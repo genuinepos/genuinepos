@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Events\EmailNotified;
+use App\Events\EmailConfiguration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,12 +31,12 @@ class SendEmailJob implements ShouldQueue
 
     public function handle()
     {
-        Event::dispatch(new EmailNotified());
+        Event::dispatch(new EmailConfiguration());
         $data["email"] = $this->recipient;
         $data["subject"] = $this->subject;
         $data["body"] = $this->message;
         $files = $this->attachments;
-        Mail::send('mail.test', $data, function ($message) use ($data, $files) {
+        Mail::send('mail.welcome.default', compact('data', 'files'), function ($message) use ($data, $files) {
             $message->to($data["email"])
                 ->subject($data["subject"]);
             foreach ($files as $file) {

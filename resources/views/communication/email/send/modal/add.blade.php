@@ -50,7 +50,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label><strong>Body </strong><span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="message" cols="5" rows="5" required></textarea>
+                            <textarea name="message" class="ckEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;" data-next="save_and_new"></textarea>
                         </div>
                     </div>
 

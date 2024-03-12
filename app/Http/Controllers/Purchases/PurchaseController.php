@@ -183,7 +183,6 @@ class PurchaseController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
@@ -312,24 +311,6 @@ class PurchaseController extends Controller
         } catch (Exception $e) {
 
             DB::rollBack();
-        }
-
-        if (env('EMAIL_ACTIVE') == 'true' && $purchase?->supplier && $purchase?->supplier?->email) {
-
-            $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
-
-            // $checkboxData = $request->input('checkboxes', []);
-            // $resultArray = [];
-            // foreach ($checkboxData as $model => $ids) {
-            //     if ($model === 'users') {
-            //         $users = User::whereIn('id', $ids)->select('email')->get();
-            //         $resultArray['users'] = $users->toArray();
-            //     } elseif ($model === 'customers') {
-            //         $customers = Customer::whereIn('id', $ids)->select('email')->get();
-            //         $resultArray['customers'] = $customers->toArray();
-            //     }
-            // }
-            // $this->emailService->sendMultiple(array_values($resultArray, 'email'), new PurchaseCreated( $purchase));
         }
 
         if ($request->action == 2) {

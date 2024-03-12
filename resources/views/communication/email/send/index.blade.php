@@ -74,6 +74,9 @@
             padding: 0 5px;
             font-size: 12px;
         }
+        .add_input{
+            margin:5px 0;
+        }
     </style>
 @endpush
 @section('title', 'Email Section - ')

@@ -4,11 +4,15 @@ namespace App\Services\Communication\Sms;
 
 use App\Models\Communication\Sms\SendSms;
 use App\Models\Communication\Sms\SmsServer;
+use App\Http\Traits\SendConfiguration;
 use App\Models\Contacts\Contact;
 use App\Models\User;
 
 class SmsSendService
 {
+
+    use SendConfiguration;
+
     public function index($request)
     {
 
@@ -33,19 +37,11 @@ class SmsSendService
     public function store($request)
     {
         try {
-
             $formSmss = $request->input('phone');
             $group = $request->input('group_id');
-            $message = mb_convert_encoding($request->message, 'UTF-8', 'auto');
+            $message = $request->input('message');
             $SmsRecipients = [];
             $SmssSent = false;
-
-            $sever = SmsServer::where('status', 1)->first();
-
-            if (!isset($sever)) {
-                return ['status' => 'error', 'message' => 'Sms Server not active'];
-            }
-
             if ($group == 'all') {
                 $userRecipients = User::whereNotNull('phone')->pluck('phone')->toArray();
                 $contactRecipients = Contact::whereNotNull('phone')->pluck('phone')->toArray();
@@ -58,6 +54,17 @@ class SmsSendService
                 $SmsRecipients = User::whereNotNull('phone')->pluck('phone')->toArray();
             }
 
+            if (!preg_match('/\p{Bengali}/u', $message)) {
+                $SmssSent = false;
+                return ['status' => 'success', 'message' => 'Content must be in Bangla'];
+            }
+
+            $sever = SmsServer::where('status', 1)->first();
+            if (!isset($sever)) {
+                $SmssSent = false;
+                return ['status' => 'success', 'message' => 'Sms Server not active'];
+            }
+
             if (!empty($formSmss)) {
                 foreach ($formSmss as $phone) {
                     SendSms::create([
@@ -65,8 +72,7 @@ class SmsSendService
                         'message' => $message,
                         'status' => 1,
                     ]);
-                    //SendSmsJob::dispatch($Sms, $message);
-                    $response = $this->send_sms($phone, $message);
+                    $response = $this->sendSms($phone, $message);
                     $SmssSent = true;
                 }
             }
@@ -78,8 +84,7 @@ class SmsSendService
                         'message' => $message,
                         'status' => 1,
                     ]);
-                    //SendSmsJob::dispatch($Sms, $message);
-                    $response = $this->send_sms($phone, $message);
+                    $response = $this->sendSms($phone, $message);
                     $SmssSent = true;
                 }
             }
@@ -149,40 +154,6 @@ class SmsSendService
         } else {
             return ['status' => 'error', 'message' => 'Failed to delete Sms'];
         }
-    }
-
-    function send_sms($mobile, $message)
-    {
-        $sever = SmsServer::where('status', 1)->first();
-        if (!isset($sever)) {
-            return ['status' => 'error', 'message' => 'Sms Server not active'];
-        }
-        // $url = "https://msg.elitbuzz-bd.com/smsapi";
-        $url = $sever->host;
-        // $data = [
-        //     "api_key" => "R6001497636b5b900483f9.42267793",
-        //     "type" => "{content type}",
-        //     "contacts" => "88" . $mobile,
-        //     "senderid" => "SpeedDigit",
-        //     "msg" => $message,
-        // ];
-        $data = [
-            "api_key" => $sever->api_key,
-            "type" => "{content type}",
-            "contacts" => "88" . $mobile,
-            "senderid" => $sever->sender_id,
-            "msg" => $message,
-        ];
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
     }
 
 }

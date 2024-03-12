@@ -2,12 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Mail\TestEmail;
+use App\Events\EmailConfiguration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
 class SendEmailJob implements ShouldQueue
@@ -30,7 +31,17 @@ class SendEmailJob implements ShouldQueue
 
     public function handle()
     {
-        Mail::to($this->recipient)
-            ->send(new TestEmail($this->subject, $this->message, $this->attachments));
+        Event::dispatch(new EmailConfiguration());
+        $data["email"] = $this->recipient;
+        $data["subject"] = $this->subject;
+        $data["body"] = $this->message;
+        $files = $this->attachments;
+        Mail::send('mail.welcome.default', compact('data', 'files'), function ($message) use ($data, $files) {
+            $message->to($data["email"])
+                ->subject($data["subject"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
     }
 }

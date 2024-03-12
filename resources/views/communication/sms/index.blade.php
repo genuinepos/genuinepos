@@ -44,15 +44,6 @@
                     <input type="text" name="sender_id"  class="form-control" autocomplete="off" placeholder="Enter Sender Id">
                 </div>
 
-    
-                <!-- <div class="form-group">
-                    <label>Access Shop</label>
-                    <select class="form-control select2"  multiple>
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                </div> -->
-
                 <div class="form-group">
                     <label>Status</label>
                     <select class="form-control" name="status">
@@ -62,36 +53,30 @@
                 </div>
 
                 <div class="form-group mt-3">
-                    <button type="reset" style="margin:-1px 10px"  class="btn btn-sm btn-danger float-end mr-2">Reset</button>
                     <button style="margin:-1px 10px" type="submit" id="add" class="btn btn-sm btn-success float-end">Save</button>
+                    <button type="reset" style="margin:-1px 10px"  class="btn btn-sm btn-danger float-end mr-2">Reset</button>
                 </div>
                 <br>
           </form>
-      </div>
-
-
-
-      <div class="panel-body card">
-            <div class="row">
-              <div class="table-responsive" id="data_list">
-                 <table class="display table-hover data_tbl data__table">
-                    <thead>
-                        <tr class="bg-navey-blue">
-                            <th>{{ __('Provider') }}</th>
-                            <th>{{ __('URL') }}</th>
-                            <th>{{ __('Api Key') }}</th>
-                            <th>{{ __('Sender Id') }}</th>
-                            <th>{{ __('Status') }}</th>
-                            <th>{{ __('Action') }}</th>
-                         </tr>
-                       </thead>
-                       <tbody></tbody>
-                    </table> 
-                </div>
-            </div>
         </div>
-       </div>
-    </div>
+        <div class="col-md-9 card">
+            <div class="table-responsive" id="data_list">
+                        <table class="display table-hover data_tbl data__table">
+                            <thead>
+                                <tr class="bg-navey-blue">
+                                    <th>{{ __('Provider') }}</th>
+                                    <th>{{ __('URL') }}</th>
+                                    <th>{{ __('Api Key') }}</th>
+                                    <th>{{ __('Sender Id') }}</th>
+                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </div>
 @endsection
 
 @push('scripts')

@@ -74,6 +74,9 @@
             padding: 0 5px;
             font-size: 12px;
         }
+            .add_input{
+            margin:5px 0;
+        }
     </style>
 @endpush
 @section('title', 'Sms Section - ')
@@ -93,7 +96,7 @@
         <div class="p-3">
                  <div class="row g-1">
                     <!-- modal for compose email -->
-                   @include('communication.email.send.modal.add')
+                   @include('communication.sms.send.modal.add')
                   <div class="col-md-2 card mb-3">
                     <div class="mail-sidebar" style="height:840px;">
                         <div class="card-body">
@@ -218,7 +221,7 @@
 
         $("#addMoreButton").click(function() {
         var emailField = '<div class="input-group mb-2">' +
-                            '<input required="" type="text" name="phone[]" class="form-control add_input" data-name="To" placeholder="Phone">' +
+                            '<input required="" type="number" name="phone[]" class="form-control add_input" data-name="To" placeholder="Phone">' +
                             '<div class="input-group-append">' +
                                 '<button class="btn btn-outline-danger deleteEmail" type="button"><i class="fas fa-trash"></i></button>' +
                             '</div>' +

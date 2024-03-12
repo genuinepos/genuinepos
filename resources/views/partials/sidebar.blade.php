@@ -2129,17 +2129,6 @@
                                 <p class="sub-menu-group-title">{{ __('Email') }}</p>
                                 <div class="sub-menu-row">
                                     <div class="sub-menu-col">
-                                        <a href="#" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="far fa-envelope"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Email') }}</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="sub-menu-col">
                                         <a href="{{ route('send.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2185,7 +2174,7 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="#" class="switch-bar-wrap">
+                                        <a href="{{ route('menual.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
@@ -2215,17 +2204,6 @@
                             <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __('Sms') }}</p>
                                 <div class="sub-menu-row">
-                                    <div class="sub-menu-col">
-                                        <a href="#" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="far fa-envelope"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Sms') }}</p>
-                                        </a>
-                                    </div>
-
                                         <div class="sub-menu-col">
                                         <a href="{{route('sms-send.index')}}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">

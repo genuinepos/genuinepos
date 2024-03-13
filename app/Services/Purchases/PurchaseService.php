@@ -390,7 +390,6 @@ class PurchaseService
     {
         return $request->validate([
             'supplier_account_id' => 'required',
-            'invoice_id' => 'sometimes|unique:purchases,invoice_id',
             'date' => 'required|date',
             'payment_method_id' => 'required',
             'purchase_account_id' => 'required',

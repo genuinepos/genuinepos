@@ -1,17 +1,50 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid var(--main-color); margin-top: 1px; border-radius: 0px; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid var(--main-color);
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 4px 4px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 4px 4px;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 10px; padding: 2px 2px; display: block; border: 1px solid gray; }
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 10px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid gray;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
 
-        .selectProduct { background-color: #746e70; color: #fff !important; }
+        .selectProduct {
+            background-color: #746e70;
+            color: #fff !important;
+        }
 
-        .table_product_list { max-height: 70vh; overflow-x: scroll; }
+        .table_product_list {
+            max-height: 70vh;
+            overflow-x: scroll;
+        }
     </style>
 @endpush
 @section('title', 'Generate Barcode - ')
@@ -81,6 +114,15 @@
                                                                 <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; {{ __('Supplier Prefix') }} &nbsp; </p>
                                                             </li>
                                                         </ul>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label><b>{{ __('Price Group') }}</b></label>
+                                                            <select required class="form-control select2" name="unit_id" id="unit_id" data-next="barcode_type">
+                                                                <option value="">{{ __('Default Price Group') }}</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -186,7 +228,8 @@
                                                                     }
                                                                 @endphp
 
-                                                                <tr data-product_id="{{ $purchasedProduct->product_id }}" data-product_name="{{ $purchasedProduct->product_name }}" data-product_code="{{ $purchasedProduct->variant_code ? $purchasedProduct->variant_code : $purchasedProduct->product_code }}" data-variant_id="{{ $purchasedProduct->variant_id ? $purchasedProduct->variant_id : 'noid' }}" data-variant_name="{{ $purchasedProduct->variant_name }}" data-price_exc_tax="{{ $priceExcTax }}" data-tax_ac_id="{{ $purchasedProduct->tax_ac_id }}" data-tax_percent="{{ $purchasedProduct->tax_percent ? $purchasedProduct->tax_percent : 0 }}" data-tax_type="{{ $purchasedProduct->tax_type }}" data-price_inc_tax="{{ $priceIncTax }}" data-supplier_id="{{ $purchasedProduct->supplier_account_id }}" data-supplier_name="{{ $purchasedProduct->supplier_name }}" data-supplier_prefix="{{ $purchasedProduct->supplier_prefix }}" data-label_qty="{{ $purchasedProduct->total_left_qty }}">
+                                                                <tr data-product_id="{{ $purchasedProduct->product_id }}" data-product_name="{{ $purchasedProduct->product_name }}" data-product_code="{{ $purchasedProduct->variant_code ? $purchasedProduct->variant_code : $purchasedProduct->product_code }}" data-variant_id="{{ $purchasedProduct->variant_id ? $purchasedProduct->variant_id : 'noid' }}" data-variant_name="{{ $purchasedProduct->variant_name }}" data-price_exc_tax="{{ $priceExcTax }}" data-tax_ac_id="{{ $purchasedProduct->tax_ac_id }}" data-tax_percent="{{ $purchasedProduct->tax_percent ? $purchasedProduct->tax_percent : 0 }}" data-tax_type="{{ $purchasedProduct->tax_type }}" data-price_inc_tax="{{ $priceIncTax }}" data-supplier_id="{{ $purchasedProduct->supplier_account_id }}" data-supplier_name="{{ $purchasedProduct->supplier_name }}" data-supplier_prefix="{{ $purchasedProduct->supplier_prefix }}"
+                                                                    data-label_qty="{{ $purchasedProduct->total_left_qty }}">
                                                                     <td class="text-start">
                                                                         <input type="checkbox" class="check">
                                                                     </td>
@@ -208,7 +251,7 @@
                                                             @endforeach
                                                         @else
                                                             <tr>
-                                                                <th colspan="4" class="text-center">{{ __('Data No Found') }}.</th>
+                                                                <th colspan="5" class="text-center">{{ __('Data No Found') }}.</th>
                                                             </tr>
                                                         @endif
                                                     </tbody>

@@ -83,6 +83,7 @@ class BarcodeController extends Controller
     public function preview(Request $request)
     {
         $req = $request;
+
         if (!isset($req->product_ids)) {
 
             session()->flash('errorMsg', 'Product list is empty.');

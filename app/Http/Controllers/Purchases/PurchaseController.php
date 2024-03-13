@@ -383,7 +383,7 @@ class PurchaseController extends Controller
     {
         abort_if(!auth()->user()->can('purchase_edit'), 403);
 
-        $this->purchaseService->purchaseStoreValidation(request: $request);
+        $this->purchaseService->purchaseUpdateValidation(request: $request);
 
         if (isset($request->warehouse_count)) {
 

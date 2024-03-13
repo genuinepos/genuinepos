@@ -79,7 +79,7 @@ class GeneralSettingController extends Controller
 
             $logo = $request->file('business_logo');
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-            Image::make($logo)->resize(110, 60)->save('uploads/business_logo/' . $logoName);
+            Image::make($logo)->resize(200, 60)->save('uploads/business_logo/' . $logoName);
             $businessLogo = $logoName;
         } else {
 

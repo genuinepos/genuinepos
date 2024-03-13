@@ -1,10 +1,11 @@
 <form id="business_settings_form" class="setting_form p-2" action="{{ route('settings.business.settings') }}" method="post" enctype="multipart/form-data">
+    @csrf
     <div class="form-group">
         <div class="setting_form_heading">
             <h6 class="text-primary">{{ __('Business Settings') }}</h6>
         </div>
     </div>
-    @csrf
+
     <div class="form-group row">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Business Name') }} <span class="text-danger">*</span></label>
@@ -129,7 +130,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-4">
-            <label class="fw-bold">{{ __('Business Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 60px; W: 110px;') }}</small></label>
+            <label class="fw-bold">{{ __('Business Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 60px; W: 200px;') }}</small></label>
             <input type="file" class="form-control" name="business_logo" id="business_logo" @if ($generalSettings['business_or_shop__business_logo']) data-default-file="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" @endif>
             <span class="error error_business_logo"></span>
             <a href="#" class="text-danger btn btn-sm mt-1" id="deleteBusinessLogo">{{ __('Remove Business Logo') }}</a>

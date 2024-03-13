@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('parent_category_id')->nullable()->index('categories_parent_category_id_foreign');
-            $table->string('photo')->default('default.png');
+            $table->string('photo')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
 

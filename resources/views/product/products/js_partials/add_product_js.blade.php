@@ -8,10 +8,10 @@
 
     $('#photo').dropify({
         messages: {
-            'default': 'Drag and drop a file here or click',
-            'replace': 'Drag and drop or click to replace',
-            'remove':  'Remove',
-            'error':   'Ooops, something wrong happended.'
+            'default': "{{ __('Drag and drop a file here or click') }}",
+            'replace': "{{ __('Drag and drop or click to replace') }}",
+            'remove':  "{{ __('Remove') }}",
+            'error':   "{{ __('Ooops, something wrong happended.') }}"
         }
     });
 
@@ -607,7 +607,7 @@
 
         $('#multiple_unit_body').append(html);
         $('.assigned_unit_id').select2();
-        
+
         var hasMultipleUnit = $('#has_multiple_unit').val();
         if (hasMultipleUnit == 1) {
 

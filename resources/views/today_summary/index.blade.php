@@ -1,5 +1,5 @@
 @php
-    $currency = $generalSettings['business_or_shop__currency'];
+    $currency = $generalSettings['business_or_shop__currency_symbol'];
 @endphp
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">

@@ -42,6 +42,7 @@ Route::prefix('setups')->group(function () {
         Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
         Route::post('send/sms/settings', 'sendSmsSettings')->name('settings.send.sms.settings');
         Route::post('rp/settings', 'rewardPointSettings')->name('settings.reward.point.settings');
+        Route::delete('delete/business/logo', 'deleteBusinessLogo')->name('settings.business.logo.delete');
     });
 
     Route::controller(BranchController::class)->prefix('branches')->group(function () {

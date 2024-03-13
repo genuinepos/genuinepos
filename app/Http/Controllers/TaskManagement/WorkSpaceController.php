@@ -43,10 +43,11 @@ class WorkSpaceController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_create') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)
             ->select(['id', 'prefix', 'name', 'last_name'])->get();
+
         return view('task_management.workspaces.ajax_view.create', compact('users'));
     }
 

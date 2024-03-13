@@ -11,6 +11,8 @@ use App\Services\Accounts\AccountService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
+use App\Http\Requests\Setups\GeneralSettingsRequest;
+use Intervention\Image\Facades\Image;
 
 class GeneralSettingController extends Controller
 {
@@ -58,30 +60,30 @@ class GeneralSettingController extends Controller
         ));
     }
 
-    public function businessSettings(Request $request)
+    public function businessSettings(GeneralSettingsRequest $request)
     {
         $generalSettings = config('generalSettings');
-        $business_logo = null;
+        $businessLogo = null;
 
         if ($request->hasFile('business_logo')) {
 
-            if ($generalSettings['business_or_shop__business_logo'] != null) {
+            if (isset($generalSettings['business_or_shop__business_logo'])) {
 
-                $bLogo = $generalSettings['business_or_shop__business_logo'];
+                $businessLogo = $generalSettings['business_or_shop__business_logo'];
 
-                if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
+                if (file_exists(public_path('uploads/business_logo/' . $businessLogo))) {
 
-                    unlink(public_path('uploads/business_logo/' . $bLogo));
+                    unlink(public_path('uploads/business_logo/' . $businessLogo));
                 }
             }
 
             $logo = $request->file('business_logo');
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-            $logo->move(public_path('uploads/business_logo/'), $logoName);
-            $business_logo = $logoName;
+            Image::make($logo)->resize(110, 60)->save('uploads/business_logo/' . $logoName);
+            $businessLogo = $logoName;
         } else {
 
-            $business_logo = $generalSettings['business_or_shop__business_logo'] != null ? $generalSettings['business_or_shop__business_logo'] : null;
+            $businessLogo = isset($generalSettings['business_or_shop__business_logo']) ? $generalSettings['business_or_shop__business_logo'] : null;
         }
 
         $settings = [
@@ -97,7 +99,7 @@ class GeneralSettingController extends Controller
             'business_or_shop__date_format' => $request->date_format,
             'business_or_shop__stock_accounting_method' => $request->stock_accounting_method,
             'business_or_shop__time_format' => $request->time_format,
-            'business_or_shop__business_logo' => $business_logo,
+            'business_or_shop__business_logo' => $businessLogo,
             'business_or_shop__timezone' => $request->timezone,
         ];
 
@@ -111,6 +113,7 @@ class GeneralSettingController extends Controller
         $settings = [
             'dashboard__view_stock_expiry_alert_for' => $request->view_stock_expiry_alert_for,
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json(__('Dashboard settings updated successfully.'));
@@ -280,7 +283,7 @@ class GeneralSettingController extends Controller
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
             'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
-            'modules__pos' => isset($request->pos_sale) ? 1 : 0,
+            'modules__pos' => isset($request->pos) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
@@ -340,5 +343,12 @@ class GeneralSettingController extends Controller
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json(__('Reward point settings updated successfully'));
+    }
+
+    public function deleteBusinessLogo(Request $request)
+    {
+        $this->generalSettingService->deleteBusinessLogo();
+
+        return response()->json(__('Business logo is removed successfully'));
     }
 }

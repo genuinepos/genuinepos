@@ -68,7 +68,7 @@
                                 <div class="col-md-12">
                                     <div class="form_element rounded mt-0 mb-1">
                                         <div class="element-body">
-                                            <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                            <form id="sale_purchase_profit_filter" method="get">
                                                 <div class="form-group row align-items-end">
                                                     <div class="col-md-2 search_area">
                                                         <label><strong>{{ __('Search Product') }} </strong></label>

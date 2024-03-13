@@ -226,7 +226,7 @@
             },
             columns: [
                 { data: 'date', name: 'purchases.date' },
-                { data: 'branch', name: 'branch.name' },
+                { data: 'branch', name: 'branches.name' },
                 { data: 'product', name: 'products.name' },
                 { data: 'supplier_name', name: 'suppliers.name as supplier_name' },
                 { data: 'invoice_id', name: 'purchases.invoice_id' },

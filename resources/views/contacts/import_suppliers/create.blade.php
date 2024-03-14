@@ -54,7 +54,7 @@
                                 <div class="row mt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"><b>{{ __('Download Sample') }}</b> </label>
+                                            <label class="col-4"><b>{{ __('Download Sample') }}</b></label>
                                             <div class="col-8">
                                                 <a href="{{ asset('import_template/supplier_import_template.xlsx') }}" class="btn btn-sm btn-success" download>{{ __('Download Template File, Click Here') }}</a>
                                             </div>
@@ -88,12 +88,6 @@
                                         <tbody>
                                             <tr>
                                                 <td class="text-start">{{ __('1') }}</td>
-                                                <td class="text-start">{{ __('Supplier ID') }}</td>
-                                                <td class="text-start text-danger">{{ __("Supplier ID will be generated automatically.") }}</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="text-start">{{ __('2') }}</td>
                                                 <td class="text-start">{{ __('Name') }}</td>
                                                 <td class="text-start text-danger">
                                                     {{ __('Required') }}
@@ -103,7 +97,7 @@
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('3') }}</td>
+                                                <td class="text-start">{{ __('2') }}</td>
                                                 <td class="text-start">{{ __('Phone') }}</td>
                                                 <td class="text-start text-danger">
                                                     <b>{{ __('Required') }}</b> <br>
@@ -114,73 +108,73 @@
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('4') }}</td>
+                                                <td class="text-start">{{ __('3') }}</td>
                                                 <td class="text-start">{{ __('Business') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('5') }}</td>
+                                                <td class="text-start">{{ __('4') }}</td>
                                                 <td class="text-start">{{ __('Alternative Phone Number') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('6') }}</td>
+                                                <td class="text-start">{{ __('5') }}</td>
                                                 <td class="text-start">{{ __('Landline') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('7') }}</td>
+                                                <td class="text-start">{{ __('6') }}</td>
                                                 <td class="text-start">{{ __('Email') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('8') }}</td>
+                                                <td class="text-start">{{ __('7') }}</td>
                                                 <td class="text-start">{{ __('Tax Number') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('9') }}</td>
+                                                <td class="text-start">{{ __('8') }}</td>
                                                 <td class="text-start">{{ __('Address') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('10') }}</td>
+                                                <td class="text-start">{{ __('9') }}</td>
                                                 <td class="text-start">{{ __('City') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('11') }}</td>
+                                                <td class="text-start">{{ __('10') }}</td>
                                                 <td class="text-start">{{ __('State') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('12') }}</td>
+                                                <td class="text-start">{{ __('11') }}</td>
                                                 <td class="text-start">{{ __('Zip-code') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('13') }}</td>
+                                                <td class="text-start">{{ __('12') }}</td>
                                                 <td class="text-start">{{ __('Country') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('14') }}</td>
+                                                <td class="text-start">{{ __('13') }}</td>
                                                 <td class="text-start">{{ __('Pay-Term Number') }}</td>
                                                 <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">{{ __('15') }}</td>
+                                                <td class="text-start">{{ __('14') }}</td>
                                                 <td class="text-start">{{ __('Pay-Term') }}</td>
                                                 <td class="text-start">
                                                     {{ __('Optional') }} ({{ __('If exists 1=Days,2=Months') }})

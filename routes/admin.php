@@ -187,11 +187,6 @@ Route::group(['prefix' => 'contacts'], function () {
         //     Route::post('voucher/status/change/{receiptId}', [MoneyReceiptController::class, 'changeStatus'])->name('money.receipt.voucher.status.change');
         //     Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
         // });
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', [CustomerImportController::class, 'create'])->name('contacts.customers.import.create');
-            Route::post('store', [CustomerImportController::class, 'store'])->name('contacts.customers.import.store');
-        });
     });
 
     Route::group(['prefix' => 'reports'], function () {

@@ -35,8 +35,8 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $dateTimeStrPrefix . $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
@@ -76,8 +76,8 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $dateTimeStrPrefix . $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
@@ -116,18 +116,22 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $dateTimeStrPrefix . $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
 
-    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = ''): string
+    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = '', bool $isCheckBranch = false, ?int $branchId = null): string
     {
-        $entryRaw = DB::table($table)
-            ->whereNotNull($column)
-            ->where($typeColName, $typeValue)
-            ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+        $entryRaw = null;
+        $query = DB::table($table)->whereNotNull($column)->where($typeColName, $typeValue);
+        if ($isCheckBranch == true) {
+
+            $query->where('branch_id', $branchId);
+        }
+
+        $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 
@@ -153,9 +157,9 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsLength = ($size - ($prefixLength)) - 1;
         // $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $suffixSeparator.$lastDigitsFinal;
+        $finalSuffix = $suffixSeparator . $lastDigitsFinal;
         // $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
@@ -187,8 +191,8 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }

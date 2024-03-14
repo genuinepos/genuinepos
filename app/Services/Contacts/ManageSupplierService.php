@@ -161,7 +161,7 @@ class ManageSupplierService
 
             ->editColumn('contact_id', function ($row) {
 
-                return $row->contact_id . '(' . $row->prefix . ')';
+                return $row->contact_id . '-(' . $row->prefix . ')';
             })
 
             ->editColumn('opening_balance', function ($row) {

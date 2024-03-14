@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use App\Models\Supplier;
 use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use Illuminate\Support\Collection;

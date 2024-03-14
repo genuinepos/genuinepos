@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Imports\SupplierImport;
+use App\Imports\CustomerImport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,10 +12,9 @@ use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Interfaces\CodeGenerationServiceInterface;
-use App\Http\Requests\Contacts\SupplierImportRequest;
 use App\Services\Contacts\ContactOpeningBalanceService;
 
-class SupplierImportController extends Controller
+class CustomerImportController extends Controller
 {
     public function __construct(
         private ContactService $contactService,
@@ -29,18 +28,20 @@ class SupplierImportController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('supplier_import'), 403);
-
-        return view('contacts.import_suppliers.create');
+        return view('contacts.import_customers.create');
     }
 
-    public function store(SupplierImportRequest $request)
+    public function store(Request $request)
     {
+        $this->validate($request, [
+            'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
+        ]);
+
         try {
             DB::beginTransaction();
 
             Excel::import(
-                new SupplierImport(
+                new CustomerImport(
                     accountGroupService: $this->accountGroupService,
                     codeGenerator: $this->codeGenerator,
                     contactService: $this->contactService,
@@ -57,7 +58,7 @@ class SupplierImportController extends Controller
             DB::rollBack();
         }
 
-        session()->flash('successMsg', __('Suppliers imported successfully'));
+        session()->flash('successMsg', __('Customers imported successfully'));
 
         return redirect()->back();
     }

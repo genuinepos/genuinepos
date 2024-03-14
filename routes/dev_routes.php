@@ -231,10 +231,14 @@ Route::get('my-test', function () {
     // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
     // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
 
-    $db = 'drop_db';
-    if(Schema::hasView($db)) {
+    $number = (float)'khhju899999';
+    $creditLimit = 0;
+    if (gettype($number) == 'integer' || gettype($number) == 'double') {
 
-        DB::statement('DROP DATABASE '.$db);
+        return $creditLimit = $number;
+    } else {
+
+        return $creditLimit = 0;
     }
 });
 

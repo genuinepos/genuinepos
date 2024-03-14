@@ -12,6 +12,7 @@ use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Contacts\CustomerImportRequest;
 use App\Services\Contacts\ContactOpeningBalanceService;
 
 class CustomerImportController extends Controller
@@ -28,15 +29,13 @@ class CustomerImportController extends Controller
 
     public function create()
     {
+        abort_if(!auth()->user()->can('customer_import'), 403);
+        
         return view('contacts.import_customers.create');
     }
 
-    public function store(Request $request)
+    public function store(CustomerImportRequest $request)
     {
-        $this->validate($request, [
-            'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
-        ]);
-
         try {
             DB::beginTransaction();
 

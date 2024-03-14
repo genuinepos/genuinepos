@@ -1,32 +1,38 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {border: 1px solid #7e0d3d;}
-        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
+
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
     </style>
 @endpush
+@section('title', __('Import Suppliers'))
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>@lang('menu.import_suppliers') </h5>
+                    <h5>{{ __('Import Suppliers') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
         <form action="{{ route('contacts.suppliers.import.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <div class="container-fluid p-3">
+            <div class="container-fluid p-1">
                 <div class="row">
                     <div class="col-12">
-                        <div class="form_element rounded mt-0 mb-3">
-
+                        <div class="form_element rounded mt-0 mb-1">
                             <div class="element-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.file_to_import') </b> </label>
+                                            <label class="col-4"><b>{{ __('File To Import') }}</b></label>
                                             <div class="col-8">
                                                 <input type="file" name="import_file" class="form-control">
                                                 <span class="error" style="color: red;">
@@ -39,7 +45,7 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="col-8">
-                                                <button class="btn btn-sm btn-primary float-start m-0">@lang('menu.upload')</button>
+                                                <button class="btn btn-sm btn-primary float-start m-0">{{ __('Upload') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -48,9 +54,9 @@
                                 <div class="row mt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.download_sample') </b> </label>
+                                            <label for="inputEmail3" class="col-4"><b>{{ __('Download Sample') }}</b> </label>
                                             <div class="col-8">
-                                                <a href="{{ asset('import_template/supplier_import_template.xlsx') }}" class="btn btn-sm btn-success" download>@lang('menu.download_template_click')</a>
+                                                <a href="{{ asset('import_template/supplier_import_template.xlsx') }}" class="btn btn-sm btn-success" download>{{ __('Download Template File, Click Here') }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -62,136 +68,125 @@
                     <div class="col-12">
                         <div class="form_element rounded m-0">
                             <div class="element-body">
-                                <div class="heading"><h4>@lang('menu.instructions')</h4></div>
+                                <div class="heading">
+                                    <h4>{{ __('Instructions') }}</h4>
+                                </div>
                                 <div class="top_note">
-                                    <p class="p-0 m-0"><b>@lang('menu.follow_instruct_import').</b></p>
-                                    <p>@lang('menu.column_follow_order').</p>
+                                    <p class="p-0 m-0"><b>{{ __('Follow the instructions carefully before importing the file.') }}</b></p>
+                                    <p>{{ __('The columns of the file should be in the following order.') }}</p>
                                 </div>
 
                                 <div class="instruction_table">
-                                    <table class="table table-sm modal-table table-striped">
+                                    <table class="display table table-sm">
                                         <thead>
-                                            <tr >
-                                                <th class="text-start">@lang('menu.column_number')</th>
-                                                <th class="text-start">@lang('menu.column_name')</th>
-                                                <th class="text-start">@lang('menu.instruction')</th>
+                                            <tr>
+                                                <th class="text-start">{{ __('Column Number') }}</th>
+                                                <th class="text-start">{{ __('Column Name') }}</th>
+                                                <th class="text-start">{{ __('Instruction') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="text-start">1</td>
-                                                <td class="text-start"> @lang('menu.supplier_id') </td>
-                                                <td class="text-start"> @lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('1') }}</td>
+                                                <td class="text-start">{{ __('Supplier ID') }}</td>
+                                                <td class="text-start text-danger">{{ __("Supplier ID will be generated automatically.") }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">2</td>
-                                                <td class="text-start"> @lang('menu.business_name') </td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('2') }}</td>
+                                                <td class="text-start">{{ __('Name') }}</td>
+                                                <td class="text-start text-danger">
+                                                    {{ __('Required') }}
+                                                    <br>
+                                                    (<small>{{ __('If empty row will be skipped.') }}</small>)
+                                                </td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">3</td>
-                                                <td class="text-start"> @lang('menu.name')</td>
-                                                <td class="text-start text-danger"> @lang('menu.required')</td>
+                                                <td class="text-start">{{ __('3') }}</td>
+                                                <td class="text-start">{{ __('Phone') }}</td>
+                                                <td class="text-start text-danger">
+                                                    <b>{{ __('Required') }}</b> <br>
+                                                    (<small>{{ __('Must Be Unique.') }}</small>)
+                                                    <br>
+                                                    (<small>{{ __('If empty row will be skipped.') }}</small>)
+                                                </td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">4</td>
-                                                <td class="text-start"> @lang('menu.phone') </td>
-                                                <td class="text-start text-danger"> <b>@lang('menu.required')</b> <br>
-                                                    (<small>@lang('menu.must_be_unique').</small>)</td>
+                                                <td class="text-start">{{ __('4') }}</td>
+                                                <td class="text-start">{{ __('Business') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">5</td>
-                                                <td class="text-start"> @lang('menu.alternative_number')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('5') }}</td>
+                                                <td class="text-start">{{ __('Alternative Phone Number') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">6</td>
-                                                <td class="text-start">@lang('menu.landline')</td>
-                                                <td class="text-start"> @lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('6') }}</td>
+                                                <td class="text-start">{{ __('Landline') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">7</td>
-                                                <td class="text-start">@lang('menu.email')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('7') }}</td>
+                                                <td class="text-start">{{ __('Email') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">8</td>
-                                                <td class="text-start">@lang('menu.date_of_birth')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('8') }}</td>
+                                                <td class="text-start">{{ __('Tax Number') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">9</td>
-                                                <td class="text-start">@lang('menu.tax_number')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('9') }}</td>
+                                                <td class="text-start">{{ __('Address') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">10</td>
-                                                <td class="text-start">@lang('menu.opening_balance') </td>
-                                                <td class="text-start">@lang('menu.optional') <br>
-                                                    (<small>{{ __('Opening Balance will be added in customer balance due') }}.</small>)</td>
+                                                <td class="text-start">{{ __('10') }}</td>
+                                                <td class="text-start">{{ __('City') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">12</td>
-                                                <td class="text-start">@lang('menu.address')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('11') }}</td>
+                                                <td class="text-start">{{ __('State') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">13</td>
-                                                <td class="text-start">@lang('menu.city')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('12') }}</td>
+                                                <td class="text-start">{{ __('Zip-code') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">13</td>
-                                                <td class="text-start">@lang('menu.state')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('13') }}</td>
+                                                <td class="text-start">{{ __('Country') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">14</td>
-                                                <td class="text-start">@lang('menu.country')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
+                                                <td class="text-start">{{ __('14') }}</td>
+                                                <td class="text-start">{{ __('Pay-Term Number') }}</td>
+                                                <td class="text-start">{{ __('Optional') }}</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="text-start">15</td>
-                                                <td class="text-start">@lang('menu.zip_code')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="text-start">16</td>
-                                                <td class="text-start">@lang('menu.shipping_address')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="text-start">16</td>
-                                                <td class="text-start">@lang('menu.prefix')</td>
-                                                <td class="text-start">@lang('menu.optional')({{ __('If you leave this field blank, it will be generated automatically') }}.)</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="text-start">17</td>
-                                                <td class="text-start">@lang('menu.pay_term_number')</td>
-                                                <td class="text-start">@lang('menu.optional')</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="text-start">17</td>
-                                                <td class="text-start">@lang('menu.pay_term')</td>
-                                                <td class="text-start">@lang('menu.optional') (If exists 1=Day,2=Month)</td>
+                                                <td class="text-start">{{ __('15') }}</td>
+                                                <td class="text-start">{{ __('Pay-Term') }}</td>
+                                                <td class="text-start">
+                                                    {{ __('Optional') }} ({{ __('If exists 1=Days,2=Months') }})
+                                                    <br>
+                                                    (<small>{{ __('Example: Pay-Term Number : 2, Pay-Term : 2') }} = {{ __('2 Months') }}</small>)
+                                                </td>
                                             </tr>
 
                                         </tbody>
@@ -214,4 +209,3 @@
         @endif
     </script>
 @endpush
-

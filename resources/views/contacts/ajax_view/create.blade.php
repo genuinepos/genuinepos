@@ -130,7 +130,7 @@
                                 <div class="col-md-12">
                                     <label><strong>{{ __('Pay Term') }}</strong></label>
                                     <div class="input-group">
-                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="{{ __('Number') }}" />
+                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="0" />
                                         <select name="pay_term" class="form-control" id="contact_pay_term" data-next="contact_opening_balance">
                                             <option value="1">{{ __('Select Term') }}</option>
                                             <option value="2">{{ __('Days') }}</option>

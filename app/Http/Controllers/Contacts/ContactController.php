@@ -204,7 +204,7 @@ class ContactController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $contact = $contactService->singleContact(id: $id);
+        $contact = $this->contactService->singleContact(id: $id);
 
         if ($contact->type == ContactType::Customer->value) {
 
@@ -214,7 +214,7 @@ class ContactController extends Controller
             abort_if(!auth()->user()->can('supplier_delete') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         }
 
-        $this->contactService->deleteContact($id);
+        $this->contactService->deleteContact($contact);
 
         return response()->json(__('Contact deleted successfully'));
     }

@@ -148,11 +148,6 @@ Route::group(['prefix' => 'contacts'], function () {
         // Route::get('payment/details/{paymentId}', [SupplierController::class, 'paymentDetails'])->name('suppliers.view.details');
         // Route::delete('payment/delete/{paymentId}', [SupplierController::class, 'paymentDelete'])->name('suppliers.payment.delete');
         // Route::get('amountsBranchWise/{supplierId}', [SupplierController::class, 'supplierAmountsBranchWise'])->name('contacts.supplier.amounts.branch.wise');
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', [SupplierImportController::class, 'create'])->name('contacts.suppliers.import.create');
-            Route::post('store', [SupplierImportController::class, 'store'])->name('contacts.suppliers.import.store');
-        });
     });
 
     // Customers route group

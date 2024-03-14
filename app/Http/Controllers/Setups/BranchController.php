@@ -37,7 +37,7 @@ class BranchController extends Controller
     {
         $generalSettings = config('generalSettings');
 
-        abort_if(!auth()->user()->can('shops_create') && $generalSettings['subscription']->current_shop_count == 1, 403);
+        abort_if(!auth()->user()->can('branches_create') && $generalSettings['subscription']->current_shop_count == 1, 403);
 
         $currentCreatedBranchCount = $this->branchService->branches()->count();
 
@@ -51,7 +51,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('shops_create'), 403);
+        abort_if(!auth()->user()->can('branches_create'), 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -66,7 +66,7 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        abort_if(!auth()->user()->can('shops_create'), 403);
+        abort_if(!auth()->user()->can('branches_create'), 403);
 
         $this->branchService->branchStoreValidation(request: $request);
 

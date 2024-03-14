@@ -178,6 +178,13 @@
                         </li>
                     @endif
                 @endif
+
+                <li data-menu="advertisement" class="">
+                    <a href="#">
+                        <img src="{{ asset('backend/asset/img/icon/Ads.svg') }}">
+                        <p class="title">{{ __('Advertisement') }}</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -1836,7 +1843,7 @@
                                             </div>
                                         @endif
 
-                                        @if (auth()->user()->can('branches_index') && $generalSettings['subscription']->current_shop_count > 1)
+                                        {{-- @if (auth()->user()->can('branches_index') && $generalSettings['subscription']->current_shop_count > 1)
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('branches.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -1847,7 +1854,7 @@
                                                     <p class="switch_text">{{ __('Shops') }}</p>
                                                 </a>
                                             </div>
-                                        @endif
+                                        @endif --}}
 
                                         @if (auth()->user()->can('warehouses_index') & ($generalSettings['subscription']->features['warehouse_count'] > 0))
                                             <div class="sub-menu-col">

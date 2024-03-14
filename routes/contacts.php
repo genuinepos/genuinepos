@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Contacts\ContactController;
+use App\Http\Controllers\Contacts\MoneyReceiptController;
 use App\Http\Controllers\Contacts\CustomerGroupController;
 use App\Http\Controllers\Contacts\ManageCustomerController;
 use App\Http\Controllers\Contacts\ManageSupplierController;
-use App\Http\Controllers\Contacts\MoneyReceiptController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Contacts\SupplierImportController;
 
 Route::group(['prefix' => 'contacts'], function () {
 
@@ -48,5 +49,10 @@ Route::group(['prefix' => 'contacts'], function () {
         Route::get('edit/{id}', [CustomerGroupController::class, 'edit'])->name('contacts.customers.groups.edit');
         Route::post('update/{id}', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
         Route::delete('delete/{id}', [CustomerGroupController::class, 'delete'])->name('contacts.customers.groups.delete');
+    });
+
+    Route::group(['prefix' => 'import'], function () {
+        Route::get('/', [SupplierImportController::class, 'create'])->name('contacts.suppliers.import.create');
+        Route::post('store', [SupplierImportController::class, 'store'])->name('contacts.suppliers.import.store');
     });
 });

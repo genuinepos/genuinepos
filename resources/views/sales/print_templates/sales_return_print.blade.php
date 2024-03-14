@@ -138,7 +138,7 @@
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sale Invoice Details') }} : </span></li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $return->sale ? $return->sale->invoice_id : 'N/A' }}</li>
+                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span>{{ $return->sale ? $return->sale->invoice_id : 'N/A' }}</li>
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sale Date') }} : </span>{{ $return->sale ? $return->sale->date : 'N/A' }}</li>
                     </ul>
                 </div>

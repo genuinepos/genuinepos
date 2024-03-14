@@ -40,6 +40,7 @@ class ManageCustomerService
         $customers = $query->select(
             'contacts.id',
             'contacts.contact_id',
+            'contacts.prefix',
             'contacts.name',
             'contacts.business_name',
             'contacts.status',
@@ -112,6 +113,7 @@ class ManageCustomerService
         )->groupBy(
             'contacts.id',
             'contacts.contact_id',
+            'contacts.prefix',
             'contacts.name',
             'contacts.business_name',
             'contacts.status',
@@ -153,6 +155,11 @@ class ManageCustomerService
             })
 
             // ->editColumn('group_name', fn ($row) => $row->group_name ? $row->group_name : '...')
+
+            ->editColumn('contact_id', function ($row) {
+
+                return $row->contact_id.'('.$row->prefix.')';
+            })
 
             ->editColumn('credit_limit', function ($row) {
 

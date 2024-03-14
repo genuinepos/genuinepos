@@ -30,7 +30,7 @@ class ManageSupplierController extends Controller
 
         $branches = '';
         // if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == BooleanType::False->value) {
 
             $branches = $this->branchService->branches(with: ['parentBranch'])
                 ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();

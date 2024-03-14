@@ -160,7 +160,7 @@
                                 } else {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="noid" data-variant_name="" data-product_name="' + product.name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '"  data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.product_code + '" data-price_exc_tax="' + product.product_cost + '"><img style="width:20px; height:20px;" src="' + imgUrl + '/' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                    li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="noid" data-variant_name="" data-product_name="' + product.name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '"  data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.product_code + '" data-price_exc_tax="' + product.product_price + '"><img style="width:20px; height:20px;" src="' + imgUrl + '/' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                     li += '</li>';
                                 }
                             });
@@ -193,7 +193,7 @@
                         tr += '<tr>';
                         tr += '<td class="text-start">';
                         tr += '<span id="span_product_name">' + name + '</span>';
-                        tr += '<span id="span_variant_name">' + ' - ' + variant.variant_name + '</span>';
+                        tr += '<span id="span_variant_name">' + (variant.variant_name != null ? ' - ' + variant.variant_name : '') + '</span>';
 
                         tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + variant.product.id + '">';
 
@@ -285,7 +285,7 @@
         tr += '<tr>';
         tr += '<td class="text-start">';
         tr += '<span id="span_product_name">' + name + '</span>';
-        tr += '<span id="span_variant_name">' + ' - ' + variantName + '</span>';
+        tr += '<span id="span_variant_name">' + (variantName ? ' - ' + variantName : '') + '</span>';
 
         tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + productId + '">';
 
@@ -376,7 +376,7 @@
 
             if (variant_id) {
 
-                tr += '<span id="span_variant_name">' + ' - ' + variant_name + '</span>';
+                tr += '<span id="span_variant_name">' + (variant_name ? ' - ' + variant_name : '') + '</span>';
             }
 
             tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product_id + '">';
@@ -428,6 +428,7 @@
     });
 
     function calculateQty() {
+
         var left_quantities = document.querySelectorAll('#left_quantity');
         var total_qty = 0;
 

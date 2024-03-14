@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Purchases;
 use App\Enums\AccountingVoucherType;
 use App\Enums\PurchaseStatus;
 use App\Http\Controllers\Controller;
-use App\Mail\PurchaseCreated;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
@@ -82,7 +81,8 @@ class PurchaseController extends Controller
 
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
-            'supplier:id,name,phone,address',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group:id,sub_sub_group_number',
             'admin:id,prefix,name,last_name',
             'purchaseAccount:id,name',
             'purchaseProducts',
@@ -109,7 +109,8 @@ class PurchaseController extends Controller
     {
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
-            'supplier:id,name,phone,address',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group:id,sub_sub_group_number',
             'admin:id,prefix,name,last_name',
             'purchaseAccount:id,name',
             'purchaseProducts',
@@ -183,7 +184,6 @@ class PurchaseController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
@@ -314,24 +314,6 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
-        if (env('EMAIL_ACTIVE') == 'true' && $purchase?->supplier && $purchase?->supplier?->email) {
-
-            $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
-
-            // $checkboxData = $request->input('checkboxes', []);
-            // $resultArray = [];
-            // foreach ($checkboxData as $model => $ids) {
-            //     if ($model === 'users') {
-            //         $users = User::whereIn('id', $ids)->select('email')->get();
-            //         $resultArray['users'] = $users->toArray();
-            //     } elseif ($model === 'customers') {
-            //         $customers = Customer::whereIn('id', $ids)->select('email')->get();
-            //         $resultArray['customers'] = $customers->toArray();
-            //     }
-            // }
-            // $this->emailService->sendMultiple(array_values($resultArray, 'email'), new PurchaseCreated( $purchase));
-        }
-
         if ($request->action == 2) {
 
             return response()->json(['successMsg' => __('Successfully purchase is created.')]);
@@ -403,7 +385,7 @@ class PurchaseController extends Controller
     {
         abort_if(!auth()->user()->can('purchase_edit'), 403);
 
-        $this->purchaseService->purchaseStoreValidation(request: $request);
+        $this->purchaseService->purchaseUpdateValidation(request: $request);
 
         if (isset($request->warehouse_count)) {
 

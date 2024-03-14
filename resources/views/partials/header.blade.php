@@ -83,30 +83,90 @@
 
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-hide d-md-block">
-                                <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
-                                    <span>
-                                        <i class="fa fa-plus"></i>
-                                        <br>{{ __('Quick Add') }}</span>
-                                    </span>
-                                </a>
+                            @if (
+                                auth()->user()->can('product_add') ||
+                                auth()->user()->can('create_add_sale') ||
+                                auth()->user()->can('create_sales_return') ||
+                                auth()->user()->can('purchase_add') ||
+                                auth()->user()->can('purchase_return_add') ||
+                                (
+                                    auth()->user()->can('transfer_stock_create') &&
+                                    (
+                                        $generalSettings['subscription']->has_business == 1 ||
+                                        $generalSettings['subscription']->current_shop_count > 1 ||
+                                        $generalSettings['subscription']->features['warehouse_count'] > 0
+                                    )
+                                ) ||
+                                auth()->user()->can('stock_adjustment_add') ||
+                                auth()->user()->can('production_add') ||
+                                auth()->user()->can('user_add') ||
+                                auth()->user()->can('role_add')
+                            )
+                                <li class="top-icon d-hide d-md-block">
+                                    <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
+                                        <span>
+                                            <i class="fa fa-plus"></i>
+                                            <br>{{ __('Quick Add') }}</span>
+                                        </span>
+                                    </a>
 
-                                <ul class="dropdown-menu short_create_btn_list">
-                                    <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __('Quick Add') }}</span></li>
-                                    <hr class="m-0">
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Product') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Product Pricing/Costing') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Sale') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Sales Return') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Purchase') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Purchase Return') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Transfer Stock') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Stock Adjustment') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Production') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add User') }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Role') }}</a></li>
-                                </ul>
-                            </li>
+                                    <ul class="dropdown-menu short_create_btn_list">
+                                        <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __('Quick Add') }}</span></li>
+                                        <hr class="m-0">
+                                        @if (auth()->user()->can('product_add'))
+
+                                            <li><a href="{{ route('products.create') }}" class="dropdown-item text-dark">{{ __('Add Product') }}</a></li>
+                                        @endif
+                                        {{-- <li><a href="#" class="dropdown-item text-dark">{{ __('Product Pricing/Costing') }}</a></li> --}}
+                                        @if (auth()->user()->can('create_add_sale'))
+
+                                            <li><a href="{{ route('sales.create') }}" class="dropdown-item text-dark">{{ __('Add Sale') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('create_sales_return'))
+
+                                            <li><a href="{{ route('sales.returns.create') }}" class="dropdown-item text-dark">{{ __('Add Sales Return') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('purchase_add'))
+
+                                            <li><a href="{{ route('purchases.create') }}" class="dropdown-item text-dark">{{ __('Add Purchase') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('purchase_return_add'))
+
+                                            <li><a href="{{ route('purchase.returns.create') }}" class="dropdown-item text-dark">{{ __('Add Purchase Return') }}</a></li>
+                                        @endif
+
+                                        @if ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->features['warehouse_count'] > 0)
+                                            @if (auth()->user()->can('transfer_stock_create'))
+
+                                                <li><a href="{{ route('transfer.stocks.create') }}" class="dropdown-item text-dark">{{ __('Add Transfer Stock') }}</a></li>
+                                            @endif
+                                        @endif
+
+                                        @if (auth()->user()->can('stock_adjustment_add'))
+
+                                            <li><a href="{{ route('stock.adjustments.create') }}" class="dropdown-item text-dark">{{ __('Add Stock Adjustment') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('production_add'))
+
+                                            <li><a href="{{ route('manufacturing.productions.create') }}" class="dropdown-item text-dark">{{ __('Add Production') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('user_add'))
+
+                                            <li><a href="{{ route('users.create') }}" class="dropdown-item text-dark">{{ __('Add User') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('user_add'))
+
+                                            <li><a href="{{ route('users.role.create') }}" class="dropdown-item text-dark">{{ __('Add Role') }}</a></li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            @endif
 
                             <li class="top-icon d-hide d-md-block" id="hard_reload">
                                 <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __('Reload') }}</span></a>
@@ -233,7 +293,7 @@
                                     <span>
                                         <i class="fas fa-user"></i>
                                         <br>
-                                        User
+                                        {{ __("User") }}
                                     </span>
                                 </a>
 

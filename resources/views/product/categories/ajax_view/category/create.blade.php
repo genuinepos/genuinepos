@@ -19,9 +19,9 @@
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __('Photo') }}</b><small class="text-danger"><b> ({{ __('size : 400px * 400px.') }})</b></small></label>
+                    <label><b>{{ __('Photo') }}</b><small class="text-danger"><b> ({{ __('size : 250px * 250px.') }})</b></small></label>
                     <input type="file" name="photo" class="form-control" id="category_photo">
-                    <span class="error error_photo"></span>
+                    <span class="error error_category_photo"></span>
                 </div>
 
                 <div class="form-group row mt-2">

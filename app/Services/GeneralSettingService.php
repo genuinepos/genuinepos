@@ -50,6 +50,11 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         return $query->pluck('value', 'key')->toArray();
     }
 
+    public function singleGeneralSetting(string $key = null, ?int $branchId = null): ?object
+    {
+        return GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
+    }
+
     public function generalSettingsPermission(): ?bool
     {
         if (
@@ -73,5 +78,23 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         } else {
             return true;
         }
+    }
+
+    public function deleteBusinessLogo(): bool
+    {
+        $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
+
+        if (isset($businessLogo->value)) {
+
+            if (file_exists(public_path('uploads/business_logo/' . $businessLogo->value))) {
+
+                unlink(public_path('uploads/business_logo/' . $businessLogo->value));
+            }
+        }
+
+        $businessLogo->value = null;
+        $businessLogo->save();
+
+        return true;
     }
 }

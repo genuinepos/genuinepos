@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Enums\BooleanType;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\ManageCustomerService;
-use App\Services\Setups\BranchService;
-use Illuminate\Http\Request;
 
 class ManageCustomerController extends Controller
 {
@@ -27,8 +28,8 @@ class ManageCustomerController extends Controller
             return $this->manageCustomerService->customerListTable($request);
         }
 
-        $branches = [];
-        if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+        $branches = '';
+        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == BooleanType::False->value) {
 
             $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         }

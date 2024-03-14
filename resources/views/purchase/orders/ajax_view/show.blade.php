@@ -1,6 +1,12 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $order?->supplier;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -16,17 +22,17 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Supplier') }} : </strong> {{ $order?->supplier->name }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong> {{ $order?->supplier->address }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Tax Number') }} : </strong> {{ $order?->supplier->tax_number }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong> {{ $order?->supplier->phone }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Supplier') }} : </strong> {{ $order?->supplier?->name }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong> {{ $order?->supplier?->address }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Tax Number') }} : </strong> {{ $order?->supplier?->tax_number }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong> {{ $order?->supplier?->phone }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('P/o ID') }} : </strong> {{ $order->invoice_id }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('P/o Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) . ' ' . date($timeFormat, strtotime($order->time)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('P/o Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Delivery Date') }} : </strong> {{ $order->delivery_date ? date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) : '' }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Receiving Status') }} : </strong>
                                 @if ($order->po_receiving_status == 'Pending')
@@ -179,18 +185,21 @@
                                         {{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <th class="text-end">{{ __('Order Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
-                                        {{ $order->order_discount }} {{ $order->order_discount_type == 1 ? '(Fixed)' : '%' }}
+                                        {{ $order->order_discount_type == 1 ? '(Fixed)' : '%' }} {{ $order->order_discount }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <th class="text-end">{{ __('Order Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $order->purchase_tax_amount . ' (' . $order->purchase_tax_percent . '%)' }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
@@ -222,7 +231,7 @@
                                 <tr>
                                     <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt(0) }}
+                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>
                                 </tr>
                             </table>
@@ -272,7 +281,7 @@
 
                             <a href="{{ route('purchase.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
-                        
+
                         <a href="#" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> {{ __('Add Receive Stock') }}</a>
 
                         <a href="{{ route('purchases.order.print.supplier.copy', $order->id) }}" onclick="printSupplierCopy(this); return false;" class="btn btn-sm btn-info text-white" id="printSupplierCopy" data-filename="{{ $filename }}"> <i class="fas fa-print"></i> {{ __('Print Supplier Copy') }}</a>

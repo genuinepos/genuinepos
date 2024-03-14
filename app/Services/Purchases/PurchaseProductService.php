@@ -174,6 +174,7 @@ class PurchaseProductService
         $addPurchaseProduct->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $addPurchaseProduct->description = $request->descriptions[$index];
         $addPurchaseProduct->quantity = $request->quantities[$index];
+        $addPurchaseProduct->label_left_qty = $request->quantities[$index];
         $addPurchaseProduct->left_qty = $request->quantities[$index];
         $addPurchaseProduct->unit_id = $request->unit_ids[$index];
         $addPurchaseProduct->unit_cost_exc_tax = $request->unit_costs_exc_tax[$index];
@@ -276,6 +277,7 @@ class PurchaseProductService
         $updateOrAddPurchaseProduct->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $updateOrAddPurchaseProduct->description = $request->descriptions[$index];
         $updateOrAddPurchaseProduct->quantity = $request->quantities[$index];
+        $updateOrAddPurchaseProduct->label_left_qty = $updateOrAddPurchaseProduct->label_left_qty > 0 ? $request->quantities[$index] : 0;
         $updateOrAddPurchaseProduct->left_qty = $request->quantities[$index];
         $updateOrAddPurchaseProduct->unit_id = $request->unit_ids[$index];
         $updateOrAddPurchaseProduct->unit_cost_exc_tax = $request->unit_costs_exc_tax[$index];

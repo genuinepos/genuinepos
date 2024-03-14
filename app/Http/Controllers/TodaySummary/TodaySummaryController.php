@@ -24,6 +24,7 @@ class TodaySummaryController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('today_summery'), 403);
         $branchId = $request->branch_id;
 
         $todaySummaries = $this->prepare($request);
@@ -36,6 +37,7 @@ class TodaySummaryController extends Controller
 
     public function print(Request $request)
     {
+        abort_if(!auth()->user()->can('today_summery'), 403);
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 

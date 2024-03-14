@@ -43,7 +43,7 @@
                                         </div>
 
                                         <div class="col-xl-2 col-lg-3 col-md-4">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -61,7 +61,7 @@
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> @lang('menu.add')
+                            <i class="fas fa-plus-square"></i> {{ __('Add') }}
                         </a>
                         <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __('Print') }}</a>
@@ -70,7 +70,7 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                        <h6><i class="fas fa-spinner"></i> {{ __('Processing') }}...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
@@ -93,7 +93,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
@@ -128,18 +128,18 @@
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    text: '<i class="fas fa-file-excel"></i> '+"{{ __('Excel') }}"+'',
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
                 {
                     extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    text: '<i class="fas fa-file-pdf"></i> '+"{{ __('Pdf') }}"+'',
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
             ],
@@ -328,7 +328,8 @@
                             $('#contact_name').focus().select();
                         }, 500);
 
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         if (err.status == 0) {
 

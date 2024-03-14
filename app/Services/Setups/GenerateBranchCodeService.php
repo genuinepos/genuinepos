@@ -9,7 +9,6 @@ class GenerateBranchCodeService
 {
     public function branchCode(?int $parentBranchId = null)
     {
-
         $childBranchCount = 0;
         $parentBranchCode = null;
         if (isset($parentBranchId)) {

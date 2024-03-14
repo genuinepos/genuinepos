@@ -31,6 +31,7 @@ class ManageSupplierService
             ->select(
                 'contacts.id',
                 'contacts.contact_id',
+                'contacts.prefix',
                 'contacts.name',
                 'contacts.business_name',
                 'contacts.status',
@@ -124,6 +125,7 @@ class ManageSupplierService
             ->groupBy(
                 'contacts.id',
                 'contacts.contact_id',
+                'contacts.prefix',
                 'contacts.name',
                 'contacts.business_name',
                 'contacts.status',
@@ -155,6 +157,11 @@ class ManageSupplierService
                 $html .= '</div>';
 
                 return $html;
+            })
+
+            ->editColumn('contact_id', function ($row) {
+
+                return $row->contact_id . '(' . $row->prefix . ')';
             })
 
             ->editColumn('opening_balance', function ($row) {

@@ -74,7 +74,7 @@
 @php
     $dateFormat = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $currency = $generalSettings['business_or_shop__currency'];
+    $currency = $generalSettings['business_or_shop__currency_symbol'];
 @endphp
 <div class="print_area">
     <div class="row" style="border-bottom: 1px solid black;">

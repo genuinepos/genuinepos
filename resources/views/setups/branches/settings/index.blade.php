@@ -141,12 +141,13 @@
                             <div class="col-md-10">
                                 @if (auth()->user()->can('business_or_shop_settings'))
                                     <form id="branch_settings_form" class="setting_form p-2" action="{{ route('branches.update', $branch->id) }}" method="post" enctype="multipart/form-data">
+                                        @csrf
                                         <div class="form-group">
                                             <div class="setting_form_heading">
                                                 <h6 class="text-primary">{{ __('Shop Settings') }}</h6>
                                             </div>
                                         </div>
-                                        @csrf
+
                                         <input type="hidden" name="branch_type" value="{{ $branch->branch_type }}">
                                         <div class="row">
                                             <div class="col-md-9">

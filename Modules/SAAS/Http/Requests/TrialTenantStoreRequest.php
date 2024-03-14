@@ -16,7 +16,7 @@ class TrialTenantStoreRequest extends FormRequest
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
             'fullname' => 'required|string|max:255',
-            'email' => 'required|string|min:60',
+            'email' => 'required|string|max:60',
             'currency_id' => 'required',
             'phone' => 'required|max:60',
             'password' => 'required|string|min:6|confirmed',

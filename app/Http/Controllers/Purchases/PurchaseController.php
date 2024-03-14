@@ -81,7 +81,8 @@ class PurchaseController extends Controller
 
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
-            'supplier:id,name,phone,address',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group:id,sub_sub_group_number',
             'admin:id,prefix,name,last_name',
             'purchaseAccount:id,name',
             'purchaseProducts',
@@ -108,7 +109,8 @@ class PurchaseController extends Controller
     {
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
-            'supplier:id,name,phone,address',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group:id,sub_sub_group_number',
             'admin:id,prefix,name,last_name',
             'purchaseAccount:id,name',
             'purchaseProducts',

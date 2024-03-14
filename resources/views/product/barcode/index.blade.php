@@ -119,7 +119,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <label><b>{{ __('Price Group') }}</b></label>
-                                                            <select required class="form-control select2" name="unit_id" id="unit_id" data-next="barcode_type">
+                                                            <select class="form-control select2" name="price_group_id" id="price_group_id">
                                                                 <option value="">{{ __('Default Price Group') }}</option>
                                                             </select>
                                                         </div>

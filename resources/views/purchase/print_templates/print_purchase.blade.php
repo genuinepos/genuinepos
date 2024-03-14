@@ -1,6 +1,12 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $purchase?->supplier;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
@@ -258,8 +264,8 @@
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt(0) }}
+                                <td class="text-end fw-bold" style="font-size:11px!important;">
+                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -572,7 +578,7 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ App\Utils\Converter::format_in_bdt(0) }}
+                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
                             </tr>
                         </thead>

@@ -8,6 +8,7 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Setups\BranchService;
 use App\Services\GeneralSettingService;
 use App\Services\Setups\CurrencyService;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Redirect;
 use App\Services\Setups\CashCounterService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
-use App\Services\Setups\GenerateBranchCodeService;
 
 class BranchController extends Controller
 {
@@ -28,7 +28,7 @@ class BranchController extends Controller
         private TimezoneService $timezoneService,
         private BranchSettingService $branchSettingService,
         private GeneralSettingService $generalSettingService,
-        private GenerateBranchCodeService $generateBranchCodeService,
+        private CodeGenerationServiceInterface $codeGenerator,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
@@ -56,7 +56,7 @@ class BranchController extends Controller
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
 
-        $branchCode = $this->generateBranchCodeService->branchCode();
+        $branchCode = $this->codeGenerator->branchCode();
 
         $roles = DB::table('roles')->select('id', 'name')->get();
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
@@ -195,6 +195,6 @@ class BranchController extends Controller
 
     public function branchCode($parentBranchId = null)
     {
-        return $this->generateBranchCodeService->branchCode(parentBranchId: $parentBranchId);
+        return $this->codeGenerator->branchCode(parentBranchId: $parentBranchId);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\CategoryType;
 use Illuminate\Validation\Rule;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
@@ -12,10 +13,10 @@ class CategoryService
 {
     public function categoriesTable()
     {
-        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('name', 'asc')->get();
+        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('name', 'asc');
 
         return DataTables::of($categories)
-            ->addIndexColumn()
+            // ->addIndexColumn()
             ->editColumn('photo', function ($row) {
 
                 $photo = asset('images/general_default.png');
@@ -50,9 +51,11 @@ class CategoryService
             ->rawColumns(['photo', 'action'])->smart(true)->make(true);
     }
 
-    public function addCategory(object $request): ?object
+    public function addCategory(object $request, object $codeGenerator): ?object
     {
+        $code = $codeGenerator->categoryCode(type: CategoryType::MainCategory->value);
         $addCategory = new Category();
+        $addCategory->code = $code;
         $addCategory->name = $request->name;
         $addCategory->description = $request->description;
 

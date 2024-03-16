@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Imports\SupplierImport;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,7 @@ class SupplierImportController extends Controller
         } catch (Exception $e) {
 
             DB::rollBack();
+            return __('Something went wrong. Please check again the imported file.') . ' <a href="' . url()->previous() . '">' . __('Back') . '</a>';
         }
 
         session()->flash('successMsg', __('Suppliers imported successfully'));

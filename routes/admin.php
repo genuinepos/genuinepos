@@ -116,11 +116,6 @@ Route::group(['prefix' => 'product'], function () {
     // Barcode route group
 
     // Import product route group
-    Route::group(['prefix' => 'imports'], function () {
-
-        Route::get('create', [ProductImportController::class, 'create'])->name('product.import.create');
-        Route::post('store', [ProductImportController::class, 'store'])->name('product.import.store');
-    });
 });
 
 // Contact route group

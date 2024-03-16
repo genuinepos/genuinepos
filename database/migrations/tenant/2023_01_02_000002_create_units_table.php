@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code', 255)->nullable();
             $table->string('name');
             $table->string('code_name');
             $table->unsignedBigInteger('base_unit_id')->nullable();

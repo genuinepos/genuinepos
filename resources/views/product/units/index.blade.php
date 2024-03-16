@@ -39,7 +39,7 @@
                                 <table class="display data_tbl data__table unit_table">
                                     <thead>
                                         <tr>
-                                            <th>{{ __('S/L') }}</th>
+                                            <th>{{ __('Unit ID') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Short Name') }}</th>
                                             <th>{{ __('Base Unit') }}</th>
@@ -96,9 +96,14 @@
                 [10, 25, 50, 100, 500, 1000, "All"]
             ],
             ajax: "{{ route('units.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'baseUnit.code_name'
+            columns: [
+                // {
+                //     data: 'DT_RowIndex',
+                //     name: 'baseUnit.code_name'
+                // },
+                {
+                    data: 'code',
+                    name: 'units.code'
                 },
                 {
                     data: 'name',

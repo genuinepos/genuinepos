@@ -11,6 +11,7 @@ use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
 use App\Http\Requests\Products\UnitStoreRequest;
 use App\Http\Requests\Products\UnitUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class UnitController extends Controller
 {
@@ -42,12 +43,12 @@ class UnitController extends Controller
         return view('product.units.ajax_view.create', compact('baseUnits', 'isAllowedMultipleUnit'));
     }
 
-    public function store(UnitStoreRequest $request)
+    public function store(UnitStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
             DB::beginTransaction();
 
-            $addUnit = $this->unitService->addUnit($request);
+            $addUnit = $this->unitService->addUnit(request: $request, codeGenerator: $codeGenerator);
 
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Units->value, dataObj: $addUnit);
 

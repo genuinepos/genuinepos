@@ -11,6 +11,7 @@ use App\Services\Products\CategoryService;
 use App\Services\Users\UserActivityLogService;
 use App\Http\Requests\Products\CategoryStoreRequest;
 use App\Http\Requests\Products\CategoryUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class CategoryController extends Controller
 {
@@ -40,12 +41,12 @@ class CategoryController extends Controller
         return view('product.categories.ajax_view.category.create');
     }
 
-    public function store(CategoryStoreRequest $request)
+    public function store(CategoryStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
             DB::beginTransaction();
 
-            $addCategory = $this->categoryService->addCategory($request);
+            $addCategory = $this->categoryService->addCategory(request: $request, codeGenerator: $codeGenerator);
 
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $addCategory);
 

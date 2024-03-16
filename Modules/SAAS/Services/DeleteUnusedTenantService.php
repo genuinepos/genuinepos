@@ -13,6 +13,7 @@ class DeleteUnusedTenantService
         DB::statement('use pos');
         $tenant = Tenant::where('id', $domainName)->first();
         if (isset($tenant)) {
+
             $tenant->delete();
         }
         DB::reconnect();

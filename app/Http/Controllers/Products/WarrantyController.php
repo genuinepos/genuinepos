@@ -9,6 +9,7 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\WarrantyService;
 use App\Services\Users\UserActivityLogService;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Products\WarrantyStoreRequest;
 use App\Http\Requests\Products\WarrantyUpdateRequest;
 
@@ -38,12 +39,12 @@ class WarrantyController extends Controller
         return view('product.warranties.ajax_view.create');
     }
 
-    public function store(WarrantyStoreRequest $request)
+    public function store(WarrantyStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
             DB::beginTransaction();
 
-            $addWarranty = $this->warrantyService->addWarranty(request: $request);
+            $addWarranty = $this->warrantyService->addWarranty(request: $request, codeGenerator: $codeGenerator);
 
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Warranties->value, dataObj: $addWarranty);
 

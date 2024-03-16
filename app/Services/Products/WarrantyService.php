@@ -13,7 +13,7 @@ class WarrantyService
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get();
 
         return DataTables::of($warranties)
-            ->addIndexColumn()
+            // ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
 
@@ -43,9 +43,11 @@ class WarrantyService
             ->make(true);
     }
 
-    public function addWarranty(object $request): object
+    public function addWarranty(object $request, object $codeGenerator): object
     {
+        $code = $codeGenerator->warrantyCode();
         $addWarranty = new Warranty();
+        $addWarranty->code = $code;
         $addWarranty->name = $request->name;
         $addWarranty->type = $request->type;
         $addWarranty->duration = $request->duration;

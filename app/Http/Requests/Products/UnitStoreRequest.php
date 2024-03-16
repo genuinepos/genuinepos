@@ -5,6 +5,7 @@ namespace App\Http\Requests\Products;
 use App\Enums\BooleanType;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class UnitStoreRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class UnitStoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(Request $request): array
     {
         return [
             'name' => 'required',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Imports\CustomerImport;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,7 @@ class CustomerImportController extends Controller
     public function create()
     {
         abort_if(!auth()->user()->can('customer_import'), 403);
-        
+
         return view('contacts.import_customers.create');
     }
 
@@ -55,6 +56,7 @@ class CustomerImportController extends Controller
         } catch (Exception $e) {
 
             DB::rollBack();
+            return __('Something went wrong. Please check again the imported file.') . ' <a href="' . url()->previous() . '">' . __('Back') . '</a>';
         }
 
         session()->flash('successMsg', __('Customers imported successfully'));

@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\CategoryType;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -16,14 +17,15 @@ class SubCategoryService
             ->whereNotNull('categories.parent_category_id')
             ->select(
                 'categories.id',
+                'categories.code',
                 'categories.name',
                 'categories.photo',
                 'categories.description',
                 'parentCategory.name as parent_category_name'
-            )->orderBy('id', 'desc')->get();
+            )->orderBy('id', 'desc');
 
         return DataTables::of($subCategories)
-            ->addIndexColumn()
+            // ->addIndexColumn()
             ->editColumn('photo', function ($row) {
 
                 $photo = asset('images/general_default.png');
@@ -54,9 +56,11 @@ class SubCategoryService
             ->make(true);
     }
 
-    public function addSubCategory($request): ?object
+    public function addSubcategory(object $request, object $codeGenerator): ?object
     {
+        $code = $codeGenerator->categoryCode(type: CategoryType::Subcategory->value);
         $addSubCategory = new Category();
+        $addSubCategory->code = $code;
         $addSubCategory->name = $request->name;
         $addSubCategory->description = $request->description;
         $addSubCategory->parent_category_id = $request->parent_category_id ? $request->parent_category_id : null;

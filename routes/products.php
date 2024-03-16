@@ -11,6 +11,7 @@ use App\Http\Controllers\Products\PriceGroupController;
 use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\OpeningStockController;
+use App\Http\Controllers\Products\ProductImportController;
 use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\QuickProductAddController;
 use App\Http\Controllers\Products\PriceGroupManageController;
@@ -138,5 +139,11 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         Route::get('/', 'index')->name('barcode.index');
         Route::get('preview', 'preview')->name('barcode.preview');
         Route::post('empty/label/qty/{supplierAccountId}/{productId}/{variantId?}', 'emptyLabelQty')->name('barcode.empty.label.qty');
+    });
+
+    Route::controller(ProductImportController::class)->prefix('import')->group(function () {
+
+        Route::get('create', 'create')->name('product.import.create');
+        Route::post('store', 'store')->name('product.import.store');
     });
 });

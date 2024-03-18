@@ -63,6 +63,8 @@ class RolePermissionSeeder extends Seeder
                     'name' => $permission['name'],
                     // 'guard_name' => 'web',
                 ]);
+
+                echo 'Created: ' . $permission['name'] . PHP_EOL;
             }
         }
     }
@@ -75,6 +77,8 @@ class RolePermissionSeeder extends Seeder
             $role = Role::where('id', $role['id'])->first();
 
             if (isset($role)) {
+
+                echo 'Role sync to ' . $role->name . PHP_EOL;
 
                 $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
                 $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
@@ -181,6 +185,8 @@ class RolePermissionSeeder extends Seeder
                     $role->revokePermissionTo('billing_business_add');
                     $role->revokePermissionTo('billing_pay_due_payment');
                 }
+
+                echo 'Role has been synced to ' . $role->name . ' successfully' . PHP_EOL;
             }
         }
 

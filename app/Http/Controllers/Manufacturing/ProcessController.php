@@ -95,7 +95,7 @@ class ProcessController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufaturing'] == 0) {
+        if (!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             return response()->json('Access Denied.');
         }

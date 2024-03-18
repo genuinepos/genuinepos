@@ -125,7 +125,7 @@ class StartupController extends Controller
 
                 $this->subscriptionService->updateBranchStartUpCompletingStatus();
 
-                if ($generalSettings['subscription']->current_shop_count == 1 && $generalSettings['subscription']->has_business == 0) {
+                if ($generalSettings['subscription']->current_shop_count == 1 && $generalSettings['subscription']->has_business == BooleanType::False->value) {
 
                     auth()->user()->branch_id = $addBranch->id;
                     auth()->user()->is_belonging_an_area = BooleanType::True->value;

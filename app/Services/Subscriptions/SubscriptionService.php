@@ -58,6 +58,16 @@ class SubscriptionService
                 $expireDate = $expireDateCalculation->getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_period_count);
 
                 $subscription->business_expire_date = $expireDate;
+            }else {
+
+                $subscription->has_business = BooleanType::False->value;
+                $subscription->initial_business_price_period = 0;
+                $subscription->initial_business_price = 0;
+                $subscription->initial_business_period_count = null;
+                $subscription->initial_business_subtotal = 0;
+                $subscription->initial_business_start_date = null;
+
+                $subscription->business_expire_date = null;
             }
         }
 

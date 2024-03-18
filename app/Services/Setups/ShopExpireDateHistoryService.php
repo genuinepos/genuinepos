@@ -7,8 +7,8 @@ use App\Models\Subscriptions\ShopExpireDateHistory;
 
 class ShopExpireDateHistoryService
 {
-    public function addShopExpireDateHistory(object $request, object $expireDateCalculation) : void {
-
+    public function addShopExpireDateHistory(object $request, object $expireDateCalculation): void
+    {
         $expireDate = '';
         if ($request->price_period == 'month') {
 
@@ -23,7 +23,8 @@ class ShopExpireDateHistoryService
 
         $shopHistory = new ShopExpireDateHistory();
         $shopHistory->shop_count = $request->shop_count;
-        $shopHistory->price_period = $request->period_count;
+        $shopHistory->price_period = $request->price_period;
+        // $shopHistory->current_price = $request->price;
         $shopHistory->start_date = Carbon::now();
         $shopHistory->expire_date = $expireDate;
         $shopHistory->created_count = 0;

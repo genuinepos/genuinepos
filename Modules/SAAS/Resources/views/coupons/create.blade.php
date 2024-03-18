@@ -480,21 +480,21 @@
                             </div>
 
                             <div class="col-xxl-3 col-lg-3 col-sm-6" style="display:none" id="is_minimum_purchase_id">
-                                <label for="purchase_price" class="form-label"><strong>{{ __('Minimum Purchase Amount') }}</strong></label>
-                                <input type="number" name="purchase_price" class="form-control" id="purchase_price" autocomplete="off" placeholder="{{ __('Enter Purchase Price') }}">
+                                <label for="minimum_purchase_amount" class="form-label"><strong>{{ __('Minimum Purchase Amount') }}</strong></label>
+                                <input type="number" name="minimum_purchase_amount" class="form-control" id="minimum_purchase_amount" autocomplete="off" placeholder="{{ __('Minimum Purchase Amount') }}">
                             </div>
 
                             <div class="col-xxl-3 col-lg-3 col-sm-6">
                                 <label for="phone" class="form-label"><strong>{{ __('Maximum Usage') }}</strong></label>
-                                <button type="button" class="btn btn-sm btn-toggle maximum_purchase_class" autocomplete="off" data-toggle="button" aria-pressed="true" autocomplete="off">
+                                <button type="button" class="btn btn-sm btn-toggle maximum_usage_class" autocomplete="off" data-toggle="button" aria-pressed="true" autocomplete="off">
                                     <div class="handle"></div>
                                 </button>
-                                <input type="hidden" id="maximum_purchase_input" name="is_maximum_usage" value="0">
+                                <input type="hidden" id="maximum_usage_input" name="is_maximum_usage" value="0">
                             </div>
 
                             <div class="col-xxl-3 col-lg-3 col-sm-6" style="display:none" id="is_maximum_usage_id">
-                                <label for="purchase_price" class="form-label"><strong>{{ __('No Of Usage') }}</strong></label>
-                                <input type="number" name="no_of_usage" class="form-control" id="purchase_price" autocomplete="off" placeholder="{{ __('no Of Usage') }}">
+                                <label for="no_of_usage" class="form-label"><strong>{{ __('No Of Usage') }}</strong></label>
+                                <input type="number" name="no_of_usage" class="form-control" id="no_of_usage" autocomplete="off" placeholder="{{ __('no Of Usage') }}">
                             </div>
                         </div>
 
@@ -524,24 +524,28 @@
                     if (toggleValue == 1) {
 
                         $("#is_minimum_purchase_id").show();
+                        $('#minimum_purchase_amount').prop('required', true);
                     } else {
 
                         $("#is_minimum_purchase_id").hide();
+                        $('#minimum_purchase_amount').prop('required', false);
                     }
 
                 });
 
-                $('.maximum_purchase_class').on('click', function() {
+                $('.maximum_usage_class').on('click', function() {
 
                     var toggleValue = $(this).hasClass('active') ? 0 : 1;
-                    $('#maximum_purchase_input').val(toggleValue);
+                    $('#maximum_usage_input').val(toggleValue);
 
                     if (toggleValue == 1) {
 
                         $("#is_maximum_usage_id").show();
+                        $('#no_of_usage').prop('required', true);
                     } else {
 
                         $("#is_maximum_usage_id").hide();
+                        $('#no_of_usage').prop('required', false);
                     }
                 });
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Modules\SAAS\Services\PlanService;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
+use Modules\SAAS\Services\CouponService;
 use Modules\SAAS\Services\TenantService;
 use Modules\SAAS\Services\CurrencyService;
 use Illuminate\Console\Scheduling\Schedule;
@@ -14,6 +15,7 @@ use Modules\SAAS\Console\RolePermissionSync;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
+use Modules\SAAS\Interfaces\CouponServiceInterface;
 use Modules\SAAS\Services\EmailVerificationService;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 use Modules\SAAS\Http\Middleware\PlanCheckerMiddleware;
@@ -78,6 +80,7 @@ class SAASServiceProvider extends ServiceProvider
         $this->app->bind(TenantServiceInterface::class, TenantService::class);
         $this->app->bind(CurrencyServiceInterface::class, CurrencyService::class);
         $this->app->bind(PlanServiceInterface::class, PlanService::class);
+        $this->app->bind(CouponServiceInterface::class, CouponService::class);
         $this->app->bind(EmailVerificationServiceInterface::class, EmailVerificationService::class);
     }
 

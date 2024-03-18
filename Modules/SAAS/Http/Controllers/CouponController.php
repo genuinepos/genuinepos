@@ -77,7 +77,7 @@ class CouponController extends Controller
 
         Coupon::create($data);
 
-        return redirect()->route('saas.coupons.index')->with('success', 'Coupon has been created successfully');
+        return redirect()->route('saas.coupons.index')->with('success', __('Coupon has been created successfully'));
     }
 
     /**

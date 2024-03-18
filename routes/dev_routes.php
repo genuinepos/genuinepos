@@ -17,6 +17,7 @@ use App\Enums\AccountLedgerVoucherType;
 use Illuminate\Support\Facades\Session;
 use App\Models\Subscriptions\Subscription;
 use App\Models\Accounts\AccountingVoucherDescription;
+use Illuminate\Support\Facades\File;
 
 Route::get('my-test', function () {
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
@@ -230,6 +231,8 @@ Route::get('my-test', function () {
     // return Subscription::with('plan')->first();
     // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
     // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
+    // File::cleanDirectory(storage_path('framework/laravel-excel'));
+    return storage_path('framework/laravel-excel');
 });
 
 

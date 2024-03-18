@@ -445,7 +445,7 @@
                         @csrf
                         <div class="row g-3">
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                <label for="code" class="form-label"><strong>{{ __('Coupon Code') }}</strong><span class="text-danger">*</span></label>
+                                <label for="code" class="form-label"><strong>{{ __('Coupon Code') }}</strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="text" name="code" value="{{ old('code') }}" class="form-control" autocomplete="off" id="code" placeholder="{{ __('Enter Coupon Code') }}" required>
                                     <button type="button" class="btn btn-primary" id="generate_code">{{ __('Generate') }}</button>
@@ -453,19 +453,19 @@
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                <label for="start_date" class="form-label"><strong>{{ __('Start Date') }}</strong><span class="text-danger">*</span></label>
+                                <label for="start_date" class="form-label"><strong>{{ __('Start Date') }}</strong> <span class="text-danger">*</span></label>
                                 <input type="text" id="start_date" name="start_date" value="{{ old('start_date') }}" autocomplete="off" class="form-control" placeholder="{{ __('Enter Start Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                <label for="end_date" class="form-label"><strong>{{ __('End Date') }}</strong><span class="text-danger">*</span></label>
+                                <label for="end_date" class="form-label"><strong>{{ __('End Date') }}</strong> <span class="text-danger">*</span></label>
                                 <input type="text" id="end_date" name="end_date" value="{{ old('end_date') }}" class="form-control" autocomplete="off" placeholder="{{ __('Enter End Date') }}" required>
                             </div>
                         </div>
 
                         <div class="row g-3 mt-3">
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                <label for="percent" class="form-label"><strong>{{ __('Percentage %') }}</strong><span class="text-danger">*</span></label>
+                                <label for="percent" class="form-label"><strong>{{ __('Percentage %') }}</strong> <span class="text-danger">*</span></label>
                                 <input type="number" name="percent" value="{{ old('percent') }}" class="form-control" id="percent" autocomplete="off" placeholder="{{ __('Enter Percentage') }}" required>
                             </div>
                         </div>

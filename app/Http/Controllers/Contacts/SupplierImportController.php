@@ -15,6 +15,7 @@ use App\Services\Accounts\AccountLedgerService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Contacts\SupplierImportRequest;
 use App\Services\Contacts\ContactOpeningBalanceService;
+use Illuminate\Support\Facades\File;
 
 class SupplierImportController extends Controller
 {
@@ -52,6 +53,7 @@ class SupplierImportController extends Controller
                 $request->import_file
             );
 
+            File::cleanDirectory(storage_path('framework/laravel-excel'));
             DB::commit();
         } catch (Exception $e) {
 

@@ -69,13 +69,13 @@ class LoginController extends Controller
 
         $subscription = DB::table('subscriptions')->first();
         $firstBranch = DB::table('branches')->first();
-
+        
         $user = User::with('branch', 'roles', 'roles.permissions')
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
 
-        $role = $user->roles()->first();
-        if ($role->hasPermissionTo('has_access_to_all_area') && ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)) {
+        $role = $user?->roles()?->first();
+        if (isset($role) && $role->hasPermissionTo('has_access_to_all_area') && ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)) {
 
             $user->branch_id = null;
             $user->is_belonging_an_area = BooleanType::False->value;

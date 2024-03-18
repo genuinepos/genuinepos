@@ -39,7 +39,7 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>{{ __('S/L') }}</th>
+                                            <th>{{ __('Warranty ID') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Duration') }}</th>
                                             <th>{{ __('Desctiption') }}</th>
@@ -103,9 +103,14 @@
                 [10, 25, 50, 100, 500, 1000, "All"]
             ],
             ajax: "{{ route('warranties.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+            columns: [
+                // {
+                //     data: 'DT_RowIndex',
+                //     name: 'DT_RowIndex'
+                // },
+                {
+                    data: 'code',
+                    name: 'warranties.code'
                 },
                 {
                     data: 'name',

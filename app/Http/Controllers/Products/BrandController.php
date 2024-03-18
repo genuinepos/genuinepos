@@ -11,6 +11,7 @@ use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
 use App\Http\Requests\Products\BrandStoreRequest;
 use App\Http\Requests\Products\BrandUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class BrandController extends Controller
 {
@@ -39,12 +40,12 @@ class BrandController extends Controller
         return view('product.brands.ajax_view.create');
     }
 
-    public function store(BrandStoreRequest $request)
+    public function store(BrandStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
             DB::beginTransaction();
 
-            $addBrand = $this->brandService->addBrand($request);
+            $addBrand = $this->brandService->addBrand(request: $request, codeGenerator: $codeGenerator);
 
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Brands->value, dataObj: $addBrand);
 

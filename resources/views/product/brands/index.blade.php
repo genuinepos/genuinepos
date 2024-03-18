@@ -1,14 +1,15 @@
 @extends('layout.master')
-@push('stylesheets')@endpush
+@push('stylesheets')
+@endpush
 @section('title', 'Brands - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>{{ __("Brands") }}</h5>
+                    <h5>{{ __('Brands') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -18,28 +19,29 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __("List Of Brands") }}</h6>
+                                <h6>{{ __('List of Brands') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_brand_add'))
-                                    <a href="{{ route('brands.create') }}" class="btn btn-sm btn-primary" id="addBrand"><i class="fas fa-plus-square"></i> {{ __("Add Brand") }}</a>
+
+                                    <a href="{{ route('brands.create') }}" class="btn btn-sm btn-primary" id="addBrand"><i class="fas fa-plus-square"></i> {{ __('Add Brand') }}</a>
                                 @endif
                             </div>
                         </div>
 
                         <div class="widget_content">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                             </div>
                             <div class="table-responsive" id="data-list">
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>{{ __("Serial") }}</th>
-                                            <th>{{ __("Photo") }}</th>
-                                            <th>{{ __("Name") }}</th>
-                                            <th>{{ __("Action") }}</th>
+                                            <th>{{ __('Brand ID') }}</th>
+                                            <th>{{ __('Photo') }}</th>
+                                            <th>{{ __('Name') }}</th>
+                                            <th>{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -66,33 +68,39 @@
             dom: "lBfrtip",
             buttons: [
                 //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'pdf',text: 'Pdf', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'print',text: 'Print', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: { columns: 'th:not(:last-child)' }
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    className: 'btn btn-primary',
+                    exportOptions: { columns: 'th:not(:last-child)' }
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             processing: true,
             serverSide: true,
             searchable: true,
             ajax: "{{ route('brands.index') }}",
-            columnDefs: [{
-                "targets": [0, 1, 3],
-                "orderable": false,
-                "searchable": false
-            }],
-            columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
-                {data: 'photo',name: 'photo'},
-                {data: 'name',name: 'name'},
-                {data: 'action',name: 'action'},
+            columns: [
+                // {data: 'DT_RowIndex',name: 'DT_RowIndex'},
+                { data: 'code', name: 'code' },
+                { data: 'photo', name: 'photo' },
+                { data: 'name', name: 'name' },
+                { data: 'action', name: 'action' },
             ]
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
 
         // call jquery method
         $(document).ready(function() {
@@ -118,7 +126,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net connetion error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -137,24 +145,26 @@
 
                 $('.data_preloader').show();
                 $.ajax({
-                    url: url
-                    , type: 'get'
-                    , success: function(data) {
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
 
                         $('#brandAddOrEditModal').empty();
                         $('#brandAddOrEditModal').html(data);
                         $('#brandAddOrEditModal').modal('show');
                         $('.data_preloader').hide();
+
                         setTimeout(function() {
 
                             $('#brand_name').focus().select();
                         }, 500);
-                    } , error: function(err) {
+                    },
+                    error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net connetion error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -165,16 +175,26 @@
                 });
             });
 
-            $(document).on('click', '#delete',function(e){
+            $(document).on('click', '#delete', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);
                 $.confirm({
-                    'title': '@lang("brand.delete_alert")',
+                    'title': '@lang('brand.delete_alert')',
                     'content': 'Are you sure?',
                     'buttons': {
-                        'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}
-                        },'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                        'Yes': {
+                            'class': 'yes btn-modal-primary',
+                            'action': function() {
+                                $('#deleted_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-danger',
+                            'action': function() {
+                                console.log('Deleted canceled.');
+                            }
+                        }
                     }
                 });
             });

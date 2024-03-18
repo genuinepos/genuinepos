@@ -12,6 +12,7 @@ use App\Services\Products\SubCategoryService;
 use App\Services\Users\UserActivityLogService;
 use App\Http\Requests\Products\SubcategoryStoreRequest;
 use App\Http\Requests\Products\SubcategoryUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class SubCategoryController extends Controller
 {
@@ -48,12 +49,12 @@ class SubCategoryController extends Controller
         return view('product.categories.ajax_view.subcategory.create', compact('categories', 'fixedParentCategory'));
     }
 
-    public function store(SubcategoryStoreRequest $request)
+    public function store(SubcategoryStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
             DB::beginTransaction();
 
-            $addSubCategory = $this->subCategoryService->addSubcategory($request);
+            $addSubCategory = $this->subCategoryService->addSubcategory(request: $request, codeGenerator: $codeGenerator);
 
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $addSubCategory);
 

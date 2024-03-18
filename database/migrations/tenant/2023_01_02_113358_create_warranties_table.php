@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('warranties', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code', 255)->nullable();
             $table->string('name');
             $table->string('duration');
             $table->string('duration_type', 191)->nullable();

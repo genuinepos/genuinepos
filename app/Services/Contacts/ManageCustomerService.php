@@ -130,6 +130,7 @@ class ManageCustomerService
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
 
                 if (auth()->user()->can('customer_manage')) {
+
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
                 }
 

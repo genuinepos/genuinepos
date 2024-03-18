@@ -31,14 +31,14 @@
                     @endforeach
                     <th>
                         <div class="table-top  text-center">
-                            <h4>ENTERPRISE CUSTOM PACKAGE</h4>
+                            <h4>{{ __("ENTERPRISE CUSTOM PACKAGE") }}</h4>
                             <div class="">
                                 <p class="p-0 m-0" style="font-size: 12px;line-height:1.2;">
                                     {{-- {{ $plan->description }} --}}
                                     {{ __('Bill annually') }}
                                 </p>
                             </div>
-                            <button class="btn btn-primary">Contact</button>
+                            <button class="btn btn-primary">{{ __("Contact") }}</button>
                         </div>
                     </th>
                 </tr>

@@ -116,11 +116,6 @@ Route::group(['prefix' => 'product'], function () {
     // Barcode route group
 
     // Import product route group
-    Route::group(['prefix' => 'imports'], function () {
-
-        Route::get('create', [ProductImportController::class, 'create'])->name('product.import.create');
-        Route::post('store', [ProductImportController::class, 'store'])->name('product.import.store');
-    });
 });
 
 // Contact route group
@@ -148,11 +143,6 @@ Route::group(['prefix' => 'contacts'], function () {
         // Route::get('payment/details/{paymentId}', [SupplierController::class, 'paymentDetails'])->name('suppliers.view.details');
         // Route::delete('payment/delete/{paymentId}', [SupplierController::class, 'paymentDelete'])->name('suppliers.payment.delete');
         // Route::get('amountsBranchWise/{supplierId}', [SupplierController::class, 'supplierAmountsBranchWise'])->name('contacts.supplier.amounts.branch.wise');
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', [SupplierImportController::class, 'create'])->name('contacts.suppliers.import.create');
-            Route::post('store', [SupplierImportController::class, 'store'])->name('contacts.suppliers.import.store');
-        });
     });
 
     // Customers route group
@@ -192,11 +182,6 @@ Route::group(['prefix' => 'contacts'], function () {
         //     Route::post('voucher/status/change/{receiptId}', [MoneyReceiptController::class, 'changeStatus'])->name('money.receipt.voucher.status.change');
         //     Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
         // });
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', [CustomerImportController::class, 'create'])->name('contacts.customers.import.create');
-            Route::post('store', [CustomerImportController::class, 'store'])->name('contacts.customers.import.store');
-        });
     });
 
     Route::group(['prefix' => 'reports'], function () {

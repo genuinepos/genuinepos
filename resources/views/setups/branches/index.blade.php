@@ -30,7 +30,7 @@
                         <h6>{{ __('Shop List') }}</h6>
                     </div>
 
-                    @if (auth()->user()->can('shops_create') && $currentCreatedBranchCount < $generalSettings['subscription']->current_shop_count)
+                    @if (auth()->user()->can('branches_create') && $currentCreatedBranchCount < $generalSettings['subscription']->current_shop_count)
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="addBtn" href="{{ route('branches.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus-square"></i> {{ __('Add New Shop') }}

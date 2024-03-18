@@ -29,8 +29,13 @@
         serverSide: true,
         searchable: true,
         ajax: "{{ route('subcategories.index') }}",
-        columns: [{
-                data: 'DT_RowIndex'
+        columns: [
+            // {
+            //     data: 'DT_RowIndex'
+            // },
+            {
+                data: 'code',
+                name: 'categories.code'
             },
             {
                 data: 'photo',

@@ -9,10 +9,11 @@ class ContactService
 {
     public function addContact($type, $codeGenerator, $contactIdPrefix, $name, $phone, $businessName = null, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType = 'dr')
     {
-        $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4);
+        $isCheckBranch = $type == ContactType::Supplier->value ? false : true;
+        $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4, isCheckBranch: $isCheckBranch, branchId: auth()->user()->branch_id);
 
         $prefixTypeSign = $type == ContactType::Supplier->value ? 'S' : 'C';
-        $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter : ':');
+        $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter : ':', isCheckBranch: $isCheckBranch, branchId: auth()->user()->branch_id);
 
         $addContact = new Contact();
         $addContact->contact_id = $contactId;

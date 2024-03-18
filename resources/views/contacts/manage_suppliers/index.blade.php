@@ -11,7 +11,7 @@
                 <div class="name-head">
                     <h5>{{ __('Suppliers') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
                                 <form id="filter_form">
                                     <div class="form-group row align-items-end">
                                         <div class="col-xl-6 col-lg-6 col-md-12">
-                                            <label><strong>{{ __('Shop') }}</strong></label>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
@@ -56,14 +56,21 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-4">
-                        <h6>{{ __('List Of Suppliers') }}</h6>
+                        <h6>{{ __('List of Suppliers') }}</h6>
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
-                        <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> {{ __('Add') }}
-                        </a>
-                        <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
+                        @if (auth()->user()->can('supplier_add'))
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus-square"></i> {{ __('Add') }}
+                            </a>
+                        @endif
+
+                        @if (auth()->user()->can('supplier_import'))
+
+                            <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Import Suppliers") }}</a>
+                        @endif
+
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                     </div>
                 </div>

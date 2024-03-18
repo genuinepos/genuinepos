@@ -3,7 +3,7 @@
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>{{ __("List Of Subcategories") }}</h6>
+                    <h6>{{ __("List of Subcategories") }}</h6>
                 </div>
             </div>
 
@@ -15,7 +15,7 @@
                     <table class="display data_tbl2 data__table w-100">
                         <thead>
                             <tr>
-                                <th>{{ __("Serial") }}</th>
+                                <th>{{ __("Subcategory ID") }}</th>
                                 <th>{{ __("Photo") }}</th>
                                 <th>{{ __("Subcategory Name") }}</th>
                                 <th>{{ __("Parent Category") }}</th>

@@ -28,9 +28,11 @@ class ProductAccessBranchService
 
             if (auth()->user()->branch_id) {
 
+                $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
                 $addProductAccessBranch = new ProductAccessBranch();
                 $addProductAccessBranch->product_id = $productId;
-                $addProductAccessBranch->branch_id = auth()->user()->branch_id;
+                $addProductAccessBranch->branch_id = $ownBranchIdOrParentBranchId;
                 $addProductAccessBranch->save();
             }
         }
@@ -48,7 +50,7 @@ class ProductAccessBranchService
             auth()->user()->can('has_access_to_all_area') &&
             (config('generalSettings')['subscription']->current_shop_count > 1 || config('generalSettings')['subscription']->has_business == 1)
         ) {
-
+            
             foreach ($product->productAccessBranches as $productAccessBranch) {
 
                 if (isset($productAccessBranch->branch_id)) {

@@ -49,4 +49,9 @@ interface CodeGenerationServiceInterface
         string $splitter = '-',
         string $suffixSeparator = '',
     ): string;
+
+    public function branchCode(?int $parentBranchId = null);
+    public function categoryCode(int $type): ?string;
+    public function brandCode(): ?string;
+    public function warrantyCode(): ?string;
 }

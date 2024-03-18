@@ -45,7 +45,7 @@ class UpgradePlanController extends Controller
         }
     }
 
-    public function cart($id, $pricePeriod = null, Request $request)
+    public function cart($id, $pricePeriod = null)
     {
         abort_if(!auth()->user()->can('billing_upgrade_plan'), 403);
 

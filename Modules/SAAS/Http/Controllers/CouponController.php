@@ -28,12 +28,12 @@ class CouponController extends Controller
             return DataTables::of($coupons)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    
+
                     $html = '<div class="dropdown table-dropdown">';
 
-                    $html .= '<a href="' . route('saas.coupons.edit', $row->id) . '" class="px-2 edit-btn btn btn-primary btn-sm text-white" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
+                    $html .= '<a href="' . route('saas.coupons.edit', $row->id) . '" class="px-2 edit-btn btn btn-primary btn-sm text-white" title="Edit"><span class="fas fa-edit pe-1"></span>' . __("Edit") . '</a>';
 
-                    $html .= '<a href="' . route('saas.coupons.destroy', $row->id) . '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="trashUser" title="Trash"><span class="fas fa-trash pe-1"></span>Trash</a>';
+                    $html .= '<a href="' . route('saas.coupons.destroy', $row->id) . '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="trashUser" title="Trash"><span class="fas fa-trash pe-1"></span>' . __("Trash") . '</a>';
                     $html .= '</div>';
 
                     return $html;
@@ -118,7 +118,6 @@ class CouponController extends Controller
         $coupon->update($data);
 
         return redirect()->route('saas.coupons.index')->with('success', 'Coupon has been updated successfully');
-
     }
 
     /**

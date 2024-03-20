@@ -11,6 +11,7 @@
                         <span>({{ __("Limit") }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['subscription']->current_shop_count }})</span>
                     </h5>
                 </div>
+                
                 <div class="col-md-4 text-start">
                     <p class="fw-bold"></p>
                 </div>

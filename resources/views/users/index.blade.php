@@ -6,11 +6,18 @@
     <div class="body-wraper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <h6>{{ __('Users') }}</h6>
+                <div class="col-md-6">
+                    <h6>{{ __('Shops') }}
+                        <span style="font-size: 12px;">({{ __("User Limit") }} -<span class="text-danger">{{ $currentUserCount }}</span>/{{ $generalSettings['subscription']->features['user_count'] }})</span> | <span style="font-size: 12px;">({{ __("Employee Limit") }} -<span class="text-danger">{{ $currentUserCount }}</span>/{{ $generalSettings['subscription']->features['employee_count'] }})</span>
+                    </h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <div class="col-md-6">
+
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
+                    </a>
+                </div>
             </div>
         </div>
 

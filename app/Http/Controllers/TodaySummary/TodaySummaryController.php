@@ -38,6 +38,7 @@ class TodaySummaryController extends Controller
     public function print(Request $request)
     {
         abort_if(!auth()->user()->can('today_summery'), 403);
+        
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 

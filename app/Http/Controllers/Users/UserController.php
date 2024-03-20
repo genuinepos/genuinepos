@@ -35,10 +35,12 @@ class UserController extends Controller
             return $this->userService->usersTable($request);
         }
 
+        $currentUserCount = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->count();
+
         $branches = $this->branchService->branches(['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('users.index', compact('branches'));
+        return view('users.index', compact('branches', 'currentUserCount'));
     }
 
     public function show($id)
@@ -64,6 +66,7 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
+        // $restrictions = $this->userService->storeRestrictions(request: $request);
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
         $this->userService->addUser(request: $request, role: $role);

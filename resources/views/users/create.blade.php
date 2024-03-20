@@ -127,10 +127,25 @@
                                             </div>
                                         @endif
                                     </div>
+
+                                    {{-- <div class="row mt-1">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Type') }}</b></label>
+                                                <div class="col-8">
+                                                    <select name="user_type" class="form-control" id="user_type" data-next="branch_id">
+                                                        @foreach (\App\Enums\UserType::cases() as $userType)
+                                                            <option value="{{ $userType->value }}">{{ $userType->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> --}}
                                 </div>
                             </div>
 
-                            <div class="form_element rounded mt-0 mb-1">
+                            <div class="form_element rounded mt-0 mb-1 role_permission_area">
                                 <div class="heading_area">
                                     <p class="px-1 pt-1 text-primary"><b>{{ __('Role Permission') }}</b></p>
                                 </div>
@@ -661,6 +676,21 @@
                 isAllowSubmit = true;
             }
         });
+
+        // $(document).on('change', '#user_type', function() {
+
+        //     if ($(this).val() == 1 || $(this).val() == 3) {
+
+        //         $('#allow_login').val(1);
+        //         $('.role_permission_area').show();
+        //         changeAllowLoginField();
+        //     }else {
+
+        //         $('#allow_login').val(0);
+        //         $('.role_permission_area').hide();
+        //         changeAllowLoginField();
+        //     }
+        // });
 
         $(document).on('change', '#allow_login', function() {
 

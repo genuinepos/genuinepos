@@ -4,6 +4,7 @@ namespace App\Services\Users;
 
 use App\Models\User;
 use App\Enums\RoleType;
+use App\Enums\UserType;
 use App\Enums\BooleanType;
 use App\Utils\FileUploader;
 use Illuminate\Support\Facades\DB;
@@ -113,6 +114,7 @@ class UserService
     function addUser(object $request, ?object $role): void
     {
         $addUser = new User();
+        $addUser->user_type = $request->user_type;
         $addUser->prefix = $request->prefix;
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;
@@ -352,7 +354,7 @@ class UserService
             $switchedBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
         }
 
-        $description = $currentBranch .' '.__('To').' '.$switchedBranch;
+        $description = $currentBranch . ' ' . __('To') . ' ' . $switchedBranch;
         auth()->user()->location_switch_log_description = $description;
     }
 
@@ -405,5 +407,44 @@ class UserService
         }
 
         return $query;
+    }
+
+    public function storeRestrictions(object $request): ?array
+    {
+        $userLimit = (int) config('generalSettings')['subscription']->features['user_count'];
+        $employeeLimit = (int) config('generalSettings')['subscription']->features['employee_count'];
+        $branchId = isset($request->branch_id) && !empty($request->branch_id) ? $request->branch_id : auth()->user()->branch_id;
+        $currentUserCount = $this->user()->whereIn('user_type', [UserType::User->value, UserType::Both->value])
+            ->where('branch_id', $branchId)->count();
+
+        $currentEmployeeCount = $this->user()->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
+            ->where('branch_id', $branchId)->count();
+
+        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected shop/business') : __('in your current shop/business.');
+
+        if ($request->user_type == UserType::User->value && $currentUserCount >= $userLimit) {
+
+            return ['pass' => false, 'msg' => __('Selected type is user. User Limit is ' . $userLimit .' '. $additionalMsg . ', The Limit has already full.')];
+        }
+
+        if ($request->user_type == UserType::Employee->value && $currentEmployeeCount >= $employeeLimit) {
+
+            return ['pass' => false, 'msg' => __('Selected type is employee. Employee Limit is ' . $employeeLimit .' '. $additionalMsg . ', The Limit has already full.')];
+        }
+
+        if ($request->user_type == UserType::Both->value && $currentUserCount >= $employeeLimit) {
+
+            if ($currentUserCount >= $userLimit) {
+
+                return ['pass' => false, 'msg' => __('Selected type is both (User And Employee). But User Limit is ' . $userLimit .' '. $additionalMsg . ', The Limit has already full.')];
+            }
+
+            if ($currentEmployeeCount >= $employeeLimit) {
+
+                return ['pass' => false, 'msg' => __('Selected type is both (User And Employee). But Employee Limit is ' . $employeeLimit .' '. $additionalMsg . ', The Limit has already full.')];
+            }
+        }
+
+        return ['pass' => true];
     }
 }

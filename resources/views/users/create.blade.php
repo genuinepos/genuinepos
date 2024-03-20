@@ -479,7 +479,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('shift') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('shift') ? 'addShift' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('shifts_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('shifts_create') ? 'addShift' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -501,7 +501,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('department') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('department') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -521,7 +521,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('designation') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('designation') ? 'addDesignation' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('designations_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('designations_create') ? 'addDesignation' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>

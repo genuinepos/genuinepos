@@ -66,7 +66,7 @@ class ProfitLossService
 
             $__branchId = $branchId == 'NULL' ? null : $branchId;
 
-            if ($getParentBranchData == true) {
+            if ($getParentBranchData == true && isset($__branchId)) {
 
                 $adjustmentQuery->where(function ($subQuery) use ($__branchId) {
                     $subQuery->where('stock_adjustments.branch_id', $__branchId)
@@ -77,7 +77,7 @@ class ProfitLossService
                 $adjustmentQuery->where('stock_adjustments.branch_id', $__branchId);
             }
 
-            if ($getParentBranchData == true) {
+            if ($getParentBranchData == true && isset($__branchId)) {
 
                 $saleQuery->where(function ($subQuery) use ($__branchId) {
                     $subQuery->where('sales.branch_id', $__branchId)
@@ -88,7 +88,7 @@ class ProfitLossService
                 $saleQuery->where('sales.branch_id', $__branchId);
             }
 
-            if ($getParentBranchData == true) {
+            if ($getParentBranchData == true && isset($__branchId)) {
 
                 $saleReturnQuery->where(function ($subQuery) use ($__branchId) {
                     $subQuery->where('sale_returns.branch_id', $__branchId)
@@ -99,7 +99,7 @@ class ProfitLossService
                 $saleReturnQuery->where('sale_returns.branch_id', $__branchId);
             }
 
-            if ($getParentBranchData == true) {
+            if ($getParentBranchData == true && isset($__branchId)) {
 
                 $expenseQuery->where(function ($subQuery) use ($__branchId) {
                     $subQuery->where('accounting_vouchers.branch_id', $__branchId)
@@ -110,7 +110,7 @@ class ProfitLossService
                 $expenseQuery->where('accounting_vouchers.branch_id', $__branchId);
             }
 
-            if ($getParentBranchData == true) {
+            if ($getParentBranchData == true && isset($__branchId)) {
 
                 $payrollPaymentQuery->where(function ($subQuery) use ($__branchId) {
                     $subQuery->where('accounting_vouchers.branch_id', $__branchId)
@@ -121,7 +121,7 @@ class ProfitLossService
                 $payrollPaymentQuery->where('accounting_vouchers.branch_id', $__branchId);
             }
 
-            if ($getParentBranchData == true) {
+            if ($getParentBranchData == true && isset($__branchId)) {
 
                 $saleProductQuery->where(function ($subQuery) use ($__branchId) {
                     $subQuery->where('sales.branch_id', $__branchId)

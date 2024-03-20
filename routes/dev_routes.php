@@ -232,7 +232,64 @@ Route::get('my-test', function () {
     // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
     // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
     // File::cleanDirectory(storage_path('framework/laravel-excel'));
-    return storage_path('framework/laravel-excel');
+    // return storage_path('framework/laravel-excel');
+
+    $myArr = [
+        'name' => 'Mr. X',
+        'age' => 30,
+    ];
+
+    // return gettype($myArr);
+    // $arr = (object) $myArr;
+    // return $arr->name;
+    
+    function transactionDetails($requ)
+    {
+        return [
+            'upgrade_plan_from_trial' => [
+                'has_business' => '',
+                'business_price_period' => '',
+                'business_price_period_count' => '',
+                'business_price' => '',
+                'adjustable_business_price' => '',
+                'business_subtotal' => '',
+                'shop_count' => '',
+                'shop_price_period' => '',
+                'shop_price_period_count' => '',
+                'shop_price' => '',
+                'adjustable_shop_price' => '',
+                'shop_subtotal' => '',
+                'net_total' => '',
+                'discount' => '',
+                'total_amount' => '',
+            ],
+            'direct_buy_plan' => [
+                'has_business' => '',
+                'business_price_period' => '',
+                'business_price_period_count' => '',
+                'business_price' => '',
+                'adjustable_business_price' => '',
+                'business_subtotal' => '',
+                'shop_count' => '',
+                'shop_price_period' => '',
+                'shop_price_period_count' => '',
+                'shop_price' => '',
+                'adjustable_shop_price' => '',
+                'shop_subtotal' => '',
+                'net_total' => '',
+                'discount' => '',
+                'total_amount' => '',
+            ],
+            'upgrade_plan_from_real_plan' => [
+                'net_total' => '',
+                'total_adjusted_amount' => '',
+                'discount' => '',
+                'total_amount' => '',
+            ],
+        ];
+    }
+
+    return transactionDetails()['upgrade_plan_from_trial'];
 });
 
 

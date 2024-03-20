@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\PlanType;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +54,11 @@ class UpgradePlanController extends Controller
         $plan = $this->planServiceInterface->singlePlanById(id: $id, with: ['currency:id,symbol']);
         DB::reconnect();
 
+        if (config('generalSettings')['subscription']->plan_type == PlanType::Custom->value) {
+
+            return __('Custom Plan can not be upgrade');
+        }
+
         $currentSubscription =  $this->subscriptionService->singleSubscription(with: ['plan']);
 
         if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::True->value) {
@@ -85,7 +91,7 @@ class UpgradePlanController extends Controller
                 $this->shopExpireDateHistoryService->addShopExpireDateHistory(request: $request, expireDateCalculation: $this->expireDateCalculation);
             }
 
-            $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $subscription, isTrialPlan: $isTrialPlan, transactionType: SubscriptionTransactionType::UpgradePlan->value);
+            $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $subscription, isTrialPlan: $isTrialPlan, transactionType: SubscriptionTransactionType::BuyPlan->value, plan: $plan);
 
             DB::commit();
         } catch (Exception $e) {

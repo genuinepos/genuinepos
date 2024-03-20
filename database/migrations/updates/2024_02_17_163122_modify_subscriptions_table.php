@@ -20,7 +20,7 @@ return new class extends Migration
 
             if (!Schema::hasColumn('subscriptions', 'initial_business_price')) {
 
-                $table->boolean('initial_business_price')->after('initial_plan_price')->default(0);
+                $table->boolean('initial_business_price')->default(0);
             }
 
             if (!Schema::hasColumn('subscriptions', 'has_business')) {

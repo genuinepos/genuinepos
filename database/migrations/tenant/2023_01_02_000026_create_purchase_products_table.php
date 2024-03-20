@@ -42,7 +42,7 @@ return new class extends Migration
             $table->timestamp('expire_date')->nullable();
             $table->boolean('delete_in_update')->default(false);
             $table->unsignedBigInteger('purchase_order_product_id')->nullable()->index('purchase_products_purchase_order_product_id_foreign')->comment('when product add from purchase_order_products table');
-            $table->decimal('lebel_left_qty', 22)->default(0);
+            $table->decimal('label_left_qty', 22)->default(0);
             $table->decimal('left_qty', 22)->default(0);
             $table->unsignedBigInteger('production_id')->nullable()->index('purchase_products_production_id_foreign');
             $table->unsignedBigInteger('opening_stock_id')->nullable()->index('purchase_products_opening_stock_id_foreign');

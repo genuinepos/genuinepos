@@ -3,22 +3,22 @@
         <div class="period_buttons_area mb-1">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary">
-                    <input type="radio" name="price_period" id="price_period" value="month" autocomplete="off"> {{ __('Monthly') }}
+                    <input type="radio" name="shop_price_period" id="shop_price_period" value="month" autocomplete="off"> {{ __('Monthly') }}
                 </label>
 
                 <label class="btn btn-secondary">
-                    <input type="radio" name="price_period" id="price_period" value="year" autocomplete="off"> {{ __('Yearly') }}
+                    <input type="radio" name="shop_price_period" id="shop_price_period" value="year" autocomplete="off"> {{ __('Yearly') }}
                 </label>
 
                 <label class="btn btn-secondary">
-                    <input type="radio" name="price_period" id="price_period" value="lifetime" autocomplete="off"> {{ __('Lifetime') }}
+                    <input type="radio" name="shop_price_period" id="shop_price_period" value="lifetime" autocomplete="off"> {{ __('Lifetime') }}
                 </label>
 
                 <input type="hidden" name="is_trial_plan" id="is_trial_plan" value="0">
-                <input type="hidden" name="price_per_month" id="price_per_month">
-                <input type="hidden" name="price_per_year" id="price_per_year">
+                <input type="hidden" name="shop_price_per_month" id="shop_price_per_month">
+                <input type="hidden" name="shop_price_per_year" id="shop_price_per_year">
                 <input type="hidden" name="has_lifetime_period" id="has_lifetime_period" value="1"/>
-                <input type="hidden" name="lifetime_price" id="lifetime_price">
+                <input type="hidden" name="shop_lifetime_price" id="shop_lifetime_price">
                 <input type="hidden" name="lifetime_applicable_years" id="lifetime_applicable_years">
                 <input type="hidden" name="business_price_per_month" id="business_price_per_month">
                 <input type="hidden" name="business_price_per_year" id="business_price_per_year">
@@ -81,9 +81,9 @@
                         </td>
 
                         <td>
-                            <div class="product-count cart-product-count period_count">
+                            <div class="product-count cart-product-count shop_price_period_count">
                                 <div class="quantity rapper-quantity">
-                                    <input readonly name="period_count" id="period_count" type="number" min="1" step="1" value="">
+                                    <input readonly name="shop_price_period_count" id="shop_price_period_count" type="number" min="1" step="1" value="">
                                     <div class="quantity-nav">
                                         <div class="quantity-button quantity-down">
                                             <i class="fa-solid fa-minus"></i>
@@ -94,12 +94,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="fixed_period_text"></div>
+                            <div id="shop_fixed_price_period_text"></div>
                         </td>
 
                         <td>
-                            <input type="hidden" name="subtotal" id="subtotal" value="">
-                            <span class="price-txt"><span id="span_subtotal"></span></span>
+                            <input type="hidden" name="shop_subtotal" id="shop_subtotal" value="">
+                            <span class="price-txt"><span id="span_shop_subtotal"></span></span>
                         </td>
                     </tr>
                 </tbody>
@@ -126,13 +126,14 @@
                                     <span class="span_total_shop_count">1</span>
                                 </span>
                             </li>
-                            <li>{{ __('Sub Total') }}
+                            <li>{{ __('Net Total') }}
                                 <span class="price-txt">
-                                    <span class="span_subtotal_after_discount"></span>
+                                    <input type="hidden" name="net_total" id="net_total" value="0">
+                                    <span class="span_net_total"></span>
                                 </span>
                             </li>
                             <li>{{ __('Discount') }}
-                                <input type="hidden" name="discount" id="discount">
+                                <input type="hidden" name="discount" id="discount" value="0">
                                 <span class="price-txt" class="span_discount">
                                     <span>0.00</span>
                                 </span>

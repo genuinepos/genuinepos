@@ -15,7 +15,18 @@
                         <input type="hidden" name="is_trial_plan" value="{{ $plan->is_trial_plan }}">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-1">
+                                @if ($plan->is_trial_plan == 0)
+                                    <div class="mb-4">
+                                        <label class="form-label">{{ __('Plan Type') }} <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="plan_type" id="plan_type">
+                                            @foreach (\App\Enums\PlanType::cases() as $planType)
+                                                <option @selected($plan->plan_type == $planType->value) value="{{ $planType->value }}">{{ $planType->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+                                <div class="mb-4">
                                     <label class="form-label" class="form-label">{{ __('Plan Name') }}</label>
                                     <input required type="text" class="form-control" name="name" placeholder="{{ __("Enter Plan Name") }}" value="{{ $plan->name }}">
                                     <span class="text-danger error_name"></span>

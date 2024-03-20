@@ -2,24 +2,24 @@
     <div class="period_buttons_area mb-1 w-100">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
             <label class="btn btn-secondary {{ $pricePeriod == 'month' ? 'bg-danger active' : '' }}">
-                <input type="radio" name="price_period" id="price_period" value="month" autocomplete="off" {{ $pricePeriod == 'month' ? 'checked' : '' }}> {{ __('Monthly') }}
+                <input type="radio" name="shop_price_period" id="shop_price_period" value="month" autocomplete="off" {{ $pricePeriod == 'month' ? 'checked' : '' }}> {{ __('Monthly') }}
             </label>
 
             <label class="btn btn-secondary {{ $pricePeriod == 'year' ? 'bg-danger active' : '' }}">
-                <input type="radio" name="price_period" id="price_period" value="year" {{ $pricePeriod == 'year' ? 'checked' : '' }} autocomplete="off"> {{ __('Yearly') }}
+                <input type="radio" name="shop_price_period" id="shop_price_period" value="year" {{ $pricePeriod == 'year' ? 'checked' : '' }} autocomplete="off"> {{ __('Yearly') }}
             </label>
 
             @if ($plan->has_lifetime_period == 1)
                 <label class="btn btn-secondary {{ $pricePeriod == 'lifetime' ? 'bg-danger active' : '' }}">
-                    <input type="radio" name="price_period" id="price_period" value="lifetime" {{ $pricePeriod == 'lifetime' ? 'checked' : '' }} autocomplete="off"> {{ __('Lifetime') }}
+                    <input type="radio" name="shop_price_period" id="shop_price_period" value="lifetime" {{ $pricePeriod == 'lifetime' ? 'checked' : '' }} autocomplete="off"> {{ __('Lifetime') }}
                 </label>
             @endif
 
             <input type="hidden" name="plan_id" id="plan_id" value="{{ $plan->id }}" />
             <input type="hidden" name="has_lifetime_period" id="has_lifetime_period" value="{{ $plan->has_lifetime_period }}" />
-            <input type="hidden" name="price_per_month" id="price_per_month" value="{{ $plan->price_per_month }}">
-            <input type="hidden" name="price_per_year" id="price_per_year" value="{{ $plan->price_per_year }}">
-            <input type="hidden" name="lifetime_price" id="lifetime_price" value="{{ $plan->lifetime_price }}">
+            <input type="hidden" name="shop_price_per_month" id="shop_price_per_month" value="{{ $plan->price_per_month }}">
+            <input type="hidden" name="shop_price_per_year" id="shop_price_per_year" value="{{ $plan->price_per_year }}">
+            <input type="hidden" name="shop_lifetime_price" id="shop_lifetime_price" value="{{ $plan->lifetime_price }}">
             <input type="hidden" name="business_price_per_month" id="business_price_per_month" value="{{ $plan->business_price_per_month }}">
             <input type="hidden" name="business_price_per_year" id="business_price_per_year" value="{{ $plan->business_price_per_year }}">
             <input type="hidden" name="business_lifetime_price" id="business_lifetime_price" value="{{ $plan->business_lifetime_price }}">
@@ -87,7 +87,7 @@
                     <td>
                         <div class="product-count cart-product-count period_count {{ $pricePeriod == 'lifetime' ? 'd-none' : '' }}">
                             <div class="quantity rapper-quantity">
-                                <input readonly name="period_count" id="period_count" type="number" min="1" step="1" value="1">
+                                <input readonly name="shop_price_period_count" id="shop_price_period_count" type="number" min="1" step="1" value="1">
                                 <div class="quantity-nav">
                                     <div class="quantity-button quantity-down">
                                         <i class="fa-solid fa-minus"></i>
@@ -104,8 +104,8 @@
                     </td>
 
                     <td>
-                        <input type="hidden" name="subtotal" id="subtotal" value="{{ $defaultPricePeriod }}">
-                        <span class="price-txt"><span id="span_subtotal">{{ $defaultPricePeriod }}</span></span>
+                        <input type="hidden" name="shop_subtotal" id="shop_subtotal" value="{{ $defaultPricePeriod }}">
+                        <span class="price-txt"><span id="span_shop_subtotal">{{ $defaultPricePeriod }}</span></span>
                     </td>
                 </tr>
             </tbody>
@@ -132,13 +132,14 @@
                                 <span class="span_total_shop_count">1</span>
                             </span>
                         </li>
-                        <li>{{ __('Sub Total') }}
+                        <li>{{ __('Net Total') }}
                             <span class="price-txt">
-                                <span class="span_subtotal_after_discount">{{ $defaultPricePeriod }}</span>
+                                <span class="span_net_total">{{ $defaultPricePeriod }}</span>
+                                <input type="hidden" name="net_total" id="net_total" value="0">
                             </span>
                         </li>
                         <li>{{ __('Discount') }}
-                            <input type="hidden" name="discount" id="discount">
+                            <input type="hidden" name="discount" id="discount" value="0">
                             <span class="price-txt" class="span_discount">
                                 <span>0.00</span>
                             </span>
@@ -148,7 +149,7 @@
                             <span class="price-txt"><span class="span_total_payable">{{ $defaultPricePeriod }}</span></span>
                         </li>
                     </ul>
-                    
+
                     <a class="def-btn tab-next-btn single-nav" data-tab="stepTwoTab">{{ __('Next Step') }}</a>
                 </div>
             </div>

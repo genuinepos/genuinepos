@@ -100,10 +100,11 @@ class TodaySummaryController extends Controller
             ->where('voucher_type', AccountingVoucherType::PayrollPayment->value)
             ->select(DB::raw('sum(total_amount) as total_payroll_payment'));
 
+        $branchId = null;
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
-
+                $branchId = 'NULL';
                 $purchaseQuery->where('branch_id', null);
                 $paymentQuery->where('branch_id', null);
                 $purchaseReturnQuery->where('branch_id', null);
@@ -115,6 +116,7 @@ class TodaySummaryController extends Controller
                 $payrollQuery->where('branch_id', null);
             } else {
 
+                $branchId = $request->branch_id;
                 $purchaseQuery->where('branch_id', $request->branch_id);
                 $paymentQuery->where('branch_id', $request->branch_id);
                 $purchaseReturnQuery->where('branch_id', $request->branch_id);
@@ -127,17 +129,18 @@ class TodaySummaryController extends Controller
             }
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
+            $branchId = auth()->user()->branch_id;
             $purchaseQuery->where('branch_id', auth()->user()->branch_id);
-            $paymentQuery->where('branch_id', $request->branch_id);
-            $purchaseReturnQuery->where('branch_id', $request->branch_id);
-            $saleQuery->where('branch_id', $request->branch_id);
-            $receiptQuery->where('branch_id', $request->branch_id);
-            $saleReturnQuery->where('branch_id', $request->branch_id);
-            $expenseQuery->where('branch_id', $request->branch_id);
-            $adjustmentQuery->where('branch_id', $request->branch_id);
-            $payrollQuery->where('branch_id', $request->branch_id);
+            $paymentQuery->where('branch_id', auth()->user()->branch_id);
+            $purchaseReturnQuery->where('branch_id', auth()->user()->branch_id);
+            $saleQuery->where('branch_id', auth()->user()->branch_id);
+            $receiptQuery->where('branch_id', auth()->user()->branch_id);
+            $saleReturnQuery->where('branch_id', auth()->user()->branch_id);
+            $expenseQuery->where('branch_id', auth()->user()->branch_id);
+            $adjustmentQuery->where('branch_id', auth()->user()->branch_id);
+            $payrollQuery->where('branch_id', auth()->user()->branch_id);
         }
 
         $purchases = $purchaseQuery->whereDate('report_date', date('Y-m-d'))->get();
@@ -150,7 +153,7 @@ class TodaySummaryController extends Controller
         $stockAdjustments = $adjustmentQuery->whereDate('date_ts', date('Y-m-d'))->get();
         $payrollPayments = $payrollQuery->whereDate('date_ts', date('Y-m-d'))->get();
 
-        $profitLoss = $this->profitLossService->profitLossAmounts(branchId: $request->branch_id, fromDate: date('Y-m-d'), toDate: date('Y-m-d'));
+        $profitLoss = $this->profitLossService->profitLossAmounts(branchId: $branchId, fromDate: date('Y-m-d'), toDate: date('Y-m-d'), getParentBranchData: false);
 
         return [
             'totalPurchase' => $purchases->sum('total_purchase'),

@@ -91,9 +91,9 @@ class GeneralSettingsListener
             $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
             $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
 
-            Cache::rememberForever('generalSettings', function () use ($generalSettings) {
-                return $generalSettings;
-            });
+            // Cache::rememberForever('generalSettings', function () use ($generalSettings) {
+            //     return $generalSettings;
+            // });
 
             // }
 
@@ -127,14 +127,15 @@ class GeneralSettingsListener
                 ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
                 ->select(
                     [
-                        'subscriptions.initial_due_amount',
-                        'subscriptions.initial_payment_status',
+                        'subscriptions.plan_id',
+                        'subscriptions.has_due_amount',
                         'subscriptions.initial_plan_start_date',
-                        'subscriptions.initial_plan_expire_date',
+                        'subscriptions.due_repayment_date',
                         'subscriptions.has_business',
                         'subscriptions.is_completed_business_startup',
                         'subscriptions.is_completed_branch_startup',
                         'subscriptions.business_expire_date',
+                        'pos.plans.plan_type',
                         'pos.plans.name as plan_name',
                         'pos.plans.is_trial_plan',
                         'pos.plans.trial_days',

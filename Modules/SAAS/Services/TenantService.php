@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Subscriptions\Subscription;
+use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Database\factories\AdminFactory;
 use App\Models\Subscriptions\ShopExpireDateHistory;
 use App\Models\Subscriptions\SubscriptionTransaction;
@@ -32,13 +33,13 @@ class TenantService implements TenantServiceInterface
             $expireDate = '';
             if ($plan->is_trial_plan == BooleanType::False->value) {
 
-                if ($tenantRequest['price_period'] == 'month') {
+                if ($tenantRequest['shop_price_period'] == 'month') {
 
-                    $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
-                } else if ($tenantRequest['price_period'] == 'year') {
+                    $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['shop_price_period_count']);
+                } else if ($tenantRequest['shop_price_period'] == 'year') {
 
-                    $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
-                } else if ($tenantRequest['price_period'] == 'lifetime') {
+                    $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['shop_price_period_count']);
+                } else if ($tenantRequest['shop_price_period'] == 'lifetime') {
 
                     $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
                 }
@@ -164,42 +165,30 @@ class TenantService implements TenantServiceInterface
         $subscribe->plan_id = $plan->id;
         $subscribe->status = BooleanType::True->value;
         $subscribe->initial_plan_start_date = Carbon::now();
-        $subscribe->initial_shop_count = $plan->is_trial_plan == BooleanType::True->value ? $plan->trial_shop_count : $tenantRequest['shop_count'];
         $subscribe->current_shop_count = $plan->is_trial_plan == BooleanType::True->value ? $plan->trial_shop_count : $tenantRequest['shop_count'];
 
         if ($plan->is_trial_plan == BooleanType::False->value) {
 
-            $subscribe->initial_plan_start_date = Carbon::now();
-            $subscribe->initial_price_period = $tenantRequest['price_period'] ? $tenantRequest['price_period'] : null;
-            $subscribe->initial_period_count = $tenantRequest['period_count'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['period_count'];
-            $subscribe->initial_plan_price = $tenantRequest['plan_price'] ? $tenantRequest['plan_price'] : 0;
-
-            $subscribe->initial_subtotal = $tenantRequest['subtotal'] ? $tenantRequest['subtotal'] : 0;
-            $subscribe->initial_discount = $tenantRequest['discount'] ? $tenantRequest['discount'] : 0;
-            $subscribe->initial_total_payable_amount = $tenantRequest['total_payable'] ? $tenantRequest['total_payable'] : 0;
-
             if (isset($tenantRequest['has_business'])) {
 
                 $subscribe->has_business = BooleanType::True->value;
-                $subscribe->initial_business_price_period = $tenantRequest['business_price_period'] ? $tenantRequest['business_price_period'] : 0;
-                $subscribe->initial_business_price = $tenantRequest['business_price'] ? $tenantRequest['business_price'] : 0;
-                $subscribe->initial_business_period_count = $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count'];
-                $subscribe->initial_business_subtotal = $tenantRequest['business_subtotal'] ? $tenantRequest['business_subtotal'] : 0;
-                $subscribe->initial_business_start_date = Carbon::now();
-
-                $expireDate = $this->getExpireDate(period: $tenantRequest['business_price_period'] == 'lifetime' ? 'year' : $tenantRequest['business_price_period'], periodCount: $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count']);
+                $subscribe->business_start_date = Carbon::now();
+                $subscribe->business_price_period = $tenantRequest['business_price_period'];
+                $expireDate = $this->getExpireDate(period: $tenantRequest['business_price_period'] == 'lifetime' ? 'year' : $tenantRequest['business_price_period'], periodCount: $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_price_period_count']);
 
                 $subscribe->business_expire_date = $expireDate;
+
+                $business = isset($tenantRequest['has_business']) ? 1 : 0;
+                $shopPlusBusiness = $tenantRequest['shop_count'] + $business;
+                $adjustablePrice = $tenantRequest['total_payable'] / $shopPlusBusiness;
+
+                $subscribe->business_adjustable_price = $adjustablePrice;
             }
 
-            $subscribe->initial_payment_status = $tenantRequest['payment_status'];
+            $subscribe->has_due_amount = $tenantRequest['payment_status'] == BooleanType::False->value ? BooleanType::True->value : BooleanType::False->value;
             if ($tenantRequest['payment_status'] == BooleanType::False->value) {
 
-                $subscribe->initial_due_amount = $tenantRequest['total_payable'] ? $tenantRequest['total_payable'] : 0;
-                $subscribe->initial_plan_expire_date = $tenantRequest['repayment_date'] ? date('Y-m-d', strtotime($tenantRequest['repayment_date'])) : null;
-            } elseif ($tenantRequest['payment_status'] == BooleanType::False->value) {
-
-                $subscribe->initial_due_amount = 0;
+                $subscribe->due_repayment_date = $tenantRequest['repayment_date'] ? date('Y-m-d', strtotime($tenantRequest['repayment_date'])) : null;
             }
         } elseif ($plan->is_trial_plan == BooleanType::True->value) {
 
@@ -209,9 +198,9 @@ class TenantService implements TenantServiceInterface
 
         $subscribe->save();
 
-        if ($plan->is_trial_plan == BooleanType::False->value && $subscribe->initial_payment_status == BooleanType::True->value) {
+        if ($plan->is_trial_plan == BooleanType::False->value) {
 
-            $this->storeSubscriptionTransaction($subscribe, $tenantRequest);
+            $this->storeSubscriptionTransaction($subscribe, $plan, $tenantRequest);
         }
 
         if ($plan->is_trial_plan == BooleanType::False->value) {
@@ -220,41 +209,54 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    protected function storeSubscriptionTransaction($subscribe, $tenantRequest)
+    protected function storeSubscriptionTransaction($subscribe, $plan, $tenantRequest)
     {
         $payment = new SubscriptionTransaction();
         $payment->transaction_type = 0;
         $payment->subscription_id = $subscribe->id;
         $payment->plan_id = $subscribe->plan_id;
-        $payment->increase_shop_count = $subscribe->initial_shop_count;
         $payment->payment_method_name = $tenantRequest['payment_method_name'];
         $payment->payment_trans_id = $tenantRequest['payment_trans_id'];
-        $payment->subtotal = $subscribe->initial_subtotal;
-        $payment->discount = $subscribe->initial_discount;
-        $payment->total_payable_amount = $subscribe->initial_total_payable_amount;
-        $payment->paid = $subscribe->initial_total_payable_amount;
-        $payment->payment_status = BooleanType::True->value;
-        $payment->payment_date = Carbon::now();
+        $payment->net_total = $tenantRequest['net_total'];
+        $payment->discount = isset($tenantRequest['discount']) ? $tenantRequest['discount'] : 0;
+        $payment->total_payable_amount = $tenantRequest['total_payable'];
+        $payment->paid = $tenantRequest['payment_status'] == BooleanType::True->value ? $tenantRequest['total_payable'] : 0;
+        $payment->due = $tenantRequest['payment_status'] == BooleanType::False->value ? $tenantRequest['total_payable'] : 0;
+        $payment->payment_status = $tenantRequest['payment_status'];
+        $payment->payment_date = $tenantRequest['payment_status'] == BooleanType::True->value ? Carbon::now() : null;
+        $payment->details_type = SubscriptionTransactionDetailsType::DirectBuyPlan->value;
+
+        $subscriptionTransactionService = new \App\Services\Subscriptions\SubscriptionTransactionService();
+        $request = (object) $tenantRequest;
+        $transactionDetails = $subscriptionTransactionService->transactionDetails(request: $request, detailsType: SubscriptionTransactionDetailsType::DirectBuyPlan->value, plan: $plan);
+
+        $payment->details = $transactionDetails;
+
         $payment->save();
     }
 
     protected function storeShopExpireHistory($tenantRequest, $plan)
     {
         $expireDate = '';
-        if ($tenantRequest['price_period'] == 'month') {
+        if ($tenantRequest['shop_price_period'] == 'month') {
 
-            $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
-        } else if ($tenantRequest['price_period'] == 'year') {
+            $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['shop_price_period_count']);
+        } else if ($tenantRequest['shop_price_period'] == 'year') {
 
-            $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
-        } else if ($tenantRequest['price_period'] == 'lifetime') {
+            $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['shop_price_period_count']);
+        } else if ($tenantRequest['shop_price_period'] == 'lifetime') {
 
             $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
         }
 
+        $business = isset($tenantRequest['has_business']) ? 1 : 0;
+        $shopPlusBusiness = $tenantRequest['shop_count'] + $business;
+        $adjustablePrice = $tenantRequest['total_payable'] / $shopPlusBusiness;
+
         $shopHistory = new ShopExpireDateHistory();
         $shopHistory->shop_count = $tenantRequest['shop_count'];
-        $shopHistory->price_period = $tenantRequest['period_count'];
+        $shopHistory->price_period = $tenantRequest['shop_price_period'];
+        $shopHistory->adjustable_price = $adjustablePrice;
         $shopHistory->start_date = Carbon::now();
         $shopHistory->expire_date = $expireDate;
         $shopHistory->created_count = 0;

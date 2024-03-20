@@ -108,9 +108,9 @@
                                             <span class="span_total_shop_count">1</span>
                                         </span>
                                     </li>
-                                    <li>{{ __('Sub Total') }}
+                                    <li>{{ __('Net Total') }}
                                         <span class="price-txt">
-                                            <span class="span_subtotal_after_discount">{{ $plan->price }}</span>
+                                            <span class="span_net_total">{{ $plan->price }}</span>
                                         </span>
                                     </li>
                                     <li>{{ __('Discount') }}

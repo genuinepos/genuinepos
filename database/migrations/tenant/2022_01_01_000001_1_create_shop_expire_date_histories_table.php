@@ -17,6 +17,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('user_id');
             // $table->unsignedBigInteger('plan_id');
             $table->string('price_period', 20)->nullable();
+            $table->decimal('adjustable_price', 22, 2)->nullable();
             $table->tinyInteger('shop_count'); // = 8;
             $table->timestamp('start_date'); // = 04-02-24;
             $table->date('expire_date'); // = 04-02-25;

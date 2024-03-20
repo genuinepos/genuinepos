@@ -48,7 +48,13 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h6>{{ $generalSettings['subscription']->plan_name }}</h6>
+                                        @if ($generalSettings['subscription']->plan_type == 1)
+
+                                            <h6>{{ $generalSettings['subscription']->plan_name }}</h6>
+                                        @else
+                                        
+                                            <h6>{{ __('Custom Plan') }}</h6>
+                                        @endif
                                     </div>
 
                                     <div class="card-body">
@@ -89,7 +95,10 @@
                             </div>
 
                             <div class="col-md-4">
-                                <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-danger p-2">{{ __('Upgrade Plan') }}</a>
+                                @if ($generalSettings['subscription']->plan_type == 1)
+
+                                    <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-danger p-2">{{ __('Upgrade Plan') }}</a>
+                                @endif
 
                                 @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add'))
 
@@ -141,12 +150,45 @@
                                                         <td>
                                                             {{ $branch?->shopExpireDateHistory ? date($dateFormat, strtotime($branch?->shopExpireDateHistory?->start_date)) : date($dateFormat, strtotime($branch?->created_at)) }}
                                                         </td>
-                                                        <td>{{ date($dateFormat, strtotime($branch->expire_date)) }}</td>
                                                         <td>
-                                                            @if (date('Y-m-d') < date('Y-m-d', strtotime($branch->expire_date)))
-                                                                <span class="text-success fw-bold">{{ (new \DateTime(date('Y-m-d')))->diff(new \DateTime($branch->expire_date))->days + 1 }}</span> / Days
+                                                            @if ($generalSettings['subscription']->is_trial_plan == 0)
+
+                                                                {{ date($dateFormat, strtotime($branch->expire_date)) }}
                                                             @else
-                                                                <span class="text-danger fw-bold">0</span> / Days
+                                                                @php
+                                                                    $planStartDate = $generalSettings['subscription']->trial_start_date;
+                                                                    $trialDays = $generalSettings['subscription']->trial_days;
+                                                                    $startDate = new DateTime($planStartDate);
+                                                                    $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
+                                                                    $expireDate = $lastDate->format('Y-m-d');
+                                                                    $dateFormat = $generalSettings['business_or_shop__date_format'];
+                                                                @endphp
+                                                                {{ date($dateFormat, strtotime($expireDate)) }}
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($generalSettings['subscription']->is_trial_plan == 0)
+                                                                @if (date('Y-m-d') < date('Y-m-d', strtotime($branch->expire_date)))
+                                                                    <span class="text-success fw-bold">{{ (new \DateTime(date('Y-m-d')))->diff(new \DateTime($branch->expire_date))->days + 1 }}</span> / Days
+                                                                @else
+                                                                    <span class="text-danger fw-bold">0</span> / Days
+                                                                @endif
+                                                            @else
+
+                                                                @php
+                                                                    $planStartDate = $generalSettings['subscription']->trial_start_date;
+                                                                    $trialDays = $generalSettings['subscription']->trial_days;
+                                                                    $startDate = new DateTime($planStartDate);
+                                                                    $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
+                                                                    $expireDate = $lastDate->format('Y-m-d');
+                                                                    $dateFormat = $generalSettings['business_or_shop__date_format'];
+                                                                @endphp
+
+                                                                @if (date('Y-m-d') < date('Y-m-d', strtotime($expireDate)))
+                                                                    <span class="text-success fw-bold">{{ (new \DateTime(date('Y-m-d')))->diff(new \DateTime($expireDate))->days }}</span> / {{ __("Days") }}
+                                                                @else
+                                                                    <span class="text-danger fw-bold">0</span> / {{ __("Days") }}
+                                                                @endif
                                                             @endif
                                                         </td>
                                                         <td>{{ date('Y-m-d') > date('Y-m-d', strtotime($branch->expire_date)) ? __('Expired') : __('Active') }}</td>

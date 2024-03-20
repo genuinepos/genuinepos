@@ -27,25 +27,24 @@
 </head>
 
 <body class="inner">
-    <!--------------------------------- CART SECTION START --------------------------------->
     <div class="tab-section py-120">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="tab-nav">
                         <button class="single-nav active" data-tab="cartTab">
-                            <span class="txt">Step One</span>
-                            <span class="sl-no">01</span>
+                            <span class="txt">{{ __("Step One") }}</span>
+                            <span class="sl-no">{{ __("01") }}</span>
                         </button>
 
                         <button class="single-nav" data-tab="checkOutTab" disabled>
-                            <span class="txt">Step Two</span>
-                            <span class="sl-no">02</span>
+                            <span class="txt">{{ __("Step Two") }}</span>
+                            <span class="sl-no">{{ __("02") }}</span>
                         </button>
 
                         <button class="single-nav" data-tab="orderCompletedTab" disabled>
-                            <span class="txt">Step Three</span>
-                            <span class="sl-no">03</span>
+                            <span class="txt">{{ __("Step Three") }}</span>
+                            <span class="sl-no">{{ __("03") }}</span>
                         </button>
                     </div>
 
@@ -66,31 +65,16 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td><p>Previous package (<b>{{ $currentSubscription->plan->name }}</b>) <i class="fa-solid fa-xmark text-danger"></i></p></td>
                                                 <td class=""><span class="price-txt">$<span class="main-price">{{ $currentSubscription->plan->price_per_year }}</</span></span></td>
                                                 <td>
                                                     1
-                                                    {{-- <div class="product-count cart-product-count">
-                                                        <div class="quantity rapper-quantity">
-                                                            <input class="bg-secondary" type="number" min="1" max="100" step="1" value="1" readonly>
-                                                            <div class="quantity-nav">
-                                                                <div class="quantity-button-disabled">
-                                                                    <i class="fa-solid fa-minus"></i>
-                                                                </div>
-
-                                                                <div class="quantity-button-disabled">
-                                                                    <i class="fa-solid fa-plus"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> --}}
-                                                    {{-- <input class="bg-secondary" type="number" min="1" max="100" step="1" value="1" readonly> --}}
                                                 </td>
                                                 <td><span class="price-txt text-danger">$<span class="total-price">{{ $currentSubscription->plan->price_per_year }}</span></span></td>
                                                 <td><span>$<span class="adjusted-price">0.00</span></span></td>
                                                 <td><span>$<span class="total-price">{{ $currentSubscription->plan->price_per_year }}</</span></span></td>
-                                            </tr>
+                                            </tr> --}}
 
                                             <tr>
                                                 <td>{{  $plan->name }}</td>

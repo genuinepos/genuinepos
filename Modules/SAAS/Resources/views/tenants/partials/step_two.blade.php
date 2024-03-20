@@ -101,9 +101,9 @@
                                                 <span class="span_total_shop_count">1</span>
                                             </span>
                                         </li>
-                                        <li>{{ __('Sub Total') }}
+                                        <li>{{ __('Net Total') }}
                                             <span class="price-txt">
-                                                <span class="span_subtotal_after_discount"></span>
+                                                <span class="span_net_total"></span>
                                             </span>
                                         </li>
                                         <li>{{ __('Discount') }}

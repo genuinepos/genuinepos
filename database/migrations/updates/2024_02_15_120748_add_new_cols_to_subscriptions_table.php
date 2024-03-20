@@ -20,7 +20,7 @@ return new class extends Migration
 
             if (!Schema::hasColumn('subscriptions', 'is_completed_startup')) {
 
-                $table->boolean('is_completed_startup')->after('initial_plan_expire_date')->default(0);
+                $table->boolean('is_completed_startup')->default(0);
             }
         });
     }

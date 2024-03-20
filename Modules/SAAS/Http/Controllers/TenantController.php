@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\DB;
 use Modules\SAAS\Entities\Currency;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Http\Requests\TenantStoreRequest;
+use Modules\SAAS\Services\DeleteUnusedTenantService;
 
 class TenantController extends Controller
 {
     public function __construct(
         private TenantServiceInterface $tenantService,
+        private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
 
@@ -41,22 +43,15 @@ class TenantController extends Controller
 
         $tenantRequest = $request->all();
 
-        try {
-            DB::beginTransaction();
-
-            $tenant = $this->tenantService->create($tenantRequest);
-
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollBack();
-        }
+        $tenant = $this->tenantService->create($tenantRequest);
 
         if (isset($tenant)) {
 
-            return route('saas.tenants.index');
+            // return route('saas.tenants.index');
+            return response()->json(__('App created successfully'), 201);
         }
 
-        return response()->json('Something went wrong, please try again!', 500);
+        $this->deleteUnusedTenantService->deleteTenant(domainName: $tenantRequest['domain']);
+        throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
     }
 }

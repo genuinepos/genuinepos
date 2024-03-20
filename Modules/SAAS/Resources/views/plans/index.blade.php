@@ -33,7 +33,15 @@
                                 @foreach ($plans as $key => $plan)
                                     <tr class="">
                                         <td class="text-start">{{ $loop->iteration }}</td>
-                                        <td class="text-start {{ $plan->is_trial_plan == 1 ? 'text-danger' : '' }}">{!! $plan->name . ' ' . ($plan->is_trial_plan == 1 ? ' <samll style="font-size: 10px!important;">(Period : ' . $plan->trial_days . ' Days)</samll>' : '') !!}</td>
+                                        <td class="text-start {{ $plan->is_trial_plan == 1 ? 'text-danger' : '' }}">
+                                            @if ($plan->is_trial_plan == 1)
+
+                                                {!! $plan->name . ' <samll style="font-size: 10px!important;">(Period : ' . $plan->trial_days . ' Days)</samll>' !!}
+                                            @else
+
+                                                {!! $plan->name . ' <samll style="font-size: 10px!important;"> | ' . \App\Enums\PlanType::tryFrom($plan->plan_type)->name . ' </samll>' !!}
+                                            @endif
+                                        </td>
                                         <td class="text-start">
                                             @if ($plan->is_trial_plan == 1)
                                                 {{ __('N/A') }}

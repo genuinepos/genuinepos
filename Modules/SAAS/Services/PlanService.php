@@ -25,6 +25,7 @@ class PlanService implements PlanServiceInterface
         $preparedPlanFeatures = $this->preparedPlanFeatures(request: $request);
 
         $plan = Plan::create([
+            'plan_type' => $request->plan_type,
             'name' => $request->name,
             'slug' => $request->slug ? $request->slug : Str::slug($request->name),
             'price_per_month' => $request->price_per_month,
@@ -65,6 +66,7 @@ class PlanService implements PlanServiceInterface
 
         if ($updatePlan->is_trial_plan == BooleanType::False->value) {
 
+            $updatePlan->plan_type = $request->plan_type;
             $updatePlan->price_per_month = $request->price_per_month;
             $updatePlan->has_lifetime_period = $request->has_lifetime_period;
             $updatePlan->price_per_year = $request->price_per_year;

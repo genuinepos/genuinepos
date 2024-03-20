@@ -12,9 +12,10 @@ class SubscriptionTransaction extends Model
     use HasFactory;
 
     protected $guarded = [];
-
+ 
     protected $casts = [
-        'payment_date' => 'datetime'
+        'payment_date' => 'datetime',
+        'details' => 'object',
     ];
 
     public function subscription()

@@ -14,7 +14,7 @@
                         </p>
                     </div>
 
-                    @if ($generalSettings['subscription']->is_trial_plan == 1 || ($generalSettings['subscription']->initial_payment_status == 0 && $generalSettings['subscription']->initial_plan_expire_date))
+                    @if ($generalSettings['subscription']->is_trial_plan == 1 || ($generalSettings['subscription']->has_due_amount == 0 && $generalSettings['subscription']->due_repayment_date))
                         @if ($generalSettings['subscription']->is_trial_plan == 1)
                             @php
                                 $planStartDate = $generalSettings['subscription']->trial_start_date;
@@ -29,13 +29,13 @@
                                 <span class="text-danger">{{ date($dateFormat, strtotime($expireDate)) }}</span>
                                 <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
                             </p>
-                        @elseif ($generalSettings['subscription']->initial_payment_status == 0 && $generalSettings['subscription']->initial_plan_expire_date)
+                        @elseif ($generalSettings['subscription']->has_due_amount == 0 && $generalSettings['subscription']->due_repayment_date)
                             @php
                                 $dateFormat = $generalSettings['business_or_shop__date_format'];
                             @endphp
 
                             <p class="text-white mt-1">
-                                {{ __('Due Repayment Date') }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->initial_plan_expire_date)) }}</span>
+                                {{ __('Due Repayment Date') }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->due_repayment_date)) }}</span>
                                 <a href="{{ route('software.service.billing.due.repayment') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
                             </p>
                         @endif

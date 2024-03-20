@@ -15,7 +15,7 @@ return new class extends Migration
 
             if (!Schema::hasColumn('subscriptions', 'initial_business_price_period')) {
 
-                $table->string('initial_business_price_period')->after('initial_plan_price')->nullable();
+                $table->string('initial_business_price_period')->nullable();
             }
 
             if (!Schema::hasColumn('subscriptions', 'initial_business_period_count')) {
@@ -33,7 +33,7 @@ return new class extends Migration
                 $table->timestamp('initial_business_start_date')->after('initial_plan_start_date')->nullable();
             }
 
-            if (!Schema::hasColumn('subscriptions', 'initial_period_count')) {
+            if (Schema::hasColumn('subscriptions', 'initial_period_count')) {
 
                 $table->bigInteger('initial_period_count')->change();
             }

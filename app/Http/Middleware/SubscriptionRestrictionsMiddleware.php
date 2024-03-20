@@ -86,9 +86,9 @@ class SubscriptionRestrictionsMiddleware
                 return redirect()->route('software.service.billing.upgrade.plan.index')->with(['trialExpireDate' => __('Your trial period is expired. Please Upgrade your plan.')]);
             }
         } elseif (
-            $subscription->initial_payment_status == SubscriptionPaymentStatus::Due->value &&
-            $generalSettings['subscription']->initial_plan_expire_date &&
-            date('Y-m-d') > $generalSettings['subscription']->initial_plan_expire_date
+            $subscription->has_due_amount == SubscriptionPaymentStatus::Due->value &&
+            $generalSettings['subscription']->due_repayment_date &&
+            date('Y-m-d') > $generalSettings['subscription']->due_repayment_date
         ) {
 
             return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment your due amount.')]);

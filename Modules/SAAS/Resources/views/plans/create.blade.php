@@ -13,6 +13,15 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">{{ __('Plan Type') }} <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="plan_type" id="plan_type">
+                                        @foreach (\App\Enums\PlanType::cases() as $planType)
+                                            <option value="{{ $planType->value }}">{{ $planType->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <div class="mb-1">
                                     <label class="form-label">{{ __('Plan Name') }} <span class="text-danger">*</span></label>
                                     <input required type="text" class="form-control" name="name" placeholder="{{ __('Enter Plan Name') }}">
@@ -39,8 +48,8 @@
                                 <div class="mb-4">
                                     <label class="form-label">{{ __('Is Enable Lifetime Period') }} <span class="text-danger">*</span></label>
                                     <select name="has_lifetime_period" class="form-control" id="has_lifetime_period">
-                                        <option value="0">{{ __("No") }}</option>
-                                        <option value="1">{{ __("Yes") }}</option>
+                                        <option value="0">{{ __('No') }}</option>
+                                        <option value="1">{{ __('Yes') }}</option>
                                     </select>
                                 </div>
 
@@ -52,25 +61,25 @@
 
                                 <div class="mb-1 d-none lifetime_field">
                                     <label class="form-label">{{ __('Lifetime Applicable Years') }} <span class="text-danger">*</span></label>
-                                    <input type="number" name="applicable_lifetime_years" class="form-control lifetime-required-field" id="applicable_lifetime_years" placeholder="{{ __("Applicable Years") }}">
+                                    <input type="number" name="applicable_lifetime_years" class="form-control lifetime-required-field" id="applicable_lifetime_years" placeholder="{{ __('Applicable Years') }}">
                                     <span class="text-danger error error_applicable_lifetime_years"></span>
                                 </div>
 
                                 <div class="mb-1">
                                     <label class="form-label">{{ __('Business price per month') }} <span class="text-danger">*</span></label>
-                                    <input required type="number" name="business_price_per_month" class="form-control" id="business_price_per_month" placeholder="{{ __("Business Price Per Month") }}">
+                                    <input required type="number" name="business_price_per_month" class="form-control" id="business_price_per_month" placeholder="{{ __('Business Price Per Month') }}">
                                     <span class="text-danger error error_business_price_per_month"></span>
                                 </div>
 
                                 <div class="mb-1">
                                     <label class="form-label">{{ __('Business price per years') }} <span class="text-danger">*</span></label>
-                                    <input required type="number" name="business_price_per_year" class="form-control" id="business_price_per_year" placeholder="{{ __("Business Price Per Year") }}">
+                                    <input required type="number" name="business_price_per_year" class="form-control" id="business_price_per_year" placeholder="{{ __('Business Price Per Year') }}">
                                     <span class="text-danger error error_business_price_per_year"></span>
                                 </div>
 
                                 <div class="mb-1 d-none lifetime_field">
                                     <label class="form-label">{{ __('Business price lifetime') }} <span class="text-danger">*</span></label>
-                                    <input type="number" name="business_lifetime_price" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __("Business Price Per lifetime") }}">
+                                    <input type="number" name="business_lifetime_price" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Business Price Per lifetime') }}">
                                     <span class="text-danger error error_business_lifetime_price"></span>
                                 </div>
 
@@ -101,13 +110,13 @@
                                     </div>
 
                                     @foreach ($features as $key => $feature)
-                                        <div class=" @if(!$feature && ($key == 'user_count' || $key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif"  id="feature_{{ $key }}">
-                                            @if($feature)
-                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" />
+                                        <div class=" @if (!$feature && ($key == 'user_count' || $key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif" id="feature_{{ $key }}">
+                                            @if ($feature)
+                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{ $key }}]" value="{{ $feature }}" id="{{ $key }}" />
                                             @endif
                                             <label for="{{ $key }}">{{ str($key)->headline() }}</label>
-                                            @if(!$feature)
-                                                <input type="text" name="features[{{$key}}]" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
+                                            @if (!$feature)
+                                                <input type="text" name="features[{{ $key }}]" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{ $key }} count" />
                                             @endif
                                         </div>
                                     @endforeach
@@ -116,16 +125,16 @@
                                 <div class="mb-4 p-2" style="border: 1px solid red;">
                                     <label for="status" class="form-label"><span class="text-danger">*</span>{{ __('Plan Status') }}</label>
                                     <select required name="status" id="status" class="form-select">
-                                        <option value="1">{{ __("Active") }}</option>
-                                        <option value="0">{{ __("In-Active") }}</option>
+                                        <option value="1">{{ __('Active') }}</option>
+                                        <option value="0">{{ __('In-Active') }}</option>
                                     </select>
                                 </div>
 
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <div class="btn-loading">
-                                        <button type="button" class="btn loading_button plan_loading_btn d-none"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                                        <button type="submit" id="plan_save" class="btn btn-sm btn-success plan_submit_button">{{ __("Save") }}</button>
+                                        <button type="button" class="btn loading_button plan_loading_btn d-none"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                                        <button type="submit" id="plan_save" class="btn btn-sm btn-success plan_submit_button">{{ __('Save') }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -144,9 +153,9 @@
                 $('#feature_warehouse_count').hide();
                 $('#feature_cash_counter_count').hide();
 
-                $('#hrm').change( function() {
+                $('#hrm').change(function() {
 
-                    if($(this).is(":checked")) {
+                    if ($(this).is(":checked")) {
 
                         $('#feature_employee_count').show();
                     } else {
@@ -156,8 +165,8 @@
                     }
                 });
 
-                $('#setup').change( function() {
-                    if($(this).is(":checked")) {
+                $('#setup').change(function() {
+                    if ($(this).is(":checked")) {
                         $('#feature_warehouse_count').show();
                         $('#feature_cash_counter_count').show();
                     } else {
@@ -168,7 +177,7 @@
 
                 $('#users').change(function() {
 
-                    if($(this).is(":checked")) {
+                    if ($(this).is(":checked")) {
 
                         $('#feature_user_count').show();
                     } else {
@@ -180,7 +189,7 @@
 
                 $('#has_lifetime_period').change(function() {
 
-                    if($(this).val() == 1) {
+                    if ($(this).val() == 1) {
 
                         $('.lifetime_field').removeClass('d-none');
                         $('.lifetime-required-field').prop('required', true);
@@ -214,18 +223,18 @@
             });
 
             var isAllowSubmit = true;
-            $(document).on('click', '.plan_submit_button',function () {
+            $(document).on('click', '.plan_submit_button', function() {
 
                 if (isAllowSubmit) {
 
                     $(this).prop('type', 'submit');
-                }else {
+                } else {
 
                     $(this).prop('type', 'button');
                 }
             });
 
-            $('#add_plan_from').on('submit',function(e) {
+            $('#add_plan_from').on('submit', function(e) {
                 e.preventDefault();
 
                 $('.plan_loading_btn').removeClass('d-none');
@@ -235,20 +244,20 @@
                 isAjaxIn = false;
                 isAllowSubmit = false;
                 $.ajax({
-                    beforeSend: function(){
+                    beforeSend: function() {
                         isAjaxIn = true;
                     },
-                    url : url,
-                    type : 'post',
+                    url: url,
+                    type: 'post',
                     data: request,
-                    success:function(data){
+                    success: function(data) {
 
                         isAjaxIn = true;
                         isAllowSubmit = true;
                         $('.plan_loading_btn').addClass('d-none');
                         $('.error').html('');
 
-                        if(!$.isEmptyObject(data.errorMsg)) {
+                        if (!$.isEmptyObject(data.errorMsg)) {
 
                             toastr.error(data.errorMsg, 'ERROR');
                             return;
@@ -256,7 +265,8 @@
 
                         $('#add_plan_from')[0].reset();
                         toastr.success(data);
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         isAjaxIn = true;
                         isAllowSubmit = true;
@@ -267,11 +277,11 @@
 
                             toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
-                        } else if(err.status == 500) {
+                        } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                             return;
-                        } else if(err.status == 403) {
+                        } else if (err.status == 403) {
 
                             toastr.error("{{ __('Access Denied') }}");
                             return;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\UserType;
 use Illuminate\Http\Request;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
@@ -80,7 +81,7 @@ class DepartmentController extends Controller
             $query->where('department_id', $id);
         }
 
-        $users = $query->select(['id', 'prefix', 'name', 'last_name', 'emp_id'])->get();
+        $users = $query->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])->select(['id', 'prefix', 'name', 'last_name', 'emp_id'])->get();
         return $users;
     }
 }

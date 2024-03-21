@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Enums\BooleanType;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Enums\UserType;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Models\Hrm\Attendance;
 use App\Services\Hrm\ShiftService;
@@ -45,7 +46,7 @@ class AttendanceController extends Controller
         abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $departments = DB::table('hrm_departments')->get(['id', 'name']);
-        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+        $users = DB::table('users')->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
 
         return view('hrm.attendances.ajax_view.create', compact('users', 'departments'));
     }
@@ -105,7 +106,7 @@ class AttendanceController extends Controller
     public function delete($id, Request $request)
     {
         abort_if(!auth()->user()->can('attendances_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-       
+
         $this->attendanceService->deleteAttendance(id: $id);
         return response()->json(__('Attendance deleted successfully'));
     }

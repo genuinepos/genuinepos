@@ -243,8 +243,10 @@ class BranchSettingService
         if (count($keys) > 0) {
 
             foreach ($keys as $key) {
+
                 $deleteBranchSetting = GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
                 if (isset($deleteBranchSetting)) {
+                    
                     $deleteBranchSetting->delete();
                 }
             }

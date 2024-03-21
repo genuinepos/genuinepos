@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
@@ -41,7 +42,12 @@ class PayrollController extends Controller
         }
 
         $departments = $this->departmentService->departments()->get(['id', 'name']);
-        $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+        
+        $users = $this->userService->users()
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
+            ->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 

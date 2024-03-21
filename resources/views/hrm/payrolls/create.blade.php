@@ -1,7 +1,10 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
     </style>
 @endpush
 @section('title', 'Add Payroll - ')
@@ -71,17 +74,17 @@
                                         <div class="col-md-12 mt-1">
                                             <label><b>{{ __('Unit') }} ({{ __('Pay Type') }})</b> <span class="text-danger">* </span> </label>
                                             <select required name="duration_unit" id="duration_unit" class="form-control">
-                                                <option value="Hourly">{{ __('Hourly') }}</option>
-                                                <option value="Monthly">{{ __('Monthly') }}</option>
-                                                <option value="Yearly">{{ __('Yearly') }}</option>
-                                                <option value="Daliy">{{ __('Daily') }}</option>
+                                                <option @selected($user->salary_type == 'Hourly') value="Hourly">{{ __('Hourly') }}</option>
+                                                <option @selected($user->salary_type == 'Monthly') value="Monthly">{{ __('Monthly') }}</option>
+                                                <option @selected($user->salary_type == 'Yearly') value="Yearly">{{ __('Yearly') }}</option>
+                                                <option @selected($user->salary_type == 'Daliy') value="Daliy">{{ __('Daily') }}</option>
                                             </select>
                                             <span class="error error_duration_unit"></span>
                                         </div>
 
                                         <div class="col-md-12 mt-1">
                                             <label><b>{{ __('Amount per unit duration') }}</b> <span class="text-danger">*</span></label>
-                                            <input required type="number" step="any" name="amount_per_unit" id="amount_per_unit" class="form-control fw-bold" placeholder="{{ __('Amount per unit duration') }}" value="">
+                                            <input required type="number" step="any" name="amount_per_unit" id="amount_per_unit" class="form-control fw-bold" placeholder="{{ __('Amount per unit duration') }}" value="{{ $user->salary }}">
                                             <span class="error error_amount_per_unit"></span>
                                         </div>
 
@@ -239,13 +242,13 @@
                                                                         <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
                                                                         <input type="hidden" name="deduction_ids[]" id="deduction_id" value="{{ $deduction->id }}">
 
-                                                                        <input type="text" name="deduction_names[]" id="deduction_name" class="form-control" placeholder="{{ __("Deduction Name") }}" value="{{ $deduction->name }}" autocomplete="off">
+                                                                        <input type="text" name="deduction_names[]" id="deduction_name" class="form-control" placeholder="{{ __('Deduction Name') }}" value="{{ $deduction->name }}" autocomplete="off">
                                                                     </td>
 
                                                                     <td>
                                                                         <select class="form-control" name="deduction_amount_types[]" id="deduction_amount_type">
-                                                                            <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">{{ __("Fixed") }}</option>
-                                                                            <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">{{ __("Percentage") }}</option>
+                                                                            <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">{{ __('Fixed') }}</option>
+                                                                            <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">{{ __('Percentage') }}</option>
                                                                         </select>
 
                                                                         <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-hide' : '' }} ">
@@ -258,7 +261,7 @@
                                                                     </td>
 
                                                                     <td>
-                                                                        <input type="number" step="any" name="deduction_amounts[]" id="deduction_amount" class="form-control fw-bold" value="{{ $deduction->amount }}" placeholder="{{ __("Amount") }}" autocomplete="off">
+                                                                        <input type="number" step="any" name="deduction_amounts[]" id="deduction_amount" class="form-control fw-bold" value="{{ $deduction->amount }}" placeholder="{{ __('Amount') }}" autocomplete="off">
                                                                     </td>
 
                                                                     <td class="text-right">
@@ -294,7 +297,7 @@
                                                             </td>
 
                                                             <td>
-                                                                <input type="number" step="any" name="deduction_amounts[]" class="form-control fw-bold" id="deduction_amount" value="0.00" placeholder="{{ __("Amount") }}" autocomplete="off">
+                                                                <input type="number" step="any" name="deduction_amounts[]" class="form-control fw-bold" id="deduction_amount" value="0.00" placeholder="{{ __('Amount') }}" autocomplete="off">
                                                             </td>
 
                                                             <td class="text-right">
@@ -322,7 +325,9 @@
 
                             <div class="row">
                                 <div class="col-md-4 offset-8 text-end">
-                                    <label><h5>{{ __('Gross Amount') }} : <span id="span_gross_amount">0.00</span></h5> </label>
+                                    <label>
+                                        <h5>{{ __('Gross Amount') }} : <span id="span_gross_amount">0.00</span></h5>
+                                    </label>
                                     <input type="hidden" name="gross_amount" id="gross_amount">
                                 </div>
                             </div>

@@ -31,6 +31,8 @@ class UserUpdateRequest extends FormRequest
         $user = $userService->singleUser(id: $id);
         $role = $roleService->singleRole(id: $request->role_id);
 
+        $roleId = $user?->roles()?->first()?->id;
+
         return [
             'first_name' => 'required',
             'email' => 'required|unique:users,email,' . $id,
@@ -43,7 +45,7 @@ class UserUpdateRequest extends FormRequest
                     $request->branch_count,
                 'required'
             ),
-            'role_id' => Rule::when($request->allow_login == BooleanType::True->value, 'required'),
+            'role_id' => Rule::when($request->allow_login == BooleanType::True->value && $roleId != 1, 'required'),
             'username' => Rule::when($request->allow_login == BooleanType::True->value, 'required|unique:users,username,' . $id),
             'password' => $request->allow_login == BooleanType::True->value && !$user->password ? 'required|confirmed' : 'sometimes|confirmed',
         ];

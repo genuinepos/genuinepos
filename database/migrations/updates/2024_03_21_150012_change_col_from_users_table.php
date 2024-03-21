@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            if (!Schema::hasColumn('users', 'user_type')) {
+            if (Schema::hasColumn('users', 'photo')) {
 
-                $table->tinyInteger('user_type')->after('id')->default(1);
+                $table->string('photo', 255)->change()->nullable()->default(null);
             }
         });
     }
@@ -26,7 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('user_type');
+
+            $table->string('photo', 255)->change()->default('default.png');
         });
     }
 };

@@ -19,7 +19,17 @@
                             <div class="profile-sidebar">
                                 <div class="profile-top">
                                     <div class="part-img">
-                                        <img src="{{ asset('uploads/user_photo') }}/{{ $user->photo }}" alt="Not found">
+                                        @php
+                                            $photoSrc = null;
+                                            if ($user->photo && file_exists(public_path('uploads/user_photo/' . $user->photo))) {
+
+                                                $photoSrc = asset('uploads/user_photo/'.$user->photo);
+                                            } else {
+
+                                                $photoSrc = asset('images/user_default.png');
+                                            }
+                                        @endphp
+                                        <img src="{{ $photoSrc }}" alt="Not found">
                                     </div>
                                     <div class="part-txt text-center">
                                         <h4>{!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!}</h4>

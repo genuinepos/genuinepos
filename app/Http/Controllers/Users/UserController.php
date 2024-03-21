@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Enums\UserType;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,12 +36,10 @@ class UserController extends Controller
             return $this->userService->usersTable($request);
         }
 
-        $currentUserCount = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->count();
-
         $branches = $this->branchService->branches(['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('users.index', compact('branches', 'currentUserCount'));
+        return view('users.index', compact('branches'));
     }
 
     public function show($id)
@@ -66,7 +65,13 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        // $restrictions = $this->userService->storeRestrictions(request: $request);
+        $restrictions = $this->userService->storeRestrictions(request: $request);
+
+        if ($restrictions['pass'] == false) {
+
+            return response()->json(['errorMsg' => $restrictions['msg']]);
+        }
+
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
         $this->userService->addUser(request: $request, role: $role);
@@ -93,6 +98,13 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
+        $restrictions = $this->userService->updateRestrictions(request: $request, id: $id);
+
+        if ($restrictions['pass'] == false) {
+
+            return response()->json(['errorMsg' => $restrictions['msg']]);
+        }
+
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
 
@@ -133,5 +145,10 @@ class UserController extends Controller
     public function branchUsers($isOnlyAuthenticatedUser, $allowAll, $branchId = null)
     {
         return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
+    }
+
+    function currentUserAndEmployeeCount($branchId = null)
+    {
+        return $this->userService->currentUserAndEmployeeCount($branchId);
     }
 }

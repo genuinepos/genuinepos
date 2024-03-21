@@ -7,8 +7,13 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-6">
-                    <h6>{{ __('Shops') }}
-                        <span style="font-size: 12px;">({{ __("User Limit") }} -<span class="text-danger">{{ $currentUserCount }}</span>/{{ $generalSettings['subscription']->features['user_count'] }})</span> | <span style="font-size: 12px;">({{ __("Employee Limit") }} -<span class="text-danger">{{ $currentUserCount }}</span>/{{ $generalSettings['subscription']->features['employee_count'] }})</span>
+                    <h6>{{ __('Users') }}
+                        <span style="font-size: 12px;">({{ __('User Limit') }}
+                            : <span class="text-danger" id="current_user_count"> --- </span>/{{ $generalSettings['subscription']->features['user_count'] }})
+                        </span> |
+                        <span style="font-size: 12px;">({{ __('Employee Limit') }}
+                            : <span class="text-danger" id="current_employee_count"> --- </span>/{{ $generalSettings['subscription']->features['employee_count'] }})
+                        </span>
                     </h6>
                 </div>
 
@@ -31,7 +36,7 @@
                                 <form action="" method="get">
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id">
                                                 <option value="">{{ __("All") }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
@@ -44,6 +49,16 @@
                                                         @endphp
                                                         {{ $branch->name . $parentBranchName . $areaName . $branchCode }}
                                                     </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __("Type") }}</strong></label>
+                                            <select name="user_type" class="form-control submit_able" id="user_type">
+                                                <option value="">{{ __("All") }}</option>
+                                                @foreach (\App\Enums\UserType::cases() as $userType)
+                                                    <option value="{{ $userType->value }}">{{ $userType->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -63,6 +78,7 @@
                                 <tr>
                                     <th>{{ __('Username') }}</th>
                                     <th>{{ __('Allow Login') }}</th>
+                                    <th>{{ __('Type') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Phone') }}</th>
                                     <th>{{ __('Shop/Business') }}</th>
@@ -128,14 +144,20 @@
                 "url": "{{ route('users.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
+                    d.user_type = $('#user_type').val();
                 }
             },
             columns: [{
                     data: 'username',
                     name: 'username'
-                }, {
+                },
+                {
                     data: 'allow_login',
                     name: 'username'
+                }, {
+                    data: 'type',
+                    name: 'type',
+                    className: 'fw-bold'
                 }, {
                     data: 'name',
                     name: 'name'
@@ -205,5 +227,25 @@
                 }
             });
         });
+
+        function currentUserAndEmployeeCount() {
+            $.ajax({
+                url: "{{ route('users.current.user.and.employee.count') }}",
+                type: 'get',
+                success: function(data) {
+
+                    $('#current_user_count').html(data.current_user_count);
+                    $('#current_employee_count').html(data.current_employee_count);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    }
+                }
+            });
+        }
+        currentUserAndEmployeeCount();
     </script>
 @endpush

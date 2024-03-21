@@ -29,11 +29,23 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <h5>{{ __('Add User') }}</h5>
+                <div class="col-md-6">
+                    <h6>{{ __('Add User') }}
+                        <span style="font-size: 12px;">({{ __('User Limit') }}
+                            : <span class="text-danger" id="current_user_count"> --- </span>/{{ $generalSettings['subscription']->features['user_count'] }})
+                        </span> |
+                        <span style="font-size: 12px;">({{ __('Employee Limit') }}
+                            : <span class="text-danger" id="current_employee_count"> --- </span>/{{ $generalSettings['subscription']->features['employee_count'] }})
+                        </span>
+                    </h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                <div class="col-md-6">
+
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
+                    </a>
+                </div>
             </div>
         </div>
         <div class="p-2">
@@ -108,7 +120,7 @@
                                                     <label class="col-4"><b>{{ __('Shop/Business') }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <input type="hidden" name="branch_count" value="YES">
-                                                        <select required name="branch_id" class="form-control" id="branch_id" data-next="allow_login">
+                                                        <select required name="branch_id" class="form-control" id="branch_id" data-next="user_type">
                                                             <option value="">{{ __('Select Shop/Business') }}</option>
                                                             <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
@@ -128,12 +140,12 @@
                                         @endif
                                     </div>
 
-                                    {{-- <div class="row mt-1">
+                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Type') }}</b></label>
                                                 <div class="col-8">
-                                                    <select name="user_type" class="form-control" id="user_type" data-next="branch_id">
+                                                    <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
                                                         @foreach (\App\Enums\UserType::cases() as $userType)
                                                             <option value="{{ $userType->value }}">{{ $userType->name }}</option>
                                                         @endforeach
@@ -141,7 +153,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
 
@@ -594,295 +606,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        $(document).on('click keypress focus blur change', '.form-control', function(event) {
-
-            $('.submit_button').prop('type', 'button');
-        });
-
-        var isAllowSubmit = true;
-        $(document).on('click', '.submit_button', function() {
-
-            var value = $(this).val();
-            $('#action').val(value);
-
-            if (isAllowSubmit) {
-
-                $(this).prop('type', 'submit');
-            } else {
-
-                $(this).prop('type', 'button');
-            }
-        });
-
-        // Add user by ajax
-        $(document).on('submit', '#add_user_form', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-
-            isAjaxIn = false;
-            isAllowSubmit = false;
-            $.ajax({
-                beforeSend: function() {
-                    isAjaxIn = true;
-                },
-                url: url,
-                type: 'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    isAjaxIn = true;
-                    isAllowSubmit = true;
-
-                    $('#add_user_form')[0].reset();
-                    changeAllowLoginField();
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    $('#first_name').focus();
-                },
-                error: function(err) {
-
-                    isAjaxIn = true;
-                    isAllowSubmit = true;
-                    $('.loading_button').hide();
-
-                    $('.error').html('');
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                        return;
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-
-                    toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
-
-                    $.each(err.responseJSON.errors, function(key, error) {
-
-                        $('.error_' + key + '').html(error[0]);
-                    });
-                }
-            });
-
-            if (isAjaxIn == false) {
-
-                isAllowSubmit = true;
-            }
-        });
-
-        // $(document).on('change', '#user_type', function() {
-
-        //     if ($(this).val() == 1 || $(this).val() == 3) {
-
-        //         $('#allow_login').val(1);
-        //         $('.role_permission_area').show();
-        //         changeAllowLoginField();
-        //     }else {
-
-        //         $('#allow_login').val(0);
-        //         $('.role_permission_area').hide();
-        //         changeAllowLoginField();
-        //     }
-        // });
-
-        $(document).on('change', '#allow_login', function() {
-
-            changeAllowLoginField();
-        });
-
-        function changeAllowLoginField() {
-
-            $('#auth_fields_area').show();
-            $('#role_id').prop('required', true);
-            $('#username').prop('required', true);
-            $('#password').prop('required', true);
-            $('#password_confirmation').prop('required', true);
-
-            if ($('#allow_login').val() == 0) {
-
-                $('#auth_fields_area').hide();
-                $('#role_id').prop('required', false);
-                $('#username').prop('required', false);
-                $('#password').prop('required', false);
-                $('#password_confirmation').prop('required', false);
-            }
-        }
-
-        document.onkeyup = function() {
-            var e = e || window.event; // for IE to cover IEs window event-object
-
-            if (e.ctrlKey && e.which == 13) {
-
-                $('#save_btn').click();
-                return false;
-            }
-        }
-
-        $('select').on('select2:close', function(e) {
-
-            var nextId = $(this).data('next');
-
-            setTimeout(function() {
-
-                $('#' + nextId).focus();
-            }, 100);
-        });
-
-        $(document).on('change keypress click', 'select', function(e) {
-
-            var nextId = $(this).data('next');
-
-            if (e.which == 0) {
-
-                if ($(this).attr('id') == 'allow_login' && $('#allow_login').val() == 0) {
-
-                    $('#sales_commission_percent').focus().select();
-                    return;
-                }
-
-                $('#' + nextId).focus().select();
-            }
-        });
-
-        $(document).on('change keypress', 'input', function(e) {
-
-            var nextId = $(this).data('next');
-
-            if (e.which == 13) {
-
-                if (nextId == 'emp_id' && $('#emp_id').val() == undefined) {
-
-                    $('#save_btn').focus();
-                    return;
-                }
-
-                if (nextId == 'branch_id' && $('#branch_id').val() == undefined) {
-
-                    $('#allow_login').focus();
-                    return;
-                }
-
-                $('#' + nextId).focus().select();
-            }
-        });
-
-        $(document).on('change', '#role_id', function(e) {
-            var hasAccassToAllArea = $(this).find(':selected').data('has_accass_to_all_area');
-            $('#branch_id').prop('required', true);
-            $('#roleMsg').html('');
-            if (hasAccassToAllArea == 1) {
-
-                $('#roleMsg').html('Selected Role Has Access to All Shop/Place');
-                $('#branch_id').prop('required', false);
-            }
-        })
-    </script>
-
-    <script>
-        $(document).on('click', '#addShift', function(e) {
-            e.preventDefault();
-
-            var url = "{{ route('hrm.shifts.create') }}";
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('#shiftAddOrEditModal').html(data);
-                    $('#shiftAddOrEditModal').modal('show');
-
-                    setTimeout(function() {
-
-                        $('#shift_name').focus();
-                    }, 500);
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error') }}");
-                        return;
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-                }
-            });
-        });
-
-        $(document).on('click', '#addDepartment', function(e) {
-            e.preventDefault();
-
-            var url = "{{ route('hrm.departments.create') }}";
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('#departmentAddOrEditModal').html(data);
-                    $('#departmentAddOrEditModal').modal('show');
-
-                    setTimeout(function() {
-
-                        $('#department_name').focus();
-                    }, 500);
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error') }}");
-                        return;
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-                }
-            });
-        });
-
-        $(document).on('click', '#addDesignation', function(e) {
-            e.preventDefault();
-
-            var url = "{{ route('hrm.designations.create') }}";
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('#designationAddOrEditModal').html(data);
-                    $('#designationAddOrEditModal').modal('show');
-
-                    setTimeout(function() {
-
-                        $('#designation_name').focus();
-                    }, 500);
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error') }}");
-                        return;
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-                }
-            });
-        });
-    </script>
+    @include('users.partials.js_partials.user_add_js')
 @endpush

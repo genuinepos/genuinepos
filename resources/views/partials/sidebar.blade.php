@@ -2169,7 +2169,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2178,7 +2178,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Default Server') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
 
                                     <div class="sub-menu-col">
                                         <a href="{{ route('menual.index') }}" class="switch-bar-wrap">
@@ -2191,7 +2191,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2200,7 +2200,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Email Permission') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -2245,7 +2245,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2254,7 +2254,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Default Provider') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
 
                                     <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
@@ -2267,7 +2267,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2276,7 +2276,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Sms Permission') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

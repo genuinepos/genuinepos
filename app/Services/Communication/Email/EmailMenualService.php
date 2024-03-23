@@ -1,77 +1,62 @@
 <?php
 
 namespace App\Services\Communication\Email;
-
-
 use App\Models\Communication\Email\EmailBody;
-
+use App\Models\Communication\Email\EmailServer;
+use App\Jobs\SendManualEmailJob;
+use App\Models\Contacts\Contact;
+use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
-
-// Import Log facade for debugging
 
 class EmailMenualService
 {
     public function index()
     {
-        return view('communication.email.menual.index');
-
+        $body = EmailBody::where('is_important',1)->orderBy('id','DESC')->get();
+        $sender = EmailServer::select('id','name')->get();
+        return view('communication.email.menual.index',compact('body','sender'));
     }
 
     public function store($data)
     {
-        $validatedData = validator($data, [
-            'format' => 'required',
-            'subject' => 'required',
-            'body' => 'required',
-            'is_important' => 'required',
-        ])->validate();
 
-        $emailBody = EmailBody::create($validatedData);
+        $emailsSent = false;
 
-        if ($emailBody) {
-            return ['status' => 'success', 'message' => 'Email body added successfully'];
-        } else {
-            return ['status' => 'error', 'message' => 'Failed to add email body'];
+        if (!empty($data->mail)) {
+                foreach ($data->mail as $email) {
+                    SendManualEmailJob::dispatch($email, $data->subject, $data->message, $data->cc, $data->bcc);
+                    $emailsSent = true;
+                }
         }
+
+        if ($emailsSent) {
+                return ['status' => 'success', 'message' => 'Email(s) sent successfully'];
+            } else {
+                return ['status' => 'error', 'message' => 'No recipients provided'];
+        }
+    
     }
+
+    public function show($id){
+      $data = EmailBody::findOrFail($id);
+      return $data;
+    } 
 
     public function edit($id)
     {
-        $data = EmailBody::findOrFail($id);
-        return $data;
-    }
-
-    public function update($id, $data)
-    {
-        $validatedData = validator($data, [
-            'format' => 'required',
-            'subject' => 'required',
-            'body' => 'required',
-            'is_important' => 'required',
-        ])->validate();
-
-        $emailBody = EmailBody::findOrFail($id);
-
-        $updated = $emailBody->update($validatedData);
-
-        if ($updated) {
-            return ['status' => 'success', 'message' => 'Email body updated successfully'];
-        } else {
-            return ['status' => 'error', 'message' => 'Failed to update email body'];
-        }
-    }
-
-    public function destroy($id)
-    {
-        $emailBody = EmailBody::findOrFail($id);
-
-        $deleted = $emailBody->delete();
-
-        if ($deleted) {
-            return ['status' => 'success', 'message' => 'Email body deleted successfully'];
-        } else {
-            return ['status' => 'error', 'message' => 'Failed to delete email body'];
-        }
+          $emailRecipients = [];
+          if ($id == 1) {
+                $userRecipients = User::whereNotNull('email')->select('email')->get()->toArray();
+                $contactRecipients = Contact::whereNotNull('email')->select('email')->get()->toArray();
+                $emailRecipients = array_merge($userRecipients, $contactRecipients);
+            } elseif ($id == 2) {
+                $emailRecipients = Contact::whereNotNull('email')->where('type', 1)->select('email')->get();
+            } elseif ($id == 3) {
+                $emailRecipients = Contact::whereNotNull('email')->where('type', 2)->select('email')->get();
+            } elseif ($id == 4) {
+                $emailRecipients = User::whereNotNull('email')->select('email')->get();
+            }
+         return $emailRecipients;
     }
 
 }

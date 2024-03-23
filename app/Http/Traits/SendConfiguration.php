@@ -8,6 +8,11 @@ trait SendConfiguration{
     function sendSms($mobile, $message)
     {
         $sever = SmsServer::where('status', 1)->first();
+
+        if (!isset($sever)) {
+            $SmssSent = false;
+            return ['status' => 'error', 'message' => 'Sms Server not active'];
+        }
       
         // $url = "https://msg.elitbuzz-bd.com/smsapi";
         // $data = [

@@ -8,11 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Http\Traits\SendConfiguration;
 use Illuminate\Support\Facades\Mail;
 
 class SendSmsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, SendConfiguration;
 
     public $recipient;
     public $message;
@@ -27,11 +28,7 @@ class SendSmsJob implements ShouldQueue
     public function handle()
     {
 
+       return  $this->sendSms($this->recipient, $this->message);
 
-        return $this->recipient;
-
-        
-        // Mail::to($this->recipient)
-        //     ->send(new TestEmail($this->message));
     }
 }

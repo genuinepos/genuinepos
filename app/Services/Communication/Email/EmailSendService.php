@@ -2,7 +2,7 @@
 
 namespace App\Services\Communication\Email;
 
-use App\Jobs\SendEmailJob;
+use App\Jobs\Communication\Email\SendEmailJob;
 use App\Models\Communication\Email\SendEmail;
 use App\Models\Communication\Email\EmailServer;
 use App\Models\Contacts\Contact;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Communication\Email;
 
 use App\Events\EmailConfiguration;
 use Illuminate\Bus\Queueable;

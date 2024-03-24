@@ -1,9 +1,10 @@
 <?php 
 
-namespace App\Http\Traits;
+namespace App\Http\Traits\Communication\Sms;
+
 use App\Models\Communication\Sms\SmsServer;
 
-trait SendConfiguration{
+trait SmsConfiguration{
 
     function sendSms($mobile, $message)
     {

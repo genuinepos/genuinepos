@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Communication\Email;
 
 use Illuminate\Bus\Queueable;
-use App\Events\EmailConfiguration;
+// use App\Events\EmailConfiguration;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Http\Traits\Communication\Email\MenualEmailConfiguration;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Event;
+// use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
 class SendManualEmailJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, MenualEmailConfiguration;
 
     public $recipient;
 
@@ -39,7 +40,7 @@ class SendManualEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Event::dispatch(new EmailConfiguration());
+        // Event::dispatch(new EmailConfiguration());
         $data["email"] = $this->recipient;
         $data["subject"] = $this->subject;
         $data["body"] = $this->message;

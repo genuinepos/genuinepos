@@ -4,15 +4,15 @@ namespace App\Services\Communication\Sms;
 
 use App\Models\Communication\Sms\SendSms;
 use App\Models\Communication\Sms\SmsServer;
-use App\Http\Traits\SendConfiguration;
-use App\Jobs\SendSmsJob;
+use App\Http\Traits\Communication\Sms\SmsConfiguration;
+use App\Jobs\Communication\Sms\SendSmsJob;
 use App\Models\Contacts\Contact;
 use App\Models\User;
 
 class SmsSendService
 {
 
-    use SendConfiguration;
+    use SmsConfiguration;
 
     public function index($request)
     {

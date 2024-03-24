@@ -72,7 +72,7 @@
       </div>
 
        <div class="col-md-7 card mb-3">
-       <strong> Manual Mail </strong>
+       <strong> Manual Mail</strong>
                 <input type="hidden" name="id" id="edit_input" value="">
                 <div class="col-md-12 row">
                     <div class="col-md-6">
@@ -81,7 +81,7 @@
                         <select class="form-control" name="sender_id">
                            <option value="">Select Sender</option>
                             @foreach($sender as $senders)
-                              <option value="{{$senders->id}}">{{$senders->name}}</option>
+                              <option value="{{$senders->id}}">{{$senders->host}} - {{$senders->name}}</option>
                             @endforeach 
                         </select>
                     </div>
@@ -103,7 +103,7 @@
                         <div class="form-group">
                             <label>To</label>
                               <div id="emailContainer">
-                                <input type="text" name="mail[]" class="form-control add_input" placeholder="Ex. demo@email.com" required>
+                                <input type="text" name="mail[]" class="form-control add_input" placeholder="Ex. demo@email.com">
                                 <span class="error error_to"></span>
                             </div>
                         </div>

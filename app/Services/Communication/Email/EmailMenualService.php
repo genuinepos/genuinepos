@@ -3,28 +3,43 @@
 namespace App\Services\Communication\Email;
 use App\Models\Communication\Email\EmailBody;
 use App\Models\Communication\Email\EmailServer;
-use App\Jobs\SendManualEmailJob;
+use App\Jobs\Communication\Email\SendManualEmailJob;
+use App\Http\Traits\Communication\Email\MenualEmailConfiguration;
 use App\Models\Contacts\Contact;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 
 class EmailMenualService
 {
+
+    use MenualEmailConfiguration;
+
     public function index()
     {
         $body = EmailBody::where('is_important',1)->orderBy('id','DESC')->get();
-        $sender = EmailServer::select('id','name')->get();
+        $sender = EmailServer::select('id','host','name')->get();
         return view('communication.email.menual.index',compact('body','sender'));
     }
 
-    public function store($data)
+    public function store($request)
     {
+         $request->validate([
+            'sender_id' => 'required',
+            'mail.*' => 'required', 
+            'subject' => 'required',
+            'message' => 'required',
+            'cc' => 'required',
+            'bcc' => 'required',
+        ]);
+
+        $this->menualConfiguration($request->sender_id);
 
         $emailsSent = false;
 
-        if (!empty($data->mail)) {
-                foreach ($data->mail as $email) {
-                    SendManualEmailJob::dispatch($email, $data->subject, $data->message, $data->cc, $data->bcc);
+        if (!empty($request->mail)) {
+                foreach ($request->mail as $email) {
+                    SendManualEmailJob::dispatch($email, $request->subject, $request->message, $request->cc, $request->bcc);
                     $emailsSent = true;
                 }
         }

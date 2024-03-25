@@ -3,6 +3,7 @@
 namespace App\Services\Advertisement;
 
 use App\Models\Advertisement\Advertisements;
+use App\Models\Advertisement\AdvertiseAttachment;
 
 use Yajra\DataTables\Facades\DataTables;
 
@@ -43,9 +44,33 @@ class AdvertisementService {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($request)
     {
-        //
+
+        // $request->validate([
+        //     'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048' 
+        // ]);
+
+        $advertisement = Advertisements::create([
+            'content_type'=>$request['content_type'],
+            'title'=>$request['title'],
+            'status'=>$request['status'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $key=> $image) {
+                $imageName = $image->getClientOriginalName(); 
+                $image->move(public_path('slider/image'), $imageName);
+                $data = [
+                    'advertisement_id'=>$advertisement->id,
+                    'content_title'=>$request['content_title'][$key],
+                    'caption'=>$request['caption'][$key],
+                    'image'=>$imageName,
+                ];
+                AdvertiseAttachment::create($data);
+            }
+        }
+
     }
 
     /**

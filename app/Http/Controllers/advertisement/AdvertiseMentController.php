@@ -35,7 +35,7 @@ class AdvertiseMentController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->advertisementService->store($request->all());
+        $response = $this->advertisementService->store($request);
 
         return response()->json($response);
     }

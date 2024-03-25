@@ -20,23 +20,34 @@
         </div>
     </div>
     <div class="p-3 card mb-3">
-         <form id="add_data" class="" method="post" action="">
+         <form id="add_data" class="" method="post" action="{{route('advertise.store')}}" enctype="multipart/form-data">
                 @csrf
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>{{ __('Advertisement Title') }}</label>
-                        <input type="text" name="title" class="form-control" autocomplete="off" placeholder="Advertisement Title">
+                        <input type="text" name="title" class="form-control" autocomplete="off" placeholder="Advertisement Title" required>
                     </div>
                 </div>
 
-               <div class="col-md-6">
+               <div class="col-md-4">
                     <div class="form-group">
                         <label>{{ __('Select Type') }}</label>
-                        <select class="form-control" name="content_type" id="select_type">
+                        <select class="form-control" name="content_type" id="select_type" required>
                             <option value="">Select</option>
                             <option value="1">Image</option>
                             <option value="2">Video</option>
+                        </select>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label>{{ __('Select Status') }}</label>
+                        <select class="form-control" name="status" id="select_type" required>
+                            <option value="">Select</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
                         </select>
                     </div>
                 </div>

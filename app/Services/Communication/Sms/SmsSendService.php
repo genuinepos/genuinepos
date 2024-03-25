@@ -57,7 +57,7 @@ class SmsSendService
 
             if (!preg_match('/\p{Bengali}/u', $message)) {
                 $smsSent = false;
-                return ['status' => 'error', 'message' => 'Content must be in Bangla to send sms'];
+                return ['status' => 'error', 'message' => 'Content must be Bangla'];
             }
 
             $sever = SmsServer::where('status', 1)->first();

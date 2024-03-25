@@ -3,7 +3,7 @@ $(document).on('submit', '#add_data', function(event) {
     event.preventDefault(); 
     var formData = $(this).serialize(); 
     $.ajax({
-        url: "{{ route('body.store') }}",
+        url: "{{ route('sms-body.store') }}",
         type: 'POST',
         data: formData,
         headers: {

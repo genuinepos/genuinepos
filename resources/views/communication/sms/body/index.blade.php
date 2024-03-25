@@ -5,13 +5,13 @@
         .top-menu-area a {border: 1px solid lightgray; padding: 1px 5px; border-radius: 3px; font-size: 11px;}
     </style>
 @endpush
-@section('title', 'Email Body Format - ')
+@section('title', 'Sms Body Format - ')
 @section('content')
 <div class="body-woaper">
     <div class="main__content">
         <div class="sec-name">
             <div class="name-head">
-                <h6>@lang('Email Body Format')</h6>
+                <h6>@lang('Sms Body Format')</h6>
             </div>
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                 <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
@@ -31,10 +31,7 @@
                     <input type="text" name="format" class="form-control" autocomplete="off" placeholder="Format Name">
                 </div>
 
-                <div class="form-group">
-                    <label>{{ __('Subject') }}</label>
-                    <input type="text" name="subject" class="form-control" autocomplete="off" placeholder="Email Subject">
-                </div>
+                <input type="hidden" name="subject" value="subject">
 
                 <div class="form-group">
                     <label>{{ __('Body') }}</label>
@@ -65,8 +62,7 @@
                     <thead>
                         <tr class="bg-navey-blue">
                             <th>{{ __('Important') }}</th>
-                            <th>{{ __('Name') }}</th>
-                            <th>{{ __('Subject') }}</th>
+                            <th>{{ __('Format Name') }}</th>
                             <th>{{ __('Action') }}</th>
                          </tr>
                        </thead>
@@ -95,9 +91,9 @@
             });
     });
    </script>
-   @include('communication.email.body.ajax_view.list_js')
-   @include('communication.email.body.ajax_view.create_js')
-   @include('communication.email.body.ajax_view.edit_js')
-   @include('communication.email.body.ajax_view.update_js')
-   @include('communication.email.body.ajax_view.delete_js')
+   @include('communication.sms.body.ajax_view.list_js')
+   @include('communication.sms.body.ajax_view.create_js')
+   @include('communication.sms.body.ajax_view.edit_js')
+   @include('communication.sms.body.ajax_view.update_js')
+   @include('communication.sms.body.ajax_view.delete_js')
 @endpush

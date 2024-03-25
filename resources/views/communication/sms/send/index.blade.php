@@ -203,22 +203,7 @@
 @endsection
 
 @push('scripts')
- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
   <script>
-        window.editors = {};
-        document.querySelectorAll('.ckEditor').forEach((node, index) => {
-            ClassicEditor
-              .create(node, {})
-                .then(newEditor => {
-                   newEditor.editing.view.change(writer => {
-                     var height = node.getAttribute('data-height');
-                   writer.setStyle('min-height', height + 'px', newEditor.editing.view.document
-                    .getRoot());
-             });
-                window.editors[index] = newEditor
-            });
-        });
-
         $("#addMoreButton").click(function() {
         var emailField = '<div class="input-group mb-2">' +
                             '<input required="" type="number" name="phone[]" class="form-control add_input" data-name="To" placeholder="Phone">' +

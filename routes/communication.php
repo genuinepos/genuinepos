@@ -1,10 +1,10 @@
 <?php
 use Illuminate\Support\Facades\Event;
-use App\Events\EmailNotified;
 use App\Http\Controllers\communication\email\EmailBodyController;
 use App\Http\Controllers\communication\email\EmailServerController;
 use App\Http\Controllers\communication\email\SendEmailController;
 use App\Http\Controllers\communication\email\MenualEmailController;
+use App\Http\Controllers\communication\sms\MenualSmsController;
 use App\Http\Controllers\communication\sms\SmsBodyController;
 use App\Http\Controllers\communication\sms\SmsServerController;
 use App\Http\Controllers\communication\sms\SendSmsController;
@@ -30,6 +30,7 @@ Route::group(['prefix' => 'communication'], function () {
         Route::get('sms-restore/{id}', [SendSmsController::class, 'restoreSms'])->name('restore_sms');
         Route::delete('/sms/delete/multiple', [SendSmsController::class, 'deleteSmsMultiple'])->name('delete_sms_multiple');
         Route::delete('/sms/delete/permanent', [SendSmsController::class, 'deleteSmsPermanent'])->name('delete_sms_permanent');
+        Route::resource('menual-sms', MenualSmsController::class);
     });
 
 });

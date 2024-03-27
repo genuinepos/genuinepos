@@ -27,7 +27,7 @@ class AdvertiseMentController extends Controller
      */
     public function create()
     {
-          return $this->advertisementService->create();
+        return $this->advertisementService->create();
     }
 
     /**
@@ -45,7 +45,14 @@ class AdvertiseMentController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $data = $this->advertisementService->show($id);
+        if($data[0]->image){
+          return view('advertisement.show_image',compact('data'));
+        }else{
+          return view('advertisement.show_video',compact('data'));
+        }
+    
     }
 
     /**
@@ -54,7 +61,7 @@ class AdvertiseMentController extends Controller
     public function edit(string $id)
     {
         $data = $this->advertisementService->edit($id);
-        return response()->json($data);
+        return view('advertisement.edit',compact('data'));
     }
 
     /**

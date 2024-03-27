@@ -10,4 +10,8 @@ class Advertisements extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function attachments(){
+        return $this->hasMany(AdvertiseAttachment::class,'advertisement_id','id');
+    }
 }

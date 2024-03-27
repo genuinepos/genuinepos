@@ -2312,6 +2312,17 @@
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
                                         </div>
+                                        <p class="switch_text">{{ __('Slider List') }}</p>
+                                    </a>
+                                </div>
+
+                                <div class="sub-menu-col">
+                                    <a href="{{route('advertise.create')}}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </div>
+                                        </div>
                                         <p class="switch_text">{{ __('Add Slider') }}</p>
                                     </a>
                                 </div>

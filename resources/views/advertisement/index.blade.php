@@ -1,113 +1,48 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .dropify-wrapper { height: 100px!important;}
-        .base_unit_name {font-size: 10px;}
+        .top-menu-area ul li {display: inline-block; margin-right: 3px;}
+        .top-menu-area a {border: 1px solid lightgray; padding: 1px 5px; border-radius: 3px; font-size: 11px;}
     </style>
-    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
-@section('title', 'Advertisement - ')
+@section('title', ' - Advertisement List ')
 @section('content')
 <div class="body-woaper">
     <div class="main__content">
         <div class="sec-name">
             <div class="name-head">
-                <h6>@lang('Advertisement')</h6>
+                <h6>@lang('Advertisement List')</h6>
             </div>
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                 <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
             </a>
         </div>
     </div>
-    <div class="p-3 card mb-3">
-         <form id="add_data" class="" method="post" action="{{route('advertise.store')}}" enctype="multipart/form-data">
-                @csrf
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>{{ __('Advertisement Title') }}</label>
-                        <input type="text" name="title" class="form-control" autocomplete="off" placeholder="Advertisement Title" required>
-                    </div>
+    <div class="p-3">
+       <div class="row">
+     <div class="col-md-12 card mb-3">
+         <div class="panel-body card">
+              <div class="table-responsive" id="data_list">
+                 <table class="display table-hover data_tbl data__table">
+                    <thead>
+                        <tr class="bg-navey-blue">
+                            <th>{{ __('Type') }}</th>
+                            <th>{{ __('Title') }}</th>
+                            <th>{{ __('Attachment') }}</th>
+                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Action') }}</th>
+                         </tr>
+                       </thead>
+                       <tbody></tbody>
+                    </table> 
                 </div>
-
-               <div class="col-md-4">
-                    <div class="form-group">
-                        <label>{{ __('Select Type') }}</label>
-                        <select class="form-control" name="content_type" id="select_type" required>
-                            <option value="">Select</option>
-                            <option value="1">Image</option>
-                            <option value="2">Video</option>
-                        </select>
-                    </div>
-                </div>
-
-                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label>{{ __('Select Status') }}</label>
-                        <select class="form-control" name="status" id="select_type" required>
-                            <option value="">Select</option>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- image div start -->
-                    <div id="titleForm" style="display: none;">
-                    <div class="row">
-                        <div class="col-md-4">
-                        <div class="form-group">
-                            <label>{{ __('Images') }}</label>
-                            <input type="file" name="image[]" class="form-control dropify" id="photo" accept="" data-allowed-file-extensions="png jpeg jpg gif">
-                        </div>
-                        </div>
-                        <div class="col-md-4">
-                        <div class="form-group">
-                            <label>{{ __('Slider Title') }}</label>
-                            <input type="text" name="content_title[]" class="form-control mt-2" placeholder="Enter Slider Title">
-                        </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                            <label>{{ __('Slider Caption') }}</label>
-                            <input type="text" name="caption[]" class="form-control mt-2" placeholder="Enter Slider Caption">
-                        </div>
-                        </div>
-                    </div>
-                    <button type="button" id="addImage" class="btn btn-primary mt-2 btn-sm">{{ __('Add More') }}</button>
-                </div>
-                <br/>  <br/>  <br/>
-                <div id="imageUploads"></div>
-               <!-- image div end -->
-
-
-                <!-- url div start -->
-                <div id="urlForm" style="display: none; margin-top:3px;">
-                    <div class="row">
-                        <div class="col-md-12">
-                             <div id="urlUploads">
-                              <div class="form-group">
-                                 <input type="text" name="url[]" class="form-control" autocomplete="off" placeholder="URL">
-                               </div>  
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" id="addUrl" class="btn btn-primary mt-2 btn-sm">{{ __('Add More') }}</button>
-                </div>
-               <!-- url div end -->
-
-               
-                <div class="form-group mt-3">
-                    <button type="submit" style="margin:-1px 10px"  class="btn btn-sm btn-success float-end mr-2">Save</button>
-                    <button style="margin:-1px 10px" type="reset" id="add" class="btn btn-sm  btn-danger float-end">Reset</button>
-                </div>
-                <br>
-          </div>
-         </form>
+           </div>
+       </div>
     </div>
+</div> 
+
 @endsection
 
 @push('scripts')
-   <script type="text/javascript" src="https://jeremyfagis.github.io/dropify/dist/js/dropify.min.js"></script>
    @include('advertisement.ajax_view.list_js')
 @endpush

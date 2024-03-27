@@ -78,14 +78,22 @@
                 <div class="form-col-10">
                     <div class="form-row">
                         <div class="form-col-5">
+                            <label for="username">{{ __('Username') }} <span class="text-danger">*</span></label>
+                            <input required type="text" name="username" id="username" class="form-control" placeholder="{{ __('Username') }}" autocomplete="off" />
+                            <span class="text-danger">{{ $errors->first('username') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row mt-2">
+                        <div class="form-col-5">
                             <label for="email-address">{{ __('Password') }} <span class="text-danger">*</span></label>
-                            <input required type="text" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off" />
+                            <input required type="password" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off" />
                             <span class="text-danger">{{ $errors->first('password') }}</span>
                         </div>
 
                         <div class="form-col-5">
                             <label for="email-address">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
-                            <input required type="text" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" autocomplete="off" />
+                            <input required type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" autocomplete="off" />
                         </div>
                     </div>
                 </div>
@@ -96,7 +104,7 @@
     <div class="col-xl-4 col-lg-5 col-md-6">
         <div class="payment-method">
             <div class="cart-total-panel">
-                <h3 class="title">Cart Total</h3>
+                <h3 class="title">{{ __("Cart Total") }}</h3>
                 <div class="panel-body">
                     <div class="row gy-5">
                         <div class="col-12">

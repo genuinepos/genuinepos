@@ -125,6 +125,8 @@ class StockAdjustmentService
             'adjustmentProducts',
             'adjustmentProducts.product',
             'adjustmentProducts.variant',
+            'adjustmentProducts.stockChains',
+            'adjustmentProducts.stockChains.purchaseProduct',
         ]);
 
         if (count($deleteAdjustment->references) > 0) {

@@ -71,8 +71,8 @@
         </div>
     </div>
 
-    @if ($generalSettings['subscription']->features['hrm'] == 1)
-        <div class="row mt-1">
+    <div class="row mt-1">
+        @if ($generalSettings['subscription']->features['hrm'] == 1)
             <div class="col-lg-3 col-md-6">
                 <label class="fw-bold">{{ __('Payroll Voucher Prefix') }}</label>
                 <input type="text" name="payroll_voucher_prefix" class="form-control" id="payroll_voucher_prefix" value="{{ $generalSettings['prefix__payroll_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
@@ -82,8 +82,14 @@
                 <label class="fw-bold">{{ __('Payroll Payment Voucher Prefix') }}</label>
                 <input type="text" name="payroll_payment_voucher_prefix" class="form-control" id="payroll_payment_voucher_prefix" value="{{ $generalSettings['prefix__payroll_payment_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
             </div>
+        @endif
+
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Stock Issue Voucher Prefix') }}</label>
+            <input type="text" name="stock_issue_voucher_prefix" class="form-control" id="stock_issue_voucher_prefix" value="{{ isset($generalSettings['prefix__stock_issue_voucher_prefix']) ? $generalSettings['prefix__stock_issue_voucher_prefix'] : '' }}" placeholder="{{ __('Stock Issue Voucher Prefix') }}" />
         </div>
-    @endif
+    </div>
+
 
     <div class="form-group row mt-1">
         <div class="col-md-4">

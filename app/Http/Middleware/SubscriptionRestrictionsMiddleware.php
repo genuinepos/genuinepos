@@ -65,7 +65,7 @@ class SubscriptionRestrictionsMiddleware
             )
         ) {
 
-            Session::put('startupType', 'business_and_branch');
+            Session::put('startupType', 'business');
             return redirect()->route('setup.startup.form');
         } else if (
             $subscription->has_business == BooleanType::False->value &&

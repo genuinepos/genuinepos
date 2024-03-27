@@ -225,9 +225,7 @@
                                             <a href="{{ route('products.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span>
-                                                            <i class="fas fa-sitemap"></i>
-                                                        </span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __('Product List') }}</p>
@@ -245,7 +243,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.import_products')</p>
+                                                <p class="switch_text">{{ __("Import Products") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -255,9 +253,7 @@
                                             <a href="{{ route('expired.products.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span>
-                                                            <i class="fas fa-sitemap"></i>
-                                                        </span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __('Expired Product List') }}</p>
@@ -375,6 +371,44 @@
                             </div>
 
                             <div class="sub-menu-group">
+                                <p class="sub-menu-group-title">{{ __('Manage Stock Issues') }}</p>
+                                <div class="sub-menu-row">
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('stock.issues.create') }}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-plus-circle"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Add Stock Issue') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('stock.issues.index') }}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-list"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Stock Issue List') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('stock.issued.products.index') }}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-list"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Stock Issued Product List') }}</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __('Product Reports') }}</p>
                                 @if (auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report'))
                                     <div class="sub-menu-row">
@@ -383,7 +417,7 @@
                                                 <a href="{{ route('reports.stock.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
-                                                            <span><i class="fas fa-sitemap"></i></span>
+                                                            <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">{{ __('Stock Report') }}</p>
@@ -396,7 +430,7 @@
                                                 <a href="{{ route('reports.stock.in.out.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
-                                                            <span><i class="fas fa-cubes"></i></span>
+                                                            <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">{{ __('Stock In-Out Report') }}</p>

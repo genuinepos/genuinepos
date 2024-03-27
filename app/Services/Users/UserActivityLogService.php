@@ -141,6 +141,10 @@ class UserActivityLogService
                 'fields' => ['location_switch_log_description'],
                 'texts' => [''],
             ],
+            37 => [ // Stock Issue
+                'fields' => ['date', 'voucher_no', 'total_item', 'total_qty', 'net_total_amount'],
+                'texts' => ['Date: ', 'Voucher No: ', 'Total Item: ', 'Total Qty: ', 'Net Total Amount: '],
+            ],
         ];
     }
 

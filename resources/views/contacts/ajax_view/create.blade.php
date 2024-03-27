@@ -227,7 +227,7 @@
 
                 if (customer_account_id != undefined) {
 
-                    $('#customer_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
+                    $('#customer_account_id').append('<option data-default_balance_type="dr" data-sub_sub_group_number="6" data-pay_term="'+data.payTerm+'" data-pay_term_number="'+data.payTermNumber+'" value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
                     $('#customer_account_id').val(data.id);
 
                     var closingBalance = (data.balanceType == 'cr' ? '-' : '') + data.balance;
@@ -238,7 +238,7 @@
                     $('#' + nextId).focus().select();
                 } else if (supplier_account_id != undefined) {
 
-                    $('#supplier_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
+                    $('#supplier_account_id').append('<option data-default_balance_type="cr" data-sub_sub_group_number="10" data-pay_term="'+data.payTerm+'" data-pay_term_number="'+data.payTermNumber+'" value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
                     $('#supplier_account_id').val(data.id);
 
                     var closingBalance = (data.balanceType == 'dr' ? '-' : '') + data.balance;

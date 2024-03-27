@@ -3,70 +3,38 @@
 namespace App\Http\Controllers\StockAdjustments;
 
 use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Services\CodeGenerationService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\StockAdjustments\StockAdjustmentService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\StockAdjustments\StockAdjustmentProductService;
 use App\Http\Requests\StockAdjustments\StockAdjustmentStoreRequest;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 
 class StockAdjustmentController extends Controller
 {
-    public function __construct(
-        private StockAdjustmentService $stockAdjustmentService,
-        private StockAdjustmentProductService $stockAdjustmentProductService,
-        private PaymentMethodService $paymentMethodService,
-        private AccountService $accountService,
-        private AccountFilterService $accountFilterService,
-        private WarehouseService $warehouseService,
-        private BranchService $branchService,
-        private ProductStockService $productStockService,
-        private DayBookService $dayBookService,
-        private AccountLedgerService $accountLedgerService,
-        private ProductLedgerService $productLedgerService,
-        private AccountingVoucherService $accountingVoucherService,
-        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-        private UserActivityLogUtil $userActivityLogUtil,
-    ) {
+    public function __construct()
+    {
         $this->middleware('subscriptionRestrictions');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('stock_adjustment_all'), 403);
 
+        $indexMethodContainer = $stockAdjustmentControllerMethodContainersInterface->indexMethodContainer(request: $request);
+
         if ($request->ajax()) {
 
-            return $this->stockAdjustmentService->stockAdjustmentsTable(request: $request);
+            return $indexMethodContainer;;
         }
 
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        extract($indexMethodContainer);
 
         return view('stock_adjustments.index', compact('branches'));
     }
 
     public function show($id, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        $showMethodContainer = $stockAdjustmentControllerMethodContainersInterface->showMethodContainer(
-            id: $id,
-            stockAdjustmentService: $this->stockAdjustmentService,
-        );
+        $showMethodContainer = $stockAdjustmentControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
 
@@ -75,11 +43,7 @@ class StockAdjustmentController extends Controller
 
     public function print($id, Request $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        $printMethodContainer = $stockAdjustmentControllerMethodContainersInterface->printMethodContainer(
-            id: $id,
-            request: $request,
-            stockAdjustmentService: $this->stockAdjustmentService,
-        );
+        $printMethodContainer = $stockAdjustmentControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request);
 
         extract($printMethodContainer);
 
@@ -90,41 +54,19 @@ class StockAdjustmentController extends Controller
     {
         abort_if(!auth()->user()->can('stock_adjustment_add'), 403);
 
-        $createMethodContainer = $stockAdjustmentControllerMethodContainersInterface->createMethodContainer(
-            branchService: $this->branchService,
-            accountService: $this->accountService,
-            accountFilterService: $this->accountFilterService,
-            paymentMethodService: $this->paymentMethodService,
-            warehouseService: $this->warehouseService,
-        );
+        $createMethodContainer = $stockAdjustmentControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
 
         return view('stock_adjustments.create', compact('expenseAccounts', 'accounts', 'warehouses', 'methods', 'branchName'));
     }
 
-    public function store(
-        StockAdjustmentStoreRequest $request,
-        StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface,
-        CodeGenerationService $codeGenerator
-    ) {
+    public function store(StockAdjustmentStoreRequest $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    {
         try {
             DB::beginTransaction();
 
-            $storeMethodContainer = $stockAdjustmentControllerMethodContainersInterface->storeMethodContainer(
-                request: $request,
-                stockAdjustmentService: $this->stockAdjustmentService,
-                stockAdjustmentProductService: $this->stockAdjustmentProductService,
-                dayBookService: $this->dayBookService,
-                accountLedgerService: $this->accountLedgerService,
-                productStockService: $this->productStockService,
-                productLedgerService: $this->productLedgerService,
-                accountingVoucherService: $this->accountingVoucherService,
-                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
-                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
-                userActivityLogUtil: $this->userActivityLogUtil,
-                codeGenerator: $codeGenerator
-            );
+            $storeMethodContainer = $stockAdjustmentControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
 
             if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
@@ -149,12 +91,7 @@ class StockAdjustmentController extends Controller
         try {
             DB::beginTransaction();
 
-            $deleteMethodContainer = $stockAdjustmentControllerMethodContainersInterface->deleteMethodContainer(
-                id: $id,
-                stockAdjustmentService: $this->stockAdjustmentService,
-                productStockService: $this->productStockService,
-                userActivityLogUtil: $this->userActivityLogUtil,
-            );
+            $deleteMethodContainer = $stockAdjustmentControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
             if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
 

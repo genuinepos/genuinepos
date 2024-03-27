@@ -541,6 +541,7 @@
                         tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
                         tr += '<input type="hidden" name="sale_product_ids[]">';
                         tr += '<input type="hidden" id="current_stock" value="' + stock_quantity + '">';
+                        tr += '<input type="hidden" id="current_quantity" value="0">';
                         tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' + e_unit_name + '" id="stock_limit" value="' + data.stock + '">';
                         tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + e_warehouse_id + '">';
                         tr += '</td>';
@@ -632,7 +633,7 @@
         var tr = $(this);
         var unique_id = tr.find('#unique_id').val();
         var warehouse_id = tr.find('#warehouse_id').val();
-        var current_quantity = tr.find('#current_quantity').val();
+        var current_quantity = tr.find('#current_quantity').val() ? tr.find('#current_quantity').val() : 0;
         var current_warehouse_id = tr.find('#current_warehouse_id').val();
         var stock_location_name = tr.find('#stock_location_name').html();
         var item_name = tr.find('#item_name').val();

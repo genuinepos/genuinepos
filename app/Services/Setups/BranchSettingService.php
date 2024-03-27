@@ -23,26 +23,6 @@ class BranchSettingService
             $branchPrefix .= $str[0];
         }
 
-        // $str1 = isset($exp[0]) ? str_split($exp[0])[0] : '';
-        // $str2 = isset($exp[1]) ? str_split($exp[1])[0] : '';
-
-        // $branchNamePrefix = strtoupper($str1 . $str2);
-
-        // $addBranchSettings = new BranchSetting();
-        // $addBranchSettings->branch_id = $branchId;
-        // $addBranchSettings->invoice_prefix = $branchNamePrefix;
-        // $addBranchSettings->quotation_prefix = $branchNamePrefix . 'Q';
-        // $addBranchSettings->sales_order_prefix = $branchNamePrefix . 'SO';
-        // $addBranchSettings->sales_return_prefix = $branchNamePrefix . 'SR';
-        // $addBranchSettings->payment_voucher_prefix = $branchNamePrefix . 'PV';
-        // $addBranchSettings->receipt_voucher_prefix = $branchNamePrefix . 'RV';
-        // $addBranchSettings->purchase_invoice_prefix = $branchNamePrefix . 'PI';
-        // $addBranchSettings->purchase_order_prefix = $branchNamePrefix . 'PO';
-        // $addBranchSettings->purchase_return_prefix = $branchNamePrefix . 'PRV';
-        // $addBranchSettings->add_sale_invoice_layout_id = $defaultInvoiceLayoutId;
-        // $addBranchSettings->pos_sale_invoice_layout_id = $defaultInvoiceLayoutId;
-        // $addBranchSettings->save();
-
         $generalSettings = [
             ['key' => 'business_or_shop__account_start_date', 'value' => $request->account_start_date, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
             ['key' => 'business_or_shop__financial_year_start_month', 'value' => $request->financial_year_start_month, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
@@ -68,21 +48,8 @@ class BranchSettingService
             ['key' => 'email_settings__send_notice_via_sms', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'email_settings__customer_due_reminder_via_email', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'email_settings__customer_due_reminder_via_sms', 'value' => null, 'branch_id' => $branchId],
-            // ['id' => '39', 'key' => 'email_config__MAIL_MAILER', 'value' => null, 'branch_id' => null],
-            // ['id' => '40', 'key' => 'email_config__MAIL_HOST', 'value' => null, 'branch_id' => null],
-            // ['id' => '41', 'key' => 'email_config__MAIL_PORT', 'value' => null, 'branch_id' => null],
-            // ['id' => '42', 'key' => 'email_config__MAIL_USERNAME', 'value' => null, 'branch_id' => null],
-            // ['id' => '43', 'key' => 'email_config__MAIL_PASSWORD', 'value' => null, 'branch_id' => null],
-            // ['id' => '44', 'key' => 'email_config__MAIL_ENCRYPTION', 'value' => null, 'branch_id' => null],
-            // ['id' => '45', 'key' => 'email_config__MAIL_FROM_ADDRESS', 'value' => null, 'branch_id' => null],
-            // ['id' => '46', 'key' => 'email_config__MAIL_FROM_NAME', 'value' => null, 'branch_id' => null],
-            // ['id' => '47', 'key' => 'email_config__MAIL_ACTIVE', 'value' => null, 'branch_id' => null],
             ['key' => 'modules__manufacturing', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'modules__service', 'value' => 1, 'branch_id' => $branchId],
-            // ['id' => '53', 'key' => 'sms__SMS_URL', 'value' => null, 'branch_id' => null],
-            // ['id' => '54', 'key' => 'sms__API_KEY', 'value' => null, 'branch_id' => null],
-            // ['id' => '55', 'key' => 'sms__SENDER_ID', 'value' => null, 'branch_id' => null],
-            // ['id' => '56', 'key' => 'sms__SMS_ACTIVE', 'value' => null, 'branch_id' => null],
             ['key' => 'product__product_code_prefix', 'value' => $branchPrefix . $numberOfChildBranch, 'branch_id' => $branchId],
             ['key' => 'product__default_unit_id', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'product__is_enable_brands', 'value' => '1', 'branch_id' => $branchId],
@@ -122,6 +89,7 @@ class BranchSettingService
             ['key' => 'prefix__stock_adjustment_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'SA', 'branch_id' => $branchId],
             ['key' => 'prefix__payroll_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRL', 'branch_id' => $branchId],
             ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRLP', 'branch_id' => $branchId],
+            ['key' => 'prefix__stock_issue_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'STI', 'branch_id' => $branchId],
             ['key' => 'prefix__supplier_id', 'value' => $branchPrefix . $numberOfChildBranch . 'S', 'branch_id' => $branchId],
             ['key' => 'prefix__customer_id', 'value' => $branchPrefix . $numberOfChildBranch . 'C', 'branch_id' => $branchId],
             // ['id' => '103', 'key' => 'email_setting__MAIL_MAILER', 'value' => 'smtp', 'branch_id' => null],
@@ -246,7 +214,7 @@ class BranchSettingService
 
                 $deleteBranchSetting = GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
                 if (isset($deleteBranchSetting)) {
-                    
+
                     $deleteBranchSetting->delete();
                 }
             }

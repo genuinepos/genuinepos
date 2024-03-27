@@ -2,10 +2,11 @@
 
 namespace App\Services\Purchases;
 
+use Carbon\Carbon;
+use App\Enums\BooleanType;
 use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -70,7 +71,8 @@ class PurchaseOrderService
             $query->where('purchases.supplier_account_id', $supplierAccountId);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('purchases.branch_id', auth()->user()->branch_id);
         }

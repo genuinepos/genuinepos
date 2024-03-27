@@ -93,16 +93,16 @@ class PosSaleService
             $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'suspend_id', prefix: 'SPND', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
         }
 
-        $updateSale->invoice_id = $request->status == SaleStatus::Final->value && ! isset($updateSale->invoice_id) ? $transId : $updateSale->invoice_id;
-        $updateSale->quotation_id = ($request->status == SaleStatus::Quotation->value && ! isset($updateSale->quotation_id) ? $transId : $updateSale->quotation_id);
-        $updateSale->draft_id = $request->status == SaleStatus::Draft->value && ! isset($updateSale->draft_id) ? $transId : $updateSale->draft_id;
-        $updateSale->hold_invoice_id = $request->status == SaleStatus::Hold->value && ! isset($updateSale->hold_invoice_id) ? $transId : $updateSale->hold_invoice_id;
-        $updateSale->suspend_id = $request->status == SaleStatus::Suspended->value && ! isset($updateSale->suspend_id) ? $transId : $updateSale->suspend_id;
+        $updateSale->invoice_id = $request->status == SaleStatus::Final->value && !isset($updateSale->invoice_id) ? $transId : $updateSale->invoice_id;
+        $updateSale->quotation_id = ($request->status == SaleStatus::Quotation->value && !isset($updateSale->quotation_id) ? $transId : $updateSale->quotation_id);
+        $updateSale->draft_id = $request->status == SaleStatus::Draft->value && !isset($updateSale->draft_id) ? $transId : $updateSale->draft_id;
+        $updateSale->hold_invoice_id = $request->status == SaleStatus::Hold->value && !isset($updateSale->hold_invoice_id) ? $transId : $updateSale->hold_invoice_id;
+        $updateSale->suspend_id = $request->status == SaleStatus::Suspended->value && !isset($updateSale->suspend_id) ? $transId : $updateSale->suspend_id;
         $updateSale->customer_account_id = $request->customer_account_id;
         $updateSale->status = $request->status;
-        $updateSale->quotation_date_ts = $request->status == SaleStatus::Quotation->value && ! isset($updateSale->quotation_date_ts) ? date('Y-m-d H:i:s') : $updateSale->quotation_date_ts;
-        $updateSale->sale_date_ts = $request->status == SaleStatus::Final->value && ! isset($updateSale->sale_date_ts) ? date('Y-m-d H:i:s') : $updateSale->sale_date_ts;
-        $updateSale->draft_date_ts = $request->status == SaleStatus::Draft->value && ! isset($updateSale->draft_date_ts) ? date('Y-m-d H:i:s') : $updateSale->draft_date_ts;
+        $updateSale->quotation_date_ts = $request->status == SaleStatus::Quotation->value && !isset($updateSale->quotation_date_ts) ? date('Y-m-d H:i:s') : $updateSale->quotation_date_ts;
+        $updateSale->sale_date_ts = $request->status == SaleStatus::Final->value && !isset($updateSale->sale_date_ts) ? date('Y-m-d H:i:s') : $updateSale->sale_date_ts;
+        $updateSale->draft_date_ts = $request->status == SaleStatus::Draft->value && !isset($updateSale->draft_date_ts) ? date('Y-m-d H:i:s') : $updateSale->draft_date_ts;
         $updateSale->draft_status = $request->status == SaleStatus::Draft->value ? BooleanType::True->value : $updateSale->draft_status;
         $updateSale->quotation_status = $request->status == SaleStatus::Quotation->value ? BooleanType::True->value : $updateSale->quotation_status;
         $updateSale->total_item = $request->total_item;
@@ -124,4 +124,56 @@ class PosSaleService
 
         return $updateSale;
     }
+
+    public function printTemplateBySaleStatusForStore(object $request, object $sale, object $customerCopySaleProducts): mixed
+    {
+        $printPageSize = $request->print_page_size;
+        if ($request->status == SaleStatus::Final->value) {
+
+            $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
+            $receivedAmount = $request->received_amount;
+
+            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
+        } elseif ($request->status == SaleStatus::Draft->value) {
+
+            $draft = $sale;
+            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts', 'printPageSize'));
+        } elseif ($request->status == SaleStatus::Quotation->value) {
+
+            $quotation = $sale;
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
+        } elseif ($request->status == SaleStatus::Hold->value) {
+
+            return response()->json(['holdInvoiceMsg' => __('Invoice is hold.')]);
+        } elseif ($request->status == SaleStatus::Suspended->value) {
+
+            return response()->json(['suspendedInvoiceMsg' => __('Invoice is suspended.')]);
+        }
+    }
+
+    public function printTemplateBySaleStatusForUpdate(object $request, object $sale, object $customerCopySaleProducts): mixed
+    {
+        if ($request->status == SaleStatus::Final->value) {
+
+            $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
+            $receivedAmount = $request->received_amount;
+            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
+        } elseif ($request->status == SaleStatus::Draft->value) {
+
+            $draft = $sale;
+            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts'));
+        } elseif ($request->status == SaleStatus::Quotation->value) {
+
+            $quotation = $sale;
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts'));
+        } elseif ($request->status == SaleStatus::Hold->value) {
+
+            return response()->json(['holdInvoiceMsg' => __('Invoice is hold.')]);
+        } elseif ($request->status == SaleStatus::Suspended->value) {
+
+            return response()->json(['suspendedInvoiceMsg' => __('Invoice is suspended.')]);
+        }
+    }
+
+
 }

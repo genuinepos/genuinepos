@@ -26,6 +26,7 @@ class GuestTenantStoreRequest extends FormRequest
             'email' => 'required|email',
             'phone' => 'required|max:60',
             'currency_id' => 'required',
+            'username' => 'required|min:5|max:25',
             'password' => 'required|string|min:6|confirmed',
             // 'password' => ['required', Password::default()],
         ];

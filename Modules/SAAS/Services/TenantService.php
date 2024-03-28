@@ -130,7 +130,7 @@ class TenantService implements TenantServiceInterface
         // strtolower(str_replace(' ', '', str_replace('.', '', $tenantRequest['fullname'])));
         $admin = [
             'name' => $tenantRequest['fullname'],
-            'username' => explode('@', $tenantRequest['email'])[0],
+            'username' => isset($tenantRequest['username']) ? $tenantRequest['username'] : explode('@', $tenantRequest['email'])[0],
             'email' => $tenantRequest['email'],
             'password' => bcrypt($tenantRequest['password']),
             'role_type' => 1,

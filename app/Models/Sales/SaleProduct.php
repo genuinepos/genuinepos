@@ -5,8 +5,8 @@ namespace App\Models\Sales;
 use App\Models\BaseModel;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
+use App\Models\Products\StockChain;
 use App\Models\Products\Unit;
-use App\Models\Purchases\PurchaseSaleProductChain;
 use App\Models\Setups\Branch;
 use App\Models\Setups\Warehouse;
 
@@ -26,9 +26,9 @@ class SaleProduct extends BaseModel
         return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 
-    public function purchaseSaleProductChains()
+    public function stockChains()
     {
-        return $this->hasMany(PurchaseSaleProductChain::class, 'sale_product_id');
+        return $this->hasMany(StockChain::class, 'sale_product_id');
     }
 
     public function unit()

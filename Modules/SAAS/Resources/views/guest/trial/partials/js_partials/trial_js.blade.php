@@ -121,6 +121,12 @@
                 return;
             }
 
+             if ($('#username').val() == '') {
+
+                toastr.error("{{ __('Username is required.') }}");
+                return;
+            }
+
             if ($('#password').val() == '') {
 
                 toastr.error("{{ __('Password is required.') }}");

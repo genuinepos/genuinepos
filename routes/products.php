@@ -8,6 +8,7 @@ use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\WarrantyController;
 use App\Http\Controllers\Products\PriceGroupController;
+use App\Http\Controllers\Products\StockIssueController;
 use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\OpeningStockController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Products\ProductImportController;
 use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\QuickProductAddController;
 use App\Http\Controllers\Products\PriceGroupManageController;
+use App\Http\Controllers\Products\StockIssueProductController;
 use App\Http\Controllers\Products\Reports\StockReportController;
 use App\Http\Controllers\Products\Reports\StockInOutReportController;
 
@@ -109,6 +111,22 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         Route::controller(PriceGroupManageController::class)->prefix('manage')->group(function () {
             Route::get('index/{productId}/{type}', 'index')->name('selling.price.groups.manage.index');
             Route::post('store/or/update', 'storeOrUpdate')->name('selling.price.groups.manage.store.or.update');
+        });
+    });
+
+    Route::controller(StockIssueController::class)->prefix('stock-issues')->group(function () {
+
+        Route::get('/', 'index')->name('stock.issues.index');
+        Route::get('show/{id}', 'show')->name('stock.issues.show');
+        Route::get('print/{id}', 'print')->name('stock.issues.print');
+        Route::get('create', 'create')->name('stock.issues.create');
+        Route::post('store', 'store')->name('stock.issues.store');
+        Route::get('edit/{id}', 'edit')->name('stock.issues.edit');
+        Route::post('update/{id}', 'update')->name('stock.issues.update');
+        Route::delete('delete/{id}', 'delete')->name('stock.issues.delete');
+
+        Route::controller(StockIssueProductController::class)->prefix('stock-issued-products')->group(function () {
+            Route::get('/', 'index')->name('stock.issued.products.index');
         });
     });
 

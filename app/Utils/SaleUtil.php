@@ -522,8 +522,8 @@ class SaleUtil
         $deleteSale = Sale::with([
             'sale_payments',
             'sale_products',
-            'sale_products.purchaseSaleProductChains',
-            'sale_products.purchaseSaleProductChains.purchaseProduct',
+            'sale_products.stockChains',
+            'sale_products.stockChains.purchaseProduct',
             'sale_products.product',
             'sale_products.variant',
             'sale_products.product.comboProducts',
@@ -600,11 +600,11 @@ class SaleUtil
                     $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, $saleProduct->stock_branch_id);
                 }
 
-                foreach ($saleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
+                foreach ($saleProduct->stockChains as $stockChain) {
 
-                    if ($purchaseSaleProductChain->purchaseProduct) {
+                    if ($stockChain->purchaseProduct) {
 
-                        $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
+                        $this->purchaseUtil->adjustPurchaseLeftQty($stockChain->purchaseProduct);
                     }
                 }
             }

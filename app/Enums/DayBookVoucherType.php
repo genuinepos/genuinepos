@@ -21,4 +21,5 @@ enum DayBookVoucherType: int
     case ReceivedStock = 15;
     case Payroll = 16;
     case PayrollPayment = 17;
+    case StockIssue = 18;
 }

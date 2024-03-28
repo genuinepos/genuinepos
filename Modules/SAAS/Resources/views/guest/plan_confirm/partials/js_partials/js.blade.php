@@ -50,12 +50,13 @@
                     return;
                 }
 
-                if (res.isAvailable) {
+                if (res.isAvailable == true) {
 
                     isAvailable = true;
                     $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
-                } else {
+                } else if (res.isAvailable == false) {
 
+                    isAvailable = false;
                     $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                 }
             },
@@ -143,6 +144,18 @@
             if ($('#phone').val() == '') {
 
                 toastr.error("{{ __('Phone number is required.') }}");
+                return;
+            }
+
+            if ($('#username').val() == '') {
+
+                toastr.error("{{ __('Username is required.') }}");
+                return;
+            }
+
+            if ($('#username').val() == '') {
+
+                toastr.error("{{ __('Username is required.') }}");
                 return;
             }
 
@@ -617,8 +630,7 @@
                 // $('#successSection').removeClass('d-none');
 
                 window.location = res;
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 $('#response-message').addClass('d-none');
                 toastr.error('Something went wrong');

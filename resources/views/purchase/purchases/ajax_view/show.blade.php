@@ -1,5 +1,5 @@
 @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
     $account = $purchase?->supplier;
@@ -31,7 +31,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($dateFormat, strtotime($purchase->date)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
                                 @php
@@ -255,7 +255,7 @@
                             <div class="col-2">
                                 <select id="print_page_size" class="form-control">
                                     @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                        <option {{ $generalSettings['print_page_size__purchase_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                                        <option @selected($generalSettings['print_page_size__purchase_page_size'] == $item->value) value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>

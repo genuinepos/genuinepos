@@ -27,8 +27,8 @@
         size: a4;
         margin-top: 0.8cm;
         margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     div#footer {
@@ -167,9 +167,12 @@
             @php
                 $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
+
                     if (auth()->user()?->branch->parentBranch) {
+
                         $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
                     } else {
+
                         $ownOrParentbranchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
                     }
                 }
@@ -192,56 +195,103 @@
                 <thead>
                     <tr>
                         <th class="text-start">{{ __('Product') }}</th>
-                        <th class="text-start">{{ __('Sale') }}</th>
-                        <th class="text-start">{{ __('Sale Date') }}</th>
-                        <th class="text-start">{{ __('Shop') }}</th>
-                        <th class="text-end">{{ __('Sold/Out Qty') }}</th>
-                        <th class="text-end">{{ __('Sold Price') }}</th>
+                        <th class="text-start">{{ __('Out Date') }}</th>
+                        <th class="text-start">{{ __('Out By') }}</th>
+                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                        <th class="text-end">{{ __('Out Qty') }}</th>
+                        <th class="text-end">{{ __('Price/Cost(Inc. Tax)') }}</th>
                         <th class="text-start">{{ __('Customer') }}</th>
                         <th class="text-start">{{ __('Stock In By') }}</th>
                         <th class="text-start">{{ __('Stock In Date') }}</th>
-                        <th class="text-end">{{ __('Unit Cost') }}</th>
+                        <th class="text-end">{{ __('Unit Cost(Inc. Tax)') }}</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
                     @foreach ($stockInOuts as $row)
                         @php
                             $totalStockInQty += $row->stock_in_qty;
-                            $totalStockOutQty += $row->sold_qty;
+                            $totalStockOutQty += $row->out_qty;
                         @endphp
                         <tr>
                             <td class="text-start">
                                 @php
                                     $variant = $row->variant_name ? '/' . $row->variant_name : '';
                                 @endphp
-                                {{ Str::limit($row->name, 20, '') . $variant }}
+                                {{ Str::limit($row->product_name, 20, '') . $variant }}
                             </td>
 
-                            <td class="text-start">{{ $row->invoice_id }}</td>
+                            <td class="text-start">
+                                {{ date($dateFormat, strtotime($row->stock_out_data_ts)) }}
+                            </td>
 
                             <td class="text-start">
-                                {{ date($dateFormat, strtotime($row->date)) }}
+                                @php
+                                    $stockOutBy = null;
+                                    if ($row->sale_id) {
+
+                                        $stockOutBy = __('Sales') . ': '. $row->invoice_id;
+                                    } elseif ($row->stock_issue_id) {
+
+                                        $stockOutBy = __('Stock Issue') . ': ' . $row->stock_issue_voucher_no;
+                                    } elseif ($row->stock_adjustment_id) {
+
+                                        $stockOutBy = __('Stock Adjustment') . ': ' . $row->stock_adjustment_voucher_no;
+                                    }
+                                @endphp
+                                {{ $stockOutBy }}
                             </td>
 
                             <td class="text-start">
                                 @if ($row->branch_id)
+
                                     @if ($row->parent_branch_name)
-                                        {{ $row->parent_branch_name . '(' . $row->branch_area_name . ')' }}
+
+                                        {{ $row->parent_branch_name . '(' . $row->branch_area_name . ')-'.$row->branch_code }}
                                     @else
-                                        {{ $row->branch_name . '(' . $row->branch_area_name . ')' }}
+
+                                        {{ $row->branch_name . '(' . $row->branch_area_name . ')-'.$row->branch_code }}
                                     @endif
                                 @else
+
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             </td>
 
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($row->sold_qty) }}</td>
-
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) }}
+                                @php
+                                    $stockOutUnit = null;
+                                    if ($row->sale_id) {
+
+                                        $stockOutUnit = $row->sale_unit;
+                                    } elseif ($row->stock_issue_id) {
+
+                                        $stockOutUnit = $row->stock_issue_unit;
+                                    } elseif ($row->stock_adjustment_id) {
+
+                                        $stockOutUnit = $row->stock_adjustment_unit;
+                                    }
+                                @endphp
+                                {{ \App\Utils\Converter::format_in_bdt($row->out_qty) . '/' . $stockOutUnit }}
                             </td>
 
-                            <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer' }}</td>
+                            <td class="text-end fw-bold">
+                                @php
+                                    $stockOutUnitPriceOrCostIncTax = null;
+                                     if ($row->sale_id) {
+
+                                        $stockOutUnitPriceOrCostIncTax = \App\Utils\Converter::format_in_bdt($row->sale_unit_price_inc_tax);
+                                    } elseif ($row->stock_issue_id) {
+
+                                        $stockOutUnitPriceOrCostIncTax = \App\Utils\Converter::format_in_bdt($row->stock_issue_unit_cost_inc_tax);
+                                    } elseif ($row->stock_adjustment_id) {
+
+                                        $stockOutUnitPriceOrCostIncTax = \App\Utils\Converter::format_in_bdt($row->stock_adjustment_unit_cost_inc_tax);
+                                    }
+                                @endphp
+                                {{ $stockOutUnitPriceOrCostIncTax }}
+                            </td>
+
+                            <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'N/A' }}</td>
 
                             <td class="text-start">
                                 @if ($row->purchase_inv)
@@ -260,11 +310,37 @@
                             </td>
 
                             <td class="text-start">
-                                {{ date($dateFormat, strtotime($row->stock_in_date)) }}
+                                @php
+                                    $stockInDate = null;
+                                    if ($row->stock_in_date_ts) {
+
+                                        $stockInDate = date($dateFormat, strtotime($row->stock_in_date_ts));
+                                    } else {
+
+                                        $stockInDate = date($dateFormat, strtotime($row->product_created_at));
+                                    }
+                                @endphp
+                                {{ $stockInDate }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($row->net_unit_cost) }}
+                                @php
+                                    $stockInUnitCostIncTax = null;
+                                    if ($row->stock_in_unit_cost_inc_tax) {
+
+                                        $stockInUnitCostIncTax = \App\Utils\Converter::format_in_bdt($row->stock_in_unit_cost_inc_tax);
+                                    } else {
+
+                                        if ($row->variant_unit_cost_inc_tax) {
+
+                                            $stockInUnitCostIncTax = \App\Utils\Converter::format_in_bdt($row->variant_unit_cost_inc_tax);
+                                        } else {
+
+                                            $stockInUnitCostIncTax = \App\Utils\Converter::format_in_bdt($row->product_unit_cost_inc_tax);
+                                        }
+                                    }
+                                @endphp
+                                {{ $stockInUnitCostIncTax }}
                             </td>
                         </tr>
                     @endforeach

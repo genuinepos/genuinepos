@@ -423,6 +423,7 @@
                                                         <label for="generate_barcode">{{ __('Generate Barcode') }}</label>
                                                     </p>
                                                 </div>
+
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
@@ -447,6 +448,7 @@
                                                         <label for="product_category_delete">{{ __('Delete Category') }}</label>
                                                     </p>
                                                 </div>
+
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
@@ -471,6 +473,7 @@
                                                         <label for="product_brand_delete">{{ __('Delete Brand') }}</label>
                                                     </p>
                                                 </div>
+
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
@@ -496,6 +499,7 @@
                                                     </p>
                                                 </div>
                                             </div>
+
                                             <hr class="mt-2">
                                             <div class="row">
                                                 <div class="col-lg-3 col-sm-6">
@@ -584,6 +588,43 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="selling_price_group_delete" id="selling_price_group_delete" class="products selling_price_group_delete">
                                                         <label for="selling_price_group_delete">{{ __('Selling Price Group Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <hr class="mt-2">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input id="select_all" type="checkbox" class="products" data-target="stock_issues" autocomplete="off">
+                                                            <strong>{{ __('Stock Issues') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="stock_issues_index" id="stock_issues_index" class="stock_issues products">
+                                                        <label for="stock_issues_index">{{ __('Stock Issue List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="stock_issues_products_index" id="stock_issues_products_index" class="stock_issues products">
+                                                        <label for="stock_issues_products_index">{{ __('Stock Issued Products List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="stock_issues_add" id="stock_issues_add" class="stock_issues products">
+                                                        <label for="stock_issues_add"> {{ __('Stock Issue Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="stock_issues_edit" id="stock_issues_edit" class="stock_issues products">
+                                                        <label for="stock_issues_edit">{{ __('Stock Issue Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="stock_issues_delete" id="stock_issues_delete" class="stock_issues products">
+                                                        <label for="stock_issues_delete"> {{ __('Stock Issue Delete') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

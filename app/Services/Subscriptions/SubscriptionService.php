@@ -27,6 +27,7 @@ class SubscriptionService
         $subscription = $this->singleSubscription();
         $subscription->plan_id = $plan->id;
         $subscription->trial_start_date = null;
+        $subscription->initial_plan_start_date = Carbon::now();
         $subscription->has_due_amount = BooleanType::False->value;
         $subscription->due_repayment_date = null;
         if ($isTrialPlan == BooleanType::True->value) {

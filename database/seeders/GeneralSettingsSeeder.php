@@ -90,6 +90,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'prefix__stock_adjustment_prefix', 'value' => 'SA', 'branch_id' => null],
             ['key' => 'prefix__payroll_voucher_prefix', 'value' => 'PRL', 'branch_id' => null],
             ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => 'PRLP', 'branch_id' => null],
+            ['key' => 'prefix__stock_issue_voucher_prefix', 'value' => 'STI', 'branch_id' => null],
             ['key' => 'prefix__supplier_id', 'value' => 'S', 'branch_id' => null],
             ['key' => 'prefix__customer_id', 'value' => 'C', 'branch_id' => null, 'parent_branch_id' => null],
             // ['key' => 'email_setting__MAIL_MAILER', 'value' => 'smtp', 'branch_id' => null],

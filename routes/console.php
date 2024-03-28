@@ -11,13 +11,51 @@ use Illuminate\Database\Schema\Blueprint;
 require_once base_path('deployment/db-migrations/001.php');
 
 Artisan::command('dev:m', function () {
-    // Schema::table('users', function (Blueprint $table) {
-    //     $table->ipAddress()->nullable();
-    // });
 
-    Schema::table('sales', function (Blueprint $table) {
-        $table->renameColumn('redeem_point', 'redeemed_point');
-    });
+    $migration = DB::table('migrations')
+        ->where('migration', '2023_01_02_113358_create_purchase_sale_product_chains_table')
+        ->delete();
+});
+
+Artisan::command('sync:gs', function () {
+
+    $generalSettings = GeneralSetting::where('key', 'prefix__stock_issue_voucher_prefix')->where('branch_id', null)->first();
+
+    if (!isset($generalSettings)) {
+
+        $add = new GeneralSetting();
+        $add->key = 'prefix__stock_issue_voucher_prefix';
+        $add->value = 'STI';
+        $add->save();
+    }
+
+    $branches = Branch::with('parentBranch', 'childBranches')->get();
+    foreach ($branches as $key => $branch) {
+
+        $generalSettings = GeneralSetting::where('key', 'prefix__stock_issue_voucher_prefix')
+            ->where('branch_id', $branch->id)->first();
+
+        if (!isset($generalSettings)) {
+
+            $numberOfChildBranch = $branch?->parentBranch && count($branch?->parentBranch?->childBranches) > 0 ? count($branch->parentBranch->childBranches) : '';
+
+            $branchName = $branch?->parentBranch ? $branch?->parentBranch->name : $branch->name;
+
+            $exp = explode(' ', $branchName);
+
+            $branchPrefix = '';
+            foreach ($exp as $ex) {
+                $str = str_split($ex);
+                $branchPrefix .= $str[0];
+            }
+
+            $add = new GeneralSetting();
+            $add->key = 'prefix__stock_issue_voucher_prefix';
+            $add->value = $branchPrefix . $numberOfChildBranch . 'STI';
+            $add->branch_id = $branch->id;
+            $add->save();
+        }
+    }
 });
 
 Artisan::command('dev:init', function () {

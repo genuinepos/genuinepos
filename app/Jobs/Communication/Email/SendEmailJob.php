@@ -43,5 +43,15 @@ class SendEmailJob implements ShouldQueue
                 $message->attach($file);
             }
         });
+
+        // Delete attachments after sending email
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                $imagePath = public_path('uploads/communication/' . tenant('id') . '/email/attachment/' . $file);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+        }
     }
 }

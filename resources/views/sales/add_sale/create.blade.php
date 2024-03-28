@@ -274,20 +274,20 @@
                                                 <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="IMEI/SL No./Other Info.">
                                             </div>
 
-                                            @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                <div class="col-xl-2 col-md-6 warehouse_field">
-                                                    <label class="fw-bold">{{ __('Warehouse') }}</label>
-                                                    <select class="form-control" id="e_warehouse_id">
-                                                        <option value="">{{ __('Select Warehouse') }}</option>
+                                            <div class="col-xl-2 col-md-6 warehouse_field">
+                                                <label class="fw-bold">{{ __('Stock Location') }}</label>
+                                                <select class="form-control" id="e_warehouse_id">
+                                                    <option value="">{{ $branchName }}</option>
+                                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
                                                         @foreach ($warehouses as $w)
                                                             @php
                                                                 $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
                                                             @endphp
                                                             <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
                                                         @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
+                                                    @endif
+                                                </select>
+                                            </div>
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Subtotal') }}</label>

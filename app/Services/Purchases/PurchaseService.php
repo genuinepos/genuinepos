@@ -76,7 +76,7 @@ class PurchaseService
         //     $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id);
         // }
 
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id);
         }
@@ -274,7 +274,7 @@ class PurchaseService
             'purchaseProducts',
             'purchaseProducts.product',
             'purchaseProducts.variant',
-            'purchaseProducts.purchaseSaleChains',
+            'purchaseProducts.stockChains',
         ]);
 
         if (count($deletePurchase->references) > 0) {
@@ -284,7 +284,7 @@ class PurchaseService
 
         foreach ($deletePurchase->purchaseProducts as $purchaseProduct) {
 
-            if (count($purchaseProduct->purchaseSaleChains) > 0) {
+            if (count($purchaseProduct->stockChains) > 0) {
 
                 $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->name : '';
                 $product = $purchaseProduct->product->name . $variant;
@@ -292,20 +292,6 @@ class PurchaseService
                 return ['pass' => false, 'msg' => __('Can not delete is purchase. Mismatch between sold and purchase stock account method. Product:') . $product];
             }
         }
-
-        // foreach ($deletePurchase->purchaseProducts as $purchaseProduct) {
-
-        //     $SupplierProduct = SupplierProduct::where('supplier_id', $deletePurchase->supplier_id)
-        //         ->where('product_id', $purchaseProduct->product_id)
-        //         ->where('product_variant_id', $purchaseProduct->product_variant_id)
-        //         ->first();
-
-        //     if ($SupplierProduct) {
-
-        //         $SupplierProduct->label_qty -= $purchase_product->quantity;
-        //         $SupplierProduct->save();
-        //     }
-        // }
 
         $deletePurchase->delete();
 

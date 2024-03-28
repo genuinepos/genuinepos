@@ -30,7 +30,6 @@ class SalesHelperController extends Controller
 
     public function recentTransactionModal($initialStatus, $saleScreenType, $limit = null)
     {
-
         $sales = $this->salesHelperService->recentSales(status: $initialStatus, saleScreenType: $saleScreenType, limit: $limit);
 
         return view('sales.recent_transactions.index_modal', compact('sales', 'saleScreenType'));
@@ -45,7 +44,6 @@ class SalesHelperController extends Controller
 
     public function holdInvoicesModal($limit = null)
     {
-
         $holdInvoices = $this->salesHelperService->recentSales(status: SaleStatus::Hold->value, saleScreenType: SaleScreenType::PosSale->value, limit: $limit);
 
         if (count($holdInvoices) == 0) {
@@ -58,7 +56,6 @@ class SalesHelperController extends Controller
 
     public function suspendedModal($limit = null)
     {
-
         $suspendedInvoices = $this->salesHelperService->recentSales(status: SaleStatus::Suspended->value, saleScreenType: SaleScreenType::PosSale->value, limit: $limit);
 
         if (count($suspendedInvoices) == 0) {

@@ -161,7 +161,6 @@ class PosSaleExchangeController extends Controller
     public function exchangeConfirm(Request $request, CodeGenerationService $codeGenerator)
     {
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $request->ex_sale_id);

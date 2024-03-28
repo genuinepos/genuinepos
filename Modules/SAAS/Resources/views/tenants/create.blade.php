@@ -188,10 +188,14 @@
                     },
                     success: function(res) {
 
-                        if (res.isAvailable) {
+                        if (res.isAvailable == true) {
 
                             isAvailable = true;
                             $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
+                        }else if(res.isAvailable == false){
+
+                            isAvailable = false;
+                            $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                         }
                     },
                     error: function(err) {
@@ -211,13 +215,14 @@
 
                 if (isAvailable == false) {
 
+                    toastr.error('Doamin is not available');
                     $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                     $('#response-message').addClass('d-none');
                     return;
                 }
 
                 $('#timespan').text(0);
-                setInterval(function() {
+                var myInterval = setInterval(function() {
                     let currentValue = parseInt($('#timespan').text() || 0);
                     $('#timespan').text(currentValue + 1);
                 }, 1000);
@@ -228,14 +233,37 @@
                     data: request,
                     success: function(res) {
 
+                        $('.error').html('');
                         $('#response-message-text').addClass('text-success');
                         $('#response-message-text').text("{{ __('Successfully created! Redirecting you to the list') }}");
                         window.location = "{{ route('saas.tenants.index') }}";
                     },
                     error: function(err) {
 
+                        clearInterval(myInterval);
+                        $('.error').html('');
                         $('#response-message').addClass('d-none');
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if(err.status == 500) {
+
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                            return;
+                        } else if(err.status == 403) {
+
+                            toastr.error("{{ __('Access Denied') }}");
+                            return;
+                        }
+
                         toastr.error(err.responseJSON.message);
+
+                        $.each(err.responseJSON.errors, function(key, error) {
+
+                            $('.error_' + key + '').html(error[0]);
+                        });
                     }
                 });
             });

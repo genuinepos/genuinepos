@@ -229,7 +229,6 @@
                     var tempElement = document.createElement('div');
                     tempElement.innerHTML = data;
                     var filename = tempElement.querySelector('#title');
-                    console.log(filename.innerHTML);
                     document.title = filename.innerHTML;
 
                     setTimeout(function() {

@@ -71,13 +71,20 @@
                 <div class="form-col-10">
                     <div class="form-row">
                         <div class="form-col-5">
-                            <label for="email-address">{{ __('Password') }} <span class="text-danger">*</span></label>
-                            <input required type="text" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off"/>
+                            <label for="username">{{ __('Username') }} <span class="text-danger">*</span></label>
+                            <input required type="text" name="username" id="username" class="form-control" placeholder="{{ __('Username') }}" autocomplete="off"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row mt-4">
+                        <div class="form-col-5">
+                            <label for="password">{{ __('Password') }} <span class="text-danger">*</span></label>
+                            <input required type="password" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off"/>
                         </div>
 
                         <div class="form-col-5">
-                            <label for="email-address">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
-                            <input required type="text" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" autocomplete="off"/>
+                            <label for="password_confirmation">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
+                            <input required type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" autocomplete="off"/>
                         </div>
                     </div>
                 </div>

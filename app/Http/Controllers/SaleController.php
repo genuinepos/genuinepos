@@ -955,7 +955,7 @@ class SaleController extends Controller
             $__index++;
         }
 
-        $deleteNotFoundSaleProducts = SaleProduct::with('purchaseSaleProductChains', 'purchaseSaleProductChains.purchaseProduct')
+        $deleteNotFoundSaleProducts = SaleProduct::with('stockChains', 'stockChains.purchaseProduct')
             ->where('sale_id', $updateSale->id)
             ->where('delete_in_update', 1)->get();
 
@@ -966,7 +966,7 @@ class SaleController extends Controller
             $storedStockBranchId = $deleteNotFoundSaleProduct->stock_branch_id;
             $storedStockWarehouseId = $deleteNotFoundSaleProduct->stock_warehouse_id;
 
-            $purchaseSaleProductChains = $deleteNotFoundSaleProduct->purchaseSaleProductChains;
+            $stockChains = $deleteNotFoundSaleProduct->stockChains;
 
             $deleteNotFoundSaleProduct->delete();
 
@@ -980,9 +980,9 @@ class SaleController extends Controller
                 $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, $storedStockBranchId);
             }
 
-            foreach ($purchaseSaleProductChains as $purchaseSaleProductChain) {
+            foreach ($stockChains as $stockChain) {
 
-                $this->purchaseUtil->adjustPurchaseLeftQty($purchaseSaleProductChain->purchaseProduct);
+                $this->purchaseUtil->adjustPurchaseLeftQty($stockChain->purchaseProduct);
             }
         }
 
@@ -1008,8 +1008,8 @@ class SaleController extends Controller
             $sale = Sale::with([
                 'sale_products',
                 'sale_products.product',
-                'sale_products.purchaseSaleProductChains',
-                'sale_products.purchaseSaleProductChains.purchaseProduct',
+                'sale_products.stockChains',
+                'sale_products.stockChains.purchaseProduct',
             ])->where('id', $updateSale->id)->first();
 
             $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);

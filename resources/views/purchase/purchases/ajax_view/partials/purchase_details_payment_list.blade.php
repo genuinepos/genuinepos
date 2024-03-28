@@ -56,7 +56,7 @@
 
                         <tr>
                             <td class="fw-bold">{{ $voucherType }}</td>
-                            <td class="fw-bold">{{ date($generalSettings['business_or_shop__date_format'], strtotime($date)) }}</td>
+                            <td class="fw-bold">{{ date($dateFormat, strtotime($date)) }}</td>
                             <td class="fw-bold">{{ $reference->voucherDescription->accountingVoucher->voucher_no }}</td>
                             <td><b>{{ $method }}</b></td>
                             {{-- <td class="fw-bold">{{ $cashBankAccount?->account?->name.$accountNo.$bank }}</td> --}}
@@ -80,7 +80,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
+                        <td colspan="7" class="text-center">{{ __("No Date Found") }}</td>
                     </tr>
                 @endif
             </tbody>

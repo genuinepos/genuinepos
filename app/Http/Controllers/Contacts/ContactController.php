@@ -57,7 +57,6 @@ class ContactController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
@@ -108,7 +107,7 @@ class ContactController extends Controller
             DB::rollBack();
         }
 
-        return ['id' => $addAccount->id, 'name' => $addAccount->name, 'phone' => $addAccount->phone, 'balance' => $request->opening_balance, 'balanceType' => $request->opening_balance_type];
+        return ['id' => $addAccount->id, 'name' => $addAccount->name, 'phone' => $addAccount->phone, 'balance' => $request->opening_balance, 'balanceType' => $request->opening_balance_type, 'payTerm' => $addContact->pay_term, 'payTermNumber' => $addContact->pay_term_number];
     }
 
     public function edit($contactId, $type)

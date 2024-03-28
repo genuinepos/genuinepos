@@ -5,6 +5,7 @@ namespace App\Models\Purchases;
 use App\Models\BaseModel;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
+use App\Models\Products\StockChain;
 use App\Models\Products\Unit;
 
 class PurchaseProduct extends BaseModel
@@ -18,9 +19,9 @@ class PurchaseProduct extends BaseModel
         return $this->belongsTo(Purchase::class, 'purchase_id', 'id');
     }
 
-    public function purchaseSaleChains()
+    public function stockChains()
     {
-        return $this->hasMany(PurchaseSaleProductChain::class);
+        return $this->hasMany(StockChain::class);
     }
 
     public function variant()

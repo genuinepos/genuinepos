@@ -50,11 +50,6 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         return $query->pluck('value', 'key')->toArray();
     }
 
-    public function singleGeneralSetting(string $key = null, ?int $branchId = null): ?object
-    {
-        return GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
-    }
-
     public function generalSettingsPermission(): ?bool
     {
         if (
@@ -96,5 +91,10 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         $businessLogo->save();
 
         return true;
+    }
+
+    public function singleGeneralSetting(string $key = null, ?int $branchId = null): ?object
+    {
+        return GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
     }
 }

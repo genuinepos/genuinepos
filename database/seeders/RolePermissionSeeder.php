@@ -578,6 +578,12 @@ class RolePermissionSeeder extends Seeder
             ['id' => '397', 'name' => 'user_activities_log_index'],
             ['id' => '398', 'name' => 'user_activities_log_only_own_log'],
             ['id' => '399', 'name' => 'vat_tax_report'],
+
+            ['id' => '400', 'name' => 'stock_issues_index'],
+            ['id' => '401', 'name' => 'stock_issues_products_index'],
+            ['id' => '402', 'name' => 'stock_issues_add'],
+            ['id' => '403', 'name' => 'stock_issues_edit'],
+            ['id' => '404', 'name' => 'stock_issues_delete'],
         ];
 
         return $permissions;

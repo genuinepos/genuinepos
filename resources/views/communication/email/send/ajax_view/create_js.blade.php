@@ -13,7 +13,10 @@ $(document).on('submit', '#mail_send', function(event) {
         cache: false,
         processData: false,
         success: function(response) {
-            console.log(response);
+            if(response.status=='error'){
+                toastr.error(response.message);
+                return false;
+            }
             toastr . success(response . message);
             $('#VairantChildModal').modal('hide');
         },

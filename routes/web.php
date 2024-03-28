@@ -47,6 +47,7 @@ Route::middleware([
         Route::middleware('auth')->group(base_path('routes/today_summary.php'));
         Route::middleware('auth')->group(base_path('routes/users.php'));
         Route::middleware('auth')->group(base_path('routes/communication.php'));
+        Route::middleware('auth')->group(base_path('routes/advertisement.php'));
 
     });
 });

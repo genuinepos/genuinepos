@@ -1,77 +1,77 @@
 <?php
 
 namespace App\Services\Communication\Email;
-
-
 use App\Models\Communication\Email\EmailBody;
-
+use App\Models\Communication\Email\EmailServer;
+use App\Jobs\Communication\Email\SendManualEmailJob;
+use App\Http\Traits\Communication\Email\MenualEmailConfiguration;
+use App\Models\Contacts\Contact;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
-
-// Import Log facade for debugging
 
 class EmailMenualService
 {
+
+    use MenualEmailConfiguration;
+
     public function index()
     {
-        return view('communication.email.menual.index');
-
+        $body = EmailBody::where('is_important',1)->orderBy('id','DESC')->get();
+        $sender = EmailServer::select('id','host','name')->get();
+        return view('communication.email.menual.index',compact('body','sender'));
     }
 
-    public function store($data)
+    public function store($request)
     {
-        $validatedData = validator($data, [
-            'format' => 'required',
+         $request->validate([
+            'sender_id' => 'required',
+            'mail.*' => 'required', 
             'subject' => 'required',
-            'body' => 'required',
-            'is_important' => 'required',
-        ])->validate();
+            'message' => 'required',
+            'cc' => 'required',
+            'bcc' => 'required',
+        ]);
 
-        $emailBody = EmailBody::create($validatedData);
+        $this->menualConfiguration($request->sender_id);
 
-        if ($emailBody) {
-            return ['status' => 'success', 'message' => 'Email body added successfully'];
-        } else {
-            return ['status' => 'error', 'message' => 'Failed to add email body'];
+        $emailsSent = false;
+
+        if (!empty($request->mail)) {
+                foreach ($request->mail as $email) {
+                    SendManualEmailJob::dispatch($email, $request->subject, $request->message, $request->cc, $request->bcc);
+                    $emailsSent = true;
+                }
         }
+
+        if ($emailsSent) {
+                return ['status' => 'success', 'message' => 'Email(s) sent successfully'];
+            } else {
+                return ['status' => 'error', 'message' => 'No recipients provided'];
+        }
+    
     }
+
+    public function show($id){
+      $data = EmailBody::findOrFail($id);
+      return $data;
+    } 
 
     public function edit($id)
     {
-        $data = EmailBody::findOrFail($id);
-        return $data;
-    }
-
-    public function update($id, $data)
-    {
-        $validatedData = validator($data, [
-            'format' => 'required',
-            'subject' => 'required',
-            'body' => 'required',
-            'is_important' => 'required',
-        ])->validate();
-
-        $emailBody = EmailBody::findOrFail($id);
-
-        $updated = $emailBody->update($validatedData);
-
-        if ($updated) {
-            return ['status' => 'success', 'message' => 'Email body updated successfully'];
-        } else {
-            return ['status' => 'error', 'message' => 'Failed to update email body'];
-        }
-    }
-
-    public function destroy($id)
-    {
-        $emailBody = EmailBody::findOrFail($id);
-
-        $deleted = $emailBody->delete();
-
-        if ($deleted) {
-            return ['status' => 'success', 'message' => 'Email body deleted successfully'];
-        } else {
-            return ['status' => 'error', 'message' => 'Failed to delete email body'];
-        }
+          $emailRecipients = [];
+          if ($id == 1) {
+                $userRecipients = User::whereNotNull('email')->select('email')->get()->toArray();
+                $contactRecipients = Contact::whereNotNull('email')->select('email')->get()->toArray();
+                $emailRecipients = array_merge($userRecipients, $contactRecipients);
+            } elseif ($id == 2) {
+                $emailRecipients = Contact::whereNotNull('email')->where('type', 1)->select('email')->get();
+            } elseif ($id == 3) {
+                $emailRecipients = Contact::whereNotNull('email')->where('type', 2)->select('email')->get();
+            } elseif ($id == 4) {
+                $emailRecipients = User::whereNotNull('email')->select('email')->get();
+            }
+         return $emailRecipients;
     }
 
 }

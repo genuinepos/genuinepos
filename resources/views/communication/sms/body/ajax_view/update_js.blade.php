@@ -3,7 +3,7 @@ $(document).on('submit', '#edit_data', function(event) {
     event.preventDefault();
     var formData = $(this).serialize();
     var id = $('#edit_input').val();
-    var url = "{{ route('body.update', ':id') }}"; 
+    var url = "{{ route('sms-body.update', ':id') }}"; 
     url = url.replace(':id', id); 
     $.ajax({
         url: url,

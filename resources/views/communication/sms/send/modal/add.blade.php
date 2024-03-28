@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label><strong>Body </strong></label>
-                            <textarea class="ckEditor" name="message"></textarea>
+                             <textarea name="message" class="form-control" cols="50" rows="5"></textarea>
                         </div>
                     </div>
 

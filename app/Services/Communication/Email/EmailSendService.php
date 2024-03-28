@@ -2,8 +2,9 @@
 
 namespace App\Services\Communication\Email;
 
-use App\Jobs\SendEmailJob;
+use App\Jobs\Communication\Email\SendEmailJob;
 use App\Models\Communication\Email\SendEmail;
+use App\Models\Communication\Email\EmailServer;
 use App\Models\Contacts\Contact;
 use App\Models\User;
 
@@ -59,6 +60,12 @@ class EmailSendService
                 $emailRecipients = Contact::whereNotNull('email')->where('type', 2)->pluck('email')->toArray();
             } elseif ($group == 'user') {
                 $emailRecipients = User::whereNotNull('email')->pluck('email')->toArray();
+            }
+
+
+           $sever = EmailServer::where('status', 1)->first();
+            if (!isset($sever)) {
+                return ['status' => 'error', 'message' => 'Email Server not active'];
             }
 
             if (!empty($formEmails)) {

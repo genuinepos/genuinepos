@@ -185,6 +185,11 @@
                         <p class="title">{{ __('Advertisement') }}</p>
                     </a>
                 </li>
+
+
+
+
+
             </ul>
         </div>
     </div>
@@ -2203,7 +2208,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2212,7 +2217,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Default Server') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
 
                                     <div class="sub-menu-col">
                                         <a href="{{ route('menual.index') }}" class="switch-bar-wrap">
@@ -2225,7 +2230,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2234,7 +2239,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Email Permission') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -2279,7 +2284,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2288,10 +2293,10 @@
                                             </div>
                                             <p class="switch_text">{{ __('Default Provider') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
 
                                     <div class="sub-menu-col">
-                                        <a href="#" class="switch-bar-wrap">
+                                        <a href="{{route('menual-sms.index')}}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
@@ -2301,7 +2306,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
+                                    <!-- <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
@@ -2310,7 +2315,7 @@
                                             </div>
                                             <p class="switch_text">{{ __('Sms Permission') }}</p>
                                         </a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -2318,6 +2323,49 @@
                     </div>
                 </div>
             @endif
+
+            <div class="sub-menu_t" id="advertisement">
+                <div class="sub-menu-width">
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-md-4">
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- advertise start -->
+                    <div class="container-fluid">
+                        <div class="sub-menu-group">
+                            <p class="sub-menu-group-title">{{ __('Advertisement') }}</p>
+                            <div class="sub-menu-row">
+                                <div class="sub-menu-col">
+                                    <a href="{{route('advertise.index')}}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">{{ __('Slider List') }}</p>
+                                    </a>
+                                </div>
+
+                                <div class="sub-menu-col">
+                                    <a href="{{route('advertise.create')}}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">{{ __('Add Slider') }}</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- advertise end -->
+                </div>
+            </div>
         </div>
     </div>
 </div>

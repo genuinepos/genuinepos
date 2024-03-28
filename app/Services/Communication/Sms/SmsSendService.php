@@ -4,14 +4,15 @@ namespace App\Services\Communication\Sms;
 
 use App\Models\Communication\Sms\SendSms;
 use App\Models\Communication\Sms\SmsServer;
-use App\Http\Traits\SendConfiguration;
+use App\Http\Traits\Communication\Sms\SmsConfiguration;
+use App\Jobs\Communication\Sms\SendSmsJob;
 use App\Models\Contacts\Contact;
 use App\Models\User;
 
 class SmsSendService
 {
 
-    use SendConfiguration;
+    use SmsConfiguration;
 
     public function index($request)
     {
@@ -37,59 +38,60 @@ class SmsSendService
     public function store($request)
     {
         try {
-            $formSmss = $request->input('phone');
+            $formSms = $request->input('phone');
             $group = $request->input('group_id');
             $message = $request->input('message');
-            $SmsRecipients = [];
-            $SmssSent = false;
+            $smsRecipients = [];
+            $smsSent = false;
             if ($group == 'all') {
                 $userRecipients = User::whereNotNull('phone')->pluck('phone')->toArray();
                 $contactRecipients = Contact::whereNotNull('phone')->pluck('phone')->toArray();
-                $SmsRecipients = array_merge($userRecipients, $contactRecipients);
+                $smsRecipients = array_merge($userRecipients, $contactRecipients);
             } elseif ($group == 'customer') {
-                $SmsRecipients = Contact::whereNotNull('phone')->where('type', 1)->pluck('phone')->toArray();
+                $smsRecipients = Contact::whereNotNull('phone')->where('type', 1)->pluck('phone')->toArray();
             } elseif ($group == 'supplier') {
-                $SmsRecipients = Contact::whereNotNull('phone')->where('type', 2)->pluck('phone')->toArray();
+                $smsRecipients = Contact::whereNotNull('phone')->where('type', 2)->pluck('phone')->toArray();
             } elseif ($group == 'user') {
-                $SmsRecipients = User::whereNotNull('phone')->pluck('phone')->toArray();
+                $smsRecipients = User::whereNotNull('phone')->pluck('phone')->toArray();
             }
 
             if (!preg_match('/\p{Bengali}/u', $message)) {
-                $SmssSent = false;
-                return ['status' => 'success', 'message' => 'Content must be in Bangla'];
+                $smsSent = false;
+                return ['status' => 'error', 'message' => 'Content must be Bangla'];
             }
 
             $sever = SmsServer::where('status', 1)->first();
             if (!isset($sever)) {
-                $SmssSent = false;
-                return ['status' => 'success', 'message' => 'Sms Server not active'];
+                $smsSent = false;
+                return ['status' => 'error', 'message' => 'Sms Server not active'];
             }
 
-            if (!empty($formSmss)) {
-                foreach ($formSmss as $phone) {
+            if (!empty($formSms)) {
+                $smsSent = true;
+                foreach ($formSms as $phone) {
                     SendSms::create([
                         'phone' => $phone,
                         'message' => $message,
                         'status' => 1,
                     ]);
-                    $response = $this->sendSms($phone, $message);
-                    $SmssSent = true;
+                    SendSmsJob::dispatch($phone, $message);
                 }
             }
 
-            if (!empty($SmsRecipients)) {
-                foreach ($SmsRecipients as $phone) {
+            if (!empty($smsRecipients)) {
+                $smsSent = true;
+                foreach ($smsRecipients as $phone) {
                     SendSms::create([
                         'phone' => $phone,
                         'message' => $message,
                         'status' => 1,
                     ]);
-                    $response = $this->sendSms($phone, $message);
-                    $SmssSent = true;
+                    SendSmsJob::dispatch($phone, $message);
                 }
             }
+            
 
-            if ($SmssSent) {
+            if ($smsSent) {
                 return ['status' => 'success', 'message' => 'Sms(s) sent successfully'];
             } else {
                 return ['status' => 'error', 'message' => 'No recipients provided'];

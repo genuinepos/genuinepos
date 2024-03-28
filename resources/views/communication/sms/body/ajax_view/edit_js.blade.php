@@ -16,13 +16,13 @@ function bindDataToForm(data) {
 $(document).on('click', '.edit-btn', function(){
     var id = $(this).data('id'); 
     $.ajax({
-        url: "{{ route('body.edit', ['body' => ':body']) }}".replace(':body', id),
+        url: "{{ route('sms-body.edit', ['sms_body' => ':body']) }}".replace(':body', id),
         type: "GET",
         dataType: "json",
         success: function(data){
-          bindDataToForm(data);
-          $('#add_data').attr('id', 'edit_data');
-          $('#add_data button[type="button"]').attr('id', 'update').text('Update'); 
+            bindDataToForm(data);
+            $('#add_data').attr('id', 'edit_data');
+            $('#add_data button[type="button"]').attr('id', 'update').text('Update'); 
         },
         error: function (data) {
             console.log('Error:', data);

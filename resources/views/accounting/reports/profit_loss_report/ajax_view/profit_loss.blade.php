@@ -65,7 +65,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                                <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end text-success">
                                     {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalStockAdjustmentRecovered']) }}
                                 </td>
@@ -82,6 +82,13 @@
                                 <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end text-danger">
                                     ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalSaleReturn']) }})
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end"><strong>{{ __('Total Stock Issue') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                                <td class="text-end text-danger">
+                                    ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalStockIssue']) }})
                                 </td>
                             </tr>
 

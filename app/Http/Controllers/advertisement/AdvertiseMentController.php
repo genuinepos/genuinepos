@@ -11,7 +11,6 @@ class AdvertiseMentController extends Controller
 
     public function __construct(private AdvertisementService $advertisementService)
     {
-
     }
 
     /**
@@ -47,12 +46,11 @@ class AdvertiseMentController extends Controller
     {
 
         $data = $this->advertisementService->show($id);
-        if($data[0]->image){
-          return view('advertisement.show_image',compact('data'));
-        }else{
-          return view('advertisement.show_video',compact('data'));
+        if ($data[0]->image) {
+            return view('advertisement.show_image', compact('data'));
+        } else {
+            return view('advertisement.show_video', compact('data'));
         }
-    
     }
 
     /**
@@ -61,15 +59,16 @@ class AdvertiseMentController extends Controller
     public function edit(string $id)
     {
         $data = $this->advertisementService->edit($id);
-        return view('advertisement.edit',compact('data'));
+        return view('advertisement.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,$id)
     {
-        $response = $this->advertisementService->update($id, $request->all());
+
+        $response = $this->advertisementService->update($request->all(),$id);
 
         return response()->json($response);
     }
@@ -79,6 +78,5 @@ class AdvertiseMentController extends Controller
      */
     public function destroy(string $id)
     {
-       
     }
 }

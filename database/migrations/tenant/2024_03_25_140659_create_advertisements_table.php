@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('content_type');
             $table->string('title')->nullable();
+            $table->string('logo')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

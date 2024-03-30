@@ -1,58 +1,23 @@
  <script>
-     // this is for datatable
-     var productTable = $('.data_tbl').DataTable({
-         // dom: "lBfrtip",
-         "processing": true,
-         "serverSide": true,
-         aaSorting: [
-             [0, 'asc']
-         ],
-         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-         "lengthMenu": [
-             [10, 25, 50, 100, 500, 1000, -1],
-             [10, 25, 50, 100, 500, 1000, "All"]
-         ],
-         "ajax": {
-             "url": "{{ route('advertise.index') }}",
-         },
-         columns: [{
-                 data: 'content_type',
-                 name: 'content_type'
-             },
-             {
-                 data: 'title',
-                 name: 'title'
-             },
-             {
-                 data: 'attachment',
-                 name: 'attachment'
-             },
-             {
-                 data: 'status',
-                 name: 'status'
-             },
-             {
-                 data: 'action',
-                 name: 'action'
-             },
-         ],
-     });
-
-
      //this is for select type video or url
      $(document).ready(function() {
-         $("#select_type").change(function() {
+         var initialContentType = '{{ $data->content_type ?? 0 }}';
+         if (initialContentType == '1') {
+             $('#img_attach').show();
+             $('#video_attach').hide();
+         } else if (initialContentType == '2') {
+             $('#img_attach').hide();
+             $('#video_attach').show();
+         }
+
+         $('#select_type').change(function() {
              var selectType = $(this).val();
-             if (selectType == 1) {
-                 $("#titleForm").show();
-                 $("#urlForm").hide();
-                 $("#imageUploads").show();
-                 $('.url_form').hide();
-             } else {
-                 $("#titleForm").hide();
-                 $('.image_form').hide();
-                 $("#urlForm").show();
-                 $("#imageUploads").hide();
+             if (selectType == '1') {
+                 $('#img_attach').show();
+                 $('#video_attach').hide();
+             } else if (selectType == '2') {
+                 $('#img_attach').hide();
+                 $('#video_attach').show();
              }
          });
 
@@ -114,12 +79,13 @@
          $('.dropify').dropify();
      });
 
-     $(document).on('submit', '#add_data', function(event) {
+
+     $(document).on('submit', '#update_data', function(event) {
          event.preventDefault();
          var formData = new FormData($(this)[0]);
          $.ajax({
-             url: "{{ route('advertise.store') }}",
-             type: 'POST',
+             url: "{{ route('advertise.update', $data->id) }}",
+             type: 'PATCH',
              data: formData,
              headers: {
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -134,9 +100,9 @@
                      return false;
                  }
                  toastr.success(response.message);
-                 setTimeout(function() {
-                     location.reload();
-                 }, 4000);
+                 //  setTimeout(function() {
+                 //      location.reload();
+                 //  }, 4000);
              },
              error: function(xhr, status, error) {
                  var errorData = JSON.parse(xhr.responseText);

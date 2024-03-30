@@ -1,8 +1,6 @@
 <style>
     @media print {
-        table {
-            page-break-after: auto;
-        }
+        table { page-break-after: auto; }
 
         tr {
             page-break-inside: avoid;
@@ -11,7 +9,7 @@
 
         td {
             page-break-inside: avoid;
-            page-break-after: auto, font-size:9px !important;
+            page-break-after: auto, font-size: 9px !important;
         }
 
         thead {

@@ -35,4 +35,16 @@ class ShopExpireDateHistoryService
         $shopHistory->left_count = $request->shop_count;
         $shopHistory->save();
     }
+
+    public function shopExpireDateHistories(array $with = null)
+    {
+        $query = ShopExpireDateHistory::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
 }

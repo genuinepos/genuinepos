@@ -20,6 +20,7 @@ use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
 use Modules\SAAS\Http\Controllers\Guest\PlanConfirmController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
+use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');

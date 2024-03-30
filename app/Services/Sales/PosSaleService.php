@@ -44,8 +44,8 @@ class PosSaleService
         $addSale->sale_date_ts = $request->status == SaleStatus::Final->value ? date('Y-m-d H:i:s') : null;
         $addSale->quotation_date_ts = $request->status == SaleStatus::Quotation->value ? date('Y-m-d H:i:s') : null;
         $addSale->draft_date_ts = $request->status == SaleStatus::Draft->value ? date('Y-m-d H:i:s') : null;
-        $addSale->quotation_status = $request->status == SaleStatus::Quotation->value ? 1 : 0;
-        $addSale->draft_status = $request->status == SaleStatus::Draft->value ? 1 : 0;
+        $addSale->quotation_status = $request->status == SaleStatus::Quotation->value ? BooleanType::True->value : 0;
+        $addSale->draft_status = $request->status == SaleStatus::Draft->value ? BooleanType::True->value : 0;
         $addSale->total_item = $request->total_item;
         $addSale->total_qty = $request->total_qty;
         $addSale->total_sold_qty = $request->status == SaleStatus::Final->value ? $request->total_qty : 0;
@@ -71,7 +71,7 @@ class PosSaleService
     {
         foreach ($updateSale->saleProducts as $saleProduct) {
 
-            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->is_delete_in_update = BooleanType::True->value;
             $saleProduct->save();
         }
 

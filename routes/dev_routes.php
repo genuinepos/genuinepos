@@ -10,6 +10,7 @@ use Modules\SAAS\Entities\Plan;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Models\Accounts\AccountLedger;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,6 @@ use App\Enums\AccountLedgerVoucherType;
 use Illuminate\Support\Facades\Session;
 use App\Models\Subscriptions\Subscription;
 use App\Models\Accounts\AccountingVoucherDescription;
-use Illuminate\Support\Facades\File;
 
 Route::get('my-test', function () {
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
@@ -234,65 +234,23 @@ Route::get('my-test', function () {
     // File::cleanDirectory(storage_path('framework/laravel-excel'));
     // return storage_path('framework/laravel-excel');
 
-    $myArr = [
-        'name' => 'Mr. X',
-        'age' => 30,
-    ];
-
-    // return gettype($myArr);
-    // $arr = (object) $myArr;
-    // return $arr->name;
-    
-    function transactionDetails($requ)
+    function getMonths($startDate, $endDate)
     {
-        return [
-            'upgrade_plan_from_trial' => [
-                'has_business' => '',
-                'business_price_period' => '',
-                'business_price_period_count' => '',
-                'business_price' => '',
-                'adjustable_business_price' => '',
-                'business_subtotal' => '',
-                'shop_count' => '',
-                'shop_price_period' => '',
-                'shop_price_period_count' => '',
-                'shop_price' => '',
-                'adjustable_shop_price' => '',
-                'shop_subtotal' => '',
-                'net_total' => '',
-                'discount' => '',
-                'total_amount' => '',
-            ],
-            'direct_buy_plan' => [
-                'has_business' => '',
-                'business_price_period' => '',
-                'business_price_period_count' => '',
-                'business_price' => '',
-                'adjustable_business_price' => '',
-                'business_subtotal' => '',
-                'shop_count' => '',
-                'shop_price_period' => '',
-                'shop_price_period_count' => '',
-                'shop_price' => '',
-                'adjustable_shop_price' => '',
-                'shop_subtotal' => '',
-                'net_total' => '',
-                'discount' => '',
-                'total_amount' => '',
-            ],
-            'upgrade_plan_from_real_plan' => [
-                'net_total' => '',
-                'total_adjusted_amount' => '',
-                'discount' => '',
-                'total_amount' => '',
-            ],
-        ];
+        if ($startDate <= $endDate) {
+            $startDate = new \DateTime($startDate);
+            $endDate = new \DateTime($endDate);
+
+            // Calculate the difference in months
+            $interval = $startDate->diff($endDate);
+            $months = $interval->y * 12 + $interval->m;
+            return (int) $months;
+        }else {
+            return 0;
+        }
     }
 
-    return transactionDetails()['upgrade_plan_from_trial'];
+    return getMonths('2024-02-01', '2024-03-30');
 });
-
-
 
 Route::get('t-id', function () {
 });

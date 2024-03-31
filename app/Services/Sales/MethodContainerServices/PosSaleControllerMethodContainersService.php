@@ -500,7 +500,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
                 $this->productStockService->adjustBranchAllStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, branchId: $updatePosSale->branch_id);
 
-                $this->productStockService->adjustBranchStock(productId: $deletedUnusedSaleProduct->product_id, ariantId: $deletedUnusedSaleProduct->variant_id, branchId: $updatePosSale->branch_id);
+                $this->productStockService->adjustBranchStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, branchId: $updatePosSale->branch_id);
 
                 foreach ($deletedUnusedSaleProduct->stockChains as $stockChain) {
 

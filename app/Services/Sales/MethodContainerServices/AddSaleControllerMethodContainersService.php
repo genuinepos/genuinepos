@@ -456,7 +456,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
                     $this->productStockService->adjustWarehouseStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, warehouseId: $deletedUnusedSaleProduct->warehouse_id);
                 } else {
 
-                    $this->productStockService->adjustBranchStock(productId: $deletedUnusedSaleProduct->product_id, ariantId: $deletedUnusedSaleProduct->variant_id, branchId: $updateSale->branch_id);
+                    $this->productStockService->adjustBranchStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, branchId: $updateSale->branch_id);
                 }
 
                 foreach ($deletedUnusedSaleProduct->stockChains as $stockChain) {

@@ -17,17 +17,17 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        echo 'Start'.PHP_EOL;
+        // echo 'Start'.PHP_EOL;
         Artisan::call('permission:cache-reset');
         $this->truncateRolePermissionDataButKeepOldData();
         $this->createRolePermission();
         $this->syncRolesPermissions();
-        echo 'END'.PHP_EOL;
+        // echo 'END'.PHP_EOL;
     }
 
     public function truncateRolePermissionDataButKeepOldData(): void
     {
-        echo 'Truncate Start'.PHP_EOL;
+        // echo 'Truncate Start'.PHP_EOL;
         Schema::disableForeignKeyConstraints();
 
         if (Role::count() == 0) {
@@ -40,12 +40,12 @@ class RolePermissionSeeder extends Seeder
         }
 
         Schema::enableForeignKeyConstraints();
-        echo 'Truncate Completed'.PHP_EOL;
+        // echo 'Truncate Completed'.PHP_EOL;
     }
 
     public function createRolePermission(): void
     {
-        echo 'Role creation started.' . PHP_EOL;
+        // echo 'Role creation started.' . PHP_EOL;
         $roles = $this->getRolesArray();
         foreach ($roles as $role) {
 
@@ -69,14 +69,14 @@ class RolePermissionSeeder extends Seeder
                     // 'guard_name' => 'web',
                 ]);
 
-                echo 'Created: ' . $permission['name'] . PHP_EOL;
+                // echo 'Created: ' . $permission['name'] . PHP_EOL;
             }
         }
     }
 
     public function syncRolesPermissions(): void
     {
-        echo 'Sync permission' . PHP_EOL;
+        // echo 'Sync permission' . PHP_EOL;
         $roles = $this->getRolesArray();
         foreach ($roles as $role) {
 

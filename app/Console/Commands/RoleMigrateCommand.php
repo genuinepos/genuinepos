@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 class RoleMigrateCommand extends Command
 {
@@ -28,8 +29,11 @@ class RoleMigrateCommand extends Command
      */
     public function handle()
     {
-        // if (app()->runningInConsole()) {
+        Log::debug('Initial');
+        if (app()->runningInConsole()) {
+            Log::debug('Start');
             Artisan::call('db:seed --class=RolePermissionSeeder');
-        // }
+            Log::debug('END');
+        }
     }
 }

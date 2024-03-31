@@ -29,11 +29,9 @@ class RoleMigrateCommand extends Command
      */
     public function handle()
     {
-        Log::debug('Initial');
         if (app()->runningInConsole()) {
-            Log::debug('Start');
+
             Artisan::call('db:seed --class=RolePermissionSeeder');
-            Log::debug('END');
         }
     }
 }

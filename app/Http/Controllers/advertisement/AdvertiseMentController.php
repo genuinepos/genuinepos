@@ -5,6 +5,7 @@ namespace App\Http\Controllers\advertisement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Advertisement\AdvertisementService;
+use App\Models\Advertisement\Advertisements;
 
 class AdvertiseMentController extends Controller
 {
@@ -65,11 +66,9 @@ class AdvertiseMentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-
-        $response = $this->advertisementService->update($request->all(),$id);
-
+        $response = $this->advertisementService->update($request, $id);
         return response()->json($response);
     }
 
@@ -78,5 +77,7 @@ class AdvertiseMentController extends Controller
      */
     public function destroy(string $id)
     {
+        $response = $this->advertisementService->destroy($id);
+        return response()->json($response);
     }
 }

@@ -80,45 +80,77 @@
      });
 
 
-     $(document).on('submit', '#update_data', function(event) {
-         event.preventDefault();
-         var formData = new FormData($(this)[0]);
-         $.ajax({
-             url: "{{ route('advertise.update', $data->id) }}",
-             type: 'PATCH',
-             data: formData,
-             headers: {
-                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-             },
-             contentType: false,
-             cache: false,
-             processData: false,
-             success: function(response) {
-                 console.log(response);
-                 if (response.status == 'error') {
-                     toastr.error(response.message);
-                     return false;
-                 }
-                 toastr.success(response.message);
-                 //  setTimeout(function() {
-                 //      location.reload();
-                 //  }, 4000);
-             },
-             error: function(xhr, status, error) {
-                 var errorData = JSON.parse(xhr.responseText);
-                 var errorMessage = "";
-                 if (errorData.errors) {
-                     Object.keys(errorData.errors).forEach(function(key) {
-                         var errorMessages = errorData.errors[key];
-                         errorMessages.forEach(function(message) {
-                             errorMessage += message + "<br>";
+     $(document).ready(function() {
+         $('#updateForm').submit(function(e) {
+             e.preventDefault();
+             var formData = new FormData(this);
+             var url = $(this).attr('action');
+             $.ajax({
+                 url: url,
+                 method: 'POST',
+                 data: formData,
+                 contentType: false,
+                 processData: false,
+                 success: function(response) {
+                     if (response.status == 'error') {
+                         toastr.error(response.message);
+                         return false;
+                     }
+                      toastr.success(response.message);
+                      setTimeout(function() {
+                          location.reload();
+                      }, 1000);
+                     console.log(response);
+                 },
+                 error: function(xhr, status, error) {
+                     var errors = xhr.responseJSON.errors;
+                     console.log(error);
+                     if (errors) {
+                         $.each(errors, function(key, value) {
+                             toastr.error(value[0]);
+                             return false;
                          });
-                     });
-                 } else {
-                     errorMessage = errorData.message;
+                     } else {
+                         console.error(error);
+                         alert('Error updating advertisement');
+                     }
                  }
-                 toastr.error(errorMessage);
+             });
+         });
+
+
+
+
+         $('.delete-item').click(function() {
+             var itemId = $(this).data('id');
+             if (confirm('Are you sure you want to delete this item?')) {
+                 $.ajax({
+                     url: "{{ route('advertise.destroy', '__itemId') }}".replace('__itemId', itemId),
+                     type: 'DELETE',
+                     headers: {
+                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     success: function(response) {
+                         toastr.success(response.message);
+                         setTimeout(function() {
+                             location.reload();
+                         }, 1000);
+                     },
+                     error: function(xhr, status, error) {
+                         // Handle error response
+                         console.error(xhr.responseText);
+                         alert('Failed to delete the item. Please try again.');
+                     }
+                 });
              }
          });
+
+
+
+
+
+
+
+
      });
  </script>

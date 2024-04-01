@@ -2,7 +2,6 @@
 
 namespace App\Services\Communication\Sms;
 
-
 use App\Models\Communication\Sms\SmsServer;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -10,7 +9,6 @@ class SmsServerService
 {
     public function index($request)
     {
-
         $data = SmsServer::query()->orderBy('id', 'desc');
 
         if ($request->ajax()) {

@@ -2,9 +2,9 @@
 
 namespace Modules\SAAS\Services;
 
+use App\Models\User;
 use App\Enums\BooleanType;
 use Modules\SAAS\Entities\Role;
-use Modules\SAAS\Entities\User;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\SAAS\Interfaces\RoleServiceInterface;
 use Modules\SAAS\Database\Seeders\RolePermissionTableSeeder;
@@ -26,7 +26,7 @@ class RoleService implements RoleServiceInterface
 
                 if (auth()->user()->can('roles_destroy')) {
 
-                    $html .= '<a href="' . route('saas.roles.destroy', $row->id) . '" class="px-2 delete-btn btn btn-danger btn-sm text-white ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
+                    $html .= '<a href="' . route('saas.roles.delete', $row->id) . '" class="px-2 delete-btn btn btn-danger btn-sm text-white ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
                 }
 
                 $html .= '</div>';
@@ -54,9 +54,9 @@ class RoleService implements RoleServiceInterface
         $addRole->syncPermissions($updatedPermission);
     }
 
-    public function updateRole(object $request): void
+    public function updateRole(int $id, object $request): void
     {
-        $data = $request->except('_token', 'name');
+        $data = $request->except('_token', '_method', 'name');
         \array_walk($data, function (&$v, $k) {
             $v = (strtolower($v) == 'on' || $v == '1') ? BooleanType::True->value : BooleanType::False->value;
         });
@@ -64,12 +64,12 @@ class RoleService implements RoleServiceInterface
         $updatedPermission = array_keys($data);
 
         $updateRole = $this->singleRole(id: $id);
-        $updateRole->name = $request->role_name;
+        $updateRole->name = $request->name;
         $updateRole->save();
         $updateRole->syncPermissions($updatedPermission);
     }
 
-    public function singleRole(?int $id, array $with = null) : ?object
+    public function singleRole(?int $id, array $with = null): ?object
     {
         $query = Role::query();
 
@@ -81,7 +81,7 @@ class RoleService implements RoleServiceInterface
         return $query->where('id', $id)->first();
     }
 
-    public function roles(array $with = null) : object
+    public function roles(array $with = null): object
     {
         $query = Role::query();
 
@@ -93,7 +93,7 @@ class RoleService implements RoleServiceInterface
         return $query;
     }
 
-    public function deleteRole($id): array
+    public function deleteRole(int $id): array
     {
         $deleteRole = $this->singleRole(id: $id);
 
@@ -103,7 +103,7 @@ class RoleService implements RoleServiceInterface
 
             if ($associationCount > 0) {
 
-                return ['pass' => false, 'msg' => __('Role can\'t be deleted. This role is assigned to one or many user.')];
+                return ['pass' => false, 'msg' => __('Role can\'t be deleted. This role is assigned to one or many users.')];
             }
 
             $deleteRole->delete();

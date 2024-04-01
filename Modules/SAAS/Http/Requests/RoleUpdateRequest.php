@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SAAS\App\Http\Requests;
+namespace Modules\SAAS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,8 +11,9 @@ class RoleUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
-            'name' => 'required|string|unique:roles,name',
+            'name' => 'required|string|unique:roles,name,' . $id,
         ];
     }
 

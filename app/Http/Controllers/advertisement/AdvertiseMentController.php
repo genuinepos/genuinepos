@@ -45,7 +45,6 @@ class AdvertiseMentController extends Controller
      */
     public function show(string $id)
     {
-
         $data = $this->advertisementService->show($id);
         if ($data[0]->image) {
             return view('advertisement.show_image', compact('data'));

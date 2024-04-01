@@ -87,20 +87,46 @@ Route::middleware(['is_verified'])->group(function () {
 
             Route::get('/', 'index')->name('dashboard');
         });
-
-        Route::resource('tenants', TenantController::class);
     });
 
     Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile/{user}/update', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::resource('plans', PlanController::class);
     Route::get('plans/single/plan/by/{id}', [PlanController::class, 'singlePlanById'])->name('plans.single.by.id');
 
-    Route::resource('users', UserController::class);
-    Route::delete('users/{user}/trash', [UserController::class, 'trash'])->name('users.trash');
-    Route::patch('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
 
-    Route::resource('roles', RoleController::class);
+    Route::resource('tenants', TenantController::class);
+
+    Route::controller(UserController::class)->prefix('users')->group(function () {
+
+        Route::get('users', 'index')->name('users.index');
+        Route::get('create', 'create')->name('users.create');
+        Route::post('store', 'store')->name('users.store');
+        Route::get('edit/{id}', 'edit')->name('users.edit');
+        Route::post('update/{id}', 'update')->name('users.update');
+        Route::delete('delete/{id}', 'delete')->name('users.delete');
+    });
+
+    Route::controller(UserController::class)->prefix('users')->group(function () {
+
+        Route::get('/', 'index')->name('users.index');
+        Route::get('create', 'create')->name('users.create');
+        Route::post('store', 'store')->name('users.store');
+        Route::get('edit/{id}', 'edit')->name('users.edit');
+        Route::post('update/{id}', 'update')->name('users.update');
+        Route::get('delete/{id}', 'delete')->name('users.delete');
+    });
+
+    Route::controller(RoleController::class)->prefix('users')->group(function () {
+
+        Route::get('/', 'index')->name('roles.index');
+        Route::get('create', 'create')->name('roles.create');
+        Route::post('store', 'store')->name('roles.store');
+        Route::get('edit/{id}', 'edit')->name('roles.edit');
+        Route::post('update/{id}', 'update')->name('roles.update');
+        Route::get('delete/{id}', 'delete')->name('roles.delete');
+    });
 
     //Coupons Route
     Route::resource('coupons', CouponController::class);

@@ -29,10 +29,11 @@ class SubscriptionTransactionService
         $transaction->plan_id = $subscription->plan_id;
         $transaction->payment_method_name = 'Cash-On-Delivery';
         $transaction->payment_trans_id = 'N/A';
-        $transaction->net_total = $request->net_total;
-        $transaction->discount = $request->discount;
+        $transaction->net_total = isset($request->net_total) ? $request->net_total : 0;
+        $transaction->discount_percent = isset($request->discount_percent) ? $request->discount_percent : 0;
+        $transaction->discount = isset($request->discount) ? $request->discount : 0;
         $transaction->total_payable_amount = $request->total_payable;
-        $transaction->paid = $request->total_payable;
+        $transaction->paid = isset($request->total_payable) ? $request->total_payable : 0;
         $transaction->payment_status = BooleanType::True->value;
         $transaction->payment_date = Carbon::now();
 
@@ -73,12 +74,14 @@ class SubscriptionTransactionService
                 'shop_count' => $request->shop_count,
                 'shop_price_period' => $request->shop_price_period,
                 'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
-                'shop_price' => $request->plan_price,
+                'shop_price' => isset($request->plan_price) ? $request->plan_price : 0,
                 'adjustable_shop_price' => $adjustableShopPrice,
-                'shop_subtotal' => $request->shop_subtotal,
-                'net_total' => $request->net_total,
-                'discount' => $request->discount,
-                'total_amount' => $request->total_payable,
+                'shop_subtotal' => isset($request->shop_subtotal) ? $request->shop_subtotal : 0,
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
             ];
         } elseif ($detailsType == 'direct_buy_plan') {
 
@@ -106,20 +109,24 @@ class SubscriptionTransactionService
                 'shop_count' => $request->shop_count,
                 'shop_price_period' => $request->shop_price_period,
                 'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
-                'shop_price' => $request->plan_price,
+                'shop_price' => isset($request->plan_price) ? $request->plan_price : 0,
                 'adjustable_shop_price' => $adjustableShopPrice,
-                'shop_subtotal' => $request->shop_subtotal,
-                'net_total' => $request->net_total,
-                'discount' => $request->discount,
-                'total_amount' => $request->total_payable,
+                'shop_subtotal' => isset($request->shop_subtotal) ? $request->shop_subtotal : 0,
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
             ];
         } elseif ($detailsType == 'upgrade_plan_from_real_plan') {
 
             return [
-                'net_total' => $request->net_total,
-                'total_adjusted_amount' => $request->total_adjusted_amount,
-                'discount' => $request->discount,
-                'total_amount' => $request->total_payable,
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'total_adjusted_amount' => isset($request->total_adjusted_amount) ? $request->total_adjusted_amount : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
             ];
         }
     }

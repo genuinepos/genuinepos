@@ -5,6 +5,8 @@ namespace Modules\SAAS\Providers;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Modules\SAAS\Services\PlanService;
+use Modules\SAAS\Services\RoleService;
+use Modules\SAAS\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
 use Modules\SAAS\Services\CouponService;
@@ -13,6 +15,8 @@ use Modules\SAAS\Services\CurrencyService;
 use Illuminate\Console\Scheduling\Schedule;
 use Modules\SAAS\Console\RolePermissionSync;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
+use Modules\SAAS\Interfaces\RoleServiceInterface;
+use Modules\SAAS\Interfaces\UserServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
@@ -78,6 +82,8 @@ class SAASServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('plan_check', PlanCheckerMiddleware::class);
 
         $this->app->bind(TenantServiceInterface::class, TenantService::class);
+        $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(RoleServiceInterface::class, RoleService::class);
         $this->app->bind(CurrencyServiceInterface::class, CurrencyService::class);
         $this->app->bind(PlanServiceInterface::class, PlanService::class);
         $this->app->bind(CouponServiceInterface::class, CouponService::class);

@@ -22,6 +22,7 @@ class UserStoreRequest extends FormRequest
             'address' => 'nullable',
             'language' => 'required',
             'role_id' => 'required',
+            // 'password' => ['required', Password::default()],
             'password' => ['required', Password::default()],
         ];
     }
@@ -33,6 +34,6 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('users_create');
     }
 }

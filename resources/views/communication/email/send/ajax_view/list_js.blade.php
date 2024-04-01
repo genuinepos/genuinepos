@@ -21,6 +21,7 @@
                 table += '<tbody>';
                 $.each(response.data, function(index, item) {
                     var actionBtn = '';
+                    var group_name = item.group_name ? item.group_name : 'No';
                     if (item.deleted_at !== null) {
                         actionBtn = '<a href="#" class="restore-btn btn btn-success btn-sm text-white ms-2" title="Restore" data-id="' + item.id + '"><span class="fas fa-undo"></span></a>';
                     } else {
@@ -29,7 +30,7 @@
                     table += '<tr>';
                     table += '<td><input type="checkbox" class="checkbox-item" data-id="' + item.id + '"></td>';
                     table += '<td>' + item.mail + '</td>';
-                    table += '<td>' + item.group_name + '</td>';
+                    table += '<td>' + group_name + '</td>';
                     table += '<td>' + item.attachment + '</td>';
                     table += '<td>' + item.subject + '</td>';
                     table += '<td>' + formatTime(item.created_at) + '</td>';

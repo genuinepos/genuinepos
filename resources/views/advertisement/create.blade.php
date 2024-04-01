@@ -99,7 +99,7 @@
                             <div id="urlUploads">
                                 <div class="form-group">
                                     <label>{{ __('Video') }}</label>
-                                    <input type="file" name="video" class="form-control dropify" id="photo">
+                                    <input type="file" data-max-file-size="100M"  name="video" class="form-control dropify" id="photo">
                                 </div>
                             </div>
                         </div>

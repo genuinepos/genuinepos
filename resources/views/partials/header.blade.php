@@ -47,7 +47,7 @@
                                 <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
                             </p>
                         @elseif (
-                            $generalSettings['subscription']->has_due_amount == 0 &&
+                            $generalSettings['subscription']->has_due_amount == 1 &&
                             $generalSettings['subscription']->due_repayment_date
                         )
                             @php

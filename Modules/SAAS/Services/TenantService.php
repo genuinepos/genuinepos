@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Services;
 
+use App\Enums\BillingPanelUserType;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Role;
@@ -52,10 +53,6 @@ class TenantService implements TenantServiceInterface
                 'id' => $tenantRequest['domain'],
                 'name' => $tenantRequest['name'],
                 'impersonate_user' => 1,
-                'plan_id' => $tenantRequest['plan_id'],
-                // 'shop_count' => $tenantRequest['shop_count'],
-                'start_date' => Carbon::now(),
-                'expire_date' => $expireDate ? $expireDate : null,
                 'user_id' => 1,
             ]);
 
@@ -65,21 +62,21 @@ class TenantService implements TenantServiceInterface
                 if ($domain) {
 
                     // Primary/Owner user
-                    // $user = User::create([
-                    //     'name' => $tenantRequest['fullname'],
-                    //     'email' => $tenantRequest['email'],
-                    //     'password' => bcrypt($tenantRequest['password']),
-                    //     'phone' => $tenantRequest['phone'],
-                    //     'primary_tenant_id' => $tenant->id,
-                    //     'ip_address' => request()->ip(),
-                    // ]);
+                    $user = User::create([
+                        'name' => $tenantRequest['fullname'],
+                        'email' => $tenantRequest['email'],
+                        'phone' => $tenantRequest['phone'],
+                        'tenant_id' => $tenant->id,
+                        'ip_address' => request()->ip(),
+                        'user_type' => BillingPanelUserType::Subscriber->value,
+                    ]);
 
                     // $tenant->update([
                     //     'user_id' => $user->id,
                     // ]);
 
                     DB::statement('use ' . $tenant->tenancy_db_name);
-                    $this->makeSuperAdminForTenant($tenantRequest);
+                    $this->makeSuperAdminForApplication($tenantRequest);
                     // Insert settings coming from tenant creation form
                     $this->saveBusinessSettings($tenantRequest, $plan);
 
@@ -116,7 +113,7 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    private function makeSuperAdminForTenant(array $tenantRequest): int
+    private function makeSuperAdminForApplication(array $tenantRequest): int
     {
         $admin = $this->getAdmin($tenantRequest);
         $tenantAdminUser = User::create($admin);
@@ -159,6 +156,7 @@ class TenantService implements TenantServiceInterface
     protected function storeSubscription($tenantRequest, $plan)
     {
         $subscribe = new Subscription();
+        $subscribe->domain_name = $tenantRequest['domain'];
         $subscribe->user_id = 1;
         $subscribe->plan_id = $plan->id;
         $subscribe->status = BooleanType::True->value;
@@ -178,7 +176,8 @@ class TenantService implements TenantServiceInterface
 
                 $business = isset($tenantRequest['has_business']) ? 1 : 0;
                 $shopPlusBusiness = $tenantRequest['shop_count'] + $business;
-                $adjustablePrice = $tenantRequest['total_payable'] / $shopPlusBusiness;
+                $totalPayableInUsd = \Modules\SAAS\Utils\AmountInUsdIfLocationIsBd::amountInUsd($tenantRequest['total_payable']);
+                $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
 
                 $subscribe->business_adjustable_price = $adjustablePrice;
             }
@@ -215,9 +214,11 @@ class TenantService implements TenantServiceInterface
         $payment->plan_id = $subscribe->plan_id;
         $payment->payment_method_name = $tenantRequest['payment_method_name'];
         $payment->payment_trans_id = $tenantRequest['payment_trans_id'];
-        $payment->net_total = $tenantRequest['net_total'];
+        $payment->net_total = isset($tenantRequest['net_total']) ? $tenantRequest['net_total'] : 0;
+        $payment->coupon_code = isset($tenantRequest['coupon_code']) ? $tenantRequest['coupon_code'] : 0;
+        $payment->discount_percent = isset($tenantRequest['discount_percent']) ? $tenantRequest['discount_percent'] : 0;
         $payment->discount = isset($tenantRequest['discount']) ? $tenantRequest['discount'] : 0;
-        $payment->total_payable_amount = $tenantRequest['total_payable'];
+        $payment->total_payable_amount = isset($tenantRequest['total_payable']) ? $tenantRequest['total_payable'] : 0;
         $payment->paid = $tenantRequest['payment_status'] == BooleanType::True->value ? $tenantRequest['total_payable'] : 0;
         $payment->due = $tenantRequest['payment_status'] == BooleanType::False->value ? $tenantRequest['total_payable'] : 0;
         $payment->payment_status = $tenantRequest['payment_status'];
@@ -249,7 +250,8 @@ class TenantService implements TenantServiceInterface
 
         $business = isset($tenantRequest['has_business']) ? 1 : 0;
         $shopPlusBusiness = $tenantRequest['shop_count'] + $business;
-        $adjustablePrice = $tenantRequest['total_payable'] / $shopPlusBusiness;
+        $totalPayableInUsd = \Modules\SAAS\Utils\AmountInUsdIfLocationIsBd::amountInUsd($tenantRequest['total_payable']);
+        $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
 
         $shopHistory = new ShopExpireDateHistory();
         $shopHistory->shop_count = $tenantRequest['shop_count'];

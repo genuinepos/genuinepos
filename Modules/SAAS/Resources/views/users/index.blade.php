@@ -8,7 +8,10 @@
         <div class="panel-header">
             <h5>{{ __('Users') }}</h5>
             <div>
-                <a href="{{ route('saas.users.create') }}" class="btn btn-sm btn-primary">{{ __('Create User') }}</a>
+                @if (auth()->user()->can('create'))
+
+                    <a href="{{ route('saas.users.create') }}" class="btn btn-sm btn-primary">{{ __('Add User') }}</a>
+                @endif
             </div>
         </div>
         <div class="panel-body">
@@ -25,9 +28,7 @@
                                 <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

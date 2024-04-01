@@ -8,15 +8,18 @@
                             <h6>{{ __('Choose Your Plan') }}</h6>
                         </div>
                     </th>
+                    @php
+                        $planPriceCurrency = \Modules\SAAS\Utils\PlanPriceCurrencySymbol::currencySymbol();
+                    @endphp
                     @foreach ($plans as $plan)
                         <th>
                             <div class="table-top text-center">
                                 <h4>{{ $plan->name }}</h4>
-                                <h6 class="price">$<span class="amount">{{ $plan->price_per_month }} </span> <span class="type text-muted">/{{ __('Monthly') }}</span>
+                                <h6 class="price">{{ $planPriceCurrency }} <span class="amount">{{ \App\Utils\Converter::format_in_bdt(\Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->price_per_month)) }} </span> <span class="type text-muted">/{{ __('Monthly') }}</span>
 
-                                <h6 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type text-muted">/{{ __('Yearly') }}</span>
+                                <h6 class="price">{{ $planPriceCurrency }} <span class="amount">{{ \App\Utils\Converter::format_in_bdt(\Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->price_per_year)) }} </span> <span class="type text-muted">/{{ __('Yearly') }}</span>
 
-                                <h6 class="price">$<span class="amount">{{ $plan->lifetime_price }} </span> <span class="type text-muted">/{{ __('Lifetime') }}</span>
+                                <h6 class="price">{{ $planPriceCurrency }} <span class="amount">{{ \App\Utils\Converter::format_in_bdt(\Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->lifetime_price)) }} </span> <span class="type text-muted">/{{ __('Lifetime') }}</span>
 
                                 <div class="">
                                     <p class="p-0 m-0" style="font-size: 12px;line-height:1.2;">

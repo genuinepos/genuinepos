@@ -91,6 +91,11 @@
                                 </tr>
 
                                 <tr>
+                                    <th class="text-start">{{ __('Total Stock Issue') }}</th>
+                                    <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockIssue']) }}</td>
+                                </tr>
+
+                                <tr>
                                     <th class="text-start">{{ __('Total Stock Adjustment') }}</th>
                                     <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockAdjustment']) }}</td>
                                 </tr>

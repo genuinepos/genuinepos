@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Utils\ExpireDateCalculation;
+use App\Services\Setups\BranchService;
 use Illuminate\Support\Facades\Session;
 use App\Enums\SubscriptionTransactionType;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use App\Services\Subscriptions\SubscriptionService;
+use Modules\SAAS\Interfaces\CouponServiceInterface;
 use App\Services\Setups\DeleteTrialPeriodDataService;
 use App\Services\Setups\ShopExpireDateHistoryService;
 use App\Services\Subscriptions\SubscriptionMailService;
@@ -21,6 +23,8 @@ class UpgradePlanController extends Controller
 {
     public function __construct(
         private PlanServiceInterface $planServiceInterface,
+        private CouponServiceInterface $couponServiceInterface,
+        private BranchService $branchService,
         private SubscriptionService $subscriptionService,
         private SubscriptionTransactionService $subscriptionTransactionService,
         private ShopExpireDateHistoryService $shopExpireDateHistoryService,
@@ -50,6 +54,16 @@ class UpgradePlanController extends Controller
     {
         abort_if(!auth()->user()->can('billing_upgrade_plan'), 403);
 
+        $branches = null;
+        $leftBranchExpireDateHistories = null;
+        if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::False->value) {
+
+            $branches = $this->branchService->branches(with: ['parentBranch', 'shopExpireDateHistory'])
+                ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+            $leftBranchExpireDateHistories = $this->shopExpireDateHistoryService->shopExpireDateHistories()->where('left_count', '>', 0)->get();
+        }
+
         DB::statement('use ' . env('DB_DATABASE'));
         $plan = $this->planServiceInterface->singlePlanById(id: $id, with: ['currency:id,symbol']);
         DB::reconnect();
@@ -66,7 +80,7 @@ class UpgradePlanController extends Controller
             return view('setups.billing.plan_upgrade.upgrade_plan_from_trial.cart', compact('plan', 'currentSubscription', 'pricePeriod'));
         } else {
 
-            return view('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.cart', compact('plan', 'currentSubscription', 'pricePeriod'));
+            return view('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.cart', compact('plan', 'branches', 'leftBranchExpireDateHistories', 'currentSubscription', 'pricePeriod'));
         }
     }
 
@@ -107,5 +121,19 @@ class UpgradePlanController extends Controller
         $this->subscriptionMailService->sendPlanUpgradeSuccessMain(user: auth()->user());
 
         return response()->json(__('Plan upgraded successfully'));
+    }
+
+    public function checkCouponCode(Request $request)
+    {
+        DB::statement('use ' . env('DB_DATABASE'));
+        $checkCouponCode = $this->couponServiceInterface->checkCouponCode(request: $request);
+        DB::reconnect();
+        
+        if (isset($checkCouponCode['pass']) && $checkCouponCode['pass'] == false) {
+
+            return response()->json(['errorMsg' => $checkCouponCode['msg']]);
+        }
+
+        return $checkCouponCode;
     }
 }

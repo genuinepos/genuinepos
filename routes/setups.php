@@ -155,6 +155,7 @@ Route::prefix('setups')->group(function () {
         Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
 
             Route::get('/', 'index')->name('software.service.billing.upgrade.plan.index');
+            Route::get('check/coupon/code', 'checkCouponCode')->name('software.service.billing.upgrade.plan.check.coupon.code');
             Route::get('cart/{id}/{pricePeriod?}', 'cart')->name('software.service.billing.upgrade.plan.cart');
             Route::post('confirm', 'confirm')->name('software.service.billing.upgrade.plan.confirm');
         });

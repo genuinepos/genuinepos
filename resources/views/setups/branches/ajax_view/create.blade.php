@@ -492,7 +492,6 @@
 
     function getBranchCode(e) {
 
-        console.log(e);
         var parentBranchId = $(e).val();
         var url = "{{ route('branches.code', ':parentBranchId') }}";
         var route = url.replace(':parentBranchId', parentBranchId);

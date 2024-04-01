@@ -5,6 +5,7 @@ namespace App\Services\Advertisement;
 use App\Models\Advertisement\Advertisements;
 use App\Models\Advertisement\AdvertiseAttachment;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\Request;
 use App\Http\Traits\File\FileUploadTrait;
 
 class AdvertisementService
@@ -107,16 +108,9 @@ class AdvertisementService
             ]);
         }
 
-        // $logo = null;
-
-        // if ($request->hasFile('logo')) {
-        //     $logo = $this->single($request, 'slider/logo', 'logo');
-        // }
-
         $advertisement = Advertisements::create([
             'content_type' => $request->content_type,
             'title' => $request->title,
-            // 'logo' => $logo,
             'status' => $request->status,
         ]);
 
@@ -147,7 +141,6 @@ class AdvertisementService
         }
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -162,116 +155,116 @@ class AdvertisementService
      */
     public function edit(string $id)
     {
-        $data = Advertisements::with('attachments')->findOrFail($id);
+        $data = Advertisements::with(['attachments' => function ($query) {
+            $query->orderByDesc('id');
+        }])->findOrFail($id);
         return $data;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($request,$id)
+    public function update(Request $request, $id)
     {
 
-        $advertisement = Advertisements::findOrFail($id);
+        try {
+            $validatedData = $request->validate([
+                'title' => 'required',
+                'logo' => 'nullable|mimes:jpeg,jpg,png,gif,avif,webp|max:1024',
+                'status' => 'required',
+            ]);
 
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'content_type' => 'required',
-            'status' => 'required',
-            'logo' => 'mimes:jpeg,jpg,png,gif,avif,webp|max:1024', // 1 MB max
-        ]);
+            $advertisement = Advertisements::findOrFail($id);
 
-        // if ($request->content_type == 1) {
-        //     $request->validate([
-        //         'image' => 'array|min:1', // At least one image is required
-        //         'image.*' => 'mimes:jpeg,jpg,png,gif,avif,webp|max:1024', // 1 MB max
-        //     ]);
-        // } elseif ($request->content_type == 2) {
-        //     $request->validate([
-        //         'video' => 'mimes:mp4,avi,mov,wmv|max:102400', // 100 MB max
-        //     ], [
-        //         'video.max' => 'The video must not be larger than 100 MB.',
-        //     ]);
-        // }
+            $advertisement->update([
+                'title' => $validatedData['title'],
+                'status' => $validatedData['status'],
+            ]);
 
-        $advertisement->update([
-            'content_type' => $request->content_type,
-            'title' => $request->title,
-            'status' => $request->status,
-        ]);
+            // Handle image or video update
+            if
+            ($advertisement->content_type == 1) {
+                if ($request->hasFile('image')) {
+                    foreach ($request->file('image') as $key => $image) {
+                        $imageName = time() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('uploads/advertisement/' . tenant('id') . '/file'), $imageName);
+                        AdvertiseAttachment::create([
+                            'advertisement_id' => $advertisement->id,
+                            'content_title' => $request->input('content_title')[$key],
+                            'caption' => $request->input('caption')[$key],
+                            'image' => $imageName,
+                        ]);
+                    }
+                }
+                if (!empty($request->default_content_title)) {
+                    $this->updateDefaultContent($request);
+                }
 
-        dd('update');
+            } elseif ($advertisement->content_type == 2) {
+            
+                if ($request->hasFile('video')) {
+                    $advertiseAttachment = AdvertiseAttachment::findOrFail($request->video_id);
+                    $request->validate([
+                        'video' => 'required|mimes:mp4,avi,mov,wmv|max:102400', // 100 MB max
+                    ], [
+                        'video.max' => 'The video must not be larger than 100 MB.',
+                    ]);
+                    $filePath = public_path('uploads/advertisement/' . tenant('id') . '/' . 'file/' . $advertiseAttachment->video);
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                    AdvertiseAttachment::findOrFail($request->video_id)->delete();
+                    $videoName = time() . '.' . $request->video->getClientOriginalExtension();
+                    $request->video->move(public_path('uploads/advertisement/' . tenant('id') . '/file'), $videoName);
+                    AdvertiseAttachment::create([
+                        'advertisement_id' => $advertisement->id,
+                        'video' => $videoName,
+                    ]);
+                }
 
-        // Handle logo update if present
-        // if ($request->hasFile('logo')) {
-        //     $logo = $this->single($request, 'slider/logo', 'logo');
-        //     $advertisement->update(['logo' => $logo]);
-        // }
-
-        // Handle image or video update
-        if ($request->content_type == 1) {
-            $this->deleteExistingAttachments($advertisement);
-            foreach ($request->file('image') as $key => $image) {
-                $imageName = $this->multiple($request->file('image'), '/uploads/advertisement/' . tenant('id') . '/file');
-                $data = [
-                    'advertisement_id' => $advertisement->id,
-                    'content_title' => $request->input('content_title')[$key],
-                    'caption' => $request->input('caption')[$key],
-                    'image' => $imageName,
-                ];
-                AdvertiseAttachment::where('advertisement_id', $id)->update($data);
             }
-        } elseif ($request->content_type == 2) {
-            $this->deleteExistingAttachments($advertisement);
-            $imageName = $this->single($request, '/uploads/advertisement/' . tenant('id') . '/file', 'video');
-            $data = [
-                'advertisement_id' => $advertisement->id,
-                'video' => $imageName,
-            ];
-            AdvertiseAttachment::where('advertisement_id', $id)->update($data);
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
         }
 
         return ['status' => 'success', 'message' => 'Advertisement has been updated successfully'];
     }
 
-
-    protected function deleteExistingAttachments(Advertisements $advertisement)
+    public function updateDefaultContent($request)
     {
-        $existingAttachments = AdvertiseAttachment::where('advertisement_id', $advertisement->id)->get();
-
-        foreach ($existingAttachments as $attachment) {
-
-            // Delete image files
-            if ($advertisement->content_type == 1) {
-                if (!empty($attachment->image)) {
-                    $imagePath = public_path('uploads/advertisement/' . tenant('id') . '/file/' . $attachment->image);
-                    if (file_exists($imagePath)) {
-                        unlink($imagePath);
-                    }
-                }
-            }
-
-            // Delete video files
-            if ($advertisement->content_type == 2) {
-                if (!empty($attachment->video)) {
-                    $videoPath = public_path('uploads/advertisement/' . tenant('id') . '/file/' . $attachment->video);
-                    if (file_exists($videoPath)) {
-                        unlink($videoPath);
-                    }
-                }
-            }
-
-            // Delete the attachment record from the database
-            $attachment->delete();
+        foreach ($request->attach_id as $key => $attachId) {
+            $contentTitle = $request->default_content_title[$key];
+            $caption = $request->default_caption[$key];
+            AdvertiseAttachment::where('id', $attachId)->update([
+                'content_title' => $contentTitle,
+                'caption' => $caption,
+            ]);
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $advertiseAttachment = AdvertiseAttachment::findOrFail($id);
+
+        $advertisement = Advertisements::findOrFail($advertiseAttachment->advertisement_id);
+
+        if ($advertisement->content_type == 1) {
+            $filePath = public_path('uploads/advertisement/' . tenant('id') . '/' . 'file/' . $advertiseAttachment->image);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        } else {
+            $filePath = public_path('uploads/advertisement/' . tenant('id') . '/' . 'file/' . $advertiseAttachment->video);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        $advertiseAttachment->delete();
+
+        return ['status' => 'success', 'message' => 'Advertisement has been deleted successfully'];
     }
 }

@@ -136,7 +136,7 @@
                  toastr.success(response.message);
                  setTimeout(function() {
                      location.reload();
-                 }, 4000);
+                 }, 1000);
              },
              error: function(xhr, status, error) {
                  var errorData = JSON.parse(xhr.responseText);

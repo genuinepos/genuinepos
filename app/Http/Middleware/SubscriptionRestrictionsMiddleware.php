@@ -100,7 +100,7 @@ class SubscriptionRestrictionsMiddleware
 
             if (auth()->user()->can('billing_renew_branch')) {
 
-                return redirect()->route('software.service.billing.cart.for.renew.branch')->with(['branchExpired' => __('Shop is expired please renew the shop')]);
+                return redirect()->route('software.service.billing.shop.renew.cart')->with(['branchExpired' => __('Shop is expired please renew the shop')]);
             } else {
 
                 auth()->logout();
@@ -112,7 +112,7 @@ class SubscriptionRestrictionsMiddleware
         ) {
             if (auth()->user()->can('billing_renew_branch')) {
 
-                return redirect()->route('software.service.billing.cart.for.renew.branch')->with(['businessExpired' => __('Business is expired please renew your business')]);
+                return redirect()->route('software.service.billing.shop.renew.cart')->with(['businessExpired' => __('Business is expired please renew your business')]);
             } else {
 
                 auth()->logout();

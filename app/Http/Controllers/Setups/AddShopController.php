@@ -57,13 +57,14 @@ class AddShopController extends Controller
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::AddShop->value);
 
-            if (isset($request->shop_increase_count)) {
+            if (isset($request->increase_shop_count)) {
 
-                for ($i=0; $i < $request->shop_increase_count; $i++) {
+                for ($i = 0; $i < $request->increase_shop_count; $i++) {
 
                     $planPrice = $request->plan_price;
                     $discountPercent = $request->discount_percent;
-                    $adjustablePrice = ($planPrice / 100) * $discountPercent;
+                    $discount = ($planPrice / 100) * $discountPercent;
+                    $adjustablePrice = $planPrice - $discount;
 
                     $this->shopExpireDateHistoryService->addShopExpireDateHistory(shopPricePeriod: $request->shop_price_period, shopPricePeriodCount: $request->shop_price_period_count, plan: $plan, adjustablePrice: $adjustablePrice);
                 }

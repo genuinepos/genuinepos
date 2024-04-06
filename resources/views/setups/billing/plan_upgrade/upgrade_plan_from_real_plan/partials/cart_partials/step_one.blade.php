@@ -1,6 +1,6 @@
 <div class="table-wrap revel-table">
     <div class="table-responsive">
-        <table class="table table-borderless">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>{{ __('Package Name') }}</th>
@@ -40,7 +40,7 @@
 
     <h6 class="mt-3"><a href="#" id="togglePriceAdjustmentDetails" class="text-primary">{{ __('Price Adjustment Details') }}</a></h6>
     <div class="table-responsive" style="display:none;" id="priceAdjustmentDetailsTable">
-        <table class="table table-borderless">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>{{ __('No.') }}</th>

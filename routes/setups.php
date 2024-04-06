@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\AddShopController;
 use App\Http\Controllers\Setups\StartupController;
+use App\Http\Controllers\Setups\ShopRenewController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
@@ -148,7 +149,6 @@ Route::prefix('setups')->group(function () {
     Route::controller(SoftwareServiceBillingController::class)->prefix('billing')->group(function () {
 
         Route::get('/', 'index')->name('software.service.billing.index');
-        Route::get('cart/for/renew/branch', 'cartForRenewBranch')->name('software.service.billing.cart.for.renew.branch');
         Route::get('due/repayment', 'dueRepayment')->name('software.service.billing.due.repayment');
         Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
         Route::get('invoice/download/{id}', 'invoiceDownload')->name('software.service.billing.invoice.download');
@@ -168,6 +168,12 @@ Route::prefix('setups')->group(function () {
 
             Route::get('cart', 'cart')->name('software.service.billing.add.shop.cart');
             Route::post('confirm', 'confirm')->name('software.service.billing.add.shop.confirm');
+        });
+
+        Route::controller(ShopRenewController::class)->prefix('shop-renew')->group(function () {
+
+            Route::get('cart', 'cart')->name('software.service.billing.shop.renew.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.shop.renew.confirm');
         });
     });
 

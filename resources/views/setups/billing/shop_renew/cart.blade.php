@@ -26,7 +26,6 @@
 </head>
 
 <body class="inner">
-    <!--------------------------------- CART SECTION START --------------------------------->
     <div class="tab-section py-120">
         <div class="container">
             <div class="row">

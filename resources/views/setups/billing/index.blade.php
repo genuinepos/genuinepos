@@ -117,7 +117,7 @@
 
                                         <div class="col-md-6 text-end">
                                             @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_renew_branch'))
-                                                <a href="{{ route('software.service.billing.cart.for.renew.branch') }}" class="btn btn-sm btn-success">{{ __('Renew Shop') }}</a>
+                                                <a href="{{ route('software.service.billing.shop.renew.cart') }}" class="btn btn-sm btn-success">{{ __('Renew Shop') }}</a>
                                             @endif
                                         </div>
                                     </div>

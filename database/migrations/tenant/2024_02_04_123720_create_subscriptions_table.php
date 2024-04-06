@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('domain_name', 255)->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('plan_id')->nullable()->comment('initial plan and upgraded plan id will be go here.');
             $table->timestamp('trial_start_date')->nullable();

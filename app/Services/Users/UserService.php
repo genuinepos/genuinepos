@@ -2,6 +2,7 @@
 
 namespace App\Services\Users;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Enums\RoleType;
 use App\Enums\UserType;
@@ -56,7 +57,7 @@ class UserService
 
         return DataTables::of($users)
             ->addColumn('action', function ($row) {
-                
+
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
@@ -488,7 +489,7 @@ class UserService
         } else if ($user->user_type == UserType::User->value && $request->user_type == UserType::Both->value) {
 
             $userLimit += 1;
-        }else if ($user->user_type == UserType::Employee->value && $request->user_type == UserType::Both->value) {
+        } else if ($user->user_type == UserType::Employee->value && $request->user_type == UserType::Both->value) {
 
             $employeeLimit += 1;
         }
@@ -542,5 +543,32 @@ class UserService
             'current_user_count' => $currentUserCount,
             'current_employee_count' => $currentEmployeeCount,
         ];
+    }
+
+    public function addAppSuperAdminUser(object $request) : void
+    {
+        $admin = [
+            'name' => $request->fullname,
+            'username' => isset($request->username) ? $request->username : explode('@', $request->email)[0],
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role_type' => RoleType::SuperAdmin->value,
+            'allow_login' => 1,
+            'status' => 1,
+            'phone' => $request->phone,
+            'date_of_birth' => '0000-00-00',
+            'language' => 'en',
+            'is_belonging_an_area' => 0,
+            'currency_id' => $request->currency_id,
+            'city' => $request->city,
+            'postal_code' => $request->postal_code,
+            'permanent_address' => $request->address,
+            'current_address' => $request->address,
+            'created_at' => Carbon::now(),
+        ];
+
+        $appUserAdmin = User::create($admin);
+        $superAdminRole = (new \App\Services\Users\RoleService)->singleRole(id: 1);
+        $appUserAdmin->assignRole($superAdminRole);
     }
 }

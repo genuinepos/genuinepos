@@ -52,7 +52,7 @@
 
                                             <h6>{{ $generalSettings['subscription']->plan_name }}</h6>
                                         @else
-                                        
+
                                             <h6>{{ __('Custom Plan') }}</h6>
                                         @endif
                                     </div>
@@ -102,7 +102,7 @@
 
                                 @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add'))
 
-                                    <a href="{{ route('software.service.billing.cart.for.add.branch') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
+                                    <a href="{{ route('software.service.billing.add.shop.cart') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
                                 @endif
                             </div>
                         </div>

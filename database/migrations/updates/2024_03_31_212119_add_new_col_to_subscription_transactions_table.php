@@ -20,7 +20,7 @@ return new class extends Migration
 
             if (!Schema::hasColumn('subscription_transactions', 'discount_percent')) {
 
-                $table->decimal('discount_percent', 22, 2)->after('coupon_code')->nullable();
+                $table->decimal('discount_percent', 22, 2)->after('coupon_code')->default(0);
             }
         });
     }

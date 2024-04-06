@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Manufacturing\Production;
 use App\Models\Purchases\PurchaseProduct;
 use App\Models\Accounts\AccountingVoucher;
+use App\Models\Products\StockIssue;
 use App\Models\TransferStocks\TransferStock;
 use App\Models\StockAdjustments\StockAdjustment;
 use App\Models\TransferStocks\TransferStockProduct;
@@ -56,6 +57,7 @@ class DeleteTrialPeriodDataService
         }
 
         if (Branch::count() == 0) {
+
             Schema::disableForeignKeyConstraints();
             Branch::truncate();
             Schema::enableForeignKeyConstraints();
@@ -155,6 +157,18 @@ class DeleteTrialPeriodDataService
         if (Product::count() == 0) {
             Schema::disableForeignKeyConstraints();
             Product::truncate();
+            Schema::enableForeignKeyConstraints();
+        }
+
+        $stockIssues = StockIssue::all();
+        foreach ($stockIssues as $stockIssue) {
+
+            $stockIssue->delete();
+        }
+
+        if (StockIssue::count() == 0) {
+            Schema::disableForeignKeyConstraints();
+            StockIssue::truncate();
             Schema::enableForeignKeyConstraints();
         }
     }

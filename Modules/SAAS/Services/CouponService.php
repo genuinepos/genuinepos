@@ -69,6 +69,16 @@ class CouponService implements CouponServiceInterface
         $coupon->update($data);
     }
 
+    public function increaseCouponNumberOfUsed(string $code): void
+    {
+        $coupon = $this->singleCouponByCode(code: $code);
+
+        if (isset($coupon)) {
+            $coupon->no_of_used += 1;
+            $coupon->save();
+        }
+    }
+
     public function deleteCoupon(int $id): array
     {
         $deleteCoupon = $this->singleCouponById(id: $id);

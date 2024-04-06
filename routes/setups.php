@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\AddShopController;
 use App\Http\Controllers\Setups\StartupController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\Setups\BarcodeSettingController;
 use App\Http\Controllers\Setups\GeneralSettingController;
+use App\Http\Controllers\Setups\CheckCouponCodeController;
 use App\Http\Controllers\Setups\PaymentMethodSettingsController;
 use App\Http\Controllers\Setups\SoftwareServiceBillingController;
 use App\Http\Controllers\Setups\ChangeBusinessOrBranchLocationController;
@@ -146,18 +148,26 @@ Route::prefix('setups')->group(function () {
     Route::controller(SoftwareServiceBillingController::class)->prefix('billing')->group(function () {
 
         Route::get('/', 'index')->name('software.service.billing.index');
-        Route::get('cart/for/add/branch', 'cartFoAddBranch')->name('software.service.billing.cart.for.add.branch');
         Route::get('cart/for/renew/branch', 'cartForRenewBranch')->name('software.service.billing.cart.for.renew.branch');
         Route::get('due/repayment', 'dueRepayment')->name('software.service.billing.due.repayment');
         Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
         Route::get('invoice/download/{id}', 'invoiceDownload')->name('software.service.billing.invoice.download');
 
+        Route::controller(CheckCouponCodeController::class)->prefix('check-coupon-code')->group(function () {
+            Route::get('/', 'checkCouponCode')->name('check.coupon.code');
+        });
+
         Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
 
             Route::get('/', 'index')->name('software.service.billing.upgrade.plan.index');
-            Route::get('check/coupon/code', 'checkCouponCode')->name('software.service.billing.upgrade.plan.check.coupon.code');
             Route::get('cart/{id}/{pricePeriod?}', 'cart')->name('software.service.billing.upgrade.plan.cart');
             Route::post('confirm', 'confirm')->name('software.service.billing.upgrade.plan.confirm');
+        });
+
+        Route::controller(AddShopController::class)->prefix('add-shop')->group(function () {
+
+            Route::get('cart', 'cart')->name('software.service.billing.add.shop.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.add.shop.confirm');
         });
     });
 

@@ -7,30 +7,38 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Utils\ExpireDateCalculation;
 use App\Services\Setups\BranchService;
 use Illuminate\Support\Facades\Session;
 use App\Enums\SubscriptionTransactionType;
+use App\Services\Setups\UpgradePlanService;
+use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
+use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
 use App\Services\Setups\DeleteTrialPeriodDataService;
 use App\Services\Setups\ShopExpireDateHistoryService;
 use App\Services\Subscriptions\SubscriptionMailService;
+use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use App\Services\Subscriptions\SubscriptionTransactionService;
+use Modules\SAAS\Interfaces\UserSubscriptionTransactionServiceInterface;
 
 class UpgradePlanController extends Controller
 {
     public function __construct(
+        private UpgradePlanService $upgradePlanService,
         private PlanServiceInterface $planServiceInterface,
         private CouponServiceInterface $couponServiceInterface,
+        private TenantServiceInterface $tenantServiceInterface,
+        private UserSubscriptionServiceInterface $userSubscriptionServiceInterface,
+        private UserSubscriptionTransactionServiceInterface $userSubscriptionTransactionServiceInterface,
         private BranchService $branchService,
         private SubscriptionService $subscriptionService,
         private SubscriptionTransactionService $subscriptionTransactionService,
         private ShopExpireDateHistoryService $shopExpireDateHistoryService,
         private DeleteTrialPeriodDataService $deleteTrialPeriodDataService,
         private SubscriptionMailService $subscriptionMailService,
-        private ExpireDateCalculation $expireDateCalculation,
     ) {
     }
 
@@ -56,12 +64,14 @@ class UpgradePlanController extends Controller
 
         $branches = null;
         $leftBranchExpireDateHistories = null;
+        $prepareAmounts = null;
         if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::False->value) {
 
             $branches = $this->branchService->branches(with: ['parentBranch', 'shopExpireDateHistory'])
                 ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-            $leftBranchExpireDateHistories = $this->shopExpireDateHistoryService->shopExpireDateHistories()->where('left_count', '>', 0)->get();
+            $leftBranchExpireDateHistories = $this->shopExpireDateHistoryService->shopExpireDateHistories()
+                ->where('is_created', BooleanType::False->value)->get();
         }
 
         DB::statement('use ' . env('DB_DATABASE'));
@@ -75,12 +85,17 @@ class UpgradePlanController extends Controller
 
         $currentSubscription =  $this->subscriptionService->singleSubscription(with: ['plan']);
 
+        if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::False->value) {
+
+            $prepareAmounts = $this->upgradePlanService->prepareAmounts(plan: $plan, branches: $branches, leftBranchExpireDateHistories: $leftBranchExpireDateHistories, currentSubscription: $currentSubscription);
+        }
+
         if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::True->value) {
 
             return view('setups.billing.plan_upgrade.upgrade_plan_from_trial.cart', compact('plan', 'currentSubscription', 'pricePeriod'));
         } else {
 
-            return view('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.cart', compact('plan', 'branches', 'leftBranchExpireDateHistories', 'currentSubscription', 'pricePeriod'));
+            return view('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.cart', compact('plan', 'branches', 'leftBranchExpireDateHistories', 'currentSubscription', 'pricePeriod', 'prepareAmounts'));
         }
     }
 
@@ -98,19 +113,65 @@ class UpgradePlanController extends Controller
             $generalSettings = config('generalSettings');
             $isTrialPlan = $generalSettings['subscription']->is_trial_plan;
 
-            $subscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan, expireDateCalculation: $this->expireDateCalculation);
+            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
             if ($isTrialPlan == BooleanType::True->value) {
 
-                $this->shopExpireDateHistoryService->addShopExpireDateHistory(request: $request, expireDateCalculation: $this->expireDateCalculation);
+                $business = isset($request->has_business) ? 1 : 0;
+                $shopPlusBusiness = $request->shop_count + $business;
+                $totalPayableInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->total_payable);
+                $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
+
+                for ($i = 0; $i < $request->shop_count; $i++) {
+
+                    $this->shopExpireDateHistoryService->addShopExpireDateHistory(shopPricePeriod: $request->shop_price_period, shopPricePeriodCount: $request->shop_price_period_count, plan: $plan, adjustablePrice: $adjustablePrice);
+                }
+            } else {
+
+                if (isset($request->shop_expire_date_history_ids)) {
+
+                    foreach ($request->shop_expire_date_history_ids as $shopExpireDateHistoryId) {
+
+                        $this->shopExpireDateHistoryService->updateShopExpireDateHistoryAdjustablePriceAndPricePeriod(plan: $plan, shopExpireDateHistoryId: $shopExpireDateHistoryId, discountPercent: $request->discount_percent);
+                    }
+                }
             }
 
-            $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $subscription, isTrialPlan: $isTrialPlan, transactionType: SubscriptionTransactionType::BuyPlan->value, plan: $plan);
+            $transactionDetailsType = $isTrialPlan == BooleanType::True->value ? SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value : SubscriptionTransactionDetailsType::UpgradePlanFromRealPlan->value;
+
+            $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $updateSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
         }
+
+        DB::statement('use ' . env('DB_DATABASE'));
+        try {
+            DB::beginTransaction();
+
+            $tenantId = tenant('id');
+
+            $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
+
+            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
+
+            if (isset($updateUserSubscription)) {
+
+                $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
+            }
+
+            if (isset($request->coupon_code) && isset($request->coupon_id)) {
+
+                $this->couponServiceInterface->increaseCouponNumberOfUsed(code: $request->coupon_code);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollback();
+        }
+        DB::reconnect();
 
         if ($isTrialPlan == BooleanType::True->value) {
 
@@ -121,19 +182,5 @@ class UpgradePlanController extends Controller
         $this->subscriptionMailService->sendPlanUpgradeSuccessMain(user: auth()->user());
 
         return response()->json(__('Plan upgraded successfully'));
-    }
-
-    public function checkCouponCode(Request $request)
-    {
-        DB::statement('use ' . env('DB_DATABASE'));
-        $checkCouponCode = $this->couponServiceInterface->checkCouponCode(request: $request);
-        DB::reconnect();
-        
-        if (isset($checkCouponCode['pass']) && $checkCouponCode['pass'] == false) {
-
-            return response()->json(['errorMsg' => $checkCouponCode['msg']]);
-        }
-
-        return $checkCouponCode;
     }
 }

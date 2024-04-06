@@ -33,7 +33,13 @@
                                     <button href="#" id="link-plan" class="btn btn-primary" disabled>{{ __('Current Plan') }}</button>
                                 @else
 
-                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id]) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                    @if ($plan->id < $generalSettings['subscription']->plan_id)
+
+                                        <button href="#" id="link-plan" class="btn btn-primary" disabled>{{ __('Select') }}</button>
+                                    @else
+
+                                        <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id]) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                    @endif
                                 @endif
                             </div>
                         </th>

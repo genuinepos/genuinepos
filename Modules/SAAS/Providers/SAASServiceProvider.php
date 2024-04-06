@@ -18,6 +18,7 @@ use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Interfaces\RoleServiceInterface;
 use Modules\SAAS\Interfaces\UserServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Services\UserSubscriptionService;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
 use Modules\SAAS\Services\EmailVerificationService;
@@ -26,7 +27,10 @@ use Modules\SAAS\Http\Middleware\PlanCheckerMiddleware;
 use Modules\SAAS\Http\Middleware\IsAuthenticatedMiddleware;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
 use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
+use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
+use Modules\SAAS\Services\UserSubscriptionTransactionService;
 use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
+use Modules\SAAS\Interfaces\UserSubscriptionTransactionServiceInterface;
 
 class SAASServiceProvider extends ServiceProvider
 {
@@ -84,6 +88,8 @@ class SAASServiceProvider extends ServiceProvider
         $this->app->bind(TenantServiceInterface::class, TenantService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(UserSubscriptionServiceInterface::class, UserSubscriptionService::class);
+        $this->app->bind(UserSubscriptionTransactionServiceInterface::class, UserSubscriptionTransactionService::class);
         $this->app->bind(CurrencyServiceInterface::class, CurrencyService::class);
         $this->app->bind(PlanServiceInterface::class, PlanService::class);
         $this->app->bind(CouponServiceInterface::class, CouponService::class);

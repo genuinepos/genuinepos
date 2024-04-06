@@ -15,4 +15,5 @@ interface CouponServiceInterface
     public function singleCouponById(int $id, ?array $with = null): ?object;
     public function coupons(?array $with = null): object;
     public function checkCouponCode(object $request): array|object;
+    public function increaseCouponNumberOfUsed(string $code): void;
 }

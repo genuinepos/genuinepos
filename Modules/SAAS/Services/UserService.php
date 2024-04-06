@@ -61,6 +61,18 @@ class UserService implements UserServiceInterface
         }
     }
 
+    public function addSubscriberUser(object $request, string $tenantId): object
+    {
+        return User::create([
+            'name' => $request->fullname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'tenant_id' => $tenantId,
+            'ip_address' => request()->ip(),
+            'user_type' => BillingPanelUserType::Subscriber->value,
+        ]);
+    }
+
     public function updateUser(int $id, object $request, ?object $role, object $fileUploader): void
     {
         $updateUser = $this->singleUser(id: $id);

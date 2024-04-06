@@ -39,7 +39,7 @@ class TenantStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('tenants_store');
     }
 
     public function messages()

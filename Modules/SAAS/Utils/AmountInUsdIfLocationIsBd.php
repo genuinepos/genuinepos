@@ -12,10 +12,10 @@ class AmountInUsdIfLocationIsBd
         $currencyRateInUsd = $gioInfo['currency_rate'];
         if ($gioInfo['country'] == 'bangladesh') {
 
-            return round(($amount / $currencyRateInUsd), 2);
-        }else {
+            return round(($amount / $currencyRateInUsd), 0);
+        } else {
 
-            return round($amount, 2);
+            return round($amount, 0);
         }
     }
 }

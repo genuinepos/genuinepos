@@ -128,8 +128,15 @@
                                 _token: $('meta[name="csrf-token"]').attr('content'),
                             },
                             success: function(data) {
+
+                                if (!$.isEmptyObject(data.errorMsg)) {
+
+                                    toastr.error(data.errorMsg);
+                                    return;
+                                }
+
                                 toastr.success(data);
-                                window.location.reload();
+                                // window.location.reload();
                             },
                             error: function(data) {
                                 toastr.error(data);

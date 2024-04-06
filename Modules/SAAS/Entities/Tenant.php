@@ -2,8 +2,10 @@
 
 namespace Modules\SAAS\Entities;
 
-use App\Models\User;
+// use App\Models\User;
 use Modules\SAAS\Entities\Plan;
+use Modules\SAAS\Entities\User;
+use Modules\SAAS\Entities\Domain;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -22,9 +24,14 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         return $this->belongsTo(Plan::class);
     }
 
+    public function domain()
+    {
+        return $this->hasOne(Domain::class);
+    }
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class, 'tenant_id');
     }
 
     public function owner()

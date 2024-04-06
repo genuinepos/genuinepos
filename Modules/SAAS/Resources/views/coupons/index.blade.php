@@ -37,7 +37,6 @@
         </div>
     </div>
 
-
     @push('js')
         <script>
             var table = $("#userTable").DataTable({

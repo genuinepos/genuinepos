@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    <div class="form-row mt-2">
+                    <div class="form-row">
                         <div class="form-col-5">
                             <label for="email-address">{{ __('Password') }} <span class="text-danger">*</span></label>
                             <input required type="password" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off" />
@@ -104,7 +104,7 @@
     <div class="col-xl-4 col-lg-5 col-md-6">
         <div class="payment-method">
             <div class="cart-total-panel">
-                <h3 class="title">{{ __("Cart Total") }}</h3>
+                <h3 class="title">{{ __('Cart Total') }}</h3>
                 <div class="panel-body">
                     <div class="row gy-5">
                         <div class="col-12">
@@ -117,18 +117,18 @@
                                         </span>
                                     </li>
                                     <li>{{ __('Net Total') }}
-                                        <span class="price-txt">
-                                            <span class="span_net_total">{{ $plan->price }}</span>
+                                        <span class="price-txt">{{ $planPriceCurrency }}
+                                            <span class="span_net_total">0</span>
                                         </span>
                                     </li>
                                     <li>{{ __('Discount') }}
-                                        <span class="price-txt">
+                                        <span class="price-txt">{{ $planPriceCurrency }}
                                             <span class="span_discount">0.00</span>
                                         </span>
                                     </li>
                                     <li class="total-price-wrap">{{ __('Total Payable') }}
-                                        <span class="price-txt">
-                                            <span class="span_total_payable">{{ $plan->price }}</span>
+                                        <span class="price-txt">{{ $planPriceCurrency }}
+                                            <span class="span_total_payable">0</span>
                                         </span>
                                     </li>
                                 </ul>
@@ -139,7 +139,7 @@
             </div>
 
             <div class="payment-option">
-                <h6 class="p-2 mt-2">Choose Payment Method</h6>
+                <h6 class="p-2 mt-2">{{ __("Choose Payment Method") }}</h6>
                 <hr class="p-0 m-0">
                 {{-- <div class="single-payment-card">
                     <div class="panel-header">
@@ -272,7 +272,7 @@
             </div>
 
             {{-- <button type="submit" class="def-btn palce-order tab-next-btn btn-success" id="palceOrder">{{ __("Confirm") }}</button> --}}
-            <a class="def-btn tab-next-btn single-nav" data-tab="stepThreeTab">{{ __('Next Step') }}</a>
+            <a class="def-btn tab-next-btn single-nav px-5" data-tab="stepThreeTab" style="cursor: pointer;">{{ __('Next Step') }}</a>
             {{-- <button type="submit" class="def-btn palce-order tab-next-btn btn-success">{{ __('Confirm') }}</button> --}}
         </div>
     </div>

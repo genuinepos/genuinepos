@@ -22,7 +22,6 @@ class UserStoreRequest extends FormRequest
             'address' => 'nullable',
             'language' => 'required',
             'role_id' => 'required',
-            // 'password' => ['required', Password::default()],
             'password' => ['required', Password::default()],
         ];
     }

@@ -11,12 +11,10 @@ use App\Models\User;
 
 class SmsSendService
 {
-
     use SmsConfiguration;
 
     public function index($request)
     {
-
         $data = SendSms::query()->orderBy('id', 'desc');
 
         if ($request->ajax()) {
@@ -89,7 +87,6 @@ class SmsSendService
                     SendSmsJob::dispatch($phone, $message);
                 }
             }
-            
 
             if ($smsSent) {
                 return ['status' => 'success', 'message' => 'Sms(s) sent successfully'];

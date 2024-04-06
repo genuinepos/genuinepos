@@ -5,7 +5,7 @@
             <li class="sidebar-item">
                 <a role="button" class="sidebar-link-group-title has-sub">{{ __('Dashboard') }}</a>
                 <ul class="sidebar-link-group">
-                    @canany(['tenants_index', 'tenants_create', 'tenants_edit', 'tenants_destroy'])
+                    @canany(['tenants_index', 'tenants_create'])
                         <li class="sidebar-dropdown-item">
                             <a role="button" class="sidebar-link has-sub" data-dropdown="customerDropdown">
                                 <span class="nav-icon"><i class="fa-light fa-user-tie"></i></span>
@@ -70,7 +70,7 @@
                     </ul>
                 @endcanany
 
-                @canany(['users_index'])
+                @canany(['users_index', 'roles_index'])
                     <ul class="sidebar-link-group">
                         <li class="sidebar-dropdown-item">
                             <a role="button" class="sidebar-link has-sub" data-dropdown="userManagementDropdown">
@@ -83,6 +83,7 @@
                                         <a href="{{ route('saas.users.index') }}" class="sidebar-link">{{ __('Users') }}</a>
                                     </li>
                                 @endcan
+
                                 @can('roles_index')
                                     <li class="sidebar-dropdown-item">
                                         <a href="{{ route('saas.roles.index') }}" class="sidebar-link">{{ __('Roles') }}</a>
@@ -93,23 +94,29 @@
                     </ul>
                 @endcanany
 
-                <ul class="sidebar-link-group">
-                    <li class="sidebar-dropdown-item">
-                        <a role="button" class="sidebar-link has-sub" data-dropdown="cuponsDropdown">
-                            <span class="nav-icon"><i class="fa-solid fa-check"></i></span>
-                            <span class="sidebar-txt">{{ __('Cupons') }}</span>
-                        </a>
-                        <ul class="sidebar-dropdown-menu" id="cuponsDropdown">
-                            <li class="sidebar-dropdown-item">
-                                <a href="{{ route('saas.coupons.create') }}" class="sidebar-link">{{ __('Add Cupon') }}</a>
-                            </li>
+                @canany(['coupons_index'])
+                    <ul class="sidebar-link-group">
+                        <li class="sidebar-dropdown-item">
+                            <a role="button" class="sidebar-link has-sub" data-dropdown="cuponsDropdown">
+                                <span class="nav-icon"><i class="fa-solid fa-check"></i></span>
+                                <span class="sidebar-txt">{{ __('Coupons') }}</span>
+                            </a>
+                            <ul class="sidebar-dropdown-menu" id="cuponsDropdown">
+                                @can('coupons_create')
+                                    <li class="sidebar-dropdown-item">
+                                        <a href="{{ route('saas.coupons.create') }}" class="sidebar-link">{{ __('Add Cupon') }}</a>
+                                    </li>
+                                @endcan
 
-                            <li class="sidebar-dropdown-item">
-                                <a href="{{ route('saas.coupons.index') }}" class="sidebar-link">{{ __('All Cupons') }}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                                @can('coupons_index')
+                                    <li class="sidebar-dropdown-item">
+                                        <a href="{{ route('saas.coupons.index') }}" class="sidebar-link">{{ __('All Cupons') }}</a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    </ul>
+                @endcanany
 
                 <ul class="sidebar-link-group">
                     <li class="sidebar-dropdown-item">

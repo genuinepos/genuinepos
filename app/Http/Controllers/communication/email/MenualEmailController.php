@@ -44,6 +44,4 @@ class MenualEmailController extends Controller
     {
         return $this->emailMenualService->edit($id);
     }
-
-
 }

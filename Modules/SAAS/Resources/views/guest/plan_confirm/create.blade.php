@@ -26,9 +26,28 @@
                 position: fixed;
                 top: 69%;
             }
+
+            .table-wrap.revel-table th {
+                font-size: 12px;
+            }
+
+            .table-wrap.revel-table td {
+                font-size: 13px;
+            }
+
+            .price-txt {
+                font-size: 13px!important;
+            }
+
+            .calculate-area ul li {
+                font-size: 13px!important;
+            }
         </style>
         <link rel="stylesheet" href="{{ asset('backend/asset/css/animated-headline.css') }}">
     @endpush
+    @php
+        $planPriceCurrency = \Modules\SAAS\Utils\PlanPriceCurrencySymbol::currencySymbol();
+    @endphp
     <header class="cart-header my-3">
         <div class="row">
             <div class="col-md-4">
@@ -53,17 +72,17 @@
     <div class="row mt-4">
         <div class="col-12">
             <div class="tab-nav">
-                <button class="single-nav active stepOneTab" data-tab="stepOneTab">
+                <button class="single-nav single-tab active stepOneTab" data-tab="stepOneTab">
                     <span class="txt">{{ __('Step One') }}</span>
                     <span class="sl-no">{{ __('01') }}</span>
                 </button>
 
-                <button class="single-nav stepTwoTab" data-tab="stepTwoTab">
+                <button class="single-nav single-tab stepTwoTab" data-tab="stepTwoTab">
                     <span class="txt">{{ __('Step Two') }}</span>
                     <span class="sl-no">{{ __('02') }}</span>
                 </button>
 
-                <button class="single-nav stepThreeTab" data-tab="stepThreeTab">
+                <button class="single-nav single-tab stepThreeTab" data-tab="stepThreeTab">
                     <span class="txt">{{ __('Step Three') }}</span>
                     <span class="sl-no">{{ __('03') }}</span>
                 </button>
@@ -116,20 +135,20 @@
                                 <div class="container position-relative py-5" id="preloader-animitation-section">
                                     <div class="o_start_trial_message_container position-relative">
                                         <h1 class="o_start_trial_message text-white animate o_start_first one fadeInUpOne message">
-                                            Welcome to GPOS System
+                                            {{ __("Welcome to GPOS System") }}
                                             <span class="d-block">
                                                 <span class="slides fadeInUpOne">
                                                     <span class="slide1">
-                                                        <span>Build Your Shop</span>
-                                                        <span>Manage Your Inventory</span>
-                                                        <span>Mange Your Sales</span>
+                                                        <span>{{ __("Build Your Shop") }}</span>
+                                                        <span>{{ __("Manage Your Inventory") }}</span>
+                                                        <span>{{ __("Mange Your Sales") }}</span>
                                                     </span>
                                                 </span>
                                             </span>
                                         </h1>
 
                                         <h2 class="o_start_trial_message text-white animate o_start_second two fadeInUpTwo" >
-                                            <span class="d-block">No. #1</span> Retail POS Software.
+                                            <span class="d-block">{{ __("No. #1") }}</span> {{ __("Retail POS Software.") }}
                                         </h2>
                                     </div>
                                 </div>
@@ -153,8 +172,14 @@
             </div>
         </div>
     </div>
+
+    <form id="deleteFailedTenant" action="{{ route('saas.delete.failed.tenant.destroy') }}" method="POST">
+        @csrf
+        <input type="hidden" name="delete_domain" id="delete_domain" value="">
+    </form>
     @push('js')
         {{-- <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script> --}}
+        <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
         @include('saas::guest.plan_confirm.partials.js_partials.js')
     @endpush
 </x-saas::guest>

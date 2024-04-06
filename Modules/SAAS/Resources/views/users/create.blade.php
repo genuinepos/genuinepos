@@ -11,31 +11,41 @@
                 <div class="panel-body">
                     <form method="POST" action="{{ route('saas.users.store') }}" id="userStoreForm" enctype="multipart/form-data">
                         @csrf
-                        <div class="row g-3">
+                        <div class="row">
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="name" class="form-label"><strong>{{ __('Name') }}</strong><span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" id="name" placeholder="{{ __('Enter fullname') }}" required>
+                                <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="{{ __('Enter fullname') }}" required>
                             </div>
+
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="email" class="form-label"><strong>{{ __('Email') }}</strong><span class="text-danger">*</span></label>
-                                <input type="email" name="email" class="form-control" id="email" placeholder="{{ __('Enter email-address') }}" required>
+                                <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}" placeholder="{{ __('Enter email-address') }}" required>
                             </div>
+
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="password" class="form-label"><strong>{{ __('Password') }}</strong><span class="text-danger">*</span></label>
-                                <input type="password" name="password" class="form-control" id="password" placeholder="{{ __('Enter password') }}" required>
+                                <input type="password" name="password" class="form-control" value="{{ old('password') }}" id="password" placeholder="{{ __('Enter password') }}" required>
                             </div>
+                        </div>
+
+                        <div class="row mt-2">
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="phone" class="form-label"><strong>{{ __('Phone Number') }}</strong></label>
-                                <input type="text" name="phone" class="form-control" placeholder="{{ __('Enter phone number') }}" id="phone">
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="{{ __('Enter phone number') }}" id="phone">
                             </div>
+
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="photo" class="form-label"><strong>{{ __('Profile Image') }}</strong></label>
                                 <input type="file" name="photo" class="form-control">
                             </div>
+
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="addresss" class="form-label"><strong>{{ __('Address') }}</strong></label>
-                                <input type="text" name="address" class="form-control" placeholder="{{ __('Enter address') }}">
+                                <input type="text" name="address" class="form-control" value="{{ old('address') }}" placeholder="{{ __('Enter address') }}">
                             </div>
+                        </div>
+
+                        <div class="row mt-2">
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="language" class="form-label"><strong>{{ __('Language') }}</strong><span class="text-danger">*</span></label>
                                 <select name="language" id="languageDropdown" class="form-control form-select lang-select" required>
@@ -55,7 +65,7 @@
                                 </select>
                             </div>
 
-                            <div class="mt-3">
+                            <div class="mt-3 text-end">
                                 <input type="submit" class="btn btn-sm btn-primary" value="{{ __('Create') }}" />
                             </div>
                         </div>

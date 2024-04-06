@@ -1,14 +1,15 @@
 <?php
 
 use Carbon\Carbon;
-use App\Models\Tenant;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
 use Modules\SAAS\Entities\Plan;
 use App\Models\Accounts\Account;
+use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
+use Stancl\Tenancy\Facades\Tenancy;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -233,23 +234,13 @@ Route::get('my-test', function () {
     // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
     // File::cleanDirectory(storage_path('framework/laravel-excel'));
     // return storage_path('framework/laravel-excel');
+    // $tenantId =  tenant('id');
+    // DB::statement('use ' . env('DB_DATABASE'));
+    // return $tenantUser = Tenant::with('user', 'user.userSubscription')->where('id', $tenantId)->first();
+    // return $tenantUser->userSubscription;
+    // DB::reconnect();
 
-    function getMonths($startDate, $endDate)
-    {
-        if ($startDate <= $endDate) {
-            $startDate = new \DateTime($startDate);
-            $endDate = new \DateTime($endDate);
-
-            // Calculate the difference in months
-            $interval = $startDate->diff($endDate);
-            $months = $interval->y * 12 + $interval->m;
-            return (int) $months;
-        }else {
-            return 0;
-        }
-    }
-
-    return getMonths('2024-02-01', '2024-03-30');
+    Tenancy::find('organio')?->delete();
 });
 
 Route::get('t-id', function () {

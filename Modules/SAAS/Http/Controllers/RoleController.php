@@ -10,6 +10,7 @@ use Modules\SAAS\Entities\Permission;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Contracts\Support\Renderable;
 use Modules\SAAS\Http\Requests\RoleStoreRequest;
+use Modules\SAAS\Http\Requests\RoleUpdateRequest;
 use Modules\SAAS\Interfaces\RoleServiceInterface;
 use Modules\SAAS\Database\Seeders\RolePermissionTableSeeder;
 
@@ -53,21 +54,27 @@ class RoleController extends Controller
     public function edit($id)
     {
         abort_if(!auth()->user()->can('roles_update'), 403);
+        $role = $this->roleServiceInterface->singleRole(id: $id);
         return view('saas::roles.edit', ['role' => $role]);
     }
 
     public function update(RoleUpdateRequest $request, $id)
     {
         $this->roleServiceInterface->updateRole(id: $id, request: $request);
-
         return redirect()->route('saas.roles.index')->with('success', 'Role updated successfully!');
     }
 
-    public function delete(Role $role)
+    public function delete($id)
     {
         // $role->update(['status' => 0]);
-        $role->syncPermissions([]);
-        $role->delete();
+        // $role->syncPermissions([]);
+        // $role->delete();
+
+        $deletedRole = $this->roleServiceInterface->deleteRole($id);
+        if ($deletedRole['pass'] == false) {
+
+            return redirect()->back()->with('error', $deletedRole['msg']);
+        }
 
         return redirect()->route('saas.roles.index')->with('success', 'Role disabled successfully!');
     }

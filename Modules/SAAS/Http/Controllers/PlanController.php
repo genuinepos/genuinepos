@@ -92,8 +92,12 @@ class PlanController extends Controller
 
     public function destroy($id)
     {
-        $plan = $this->planServiceInterface->singlePlanById(id: $id);
-        $plan->delete();
+        $deletePlan = $this->planServiceInterface->deletePlan(id: $id);
+
+        if ($deletePlan['pass'] == false) {
+
+            return response()->json(['errorMsg' => $deletePlan['msg']]);
+        }
 
         return response()->json(__('Plan deleted successfully!'), 201);
     }

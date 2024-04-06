@@ -90,6 +90,28 @@ class PlanService implements PlanServiceInterface
         return null;
     }
 
+    public function deletePlan(int $id): array
+    {
+        $deletePlan = $this->singlePlanById(id: $id, with: ['userSubscriptions']);
+
+        if (isset($deletePlan)) {
+
+            if ($deletePlan->is_trial_plan == BooleanType::True->value) {
+
+                return ['pass' => false, 'msg' => 'Trial Plan cant be deleted.'];
+            }
+
+            if (count($deletePlan->userSubscriptions) > 0) {
+
+                return ['pass' => false, 'msg' => 'Plan cant be deleted. This plan is belonging to one or many subscriptions.'];
+            }
+
+            $deletePlan->delete();
+        }
+
+        return ['pass' => true];
+    }
+
     public function plans(array $with = null): object
     {
         $query = Plan::query();

@@ -2,129 +2,79 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Models\User;
 use App\Utils\FileUploader;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use Modules\SAAS\Entities\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
-use Yajra\DataTables\Facades\DataTables;
 use Modules\SAAS\Http\Requests\UserStoreRequest;
 use Modules\SAAS\Http\Requests\UserUpdateRequest;
+use Modules\SAAS\Interfaces\RoleServiceInterface;
 use Modules\SAAS\Interfaces\UserServiceInterface;
 
 class UserController extends Controller
 {
     public function __construct(
         private UserServiceInterface $userServiceInterface,
+        private RoleServiceInterface $roleServiceInterface,
     ) {
     }
 
     public function index(Request $request)
     {
-        $this->authorize('users_index');
+        abort_if(!auth()->user()->can('users_index'), 403);
 
         if ($request->ajax()) {
 
             return $this->userServiceInterface->usersTable();
         }
 
-        return view('saas::users.index', compact('users'));
+        return view('saas::users.index');
     }
 
     public function create()
     {
-        $this->authorize('users_create');
+        abort_if(!auth()->user()->can('users_create'), 403);
 
-        return view('saas::users.create', ['roles' => Role::all()]);
+        $roles = $this->roleServiceInterface->roles()->get(['id', 'name']);
+
+        return view('saas::users.create', ['roles' => $roles]);
     }
 
     public function store(UserStoreRequest $request, FileUploader $fileUploader)
     {
-        $this->userServiceInterface->addUser(request: $request);
-
+        $role = $this->roleServiceInterface->singleRole(id: $request->role_id);
+        $this->userServiceInterface->addUser(request: $request, role: $role, fileUploader: $fileUploader);
         return redirect(route('saas.users.index'))->with('success', 'User created successfully!');
     }
 
-    public function show($id)
+    public function edit($id)
     {
-        $this->authorize('users_show');
-        // return view('saas::show');
+        abort_if(!auth()->user()->can('users_update'), 403);
+
+        $roles = $this->roleServiceInterface->roles()->get(['id', 'name']);
+        $user = $this->userServiceInterface->singleUser(id: $id);
+
+        return view('saas::users.edit', ['user' => $user, 'roles' => $roles]);
     }
 
-    public function edit(User $user)
+    public function update($id, UserUpdateRequest $request, FileUploader $fileUploader)
     {
-        $this->authorize('users_update');
+        $role = $this->roleServiceInterface->singleRole(id: $request->role_id);
+        $this->userServiceInterface->updateUser(id: $id, request: $request, role: $role, fileUploader: $fileUploader);
 
-        return view('saas::users.edit', [
-            'user' => $user,
-            'roles' => Role::all(),
-        ]);
+        return redirect()->route('saas.users.index')->with('success', 'User update successfully!');
     }
 
-    public function update(UserUpdateRequest $request, User $user, FileUploader $fileUploader)
+    public function delete($id)
     {
-        $this->authorize('users_update');
-        $userUpdateAttributes = $request->validated();
+        abort_if(!auth()->user()->can('users_destroy'), 403);
 
-        if ($request->hasFile('photo')) {
+        $deleteUser = $this->userServiceInterface->deleteUser(id: $id);
 
-            if (isset($user->photo)) {
+        if ($deleteUser['pass'] == false) {
 
-                File::delete(public_path('uploads/saas/users/' . $user->photo));
-            }
-
-            $userUpdateAttributes['photo'] = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
-        } else {
-
-            Arr::forget($userUpdateAttributes, 'photo');
+            return redirect()->back()->with('error', $deleteUser['msg']);
         }
 
-        if (isset($userUpdateAttributes['password']) && !empty($userUpdateAttributes['password'])) {
-
-            $userUpdateAttributes['password'] = bcrypt($userUpdateAttributes['password']);
-        } else {
-
-            Arr::forget($userUpdateAttributes, 'password');
-        }
-
-        $role = Role::find($userUpdateAttributes['role_id']);
-        Arr::forget($userUpdateAttributes, 'role_id');
-
-        $user->update($userUpdateAttributes);
-
-        if ($user && $role) {
-
-            $user->syncRoles($role);
-
-            return redirect(route('saas.users.index'))->with('success', 'User updated successfully!');
-        }
-
-        return back()->with('success', 'User update failed!');
-    }
-
-    public function trash(User $user)
-    {
-        $this->authorize('users_trash');
-        $user->update(['status' => false]);
-
-        return redirect()->route('saas.users.index')->with('success', 'User Deactivated!');
-    }
-
-    public function restore(User $user)
-    {
-        $this->authorize('users_restore');
-        $user->update(['status' => true]);
-
-        return redirect()->route('saas.users.index')->with('success', 'User Successfully Activated!');
-    }
-
-    public function destroy(User $user)
-    {
-        $this->authorize('users_destroy');
-        $user->delete();
-
-        return redirect()->route('saas.users.index')->with('success', 'User Deleted Permanently!');
+        return redirect()->route('saas.users.index')->with('success', 'User Deleted successfully!');
     }
 }

@@ -10,7 +10,6 @@ use App\Http\Traits\File\FileUploadTrait;
 
 class AdvertisementService
 {
-
     use FileUploadTrait;
     /**
      * Display a listing of the resource.
@@ -201,7 +200,7 @@ class AdvertisementService
                 }
 
             } elseif ($advertisement->content_type == 2) {
-            
+
                 if ($request->hasFile('video')) {
                     $advertiseAttachment = AdvertiseAttachment::findOrFail($request->video_id);
                     $request->validate([

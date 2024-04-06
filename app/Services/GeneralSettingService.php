@@ -75,6 +75,18 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         }
     }
 
+    public function partiallyUpdateBusinessSettings(object $request): void
+    {
+        $settings = [
+            'business_or_shop__business_name' => $request->name,
+            'business_or_shop__phone' => $request->phone,
+            'business_or_shop__email' => $request->email,
+            'business_or_shop__address' => $request->address,
+        ];
+
+        $this->updateAndSync(settings: $settings);
+    }
+
     public function deleteBusinessLogo(): bool
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);

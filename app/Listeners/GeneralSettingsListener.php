@@ -127,6 +127,7 @@ class GeneralSettingsListener
                 ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
                 ->select(
                     [
+                        'subscriptions.id',
                         'subscriptions.plan_id',
                         'subscriptions.has_due_amount',
                         'subscriptions.initial_plan_start_date',

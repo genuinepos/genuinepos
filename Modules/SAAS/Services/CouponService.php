@@ -19,9 +19,16 @@ class CouponService implements CouponServiceInterface
 
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="' . route('saas.coupons.edit', $row->id) . '" class="px-2 edit-btn btn btn-primary btn-sm text-white" title="Edit"><span class="fas fa-edit pe-1"></span>' . __("Edit") . '</a>';
+                if (auth()->user()->can('coupons_update')) {
 
-                $html .= '<a href="' . route('saas.coupons.destroy', $row->id) . '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="delete" title="Delete"><span class="fas fa-trash pe-1"></span>' . __("Delete") . '</a>';
+                    $html .= '<a href="' . route('saas.coupons.edit', $row->id) . '" class="px-2 edit-btn btn btn-primary btn-sm text-white" title="Edit"><span class="fas fa-edit pe-1"></span>' . __("Edit") . '</a>';
+                }
+
+                if (auth()->user()->can('coupons_destroy')) {
+
+                    $html .= '<a href="' . route('saas.coupons.destroy', $row->id) . '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="delete" title="Delete"><span class="fas fa-trash pe-1"></span>' . __("Delete") . '</a>';
+                }
+
                 $html .= '</div>';
 
                 return $html;
@@ -38,7 +45,7 @@ class CouponService implements CouponServiceInterface
             'is_minimum_purchase' => $request->is_minimum_purchase,
             'minimum_purchase_amount' => isset($request->is_minimum_purchase) ? $request->minimum_purchase_amount : 0,
             'is_maximum_usage' => $request->is_maximum_usage,
-            'no_of_usage' => $request->is_maximum_usage ==  BooleanType::True->value ? $request->no_of_usage : 0,
+            'no_of_usage' => $request->is_maximum_usage == BooleanType::True->value ? $request->no_of_usage : 0,
         ];
 
         Coupon::create($data);
@@ -56,10 +63,20 @@ class CouponService implements CouponServiceInterface
             'is_minimum_purchase' => $request->is_minimum_purchase,
             'minimum_purchase_amount' => $request->is_minimum_purchase == BooleanType::True->value ? $request->minimum_purchase_amount : 0,
             'is_maximum_usage' => $request->is_maximum_usage,
-            'no_of_usage' => $request->is_maximum_usage ==  BooleanType::True->value ? $request->no_of_usage : 0,
+            'no_of_usage' => $request->is_maximum_usage == BooleanType::True->value ? $request->no_of_usage : 0,
         ];
 
         $coupon->update($data);
+    }
+
+    public function increaseCouponNumberOfUsed(string $code): void
+    {
+        $coupon = $this->singleCouponByCode(code: $code);
+
+        if (isset($coupon)) {
+            $coupon->no_of_used += 1;
+            $coupon->save();
+        }
     }
 
     public function deleteCoupon(int $id): array

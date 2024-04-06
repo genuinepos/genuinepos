@@ -8,7 +8,7 @@
         <div class="panel-header">
             <h5>{{ __('Users') }}</h5>
             <div>
-                @if (auth()->user()->can('create'))
+                @if (auth()->user()->can('users_create'))
 
                     <a href="{{ route('saas.users.create') }}" class="btn btn-sm btn-primary">{{ __('Add User') }}</a>
                 @endif

@@ -1,11 +1,15 @@
 <x-saas::admin-layout>
     <div class="dashboard-breadcrumb mb-30">
         <h2>{{ __("Dashboard") }}</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            Launch demo modal
+          </button>
         <div class="input-group dashboard-filter">
             <input type="text" class="form-control" name="basic" id="dashboardFilter" readonly>
             <label for="dashboardFilter" class="input-group-text"><i class="fa-light fa-calendar-days"></i></label>
         </div>
     </div>
+
     <div class="row mb-30">
         <div class="col-lg-3 col-6 col-xs-12">
             <div class="dashboard-top-box d-block rounded border-0 panel-bg">
@@ -88,6 +92,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-8">
             <div class="panel chart-panel-1">
@@ -248,6 +253,7 @@
                 <h1 class="modal-title" id="addTaskModalLabel">Add New Task</h1>
                 <button type="button" class="btn btn-sm btn-icon btn-outline-primary" data-bs-dismiss="modal" aria-label="Close"><i class="fa-light fa-xmark"></i></button>
             </div>
+
             <div class="modal-body">
                 <div class="row g-3">
                     <div class="col-12">

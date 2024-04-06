@@ -8,7 +8,10 @@
         <div class="panel-header">
             <h5>{{ __('Coupons') }}</h5>
             <div>
-                <a href="{{route('saas.coupons.create')}}" class="btn btn-sm btn-primary">{{ __('Create Coupon') }}</a>
+                @if (auth()->user()->can('users_create'))
+
+                    <a href="{{route('saas.coupons.create')}}" class="btn btn-sm btn-primary">{{ __('Create Coupon') }}</a>
+                @endif
             </div>
         </div>
         <div class="panel-body">
@@ -27,15 +30,12 @@
                                 <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 
     @push('js')
         <script>
@@ -73,7 +73,7 @@
                         name: 'no_of_used',
                         data: 'no_of_used'
                     },
-                    
+
                     {
                         name: 'action',
                         data: 'action'

@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-
-            if (!Schema::hasColumn('subscriptions', 'domain_name')) {
-
-                $table->string('domain_name', 255)->after('id')->nullable();
-            }
+        Schema::table('users', function (Blueprint $table) {
+            
+            $table->string('password', 255)->nullable()->change()->default(null);
         });
     }
 
@@ -25,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
 
-            $table->dropColumn('domain_name');
+            $table->string('password', 255)->change();
         });
     }
 };

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('payment_method_name')->nullable();
             $table->string('payment_trans_id')->nullable();
             $table->decimal('net_total', 22, 2)->default(0);
+            $table->string('coupon_code', 255)->nullable();
+            $table->decimal('discount_percent', 22, 2)->default(0);
             $table->decimal('discount', 22, 2)->default(0);
             $table->decimal('total_payable_amount', 22, 2);
             $table->decimal('paid', 22, 2)->default(0);

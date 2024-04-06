@@ -19,7 +19,7 @@
                 <div class="panel-body">
                     <form method="POST" action="{{ route('saas.roles.update', $role->id) }}" id="roleStoreForm" enctype="multipart/form-data">
                         @csrf
-                        @method('PATCh')
+                        @method('PATCH')
                         <div class="row g-3">
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="name" class="form-label"><strong>{{ __('Role Name') }}</strong><span class="text-danger">*</span></label>

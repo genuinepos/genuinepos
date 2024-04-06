@@ -21,29 +21,51 @@ class SubscriptionTransactionService
         return $query;
     }
 
-    public function addSubscriptionTransaction(object $request, object $subscription, bool $isTrialPlan, int $transactionType, ?object $plan): void
+    public function addSubscriptionTransaction(object $request, object $subscription, int $transactionType, $transactionDetailsType, ?object $plan = null): void
     {
-        $transaction = new SubscriptionTransaction();
-        $transaction->transaction_type = $transactionType;
-        $transaction->subscription_id = $subscription->id;
-        $transaction->plan_id = $subscription->plan_id;
-        $transaction->payment_method_name = 'Cash-On-Delivery';
-        $transaction->payment_trans_id = 'N/A';
-        $transaction->net_total = isset($request->net_total) ? $request->net_total : 0;
-        $transaction->discount_percent = isset($request->discount_percent) ? $request->discount_percent : 0;
-        $transaction->discount = isset($request->discount) ? $request->discount : 0;
-        $transaction->total_payable_amount = $request->total_payable;
-        $transaction->paid = isset($request->total_payable) ? $request->total_payable : 0;
-        $transaction->payment_status = BooleanType::True->value;
-        $transaction->payment_date = Carbon::now();
+        $addTransaction = new SubscriptionTransaction();
+        $addTransaction->transaction_type = $transactionType;
+        $addTransaction->subscription_id = $subscription->id;
+        $addTransaction->plan_id = $plan?->id;
+        $addTransaction->payment_method_name = $request->payment_method_name;
+        $addTransaction->payment_trans_id = $request->payment_trans_id;
+        $addTransaction->net_total = isset($request->net_total) ? $request->net_total : 0;
+        $addTransaction->coupon_code = isset($request->coupon_code) ? $request->coupon_code : 0;
+        $addTransaction->discount_percent = isset($request->discount_percent) ? $request->discount_percent : 0;
+        $addTransaction->discount = isset($request->discount) ? $request->discount : 0;
+        $addTransaction->total_payable_amount = isset($request->total_payable) ? $request->total_payable : 0;
+        $addTransaction->paid = $request->payment_status == BooleanType::True->value ? $request->total_payable : 0;
+        $addTransaction->due = $request->payment_status == BooleanType::False->value ? $request->total_payable : 0;
+        $addTransaction->payment_status = $request->payment_status;
+        $addTransaction->payment_date = $request->payment_status == BooleanType::True->value ? Carbon::now() : null;
+        $addTransaction->details_type = $transactionDetailsType;
 
-        $transaction->details_type = SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value;
+        $transactionDetails = $this->transactionDetails(request: $request, detailsType: $transactionDetailsType, plan: $plan);
+        $addTransaction->details = $transactionDetails;
 
-        $transactionDetails = $this->transactionDetails(request: $request, detailsType: SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value, plan: $plan);
+        $addTransaction->save();
 
-        $transaction->details = $transactionDetails;
+        // $transaction = new SubscriptionTransaction();
+        // $transaction->transaction_type = $transactionType;
+        // $transaction->subscription_id = $subscription->id;
+        // $transaction->plan_id = $plan?->id;
+        // $transaction->payment_method_name = isset($request->payment_method_name) ? $request->payment_method_name : 'Cash-On-Delivery';
+        // $transaction->payment_trans_id = 'N/A';
+        // $transaction->net_total = isset($request->net_total) ? $request->net_total : 0;
+        // $transaction->discount_percent = isset($request->discount_percent) ? $request->discount_percent : 0;
+        // $transaction->discount = isset($request->discount) ? $request->discount : 0;
+        // $transaction->total_payable_amount = $request->total_payable;
+        // $transaction->paid = isset($request->total_payable) ? $request->total_payable : 0;
+        // $transaction->payment_status = BooleanType::True->value;
+        // $transaction->payment_date = Carbon::now();
 
-        $transaction->save();
+        // $transaction->details_type = SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value;
+
+        // $transactionDetails = $this->transactionDetails(request: $request, detailsType: SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value, plan: $plan);
+
+        // $transaction->details = $transactionDetails;
+
+        // $transaction->save();
     }
 
     function transactionDetails(object $request, string $detailsType, ?object $plan)
@@ -123,6 +145,18 @@ class SubscriptionTransactionService
             return [
                 'net_total' => isset($request->net_total) ? $request->net_total : 0,
                 'total_adjusted_amount' => isset($request->total_adjusted_amount) ? $request->total_adjusted_amount : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
+            ];
+        } elseif ($detailsType == 'add_shop') {
+
+            return [
+                'increase_shop_count' => isset($request->increase_shop_count) ? $request->increase_shop_count : 0,
+                'shop_price_period' => isset($request->shop_price_period) ? $request->shop_price_period : null,
+                'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
                 'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
                 'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
                 'discount' => isset($request->discount) ? $request->discount : 0,

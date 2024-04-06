@@ -281,6 +281,12 @@
 </script>
 
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(document).on('submit', '#tenantStoreForm', function(e) {
         e.preventDefault();
 
@@ -323,7 +329,35 @@
                 $('#response-message').addClass('d-none');
                 toastr.error('Something went wrong');
                 toastr.error(err.responseJSON.message);
+                var domain = $('#domain').val();
+                $('#delete_domain').val(domain);
+                $('#deleteFailedTenant').submit();
+            }
+        });
+    });
+
+    $(document).on('submit', '#deleteFailedTenant', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: request ,
+            async: false,
+            success: function(res) {
+
                 location.reload(true);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    location.reload(true);
+                    return;
+                }
             }
         });
     });

@@ -187,7 +187,8 @@
                 success: function(res) {
 
                     pass = true;
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     pass = false;
                     toastr.error(Object.values(err.responseJSON.errors)[0]);
@@ -315,21 +316,21 @@
 
                 $('#period_count_header').html('Months');
                 $('#plan_price').val(parseFloat(shop_price_per_month));
-                $('#span_plan_price').html(parseFloat(shop_price_per_month).toFixed(2));
+                $('#span_plan_price').html(bdFormat(shop_price_per_month));
                 $('.period_count').removeClass('d-none');
                 $('#fixed_period_text').html('');
             } else if (shop_price_period == 'year') {
 
                 $('#period_count_header').html('Years');
                 $('#plan_price').val(parseFloat(shop_price_per_year));
-                $('#span_plan_price').html(parseFloat(shop_price_per_year).toFixed(2));
+                $('#span_plan_price').html(bdFormat(shop_price_per_year));
                 $('.period_count').removeClass('d-none');
                 $('#fixed_period_text').html('');
             } else if (shop_price_period == 'lifetime') {
 
                 $('#period_count_header').html('Years');
                 $('#plan_price').val(parseFloat(shop_lifetime_price));
-                $('#span_plan_price').html(parseFloat(shop_lifetime_price).toFixed(2));
+                $('#span_plan_price').html(bdFormat(shop_lifetime_price));
                 $('.period_count').addClass('d-none');
                 $('#fixed_period_text').removeClass('d-none');
                 $('#fixed_period_text').html('Lifetime');
@@ -353,19 +354,19 @@
             if (business_price_period == 'month') {
 
                 $('#business_price').val(parseFloat(business_price_per_month));
-                $('#span_business_price').html(parseFloat(business_price_per_month).toFixed(2));
+                $('#span_business_price').html(bdFormat(business_price_per_month));
                 $('.business_price_period_count').removeClass('d-none');
                 $('#business_fixed_price_period_text').html('');
             } else if (business_price_period == 'year') {
 
                 $('#business_price').val(parseFloat(business_price_per_year));
-                $('#span_business_price').html(parseFloat(business_price_per_year).toFixed(2));
+                $('#span_business_price').html(bdFormat(business_price_per_year));
                 $('.business_price_period_count').removeClass('d-none');
                 $('#business_fixed_price_period_text').html('');
             } else if (business_price_period == 'lifetime') {
 
                 $('#business_price').val(parseFloat(business_lifetime_price));
-                $('#span_business_price').html(parseFloat(business_lifetime_price).toFixed(2));
+                $('#span_business_price').html(bdFormat(business_lifetime_price));
                 $('.business_price_period_count').addClass('d-none');
                 $('#business_fixed_price_period_text').removeClass('d-none');
                 $('#business_fixed_price_period_text').html('Lifetime');
@@ -394,18 +395,18 @@
 
             var shopSubtotal = (parseFloat(plan_price) * parseFloat(shop_count)) * parseFloat(__shop_price_period_count);
             $('#shop_subtotal').val(parseFloat(shopSubtotal).toFixed(2));
-            $('#span_shop_subtotal').html(parseFloat(shopSubtotal).toFixed(2));
+            $('#span_shop_subtotal').html(bdFormat(shopSubtotal));
             var businessSubtotal = (parseFloat(business_price) * parseFloat(__business_price_period_count));
             $('#business_subtotal').val(parseFloat(businessSubtotal).toFixed(2));
-            $('#span_business_subtotal').html(parseFloat(businessSubtotal).toFixed(2));
+            $('#span_business_subtotal').html(bdFormat(businessSubtotal));
             var netTotal = parseFloat(shopSubtotal) + parseFloat(businessSubtotal);
             $('#net_total').val(parseFloat(netTotal));
-            $('.span_net_total').html(parseFloat(netTotal).toFixed(2));
+            $('.span_net_total').html(bdFormat(netTotal));
 
             var totalPayableAmount = parseFloat(shopSubtotal) + parseFloat(businessSubtotal) - parseFloat(discount)
             $('.span_total_shop_count').html(parseInt(shop_count));
             $('#total_payable').val(parseFloat(totalPayableAmount));
-            $('.span_total_payable').html(parseFloat(totalPayableAmount).toFixed(2));
+            $('.span_total_payable').html(bdFormat(totalPayableAmount));
         }
     }
 
@@ -441,10 +442,10 @@
 
             var html = '';
             html += '<tr id="add_business_tr">';
-            html += '<td>Multi Store Management System</td>';
+            html += '<td>'+"{{ __('Multi Store Management System') }}"+'</td>';
             html += '<td>';
             html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(initialBusinessPrice).toFixed(2) + '">';
-            html += '<span class="price-txt"><span id="span_business_price">' + parseFloat(initialBusinessPrice).toFixed(2) + '</span></span>';
+            html += '<span class="price-txt">' + "{{ $planPriceCurrency }}" + '<span id="span_business_price">' + bdFormat(initialBusinessPrice) + '</span></span>';
             html += '</td>';
 
             html += '<td class="text-start">';
@@ -462,7 +463,7 @@
             html += '</td>';
 
             html += '<td>';
-            html += '<label>Period Count</label>';
+            html += '<label>'+"{{ __('Period Count') }}"+'</label>';
             html += '<div class="product-count cart-product-count business_price_period_count ' + (shop_price_period == 'lifetime' ? "d-none" : '') + '">';
             html += '<div class="quantity rapper-quantity">';
             html += '<input readonly name="business_price_period_count" id="business_price_period_count" type="number" min="1" step="1" value="1">';
@@ -481,7 +482,7 @@
 
             html += '<td>';
             html += '<input type="hidden" name="business_subtotal" id="business_subtotal" value="' + parseFloat(initialBusinessPrice).toFixed(2) + '">';
-            html += '<span class="price-txt"><span id="span_business_subtotal">' + parseFloat(initialBusinessPrice).toFixed(2) + '</span></span>';
+            html += '<span class="price-txt">' + "{{ $planPriceCurrency }}" + '<span id="span_business_subtotal">' + bdFormat(initialBusinessPrice) + '</span></span>';
             html += '</td>';
             html += '</tr>';
 
@@ -578,7 +579,7 @@
                     return;
                 } else if (err.status == 500) {
 
-                    console.log('Server error.');;
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                     return;
                 }
             }
@@ -626,16 +627,45 @@
             data: request,
             success: function(res) {
 
-                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">'+res+'</span></span>');
+                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">' + res + '</span></span>');
                 // $('#successSection').removeClass('d-none');
 
                 window.location = res;
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('#response-message').addClass('d-none');
                 toastr.error('Something went wrong');
                 toastr.error(err.responseJSON.message);
+                var domain = $('#domain').val();
+                $('#delete_domain').val(domain);
+                $('#deleteFailedTenant').submit();
+            }
+        });
+    });
+
+    $(document).on('submit', '#deleteFailedTenant', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('action');
+        var request = $(this).serialize();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: request ,
+            async: false,
+            success: function(res) {
+
                 location.reload(true);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    location.reload(true);
+                    return;
+                }
             }
         });
     });
@@ -647,4 +677,86 @@
         }, 100);
 
     }, 13000);
+</script>
+
+<script>
+    $(document).on('click', '#remove_applied_coupon', function(e) {
+        e.preventDefault();
+        var discount = $('#discount').val();
+        var totalPayable = $('#total_payable').val();
+        $('#coupon_code').val('');
+        $('#coupon_id').val('');
+        $('#coupon_success_msg').hide();
+        $('#coupon_code_applying_area').show();
+
+        var currentTotalPayable = parseFloat(totalPayable) + parseFloat(discount);
+        $('#total_payable').val(parseFloat(currentTotalPayable).toFixed(0));
+        $('.span_total_payable').html(bdFormat(parseFloat(currentTotalPayable).toFixed(0)));
+        $('#discount').val(0);
+        $('.span_discount').html(parseFloat(0).toFixed(2));
+    });
+
+    $(document).on('click', '#applyCouponBtn', function(e) {
+        e.preventDefault();
+
+        var coupon_code = $('#coupon_code').val();
+        var total_payable = $('#total_payable').val();
+        if (coupon_code == '') {
+
+            toastr.error("{{ __('Please enter a valid coupon code.') }}");
+            return;
+        }
+
+        $('#applyCouponBtn').hide();
+        $('#applyCouponLodingBtn').show();
+        var url = "{{ route('saas.guest.plan.confirm.check.coupon.code') }}";
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { coupon_code, total_payable },
+            success: function(data) {
+
+                $('#applyCouponBtn').show();
+                $('#applyCouponLodingBtn').hide();
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $('#applied_coupon_code').html(data.code);
+                $('#coupon_id').val(data.id);
+                var discountPercent = data.percent;
+                $('#discount_percent').val(data.percent);
+                $('#coupon_success_msg').show();
+                $('#coupon_code_applying_area').hide();
+                var totalPayable = $('#total_payable').val();
+
+                var discount = ((parseFloat(totalPayable) / 100) * parseFloat(discountPercent));
+                $('#discount').val(parseFloat(discount));
+                $('.span_discount').html('(' + data.percent + '%=' + bdFormat(parseFloat(discount).toFixed(0)) + ')');
+
+                var currentTotalPayable = parseFloat(totalPayable) - parseFloat(discount);
+                $('#total_payable').val(parseFloat(currentTotalPayable).toFixed(0));
+                $('.span_total_payable').html(bdFormat(parseFloat(currentTotalPayable).toFixed(0)));
+
+                toastr.success("{{ __('Coupon is applied successfully.') }}");
+            },
+            error: function(err) {
+
+                $('#applyCouponBtn').show();
+                $('#applyCouponLodingBtn').hide();
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error.');
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    });
 </script>

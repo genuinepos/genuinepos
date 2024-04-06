@@ -199,4 +199,6 @@ return [
         '--class' => 'DatabaseSeeder', // root seeder class
         '--force' => true,
     ],
+
+    'delete_database_after_tenant_deletion' => true,
 ];

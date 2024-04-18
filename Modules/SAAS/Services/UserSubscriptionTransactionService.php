@@ -125,6 +125,28 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
                 'discount' => isset($request->discount) ? $request->discount : 0,
                 'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
             ];
+        } elseif ($detailsType == 'shop_renew') {
+
+            return [
+                'data' => $request->all(),
+                'has_business' => isset($request->has_business) ? 1 : 0,
+                'total_renew_shop' => isset($request->shop_expire_date_history_ids) ? count($request->shop_expire_date_history_ids) : 0,
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
+            ];
+        } elseif ($detailsType == 'add_business') {
+
+            return [
+                'data' => $request->all(),
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
+            ];
         }
     }
 }

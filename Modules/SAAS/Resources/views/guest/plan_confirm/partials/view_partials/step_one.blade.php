@@ -65,8 +65,8 @@
                                 $defaultPricePeriod = \Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->lifetime_price);
                             }
                         @endphp
-                        <input type="hidden" name="plan_price" id="plan_price" value="{{ $defaultPricePeriod }}">
-                        <span class="price-txt">{{ $planPriceCurrency }} <span id="span_plan_price">{{ \App\Utils\Converter::format_in_bdt($defaultPricePeriod) }}</span></span>
+                        <input type="hidden" name="shop_price" id="shop_price" value="{{ $defaultPricePeriod }}">
+                        <span class="price-txt">{{ $planPriceCurrency }} <span id="span_shop_price">{{ \App\Utils\Converter::format_in_bdt($defaultPricePeriod) }}</span></span>
                     </td>
                     <td>
                         <div class="product-count cart-product-count">
@@ -85,7 +85,7 @@
                     </td>
 
                     <td>
-                        <div class="product-count cart-product-count period_count {{ $pricePeriod == 'lifetime' ? 'd-none' : '' }}">
+                        <div class="product-count cart-product-count shop_price_period_count {{ $pricePeriod == 'lifetime' ? 'd-none' : '' }}">
                             <div class="quantity rapper-quantity">
                                 <input readonly name="shop_price_period_count" id="shop_price_period_count" type="number" min="1" step="1" value="1">
                                 <div class="quantity-nav">

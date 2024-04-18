@@ -4,6 +4,7 @@ namespace Modules\SAAS\Services;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
+use App\Enums\SubscriptionUpdateType;
 use Modules\SAAS\Entities\UserSubscription;
 use Modules\SAAS\Utils\ExpireDateAllocation;
 use Modules\SAAS\Interfaces\UserServiceInterface;
@@ -87,6 +88,24 @@ class UserSubscriptionService implements UserSubscriptionServiceInterface
             } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddShop->value) {
 
                 $updateUserSubscription->current_shop_count = $updateSubscription->current_shop_count + $request->increase_shop_count;
+            } else if ($subscriptionUpdateType == SubscriptionUpdateType::ShopRenew->value) {
+
+                if ($request->has_business && $updateUserSubscription->has_business) {
+
+                    $startDate = date('Y-m-d') <= $updateUserSubscription->business_expire_date ? $updateUserSubscription->business_expire_date : null;
+                    $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count, startDate: $startDate);
+
+                    $updateUserSubscription->business_price_period = $request->business_price_period;
+                    $updateUserSubscription->business_expire_date = $expireDate;
+                }
+            } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddBusiness->value) {
+
+                $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count);
+
+                $updateUserSubscription->has_business = BooleanType::True->value;
+                $updateUserSubscription->business_price_period = $request->business_price_period;
+                $updateUserSubscription->business_start_date = Carbon::now();
+                $updateUserSubscription->business_expire_date = $expireDate;
             }
 
             $updateUserSubscription->save();

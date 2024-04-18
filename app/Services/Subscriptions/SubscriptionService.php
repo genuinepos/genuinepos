@@ -45,10 +45,10 @@ class SubscriptionService
 
                 $addSubscription->business_expire_date = $expireDate;
 
-                $business = isset($request->has_business) ? 1 : 0;
-                $shopPlusBusiness = $request->shop_count + $business;
-                $totalPayableInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->total_payable);
-                $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
+                $discountPercent = isset($request->discount_percent) ? isset($request->discount_percent) : 0;
+                $businessPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->business_price);
+                $discountAmount = ($businessPriceInUsd / 100) * $discountPercent;
+                $adjustablePrice = round($businessPriceInUsd - $discountAmount, 0);
 
                 $addSubscription->business_adjustable_price = $adjustablePrice;
             }
@@ -96,10 +96,11 @@ class SubscriptionService
 
                     $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count);
 
-                    $business = isset($request->has_business) ? 1 : 0;
-                    $shopPlusBusiness = $request->shop_count + $business;
-                    $totalPayableInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->total_payable);
-                    $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
+                    $discountPercent = isset($discountPercent) ? $discountPercent : 0;
+                    $businessPriceInUsd = $request->business_price ? AmountInUsdIfLocationIsBd::amountInUsd($request->business_price) : 0;
+
+                    $discountAmount = ($businessPriceInUsd / 100) * $discountPercent;
+                    $adjustablePrice = round($businessPriceInUsd - $discountAmount, 0);
 
                     $updateSubscription->business_adjustable_price = $adjustablePrice;
                     $updateSubscription->business_expire_date = $expireDate;
@@ -114,28 +115,61 @@ class SubscriptionService
 
                 if ($updateSubscription->has_business == BooleanType::True->value) {
 
-                    $currentBusinessPrice = 0;
+                    $businessPriceInUsd = 0;
                     if ($updateSubscription->business_price_period == 'month') {
 
-                        $currentBusinessPrice = $plan->business_price_per_month;
+                        $businessPriceInUsd = $plan->business_price_per_month;
                     } elseif ($updateSubscription->business_price_period == 'year') {
 
-                        $currentBusinessPrice = $plan->business_price_per_year;
+                        $businessPriceInUsd = $plan->business_price_per_year;
                     } elseif ($updateSubscription->business_price_period == 'lifetime') {
 
-                        $currentBusinessPrice = $plan->business_lifetime_price;
+                        $businessPriceInUsd = $plan->business_lifetime_price;
                     }
 
                     $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
 
-                    $discountAmount = ($currentBusinessPrice / 100) * $discountPercent;
-                    $currentAdjustablePrice = $currentBusinessPrice - $discountAmount;
-                    $updateSubscription->business_adjustable_price = $currentAdjustablePrice;
+                    $discountAmount = ($businessPriceInUsd / 100) * $discountPercent;
+                    $adjustablePrice = round($businessPriceInUsd - $discountAmount, 0);
+
+                    $updateSubscription->business_adjustable_price = $adjustablePrice;
                 }
             }
         } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddShop->value) {
 
             $updateSubscription->current_shop_count = $updateSubscription->current_shop_count + $request->increase_shop_count;
+        } else if ($subscriptionUpdateType == SubscriptionUpdateType::ShopRenew->value) {
+
+            if ($request->has_business) {
+
+                $startDate = date('Y-m-d') <= $updateSubscription->business_expire_date ? $updateSubscription->business_expire_date : null;
+                $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count, startDate: $startDate);
+
+                $discountPercent = isset($discountPercent) ? $discountPercent : 0;
+                $businessPriceInUsd = $request->business_price ? AmountInUsdIfLocationIsBd::amountInUsd($request->business_price) : 0;
+
+                $discountAmount = ($businessPriceInUsd / 100) * $discountPercent;
+                $adjustablePrice = round($businessPriceInUsd - $discountAmount, 0);
+
+                $updateSubscription->business_adjustable_price = $adjustablePrice;
+                $updateSubscription->business_price_period = $request->business_price_period;
+                $updateSubscription->business_expire_date = $expireDate;
+            }
+        } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddBusiness->value) {
+
+            $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count);
+
+            $discountPercent = isset($discountPercent) ? $discountPercent : 0;
+            $businessPriceInUsd = $request->business_price ? AmountInUsdIfLocationIsBd::amountInUsd($request->business_price) : 0;
+
+            $discountAmount = ($businessPriceInUsd / 100) * $discountPercent;
+            $adjustablePrice = round($businessPriceInUsd - $discountAmount, 0);
+
+            $updateSubscription->has_business = BooleanType::True->value;
+            $updateSubscription->business_adjustable_price = $adjustablePrice;
+            $updateSubscription->business_price_period = $request->business_price_period;
+            $updateSubscription->business_start_date = Carbon::now();
+            $updateSubscription->business_expire_date = $expireDate;
         }
 
         $updateSubscription->save();

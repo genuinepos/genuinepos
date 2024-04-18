@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Increase Shop Invoice | Gpos System</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
@@ -398,7 +397,7 @@
 @endphp
 <body>
     <div class="email-container">
-        <h2 class="page-title">Invoice</h2>
+        <h2 class="page-title">Increase Shop Count</h2>
         <table>
             <tbody>
                 <tr>
@@ -408,9 +407,9 @@
                                 <img style="height: height; width:auto;" src="{{ url('/') }}/assets/images/app_logo.png" alt="System Logo" class="logo__img">
                             </div>
                             <div class="content_customer" style="text-align: right;">
-                                <span style="font-weight: bold;">Gpos System</span> <br>
-                                Address : Sector 6, Road no 13A, House No 8, Uttara, Dhaka, Bangladesh. <br>
-                                <span style="font-weight: bold;">Phone:</span> +880 179 22 88 555 <span style="font-weight: bold;">Email:</span> speeddigitinfo@gmail.com
+                                <span style="font-weight: bold;">{{ config('speeddigit.name') }}</span> <br>
+                                Address : {{ config('speeddigit.address') }} <br>
+                                <span style="font-weight: bold;">Phone:</span> {{ config('speeddigit.phone') }} <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
                             </div>
                         </div>
                     </td>
@@ -480,10 +479,10 @@
                         <div class="mail-footer">
                             <div class="logo"><img src="{{ url('/') }}/assets/logo/logo.png" alt="LOGO"></div>
                             <div class="footer-social">
-                                <a href="https://www.facebook.com/speeddigit" title="Facebook" target="_blank"><img src="{{ url('/') }}/assets/social/facebook.png" alt="facebook"></a>
-                                <a href="https://www.instagram.com/speeddigit.official/" title="Instagram" target="_blank"><img src="{{ url('/') }}/assets/social/instagram.png" alt="instagram"></a>
-                                <a href="https://twitter.com/speeddigit" title="Twitter" target="_blank"><img src="{{ url('/') }}/assets/social/twitter.png" alt="twitter"></a>
-                                <a href="https://www.linkedin.com/company/speeddigit-pvt-ltd" title="Linkedin" target="_blank"><img src="{{ url('/') }}/assets/social/linkedin.png" alt="linkedin"></a>
+                                <a href="{{ config('speeddigit.facebook') }}" title="Facebook" target="_blank"><img src="{{ url('/') }}/assets/social/facebook.png" alt="facebook"></a>
+                                <a href="{{ config('speeddigit.Instagram') }}" title="Instagram" target="_blank"><img src="{{ url('/') }}/assets/social/instagram.png" alt="instagram"></a>
+                                <a href="{{ config('speeddigit.twitter') }}" title="Twitter" target="_blank"><img src="{{ url('/') }}/assets/social/twitter.png" alt="twitter"></a>
+                                <a href="{{ config('speeddigit.linkedin') }}" title="Linkedin" target="_blank"><img src="{{ url('/') }}/assets/social/linkedin.png" alt="linkedin"></a>
                             </div>
                         </div>
                     </td>

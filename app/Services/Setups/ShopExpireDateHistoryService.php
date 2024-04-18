@@ -34,7 +34,7 @@ class ShopExpireDateHistoryService
 
     function updateShopExpireDateHistory(int $id, ?string $shopPricePeriod = null, ?float $adjustablePrice = null, ?string $expireDate = null, ?bool $isCreated = null): void
     {
-        $updateShopExpireDateHistory = $this->singleShopExpireDateHistory(id: $id);
+        $updateShopExpireDateHistory = $this->singleShopExpireDateHistory(id: $id, with: ['branch']);
         if (isset($updateShopExpireDateHistory)) {
 
             $updateShopExpireDateHistory->price_period = isset($shopPricePeriod) ? $shopPricePeriod : $updateShopExpireDateHistory->price_period;
@@ -42,6 +42,12 @@ class ShopExpireDateHistoryService
             $updateShopExpireDateHistory->expire_date = isset($expireDate) ? $expireDate : $updateShopExpireDateHistory->expire_date;
             $updateShopExpireDateHistory->is_created = isset($isCreated) ? $isCreated : $updateShopExpireDateHistory->is_created;
             $updateShopExpireDateHistory->save();
+
+            if ($updateShopExpireDateHistory?->branch && isset($expireDate)) {
+
+                $updateShopExpireDateHistory->branch->expire_date = $expireDate;
+                $updateShopExpireDateHistory->branch->save();
+            }
         }
     }
 
@@ -64,8 +70,7 @@ class ShopExpireDateHistoryService
         }
 
         $discountAmount = ($currentShopPrice / 100) * $discountPercent;
-
-        $currentAdjustablePrice = $currentShopPrice - $discountAmount;
+        $currentAdjustablePrice = round($currentShopPrice - $discountAmount, 0);
 
         $shopExpireDateHistory->price_period = $pricePeriod;
         $shopExpireDateHistory->adjustable_price = $currentAdjustablePrice;

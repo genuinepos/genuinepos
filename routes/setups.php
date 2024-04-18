@@ -6,6 +6,7 @@ use App\Http\Controllers\Setups\AddShopController;
 use App\Http\Controllers\Setups\StartupController;
 use App\Http\Controllers\Setups\ShopRenewController;
 use App\Http\Controllers\Setups\WarehouseController;
+use App\Http\Controllers\Setups\AddBusinessController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
 use App\Http\Controllers\Setups\UpgradePlanController;
@@ -168,6 +169,12 @@ Route::prefix('setups')->group(function () {
 
             Route::get('cart', 'cart')->name('software.service.billing.add.shop.cart');
             Route::post('confirm', 'confirm')->name('software.service.billing.add.shop.confirm');
+        });
+
+        Route::controller(AddBusinessController::class)->prefix('add-business')->group(function () {
+
+            Route::get('cart', 'cart')->name('software.service.billing.add.business.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.add.business.confirm');
         });
 
         Route::controller(ShopRenewController::class)->prefix('shop-renew')->group(function () {

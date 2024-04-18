@@ -61,8 +61,8 @@
                             </select>
                         </td>
                         <td>
-                            <input type="hidden" name="plan_price" id="plan_price" value="">
-                            <span class="price-txt"><span id="span_plan_price"></span></span>
+                            <input type="hidden" name="shop_price" id="shop_price" value="">
+                            <span class="price-txt"><span id="span_shop_price"></span></span>
                         </td>
                         <td>
                             <div class="product-count cart-product-count">

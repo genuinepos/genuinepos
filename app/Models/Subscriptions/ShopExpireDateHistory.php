@@ -2,21 +2,18 @@
 
 namespace App\Models\Subscriptions;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Setups\Branch;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ShopExpireDateHistory extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
-    //     'count', 'created_count', 'left_count', 'start_at', 'end_at'
-    // ];
-
     protected $guarded = [];
 
-    // protected $casts = [
-    //     'start_at' => 'datetime',
-    //     'end_at' => 'datetime',
-    // ];
+    public function branch()
+    {
+        return $this->hasOne(Branch::class, 'shop_expire_date_history_id');
+    }
 }

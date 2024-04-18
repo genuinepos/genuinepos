@@ -47,7 +47,28 @@
                                 $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
                             @endphp
                             <p class="text-white mt-1">
-                                <span class="text-white">{{ __('Shop Expire On') }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
+                                @if (date('Y-m-d') > $branchExpireDate)
+
+                                    <span class="text-white">{{ __('Shop') }} | {{ __('Expired On') }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
+                                @else
+
+                                    <span class="text-white">{{ __('Shop') }} | {{ __('Expire On') }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
+                                @endif
+                            </p>
+                        @else
+                            @php
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                                $businessExpireDate = $generalSettings['subscription']->business_expire_date;
+                                $__businessExpireDate = date($dateFormat, strtotime($businessExpireDate));
+                            @endphp
+                            <p class="text-white mt-1">
+                                @if (date('Y-m-d') > $businessExpireDate)
+
+                                    <span class="text-white">{{ __("Business | Expired On") }}</span> : <span class="text-danger">{{ $__businessExpireDate }}</span>
+                                @else
+
+                                    <span class="text-white">{{ __("Business | Expire On") }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
+                                @endif
                             </p>
                         @endif
                     @endif

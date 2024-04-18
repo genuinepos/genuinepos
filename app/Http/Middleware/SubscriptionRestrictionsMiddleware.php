@@ -104,7 +104,7 @@ class SubscriptionRestrictionsMiddleware
             } else {
 
                 auth()->logout();
-                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact your Business/Authority'));
+                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact your Authority'));
             }
         } elseif (
             !auth()->user()?->branch_id &&
@@ -116,7 +116,7 @@ class SubscriptionRestrictionsMiddleware
             } else {
 
                 auth()->logout();
-                return response()->json(['businessExpired' => __('Shop is expired. Please contact your Business/Authority')]);
+                return response()->json(['businessExpired' => __('Shop is expired. Please contact your Authority')]);
             }
         }
 

@@ -92,10 +92,10 @@ class TenantService implements TenantServiceInterface
 
                     if ($plan->is_trial_plan == BooleanType::False->value) {
 
-                        $business = isset($request->has_business) ? 1 : 0;
-                        $shopPlusBusiness = $request->shop_count + $business;
-                        $totalPayableInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->total_payable);
-                        $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
+                        $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
+                        $shopPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->shop_price);
+                        $discountAmount = ($shopPriceInUsd / 100) * $discountPercent;
+                        $adjustablePrice = round($shopPriceInUsd - $discountAmount, 0);
 
                         for ($i = 0; $i < $request->shop_count; $i++) {
 

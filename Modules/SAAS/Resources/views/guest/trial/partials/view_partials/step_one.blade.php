@@ -17,7 +17,7 @@
                             <input required type="text" name="domain" id="domain" class="form-control" placeholder="{{ __("Store URL") }}" autocomplete="off">
                             <span class="txt">{{ __('.gposs.com') }}</span>
                         </div>
-                        <p class="mt-2">
+                        <p>
                             <span id="domainPreview" class="monospace"></span>
                         </p>
                     </div>

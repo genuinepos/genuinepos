@@ -445,14 +445,14 @@
     $('#add_initial_user_btn').on('click', function() {
         $('.add_initial_user_section').toggle(500);
 
-        if ($('#add_initial_user').val() == '') {
+        if ($('#add_initial_user').val() == 0) {
 
             $('#add_initial_user').val(1);
             $('#user_first_name').focus();
             $('.initial_user_required_field').prop('required', true);
-        } else {
+        } else if ($('#add_initial_user').val() == 1) {
 
-            $('#add_initial_user').val('');
+            $('#add_initial_user').val(0);
             $('#branch_save').focus();
             $('.initial_user_required_field').prop('required', false);
         }

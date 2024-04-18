@@ -134,7 +134,6 @@ class BranchService
         $addBranch->website = $request->website;
         $addBranch->expire_date = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->expire_date : null;
         $addBranch->shop_expire_date_history_id = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->id : null;
-        $addBranch->current_price_period = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->price_period : null;
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {

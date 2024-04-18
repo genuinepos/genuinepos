@@ -3,7 +3,6 @@
 namespace App\Services\Products;
 
 use App\Enums\CategoryType;
-use Illuminate\Validation\Rule;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;

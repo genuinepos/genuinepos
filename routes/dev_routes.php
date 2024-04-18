@@ -240,7 +240,9 @@ Route::get('my-test', function () {
     // return $tenantUser->userSubscription;
     // DB::reconnect();
 
-    Tenancy::find('organio')?->delete();
+    // Tenancy::find('organio')?->delete();
+
+    return config('speeddigit.facebook');
 });
 
 Route::get('t-id', function () {

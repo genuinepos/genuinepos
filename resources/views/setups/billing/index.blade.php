@@ -49,10 +49,8 @@
                                 <div class="card">
                                     <div class="card-header">
                                         @if ($generalSettings['subscription']->plan_type == 1)
-
                                             <h6>{{ $generalSettings['subscription']->plan_name }}</h6>
                                         @else
-
                                             <h6>{{ __('Custom Plan') }}</h6>
                                         @endif
                                     </div>
@@ -65,7 +63,7 @@
                                                     <td>: {{ date($dateFormat, strtotime($generalSettings['subscription']->initial_plan_start_date)) }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>{{ __('Multi Store Management System') }} / {{ __("Company") }}</th>
+                                                    <th>{{ __('Multi Store Management System') }} / {{ __('Company') }}</th>
                                                     <td>:
                                                         @if ($generalSettings['subscription']->has_business == 1)
                                                             <span class="text-success fw-bold ">
@@ -81,12 +79,12 @@
                                                 <tr>
                                                     <th>{{ __('Shop Limit') }}</th>
                                                     <td>: <span class="text-danger fw-bold">
-                                                        {{ count($branches) }}</span> / {{ $generalSettings['subscription']->current_shop_count }}
+                                                            {{ count($branches) }}</span> / {{ $generalSettings['subscription']->current_shop_count }}
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>{{ __('Current Status') }}</th>
-                                                    <td>: {{ __("Active") }}</td>
+                                                    <td>: {{ __('Active') }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -94,14 +92,16 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 @if ($generalSettings['subscription']->plan_type == 1)
-
                                     <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-danger p-2">{{ __('Upgrade Plan') }}</a>
                                 @endif
 
-                                @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add'))
+                                @if ($generalSettings['subscription']->is_trial_plan == 0 && $generalSettings['subscription']->has_business == 0 && auth()->user()->can('billing_business_add'))
+                                    <a href="{{ route('software.service.billing.add.business.cart') }}" class="btn btn-success p-2">{{ __('Add Multi Shop Management System') }}</a>
+                                @endif
 
+                                @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add'))
                                     <a href="{{ route('software.service.billing.add.shop.cart') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
                                 @endif
                             </div>
@@ -126,7 +126,7 @@
                                         <table class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th></th>
+                                                    {{-- <th></th> --}}
                                                     <th>{{ __('Serial') }}</th>
                                                     <th>{{ __('Shop Name') }}</th>
                                                     <th>{{ __('Registered On') }}</th>
@@ -138,7 +138,7 @@
                                             <tbody>
                                                 @foreach ($branches as $branch)
                                                     <tr>
-                                                        <td><input type="checkbox" name="" value="{{ $branch->id }}"></td>
+                                                        {{-- <td><input type="checkbox" name="" value="{{ $branch->id }}"></td> --}}
                                                         <td>{{ $branch->id }}</td>
                                                         <td>
                                                             @if ($branch?->parentBranch)
@@ -152,7 +152,6 @@
                                                         </td>
                                                         <td>
                                                             @if ($generalSettings['subscription']->is_trial_plan == 0)
-
                                                                 {{ date($dateFormat, strtotime($branch->expire_date)) }}
                                                             @else
                                                                 @php
@@ -174,7 +173,6 @@
                                                                     <span class="text-danger fw-bold">0</span> / Days
                                                                 @endif
                                                             @else
-
                                                                 @php
                                                                     $planStartDate = $generalSettings['subscription']->trial_start_date;
                                                                     $trialDays = $generalSettings['subscription']->trial_days;
@@ -185,9 +183,9 @@
                                                                 @endphp
 
                                                                 @if (date('Y-m-d') < date('Y-m-d', strtotime($expireDate)))
-                                                                    <span class="text-success fw-bold">{{ (new \DateTime(date('Y-m-d')))->diff(new \DateTime($expireDate))->days }}</span> / {{ __("Days") }}
+                                                                    <span class="text-success fw-bold">{{ (new \DateTime(date('Y-m-d')))->diff(new \DateTime($expireDate))->days }}</span> / {{ __('Days') }}
                                                                 @else
-                                                                    <span class="text-danger fw-bold">0</span> / {{ __("Days") }}
+                                                                    <span class="text-danger fw-bold">0</span> / {{ __('Days') }}
                                                                 @endif
                                                             @endif
                                                         </td>
@@ -224,7 +222,7 @@
                                             @forelse ($transactions as $transaction)
                                                 <tr>
                                                     <td>{{ $transaction->id }}</td>
-                                                    <td>{{ str(\App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name)->headline()}}</td>
+                                                    <td>{{ str(\App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name)->headline() }}</td>
                                                     <td>{{ $transaction->payment_date->format('d-m-Y') }}</td>
                                                     <td>{{ $transaction->payment_trans_id }}</td>
                                                     <td>{{ $transaction->total_payable_amount }}</td>
@@ -240,7 +238,7 @@
                                                     </td>
                                                 </tr>
                                             @empty
-                                                <td colspan="7" class="text-center">{{ __("No data found!") }}</td>
+                                                <td colspan="7" class="text-center">{{ __('No data found!') }}</td>
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -251,7 +249,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 

@@ -7,7 +7,6 @@
                     <div class="position-relative">
                         <label for="business">{{ __('Business Name') }} <span class="text-danger">*</span></label>
                         <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Business Name') }}" autocomplete="off">
-                        <span class="text-danger">{{ $errors->first('name') }}</span>
                     </div>
                 </div>
 
@@ -18,11 +17,9 @@
                             <input required type="text" name="domain" id="domain" class="form-control" placeholder="my-business" autocomplete="off">
                             <span class="txt">{{ __('.gposs.com') }}</span>
                         </div>
-                        <span class="text-danger">{{ $errors->first('domain') }}</span>
-                        <p class="mt-2">
+                        <p class="">
                             <span id="domainPreview" class="monospace"></span>
                         </p>
-
                     </div>
                 </div>
             </div>
@@ -34,13 +31,11 @@
                 <div class="form-col-5">
                     <label for="first-name">{{ __('Fullname') }} <span class="text-danger">*</span></label>
                     <input required type="text" name="fullname" class="form-control" id="fullname" placeholder="{{ __('Enter First Name') }}" autocomplete="off">
-                    <span class="text-danger">{{ $errors->first('fullname') }}</span>
                 </div>
 
                 <div class="form-col-5">
                     <label for="email-address">{{ __('Email') }} <span class="text-danger">*</span></label>
                     <input required type="email" name="email" class="form-control" id="email" placeholder="{{ __('Enter Email Address') }}" autocomplete="off">
-                    <span class="text-danger">{{ $errors->first('email') }}</span>
                 </div>
 
                 <div class="form-col-5">
@@ -51,13 +46,11 @@
                             <option value="{{ $currency->id }}">{{ $currency->country }}</option>
                         @endforeach
                     </select>
-                    <span class="text-danger">{{ $errors->first('currency_id') }}</span>
                 </div>
 
                 <div class="form-col-5">
                     <label for="phone">{{ __('Phone') }} <span class="text-danger">*</span></label>
                     <input required type="tel" name="phone" class="form-control" id="phone" placeholder="{{ __('Enter Phone Number') }}" autocomplete="off">
-                    <span class="text-danger">{{ $errors->first('phone') }}</span>
                 </div>
 
                 <div class="form-col-5">
@@ -74,28 +67,24 @@
                     <label for="address">{{ __('Address') }}</label>
                     <input type="text" name="address" class="form-control" id="address" placeholder="{{ __('Enter Address') }}" autocomplete="off">
                 </div>
+            </div>
 
-                <div class="form-col-10">
-                    <div class="form-row">
-                        <div class="form-col-5">
-                            <label for="username">{{ __('Username') }} <span class="text-danger">*</span></label>
-                            <input required type="text" name="username" id="username" class="form-control" placeholder="{{ __('Username') }}" autocomplete="off" />
-                            <span class="text-danger">{{ $errors->first('username') }}</span>
-                        </div>
-                    </div>
+            <div class="form-row mt-3">
+                <div class="form-col-5">
+                    <label for="username">{{ __('Username') }} <span class="text-danger">*</span></label>
+                    <input required type="text" name="username" id="username" class="form-control" placeholder="{{ __('Username') }}" autocomplete="off" />
+                </div>
+            </div>
 
-                    <div class="form-row">
-                        <div class="form-col-5">
-                            <label for="email-address">{{ __('Password') }} <span class="text-danger">*</span></label>
-                            <input required type="password" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off" />
-                            <span class="text-danger">{{ $errors->first('password') }}</span>
-                        </div>
+            <div class="form-row mt-3">
+                <div class="form-col-5">
+                    <label for="email-address">{{ __('Password') }} <span class="text-danger">*</span></label>
+                    <input required type="password" name="password" id="password" class="form-control" placeholder="{{ __('Enter Password') }}" autocomplete="off" />
+                </div>
 
-                        <div class="form-col-5">
-                            <label for="email-address">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
-                            <input required type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" autocomplete="off" />
-                        </div>
-                    </div>
+                <div class="form-col-5">
+                    <label for="email-address">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
+                    <input required type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" autocomplete="off" />
                 </div>
             </div>
         </div>

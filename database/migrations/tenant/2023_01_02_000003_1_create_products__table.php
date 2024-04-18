@@ -42,8 +42,7 @@ return new class extends Migration
             $table->boolean('is_show_emi_on_pos')->default(false);
             $table->boolean('has_batch_no_expire_date')->default(0);
             $table->boolean('is_for_sale')->default(true);
-            $table->string('attachment')->nullable();
-            $table->string('thumbnail_photo')->default('default.png');
+            $table->string('thumbnail_photo')->nullable();
             $table->string('expire_date')->nullable();
             $table->text('product_details')->nullable();
             $table->string('is_purchased')->default('0');

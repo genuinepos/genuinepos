@@ -31,7 +31,7 @@ class SubCategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = asset('uploads/category/' . $row->photo);
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -67,9 +67,16 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
             $subcategoryPhoto = $request->file('photo');
             $subcategoryPhotoName = uniqid() . '.' . $subcategoryPhoto->getClientOriginalExtension();
-            Image::make($subcategoryPhoto)->resize(250, 250)->save('uploads/category/' . $subcategoryPhotoName);
+            Image::make($subcategoryPhoto)->resize(250, 250)->save($dir . $subcategoryPhotoName);
             $addSubCategory->photo = $subcategoryPhotoName;
         }
 
@@ -87,14 +94,21 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
-            if ($updateSubcategory->photo && file_exists(public_path('uploads/category/' . $updateSubcategory->photo))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
 
-                unlink(public_path('uploads/category/' . $updateSubcategory->photo));
+            if ($updateSubcategory->photo && file_exists($dir . $updateSubcategory->photo)) {
+
+                unlink($dir . $updateSubcategory->photo);
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $subcategoryPhoto = $request->file('photo');
             $subcategoryPhotoName = uniqid() . '.' . $subcategoryPhoto->getClientOriginalExtension();
-            Image::make($subcategoryPhoto)->resize(250, 250)->save('uploads/category/' . $subcategoryPhotoName);
+            Image::make($subcategoryPhoto)->resize(250, 250)->save($dir . $subcategoryPhotoName);
             $updateSubcategory->photo = $subcategoryPhotoName;
         }
 
@@ -109,9 +123,10 @@ class SubCategoryService
 
         if (isset($deleteSubcategory)) {
 
-            if ($deleteSubcategory->photo && file_exists(public_path('uploads/category/' . $deleteSubcategory->photo))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            if ($deleteSubcategory->photo && file_exists($dir . $deleteSubcategory->photo)) {
 
-                unlink(public_path('uploads/category/' . $deleteSubcategory->photo));
+                unlink($dir . $deleteSubcategory->photo);
             }
 
             $deleteSubcategory->delete();

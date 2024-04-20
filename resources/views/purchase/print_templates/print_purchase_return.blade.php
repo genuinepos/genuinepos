@@ -64,13 +64,13 @@
 
                         @if ($return?->branch?->parent_branch_id)
 
-                            @if ($return->branch?->parentBranch?->logo != 'default.png')
+                            @if ($return->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($return->branch?->logo != 'default.png')
+                            @if ($return->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch?->name }}</span>
@@ -369,13 +369,13 @@
 
                         @if ($return?->branch?->parent_branch_id)
 
-                            @if ($return->branch?->parentBranch?->logo != 'default.png')
+                            @if ($return->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($return->branch?->logo != 'default.png')
+                            @if ($return->branch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch?->name }}</span>

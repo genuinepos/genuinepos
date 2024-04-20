@@ -16,11 +16,18 @@ class WorkspaceAttachmentService
 
             if (count($request->file('attachments')) > 0) {
 
+                $dir = public_path('uploads/' . tenant('id') . '/' . 'workspace_attachments');
+
+                if (!\File::isDirectory($dir)) {
+
+                    \File::makeDirectory($dir, 493, true);
+                }
+
                 foreach ($request->file('attachments') as $attachment) {
 
                     $wsAttachment = $attachment;
                     $wsAttachmentName = uniqid() . '.' . $wsAttachment->getClientOriginalExtension();
-                    $wsAttachment->move(public_path('uploads/workspace_attachments/'), $wsAttachmentName);
+                    $wsAttachment->move($dir, $wsAttachmentName);
 
                     WorkspaceAttachment::insert([
                         'workspace_id' => $workspaceId,
@@ -32,15 +39,18 @@ class WorkspaceAttachmentService
         }
     }
 
-    public function deleteWorkspaceAttachment(int $id) : void {
+    public function deleteWorkspaceAttachment(int $id): void
+    {
 
         $deleteWorkspaceAttachment = $this->singleWorkspaceAttachment(id: $id);
 
         if (isset($deleteWorkspaceAttachment)) {
 
-            if (file_exists(public_path('uploads/workspace_attachments/' . $deleteWorkspaceAttachment->attachment))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'workspace_attachments/');
 
-                unlink(public_path('uploads/workspace_attachments/' . $deleteWorkspaceAttachment->attachment));
+            if (file_exists($dir . $deleteWorkspaceAttachment->attachment)) {
+
+                unlink($dir . $deleteWorkspaceAttachment->attachment);
             }
 
             $deleteWorkspaceAttachment->delete();

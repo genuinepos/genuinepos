@@ -27,13 +27,13 @@
 
                         @if ($receipt?->branch?->parent_branch_id)
 
-                            @if ($receipt->branch?->parentBranch?->logo != 'default.png')
+                            @if ($receipt->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($receipt->branch?->logo != 'default.png')
+                            @if ($receipt->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->name }}</span>
@@ -492,13 +492,13 @@
 
                         @if ($receipt?->branch?->parent_branch_id)
 
-                            @if ($receipt->branch?->parentBranch?->logo != 'default.png')
+                            @if ($receipt->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($receipt->branch?->logo != 'default.png')
+                            @if ($receipt->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->name }}</span>

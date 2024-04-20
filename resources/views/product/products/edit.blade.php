@@ -99,7 +99,7 @@
                                                     </select>
 
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text {{ !auth()->user()->can('product_unit_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_unit_add')? 'addUnit': '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                        <span class="input-group-text {{ !auth()->user()->can('product_unit_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_unit_add') ? 'addUnit' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
                                                     </div>
                                                 </div>
                                                 <span class="error error_unit_id"></span>
@@ -136,7 +136,7 @@
                                                             @endforeach
                                                         </select>
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text {{ !auth()->user()->can('product_category_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_brand_add')? 'addCategory': '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            <span class="input-group-text {{ !auth()->user()->can('product_category_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_brand_add') ? 'addCategory' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
                                                         </div>
                                                     </div>
                                                     <span class="error error_category_id"></span>
@@ -175,7 +175,7 @@
                                                         </select>
 
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" id="{{ auth()->user()->can('product_brand_add')? 'addBrand': '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,7 +208,7 @@
                                                             @endforeach
                                                         </select>
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text {{ !auth()->user()->can('product_warranty_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_warranty_add')? 'addWarranty': '' }}"><i class="fas fa-plus-square input_i"></i><span>
+                                                            <span class="input-group-text {{ !auth()->user()->can('product_warranty_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_warranty_add') ? 'addWarranty' : '' }}"><i class="fas fa-plus-square input_i"></i><span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -224,11 +224,8 @@
                                                     <input type="hidden" name="access_branch_count" value="access_branch_count">
                                                     <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
                                                         @foreach ($branches as $branch)
-                                                            <option
-                                                                @foreach ($product->productAccessBranches as $productAccessBranche)
-                                                                    {{ $branch->id == $productAccessBranche->branch_id ? 'SELECTED' : '' }}
-                                                                @endforeach
-                                                                value="{{ $branch->id }}">
+                                                            <option @foreach ($product->productAccessBranches as $productAccessBranche)
+                                                                    {{ $branch->id == $productAccessBranche->branch_id ? 'SELECTED' : '' }} @endforeach value="{{ $branch->id }}">
                                                                 {{ $branch->name }}
                                                             </option>
                                                         @endforeach
@@ -347,11 +344,11 @@
                                     <div class="row gx-2 mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __("Has Multiple Unit?") }}</b> </label>
+                                                <label class="col-4"><b>{{ __('Has Multiple Unit?') }}</b> </label>
                                                 <div class="col-8">
                                                     <select name="has_multiple_unit" class="form-control" id="has_multiple_unit" data-next="is_variant">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option {{ $product->has_multiple_unit == \App\Enums\BooleanType::True->value ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option {{ $product->has_multiple_unit == \App\Enums\BooleanType::True->value ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -479,7 +476,7 @@
                                         <div class="input-group">
                                             <label class="col-2"><b>{{ __('Thumbnail Photo') }}</b> </label>
                                             <div class="col-10">
-                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ asset('uploads/product/thumbnail/' . $product->thumbnail_photo) }}">
+                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ $product->thumbnail_photo ? asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $product->thumbnail_photo) : '' }}">
                                                 <span class="error error_photo"></span>
                                             </div>
                                         </div>

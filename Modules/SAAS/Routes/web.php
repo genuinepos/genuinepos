@@ -26,12 +26,12 @@ use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
 
 Route::get('t-test',function () {
 
-    if (file_exists(public_path('uploads/organio'))) {
+    return 'ok';
+    
+    $id = 'organio';
+    if (file_exists(public_path('uploads/' . $id))) {
 
-        rmdir(public_path('uploads/organio'));
-    }else{
-
-        return 'NO';
+        rmdir(public_path('uploads/' . $id));
     }
 });
 

@@ -54,6 +54,16 @@ class DeleteTrialPeriodDataService
         foreach ($branches as $branch) {
 
             $branch->delete();
+
+            if ($branch->logo) {
+
+                $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+
+                if (file_exists($dir . $branch->logo)) {
+
+                    unlink($dir . $branch->logo);
+                }
+            }
         }
 
         if (Branch::count() == 0) {
@@ -148,10 +158,31 @@ class DeleteTrialPeriodDataService
             Schema::enableForeignKeyConstraints();
         }
 
-        $products = Product::all();
+        $products = Product::with('variants')->get();
         foreach ($products as $product) {
 
             $product->delete();
+
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            if (isset($product->thumbnail_photo) && file_exists($dir . $product->thumbnail_photo)) {
+
+                unlink($dir . $product->thumbnail_photo);
+            }
+
+            if (count($product->variants) > 0) {
+
+                $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+                foreach ($product->variants as $variant) {
+
+                    if ($variant->variant_image) {
+
+                        if (file_exists($variantImgDir . $variant->variant_image)) {
+
+                            unlink($variantImgDir . $variant->variant_image);
+                        }
+                    }
+                }
+            }
         }
 
         if (Product::count() == 0) {

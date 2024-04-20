@@ -26,7 +26,6 @@ class SendEmailJob implements ShouldQueue
         $this->subject = $subject;
         $this->message = $message;
         $this->attachments = $attachments;
-
     }
 
     public function handle()
@@ -37,8 +36,9 @@ class SendEmailJob implements ShouldQueue
         $data["body"] = $this->message;
         $files = $this->attachments;
         Mail::send('mail.welcome.default', compact('data', 'files'), function ($message) use ($data, $files) {
-            $message->to($data["email"])
-                ->subject($data["subject"]);
+
+            $message->to($data["email"])->subject($data["subject"]);
+
             foreach ($files as $file) {
                 $message->attach($file);
             }
@@ -46,9 +46,13 @@ class SendEmailJob implements ShouldQueue
 
         // Delete attachments after sending email
         foreach ($files as $file) {
+
             if (file_exists($file)) {
-                $imagePath = public_path('uploads/communication/' . tenant('id') . '/email/attachment/' . $file);
+
+                $imagePath = public_path('uploads/' . tenant('id') . '/' . 'communication/' . 'email/attachment/' . $file);
+
                 if (file_exists($imagePath)) {
+
                     unlink($imagePath);
                 }
             }

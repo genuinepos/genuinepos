@@ -59,13 +59,13 @@
 
                         @if ($stockIssue?->branch?->parent_branch_id)
 
-                            @if ($stockIssue->branch?->parentBranch?->logo != 'default.png')
+                            @if ($stockIssue->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($stockIssue->branch?->logo != 'default.png')
+                            @if ($stockIssue->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->name }}</span>
@@ -360,13 +360,13 @@
 
                         @if ($stockIssue?->branch?->parent_branch_id)
 
-                            @if ($stockIssue->branch?->parentBranch?->logo != 'default.png')
+                            @if ($stockIssue->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($stockIssue->branch?->logo != 'default.png')
+                            @if ($stockIssue->branch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->name }}</span>

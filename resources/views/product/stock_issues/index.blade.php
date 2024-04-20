@@ -200,7 +200,7 @@
             "processing": true,
             "serverSide": true,
             "language": {
-                "zeroRecords": '<img style="padding-top:100px!important;" src="'+"{{  asset('images/data_not_found_default_photo.png') }}"+'">',
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
             },
 
             //aaSorting: [[0, 'asc']],

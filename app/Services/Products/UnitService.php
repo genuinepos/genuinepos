@@ -114,7 +114,7 @@ class UnitService
         return ['pass' => true, 'data' => $deleteUnit];
     }
 
-    public function singleUnit(int $id, array $with = null)
+    public function singleUnit(?int $id, array $with = null)
     {
         $query = Unit::query();
 

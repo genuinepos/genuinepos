@@ -80,13 +80,13 @@
             @if (auth()->user()?->branch)
                 @if (auth()->user()?->branch?->parent_branch_id)
 
-                    @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
+                    @if (auth()->user()?->branch?->parentBranch?->logo)
                         <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
-                    @if (auth()->user()?->branch?->logo != 'default.png')
+                    @if (auth()->user()?->branch?->logo)
                         <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>

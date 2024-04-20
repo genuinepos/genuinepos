@@ -171,7 +171,7 @@
         <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
             <div class="col-4">
                 @if (auth()->user()->branch)
-                    @if (auth()->user()->branch->logo != 'default.png')
+                    @if (auth()->user()->branch->logo)
 
                         <img src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
                     @else

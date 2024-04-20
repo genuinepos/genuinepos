@@ -7,7 +7,6 @@ use Illuminate\Routing\Controller;
 use Modules\SAAS\Utils\UrlGenerator;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
-use Modules\SAAS\Services\DeleteUnusedTenantService;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 use Modules\SAAS\Http\Requests\TrialTenantStoreRequest;
 use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
@@ -19,7 +18,6 @@ class TrialController extends Controller
         private PlanServiceInterface $planServiceInterface,
         private EmailVerificationServiceInterface $emailVerificationServiceInterface,
         private TenantServiceInterface $tenantService,
-        // private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
 

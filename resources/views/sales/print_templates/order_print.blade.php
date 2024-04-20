@@ -40,13 +40,13 @@
 
                             @if ($order?->branch?->parent_branch_id)
 
-                                @if ($order->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($order->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($order->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($order->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->name }}</span>
@@ -451,13 +451,13 @@
 
                             @if ($order?->branch?->parent_branch_id)
 
-                                @if ($order->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($order->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($order->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($order->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->name }}</span>

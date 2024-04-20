@@ -1,19 +1,58 @@
 <script>
     var paymentMethodTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: 'Excel', messageTop: 'Payment Methods', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'pdf',text: 'Pdf', messageTop: 'Payment Methods', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print',text: 'Print', messageTop: '<b>Payment Methods</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: 'Excel',
+                messageTop: 'Payment Methods',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: 'Pdf',
+                messageTop: 'Payment Methods',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: 'Print',
+                messageTop: '<b>Payment Methods</b>',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
         ],
         processing: true,
         serverSide: true,
         searchable: true,
         ajax: "{{ route('payment.methods.index') }}",
-        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-        columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
-            {data: 'name',name: 'name'},
-            {data: 'action',name: 'action'},
+        "language": {
+            "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+        },
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [
+            [50, 100, 500, 1000, -1],
+            [50, 100, 500, 1000, "All"]
+        ],
+        columns: [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex'
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            },
         ],
     });
 

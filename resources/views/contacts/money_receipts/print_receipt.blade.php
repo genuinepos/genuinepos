@@ -57,7 +57,7 @@
             <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
                 <div class="col-4">
                     @if ($moneyReceipt->branch)
-                        @if ($moneyReceipt->branch->logo != 'default.png')
+                        @if ($moneyReceipt->branch->logo)
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>

@@ -76,7 +76,7 @@ class StartupService
         ];
 
         foreach ($keyMappings as $oldKey => $newKey) {
-            
+
             if (isset($requestData[$oldKey])) {
 
                 $requestData[$newKey] = $requestData[$oldKey];

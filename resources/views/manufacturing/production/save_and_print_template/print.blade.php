@@ -44,13 +44,13 @@
 
                     @if ($production?->branch?->parent_branch_id)
 
-                        @if ($production->branch?->parentBranch?->logo != 'default.png')
+                        @if ($production->branch?->parentBranch?->logo)
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->parentBranch?->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch?->parentBranch?->name }}</span>
                         @endif
                     @else
-                        @if ($production->branch?->logo != 'default.png')
+                        @if ($production->branch?->logo)
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch?->name }}</span>

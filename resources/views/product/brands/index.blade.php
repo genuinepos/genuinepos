@@ -24,7 +24,6 @@
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_brand_add'))
-
                                     <a href="{{ route('brands.create') }}" class="btn btn-sm btn-primary" id="addBrand"><i class="fas fa-plus-square"></i> {{ __('Add Brand') }}</a>
                                 @endif
                             </div>
@@ -72,17 +71,21 @@
                     extend: 'pdf',
                     text: 'Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
                 {
                     extend: 'print',
                     text: 'Print',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
             ],
             "language": {
-                "zeroRecords": '<img style="padding-top:100px!important;" src="'+"{{  asset('images/data_not_found_default_photo.png') }}"+'">',
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
             },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
@@ -95,15 +98,31 @@
             ajax: "{{ route('brands.index') }}",
             columns: [
                 // {data: 'DT_RowIndex',name: 'DT_RowIndex'},
-                { data: 'code', name: 'code' },
-                { data: 'photo', name: 'photo' },
-                { data: 'name', name: 'name' },
-                { data: 'action', name: 'action' },
+                {
+                    data: 'code',
+                    name: 'code'
+                },
+                {
+                    data: 'photo',
+                    name: 'photo'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
             ]
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         // call jquery method
         $(document).ready(function() {
@@ -125,7 +144,8 @@
 
                             $('#brand_name').focus();
                         }, 500);
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         if (err.status == 0) {
 

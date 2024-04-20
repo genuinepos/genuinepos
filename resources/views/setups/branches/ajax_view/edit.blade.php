@@ -137,10 +137,12 @@
                                 <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_date_format" value="{{ $branch->website }}" placeholder="{{ __('Website Url') }}" />
                             </div>
 
-                            <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __('Logo') }}</b> <small class="text-danger">{{ __('Logo size 200px * 70px') }}</small></label>
-                                <input type="file" name="logo" class="form-control " id="logo" />
-                            </div>
+                            @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
+                                <div class="col-lg-3 col-md-6">
+                                    <label><b>{{ __('Logo') }}</b> <small class="text-danger">{{ __('Logo size 200px * 70px') }}</small></label>
+                                    <input type="file" name="logo" class="form-control " id="logo" />
+                                </div>
+                            @endif
                         </div>
                     </div>
 

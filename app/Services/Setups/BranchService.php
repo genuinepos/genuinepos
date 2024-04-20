@@ -38,6 +38,7 @@ class BranchService
             'branches.address',
             'branches.expire_date',
             'parentBranch.name as parent_branch_name',
+            'parentBranch.logo as parent_branch_logo',
         )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id');
 
         return DataTables::of($branches)
@@ -67,7 +68,17 @@ class BranchService
 
             ->editColumn('logo', function ($row) use ($logoUrl) {
 
-                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $logoUrl . '/' . $row->logo . '">';
+                $photo = asset('images/general_default.png');
+
+                if (isset($row->parent_branch_logo)) {
+
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $row->parent_branch_logo);
+                }elseif(isset($row->logo)) {
+
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $row->logo);
+                }
+
+                return '<img loading="lazy" class="rounded" style="height:40px; width:60px; padding:2px 0px;" src="' . $photo . '">';
             })
 
             ->editColumn('address', function ($row) {
@@ -138,10 +149,16 @@ class BranchService
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
             $branchLogo = $request->file('logo');
             $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
-            $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
-
+            $branchLogo->move($dir, $branchLogoName);
             $addBranch->logo = $branchLogoName;
         }
 
@@ -178,17 +195,21 @@ class BranchService
 
         if ($request->hasFile('logo')) {
 
-            if ($updateBranch->logo != 'default.png') {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
 
-                if (file_exists(public_path('uploads/branch_logo/' . $updateBranch->logo))) {
+            if (isset($updateBranch->logo) && file_exists($dir . $updateBranch->logo)) {
 
-                    unlink(public_path('uploads/branch_logo/' . $updateBranch->logo));
-                }
+                unlink($dir . $updateBranch->logo);
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $branchLogo = $request->file('logo');
             $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
-            $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
+            $branchLogo->move($dir, $branchLogoName);
             $updateBranch->logo = $branchLogoName;
         }
 
@@ -214,12 +235,10 @@ class BranchService
             return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more purchases.')];
         }
 
-        if ($deleteBranch->logo != 'default.png') {
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+        if (file_exists($dir . $deleteBranch->logo)) {
 
-            if (file_exists(public_path('uploads/branch_logo/' . $deleteBranch->logo))) {
-
-                unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
-            }
+            unlink($dir . $deleteBranch->logo);
         }
 
         if ($deleteBranch?->shopExpireDateHistory) {
@@ -432,7 +451,7 @@ class BranchService
             'timezone' => 'required',
             'currency_id' => 'required',
             'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
-            'logo' => 'sometimes|image|max:1',
+            'logo' => 'sometimes|image|max:1024',
         ]);
     }
 }

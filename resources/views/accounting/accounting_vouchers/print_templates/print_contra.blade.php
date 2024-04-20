@@ -27,13 +27,13 @@
 
                         @if ($contra?->branch?->parent_branch_id)
 
-                            @if ($contra->branch?->parentBranch?->logo != 'default.png')
+                            @if ($contra->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($contra->branch?->logo != 'default.png')
+                            @if ($contra->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->name }}</span>
@@ -298,13 +298,13 @@
 
                         @if ($contra?->branch?->parent_branch_id)
 
-                            @if ($contra->branch?->parentBranch?->logo != 'default.png')
+                            @if ($contra->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($contra->branch?->logo != 'default.png')
+                            @if ($contra->branch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->name }}</span>

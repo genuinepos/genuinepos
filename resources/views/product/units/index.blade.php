@@ -74,22 +74,31 @@
                     extend: 'excel',
                     text: 'Excel',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
                 {
                     extend: 'pdf',
                     text: 'Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
                 {
                     extend: 'print',
                     text: 'Print',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
             ],
             serverSide: true,
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],

@@ -12,14 +12,12 @@ use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Http\Requests\TenantStoreRequest;
 use Modules\SAAS\Http\Requests\TenantDeleteRequest;
-use Modules\SAAS\Services\DeleteUnusedTenantService;
 
 class TenantController extends Controller
 {
     public function __construct(
         private TenantServiceInterface $tenantService,
         private PlanServiceInterface $planServiceInterface,
-        // private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
 

@@ -54,7 +54,7 @@
                 <h4>
                     @if ($customerPayment->branch)
 
-                        @if ($customerPayment->branch->logo != 'default.png')
+                        @if ($customerPayment->branch->logo)
                             <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $customerPayment->branch->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $customerPayment->branch->name }}</span>

@@ -164,11 +164,34 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
-                { extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
-                { extend: 'print', text: '<i class="fas fa-print"></i> Print', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
             ],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],

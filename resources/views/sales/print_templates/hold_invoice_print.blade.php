@@ -94,13 +94,13 @@
 
                         @if ($holdInvoice?->branch?->parent_branch_id)
 
-                            @if ($holdInvoice->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                            @if ($holdInvoice->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $holdInvoice->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $holdInvoice->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($holdInvoice->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                            @if ($holdInvoice->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $holdInvoice->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $holdInvoice->branch?->name }}</span>

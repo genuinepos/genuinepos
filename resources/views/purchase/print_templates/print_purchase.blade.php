@@ -64,13 +64,13 @@
 
                         @if ($purchase?->branch?->parent_branch_id)
 
-                            @if ($purchase->branch?->parentBranch?->logo != 'default.png')
+                            @if ($purchase->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($purchase->branch?->logo != 'default.png')
+                            @if ($purchase->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->name }}</span>
@@ -377,13 +377,13 @@
 
                         @if ($purchase?->branch?->parent_branch_id)
 
-                            @if ($purchase->branch?->parentBranch?->logo != 'default.png')
+                            @if ($purchase->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($purchase->branch?->logo != 'default.png')
+                            @if ($purchase->branch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->name }}</span>

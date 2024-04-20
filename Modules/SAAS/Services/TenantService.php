@@ -249,12 +249,34 @@ class TenantService implements TenantServiceInterface
 
         Tenancy::find($id)?->delete();
 
-        if (file_exists(public_path('uploads/' . $id))) {
-
-            rmdir(public_path('uploads/' . $id));
-        }
+        $this->removeDir(dir: public_path('uploads/' . $id));
 
         return ['pass' => true];
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (is_dir($dir)) {
+
+            $files = scandir($dir);
+
+            foreach ($files as $file) {
+
+                if ($file != "." && $file != "..") {
+
+                    $path = "$dir/$file";
+                    if (is_dir($path)) {
+
+                        $this->removeDir($path);
+                    } else {
+
+                        unlink($path);
+                    }
+                }
+            }
+
+            rmdir($dir);
+        }
     }
 
     public function singleTenant(string $id, ?array $with = null): ?Tenant

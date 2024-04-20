@@ -70,13 +70,13 @@
 
                             @if ($quotation?->branch?->parent_branch_id)
 
-                                @if ($quotation->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($quotation->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $quotation->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($quotation->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($quotation->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $quotation->branch?->name }}</span>
@@ -459,13 +459,13 @@
 
                             @if ($quotation?->branch?->parent_branch_id)
 
-                                @if ($quotation->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($quotation->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $quotation->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($quotation->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($quotation->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $quotation->branch?->name }}</span>

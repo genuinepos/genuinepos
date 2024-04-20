@@ -77,13 +77,13 @@
                         @if ($sale->branch)
                             @if ($sale?->branch?->parent_branch_id)
 
-                                @if ($sale->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($sale->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($sale->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->name }}</span>
@@ -526,13 +526,13 @@
 
                             @if ($sale?->branch?->parent_branch_id)
 
-                                @if ($sale->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($sale->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($sale->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                @if ($sale->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                     <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->name }}</span>
@@ -905,13 +905,13 @@
                                     @if ($sale->branch)
                                         @if ($sale?->branch?->parent_branch_id)
 
-                                            @if ($sale->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                            @if ($sale->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
                                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                             @endif
                                         @else
-                                            @if ($sale->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+                                            @if ($sale->branch?->logo && $invoiceLayout->show_shop_logo == 1)
                                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->logo) }}">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->name }}</span>

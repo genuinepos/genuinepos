@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="col-md-4">
                     <h5>{{ __('Cash Counters') }}
-                        <span>({{ __("Limit") }} -<span class="text-danger">{{ $count }}</span>/{{ $generalSettings['subscription']->features['cash_counter_count'] }})</span>
+                        <span>({{ __('Limit') }} -<span class="text-danger">{{ $count }}</span>/{{ $generalSettings['subscription']->features['cash_counter_count'] }})</span>
                     </h5>
                 </div>
                 <div class="col-md-4 text-start">
@@ -34,7 +34,7 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                <option value="">{{ __("All") }}</option>
+                                                <option value="">{{ __('All') }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
@@ -52,7 +52,7 @@
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
-                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-primary" id="addCashCounter"><i class="fas fa-plus-square"></i> {{ __("Add Cash Counter") }}</a>
+                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-primary" id="addCashCounter"><i class="fas fa-plus-square"></i> {{ __('Add Cash Counter') }}</a>
                     </div>
                 </div>
 
@@ -143,6 +143,10 @@
                     d.branch_id = $('#branch_id').val();
                 }
             },
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [50, 100, 500, 1000, -1],
                 [50, 100, 500, 1000, "All"]
@@ -253,7 +257,8 @@
 
                         $('.data_preloader').hide();
 
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {

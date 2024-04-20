@@ -26,13 +26,13 @@
 
                         @if ($payroll?->branch?->parent_branch_id)
 
-                            @if ($payroll->branch?->parentBranch?->logo != 'default.png')
+                            @if ($payroll->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payroll->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($payroll->branch?->logo != 'default.png')
+                            @if ($payroll->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payroll->branch?->name }}</span>
@@ -317,13 +317,13 @@
 
                         @if ($payroll?->branch?->parent_branch_id)
 
-                            @if ($payroll->branch?->parentBranch?->logo != 'default.png')
+                            @if ($payroll->branch?->parentBranch?->logo)
                                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payroll->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($payroll->branch?->logo != 'default.png')
+                            @if ($payroll->branch?->logo)
                                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payroll->branch?->name }}</span>

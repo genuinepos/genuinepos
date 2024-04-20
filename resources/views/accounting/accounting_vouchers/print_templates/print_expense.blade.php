@@ -27,13 +27,13 @@
 
                         @if ($expense?->branch?->parent_branch_id)
 
-                            @if ($expense->branch?->parentBranch?->logo != 'default.png')
+                            @if ($expense->branch?->parentBranch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $expense?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $expense?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($expense->branch?->logo != 'default.png')
+                            @if ($expense->branch?->logo)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $expense?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $expense?->branch?->name }}</span>
@@ -297,13 +297,13 @@
 
                         @if ($expense?->branch?->parent_branch_id)
 
-                            @if ($expense->branch?->parentBranch?->logo != 'default.png')
+                            @if ($expense->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $expense?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $expense?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($expense->branch?->logo != 'default.png')
+                            @if ($expense->branch?->logo)
                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $expense?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $expense?->branch?->name }}</span>

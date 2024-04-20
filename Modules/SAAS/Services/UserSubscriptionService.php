@@ -87,7 +87,7 @@ class UserSubscriptionService implements UserSubscriptionServiceInterface
                 }
             } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddShop->value) {
 
-                $updateUserSubscription->current_shop_count = $updateSubscription->current_shop_count + $request->increase_shop_count;
+                $updateUserSubscription->current_shop_count = $updateUserSubscription->current_shop_count + $request->increase_shop_count;
             } else if ($subscriptionUpdateType == SubscriptionUpdateType::ShopRenew->value) {
 
                 if ($request->has_business && $updateUserSubscription->has_business) {

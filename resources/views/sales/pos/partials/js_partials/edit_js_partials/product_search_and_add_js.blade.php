@@ -199,7 +199,6 @@
                         } else {
 
                             var li = "";
-                            var imgUrl = "{{ asset('uploads/product/thumbnail') }}";
                             var taxPercent = product.tax != null ? product.tax.tax_percent : 0.00;
 
                             $.each(product.variants, function(key, variant) {
@@ -357,7 +356,6 @@
                         if (product.namedProducts.length > 0) {
 
                             var li = "";
-                            var imgUrl = "{{ asset('uploads/product/thumbnail') }}";
                             var products = product.namedProducts;
 
                             $.each(products, function(key, product) {

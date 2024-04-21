@@ -140,7 +140,7 @@
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
 
@@ -254,7 +254,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 
@@ -791,7 +791,7 @@
                         if (warehouse != undefined) {
 
                             $('#e_warehouse_id').focus();
-                        }else {
+                        } else {
 
                             $('#add_item').focus();
                         }
@@ -823,7 +823,7 @@
                     if (warehouse != undefined) {
 
                         $('#e_warehouse_id').focus();
-                    }else {
+                    } else {
 
                         $('#add_item').focus();
                     }
@@ -848,7 +848,7 @@
                 if (warehouse != undefined) {
 
                     $('#e_warehouse_id').focus();
-                }else {
+                } else {
 
                     $('#add_item').focus();
                 }

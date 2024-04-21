@@ -117,7 +117,7 @@
 
             <p>
                 @if (auth()->user()?->branch)
-                    {{ auth()->user()?->branch?->city . ', ' . auth()->user()?->branch?->state . ', ' . auth()->user()?->branch?->zip_code . ', ' . auth()->user()?->branch?->country }}
+                    {{ auth()->user()?->branch?->address . ', ' . auth()->user()?->branch?->city . ', ' . auth()->user()?->branch?->state . ', ' . auth()->user()?->branch?->zip_code . ', ' . auth()->user()?->branch?->country }}
                 @else
                     {{ $generalSettings['business_or_shop__address'] }}
                 @endif

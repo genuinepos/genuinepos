@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-10"><h6>@lang('menu.all_release_note')</h6></div>

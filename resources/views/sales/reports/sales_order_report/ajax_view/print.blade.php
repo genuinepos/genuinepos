@@ -1,31 +1,75 @@
 <style>
     @media print {
-        table { page-break-after: auto; }
+        table {
+            page-break-after: auto;
+        }
 
-        tr { page-break-inside: avoid; page-break-after: auto; }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
 
-        td { page-break-inside: avoid; page-break-after: auto, font-size:9px !important; }
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto, font-size:9px !important;
+        }
 
-        thead { display: table-header-group; }
+        thead {
+            display: table-header-group;
+        }
 
-        tfoot { display: table-footer-group; }
+        tfoot {
+            display: table-footer-group;
+        }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px; margin-right: 5px; }
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 
-    div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 
-    .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
+    .print_table th {
+        font-size: 11px !important;
+        font-weight: 550 !important;
+        line-height: 12px !important;
+    }
 
-    .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
+    .print_table tr td {
+        color: black;
+        font-size: 10px !important;
+        line-height: 12px !important;
+    }
 
-    .print_area { font-family: Arial, Helvetica, sans-serif; }
+    .print_area {
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-    .print_area h6 { font-size: 14px !important; }
+    .print_area h6 {
+        font-size: 14px !important;
+    }
 
-    .print_area p { font-size: 11px !important; }
+    .print_area p {
+        font-size: 11px !important;
+    }
 
-    .print_area small { font-size: 8px !important; }
+    .print_area small {
+        font-size: 8px !important;
+    }
 </style>
 
 <div class="print_area">
@@ -35,20 +79,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -73,7 +117,7 @@
 
             <p>
                 @if (auth()->user()?->branch)
-                    {{ auth()->user()?->branch?->city . ', ' . auth()->user()?->branch?->state . ', ' . auth()->user()?->branch?->zip_code . ', ' . auth()->user()?->branch?->country }}
+                    {{ auth()->user()?->branch?->address . ', ' . auth()->user()?->branch?->city . ', ' . auth()->user()?->branch?->state . ', ' . auth()->user()?->branch?->zip_code . ', ' . auth()->user()?->branch?->country }}
                 @else
                     {{ $generalSettings['business_or_shop__address'] }}
                 @endif

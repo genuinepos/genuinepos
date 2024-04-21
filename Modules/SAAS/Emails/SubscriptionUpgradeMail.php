@@ -38,9 +38,7 @@ class SubscriptionUpgradeMail extends Mailable
      */
     public function content(): Content
     {
-        return new Content(
-            view: 'saas::mail.subscription_upgrade',
-        );
+        return new Content(view: 'saas::mail.subscription_upgrade');
     }
 
     /**

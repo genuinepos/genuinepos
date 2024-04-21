@@ -121,8 +121,9 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-6 col-md-6">
-                                <label><b>{{ __('Address') }}</b></label>
+                                <label><b>{{ __('Address') }}</b> <span class="text-danger">*</span></label>
                                 <input required type="text" name="address" class="form-control" id="branch_address" data-next="branch_email" value="{{ $branch->address }}" placeholder="{{ __('Address') }}" />
+                                <span class="error error_branch_zip_code"></span>
                             </div>
                         </div>
 

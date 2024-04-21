@@ -87,20 +87,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -167,12 +167,9 @@
             @php
                 $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
-
                     if (auth()->user()?->branch->parentBranch) {
-
                         $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
                     } else {
-
                         $ownOrParentbranchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
                     }
                 }
@@ -228,13 +225,10 @@
                                 @php
                                     $stockOutBy = null;
                                     if ($row->sale_id) {
-
-                                        $stockOutBy = __('Sales') . ': '. $row->invoice_id;
+                                        $stockOutBy = __('Sales') . ': ' . $row->invoice_id;
                                     } elseif ($row->stock_issue_id) {
-
                                         $stockOutBy = __('Stock Issue') . ': ' . $row->stock_issue_voucher_no;
                                     } elseif ($row->stock_adjustment_id) {
-
                                         $stockOutBy = __('Stock Adjustment') . ': ' . $row->stock_adjustment_voucher_no;
                                     }
                                 @endphp
@@ -243,16 +237,12 @@
 
                             <td class="text-start">
                                 @if ($row->branch_id)
-
                                     @if ($row->parent_branch_name)
-
-                                        {{ $row->parent_branch_name . '(' . $row->branch_area_name . ')-'.$row->branch_code }}
+                                        {{ $row->parent_branch_name . '(' . $row->branch_area_name . ')-' . $row->branch_code }}
                                     @else
-
-                                        {{ $row->branch_name . '(' . $row->branch_area_name . ')-'.$row->branch_code }}
+                                        {{ $row->branch_name . '(' . $row->branch_area_name . ')-' . $row->branch_code }}
                                     @endif
                                 @else
-
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             </td>
@@ -261,13 +251,10 @@
                                 @php
                                     $stockOutUnit = null;
                                     if ($row->sale_id) {
-
                                         $stockOutUnit = $row->sale_unit;
                                     } elseif ($row->stock_issue_id) {
-
                                         $stockOutUnit = $row->stock_issue_unit;
                                     } elseif ($row->stock_adjustment_id) {
-
                                         $stockOutUnit = $row->stock_adjustment_unit;
                                     }
                                 @endphp
@@ -277,14 +264,11 @@
                             <td class="text-end fw-bold">
                                 @php
                                     $stockOutUnitPriceOrCostIncTax = null;
-                                     if ($row->sale_id) {
-
+                                    if ($row->sale_id) {
                                         $stockOutUnitPriceOrCostIncTax = \App\Utils\Converter::format_in_bdt($row->sale_unit_price_inc_tax);
                                     } elseif ($row->stock_issue_id) {
-
                                         $stockOutUnitPriceOrCostIncTax = \App\Utils\Converter::format_in_bdt($row->stock_issue_unit_cost_inc_tax);
                                     } elseif ($row->stock_adjustment_id) {
-
                                         $stockOutUnitPriceOrCostIncTax = \App\Utils\Converter::format_in_bdt($row->stock_adjustment_unit_cost_inc_tax);
                                     }
                                 @endphp
@@ -313,10 +297,8 @@
                                 @php
                                     $stockInDate = null;
                                     if ($row->stock_in_date_ts) {
-
                                         $stockInDate = date($dateFormat, strtotime($row->stock_in_date_ts));
                                     } else {
-
                                         $stockInDate = date($dateFormat, strtotime($row->product_created_at));
                                     }
                                 @endphp
@@ -327,15 +309,11 @@
                                 @php
                                     $stockInUnitCostIncTax = null;
                                     if ($row->stock_in_unit_cost_inc_tax) {
-
                                         $stockInUnitCostIncTax = \App\Utils\Converter::format_in_bdt($row->stock_in_unit_cost_inc_tax);
                                     } else {
-
                                         if ($row->variant_unit_cost_inc_tax) {
-
                                             $stockInUnitCostIncTax = \App\Utils\Converter::format_in_bdt($row->variant_unit_cost_inc_tax);
                                         } else {
-
                                             $stockInUnitCostIncTax = \App\Utils\Converter::format_in_bdt($row->product_unit_cost_inc_tax);
                                         }
                                     }

@@ -18,7 +18,7 @@ class DeleteFailedTenantController extends Controller
      */
     public function delete(Request $request)
     {
-        $tenantService->deleteTenant(id: $request->delete_domain);
+        $this->tenantService->deleteTenant(id: $request->delete_domain);
         return true;
     }
 }

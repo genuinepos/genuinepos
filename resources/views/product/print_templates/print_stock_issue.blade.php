@@ -60,20 +60,20 @@
                         @if ($stockIssue?->branch?->parent_branch_id)
 
                             @if ($stockIssue->branch?->parentBranch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->parentBranch?->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $stockIssue?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($stockIssue->branch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $stockIssue?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -87,20 +87,17 @@
                         @endphp
                         @if ($stockIssue?->branch)
                             @if ($stockIssue?->branch?->parent_branch_id)
-
                                 {{ $stockIssue?->branch?->parentBranch?->name }}
                                 @php
                                     $branchName = $stockIssue?->branch?->parentBranch?->name . '(' . $stockIssue?->branch?->area_name . ')';
                                 @endphp
                             @else
-
                                 {{ $stockIssue?->branch?->name }}
                                 @php
                                     $branchName = $stockIssue?->branch?->name . '(' . $stockIssue?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else
-
                             {{ $generalSettings['business_or_shop__business_name'] }}
                             @php
                                 $branchName = $generalSettings['business_or_shop__business_name'];
@@ -110,10 +107,8 @@
 
                     <p>
                         @if ($stockIssue?->branch)
-
                             {{ $stockIssue->branch->city . ', ' . $stockIssue->branch->state . ', ' . $stockIssue->branch->zip_code . ', ' . $stockIssue->branch->country }}
                         @else
-
                             {{ $generalSettings['business_or_shop__address'] }}
                         @endif
                     </p>
@@ -188,19 +183,15 @@
 
                                 <td class="text-start" style="font-size:11px!important;">
                                     @if ($issuedProduct?->warehouse)
-                                        {{ $issuedProduct?->warehouse?->warehouse_name.'/'.$issuedProduct?->warehouse?->warehouse_code }}
+                                        {{ $issuedProduct?->warehouse?->warehouse_name . '/' . $issuedProduct?->warehouse?->warehouse_code }}
                                     @else
                                         @if ($stockIssue?->branch)
-
                                             @if ($stockIssue?->branch?->parent_branch_id)
-
                                                 {{ $stockIssue?->branch?->parentBranch?->name }}
                                             @else
-
                                                 {{ $stockIssue?->branch?->name }}
                                             @endif
                                         @else
-
                                             {{ $generalSettings['business_or_shop__business_name'] }}
                                         @endif
                                     @endif
@@ -361,20 +352,20 @@
                         @if ($stockIssue?->branch?->parent_branch_id)
 
                             @if ($stockIssue->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $stockIssue?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($stockIssue->branch?->logo)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $stockIssue?->branch?->logo) }}">
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $stockIssue?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $stockIssue?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -492,21 +483,15 @@
 
                                 <td class="text-start" style="font-size:9px!important;">
                                     @if ($issuedProduct?->stockWarehouse)
-
-                                        {{ $issuedProduct?->stockWarehouse?->warehouse_name.'/'.$issuedProduct?->stockWarehouse?->warehouse_code }}
+                                        {{ $issuedProduct?->stockWarehouse?->warehouse_name . '/' . $issuedProduct?->stockWarehouse?->warehouse_code }}
                                     @else
-
                                         @if ($stockIssue?->branch)
-
                                             @if ($stockIssue?->branch?->parent_branch_id)
-
                                                 {{ $stockIssue?->branch?->parentBranch?->name . '(' . $stockIssue?->branch?->area_name . ')' }}
                                             @else
-
                                                 {{ $stockIssue?->branch?->name . '(' . $stockIssue?->branch?->area_name . ')' }}
                                             @endif
                                         @else
-
                                             {{ $generalSettings['business_or_shop__business_name'] }}
                                         @endif
                                     @endif
@@ -593,7 +578,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('company.print_on_company'))
-                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>{{ __("SpeedDigit Software Solution.") }}</strong></small>
+                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>{{ __('SpeedDigit Software Solution.') }}</strong></small>
                         @endif
                     </div>
 

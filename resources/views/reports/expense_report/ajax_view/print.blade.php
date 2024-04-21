@@ -65,26 +65,23 @@
     <div class="col-4 align-items-center">
         @if ($branch_id == '')
             @if ($generalSettings['business_or_shop__business_logo'] != null)
-                <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
             @else
                 <h4 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h4>
             @endif
         @elseif($branch_id == 'NULL')
             @if ($generalSettings['business_or_shop__business_logo'] != null)
-                <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
             @else
                 <h4 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h4>
             @endif
         @else
             @php
-                $branch = DB::table('branches')
-                    ->where('id', $branch_id)
-                    ->select('name', 'branch_code', 'logo', 'email', 'phone', 'city', 'state', 'zip_code', 'country')
-                    ->first();
+                $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code', 'logo', 'email', 'phone', 'city', 'state', 'zip_code', 'country')->first();
             @endphp
 
             @if ($branch->logo != null)
-                <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . $branch->logo) }}" class="logo__img">
+                <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $branch->logo) }}" class="logo__img">
             @else
                 <h4 class="text-uppercase fw-bold">{{ $branch->name }}</h4>
             @endif

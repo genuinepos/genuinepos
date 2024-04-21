@@ -1,10 +1,7 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $defaultLayout = DB::table('invoice_layouts')
-        ->where('branch_id', null)
-        ->where('is_default', 1)
-        ->first();
+    $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $holdInvoice?->branch?->branchSetting?->addSaleInvoiceLayout ? $holdInvoice?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
 
@@ -95,20 +92,20 @@
                         @if ($holdInvoice?->branch?->parent_branch_id)
 
                             @if ($holdInvoice->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $holdInvoice->branch?->parentBranch?->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $holdInvoice->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $holdInvoice->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($holdInvoice->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $holdInvoice->branch?->logo) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $holdInvoice->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $holdInvoice->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -132,6 +129,7 @@
 
                     <p>
                         @if ($holdInvoice?->branch)
+                            {{ $holdInvoice->branch->address . ', ' }}
                             {{ $invoiceLayout->branch_city == 1 ? $holdInvoice->branch->city . ', ' : '' }}
                             {{ $invoiceLayout->branch_state == 1 ? $holdInvoice->branch->state . ', ' : '' }}
                             {{ $invoiceLayout->branch_zipcode == 1 ? $holdInvoice->branch->zip_code . ', ' : '' }}

@@ -73,7 +73,7 @@ class BranchService
                 if (isset($row->parent_branch_logo)) {
 
                     $photo = asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $row->parent_branch_logo);
-                }elseif(isset($row->logo)) {
+                } elseif (isset($row->logo)) {
 
                     $photo = asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $row->logo);
                 }
@@ -147,7 +147,7 @@ class BranchService
         $addBranch->shop_expire_date_history_id = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->id : null;
 
         $branchLogoName = '';
-        if ($request->hasFile('logo')) {
+        if ($request->hasFile('logo') || $request->hasFile('branch_logo')) {
 
             $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
 
@@ -156,12 +156,17 @@ class BranchService
                 \File::makeDirectory($dir, 493, true);
             }
 
-            $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
-            $branchLogo->move($dir, $branchLogoName);
-            $addBranch->logo = $branchLogoName;
-        }
+            $logo = $request->file('logo');
 
+            $branchLogo = isset($logo) ? $logo : $request->file('branch_logo');
+            if (isset($branchLogo)) {
+
+                $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
+                $branchLogo->move($dir, $branchLogoName);
+                $addBranch->logo = $branchLogoName;
+            }
+        }
+        
         $addBranch->save();
 
         if ($subscription->is_trial_plan == BooleanType::False->value) {

@@ -18,9 +18,8 @@ class NewSubscriptionMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct(private $data, private $planName, private $appUrl)
     {
-        $this->user = $user;
     }
 
     /**
@@ -29,18 +28,20 @@ class NewSubscriptionMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Subscription Mail',
+            subject: 'Subscription is confirmed',
         );
     }
 
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function build(): self
     {
-        return new Content(
-            view: 'saas::mail.new_subscription',
-        );
+        $data = $this->data;
+        $planName = $this->planName;
+        $appUrl = $this->appUrl;
+
+        return $this->view('saas::mail.new_subscription', compact('data', 'planName', 'appUrl'));
     }
 
     /**

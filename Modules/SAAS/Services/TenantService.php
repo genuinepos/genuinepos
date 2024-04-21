@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Log;
 use Stancl\Tenancy\Facades\Tenancy;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Support\Facades\Artisan;
 use Yajra\DataTables\Facades\DataTables;
 use App\Enums\SubscriptionTransactionType;
+use Modules\SAAS\Utils\ExpireDateAllocation;
 use App\Services\GeneralSettingServiceInterface;
 use App\Enums\SubscriptionTransactionDetailsType;
-use Modules\SAAS\Database\factories\AdminFactory;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Interfaces\UserServiceInterface;
 use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
@@ -106,7 +107,16 @@ class TenantService implements TenantServiceInterface
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
-                    dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(to: $request->email, user: $tenant));
+                    $appUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
+                    if ($plan->is_trial_plan) {
+
+                        $trialExpireDate = ExpireDateAllocation::getExpireDate(period: 'day', periodCount: $plan->trial_days);
+
+                        dispatch(new \Modules\SAAS\Jobs\SendTrialMailJobQueue(data: $request->all(), appUrl: $appUrl, trialExpireDate: $trialExpireDate));
+                    }else {
+
+                        dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(data: $request->all(), planName: $plan->name, appUrl: $appUrl));
+                    }
 
                     return $tenant;
                 }

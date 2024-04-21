@@ -8,10 +8,8 @@
                     <div class="form-head">
                         <div class="head">
                             @if ($generalSettings['business_or_shop__business_logo'] != null)
-
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
                             <span class="head-text">
@@ -37,8 +35,7 @@
                             <div class="left-inner-addon input-container">
                                 <i class="fa fa-envelope"></i>
                                 <input type="email" name="email" class="form-control form-st rounded-bottom
-                                            @error('email') is-invalid @enderror" value="{{ old('email') }}"
-                                    placeholder="Enter Your Email" required autocomplete="email" autofocus />
+                                            @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Enter Your Email" required autocomplete="email" autofocus />
                             </div>
 
                             @if (Session::has('errorMsg'))
@@ -49,7 +46,7 @@
                                 </div>
                             @endif
 
-                            @if($errors->any())
+                            @if ($errors->any())
                                 @foreach ($errors->all() as $error)
                                     <div class="bg-danger p-3 mt-4">
                                         <p class="text-white">

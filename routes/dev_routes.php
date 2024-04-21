@@ -242,7 +242,8 @@ Route::get('my-test', function () {
 
     // Tenancy::find('organio')?->delete();
 
-    return config('speeddigit.facebook');
+    $ip = '102.38.238.0';
+        return $location = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip));
 });
 
 Route::get('t-id', function () {

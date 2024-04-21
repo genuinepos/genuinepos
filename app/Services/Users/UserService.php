@@ -566,8 +566,6 @@ class UserService
             'language' => 'en',
             'is_belonging_an_area' => 0,
             'currency_id' => $request->currency_id,
-            'city' => $request->city,
-            'postal_code' => $request->postal_code,
             'permanent_address' => $request->address,
             'current_address' => $request->address,
             'created_at' => Carbon::now(),

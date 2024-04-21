@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __("Email Verification Code") }} - {{ config('app.name') }}</title>
+    <title>{{ __('Email Verification Code') }} - {{ config('app.name') }}</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
@@ -171,7 +171,7 @@
                 <tr>
                     <td>
                         <div class="mail-body">
-                            <div>Dear <strong>{{ $user->prefix . ' '. $user->name . $user->last_name }}</strong>,</div>
+                            <div>Dear <strong>{{ $user->prefix . ' ' . $user->name . $user->last_name }}</strong>,</div>
                             <p>We are excited to inform you that your subscription plan has been <b>successfully upgraded</b>! You now have access to all the premium features and benefits that come with your new subscription level.</p><br><br>
                             <p>Thank you for choosing us!</p>
                             <p>Best Regards,</p>

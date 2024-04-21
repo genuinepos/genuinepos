@@ -21,6 +21,7 @@ use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
+use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 use App\Services\Hrm\MethodContainerServices\PayrollControllerMethodContainersService;
@@ -35,6 +36,7 @@ use App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContain
 use App\Services\Accounts\MethodContainerServices\ReceiptControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
 use App\Services\Hrm\MethodContainerServices\PayrollPaymentControllerMethodContainersService;
+use App\Services\Purchases\MethodContainerServices\PurchaseControllerMethodContainersService;
 use App\Services\Products\MethodContainerServices\StockIssueControllerMethodContainersService;
 use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
 use App\Services\StockAdjustments\MethodContainerServices\StockAdjustmentControllerMethodContainersService;
@@ -66,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PayrollControllerMethodContainersInterface::class, PayrollControllerMethodContainersService::class);
         $this->app->bind(PayrollPaymentControllerMethodContainersInterface::class, PayrollPaymentControllerMethodContainersService::class);
         $this->app->bind(StockIssueControllerMethodContainersInterface::class, StockIssueControllerMethodContainersService::class);
+        $this->app->bind(PurchaseControllerMethodContainersInterface::class, PurchaseControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);

@@ -69,7 +69,8 @@
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
 
         var previousPaid = $('#previous_paid').val() ? $('#previous_paid').val() : 0;
-        var purchasedAmount = parseFloat(calcTotalPurchaseAmount) - parseFloat(previousPaid);
+        var currentPurchasedAmount = $('#current_purchased_amount').val() ? $('#current_purchased_amount').val() : 0;
+        var purchasedAmount = parseFloat(calcTotalPurchaseAmount) - parseFloat(currentPurchasedAmount) - parseFloat(previousPaid);
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');

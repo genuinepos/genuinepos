@@ -980,7 +980,8 @@
 
         var previous_received = $('#previous_received').val() ? $('#previous_received').val() : 0;
         var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
-        var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(previous_received);
+        var current_invoice_amount = $('#current_invoice_amount').val() ? $('#current_invoice_amount').val() : 0;
+        var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(current_invoice_amount) - parseFloat(previous_received);
         var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
 
         var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');

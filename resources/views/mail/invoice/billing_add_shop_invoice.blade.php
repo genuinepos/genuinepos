@@ -72,7 +72,7 @@
             width: 100%;
             background: rgba(0, 0, 0, 0.02);
             background: #F9F9F9;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            /* border: 1px solid rgba(0, 0, 0, 0.05); */
             border-collapse: collapse;
         }
 
@@ -205,7 +205,7 @@
 
         .mail-footer {
             border-top: 1px solid #dfe9ff;
-            background: #313131;
+            /* background: #313131; */
             padding: 25px 20px;
             margin: 0 -1px -1px;
         }
@@ -331,12 +331,12 @@
         /* Custom styles for invoice */
         .email-container table {
             margin-bottom: 20px;
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
         }
 
         .email-container table th,
         .email-container table td {
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
             padding: 8px;
             text-align: left;
         }
@@ -397,7 +397,7 @@
 @endphp
 <body>
     <div class="email-container">
-        <h2 class="page-title">Increase Shop Count</h2>
+        <h2 class="page-title">Increased Shop Invoice</h2>
         <table>
             <tbody>
                 <tr>
@@ -409,7 +409,7 @@
                             <div class="content_customer" style="text-align: right;">
                                 <span style="font-weight: bold;">{{ config('speeddigit.name') }}</span> <br>
                                 Address : {{ config('speeddigit.address') }} <br>
-                                <span style="font-weight: bold;">Phone:</span> {{ config('speeddigit.phone') }} <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
+                                <span style="font-weight: bold;">Phone:</span> {{ config('speeddigit.phone') }}, <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
                             </div>
                         </div>
                     </td>
@@ -431,20 +431,14 @@
                                 Date: {{ date('Y-m-d') }}<br>
                             </div>
 
-                            <br> <br> <br> <br> <br> <br> <br> <br> <br>
+                            <br> <br> <br>
                             <table width="100%" border="1" cellspacing="0" cellpadding="5" style="margin: 10px 0; padding: 10px;">
                                 <!-- Table header -->
                                 <tr>
                                     <th>Increased Shop</th>
                                     <th>Price Per Shop</th>
                                     <th>Pirce Period</th>
-                                    @if ($pricePeriod == 'month')
-                                        <th>Monthly</th>
-                                    @elseif ($pricePeriod == 'year')
-                                        <th>Yearly</th>
-                                    @elseif ($pricePeriod == 'lifetime')
-                                        <th>Yearly</th>
-                                    @endif
+                                    <th>Period Count</th>
                                     <th>Subtotal</th>
                                 </tr>
                                 <!-- Table data -->
@@ -455,19 +449,37 @@
                                     <td>{{ $pricePeriod != 'lifetime' ? $pricePeriodCount : 'Lifetime' }}</td>
                                     <td>{{ \App\Utils\Converter::format_in_bdt($subtotal) }}</td>
                                 </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Net Total Amount</th>
+                                    <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($netTotalAmount) }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Discount</th>
+                                    <th>: {{ $planPriceCurrency }} {{ $discount }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Tax:</th>
+                                    <th>: Free</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Total Payable</th>
+                                    <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Paid</th>
+                                    <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Due</th>
+                                    <th>: {{ $planPriceCurrency }} 0.00</th>
+                                </tr>
                             </table>
-                            <br> <br> <br>
-                            <div class="bottom_content">
-                                <span>Net Total Amount: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($netTotalAmount) }}</span><br><br>
-                                <hr>
-                                <span><strong>Tax:</strong> Free</span><br><br>
-                                <hr>
-                                <span><strong>Total Payable:</strong> {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</span><br><br>
-                                <hr>
-                                <span><strong>Paid:</strong> {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</span><br><br>
-                                <hr>
-                                <span><strong>Due:</strong> {{ $planPriceCurrency }} 0.00</span>
-                            </div>
 
                             <br><br><br>
                             <p style="text-align:center; margin-top:50px; font-size:16px;">Thanks for using our service</p>

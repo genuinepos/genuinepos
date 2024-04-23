@@ -385,7 +385,7 @@
 
                             <td>
                                 <select name="shop_price_periods[]" id="shop_price_period" class="form-control">
-                                    @if ($leftBranchExpireDateHistory?->price_period != 'year' && $shopExpireDateHistory?->price_period != 'lifetime')
+                                    @if ($leftBranchExpireDateHistory?->price_period != 'year' && $leftBranchExpireDateHistory?->price_period != 'lifetime')
                                         <option @selected($leftBranchExpireDateHistory?->price_period == 'month') value="month">{{ __('Monthly') }}</option>
                                     @endif
 
@@ -412,7 +412,7 @@
                                     </div>
                                 </div>
                                 <div id="fixed_shop_price_period_text">
-                                    {{ $branch?->shopExpireDateHistory?->price_period == 'lifetime' ? 'Lifetime' : '' }}
+                                    {{ $leftBranchExpireDateHistory->price_period == 'lifetime' ? 'Lifetime' : '' }}
                                 </div>
                             </td>
 

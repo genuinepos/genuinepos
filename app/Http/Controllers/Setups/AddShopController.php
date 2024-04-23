@@ -104,17 +104,21 @@ class AddShopController extends Controller
         }
         DB::reconnect();
 
-        $this->subscriptionMailService->sendSubscriptionAddShopInvoiceMail(
-            user: $tenant?->user,
-            increasedShopCount: $request->increase_shop_count,
-            pricePerShop: $request->plan_price,
-            pricePeriod: $request->shop_price_period,
-            pricePeriodCount: $request->shop_price_period_count,
-            subtotal: $request->shop_subtotal,
-            netTotalAmount: $request->net_total,
-            discount: $request->discount,
-            totalPayable: $request->total_payable,
-        );
+        if ($tenant?->user) {
+
+            $this->subscriptionMailService->sendSubscriptionAddShopInvoiceMail(
+                user: $tenant?->user,
+                increasedShopCount: $request->increase_shop_count,
+                pricePerShop: $request->plan_price,
+                pricePeriod: $request->shop_price_period,
+                pricePeriodCount: $request->shop_price_period_count,
+                subtotal: $request->shop_subtotal,
+                netTotalAmount: $request->net_total,
+                discount: $request->discount,
+                totalPayable: $request->total_payable,
+            );
+        }
+
 
         return response()->json(__('Plan upgraded successfully'));
     }

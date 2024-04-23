@@ -124,11 +124,14 @@ class ShopRenewController extends Controller
         }
         DB::reconnect();
 
-        $this->subscriptionMailService->sendSubscriptionShopRenewInvoiceMail(
-            user: $tenant?->user,
-            data: $request->all()
-        );
+        if ($tenant?->user) {
 
+            $this->subscriptionMailService->sendSubscriptionShopRenewInvoiceMail(
+                user: $tenant?->user,
+                data: $request->all()
+            );
+        }
+        
         return response()->json(__('Shop/Business renewed successfully'));
     }
 }

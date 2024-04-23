@@ -56,7 +56,7 @@ class SubscriptionService
             $addSubscription->has_due_amount = $request->payment_status == BooleanType::False->value ? BooleanType::True->value : BooleanType::False->value;
             if ($request->payment_status == BooleanType::False->value) {
 
-                $addSubscription->due_repayment_date = $request->repayment_date ? date('Y-m-d', strtotime($request->repayment_date)) : null;
+                $addSubscription->due_repayment_date = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
             }
         } elseif ($plan->is_trial_plan == BooleanType::True->value) {
 
@@ -73,9 +73,17 @@ class SubscriptionService
     {
         $updateSubscription = $this->singleSubscription();
 
+        $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ? BooleanType::True->value : BooleanType::False->value;
+
         $updateSubscription->trial_start_date = null;
-        $updateSubscription->has_due_amount = BooleanType::False->value;
-        $updateSubscription->due_repayment_date = null;
+
+        if ($isTrialPlan == BooleanType::False->value) {
+
+            $updateSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
+
+            $repaymentDate = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
+            $updateSubscription->due_repayment_date = $paymentStatus == BooleanType::False->value ? $repaymentDate : null;
+        }
 
         if ($subscriptionUpdateType == SubscriptionUpdateType::UpgradePlan->value) {
 

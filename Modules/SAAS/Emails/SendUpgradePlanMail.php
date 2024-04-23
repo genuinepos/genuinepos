@@ -8,21 +8,22 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailables\Envelope;
 
-class SendTrialMail extends Mailable
+class SendUpgradePlanMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(private $data, private $appUrl, private $trialExpireDate)
+    public function __construct(private $user, private $data, private $planName, private $appUrl)
     {
+        //
     }
-    
+
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Trial has been created successfully.',
+            subject: 'Subscription Plan Upgraded',
         );
     }
 
@@ -31,10 +32,11 @@ class SendTrialMail extends Mailable
      */
     public function build(): self
     {
+        $user = $this->user;
         $data = $this->data;
+        $planName = $this->planName;
         $appUrl = $this->appUrl;
-        $trialExpireDate = $this->trialExpireDate;
 
-        return $this->view('saas::mail.trial', compact('data', 'appUrl', 'trialExpireDate'));
+        return $this->view('saas::mail.upgrade_plan', compact('user', 'data', 'planName', 'appUrl'));
     }
 }

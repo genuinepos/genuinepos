@@ -1,4 +1,4 @@
-<x-saas::admin-layout title="Add Customer">
+<x-saas::admin-layout title="Upgrade Plan">
     @push('css')
         <style>
             .tab-section .tab-nav .single-nav {
@@ -103,35 +103,17 @@
         <div class="col-12">
             <div class="panel">
                 <div class="panel-header">
-                    <h5>{{ __('Add Customer') }}</h5>
+                    <h5>{{ __('Upgrade Plan') }}</h5>
                 </div>
                 <div class="panel-body">
                     <div class="tab-section py-120">
                         <div class="container">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="tab-nav">
-                                        <button class="single-nav single-tab active stepOneTab" data-tab="stepOneTab">
-                                            <span class="txt">{{ __('Step One') }}</span>
-                                            <span class="sl-no">{{ __('01') }}</span>
-                                        </button>
-
-                                        <button class="single-nav single-tab stepTwoTab" data-tab="stepTwoTab">
-                                            <span class="txt">{{ __('Step Two') }}</span>
-                                            <span class="sl-no">{{ __('02') }}</span>
-                                        </button>
-                                    </div>
-
                                     <div class="tab-contents">
-                                        <form id="tenantStoreForm" method="POST" action="{{ route('saas.tenants.store') }}">
+                                        <form id="upgrade_plan_form" action="{{ route('saas.tenants.upgrade.plan.confirm', $tenantId) }}" method="POST">
                                             @csrf
-                                            <div class="single-tab active" id="stepOneTab">
-                                                @include('saas::tenants.partials.view_partials.step_one')
-                                            </div>
-
-                                            <div class="single-tab" id="stepTwoTab">
-                                                @include('saas::tenants.partials.view_partials.step_two')
-                                            </div>
+                                            @include('saas::tenants.upgrade_plan.partials.view_partials.cart_table')
                                         </form>
                                     </div>
                                 </div>
@@ -144,6 +126,6 @@
     </div>
 
     @push('js')
-        @include('saas::tenants.partials.js_partial.js')
+        @include('saas::tenants.upgrade_plan.partials.js_partial.js')
     @endpush
 </x-saas::admin-layout>

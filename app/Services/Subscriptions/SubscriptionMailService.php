@@ -12,15 +12,13 @@ use App\Jobs\SendSubscriptionAddBusinessInvoiceMailQueueJob;
 
 class SubscriptionMailService
 {
-    public function sendPlanUpgradeSuccessMain(object $user): void
+    public function sendPlanUpgradeSuccessMain(object $user, string $planName, array $data, int $isTrialPlan): void
     {
-        dispatch(new SendSubscriptionPlanUpgradeMailQueueJob(to: $user->email, user: $user));
-
-        if ($user->id != 1) {
-
-            $superadmin = (new \App\Services\Users\UserService())->singleUser(id: 1);
-            dispatch(new SendSubscriptionPlanUpgradeMailQueueJob(to: $superadmin->email, user: $superadmin));
+        if (!isset($user?->email)) {
+            return;
         }
+
+        dispatch(new SendSubscriptionPlanUpgradeMailQueueJob(user: $user, planName: $planName, data: $data, isTrialPlan: $isTrialPlan));
     }
 
     public function sendSubscriptionAddShopInvoiceMail(
@@ -35,27 +33,13 @@ class SubscriptionMailService
         float $totalPayable,
     ): void {
 
-        $superadmin = (new \App\Services\Users\UserService())->singleUser(id: 1);
-        $prepareUser = (object) null;
-        if (!isset($user)) {
-
-            $prepareUser->email = isset($superadmin) ? $superadmin->email : null;
-            $prepareUser->phone = isset($superadmin) ? $superadmin->phone : null;
-            $prepareUser->address = isset($superadmin) ? $superadmin->present_address : null;
-            $prepareUser->name = isset($superadmin) ? $superadmin->prefix . ' ' . $superadmin->name . ' ' . $superadmin->last_name : null;
-        } else {
-
-            $prepareUser = $user;
-            $prepareUser->email = isset($user->email) ? $user->email : (isset($superadmin) ? $superadmin->email : null);
-        }
-
-        if (!isset($prepareUser->email)) {
+        if (!isset($user->email)) {
             return;
         }
 
         dispatch(
             new SendSubscriptionAddShopInvoiceMailQueueJob(
-                user: $prepareUser,
+                user: $user,
                 increasedShopCount: $increasedShopCount,
                 pricePerShop: $pricePerShop,
                 pricePeriod: $pricePeriod,
@@ -68,49 +52,21 @@ class SubscriptionMailService
         );
     }
 
-    public function sendSubscriptionShopRenewInvoiceMail(?object $user, array $data): void {
-
-        $superadmin = (new \App\Services\Users\UserService())->singleUser(id: 1);
-        $prepareUser = (object) null;
-        if (!isset($user)) {
-
-            $prepareUser->email = isset($superadmin) ? $superadmin->email : null;
-            $prepareUser->phone = isset($superadmin) ? $superadmin->phone : null;
-            $prepareUser->address = isset($superadmin) ? $superadmin->present_address : null;
-            $prepareUser->name = isset($superadmin) ? $superadmin->prefix . ' ' . $superadmin->name . ' ' . $superadmin->last_name : null;
-        } else {
-
-            $prepareUser = $user;
-            $prepareUser->email = isset($user->email) ? $user->email : (isset($superadmin) ? $superadmin->email : null);
-        }
-
-        if (!isset($prepareUser->email)) {
+    public function sendSubscriptionShopRenewInvoiceMail(?object $user, array $data): void
+    {
+        if (!isset($user->email)) {
             return;
         }
 
-        dispatch(new SendSubscriptionShopRenewInvoiceMainQueueJob(user: $prepareUser, data: $data));
+        dispatch(new SendSubscriptionShopRenewInvoiceMainQueueJob(user: $user, data: $data));
     }
 
-    public function sendSubscriptionAddBusinessInvoiceMail(?object $user, array $data): void {
-
-        $superadmin = (new \App\Services\Users\UserService())->singleUser(id: 1);
-        $prepareUser = (object) null;
-        if (!isset($user)) {
-
-            $prepareUser->email = isset($superadmin) ? $superadmin->email : null;
-            $prepareUser->phone = isset($superadmin) ? $superadmin->phone : null;
-            $prepareUser->address = isset($superadmin) ? $superadmin->present_address : null;
-            $prepareUser->name = isset($superadmin) ? $superadmin->prefix . ' ' . $superadmin->name . ' ' . $superadmin->last_name : null;
-        } else {
-
-            $prepareUser = $user;
-            $prepareUser->email = isset($user->email) ? $user->email : (isset($superadmin) ? $superadmin->email : null);
-        }
-
-        if (!isset($prepareUser->email)) {
+    public function sendSubscriptionAddBusinessInvoiceMail(?object $user, array $data): void
+    {
+        if (!isset($user->email)) {
             return;
         }
 
-        dispatch(new SendSubscriptionAddBusinessInvoiceMailQueueJob(user: $prepareUser, data: $data));
+        dispatch(new SendSubscriptionAddBusinessInvoiceMailQueueJob(user: $user, data: $data));
     }
 }

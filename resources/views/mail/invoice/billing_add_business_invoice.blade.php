@@ -331,12 +331,12 @@
         /* Custom styles for invoice */
         .email-container table {
             margin-bottom: 20px;
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
         }
 
         .email-container table th,
         .email-container table td {
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
             padding: 8px;
             text-align: left;
         }

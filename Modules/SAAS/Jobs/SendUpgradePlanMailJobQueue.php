@@ -2,28 +2,24 @@
 
 namespace Modules\SAAS\Jobs;
 
+use Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
-use Modules\SAAS\Emails\SubscriptionUpgradeMail;
+use Modules\SAAS\Emails\SendUpgradePlanMail;
 
-class SendSubscriptionUpgradeMailQueueJob implements ShouldQueue
+class SendUpgradePlanMailJobQueue implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    private $to;
-    private $user;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($to, $user)
+    public function __construct(private $user, private $data, private $planName, private $appUrl)
     {
-        $this->to = $to;
-        $this->user = $user;
+        //
     }
 
     /**
@@ -31,7 +27,7 @@ class SendSubscriptionUpgradeMailQueueJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $email =  new SubscriptionUpgradeMail($this->user);
-        Mail::to($this->to)->send($email);
+        $email = new SendUpgradePlanMail(user: $this->user, data: $this->data, planName: $this->planName, appUrl: $this->appUrl);
+        Mail::to($this->user->email)->send($email);
     }
 }

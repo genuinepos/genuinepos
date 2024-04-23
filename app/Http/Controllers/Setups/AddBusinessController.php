@@ -48,7 +48,6 @@ class AddBusinessController extends Controller
 
     public function confirm(AddBusinessConfirmRequest $request)
     {
-        // return $request->all();
         $planId = config('generalSettings')['subscription']->plan_id;
         DB::statement('use ' . env('DB_DATABASE'));
         $plan = $this->planServiceInterface->singlePlanById(id: $planId);
@@ -93,10 +92,13 @@ class AddBusinessController extends Controller
         }
         DB::reconnect();
 
-        $this->subscriptionMailService->sendSubscriptionAddBusinessInvoiceMail(
-            user: $tenant?->user,
-            data: $request->all()
-        );
+        if ($tenant?->user) {
+
+            $this->subscriptionMailService->sendSubscriptionAddBusinessInvoiceMail(
+                user: $tenant?->user,
+                data: $request->all()
+            );
+        }
 
         if (auth()->user()->can('has_access_to_all_area')) {
 

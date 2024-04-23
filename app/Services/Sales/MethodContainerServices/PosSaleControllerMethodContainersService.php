@@ -487,7 +487,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             $this->cashRegisterTransactionService->addCashRegisterTransaction(request: $request, saleId: $updatePosSale->id, voucherDebitDescriptionId: $voucherDebitDescriptionId, saleRefId: $updatePosSale->id);
         }
 
-        $deletedUnusedSaleProducts = $this->saleProductService->saleProducts(with: ['stockChains', 'stockChains.purchaseProduct'])->where('sale_id', $updatePosSale->id)->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();
+        $deletedUnusedSaleProducts = $this->saleProductService->saleProducts(with: ['stockChains', 'stockChains.purchaseProduct'])->where('sale_id', $updatePosSale->id)->where('is_delete_in_update', BooleanType::True->value)->get();
 
         if (count($deletedUnusedSaleProducts) > 0) {
 

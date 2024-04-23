@@ -113,7 +113,7 @@ class TenantService implements TenantServiceInterface
                         $trialExpireDate = ExpireDateAllocation::getExpireDate(period: 'day', periodCount: $plan->trial_days);
 
                         dispatch(new \Modules\SAAS\Jobs\SendTrialMailJobQueue(data: $request->all(), appUrl: $appUrl, trialExpireDate: $trialExpireDate));
-                    }else {
+                    } else {
 
                         dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(data: $request->all(), planName: $plan->name, appUrl: $appUrl));
                     }
@@ -171,9 +171,19 @@ class TenantService implements TenantServiceInterface
 
                 $html .= '<a href="' . $domain . '" target="_blank" class="dropdown-item">' . __('Open Application') . '</a>';
 
-                if ($row->has_due_amount == 1) {
+                if (auth()->user()->can('tenants_update_payment_status') && $row->has_due_amount == BooleanType::True->value) {
 
-                    $html .= '<a href="#" class="dropdown-item" id="receiveDueAmount">' . __('Receive Due Amount') . '</a>';
+                    $html .= '<a href="#" class="dropdown-item" id="receiveDueAmount">' . __('Update Payment Status') . '</a>';
+                }
+
+                if (auth()->user()->can('tenants_upgrade_plan') && $row->is_trial_plan == BooleanType::True->value) {
+
+                    $html .= '<a href="' . route('saas.tenants.upgrade.plan.cart', $row->id) . '" class="dropdown-item">' . __('Upgrade Plan') . '</a>';
+                }
+
+                if (auth()->user()->can('tenants_update_expire_date') && $row->is_trial_plan == BooleanType::False->value) {
+
+                    $html .= '<a href="#" class="dropdown-item">' . __('Update Expire Date') . '</a>';
                 }
 
                 if (auth()->user()->can('tenants_destroy')) {

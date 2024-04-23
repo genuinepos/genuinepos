@@ -99,9 +99,9 @@
                                 @endif
 
                                 <p class="address-name">
-                                    {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city . ', ' : '' }}
-                                    {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state . ', ' : '' }}
-                                    {{ $openedCashRegister->branch->country ? ', ' . $openedCashRegister->branch->country : '' }}
+                                    {{ $openedCashRegister?->branch?->city ? $openedCashRegister->branch->city . ', ' : '' }}
+                                    {{ $openedCashRegister?->branch?->state ? $openedCashRegister->branch->state . ', ' : '' }}
+                                    {{ $openedCashRegister?->branch?->country ? ', ' . $openedCashRegister->branch->country : '' }}
                                 </p>
                             @else
                                 <p class="store-name">

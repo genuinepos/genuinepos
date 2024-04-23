@@ -55,9 +55,17 @@ class UserSubscriptionService implements UserSubscriptionServiceInterface
 
         if (isset($updateUserSubscription)) {
 
+            $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ? BooleanType::True->value : BooleanType::False->value;
+
             $updateUserSubscription->trial_start_date = null;
-            $updateUserSubscription->has_due_amount = BooleanType::False->value;
-            $updateUserSubscription->due_repayment_date = null;
+
+            if ($isTrialPlan == BooleanType::False->value) {
+
+                $updateUserSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
+
+                $repaymentDate = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
+                $updateUserSubscription->due_repayment_date = $paymentStatus == BooleanType::False->value ? $repaymentDate : null;
+            }
 
             if ($subscriptionUpdateType == SubscriptionUpdateType::UpgradePlan->value) {
 

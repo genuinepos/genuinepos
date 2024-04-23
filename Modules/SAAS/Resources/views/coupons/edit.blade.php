@@ -434,7 +434,7 @@
         <div class="col-12">
             <div class="panel">
                 <div class="panel-header">
-                    <h5>{{ __('Create Coupon') }}</h5>
+                    <h5>{{ __('Edit Coupon') }}</h5>
                     <div class="btn-box">
                         <a href="{{ route('saas.coupons.index') }}" class="btn btn-sm btn-primary">{{ __('All coupons') }}</a>
                     </div>
@@ -559,10 +559,9 @@
 
                 $(function() {
 
-                    $("#start_date").datepicker();
-                    $("#end_date").datepicker();
+                    $("#start_date").datepicker({ dateFormat: 'yy-mm-dd' });
+                    $("#end_date").datepicker({ dateFormat: 'yy-mm-dd' });
                 });
-
             });
         </script>
     @endpush

@@ -16,10 +16,8 @@ class SendSubscriptionPlanUpgradeMail extends Mailable
     /**
      * Create a new message instance.
      */
-    private $user;
-    public function __construct($user)
+    public function __construct(private $user, private $planName, private $data, private $isTrialPlan)
     {
-        $this->user = $user;
     }
 
     /**
@@ -35,7 +33,10 @@ class SendSubscriptionPlanUpgradeMail extends Mailable
     public function build(): self
     {
         $user = $this->user;
-        return $this->view('mail.plan_upgrade', compact('user'));
+        $planName = $this->planName;
+        $data = $this->data;
+        $isTrialPlan = $this->isTrialPlan;
+        return $this->view('mail.plan_upgrade', compact('user', 'planName', 'data', 'isTrialPlan'));
     }
 
     /**

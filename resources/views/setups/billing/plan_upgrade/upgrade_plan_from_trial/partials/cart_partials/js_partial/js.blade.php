@@ -93,7 +93,7 @@
                 newVal = oldValue - 1;
             }
 
-            business_price_period_count.val(parseInt(newVal))
+            business_price_period_count.val(parseInt(newVal));
             calculateCartAmount();
         }
     });
@@ -114,7 +114,7 @@
                 newVal = oldValue + 1;
             }
 
-            business_price_period_count.val(parseInt(newVal))
+            business_price_period_count.val(parseInt(newVal));
             calculateCartAmount();
         }
     });
@@ -204,10 +204,10 @@
 
             var shop_price_period = $('#shop_price_period:checked').val() ? $('#shop_price_period:checked').val() : 0;
             var business_price_period = $('#business_price_period').val() ? $('#business_price_period').val() : 0;
+            var discount_percent = $('#discount_percent').val() ? $('#discount_percent').val() : 0;
             var shop_price = $('#shop_price').val() ? $('#shop_price').val() : 0;
             var business_price = $('#business_price').val() ? $('#business_price').val() : 0;
             var shop_count = $('#shop_count').val() ? $('#shop_count').val() : 0;
-            var discount = $('#discount').val() ? $('#discount').val() : 0;
             var shop_price_period_count = $('#shop_price_period_count').val() ? $('#shop_price_period_count').val() : 0;
             var business_price_period_count = $('#business_price_period_count').val() ? $('#business_price_period_count').val() : 0;
             var __shop_price_period_count = shop_price_period == 'month' || shop_price_period == 'year' ? parseFloat(shop_price_period_count) : 1;
@@ -224,8 +224,11 @@
             $('#net_total').val(parseFloat(netTotal));
             $('.span_net_total').html(bdFormat(netTotal));
 
-            $('#discount').val(parseFloat(discount).toFixed());
-            var totalPayableAmount = parseFloat(shop_subtotal) + parseFloat(businessSubtotal) - parseFloat(discount)
+            var discount = ((parseFloat(netTotal) / 100) * parseFloat(discount_percent));
+            $('#discount').val(parseFloat(discount));
+            $('.span_discount').html('(' + discount_percent + '%=' + bdFormat(discount) + ')');
+
+            var totalPayableAmount = parseFloat(shop_subtotal) + parseFloat(businessSubtotal) - parseFloat(discount);
 
             $('.span_total_shop_count').html(parseInt(shop_count));
             $('#total_payable').val(parseFloat(totalPayableAmount));
@@ -270,28 +273,28 @@
 
             var html = '';
             html += '<tr id="add_business_tr">';
-            html += '<td>'+"{{ __('Multi Store Management System') }}"+'</td>';
+            html += '<td>' + "{{ __('Multi Store Management System') }}" + '</td>';
             html += '<td>';
             html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(initialBusinessPrice).toFixed(2) + '">';
-            html += '<span class="price-txt">'+"{{ $planPriceCurrency }}"+' <span id="span_business_price">' + bdFormat(initialBusinessPrice) + '</span></span>';
+            html += '<span class="price-txt">' + "{{ $planPriceCurrency }}" + ' <span id="span_business_price">' + bdFormat(initialBusinessPrice) + '</span></span>';
             html += '</td>';
 
             html += '<td class="text-start">';
             html += '<label>Period</label>';
             html += '<select name="business_price_period" class="form-control" id="business_price_period">';
-            html += '<option ' + (shop_price_period == 'month' ? "SELECTED" : '') + ' value="month">'+"{{ __('Monthly') }}"+'</option>';
-            html += '<option ' + (shop_price_period == 'year' ? "SELECTED" : '') + ' value="year">'+"{{ __('Yearly') }}"+'</option>';
+            html += '<option ' + (shop_price_period == 'month' ? "SELECTED" : '') + ' value="month">' + "{{ __('Monthly') }}" + '</option>';
+            html += '<option ' + (shop_price_period == 'year' ? "SELECTED" : '') + ' value="year">' + "{{ __('Yearly') }}" + '</option>';
 
             if (has_lifetime_period == 1) {
 
-                html += '<option ' + (shop_price_period == 'lifetime' ? "SELECTED" : '') + ' value="lifetime">'+"{{ __('Lifetime') }}"+'</option>';
+                html += '<option ' + (shop_price_period == 'lifetime' ? "SELECTED" : '') + ' value="lifetime">' + "{{ __('Lifetime') }}" + '</option>';
             }
 
             html += '</select>';
             html += '</td>';
 
             html += '<td>';
-            html += '<label>'+"{{ __('Period Count') }}"+'</label>';
+            html += '<label>' + "{{ __('Period Count') }}" + '</label>';
             html += '<div class="product-count cart-product-count business_price_period_count ' + (shop_price_period == 'lifetime' ? "d-none" : '') + '">';
             html += '<div class="quantity rapper-quantity">';
             html += '<input readonly name="business_price_period_count" id="business_price_period_count" type="number" min="1" step="1" value="1">';
@@ -310,7 +313,7 @@
 
             html += '<td>';
             html += '<input type="hidden" name="business_subtotal" id="business_subtotal" value="' + parseFloat(initialBusinessPrice).toFixed(2) + '">';
-            html += '<span class="price-txt">'+"{{ $planPriceCurrency }}"+' <span id="span_business_subtotal">' + bdFormat(initialBusinessPrice) + '</span></span>';
+            html += '<span class="price-txt">' + "{{ $planPriceCurrency }}" + ' <span id="span_business_subtotal">' + bdFormat(initialBusinessPrice) + '</span></span>';
             html += '</td>';
             html += '</tr>';
 
@@ -329,18 +332,16 @@
 <script>
     $(document).on('click', '#remove_applied_coupon', function(e) {
         e.preventDefault();
-        var discount = $('#discount').val();
-        var totalPayable = $('#total_payable').val();
+
         $('#coupon_code').val('');
         $('#coupon_id').val('');
         $('#coupon_success_msg').hide();
         $('#coupon_code_applying_area').show();
 
-        var currentTotalPayable = parseFloat(totalPayable) + parseFloat(discount);
-        $('#total_payable').val(parseFloat(currentTotalPayable));
-        $('.span_total_payable').html(bdFormat(currentTotalPayable));
         $('#discount').val(0);
+        $('#discount_percent').val(0);
         $('.span_discount').html(parseFloat(0).toFixed(2));
+        calculateCartAmount();
     });
 
     $(document).on('click', '#applyCouponBtn', function(e) {
@@ -377,19 +378,11 @@
 
                 $('#applied_coupon_code').html(data.code);
                 $('#coupon_id').val(data.id);
-                var discountPercent = data.percent;
                 $('#discount_percent').val(data.percent);
                 $('#coupon_success_msg').show();
                 $('#coupon_code_applying_area').hide();
-                var totalPayable = $('#total_payable').val();
 
-                var discount = ((parseFloat(totalPayable) / 100) * parseFloat(discountPercent));
-                $('#discount').val(parseFloat(discount));
-                $('.span_discount').html('(' + data.percent + '%=' + bdFormat(discount) + ')');
-
-                var currentTotalPayable = parseFloat(totalPayable) - parseFloat(discount);
-                $('#total_payable').val(parseFloat(currentTotalPayable));
-                $('.span_total_payable').html(bdFormat(currentTotalPayable));
+                calculateCartAmount();
 
                 toastr.success("{{ __('Coupon is applied successfully.') }}");
             },

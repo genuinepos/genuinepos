@@ -45,8 +45,10 @@ class UpgradePlanController extends Controller
     public function index()
     {
         DB::statement('use ' . env('DB_DATABASE'));
-        $plans = $this->planServiceInterface->plans(with: ['currency:id,symbol'])
-            ->active()->where('is_trial_plan', BooleanType::False->value)->get();
+        $plans = $this->planServiceInterface->plans()
+            ->where('plan_type', PlanType::Fixed->value)
+            ->where('status', BooleanType::True->value)
+            ->where('is_trial_plan', BooleanType::False->value)->get();
         DB::reconnect();
 
         if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::True->value) {
@@ -75,7 +77,7 @@ class UpgradePlanController extends Controller
         }
 
         DB::statement('use ' . env('DB_DATABASE'));
-        $plan = $this->planServiceInterface->singlePlanById(id: $id, with: ['currency:id,symbol']);
+        $plan = $this->planServiceInterface->singlePlanById(id: $id);
         DB::reconnect();
 
         if (config('generalSettings')['subscription']->plan_type == PlanType::Custom->value) {
@@ -179,7 +181,10 @@ class UpgradePlanController extends Controller
             Session::forget('startupType');
         }
 
-        $this->subscriptionMailService->sendPlanUpgradeSuccessMain(user: auth()->user());
+        if ($tenant?->user) {
+
+            $this->subscriptionMailService->sendPlanUpgradeSuccessMain(user: $tenant->user, planName: $plan->name, data: $request->all(), isTrialPlan: $isTrialPlan);
+        }
 
         return response()->json(__('Plan upgraded successfully'));
     }

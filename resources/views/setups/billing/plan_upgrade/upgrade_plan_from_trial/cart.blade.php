@@ -7,7 +7,7 @@
         $planPriceCurrency = \Modules\SAAS\Utils\PlanPriceCurrencySymbol::currencySymbol();
     @endphp
 
-    <div class="tab-section py-120">
+    <div class="tab-section py-120 mt-2">
         <div class="container">
             <div class="row">
                 <div class="col-12">

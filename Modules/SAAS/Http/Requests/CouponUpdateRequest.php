@@ -16,7 +16,7 @@ class CouponUpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $id = $this->route('coupon');
+        $id = $this->route('id');
 
         return [
             'code' => 'required|unique:coupons,code,'. $id,

@@ -23,17 +23,7 @@ use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
-
-Route::get('t-test',function () {
-
-    return 'ok';
-    
-    $id = 'organio';
-    if (file_exists(public_path('uploads/' . $id))) {
-
-        rmdir(public_path('uploads/' . $id));
-    }
-});
+use Modules\SAAS\Http\Controllers\UpgradePlanController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -107,6 +97,12 @@ Route::middleware(['is_verified'])->group(function () {
         Route::post('store', 'store')->name('tenants.store');
         Route::get('delete/{id}', 'delete')->name('tenants.delete');
         Route::delete('destroy/{id}', 'destroy')->name('tenants.destroy');
+
+        Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
+
+            Route::get('cart/{tenantId}', 'cart')->name('tenants.upgrade.plan.cart');
+            Route::post('confirm/{tenantId}', 'confirm')->name('tenants.upgrade.plan.confirm');
+        });
     });
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
@@ -139,8 +135,16 @@ Route::middleware(['is_verified'])->group(function () {
         Route::delete('delete/{id}', 'delete')->name('roles.delete');
     });
 
-    //Coupons Route
-    Route::resource('coupons', CouponController::class);
+    Route::controller(CouponController::class)->prefix('coupons')->group(function () {
+
+        Route::get('/', 'index')->name('coupons.index');
+        Route::get('create', 'create')->name('coupons.create');
+        Route::post('store', 'store')->name('coupons.store');
+        Route::get('edit/{id}', 'edit')->name('coupons.edit');
+        Route::patch('update/{id}', 'update')->name('coupons.update');
+        Route::delete('delete/{id}', 'delete')->name('coupons.delete');
+        Route::get('code/check', 'checkCouponCode')->name('coupons.code.check');
+    });
 
     //Email Settings Route
     Route::resource('email-settings', EmailSettingsController::class);

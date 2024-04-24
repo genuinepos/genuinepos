@@ -1,11 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
+    <link rel="stylesheet" href="{{ asset('backend/css/cart.css') }}">
 @endpush
 @section('title', 'Due Repayment - ')
 @section('content')
-    @push('stylesheets')
-        <link rel="stylesheet" href="{{ asset('backend/css/cart.css') }}">
-    @endpush
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
@@ -50,7 +48,7 @@
                                                                 <p>1</p>
                                                             </td>
                                                             <td>
-                                                                <p>{{ __("Buy Plan") }}</p>
+                                                                <p>{{ __('Buy Plan') }}</p>
                                                             </td>
                                                             <td>
                                                                 <p>{{ $dueSubscriptionTransaction?->plan?->name }}</p>
@@ -81,7 +79,7 @@
                                                 <div class="col-md-12">
                                                     <div class="payment-method">
                                                         <div class="cart-total-panel">
-                                                            <h3 class="title">Due Amount : TK. 5,600.00</h3>
+                                                            <h3 class="title">Due Amount : <span class="text-danger">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->due) }}</span></h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -156,5 +154,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('backend/js/cart.js') }}"></script>
+    {{-- <script src="{{ asset('backend/js/cart.js') }}"></script> --}}
 @endpush

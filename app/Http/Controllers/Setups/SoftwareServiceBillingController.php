@@ -41,11 +41,6 @@ class SoftwareServiceBillingController extends Controller
         return view('setups.billing.index', compact('branches', 'transactions'));
     }
 
-    public function dueRepayment()
-    {
-        return view('setups.billing.due_repayment');
-    }
-
     public function invoiceView($id)
     {
         $transaction = $this->invoiceQuery($id);

@@ -17,9 +17,9 @@
         </div>
 
         <div class="p-1">
-            <div class="card p-2">
-                <div class="tab-section py-120">
-                    <div class="container">
+            <div class="card py-2">
+                <div class="tab-section">
+                    <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
                                 <div class="tab-contents">
@@ -30,12 +30,17 @@
                                                     <thead>
                                                         <tr>
                                                             <th>S/L</th>
+                                                            <th>Purchase Type</th>
                                                             <th>Plan</th>
                                                             <th>Price</th>
                                                             <th>Store Quantity</th>
-                                                            <th>Years</th>
-                                                            <th>Total Amount</th>
-                                                            <th>Due Amount</th>
+                                                            <th>Multi Shop Management System(Business)</th>
+                                                            <th>Price Period</th>
+                                                            <th>Net Total</th>
+                                                            <th>Discount</th>
+                                                            <th>Total Payable</th>
+                                                            <th>Paid</th>
+                                                            <th>Due</th>
                                                         </tr>
                                                     </thead>
 
@@ -45,13 +50,26 @@
                                                                 <p>1</p>
                                                             </td>
                                                             <td>
-                                                                <p>Enterpiese</p>
+                                                                <p>{{ __("Buy Plan") }}</p>
                                                             </td>
-                                                            <td class=""><span class="price-txt">$<span class="main-price">460</span></span></td>
-                                                            <td>1</td>
-                                                            <td><span class="price-txt text-danger">2</td>
-                                                            <td><span class="price-txt">$460</span></td>
-                                                            <td><span class="price-txt text-danger">$460</span></td>
+                                                            <td>
+                                                                <p>{{ $dueSubscriptionTransaction?->plan?->name }}</p>
+                                                            </td>
+                                                            <td class="">{{ $dueSubscriptionTransaction?->details?->shop_price }}</td>
+                                                            <td>{{ $dueSubscriptionTransaction?->details?->shop_count }}</td>
+                                                            <td>
+                                                                @if ($dueSubscriptionTransaction?->details?->has_business == 1)
+                                                                    <span class="text-success">Yes</span>
+                                                                @else
+                                                                    <span class="text-danger">No</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>{{ $dueSubscriptionTransaction?->details?->shop_price_period }}</td>
+                                                            <td class="fw-bold">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->net_total) }}</td>
+                                                            <td class="fw-bold">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->discount) }}</td>
+                                                            <td class="fw-bold">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->total_payable_amount) }}</td>
+                                                            <td class="text-success fw-bold">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->paid) }}</td>
+                                                            <td class="text-danger fw-bold">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->due) }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

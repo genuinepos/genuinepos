@@ -87,7 +87,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('modules/saas') }}/vendor/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('modules/saas') }}/js/dashboard.js"></script>
-    <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script>
+    {{-- <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script> --}}
     @include('saas::_includes.main-js')
     @stack('js')
 

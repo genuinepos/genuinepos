@@ -36,7 +36,7 @@
 
                             <p class="text-white mt-1">
                                 {{ __('Due Repayment Date') }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->due_repayment_date)) }}</span>
-                                <a href="{{ route('software.service.billing.due.repayment') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
+                                <a href="{{ route('software.service.billing.due.repayment.index') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
                             </p>
                         @endif
                     @else

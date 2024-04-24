@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
@@ -11,6 +10,7 @@ use App\Enums\SubscriptionTransactionType;
 use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
+use App\Http\Requests\Setups\AddShopConfirmRequest;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
 use App\Services\Setups\ShopExpireDateHistoryService;
@@ -36,6 +36,8 @@ class AddShopController extends Controller
 
     public function cart()
     {
+        abort_if(!auth()->user()->can('billing_branch_add') && config('generalSettings')['subscription']->has_due_amount == BooleanType::True->value, 403);
+
         $planId = config('generalSettings')['subscription']->plan_id;
         DB::statement('use ' . env('DB_DATABASE'));
         $plan = $this->planServiceInterface->singlePlanById(id: $planId);
@@ -44,7 +46,7 @@ class AddShopController extends Controller
         return view('setups.billing.add_shop.cart', compact('plan'));
     }
 
-    public function confirm(Request $request)
+    public function confirm(AddShopConfirmRequest $request)
     {
         $generalSettings = config('generalSettings');
         $planId = $generalSettings['subscription']->plan_id;
@@ -118,7 +120,6 @@ class AddShopController extends Controller
                 totalPayable: $request->total_payable,
             );
         }
-
 
         return response()->json(__('Plan upgraded successfully'));
     }

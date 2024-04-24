@@ -91,7 +91,7 @@ class SubscriptionRestrictionsMiddleware
             date('Y-m-d') > $generalSettings['subscription']->due_repayment_date
         ) {
 
-            return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment your due amount.')]);
+            return redirect()->route('software.service.billing.due.repayment.index')->with(['duePayment' => __('Please Repayment your due amount.')]);
         } elseif (
             auth()->user()?->branch &&
             auth()->user()?->branch?->expire_date &&

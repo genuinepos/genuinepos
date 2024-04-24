@@ -71,9 +71,11 @@ class SubscriptionService
 
     public function updateSubscription(object $request, ?object $plan = null, int $isTrialPlan = 0, int $subscriptionUpdateType = 1): object
     {
-        $updateSubscription = $this->singleSubscription();
+        $updateSubscription = $this->singleSubscription(with: ['dueSubscriptionTransaction']);
 
-        $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ? BooleanType::True->value : BooleanType::False->value;
+        $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ?
+            BooleanType::True->value :
+            BooleanType::False->value;
 
         $updateSubscription->trial_start_date = null;
 
@@ -181,6 +183,14 @@ class SubscriptionService
         } else if ($subscriptionUpdateType == SubscriptionUpdateType::UpdateExpireDate->value && $updateSubscription->has_business == BooleanType::True->value) {
 
             $updateSubscription->business_expire_date = date('Y-m-d', strtotime($request->business_new_expire_date));
+        } else if ($subscriptionUpdateType == SubscriptionUpdateType::UpdatePaymentStatus->value) {
+
+            $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ? BooleanType::True->value : BooleanType::False->value;
+
+            $updateSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
+
+            $repaymentDate = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
+            $updateSubscription->due_repayment_date = $paymentStatus == BooleanType::False->value ? $repaymentDate : null;
         }
 
         $updateSubscription->save();

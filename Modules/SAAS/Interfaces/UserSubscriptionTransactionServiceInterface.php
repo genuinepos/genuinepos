@@ -10,4 +10,6 @@ interface UserSubscriptionTransactionServiceInterface
 
     public function userSubscriptionTransactions(array $with = null): object;
     public function addUserSubscriptionTransaction(object $request, object $userSubscription, int $transactionType, string $transactionDetailsType, ?object $plan = null): void;
+    public function subscriptionTransactions(?array $with = null): ?object;
+    public function updateDueTransactionStatus(object $request, ?object $dueSubscriptionTransaction): void;
 }

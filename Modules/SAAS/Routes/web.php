@@ -11,6 +11,7 @@ use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\Guest\TrialController;
+use Modules\SAAS\Http\Controllers\UpgradePlanController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\EmailSettingsController;
 use Modules\SAAS\Http\Controllers\Guest\SendEmailController;
@@ -19,11 +20,11 @@ use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
 use Modules\SAAS\Http\Controllers\Guest\PlanConfirmController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
+use Modules\SAAS\Http\Controllers\UpdatePaymentStatusController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
-use Modules\SAAS\Http\Controllers\UpgradePlanController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -108,6 +109,12 @@ Route::middleware(['is_verified'])->group(function () {
 
             Route::get('index/{tenantId}', 'index')->name('tenants.update.expire.date.index');
             Route::post('confirm/{tenantId}', 'confirm')->name('tenants.update.expire.date.confirm');
+        });
+
+        Route::controller(UpdatePaymentStatusController::class)->prefix('update-payment-status')->group(function () {
+
+            Route::get('index/{tenantId}', 'index')->name('tenants.update.payment.status.index');
+            Route::post('update/{tenantId}', 'update')->name('tenants.update.payment.status.update');
         });
     });
 

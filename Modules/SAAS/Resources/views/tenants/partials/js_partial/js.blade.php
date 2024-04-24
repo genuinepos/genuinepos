@@ -1,5 +1,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
 <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
 
 <script>
@@ -568,7 +567,6 @@
     function planPriceIfLocationIsBd(amount = 0) {
         var gioInfo = @json(\Modules\SAAS\Utils\GioInfo::getInfo());
 
-        console.log(gioInfo['country']);
         country = gioInfo['country'];
         currencyRateInUsd = parseFloat(gioInfo['currency_rate']);
         if (gioInfo['country'] == 'bangladesh') {

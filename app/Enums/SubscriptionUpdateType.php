@@ -9,4 +9,5 @@ enum SubscriptionUpdateType: int
     case AddBusiness = 3;
     case ShopRenew = 4;
     case UpdateExpireDate = 5;
+    case UpdatePaymentStatus = 6;
 }

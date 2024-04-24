@@ -159,7 +159,7 @@
                             </span>
                         </li>
                     </ul>
-                    <a class="single-nav def-btn tab-next-btn" data-tab="stepTwoTab">{{ __('Next Step') }}</a>
+                    <a class="def-btn tab-next-btn text-center single-nav" data-tab="stepTwoTab" style="cursor: pointer;">{{ __('Next Step') }}</a>
                 </div>
             </div>
         </div>

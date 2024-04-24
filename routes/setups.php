@@ -10,6 +10,7 @@ use App\Http\Controllers\Setups\AddBusinessController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
 use App\Http\Controllers\Setups\UpgradePlanController;
+use App\Http\Controllers\Setups\DueRepaymentController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
@@ -150,7 +151,6 @@ Route::prefix('setups')->group(function () {
     Route::controller(SoftwareServiceBillingController::class)->prefix('billing')->group(function () {
 
         Route::get('/', 'index')->name('software.service.billing.index');
-        Route::get('due/repayment', 'dueRepayment')->name('software.service.billing.due.repayment');
         Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
         Route::get('invoice/download/{id}', 'invoiceDownload')->name('software.service.billing.invoice.download');
 
@@ -181,6 +181,12 @@ Route::prefix('setups')->group(function () {
 
             Route::get('cart', 'cart')->name('software.service.billing.shop.renew.cart');
             Route::post('confirm', 'confirm')->name('software.service.billing.shop.renew.confirm');
+        });
+
+        Route::controller(DueRepaymentController::class)->prefix('due-repayment')->group(function () {
+
+            Route::get('/', 'index')->name('software.service.billing.due.repayment.index');
+            Route::post('confirm', 'confirm')->name('software.service.billing.due.repayment.confirm');
         });
     });
 

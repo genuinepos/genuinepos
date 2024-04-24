@@ -93,7 +93,6 @@
                 max-width: 172px;
             }
         </style>
-        <link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
     @endpush
 
     @php

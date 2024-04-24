@@ -173,7 +173,7 @@ class TenantService implements TenantServiceInterface
 
                 if (auth()->user()->can('tenants_update_payment_status') && $row->has_due_amount == BooleanType::True->value) {
 
-                    $html .= '<a href="#" class="dropdown-item" id="receiveDueAmount">' . __('Update Payment Status') . '</a>';
+                    $html .= '<a href="' . route('saas.tenants.update.payment.status.index', $row->id) . '" class="dropdown-item" id="receiveDueAmount">' . __('Update Payment Status') . '</a>';
                 }
 
                 if (auth()->user()->can('tenants_upgrade_plan') && $row->is_trial_plan == BooleanType::True->value) {

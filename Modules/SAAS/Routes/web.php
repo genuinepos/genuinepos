@@ -103,6 +103,12 @@ Route::middleware(['is_verified'])->group(function () {
             Route::get('cart/{tenantId}', 'cart')->name('tenants.upgrade.plan.cart');
             Route::post('confirm/{tenantId}', 'confirm')->name('tenants.upgrade.plan.confirm');
         });
+
+        Route::controller(UpdateExpireDateController::class)->prefix('update-expire-date')->group(function () {
+
+            Route::get('index/{tenantId}', 'index')->name('tenants.update.expire.date.index');
+            Route::post('confirm/{tenantId}', 'confirm')->name('tenants.update.expire.date.confirm');
+        });
     });
 
     Route::controller(UserController::class)->prefix('users')->group(function () {

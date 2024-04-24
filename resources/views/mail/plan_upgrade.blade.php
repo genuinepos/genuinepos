@@ -167,8 +167,6 @@
                     <td>: {{ $user->email }}</td>
                 </tr>
 
-
-
                 @if ($isTrialPlan == 1)
                     <tr>
                         <td>Details:</td>

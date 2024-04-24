@@ -183,7 +183,7 @@ class TenantService implements TenantServiceInterface
 
                 if (auth()->user()->can('tenants_update_expire_date') && $row->is_trial_plan == BooleanType::False->value) {
 
-                    $html .= '<a href="#" class="dropdown-item">' . __('Update Expire Date') . '</a>';
+                    $html .= '<a href="' . route('saas.tenants.update.expire.date.index', $row->id) . '" class="dropdown-item">' . __('Update Expire Date') . '</a>';
                 }
 
                 if (auth()->user()->can('tenants_destroy')) {

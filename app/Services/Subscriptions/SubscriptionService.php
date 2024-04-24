@@ -77,7 +77,7 @@ class SubscriptionService
 
         $updateSubscription->trial_start_date = null;
 
-        if ($isTrialPlan == BooleanType::False->value) {
+        if ($isTrialPlan == BooleanType::False->value && $subscriptionUpdateType != SubscriptionUpdateType::UpdateExpireDate->value) {
 
             $updateSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
 
@@ -178,6 +178,9 @@ class SubscriptionService
             $updateSubscription->business_price_period = $request->business_price_period;
             $updateSubscription->business_start_date = Carbon::now();
             $updateSubscription->business_expire_date = $expireDate;
+        } else if ($subscriptionUpdateType == SubscriptionUpdateType::UpdateExpireDate->value && $updateSubscription->has_business == BooleanType::True->value) {
+
+            $updateSubscription->business_expire_date = date('Y-m-d', strtotime($request->business_new_expire_date));
         }
 
         $updateSubscription->save();

@@ -2,14 +2,13 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ config('app.url') }}">
             @env('beta')
-                <img src="{{ asset('assets/images/beta_logo.png') }}" alt="{{ config('app.name') }}" style="max-width: 150px;">
-            @else
-                <img src="{{ asset('assets/images/logo_black.png') }}" alt="{{ config('app.name') }}" style="max-width: 150px;">
+            <img src="{{ asset('assets/images/beta_logo.png') }}" alt="{{ config('app.name') }}" style="max-width: 150px;">
+        @else
+            <img src="{{ asset('assets/images/logo_black.png') }}" alt="{{ config('app.name') }}" style="max-width: 150px;">
             @endif
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -25,8 +24,7 @@
             <ul class="navbar-nav mb-lg-0">
                 @auth
                     <li class="nav-item dropdown  float-end">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSetting" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSetting" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ auth()?->user()?->name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownSetting">

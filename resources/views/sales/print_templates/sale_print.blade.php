@@ -1047,8 +1047,8 @@
                     <table class="w-100">
                         <thead>
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Net Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Net Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </span>
@@ -1056,8 +1056,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
                                     </span>
@@ -1065,8 +1065,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)
                                     </span>
@@ -1074,8 +1074,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Total Invoice Amt.') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Total Invoice Amt.') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                     </span>
@@ -1083,8 +1083,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($__receivedAmount > 0 ? $__receivedAmount : $sale->paid) }}
                                     </span>
@@ -1093,8 +1093,8 @@
 
                             @if ($changeAmount > 0 && $__receivedAmount > 0)
                                 <tr>
-                                    <th class="text-end" style="font-size:10px;">{{ __('Change') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <th class="text-end" style="font-size:10px;">
+                                    <th class="text-end" style="font-size:9px;">{{ __('Change') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end" style="font-size:9px;">
                                         <span>
                                             {{ App\Utils\Converter::format_in_bdt($changeAmount) }}
                                         </span>
@@ -1103,8 +1103,8 @@
                             @endif
 
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                     </span>
@@ -1112,8 +1112,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:10px;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <th class="text-end" style="font-size:10px;">
+                                <th class="text-end" style="font-size:9px;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </span>

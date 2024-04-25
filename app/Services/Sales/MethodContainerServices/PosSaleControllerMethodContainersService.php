@@ -388,6 +388,8 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         }
 
         $sale = $this->saleService->singleSale(id: $id, with: ['saleProducts']);
+        $storedCurrSalesAccountId = $sale->sale_account_id;
+        $storedCurrCustomerAccountId = $sale->customer_account_id;
         $storedCurrSaleTaxAccountId = $sale->sale_tax_ac_id;
         $storedCurrTotalInvoiceAmount = $sale->total_invoice_amount;
 
@@ -395,22 +397,22 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
         if ($request->status == SaleStatus::Final->value) {
 
-            // Add Day Book entry for Final Sale
-            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: date('Y-m-d'), accountId: $updatePosSale->customer_account_id, transId: $updatePosSale->id, amount: $updatePosSale->total_invoice_amount, amountType: 'debit');
+            // Update Day Book entry for Final Sale
+            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: $updatePosSale->date, accountId: $updatePosSale->customer_account_id, transId: $updatePosSale->id, amount: $updatePosSale->total_invoice_amount, amountType: 'debit');
         }
 
         if ($request->status == SaleStatus::Final->value) {
 
-            // Add Sale A/c Ledger Entry
-            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: date('Y-m-d'), account_id: $updatePosSale->sale_account_id, trans_id: $updatePosSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit');
+            // Update Sale A/c Ledger Entry
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $updatePosSale->date, account_id: $updatePosSale->sale_account_id, trans_id: $updatePosSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit', current_account_id: $storedCurrSalesAccountId);
 
-            // Add Customer A/c ledger Entry For Sale
-            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: date('Y-m-d'), trans_id: $updatePosSale->id, amount: $updatePosSale->total_invoice_amount, amount_type: 'debit');
+            // Update Customer A/c ledger Entry For Sale
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $updatePosSale->date, trans_id: $updatePosSale->id, amount: $updatePosSale->total_invoice_amount, amount_type: 'debit', current_account_id: $storedCurrCustomerAccountId);
 
             if ($updatePosSale->sale_tax_ac_id) {
 
-                // Add Tax A/c ledger Entry For Pos Sale
-                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $updatePosSale->sale_tax_ac_id, date: date('Y-m-d'), trans_id: $updatePosSale->id, amount: $updatePosSale->order_tax_amount, amount_type: 'credit');
+                // Update Tax A/c ledger Entry For Pos Sale
+                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $updatePosSale->sale_tax_ac_id, date: $updatePosSale->date, trans_id: $updatePosSale->id, amount: $updatePosSale->order_tax_amount, amount_type: 'credit', current_account_id: $storedCurrSaleTaxAccountId);
             } else {
 
                 $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::Sales->value, transId: $updatePosSale->id, accountId: $storedCurrSaleTaxAccountId);
@@ -423,7 +425,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
             if ($request->status == SaleStatus::Final->value) {
 
-                // Add Product Ledger Entry
+                // Update Product Ledger Entry
                 $quantity = $updateSaleProduct->quantity;
                 $absQuantity = abs($updateSaleProduct->quantity);
                 $voucherType = $updateSaleProduct->ex_status == BooleanType::True->value ? ProductLedgerVoucherType::Exchange->value : ProductLedgerVoucherType::Sales->value;
@@ -431,7 +433,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
                 if ($updateSaleProduct->tax_ac_id) {
 
-                    // Add Tax A/c ledger Entry
+                    // Update Tax A/c ledger Entry
                     $voucherType = $updateSaleProduct->ex_status == BooleanType::True->value ? AccountLedgerVoucherType::Exchange->value : AccountLedgerVoucherType::SaleProductTax->value;
                     $ledgerTaxAmount = $updateSaleProduct->unit_tax_amount * $updateSaleProduct->quantity;
                     $absLedgerTaxAmount = abs($ledgerTaxAmount);

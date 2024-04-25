@@ -67,7 +67,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'pos__is_disable_delivery_note', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_hold_invoice', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_multiple_pay', 'value' => '1', 'branch_id' => null],
-            ['key' => 'pos__is_show_recent_transactions', 'value' => '0', 'branch_id' => null],
+            ['key' => 'pos__is_show_recent_transactions', 'value' => '1', 'branch_id' => null],
             ['key' => 'pos__is_disable_discount', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_order_tax', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_show_credit_sale_button', 'value' => '1', 'branch_id' => null],

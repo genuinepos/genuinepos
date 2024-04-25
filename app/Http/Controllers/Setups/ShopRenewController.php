@@ -55,6 +55,7 @@ class ShopRenewController extends Controller
         DB::reconnect();
 
         $currentSubscription =  $this->subscriptionService->singleSubscription(with: ['plan']);
+        DB::reconnect();
 
         return view('setups.billing.shop_renew.cart', compact('branches', 'leftBranchExpireDateHistories', 'plan', 'currentSubscription'));
     }
@@ -131,7 +132,7 @@ class ShopRenewController extends Controller
                 data: $request->all()
             );
         }
-        
+
         return response()->json(__('Shop/Business renewed successfully'));
     }
 }

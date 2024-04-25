@@ -86,6 +86,7 @@ class UpgradePlanController extends Controller
         }
 
         $currentSubscription =  $this->subscriptionService->singleSubscription(with: ['plan']);
+        DB::reconnect();
 
         if (config('generalSettings')['subscription']->is_trial_plan == BooleanType::False->value) {
 

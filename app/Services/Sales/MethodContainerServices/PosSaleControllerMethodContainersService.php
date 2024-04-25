@@ -384,7 +384,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $id);
         if ($restrictions['pass'] == false) {
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
+            return ['pass' => false, 'msg' => $restrictions['msg']];
         }
 
         $sale = $this->saleService->singleSale(id: $id, with: ['saleProducts']);

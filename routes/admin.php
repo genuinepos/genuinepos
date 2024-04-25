@@ -13,13 +13,11 @@ use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ShortMenuController;
 use App\Http\Controllers\SaleReturnController;
 use App\Http\Controllers\LoanCompanyController;
 use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\MoneyReceiptController;
-use App\Http\Controllers\PosShortMenuController;
 use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\InvoiceSchemaController;
 use App\Http\Controllers\ProductImportController;
@@ -448,21 +446,6 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('report/print', [FinancialReportControllerReport::class, 'print'])->name('reports.financial.report.print');
         });
     });
-});
-
-Route::group(['prefix' => 'short-menus'], function () {
-
-    Route::get('modal/form', [ShortMenuController::class, 'showModalForm'])->name('short.menus.modal.form');
-    Route::get('show', [ShortMenuController::class, 'show'])->name('short.menus.show');
-    Route::post('store', [ShortMenuController::class, 'store'])->name('short.menus.store');
-});
-
-Route::group(['prefix' => 'pos-short-menus'], function () {
-
-    Route::get('modal/form', [PosShortMenuController::class, 'showModalForm'])->name('pos.short.menus.modal.form');
-    Route::get('show', [PosShortMenuController::class, 'show'])->name('pos.short.menus.show');
-    Route::get('edit/page/show', [PosShortMenuController::class, 'editPageShow'])->name('pos.short.menus.edit.page.show');
-    Route::post('store', [PosShortMenuController::class, 'store'])->name('pos.short.menus.store');
 });
 
 Route::group(['prefix' => 'communication'], function () {

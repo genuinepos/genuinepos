@@ -5,7 +5,7 @@
 </style>
 <div class="set-height">
     <div class="data_preloader submit_preloader">
-        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
+        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
     </div>
     <div class="table-responsive">
         <table class="table data__table modal-table table-sm sale-product-table">

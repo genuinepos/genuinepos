@@ -70,6 +70,10 @@ class RolePermissionTableSeeder extends Seeder
             ['id' => '21', 'name' => 'coupons_create'],
             ['id' => '22', 'name' => 'coupons_update'],
             ['id' => '23', 'name' => 'coupons_destroy'],
+
+            ['id' => '24', 'name' => 'tenants_upgrade_plan'],
+            ['id' => '25', 'name' => 'tenants_update_payment_status'],
+            ['id' => '26', 'name' => 'tenants_update_expire_date'],
         ];
     }
 }

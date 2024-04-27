@@ -241,7 +241,7 @@
                         <form id="startup_from" action="{{ route('setup.startup.finish') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="single-tab active" id="businessSetupTab">
-                                @include('setups.startup.partials.business_setup_partial')
+                                @include('setups.startup.partials.business_setup_partial', ['onlyBusinessSetup' => true])
                             </div>
                         </form>
                     </div>

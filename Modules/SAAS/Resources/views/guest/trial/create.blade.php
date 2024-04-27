@@ -4,7 +4,7 @@
             header.cart-header {
                 border: 1px solid;
                 border-radius: 7px;
-                padding: 10px;
+                padding: 0px;
             }
 
             header.cart-header .header-link-area ul li {
@@ -41,7 +41,7 @@
         </style>
         <link rel="stylesheet" href="{{ asset('backend/asset/css/animated-headline.css') }}">
     @endpush
-    <header class="cart-header my-3">
+    <header class="cart-header my-1">
         <div class="row">
             <div class="col-md-4">
                 <img style="height: 50px;; width:150px;" src="http://gposs.com/wp-content/uploads/2023/05/cropped-GPOSs-logo-b.png" alt="">

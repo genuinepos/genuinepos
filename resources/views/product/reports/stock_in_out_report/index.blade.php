@@ -2,7 +2,9 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .data_preloader { top: 2.3%; }
+        .data_preloader {
+            top: 2.3%;
+        }
 
         /* Search Product area style */
         .selectProduct {
@@ -150,7 +152,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                             </div>
                             <div class="table-responsive" id="data-list">
                                 <table class="display data_tbl data__table">
@@ -215,6 +217,9 @@
             ],
             "processing": true,
             "serverSide": true,
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -231,8 +236,7 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                {
+            columns: [{
                     data: 'product',
                     name: 'products.name'
                 },

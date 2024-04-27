@@ -36,9 +36,9 @@
                                 <form action="" method="get">
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id">
-                                                <option value="">{{ __("All") }}</option>
+                                                <option value="">{{ __('All') }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
@@ -54,9 +54,9 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Type") }}</strong></label>
+                                            <label><strong>{{ __('Type') }}</strong></label>
                                             <select name="user_type" class="form-control submit_able" id="user_type">
-                                                <option value="">{{ __("All") }}</option>
+                                                <option value="">{{ __('All') }}</option>
                                                 @foreach (\App\Enums\UserType::cases() as $userType)
                                                     <option value="{{ $userType->value }}">{{ $userType->name }}</option>
                                                 @endforeach
@@ -135,6 +135,9 @@
             "processing": true,
             "serverSide": true,
             // aaSorting: [[8, 'asc']],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -222,7 +225,8 @@
                 success: function(data) {
                     table.ajax.reload();
                     toastr.error(data);
-                }, error: function(error) {
+                },
+                error: function(error) {
                     toastr.error(error.responseJSON.message);
                 }
             });
@@ -236,7 +240,8 @@
 
                     $('#current_user_count').html(data.current_user_count);
                     $('#current_employee_count').html(data.current_employee_count);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 

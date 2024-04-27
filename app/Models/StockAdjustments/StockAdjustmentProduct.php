@@ -48,6 +48,6 @@ class StockAdjustmentProduct extends BaseModel
 
     public function stockChains()
     {
-        return $this->belongsTo(StockChain::class, 'stock_adjustment_product_id');
+        return $this->hasMany(StockChain::class, 'stock_adjustment_product_id');
     }
 }

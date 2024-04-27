@@ -16,8 +16,7 @@ class AdvertisementService
      */
     public function index($request)
     {
-        $data = Advertisements::with('attachments')
-            ->orderBy('id', 'desc')->get();
+        $data = Advertisements::with('attachments')->orderBy('id', 'desc')->get();
 
         if ($request->ajax()) {
             return DataTables::of($data)
@@ -27,23 +26,30 @@ class AdvertisementService
                     $attachments = $row->attachments;
                     $html = '';
                     foreach ($attachments as $attachment) {
+
                         if ($row->content_type == 1) {
                             // Display image
-                            $imageUrl = asset('uploads/advertisement/' . tenant('id') . '/file' . '/' . $attachment->image);
-                            if (file_exists(public_path('uploads/advertisement/' . tenant('id') . '/file' . '/' . $attachment->image))) {
-                                $html .= '<img width="100px" height="100px" src="' . $imageUrl . '" />';
+                            $imageUrl = asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->image);
+
+                            if (file_exists(public_path('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->image))) {
+
+                                $html .= '<img width="60px" height="60px" class="rounded" src="' . $imageUrl . '" />';
                             } else {
-                                $html .= 'Image not found: ' . $imageUrl;
+
+                                $html .= 'Image not found: ' . $imageUrl . '<br>';
                             }
                         } else {
                             // Display video
-                            $videoUrl = asset('uploads/advertisement/' . tenant('id') . '/file' . '/' . $attachment->video);
-                            if (file_exists(public_path('uploads/advertisement/' . tenant('id') . '/file' . '/' . $attachment->video))) {
-                                $html .= '<video width="100px" height="100px" controls>';
+                            $videoUrl = asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->video);
+
+                            if (file_exists(public_path('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->video))) {
+
+                                $html .= '<video width="100px" height="70px" controls>';
                                 $html .= '<source src="' . $videoUrl . '" type="video/mp4">';
                                 $html .= 'Your browser does not support the video tag.';
                                 $html .= '</video>';
                             } else {
+
                                 $html .= 'Video not found: ' . $videoUrl;
                             }
                         }
@@ -51,20 +57,20 @@ class AdvertisementService
                     return $html;
                 })
 
-
                 ->addColumn('content_type', function ($row) {
-                    return $row->content_type == 1 ? "Image" : "Video";
+
+                    return $row->content_type == 1 ? __("Image") : __("Video");
                 })
                 ->addColumn('status', function ($row) {
-                    return $row->status == 1 ? "Active" : "Inactive";
+
+                    return $row->status == 1 ? __("Active") : __("Inactive");
                 })
                 ->addColumn('action', function ($row) {
-                    $editBtn = '<a href="' . route('advertise.edit', ['advertise' => $row->id]) . '" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '">
-                                <span class="fas fa-edit"></span>
-                            </a>';
-                    $showBtn = '<a target="_blank" href="' . route('advertise.show', ['advertise' => $row->id]) . '" class="edit-btn btn btn-info btn-sm text-white" title="Edit" data-id="' . $row->id . '">
-                                <span class="fas fa-eye"></span>
-                            </a>';
+
+                    $editBtn = '<a href="' . route('advertise.edit', ['advertise' => $row->id]) . '" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
+
+                    $showBtn = '<a target="_blank" href="' . route('advertise.show', ['advertise' => $row->id]) . '" class="edit-btn btn btn-info btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-eye"></span></a>';
+
                     return $editBtn . ' ' . $showBtn;
                 })
 
@@ -95,15 +101,17 @@ class AdvertisementService
         ]);
 
         if ($request->content_type == 1) {
+
             $request->validate([
                 'image' => 'required',
                 'image.*' => 'required|mimes:jpeg,jpg,png,gif,avif,webp|max:1024', //1 mb max
             ]);
         } elseif ($request->content_type == 2) {
+
             $request->validate([
                 'video' => 'required|mimes:mp4,avi,mov,wmv|max:102400', // 100MB max 102400 KB
             ], [
-                'video.max' => 'The video must not be larger than 100 MB.',
+                'video.max' => __('The video must not be larger than 100 MB.'),
             ]);
         }
 
@@ -113,8 +121,12 @@ class AdvertisementService
             'status' => $request->status,
         ]);
 
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
+
         if ($request->hasFile('image')) {
-            $imageNames = $this->multiple($request->file('image'), '/uploads/advertisement/' . tenant('id') . '/file');
+
+            $imageNames = $this->multiple($request->file('image'), $dir);
+
             foreach ($imageNames as $key => $imageName) {
                 $data = [
                     'advertisement_id' => $advertisement->id,
@@ -122,10 +134,13 @@ class AdvertisementService
                     'caption' => $request->caption[$key],
                     'image' => $imageName,
                 ];
+
                 AdvertiseAttachment::create($data);
             }
         } else {
-            $imageName = $this->single($request, '/uploads/advertisement/' . tenant('id') . '/file', 'video');
+
+            $imageName = $this->single($request, $dir, 'video');
+
             $data = [
                 'advertisement_id' => $advertisement->id,
                 'video' =>  $imageName,
@@ -134,9 +149,11 @@ class AdvertisementService
         }
 
         if ($advertisement) {
-            return ['status' => 'success', 'message' => 'Advertisement has been created successfully'];
+
+            return ['status' => 'success', 'message' => __('Advertisement has been created successfully')];
         } else {
-            return ['status' => 'error', 'message' => 'Failed to create Advertisement'];
+
+            return ['status' => 'error', 'message' => __('Failed to create Advertisement')];
         }
     }
 
@@ -180,13 +197,19 @@ class AdvertisementService
                 'status' => $validatedData['status'],
             ]);
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
+
             // Handle image or video update
-            if
-            ($advertisement->content_type == 1) {
+            if ($advertisement->content_type == 1) {
+
                 if ($request->hasFile('image')) {
+
                     foreach ($request->file('image') as $key => $image) {
+
                         $imageName = time() . '.' . $image->getClientOriginalExtension();
-                        $image->move(public_path('uploads/advertisement/' . tenant('id') . '/file'), $imageName);
+
+                        $image->move($dir, $imageName);
+
                         AdvertiseAttachment::create([
                             'advertisement_id' => $advertisement->id,
                             'content_title' => $request->input('content_title')[$key],
@@ -195,45 +218,56 @@ class AdvertisementService
                         ]);
                     }
                 }
+
                 if (!empty($request->default_content_title)) {
+
                     $this->updateDefaultContent($request);
                 }
-
             } elseif ($advertisement->content_type == 2) {
 
                 if ($request->hasFile('video')) {
+
                     $advertiseAttachment = AdvertiseAttachment::findOrFail($request->video_id);
+
                     $request->validate([
                         'video' => 'required|mimes:mp4,avi,mov,wmv|max:102400', // 100 MB max
                     ], [
-                        'video.max' => 'The video must not be larger than 100 MB.',
+                        'video.max' => __('The video must not be larger than 100 MB.'),
                     ]);
-                    $filePath = public_path('uploads/advertisement/' . tenant('id') . '/' . 'file/' . $advertiseAttachment->video);
+
+                    $filePath = $dir . $advertiseAttachment->video;
+
                     if (file_exists($filePath)) {
+
                         unlink($filePath);
                     }
+
                     AdvertiseAttachment::findOrFail($request->video_id)->delete();
                     $videoName = time() . '.' . $request->video->getClientOriginalExtension();
-                    $request->video->move(public_path('uploads/advertisement/' . tenant('id') . '/file'), $videoName);
+
+                    $request->video->move($dir, $videoName);
+
                     AdvertiseAttachment::create([
                         'advertisement_id' => $advertisement->id,
                         'video' => $videoName,
                     ]);
                 }
-
             }
         } catch (\Exception $e) {
+
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
 
-        return ['status' => 'success', 'message' => 'Advertisement has been updated successfully'];
+        return ['status' => 'success', 'message' => __('Advertisement has been updated successfully')];
     }
 
     public function updateDefaultContent($request)
     {
         foreach ($request->attach_id as $key => $attachId) {
+
             $contentTitle = $request->default_content_title[$key];
             $caption = $request->default_caption[$key];
+
             AdvertiseAttachment::where('id', $attachId)->update([
                 'content_title' => $contentTitle,
                 'caption' => $caption,
@@ -250,20 +284,27 @@ class AdvertisementService
 
         $advertisement = Advertisements::findOrFail($advertiseAttachment->advertisement_id);
 
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
+
         if ($advertisement->content_type == 1) {
-            $filePath = public_path('uploads/advertisement/' . tenant('id') . '/' . 'file/' . $advertiseAttachment->image);
+
+            $filePath = $dir . $advertiseAttachment->image;
             if (file_exists($filePath)) {
+
                 unlink($filePath);
             }
         } else {
-            $filePath = public_path('uploads/advertisement/' . tenant('id') . '/' . 'file/' . $advertiseAttachment->video);
+
+            $filePath = $dir . $advertiseAttachment->video;
+
             if (file_exists($filePath)) {
+
                 unlink($filePath);
             }
         }
 
         $advertiseAttachment->delete();
 
-        return ['status' => 'success', 'message' => 'Advertisement has been deleted successfully'];
+        return ['status' => 'success', 'message' => __('Advertisement has been deleted successfully')];
     }
 }

@@ -103,9 +103,12 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [
-                [0, 'asc']
-            ],
+            // aaSorting: [
+            //     [0, 'asc']
+            // ],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -173,7 +176,8 @@
 
                         $('#product_id').focus();
                     }, 500);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -202,7 +206,8 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {

@@ -26,7 +26,7 @@
                                             <div class="col-md-2">
                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                    <option value="">{{ __("All") }}</option>
+                                                    <option value="">{{ __('All') }}</option>
                                                     <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
@@ -86,15 +86,14 @@
 
                         <div class="col-6 d-flex justify-content-end">
                             @if (auth()->user()->can('stock_adjustment_add'))
-
-                                <a href="{{ route('stock.adjustments.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                                <a href="{{ route('stock.adjustments.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                             @endif
                         </div>
                     </div>
 
                     <div class="widget_content">
                         <div class="data_preloader">
-                            <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                         </div>
                         <div class="table-responsive" id="data-list">
                             <table class="display data_tbl data__table">
@@ -170,6 +169,9 @@
             ],
             "processing": true,
             "serverSide": true,
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],

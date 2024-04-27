@@ -1,6 +1,6 @@
 <div class="table-wrap revel-table">
     <div class="table-responsive">
-        <table class="table table-borderless">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>{{ __('Package Name') }}</th>
@@ -40,7 +40,7 @@
 
     <h6 class="mt-3"><a href="#" id="togglePriceAdjustmentDetails" class="text-primary">{{ __('Price Adjustment Details') }}</a></h6>
     <div class="table-responsive" style="display:none;" id="priceAdjustmentDetailsTable">
-        <table class="table table-borderless">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>{{ __('No.') }}</th>
@@ -170,7 +170,7 @@
                             {{ __('Total Store Quantity') }} <span class="price-txt"><span class="">{{ $currentSubscription->current_shop_count }}</span></span>
                         </li>
                         <li>
-                            {{ __('Net Total') }} <span class="price-txt">{{ $planPriceCurrency }} <span class="sub-total">{{ \App\Utils\Converter::format_in_bdt($totalPrice) }}</span></span>
+                            {{ __('Net Total') }} <span class="price-txt">{{ $planPriceCurrency }} <span class="span_net_total">{{ \App\Utils\Converter::format_in_bdt($totalPrice) }}</span></span>
                             <input type="hidden" name="net_total" id="net_total" value="{{ round($totalPrice, 2) }}">
                         </li>
                         <li>
@@ -198,7 +198,7 @@
                             {{ __('Total Payable') }}
                             <span class="price-txt">
                                 {{ $planPriceCurrency }} <span class="span_total_payable">{{ \App\Utils\Converter::format_in_bdt($subtotal) }}</span>
-                                <input type="hidden" name="total_payable" id="total_payable" value="{{ round($subtotal, 2) }}">
+                                <input type="hidden" name="total_payable" id="total_payable" value="{{ round($subtotal, 0) }}">
                             </span>
                         </li>
                     </ul>

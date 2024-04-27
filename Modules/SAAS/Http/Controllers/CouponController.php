@@ -50,7 +50,7 @@ class CouponController extends Controller
         return redirect()->route('saas.coupons.index')->with('success', __('Coupon has been updated successfully'));
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $deleteCoupon = $this->couponServiceInterface->deleteCoupon(id: $id);
 
@@ -60,5 +60,17 @@ class CouponController extends Controller
         }
 
         return redirect()->route('saas.coupons.index')->with('success', __('Coupon has been deleted successfully'));
+    }
+
+    public function checkCouponCode(Request $request)
+    {
+        $checkCouponCode = $this->couponServiceInterface->checkCouponCode(request: $request);
+
+        if (isset($checkCouponCode['pass']) && $checkCouponCode['pass'] == false) {
+
+            return response()->json(['errorMsg' => $checkCouponCode['msg']]);
+        }
+
+        return $checkCouponCode;
     }
 }

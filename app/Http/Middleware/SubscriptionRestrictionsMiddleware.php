@@ -91,7 +91,7 @@ class SubscriptionRestrictionsMiddleware
             date('Y-m-d') > $generalSettings['subscription']->due_repayment_date
         ) {
 
-            return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment your due amount.')]);
+            return redirect()->route('software.service.billing.due.repayment.index')->with(['duePayment' => __('Please Repayment your due amount.')]);
         } elseif (
             auth()->user()?->branch &&
             auth()->user()?->branch?->expire_date &&
@@ -100,11 +100,11 @@ class SubscriptionRestrictionsMiddleware
 
             if (auth()->user()->can('billing_renew_branch')) {
 
-                return redirect()->route('software.service.billing.cart.for.renew.branch')->with(['branchExpired' => __('Shop is expired please renew the shop')]);
+                return redirect()->route('software.service.billing.shop.renew.cart')->with(['branchExpired' => __('Shop is expired please renew the shop')]);
             } else {
 
                 auth()->logout();
-                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact your Business/Authority'));
+                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact your Authority'));
             }
         } elseif (
             !auth()->user()?->branch_id &&
@@ -112,11 +112,11 @@ class SubscriptionRestrictionsMiddleware
         ) {
             if (auth()->user()->can('billing_renew_branch')) {
 
-                return redirect()->route('software.service.billing.cart.for.renew.branch')->with(['businessExpired' => __('Business is expired please renew your business')]);
+                return redirect()->route('software.service.billing.shop.renew.cart')->with(['businessExpired' => __('Business is expired please renew your business')]);
             } else {
 
                 auth()->logout();
-                return response()->json(['businessExpired' => __('Shop is expired. Please contact your Business/Authority')]);
+                return response()->json(['businessExpired' => __('Shop is expired. Please contact your Authority')]);
             }
         }
 

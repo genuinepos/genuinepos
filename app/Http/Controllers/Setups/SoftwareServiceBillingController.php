@@ -41,16 +41,6 @@ class SoftwareServiceBillingController extends Controller
         return view('setups.billing.index', compact('branches', 'transactions'));
     }
 
-    public function cartForRenewBranch()
-    {
-        return view('setups.billing.cart_for_branch_renew');
-    }
-
-    public function dueRepayment()
-    {
-        return view('setups.billing.due_repayment');
-    }
-
     public function invoiceView($id)
     {
         $transaction = $this->invoiceQuery($id);

@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Log;
 use Stancl\Tenancy\Facades\Tenancy;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Support\Facades\Artisan;
 use Yajra\DataTables\Facades\DataTables;
 use App\Enums\SubscriptionTransactionType;
+use Modules\SAAS\Utils\ExpireDateAllocation;
 use App\Services\GeneralSettingServiceInterface;
 use App\Enums\SubscriptionTransactionDetailsType;
-use Modules\SAAS\Database\factories\AdminFactory;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Interfaces\UserServiceInterface;
 use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
@@ -92,10 +93,10 @@ class TenantService implements TenantServiceInterface
 
                     if ($plan->is_trial_plan == BooleanType::False->value) {
 
-                        $business = isset($request->has_business) ? 1 : 0;
-                        $shopPlusBusiness = $request->shop_count + $business;
-                        $totalPayableInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->total_payable);
-                        $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
+                        $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
+                        $shopPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->shop_price);
+                        $discountAmount = ($shopPriceInUsd / 100) * $discountPercent;
+                        $adjustablePrice = round($shopPriceInUsd - $discountAmount, 0);
 
                         for ($i = 0; $i < $request->shop_count; $i++) {
 
@@ -106,7 +107,16 @@ class TenantService implements TenantServiceInterface
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
-                    dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(to: $request->email, user: $tenant));
+                    $appUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
+                    if ($plan->is_trial_plan) {
+
+                        $trialExpireDate = ExpireDateAllocation::getExpireDate(period: 'day', periodCount: $plan->trial_days);
+
+                        dispatch(new \Modules\SAAS\Jobs\SendTrialMailJobQueue(data: $request->all(), appUrl: $appUrl, trialExpireDate: $trialExpireDate));
+                    } else {
+
+                        dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(data: $request->all(), planName: $plan->name, appUrl: $appUrl));
+                    }
 
                     return $tenant;
                 }
@@ -161,9 +171,19 @@ class TenantService implements TenantServiceInterface
 
                 $html .= '<a href="' . $domain . '" target="_blank" class="dropdown-item">' . __('Open Application') . '</a>';
 
-                if ($row->has_due_amount == 1) {
+                if (auth()->user()->can('tenants_update_payment_status') && $row->has_due_amount == BooleanType::True->value) {
 
-                    $html .= '<a href="#" class="dropdown-item" id="receiveDueAmount">' . __('Receive Due Amount') . '</a>';
+                    $html .= '<a href="' . route('saas.tenants.update.payment.status.index', $row->id) . '" class="dropdown-item" id="receiveDueAmount">' . __('Update Payment Status') . '</a>';
+                }
+
+                if (auth()->user()->can('tenants_upgrade_plan') && $row->is_trial_plan == BooleanType::True->value) {
+
+                    $html .= '<a href="' . route('saas.tenants.upgrade.plan.cart', $row->id) . '" class="dropdown-item">' . __('Upgrade Plan') . '</a>';
+                }
+
+                if (auth()->user()->can('tenants_update_expire_date') && $row->is_trial_plan == BooleanType::False->value) {
+
+                    $html .= '<a href="' . route('saas.tenants.update.expire.date.index', $row->id) . '" class="dropdown-item">' . __('Update Expire Date') . '</a>';
                 }
 
                 if (auth()->user()->can('tenants_destroy')) {
@@ -249,12 +269,34 @@ class TenantService implements TenantServiceInterface
 
         Tenancy::find($id)?->delete();
 
-        if (file_exists(public_path('uploads/' . $id))) {
-
-            rmdir(public_path('uploads/' . $id));
-        }
+        $this->removeDir(dir: public_path('uploads/' . $id));
 
         return ['pass' => true];
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (is_dir($dir)) {
+
+            $files = scandir($dir);
+
+            foreach ($files as $file) {
+
+                if ($file != "." && $file != "..") {
+
+                    $path = "$dir/$file";
+                    if (is_dir($path)) {
+
+                        $this->removeDir($path);
+                    } else {
+
+                        unlink($path);
+                    }
+                }
+            }
+
+            rmdir($dir);
+        }
     }
 
     public function singleTenant(string $id, ?array $with = null): ?Tenant

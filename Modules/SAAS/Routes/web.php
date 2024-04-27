@@ -11,6 +11,7 @@ use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\Guest\TrialController;
+use Modules\SAAS\Http\Controllers\UpgradePlanController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\EmailSettingsController;
 use Modules\SAAS\Http\Controllers\Guest\SendEmailController;
@@ -19,21 +20,11 @@ use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
 use Modules\SAAS\Http\Controllers\Guest\PlanConfirmController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
+use Modules\SAAS\Http\Controllers\UpdatePaymentStatusController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
-
-Route::get('t-test',function () {
-
-    if (file_exists(public_path('uploads/organio'))) {
-
-        rmdir(public_path('uploads/organio'));
-    }else{
-
-        return 'NO';
-    }
-});
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -107,6 +98,24 @@ Route::middleware(['is_verified'])->group(function () {
         Route::post('store', 'store')->name('tenants.store');
         Route::get('delete/{id}', 'delete')->name('tenants.delete');
         Route::delete('destroy/{id}', 'destroy')->name('tenants.destroy');
+
+        Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
+
+            Route::get('cart/{tenantId}', 'cart')->name('tenants.upgrade.plan.cart');
+            Route::post('confirm/{tenantId}', 'confirm')->name('tenants.upgrade.plan.confirm');
+        });
+
+        Route::controller(UpdateExpireDateController::class)->prefix('update-expire-date')->group(function () {
+
+            Route::get('index/{tenantId}', 'index')->name('tenants.update.expire.date.index');
+            Route::post('confirm/{tenantId}', 'confirm')->name('tenants.update.expire.date.confirm');
+        });
+
+        Route::controller(UpdatePaymentStatusController::class)->prefix('update-payment-status')->group(function () {
+
+            Route::get('index/{tenantId}', 'index')->name('tenants.update.payment.status.index');
+            Route::post('update/{tenantId}', 'update')->name('tenants.update.payment.status.update');
+        });
     });
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
@@ -139,8 +148,16 @@ Route::middleware(['is_verified'])->group(function () {
         Route::delete('delete/{id}', 'delete')->name('roles.delete');
     });
 
-    //Coupons Route
-    Route::resource('coupons', CouponController::class);
+    Route::controller(CouponController::class)->prefix('coupons')->group(function () {
+
+        Route::get('/', 'index')->name('coupons.index');
+        Route::get('create', 'create')->name('coupons.create');
+        Route::post('store', 'store')->name('coupons.store');
+        Route::get('edit/{id}', 'edit')->name('coupons.edit');
+        Route::patch('update/{id}', 'update')->name('coupons.update');
+        Route::delete('delete/{id}', 'delete')->name('coupons.delete');
+        Route::get('code/check', 'checkCouponCode')->name('coupons.code.check');
+    });
 
     //Email Settings Route
     Route::resource('email-settings', EmailSettingsController::class);

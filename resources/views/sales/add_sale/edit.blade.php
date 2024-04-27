@@ -621,6 +621,7 @@
                                         <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __('Total Invoice Amt.') }}</b></label>
                                             <div class="col-md-7">
+                                                <input type="hidden" id="current_invoice_amount" class="form-control fw-bold" value="{{ $sale->total_invoice_amount }}">
                                                 <input type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="{{ $sale->total_invoice_amount }}" tabindex="-1">
                                                 <input type="number" step="any" name="sales_ledger_amount" id="sales_ledger_amount" class="d-none" value="0.00" tabindex="-1">
                                             </div>

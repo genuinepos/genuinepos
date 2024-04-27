@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('gender', 10)->nullable();
             $table->string('marital_status', 10)->nullable();
             $table->string('blood_group', 8)->nullable();
-            $table->string('photo')->default('default.png');
+            $table->string('photo', 191)->nullable();
             $table->string('facebook_link')->nullable();
             $table->string('twitter_link')->nullable();
             $table->string('instagram_link')->nullable();

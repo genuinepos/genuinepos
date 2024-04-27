@@ -10,7 +10,6 @@ use Modules\SAAS\Utils\UrlGenerator;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
-use Modules\SAAS\Services\DeleteUnusedTenantService;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
 use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
@@ -23,7 +22,6 @@ class PlanConfirmController extends Controller
         private PlanServiceInterface $planServiceInterface,
         private EmailVerificationServiceInterface $emailVerificationServiceInterface,
         private TenantServiceInterface $tenantService,
-        // private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
     /**

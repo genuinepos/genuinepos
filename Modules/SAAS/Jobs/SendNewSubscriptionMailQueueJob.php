@@ -14,16 +14,8 @@ class SendNewSubscriptionMailQueueJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $to;
-    private $user;
-
-    /**
-     * Create a new job instance.
-     */
-    public function __construct($to, $user)
+    public function __construct(private $data, private $planName, private $appUrl)
     {
-        $this->to = $to;
-        $this->user = $user;
     }
 
     /**
@@ -31,7 +23,7 @@ class SendNewSubscriptionMailQueueJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $email = new NewSubscriptionMail($this->user);
-        Mail::to($this->to)->send($email);
+        $email = new NewSubscriptionMail(data: $this->data, planName: $this->planName, appUrl: $this->appUrl);
+        Mail::to($this->data['email'])->send($email);
     }
 }

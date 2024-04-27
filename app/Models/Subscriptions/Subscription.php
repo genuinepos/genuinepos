@@ -6,6 +6,7 @@ use App\Models\User;
 use Modules\SAAS\Entities\Plan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Subscriptions\SubscriptionTransaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subscription extends Model
@@ -32,5 +33,10 @@ class Subscription extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function dueSubscriptionTransaction()
+    {
+        return $this->hasOne(SubscriptionTransaction::class)->where('due', '>', 0);
     }
 }

@@ -495,17 +495,7 @@
     <!-- Exchange modal End-->
 
     <!--Add shortcut menu modal-->
-    <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="payment_heading">@lang('menu.add_shortcut_menus')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="modal-body_shortcuts"></div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
@@ -534,18 +524,6 @@
     <script src="{{ asset('') }}/backend/asset/js/sale.exchange.js"></script>
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
-        // Get all pos shortcut menus by ajax
-        function allPosShortcutMenus() {
-            $.ajax({
-                url: "{{ route('pos.short.menus.show') }}",
-                type: 'get',
-                success: function(data) {
-                    $('#pos-shortcut-menus').html(data);
-                }
-            });
-        }
-        allPosShortcutMenus();
-
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
 

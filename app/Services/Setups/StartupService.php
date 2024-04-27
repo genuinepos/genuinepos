@@ -59,7 +59,7 @@ class StartupService
             'branch_address' => 'address',
             'branch_email' => 'email',
             'branch_website' => 'website',
-            'branch_logo' => 'logo',
+            // 'branch_logo' => 'logo',
             'branch_date_format' => 'date_format',
             'branch_time_format' => 'time_format',
             'branch_timezone' => 'timezone',
@@ -76,7 +76,7 @@ class StartupService
         ];
 
         foreach ($keyMappings as $oldKey => $newKey) {
-            
+
             if (isset($requestData[$oldKey])) {
 
                 $requestData[$newKey] = $requestData[$oldKey];

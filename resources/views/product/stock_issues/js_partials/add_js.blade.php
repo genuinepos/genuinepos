@@ -201,7 +201,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/genaral_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 

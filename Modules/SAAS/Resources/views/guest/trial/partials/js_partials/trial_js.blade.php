@@ -358,6 +358,8 @@
                     location.reload(true);
                     return;
                 }
+
+                location.reload(true);
             }
         });
     });

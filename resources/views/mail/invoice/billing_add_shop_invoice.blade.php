@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Increase Shop Invoice | Gpos System</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
@@ -73,7 +72,7 @@
             width: 100%;
             background: rgba(0, 0, 0, 0.02);
             background: #F9F9F9;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            /* border: 1px solid rgba(0, 0, 0, 0.05); */
             border-collapse: collapse;
         }
 
@@ -206,7 +205,7 @@
 
         .mail-footer {
             border-top: 1px solid #dfe9ff;
-            background: #313131;
+            /* background: #313131; */
             padding: 25px 20px;
             margin: 0 -1px -1px;
         }
@@ -332,12 +331,12 @@
         /* Custom styles for invoice */
         .email-container table {
             margin-bottom: 20px;
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
         }
 
         .email-container table th,
         .email-container table td {
-            border: 1px solid #000;
+            /* border: 1px solid #000; */
             padding: 8px;
             text-align: left;
         }
@@ -398,7 +397,7 @@
 @endphp
 <body>
     <div class="email-container">
-        <h2 class="page-title">Invoice</h2>
+        <h2 class="page-title">Increased Shop Invoice</h2>
         <table>
             <tbody>
                 <tr>
@@ -408,9 +407,9 @@
                                 <img style="height: height; width:auto;" src="{{ url('/') }}/assets/images/app_logo.png" alt="System Logo" class="logo__img">
                             </div>
                             <div class="content_customer" style="text-align: right;">
-                                <span style="font-weight: bold;">Gpos System</span> <br>
-                                Address : Sector 6, Road no 13A, House No 8, Uttara, Dhaka, Bangladesh. <br>
-                                <span style="font-weight: bold;">Phone:</span> +880 179 22 88 555 <span style="font-weight: bold;">Email:</span> speeddigitinfo@gmail.com
+                                <span style="font-weight: bold;">{{ config('speeddigit.name') }}</span> <br>
+                                Address : {{ config('speeddigit.address') }} <br>
+                                <span style="font-weight: bold;">Phone:</span> {{ config('speeddigit.phone') }}, <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
                             </div>
                         </div>
                     </td>
@@ -432,20 +431,14 @@
                                 Date: {{ date('Y-m-d') }}<br>
                             </div>
 
-                            <br> <br> <br> <br> <br> <br> <br> <br> <br>
+                            <br> <br> <br>
                             <table width="100%" border="1" cellspacing="0" cellpadding="5" style="margin: 10px 0; padding: 10px;">
                                 <!-- Table header -->
                                 <tr>
                                     <th>Increased Shop</th>
                                     <th>Price Per Shop</th>
                                     <th>Pirce Period</th>
-                                    @if ($pricePeriod == 'month')
-                                        <th>Monthly</th>
-                                    @elseif ($pricePeriod == 'year')
-                                        <th>Yearly</th>
-                                    @elseif ($pricePeriod == 'lifetime')
-                                        <th>Yearly</th>
-                                    @endif
+                                    <th>Period Count</th>
                                     <th>Subtotal</th>
                                 </tr>
                                 <!-- Table data -->
@@ -456,19 +449,37 @@
                                     <td>{{ $pricePeriod != 'lifetime' ? $pricePeriodCount : 'Lifetime' }}</td>
                                     <td>{{ \App\Utils\Converter::format_in_bdt($subtotal) }}</td>
                                 </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Net Total Amount</th>
+                                    <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($netTotalAmount) }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Discount</th>
+                                    <th>: {{ $planPriceCurrency }} {{ $discount }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Tax:</th>
+                                    <th>: Free</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Total Payable</th>
+                                    <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Paid</th>
+                                    <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="4" style="text-align: right;">Due</th>
+                                    <th>: {{ $planPriceCurrency }} 0.00</th>
+                                </tr>
                             </table>
-                            <br> <br> <br>
-                            <div class="bottom_content">
-                                <span>Net Total Amount: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($netTotalAmount) }}</span><br><br>
-                                <hr>
-                                <span><strong>Tax:</strong> Free</span><br><br>
-                                <hr>
-                                <span><strong>Total Payable:</strong> {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</span><br><br>
-                                <hr>
-                                <span><strong>Paid:</strong> {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</span><br><br>
-                                <hr>
-                                <span><strong>Due:</strong> {{ $planPriceCurrency }} 0.00</span>
-                            </div>
 
                             <br><br><br>
                             <p style="text-align:center; margin-top:50px; font-size:16px;">Thanks for using our service</p>
@@ -480,10 +491,10 @@
                         <div class="mail-footer">
                             <div class="logo"><img src="{{ url('/') }}/assets/logo/logo.png" alt="LOGO"></div>
                             <div class="footer-social">
-                                <a href="https://www.facebook.com/speeddigit" title="Facebook" target="_blank"><img src="{{ url('/') }}/assets/social/facebook.png" alt="facebook"></a>
-                                <a href="https://www.instagram.com/speeddigit.official/" title="Instagram" target="_blank"><img src="{{ url('/') }}/assets/social/instagram.png" alt="instagram"></a>
-                                <a href="https://twitter.com/speeddigit" title="Twitter" target="_blank"><img src="{{ url('/') }}/assets/social/twitter.png" alt="twitter"></a>
-                                <a href="https://www.linkedin.com/company/speeddigit-pvt-ltd" title="Linkedin" target="_blank"><img src="{{ url('/') }}/assets/social/linkedin.png" alt="linkedin"></a>
+                                <a href="{{ config('speeddigit.facebook') }}" title="Facebook" target="_blank"><img src="{{ url('/') }}/assets/social/facebook.png" alt="facebook"></a>
+                                <a href="{{ config('speeddigit.Instagram') }}" title="Instagram" target="_blank"><img src="{{ url('/') }}/assets/social/instagram.png" alt="instagram"></a>
+                                <a href="{{ config('speeddigit.twitter') }}" title="Twitter" target="_blank"><img src="{{ url('/') }}/assets/social/twitter.png" alt="twitter"></a>
+                                <a href="{{ config('speeddigit.linkedin') }}" title="Linkedin" target="_blank"><img src="{{ url('/') }}/assets/social/linkedin.png" alt="linkedin"></a>
                             </div>
                         </div>
                     </td>

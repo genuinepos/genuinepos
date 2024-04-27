@@ -90,12 +90,13 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     public function deleteBusinessLogo(): bool
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
 
         if (isset($businessLogo->value)) {
 
-            if (file_exists(public_path('uploads/business_logo/' . $businessLogo->value))) {
+            if (file_exists($dir . $businessLogo->value)) {
 
-                unlink(public_path('uploads/business_logo/' . $businessLogo->value));
+                unlink($dir . $businessLogo->value);
             }
         }
 

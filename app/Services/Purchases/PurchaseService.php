@@ -372,22 +372,6 @@ class PurchaseService
         return $html;
     }
 
-    public function purchaseStoreValidation(object $request): ?array
-    {
-        return $request->validate([
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
-    }
-
     public function purchaseUpdateValidation(object $request): ?array
     {
         return $request->validate([
@@ -398,7 +382,7 @@ class PurchaseService
             'account_id' => 'required',
         ], [
             'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
+            'account_id.required' => __('Credit Account field must not be is empty.'),
             'payment_method_id.required' => __('Payment method field is required.'),
             'supplier_account_id.required' => __('Supplier is required.'),
         ]);

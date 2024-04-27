@@ -13,7 +13,6 @@ class EmailBodyController extends Controller
 
     public function __construct(private EmailBodyService $emailBodyService)
     {
-
     }
 
     /**

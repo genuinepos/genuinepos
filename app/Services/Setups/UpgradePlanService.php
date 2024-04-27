@@ -120,9 +120,9 @@ class UpgradePlanService
         $subtotal = $totalPrice - $totalAdjustableAmount;
 
         return [
-            'totalAdjustableAmount' => $totalAdjustableAmount,
-            'totalPrice' => $totalPrice,
-            'subtotal' => $subtotal,
+            'totalAdjustableAmount' => round($totalAdjustableAmount, 0),
+            'totalPrice' => round($totalPrice, 0),
+            'subtotal' => round($subtotal, 0),
         ];
     }
 

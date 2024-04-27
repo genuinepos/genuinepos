@@ -1,4 +1,11 @@
 <x-saas::admin-layout title="Create Role">
+    <style>
+         p.checkbox_input_wrap {
+            margin: 0px;
+            line-height: 1;
+            font-size: 12px;
+        }
+    </style>
     <div class="row">
         <div class="col-12">
             <div class="panel">
@@ -54,6 +61,21 @@
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="tenants_create" id="tenants_create" class="customers select_all">
                                             <label for="tenants_create">{{ __('Customer Add') }}</label>
+                                        </p>
+
+                                        <p class="checkbox_input_wrap mt-1">
+                                            <input type="checkbox" name="tenants_upgrade_plan" id="tenants_upgrade_plan" class="customers select_all">
+                                            <label for="tenants_destroy">{{ __('Customer Upgrade Plan') }}</label>
+                                        </p>
+
+                                        <p class="checkbox_input_wrap mt-1">
+                                            <input type="checkbox" name="tenants_update_payment_status" id="tenants_update_payment_status" class="customers select_all">
+                                            <label for="tenants_destroy">{{ __('Customer Update Payment Status') }}</label>
+                                        </p>
+
+                                        <p class="checkbox_input_wrap mt-1">
+                                            <input type="checkbox" name="tenants_update_expire_date" id="tenants_update_expire_date" class="customers select_all">
+                                            <label for="tenants_destroy">{{ __('Customer Update Expire Date') }}</label>
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -154,7 +176,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <hr class="p-0 m-0">
+                                <hr>
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6">
                                         <p class="text-info checkbox_input_wrap">

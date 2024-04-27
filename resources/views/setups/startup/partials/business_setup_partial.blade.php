@@ -125,10 +125,15 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <a class="def-btn tab-next-btn float-end" id="single-nav" data-tab="createBranchTab">{{ __('Next Step') }}</a>
+                    @if (isset($onlyBusinessSetup))
+                        <button type="button" class="def-btn btn-secondary float-end bg-secondary text-white submit_blue_btn d-none">{{ __('Finish') }}</button>
+                        <button type="submit" class="def-btn btn-success float-end submit_button">{{ __('Finish') }}</button>
+                        <button type="button" class="btn loading_button float-end d-none"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
+                    @else
+                        <a class="def-btn tab-next-btn float-end" id="single-nav" data-tab="createBranchTab">{{ __('Next Step') }}</a>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
-

@@ -30,7 +30,7 @@
 
                     @if (
                         $generalSettings['subscription']->is_trial_plan == 1 ||
-                        ($generalSettings['subscription']->has_due_amount == 0 && $generalSettings['subscription']->due_repayment_date)
+                        ($generalSettings['subscription']->has_due_amount == 1 && $generalSettings['subscription']->due_repayment_date)
                     )
                         @if ($generalSettings['subscription']->is_trial_plan == 1)
                             @php
@@ -56,7 +56,7 @@
 
                             <p class="text-white mt-1">
                                 {{ __('Due Repayment Date') }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->due_repayment_date)) }}</span>
-                                <a href="{{ route('software.service.billing.due.repayment') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
+                                <a href="{{ route('software.service.billing.due.repayment.index') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
                             </p>
                         @endif
                     @else

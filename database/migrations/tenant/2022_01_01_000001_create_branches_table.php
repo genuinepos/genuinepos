@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('email')->nullable();
             $table->string('website')->nullable();
-            $table->string('logo', 191)->nullable()->default('default.png');
+            $table->string('logo', 191)->nullable();
             $table->boolean('purchase_permission')->default(1);
             $table->date('expire_date')->nullable();
             $table->unsignedBigInteger('shop_expire_date_history_id')->nullable();

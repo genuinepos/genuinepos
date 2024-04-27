@@ -32,33 +32,32 @@
             </div>
         </div>
 
-        <div class="main-content p-0 my-5">
-            <div class="container">
-                <ul class="nav nav-tabs" id="planTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="plan-monthly-tab" data-bs-toggle="tab" data-bs-target="#plan-monthly" type="button" role="tab" aria-controls="plan-monthly" aria-selected="true">Monthly</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false" onclick="activeTab('yearly')">Yearly</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false" onclick="activeTab('lifetime')">Lifetime</button>
-                    </li>
-                  </ul>
+        <div class="p-1">
 
-                  <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="plan-monthly" role="tabpanel" aria-labelledby="plan-monthly-tab">
-                        @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'month'])
-                    </div>
+            <ul class="nav nav-tabs" id="planTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="plan-monthly-tab" data-bs-toggle="tab" data-bs-target="#plan-monthly" type="button" role="tab" aria-controls="plan-monthly" aria-selected="true">Monthly</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false" onclick="activeTab('yearly')">Yearly</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false" onclick="activeTab('lifetime')">Lifetime</button>
+                </li>
+            </ul>
 
-                    <div class="tab-pane fade" id="plan-yearly" role="tabpanel" aria-labelledby="plan-yearly-tab">
-                        @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'year'])
-                    </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="plan-monthly" role="tabpanel" aria-labelledby="plan-monthly-tab">
+                    @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'month'])
+                </div>
 
-                    <div class="tab-pane fade" id="plan-lifetime" role="tabpanel" aria-labelledby="contact-tab">
-                        @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'lifetime'])
-                    </div>
-                  </div>
+                <div class="tab-pane fade" id="plan-yearly" role="tabpanel" aria-labelledby="plan-yearly-tab">
+                    @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'year'])
+                </div>
+
+                <div class="tab-pane fade" id="plan-lifetime" role="tabpanel" aria-labelledby="contact-tab">
+                    @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'lifetime'])
+                </div>
             </div>
         </div>
     </div>
@@ -83,7 +82,5 @@
         //         console.log(el.href, 'active');
         //     });
         // }
-
     </script>
 @endpush
-

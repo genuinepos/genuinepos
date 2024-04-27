@@ -197,7 +197,9 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $addUser->photo = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+
+            $addUser->photo = FileUploader::upload($request->file('photo'), $dir);
         }
 
         $addUser->save();
@@ -289,14 +291,16 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+
+            $newFile = FileUploader::upload($request->file('photo'), $dir);
             if (
                 isset($updateUser->photo) &&
-                file_exists(public_path('uploads/user_photo/' . $updateUser->photo))
+                file_exists($dir . $updateUser->photo)
             ) {
 
                 try {
-                    unlink(public_path('uploads/user_photo/' . $updateUser->photo));
+                    unlink($dir . $updateUser->photo);
                 } catch (Exception $e) {
                 }
             }
@@ -318,13 +322,15 @@ class UserService
                 return ['pass' => false, 'msg' => __('Superadmin can not be deleted')];
             }
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+
             if (
                 isset($deleteUser->photo) &&
-                file_exists(public_path('uploads/user_photo/' . $deleteUser->photo))
+                file_exists($dir . $deleteUser->photo)
             ) {
 
                 try {
-                    unlink(public_path('uploads/user_photo/' . $deleteUser->photo));
+                    unlink($dir . $deleteUser->photo);
                 } catch (Exception $e) {
                 }
             }
@@ -545,7 +551,7 @@ class UserService
         ];
     }
 
-    public function addAppSuperAdminUser(object $request) : void
+    public function addAppSuperAdminUser(object $request): void
     {
         $admin = [
             'name' => $request->fullname,
@@ -560,8 +566,6 @@ class UserService
             'language' => 'en',
             'is_belonging_an_area' => 0,
             'currency_id' => $request->currency_id,
-            'city' => $request->city,
-            'postal_code' => $request->postal_code,
             'permanent_address' => $request->address,
             'current_address' => $request->address,
             'created_at' => Carbon::now(),

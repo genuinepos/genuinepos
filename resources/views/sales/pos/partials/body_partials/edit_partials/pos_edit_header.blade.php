@@ -68,21 +68,21 @@
                                 @if (auth()->user()?->branch)
                                     @if (auth()->user()?->branch?->parent_branch_id)
 
-                                        @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
-                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                                        @if (auth()->user()?->branch?->parentBranch?->logo)
+                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                                         @endif
                                     @else
-                                        @if (auth()->user()?->branch?->logo != 'default.png')
-                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                                        @if (auth()->user()?->branch?->logo)
+                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->name }}</span>
                                         @endif
                                     @endif
                                 @else
                                     @if ($generalSettings['business_or_shop__business_logo'] != null)
-                                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                                     @endif
@@ -99,9 +99,9 @@
                                 @endif
 
                                 <p class="address-name">
-                                    {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city . ', ' : '' }}
-                                    {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state . ', ' : '' }}
-                                    {{ $openedCashRegister->branch->country ? ', ' . $openedCashRegister->branch->country : '' }}
+                                    {{ $openedCashRegister?->branch?->city ? $openedCashRegister->branch->city . ', ' : '' }}
+                                    {{ $openedCashRegister?->branch?->state ? $openedCashRegister->branch->state . ', ' : '' }}
+                                    {{ $openedCashRegister?->branch?->country ? ', ' . $openedCashRegister->branch->country : '' }}
                                 </p>
                             @else
                                 <p class="store-name">
@@ -144,7 +144,7 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                     </div>
                                 </div>
 

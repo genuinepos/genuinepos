@@ -8,17 +8,15 @@ use Illuminate\Http\Request;
 
 class SendEmailController extends Controller
 {
-
     public function __construct(private EmailSendService $emailSendService)
     {
-
     }
+    
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-
         return $this->emailSendService->index($request);
     }
 
@@ -27,11 +25,9 @@ class SendEmailController extends Controller
      */
     public function store(Request $request)
     {
-
         $response = $this->emailSendService->store($request);
 
         return response()->json($response);
-
     }
 
     /**
@@ -42,7 +38,6 @@ class SendEmailController extends Controller
         $response = $this->emailSendService->restore($id);
 
         return response()->json($response);
-
     }
 
     /**
@@ -54,7 +49,6 @@ class SendEmailController extends Controller
         $response = $this->emailSendService->destroy($id);
 
         return response()->json($response);
-
     }
 
     public function deleteEmailMultiple(Request $request)

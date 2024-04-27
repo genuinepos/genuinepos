@@ -18,7 +18,7 @@
                                     <div class="tbl-head">
                                         <ul class="tbl-head-shortcut-menus" id="pos-shortcut-menus">
                                             <li>
-                                                <a href="{{ route('pos.short.menus.modal.form') }}"
+                                                <a href="{{ route('short.menus.modal.form', \App\Enums\ShortMenuScreenType::PosScreen->value) }}"
                                                     id="addPosShortcutBtn" class="head-tbl-icon border-none" tabindex="-1">
                                                     <span class="fas fa-plus"></span>
                                                 </a>

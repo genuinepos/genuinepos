@@ -181,13 +181,34 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                { extend: 'excel', text: '<i class="fas fa-file-excel"></i> '+"{{ __('Excel') }}"+'', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
-                { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> '+"{{ __('Pdf') }}"+'', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' }},
-                { extend: 'print', text: '<i class="fas fa-print"></i> '+"{{ __('Print') }}"+'', className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:first-child)' }
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
                 },
             ],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -204,21 +225,68 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                { data: 'action' },
-                { data: 'date', name: 'date' },
-                { data: 'invoice_id', name: 'sales.invoice_id', className: 'fw-bold' },
-                { data: 'branch', name: 'branches.name' },
-                { data: 'customer_name', name: 'customers.name' },
-                { data: 'payment_status', name: 'created_by.name', className: 'text-start' },
-                { data: 'total_item', name: 'total_item', className: 'text-end fw-bold' },
-                { data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold' },
-                { data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold' },
-                { data: 'received_amount', name: 'paid', className: 'text-end fw-bold' },
-                { data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end fw-bold' },
-                { data: 'due', name: 'due', className: 'text-end fw-bold' },
-                { data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold' },
-            ], fnDrawCallback: function() {
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'invoice_id',
+                    name: 'sales.invoice_id',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'customer_name',
+                    name: 'customers.name'
+                },
+                {
+                    data: 'payment_status',
+                    name: 'created_by.name',
+                    className: 'text-start'
+                },
+                {
+                    data: 'total_item',
+                    name: 'total_item',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_qty',
+                    name: 'total_qty',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_invoice_amount',
+                    name: 'total_invoice_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'received_amount',
+                    name: 'paid',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'sale_return_amount',
+                    name: 'sale_return_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'due',
+                    name: 'due',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'created_by',
+                    name: 'created_by.name',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
                 $('#total_item').text(bdFormat(total_item));
 

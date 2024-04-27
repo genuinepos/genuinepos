@@ -33,7 +33,7 @@ class AdminFactory extends Factory
             'status' => 1,
             'phone' => 'XXXXXXXXX',
             'date_of_birth' => '0000-00-00',
-            'photo' => 'default.png',
+            'photo' => null,
             'language' => 'en',
             'created_at' => Carbon::now(),
             'updated_at' => null,

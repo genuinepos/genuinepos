@@ -84,6 +84,9 @@
                     }
                 },
             ],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -244,7 +247,8 @@
                     toastr.error(data);
                     priceGroupsTable.ajax.reload(null, false);
                     $('#deleted_form')[0].reset();
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 

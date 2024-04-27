@@ -4,22 +4,23 @@ namespace Modules\SAAS\Utils;
 
 class ExpireDateAllocation
 {
-    public static function getExpireDate(string $period, int $periodCount) : string
+    public static function getExpireDate(string $period, int $periodCount, ?string $startDate = null) : string
     {
         $today = new \DateTime();
+        $_startDate = isset($startDate) ? new \DateTime($startDate) : new \DateTime();
         $lastDate = '';
         if ($period == 'day') {
 
-            $lastDate = $today->modify('+' . $periodCount . ' days');
-            $lastDate = $today->modify('+1 days');
+            $lastDate = $_startDate->modify('+' . $periodCount . ' days');
+            $lastDate = $_startDate->modify('+1 days');
         } elseif ($period == 'month') {
 
-            $lastDate = $today->modify('+' . $periodCount . ' months');
-            $lastDate = $today->modify('+1 days');
+            $lastDate = $_startDate->modify('+' . $periodCount . ' months');
+            $lastDate = $_startDate->modify('+1 days');
         } elseif ($period == 'year') {
 
-            $lastDate = $today->modify('+' . $periodCount . ' years');
-            $lastDate = $today->modify('+1 days');
+            $lastDate = $_startDate->modify('+' . $periodCount . ' years');
+            $lastDate = $_startDate->modify('+1 days');
         }
 
         // Format the date

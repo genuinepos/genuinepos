@@ -6,17 +6,60 @@
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
-        .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important }
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        .print_table th {
+            font-size: 11px !important;
+            font-weight: 550 !important;
+            line-height: 12px !important;
+        }
+
+        .print_table tr td {
+            color: black;
+            font-size: 10px !important;
+            line-height: 12px !important
+        }
+
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Contra print templete-->
     <div class="contra_voucher_print_template">
@@ -27,21 +70,21 @@
 
                         @if ($contra?->branch?->parent_branch_id)
 
-                            @if ($contra->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
+                            @if ($contra->branch?->parentBranch?->logo)
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($contra->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
+                            @if ($contra->branch?->logo)
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -54,12 +97,12 @@
                             @if ($contra?->branch?->parent_branch_id)
                                 {{ $contra?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $contra?->branch?->parentBranch?->name.'('.$contra?->branch?->area_name.')';
+                                    $branchName = $contra?->branch?->parentBranch?->name . '(' . $contra?->branch?->area_name . ')';
                                 @endphp
                             @else
                                 {{ $contra?->branch?->name }}
                                 @php
-                                    $branchName = $contra?->branch?->name.'('.$contra?->branch?->area_name.')';
+                                    $branchName = $contra?->branch?->name . '(' . $contra?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else
@@ -277,17 +320,60 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
-        .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important }
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        .print_table th {
+            font-size: 11px !important;
+            font-weight: 550 !important;
+            line-height: 12px !important;
+        }
+
+        .print_table tr td {
+            color: black;
+            font-size: 10px !important;
+            line-height: 12px !important
+        }
+
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Contra print templete-->
     <div class="contra_print_template">
@@ -298,21 +384,21 @@
 
                         @if ($contra?->branch?->parent_branch_id)
 
-                            @if ($contra->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
+                            @if ($contra->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($contra->branch?->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
+                            @if ($contra->branch?->logo)
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -325,12 +411,12 @@
                             @if ($contra?->branch?->parent_branch_id)
                                 {{ $contra?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $contra?->branch?->parentBranch?->name.'('.$contra?->branch?->area_name.')';
+                                    $branchName = $contra?->branch?->parentBranch?->name . '(' . $contra?->branch?->area_name . ')';
                                 @endphp
                             @else
                                 {{ $contra?->branch?->name }}
                                 @php
-                                    $branchName = $contra?->branch?->name.'('.$contra?->branch?->area_name.')';
+                                    $branchName = $contra?->branch?->name . '(' . $contra?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else

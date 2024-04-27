@@ -26,7 +26,6 @@ use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 use Modules\SAAS\Http\Middleware\PlanCheckerMiddleware;
 use Modules\SAAS\Http\Middleware\IsAuthenticatedMiddleware;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
-use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use Modules\SAAS\Services\UserSubscriptionTransactionService;
 use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
@@ -79,7 +78,6 @@ class SAASServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
 
-        app()->make('router')->aliasMiddleware('plan_subscription', PlanSubscriptionMiddleware::class);
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticatedMiddleware::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);

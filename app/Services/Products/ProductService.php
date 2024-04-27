@@ -19,7 +19,7 @@ class ProductService
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
         $generalSettings = config('generalSettings');
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
-        $img_url = asset('uploads/product/thumbnail');
+
         $products = '';
 
         $query = Product::query()->with([
@@ -129,9 +129,16 @@ class ProductService
             ->addColumn('multiple_delete', function ($row) {
 
                 return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
-            })->editColumn('photo', function ($row) use ($img_url) {
+            })->editColumn('photo', function ($row) {
 
-                return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                $photo = asset('images/general_default.png');
+
+                if ($row->thumbnail_photo) {
+
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $row->thumbnail_photo);
+                }
+
+                return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $photo . '">';
             })->addColumn('action', function ($row) use ($countPriceGroup, $isForCreatePage) {
 
                 if ($isForCreatePage == BooleanType::False->value) {
@@ -427,14 +434,14 @@ class ProductService
             $productThumbnailPhoto = $request->file('photo');
             $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
 
-            $path = public_path('uploads/product/thumbnail');
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
 
-            if (!file_exists($path)) {
+            if (!\File::isDirectory($dir)) {
 
-                mkdir($path);
+                \File::makeDirectory($dir, 493, true);
             }
 
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path . '/' . $productThumbnailName);
+            Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
             $addProduct->thumbnail_photo = $productThumbnailName;
         }
 
@@ -502,25 +509,24 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            if ($updateProduct->thumbnail_photo != 'default.png') {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
 
-                if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+            if ($updateProduct->thumbnail_photo) {
 
-                    unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                if (file_exists($dir . $updateProduct->thumbnail_photo)) {
+
+                    unlink($dir . $updateProduct->thumbnail_photo);
                 }
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $productThumbnailPhoto = $request->file('photo');
             $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-
-            $path = public_path('uploads/product/thumbnail');
-
-            if (!file_exists($path)) {
-
-                mkdir($path);
-            }
-
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path . '/' . $productThumbnailName);
+            Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
             $updateProduct->thumbnail_photo = $productThumbnailName;
         }
 
@@ -612,15 +618,22 @@ class ProductService
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
             }
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            if (isset($deleteProduct->thumbnail_photo) && file_exists($dir . $deleteProduct->thumbnail_photo)) {
+
+                unlink($dir . $deleteProduct->thumbnail_photo);
+            }
+
             if (count($deleteProduct->variants) > 0) {
 
+                $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
                 foreach ($deleteProduct->variants as $variant) {
 
                     if ($variant->variant_image) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/' . $variant->variant_image))) {
+                        if (file_exists($variantImgDir . $variant->variant_image)) {
 
-                            unlink(public_path('uploads/product/variant_image/' . $variant->variant_image));
+                            unlink($variantImgDir . $variant->variant_image);
                         }
                     }
                 }

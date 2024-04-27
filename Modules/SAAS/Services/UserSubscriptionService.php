@@ -4,6 +4,7 @@ namespace Modules\SAAS\Services;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
+use App\Enums\SubscriptionUpdateType;
 use Modules\SAAS\Entities\UserSubscription;
 use Modules\SAAS\Utils\ExpireDateAllocation;
 use Modules\SAAS\Interfaces\UserServiceInterface;
@@ -54,9 +55,17 @@ class UserSubscriptionService implements UserSubscriptionServiceInterface
 
         if (isset($updateUserSubscription)) {
 
+            $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ? BooleanType::True->value : BooleanType::False->value;
+
             $updateUserSubscription->trial_start_date = null;
-            $updateUserSubscription->has_due_amount = BooleanType::False->value;
-            $updateUserSubscription->due_repayment_date = null;
+
+            if ($isTrialPlan == BooleanType::False->value && $subscriptionUpdateType != SubscriptionUpdateType::UpdateExpireDate->value) {
+
+                $updateUserSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
+
+                $repaymentDate = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
+                $updateUserSubscription->due_repayment_date = $paymentStatus == BooleanType::False->value ? $repaymentDate : null;
+            }
 
             if ($subscriptionUpdateType == SubscriptionUpdateType::UpgradePlan->value) {
 
@@ -86,7 +95,36 @@ class UserSubscriptionService implements UserSubscriptionServiceInterface
                 }
             } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddShop->value) {
 
-                $updateUserSubscription->current_shop_count = $updateSubscription->current_shop_count + $request->increase_shop_count;
+                $updateUserSubscription->current_shop_count = $updateUserSubscription->current_shop_count + $request->increase_shop_count;
+            } else if ($subscriptionUpdateType == SubscriptionUpdateType::ShopRenew->value) {
+
+                if ($request->has_business && $updateUserSubscription->has_business) {
+
+                    $startDate = date('Y-m-d') <= $updateUserSubscription->business_expire_date ? $updateUserSubscription->business_expire_date : null;
+                    $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count, startDate: $startDate);
+
+                    $updateUserSubscription->business_price_period = $request->business_price_period;
+                    $updateUserSubscription->business_expire_date = $expireDate;
+                }
+            } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddBusiness->value) {
+
+                $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count);
+
+                $updateUserSubscription->has_business = BooleanType::True->value;
+                $updateUserSubscription->business_price_period = $request->business_price_period;
+                $updateUserSubscription->business_start_date = Carbon::now();
+                $updateUserSubscription->business_expire_date = $expireDate;
+            } else if ($subscriptionUpdateType == SubscriptionUpdateType::UpdateExpireDate->value && $updateUserSubscription->has_business == BooleanType::True->value) {
+
+                $updateUserSubscription->business_expire_date = date('Y-m-d', strtotime($request->business_new_expire_date));
+            } else if ($subscriptionUpdateType == SubscriptionUpdateType::UpdatePaymentStatus->value) {
+
+                $paymentStatus = isset($request->payment_status) && $request->payment_status == BooleanType::True->value ? BooleanType::True->value : BooleanType::False->value;
+
+                $updateUserSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
+
+                $repaymentDate = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
+                $updateUserSubscription->due_repayment_date = $paymentStatus == BooleanType::False->value ? $repaymentDate : null;
             }
 
             $updateUserSubscription->save();

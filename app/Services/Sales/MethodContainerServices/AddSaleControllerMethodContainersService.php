@@ -381,7 +381,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $request->date, account_id: $request->sale_account_id, trans_id: $updateSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit', current_account_id: $storedCurrSaleAccountId, branch_id: $updateSale->branch_id);
 
         // Update customer A/c ledger Entry For sale
-        $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $updateSale->id, amount: $request->total_invoice_amount, amount_type: 'debit', current_account_id: $storedCurrSaleTaxAccountId, branch_id: $updateSale->branch_id);
+        $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $updateSale->id, amount: $request->total_invoice_amount, amount_type: 'debit', current_account_id: $storedCurrCustomerAccountId, branch_id: $updateSale->branch_id);
 
         if ($request->sale_tax_ac_id) {
 

@@ -12,6 +12,7 @@
                         <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="tenantsTable">
                             <thead>
                                 <tr>
+                                    <th class="text-start">{{ __('Action') }}</th>
                                     <th class="text-start">{{ __('Customer Name') }}</th>
                                     <th class="text-start">{{ __('Email') }}</th>
                                     <th class="text-start">{{ __('Phone') }}</th>
@@ -22,7 +23,6 @@
                                     <th class="text-start">{{ __('Has Business') }}</th>
                                     <th class="text-start">{{ __('Payment Status') }}</th>
                                     <th class="text-start">{{ __('Created At') }}</th>
-                                    <th class="text-start">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -45,7 +45,12 @@
                     [10, 25, 50, 100, 500, 1000, "All"]
                 ],
                 ajax: "{{ route('saas.tenants.index') }}",
-                columns: [{
+                columns: [
+                    {
+                        data: 'action',
+                        className: 'text-start'
+                    },
+                    {
                         data: 'user_name',
                         name: 'users.name',
                         className: 'text-start'
@@ -95,10 +100,6 @@
                     {
                         data: 'created_at',
                         name: 'tenants.created_at',
-                        className: 'text-start'
-                    },
-                    {
-                        data: 'action',
                         className: 'text-start'
                     }
                 ],

@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/daterangepicker.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas/css/style.css') }}">
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/asset/css/plan-cart.css') }}">
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script> --}}
 
     {{-- <link rel="stylesheet" id="rtlStyle" href="" type="text/css"> --}}
     <style>

@@ -18,6 +18,7 @@ return new class extends Migration
             Schema::create('stock_chains', function (Blueprint $table) {
 
                 $table->bigIncrements('id');
+                $table->unsignedBigInteger('branch_id')->after('id')->nullable()->index('branches_branch_id_foreign');
                 $table->unsignedBigInteger('purchase_product_id')->nullable()->index('stock_chains_purchase_product_id_foreign');
                 $table->unsignedBigInteger('sale_product_id')->nullable()->index('stock_chains_sale_product_id_foreign');
                 $table->unsignedBigInteger('stock_issue_product_id')->nullable()->index('stock_chains_stock_issue_product_id_foreign');
@@ -25,6 +26,7 @@ return new class extends Migration
                 $table->decimal('out_qty', 22)->default(0);
                 $table->timestamps();
 
+                $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('cascade');
                 $table->foreign(['purchase_product_id'])->references(['id'])->on('purchase_products')->onDelete('CASCADE');
                 $table->foreign(['sale_product_id'])->references(['id'])->on('sale_products')->onDelete('CASCADE');
                 $table->foreign(['stock_issue_product_id'])->references(['id'])->on('stock_issue_products')->onDelete('CASCADE');

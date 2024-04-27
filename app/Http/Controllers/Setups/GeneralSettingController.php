@@ -67,19 +67,26 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('business_logo')) {
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+
             if (isset($generalSettings['business_or_shop__business_logo'])) {
 
                 $businessLogo = $generalSettings['business_or_shop__business_logo'];
 
-                if (file_exists(public_path('uploads/business_logo/' . $businessLogo))) {
+                if (file_exists($dir . $businessLogo)) {
 
-                    unlink(public_path('uploads/business_logo/' . $businessLogo));
+                    unlink($dir . $businessLogo);
                 }
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $logo = $request->file('business_logo');
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-            Image::make($logo)->resize(200, 60)->save('uploads/business_logo/' . $logoName);
+            Image::make($logo)->resize(200, 60)->save($dir . $logoName);
             $businessLogo = $logoName;
         } else {
 

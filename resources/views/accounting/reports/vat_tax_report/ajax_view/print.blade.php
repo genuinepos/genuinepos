@@ -1,26 +1,75 @@
 <style>
     @media print {
-        table { page-break-after: auto; }
+        table {
+            page-break-after: auto;
+        }
 
-        tr { page-break-inside: avoid; page-break-after: auto; }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
 
-        td { page-break-inside: avoid; page-break-after: auto, font-size:9px !important; }
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto, font-size:9px !important;
+        }
 
-        thead { display: table-header-group; }
+        thead {
+            display: table-header-group;
+        }
 
-        tfoot { display: table-footer-group; }
+        tfoot {
+            display: table-footer-group;
+        }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 
-    div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 25px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 
-    .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
-    .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
-    .print_area { font-family: Arial, Helvetica, sans-serif; }
-    .print_area h6 { font-size: 14px !important; }
-    .print_area p { font-size: 11px !important; }
-    .print_area small { font-size: 8px !important; }
+    .print_table th {
+        font-size: 11px !important;
+        font-weight: 550 !important;
+        line-height: 12px !important;
+    }
+
+    .print_table tr td {
+        color: black;
+        font-size: 10px !important;
+        line-height: 12px !important;
+    }
+
+    .print_area {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .print_area h6 {
+        font-size: 14px !important;
+    }
+
+    .print_area p {
+        font-size: 11px !important;
+    }
+
+    .print_area small {
+        font-size: 8px !important;
+    }
 </style>
 
 @php
@@ -34,21 +83,21 @@
             @if (auth()->user()?->branch)
                 @if (auth()->user()?->branch?->parent_branch_id)
 
-                    @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                    @if (auth()->user()?->branch?->parentBranch?->logo)
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
-                    @if (auth()->user()?->branch?->logo != 'default.png')
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                    @if (auth()->user()?->branch?->logo)
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -131,7 +180,7 @@
 
     <div class="row mt-1">
         <div class="col-12">
-            <p class="fw-bold">{{ __("Input Vats/Taxes") }}</p>
+            <p class="fw-bold">{{ __('Input Vats/Taxes') }}</p>
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
@@ -153,7 +202,7 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <th class="text-end" colspan="2">{{ __("Total") }} : </th>
+                    <th class="text-end" colspan="2">{{ __('Total') }} : </th>
                     <th class="text-end">{{ App\Utils\Converter::format_in_bdt($amounts['totalInputTaxAmount']) }}</th>
                 </tfoot>
             </table>
@@ -162,7 +211,7 @@
 
     <div class="row mt-1">
         <div class="col-12">
-            <p class="fw-bold">{{ __("Output Vats/Taxes") }}</p>
+            <p class="fw-bold">{{ __('Output Vats/Taxes') }}</p>
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
@@ -184,7 +233,7 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <th class="text-end" colspan="2">{{ __("Total") }} : </th>
+                    <th class="text-end" colspan="2">{{ __('Total') }} : </th>
                     <th class="text-end">{{ App\Utils\Converter::format_in_bdt($amounts['totalOutputTaxAmount']) }}</th>
                 </tfoot>
             </table>
@@ -242,9 +291,9 @@
 @php
     $__fromDate = $fromDate ? date($dateFormat, strtotime($fromDate)) : '';
     $__toDate = date($dateFormat, strtotime($toDate));
-    $dateRange = $__fromDate ? $__fromDate . '_to_' . $__toDate :  __('All Time');
+    $dateRange = $__fromDate ? $__fromDate . '_to_' . $__toDate : __('All Time');
     $__filteredBranchName = $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName;
-    $__branchName = $__filteredBranchName == 'All' ? __('All Shops/Business') :  $__filteredBranchName;
+    $__branchName = $__filteredBranchName == 'All' ? __('All Shops/Business') : $__filteredBranchName;
     $filename = __('Vat/Tax Report') . '__' . $dateRange . '__' . $__branchName;
 @endphp
 <span id="title" class="d-none">{{ $filename }}</span>

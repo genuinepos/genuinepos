@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
 use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
+use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
@@ -60,6 +62,31 @@ Artisan::command('sync:gs', function () {
             $add->branch_id = $branch->id;
             $add->save();
         }
+    }
+
+    $products = Product::all();
+});
+
+Artisan::command('sync:table', function () {
+
+    $products = Product::all();
+    foreach ($products as $product) {
+        $product->thumbnail_photo = null;
+        $product->save();
+    }
+
+    $branches = Branch::all();
+    foreach ($branches as $branch) {
+
+        $branch->logo = null;
+        $branch->save();
+    }
+
+    $users = User::all();
+    foreach ($users as $user) {
+
+        $user->photo = null;
+        $user->save();
     }
 });
 

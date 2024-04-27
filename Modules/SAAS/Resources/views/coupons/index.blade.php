@@ -1,4 +1,4 @@
-<x-saas::admin-layout title="coupons">
+<x-saas::admin-layout title="Coupons">
     @push('css')
         <style>
 

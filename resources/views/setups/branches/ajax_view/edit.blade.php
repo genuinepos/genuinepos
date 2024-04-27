@@ -121,8 +121,9 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-6 col-md-6">
-                                <label><b>{{ __('Address') }}</b></label>
+                                <label><b>{{ __('Address') }}</b> <span class="text-danger">*</span></label>
                                 <input required type="text" name="address" class="form-control" id="branch_address" data-next="branch_email" value="{{ $branch->address }}" placeholder="{{ __('Address') }}" />
+                                <span class="error error_branch_zip_code"></span>
                             </div>
                         </div>
 
@@ -137,10 +138,12 @@
                                 <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_date_format" value="{{ $branch->website }}" placeholder="{{ __('Website Url') }}" />
                             </div>
 
-                            <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __('Logo') }}</b> <small class="text-danger">{{ __('Logo size 200px * 70px') }}</small></label>
-                                <input type="file" name="logo" class="form-control " id="logo" />
-                            </div>
+                            @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
+                                <div class="col-lg-3 col-md-6">
+                                    <label><b>{{ __('Logo') }}</b> <small class="text-danger">{{ __('Logo size 200px * 70px') }}</small></label>
+                                    <input type="file" name="logo" class="form-control " id="logo" />
+                                </div>
+                            @endif
                         </div>
                     </div>
 

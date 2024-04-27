@@ -69,7 +69,7 @@ class LoginController extends Controller
 
         $subscription = DB::table('subscriptions')->first();
         $firstBranch = DB::table('branches')->first();
-        
+
         $user = User::with('branch', 'roles', 'roles.permissions')
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
@@ -85,10 +85,11 @@ class LoginController extends Controller
         if (
             $user?->branch &&
             isset($user?->branch?->expire_date) &&
-            date('Y-m-d') > $user?->branch?->expire_date
+            date('Y-m-d') > $user?->branch?->expire_date &&
+            !$role->hasPermissionTo('billing_renew_branch')
         ) {
 
-            $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Business/Authority.');
+            $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
             session()->flash('errorMsg', $msg);
             return redirect()->back();
         }

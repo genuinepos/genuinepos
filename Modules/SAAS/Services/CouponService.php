@@ -26,7 +26,7 @@ class CouponService implements CouponServiceInterface
 
                 if (auth()->user()->can('coupons_destroy')) {
 
-                    $html .= '<a href="' . route('saas.coupons.destroy', $row->id) . '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="delete" title="Delete"><span class="fas fa-trash pe-1"></span>' . __("Delete") . '</a>';
+                    $html .= '<a href="' . route('saas.coupons.delete', $row->id) . '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="delete" title="Delete"><span class="fas fa-trash pe-1"></span>' . __("Delete") . '</a>';
                 }
 
                 $html .= '</div>';

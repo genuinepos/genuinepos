@@ -129,12 +129,12 @@
                         } else {
 
                             var li = "";
-                            var imgUrl = "{{ asset('uploads/product/thumbnail') }}";
-
                             $.each(product.variants, function(key, variant) {
 
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+
                                 li += '<li>';
-                                li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + variant.id + '" data-product_name="' + product.name + '" data-variant_name="' + variant.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax != null ? product.tax.tax_percent : 0) + '"  data-product_code="' + variant.variant_code + '" data-price_exc_tax="' + variant.variant_price + '"><img style="width:20px; height:20px;" src="' + imgUrl + '/' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + variant.id + '" data-product_name="' + product.name + '" data-variant_name="' + variant.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax != null ? product.tax.tax_percent : 0) + '"  data-product_code="' + variant.variant_code + '" data-price_exc_tax="' + variant.variant_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                 li += '</li>';
                             });
 
@@ -147,20 +147,21 @@
                         if (product.namedProducts.length > 0) {
 
                             var li = "";
-                            var imgUrl = "{{ asset('uploads/product/thumbnail') }}";
                             var products = product.namedProducts;
 
                             $.each(products, function(key, product) {
 
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+
                                 if (product.is_variant == 1) {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a  href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + product.variant_id + '" data-product_name="' + product.name + '" data-variant_name="' + product.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.variant_code + '" data-price_exc_tax="' + product.variant_price + '"><img style="width:20px; height:20px;" src="' + imgUrl + '/' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
+                                    li += '<a  href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + product.variant_id + '" data-product_name="' + product.name + '" data-variant_name="' + product.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.variant_code + '" data-price_exc_tax="' + product.variant_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
                                     li += '</li>';
                                 } else {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="noid" data-variant_name="" data-product_name="' + product.name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '"  data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.product_code + '" data-price_exc_tax="' + product.product_price + '"><img style="width:20px; height:20px;" src="' + imgUrl + '/' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                    li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="noid" data-variant_name="" data-product_name="' + product.name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '"  data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.product_code + '" data-price_exc_tax="' + product.product_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                     li += '</li>';
                                 }
                             });

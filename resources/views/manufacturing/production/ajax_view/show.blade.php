@@ -293,21 +293,21 @@
 
                     @if ($production?->branch?->parent_branch_id)
 
-                        @if ($production->branch?->parentBranch?->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->parentBranch?->logo) }}">
+                        @if ($production->branch?->parentBranch?->logo)
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $production->branch?->parentBranch?->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch?->parentBranch?->name }}</span>
                         @endif
                     @else
-                        @if ($production->branch?->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->logo) }}">
+                        @if ($production->branch?->logo)
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $production->branch?->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch?->name }}</span>
                         @endif
                     @endif
                 @else
                     @if ($generalSettings['business_or_shop__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                        <img src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
@@ -331,7 +331,7 @@
 
                 <p>
                     @if ($production?->branch)
-                        {{ $production->branch->city . ', ' . $production->branch->state . ', ' . $production->branch->zip_code . ', ' . $production->branch->country }}
+                        {{ $production->branch->address . ', ' . $production->branch->city . ', ' . $production->branch->state . ', ' . $production->branch->zip_code . ', ' . $production->branch->country }}
                     @else
                         {{ $generalSettings['business_or_shop__address'] }}
                     @endif

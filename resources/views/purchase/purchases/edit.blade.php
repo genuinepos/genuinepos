@@ -567,6 +567,8 @@
                                                     <div class="input-group">
                                                         <label class="col-4"><b>{{ __('Total Invoice Amount') }}</b></label>
                                                         <div class="col-8">
+                                                            <input readonly type="hidden" step="any" id="current_purchased_amount" value="{{ $purchase->total_purchase_amount }}" >
+
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control fw-bold" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
                                                             <input type="hidden" name="purchase_ledger_amount" id="purchase_ledger_amount" value="0">
                                                         </div>

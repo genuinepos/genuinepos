@@ -54,14 +54,14 @@
                 <h4>
                     @if ($customerPayment->branch)
 
-                        @if ($customerPayment->branch->logo != 'default.png')
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $customerPayment->branch->logo) }}">
+                        @if ($customerPayment->branch->logo)
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $customerPayment->branch->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $customerPayment->branch->name }}</span>
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif

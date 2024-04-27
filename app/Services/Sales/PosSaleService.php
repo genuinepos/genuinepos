@@ -153,11 +153,12 @@ class PosSaleService
 
     public function printTemplateBySaleStatusForUpdate(object $request, object $sale, object $customerCopySaleProducts): mixed
     {
+        $printPageSize = $request->print_page_size;
         if ($request->status == SaleStatus::Final->value) {
 
             $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $receivedAmount = $request->received_amount;
-            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
+            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
         } elseif ($request->status == SaleStatus::Draft->value) {
 
             $draft = $sale;
@@ -174,6 +175,4 @@ class PosSaleService
             return response()->json(['suspendedInvoiceMsg' => __('Invoice is suspended.')]);
         }
     }
-
-
 }

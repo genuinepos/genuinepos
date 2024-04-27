@@ -4,7 +4,9 @@ namespace App\Services\Subscriptions;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
+use Modules\SAAS\Utils\GioInfo;
 use App\Enums\SubscriptionTransactionDetailsType;
+use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
 use App\Models\Subscriptions\SubscriptionTransaction;
 
 class SubscriptionTransactionService
@@ -44,37 +46,17 @@ class SubscriptionTransactionService
         $addTransaction->details = $transactionDetails;
 
         $addTransaction->save();
-
-        // $transaction = new SubscriptionTransaction();
-        // $transaction->transaction_type = $transactionType;
-        // $transaction->subscription_id = $subscription->id;
-        // $transaction->plan_id = $plan?->id;
-        // $transaction->payment_method_name = isset($request->payment_method_name) ? $request->payment_method_name : 'Cash-On-Delivery';
-        // $transaction->payment_trans_id = 'N/A';
-        // $transaction->net_total = isset($request->net_total) ? $request->net_total : 0;
-        // $transaction->discount_percent = isset($request->discount_percent) ? $request->discount_percent : 0;
-        // $transaction->discount = isset($request->discount) ? $request->discount : 0;
-        // $transaction->total_payable_amount = $request->total_payable;
-        // $transaction->paid = isset($request->total_payable) ? $request->total_payable : 0;
-        // $transaction->payment_status = BooleanType::True->value;
-        // $transaction->payment_date = Carbon::now();
-
-        // $transaction->details_type = SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value;
-
-        // $transactionDetails = $this->transactionDetails(request: $request, detailsType: SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value, plan: $plan);
-
-        // $transaction->details = $transactionDetails;
-
-        // $transaction->save();
     }
 
-    function transactionDetails(object $request, string $detailsType, ?object $plan)
+    public function transactionDetails(object $request, string $detailsType, ?object $plan)
     {
+        $gioInfo = GioInfo::getInfo();
         if ($detailsType == 'upgrade_plan_from_trial') {
 
-            $countBusiness = isset($request->has_business) ? 1 : 0;
-            $shopPlusBusiness = $request->shop_count + $countBusiness;
-            $adjustableShopPrice = $request->total_payable / $shopPlusBusiness;
+            $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
+            $shopPrice = isset($request->shop_price) ? $request->shop_price : 0;
+            $discountAmount = ($shopPrice / 100) * $discountPercent;
+            $adjustableShopPrice = round($shopPrice - $discountAmount, 0);
 
             $businessPricePeriodCount = null;
             $businessPrice = 0;
@@ -83,10 +65,13 @@ class SubscriptionTransactionService
 
                 $businessPricePeriodCount = $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count;
                 $businessPrice = $request->business_price ? $request->business_price : 0;
-                $adjustableBusinessPrice = $request->total_payable / $shopPlusBusiness;
+                $discountPercent = isset($request->discount_percent) ? isset($request->discount_percent) : 0;
+                $discountAmount = ($businessPrice / 100) * $discountPercent;
+                $adjustableBusinessPrice = round($businessPrice - $discountAmount, 0);
             }
 
             return [
+                'country' => $gioInfo['country'],
                 'has_business' => isset($request->has_business) ? 1 : 0,
                 'business_price_period' => isset($request->has_business) ? $request->business_price_period : null,
                 'business_price_period_count' => $businessPricePeriodCount,
@@ -96,7 +81,7 @@ class SubscriptionTransactionService
                 'shop_count' => $request->shop_count,
                 'shop_price_period' => $request->shop_price_period,
                 'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
-                'shop_price' => isset($request->plan_price) ? $request->plan_price : 0,
+                'shop_price' => isset($request->shop_price) ? $request->shop_price : 0,
                 'adjustable_shop_price' => $adjustableShopPrice,
                 'shop_subtotal' => isset($request->shop_subtotal) ? $request->shop_subtotal : 0,
                 'net_total' => isset($request->net_total) ? $request->net_total : 0,
@@ -107,9 +92,10 @@ class SubscriptionTransactionService
             ];
         } elseif ($detailsType == 'direct_buy_plan') {
 
-            $countBusiness = isset($request->has_business) ? 1 : 0;
-            $shopPlusBusiness = $request->shop_count + $countBusiness;
-            $adjustableShopPrice = $request->total_payable / $shopPlusBusiness;
+            $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
+            $shopPrice = $request->shop_price;
+            $discountAmount = ($shopPrice / 100) * $discountPercent;
+            $adjustableShopPrice = round($shopPrice - $discountAmount, 0);
 
             $businessPricePeriodCount = null;
             $businessPrice = 0;
@@ -118,10 +104,13 @@ class SubscriptionTransactionService
 
                 $businessPricePeriodCount = $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count;
                 $businessPrice = $request->business_price ? $request->business_price : 0;
-                $adjustableBusinessPrice = $request->total_payable / $shopPlusBusiness;
+                $discountPercent = isset($request->discount_percent) ? isset($request->discount_percent) : 0;
+                $discountAmount = ($businessPrice / 100) * $discountPercent;
+                $adjustableBusinessPrice = round($businessPrice - $discountAmount, 0);
             }
 
             return [
+                'country' => $gioInfo['country'],
                 'has_business' => isset($request->has_business) ? 1 : 0,
                 'business_price_period' => isset($request->has_business) ? $request->business_price_period : null,
                 'business_price_period_count' => $businessPricePeriodCount,
@@ -131,7 +120,7 @@ class SubscriptionTransactionService
                 'shop_count' => $request->shop_count,
                 'shop_price_period' => $request->shop_price_period,
                 'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
-                'shop_price' => isset($request->plan_price) ? $request->plan_price : 0,
+                'shop_price' => isset($request->shop_price) ? $request->shop_price : 0,
                 'adjustable_shop_price' => $adjustableShopPrice,
                 'shop_subtotal' => isset($request->shop_subtotal) ? $request->shop_subtotal : 0,
                 'net_total' => isset($request->net_total) ? $request->net_total : 0,
@@ -143,6 +132,7 @@ class SubscriptionTransactionService
         } elseif ($detailsType == 'upgrade_plan_from_real_plan') {
 
             return [
+                'country' => $gioInfo['country'],
                 'net_total' => isset($request->net_total) ? $request->net_total : 0,
                 'total_adjusted_amount' => isset($request->total_adjusted_amount) ? $request->total_adjusted_amount : 0,
                 'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
@@ -153,6 +143,7 @@ class SubscriptionTransactionService
         } elseif ($detailsType == 'add_shop') {
 
             return [
+                'country' => $gioInfo['country'],
                 'increase_shop_count' => isset($request->increase_shop_count) ? $request->increase_shop_count : 0,
                 'shop_price_period' => isset($request->shop_price_period) ? $request->shop_price_period : null,
                 'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
@@ -162,6 +153,44 @@ class SubscriptionTransactionService
                 'discount' => isset($request->discount) ? $request->discount : 0,
                 'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
             ];
+        } elseif ($detailsType == 'shop_renew') {
+
+            return [
+                'country' => $gioInfo['country'],
+                'data' => $request->all(),
+                'has_business' => isset($request->has_business) ? 1 : 0,
+                'total_renew_shop' => isset($request->shop_expire_date_history_ids) ? count($request->shop_expire_date_history_ids) : 0,
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
+            ];
+        } elseif ($detailsType == 'add_business') {
+
+            return [
+                'country' => $gioInfo['country'],
+                'data' => $request->all(),
+                'net_total' => isset($request->net_total) ? $request->net_total : 0,
+                'coupon_code' => isset($request->coupon_code) ? $request->coupon_code : 0,
+                'discount_percent' => isset($request->discount_percent) ? $request->discount_percent : 0,
+                'discount' => isset($request->discount) ? $request->discount : 0,
+                'total_amount' => isset($request->total_payable) ? $request->total_payable : 0,
+            ];
+        }
+    }
+
+    public function updateDueTransactionStatus(object $request, ?object $dueSubscriptionTransaction): void
+    {
+        if (isset($dueSubscriptionTransaction)) {
+
+            $dueSubscriptionTransaction->payment_status = $request->payment_status;
+            $dueSubscriptionTransaction->payment_date = Carbon::now();
+            $dueSubscriptionTransaction->paid = $dueSubscriptionTransaction->total_payable_amount;
+            $dueSubscriptionTransaction->due = 0;
+            $dueSubscriptionTransaction->payment_method_name = $request->payment_method_name;
+            $dueSubscriptionTransaction->payment_trans_id = $request->payment_trans_id;
+            $dueSubscriptionTransaction->save();
         }
     }
 }

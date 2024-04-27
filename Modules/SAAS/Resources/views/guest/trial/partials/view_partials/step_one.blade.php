@@ -17,7 +17,7 @@
                             <input required type="text" name="domain" id="domain" class="form-control" placeholder="{{ __("Store URL") }}" autocomplete="off">
                             <span class="txt">{{ __('.gposs.com') }}</span>
                         </div>
-                        <p class="mt-2">
+                        <p>
                             <span id="domainPreview" class="monospace"></span>
                         </p>
                     </div>
@@ -53,7 +53,7 @@
                     <input required type="tel" name="phone" class="form-control" id="phone" placeholder="{{ __('Enter Phone Number') }}" autocomplete="off">
                 </div>
 
-                <div class="form-col-5">
+                {{-- <div class="form-col-5">
                     <label for="city">{{ __('Town/ City') }}</label>
                     <input type="text" name="city" class="form-control" id="city" placeholder="{{ __('Enter Town/City') }}" autocomplete="off">
                 </div>
@@ -61,7 +61,7 @@
                 <div class="form-col-5">
                     <label for="post-code">{{ __('Post Code') }}</label>
                     <input type="text" name="postal_code" class="form-control" id="postal_code" placeholder="{{ __('Enter Post Code') }}" autocomplete="off">
-                </div>
+                </div> --}}
 
                 <div class="form-col-5">
                     <label for="address">{{ __('Address') }}</label>

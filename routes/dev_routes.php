@@ -19,6 +19,7 @@ use App\Enums\AccountLedgerVoucherType;
 use Illuminate\Support\Facades\Session;
 use App\Models\Subscriptions\Subscription;
 use App\Models\Accounts\AccountingVoucherDescription;
+use App\Models\ShortMenus\ShortMenu;
 
 Route::get('my-test', function () {
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
@@ -215,32 +216,20 @@ Route::get('my-test', function () {
     //     })
     //     ->first();
 
-    $startDate = new DateTime('2024-02-08');
-    $endDate = clone $startDate;
-    // Add 7 days to today's date
-    $lastDate = $endDate->modify('+1 years');
-    $lastDate = $lastDate->modify('+1 days');
+    // $startDate = new DateTime('2024-02-08');
+    // $endDate = clone $startDate;
+    // // Add 7 days to today's date
+    // $lastDate = $endDate->modify('+1 years');
+    // $lastDate = $lastDate->modify('+1 days');
 
-    // Format the date
-    // return $lastDate->format('Y-m-d');
+    for ($i=0; $i < 10; $i++) {
 
-    // return DB::table('subscriptions')
-    // ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
-    // ->select('subscriptions.id', 'pos.plans.name as plan_name')
-    // ->first();
-
-    // return Subscription::with('plan')->first();
-    // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
-    // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
-    // File::cleanDirectory(storage_path('framework/laravel-excel'));
-    // return storage_path('framework/laravel-excel');
-    // $tenantId =  tenant('id');
-    // DB::statement('use ' . env('DB_DATABASE'));
-    // return $tenantUser = Tenant::with('user', 'user.userSubscription')->where('id', $tenantId)->first();
-    // return $tenantUser->userSubscription;
-    // DB::reconnect();
-
-    Tenancy::find('organio')?->delete();
+        $add = new ShortMenu();
+        $add->url = '//';
+        $add->name = '//';
+        $add->icon = '//';
+        $add->save();
+    }
 });
 
 Route::get('t-id', function () {

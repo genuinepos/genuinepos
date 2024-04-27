@@ -8,10 +8,8 @@
                     <div class="form-head">
                         <div class="head">
                             @if ($generalSettings['business_or_shop__business_logo'] != null)
-
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
                             <span class="head-text">
@@ -38,27 +36,19 @@
 
                             <div class="left-inner-addon input-container">
                                 <i class="fa fa-envelope"></i>
-                                <input type="email" name="email" class="form-control form-st" value="{{ $email ?? old('email') }}"
-                                placeholder="Enter Your Email"
-                                required autocomplete="email" />
+                                <input type="email" name="email" class="form-control form-st" value="{{ $email ?? old('email') }}" placeholder="Enter Your Email" required autocomplete="email" />
                             </div>
 
                             <div class="left-inner-addon input-container">
                                 <i class="fa fa-lock"></i>
 
-                                <input id="password" type="password" class="form-control form-st"
-                                name="password"
-                                required
-                                autocomplete="new-password"
-                                placeholder="@lang('menu.new_password')"
-                                autofocus>
+                                <input id="password" type="password" class="form-control form-st" name="password" required autocomplete="new-password" placeholder="@lang('menu.new_password')" autofocus>
                             </div>
 
                             <div class="left-inner-addon input-container">
                                 <i class="fa fa-check-double"></i>
 
-                                <input id="password_confimation" type="password" class="form-control form-st rounded-bottom"
-                                    name="password_confirmation" required placeholder="@lang('menu.confirm_password')">
+                                <input id="password_confimation" type="password" class="form-control form-st rounded-bottom" name="password_confirmation" required placeholder="@lang('menu.confirm_password')">
                             </div>
 
                             {{-- Custom errror message --}}

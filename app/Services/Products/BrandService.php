@@ -21,7 +21,7 @@ class BrandService
 
                 if ($row->photo) {
 
-                    $photo = asset('uploads/brand/' . $row->photo);
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'brand/' . $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -53,9 +53,16 @@ class BrandService
 
         if ($request->file('photo')) {
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
             $brandPhoto = $request->file('photo');
             $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/' . $brandPhotoName);
+            Image::make($brandPhoto)->resize(250, 250)->save($dir . $brandPhotoName);
             $addBrand->photo = $brandPhotoName;
         }
 
@@ -71,14 +78,21 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            if (isset($updateBrand->photo) && file_exists(public_path('uploads/brand/' . $updateBrand->photo))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
 
-                unlink(public_path('uploads/brand/' . $updateBrand->photo));
+            if (isset($updateBrand->photo) && file_exists($dir . $updateBrand->photo)) {
+
+                unlink($dir . $updateBrand->photo);
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $brandPhoto = $request->file('photo');
             $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/' . $brandPhotoName);
+            Image::make($brandPhoto)->resize(250, 250)->save($dir . $brandPhotoName);
             $updateBrand->photo = $brandPhotoName;
         }
 
@@ -93,9 +107,10 @@ class BrandService
 
         if (isset($deleteBrand)) {
 
-            if (isset($deleteBrand->photo) && file_exists(public_path('uploads/brand/' . $deleteBrand->photo))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
+            if (isset($deleteBrand->photo) && file_exists($dir . $deleteBrand->photo)) {
 
-                unlink(public_path('uploads/brand/' . $deleteBrand->photo));
+                unlink($dir . $deleteBrand->photo);
             }
 
             $deleteBrand->delete();

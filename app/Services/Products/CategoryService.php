@@ -3,7 +3,6 @@
 namespace App\Services\Products;
 
 use App\Enums\CategoryType;
-use Illuminate\Validation\Rule;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -22,7 +21,7 @@ class CategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = asset('uploads/category/' . $row->photo);
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -61,9 +60,16 @@ class CategoryService
 
         if ($request->file('photo')) {
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save($dir . $categoryPhotoName);
 
             $addCategory->photo = $categoryPhotoName;
         }
@@ -81,14 +87,21 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            if ($updateCategory->photo && file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
 
-                unlink(public_path('uploads/category/' . $updateCategory->photo));
+            if ($updateCategory->photo && file_exists($dir . $updateCategory->photo)) {
+
+                unlink($dir . $updateCategory->photo);
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save($dir . $categoryPhotoName);
             $updateCategory->photo = $categoryPhotoName;
         }
 
@@ -106,9 +119,10 @@ class CategoryService
             return ['pass' => false, 'msg' => 'Category can not be deleted. One or more sub-categories is belonging under this category.'];
         }
 
-        if ($deleteCategory->photo && file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+        if ($deleteCategory->photo && file_exists($dir . $deleteCategory->photo)) {
 
-            unlink(public_path('uploads/category/' . $deleteCategory->photo));
+            unlink($dir . $deleteCategory->photo);
         }
 
         if (!is_null($deleteCategory)) {

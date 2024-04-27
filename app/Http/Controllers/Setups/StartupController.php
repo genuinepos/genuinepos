@@ -60,6 +60,7 @@ class StartupController extends Controller
 
     public function finish(Request $request)
     {
+        // return dd($request->all());
         $this->startupService->startupValidation(request: $request);
 
         try {
@@ -74,7 +75,7 @@ class StartupController extends Controller
 
                     $logo = $request->file('business_logo');
                     $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-                    $logo->move(public_path('uploads/business_logo/'), $logoName);
+                    $logo->move(public_path('uploads/' . tenant('id') . '/' . 'business_logo/'), $logoName);
                     $business_logo = $logoName;
                 } else {
 

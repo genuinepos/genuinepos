@@ -20,7 +20,20 @@ use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
 use Modules\SAAS\Http\Controllers\Guest\PlanConfirmController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
+use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
+use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
+
+Route::get('t-test',function () {
+
+    if (file_exists(public_path('uploads/organio'))) {
+
+        rmdir(public_path('uploads/organio'));
+    }else{
+
+        return 'NO';
+    }
+});
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -33,20 +46,12 @@ Route::middleware('is_guest')->group(function () {
     Route::post('login', [LoginController::class, 'login'])->name('login');
 });
 
-// Route::get('/plan-payment', fn () => view('saas::guest.plan-payment'))->name('plan.payment');
-
 Route::get('/business-verification', [BusinessVerificationController::class, 'index'])->name('business-verification.index');
 Route::post('/business-verification/send', [BusinessVerificationController::class, 'send'])->name('business-verification.send');
 Route::get('/business-verification/{hash}/verify', [BusinessVerificationController::class, 'verify'])->name('business-verification.verify');
 
-// All User
-// Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
-// Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
-Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
-// Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
-// Route::get('plan/{plan:slug}/{pricePeriod?}/confirm', [PlanSelectController::class, 'confirm'])->name('plan.confirm');
-// Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
 Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
+Route::post('delete', [DeleteFailedTenantController::class, 'delete'])->name('delete.failed.tenant.destroy');
 
 Route::controller(TrialController::class)->prefix('guest/trial')->group(function () {
 
@@ -61,6 +66,7 @@ Route::controller(PlanConfirmController::class)->prefix('guest/plan-confirm')->g
     Route::post('confirm', 'confirm')->name('guest.plan.confirm');
     Route::post('store', 'store')->name('guest.plan.confirm.tenant.store');
     Route::post('validation', 'validation')->name('guest.plan.confirm.validation');
+    Route::get('check/coupon/code', 'checkCouponCode')->name('guest.plan.confirm.check.coupon.code');
 });
 
 Route::controller(SendEmailController::class)->prefix('guest/email')->group(function () {
@@ -86,20 +92,52 @@ Route::middleware(['is_verified'])->group(function () {
 
             Route::get('/', 'index')->name('dashboard');
         });
-
-        Route::resource('tenants', TenantController::class);
     });
 
     Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile/{user}/update', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::resource('plans', PlanController::class);
     Route::get('plans/single/plan/by/{id}', [PlanController::class, 'singlePlanById'])->name('plans.single.by.id');
 
-    Route::resource('users', UserController::class);
-    Route::delete('users/{user}/trash', [UserController::class, 'trash'])->name('users.trash');
-    Route::patch('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::controller(TenantController::class)->prefix('tenants')->group(function () {
 
-    Route::resource('roles', RoleController::class);
+        Route::get('/', 'index')->name('tenants.index');
+        Route::get('create', 'create')->name('tenants.create');
+        Route::post('store', 'store')->name('tenants.store');
+        Route::get('delete/{id}', 'delete')->name('tenants.delete');
+        Route::delete('destroy/{id}', 'destroy')->name('tenants.destroy');
+    });
+
+    Route::controller(UserController::class)->prefix('users')->group(function () {
+
+        Route::get('users', 'index')->name('users.index');
+        Route::get('create', 'create')->name('users.create');
+        Route::post('store', 'store')->name('users.store');
+        Route::get('edit/{id}', 'edit')->name('users.edit');
+        Route::post('update/{id}', 'update')->name('users.update');
+        Route::delete('delete/{id}', 'delete')->name('users.delete');
+    });
+
+    Route::controller(UserController::class)->prefix('users')->group(function () {
+
+        Route::get('/', 'index')->name('users.index');
+        Route::get('create', 'create')->name('users.create');
+        Route::post('store', 'store')->name('users.store');
+        Route::get('edit/{id}', 'edit')->name('users.edit');
+        Route::patch('update/{id}', 'update')->name('users.update');
+        Route::delete('delete/{id}', 'delete')->name('users.delete');
+    });
+
+    Route::controller(RoleController::class)->prefix('roles')->group(function () {
+
+        Route::get('/', 'index')->name('roles.index');
+        Route::get('create', 'create')->name('roles.create');
+        Route::post('store', 'store')->name('roles.store');
+        Route::get('edit/{id}', 'edit')->name('roles.edit');
+        Route::patch('update/{id}', 'update')->name('roles.update');
+        Route::delete('delete/{id}', 'delete')->name('roles.delete');
+    });
 
     //Coupons Route
     Route::resource('coupons', CouponController::class);

@@ -46,8 +46,8 @@ img {
 }
 
 .def-btn {
-  height: 50px;
-  line-height: 50px;
+  height: 38px;
+  line-height: 36px;
   padding: 0 40px;
   background: #333333;
   color: #ffffff;
@@ -202,7 +202,7 @@ img {
 }
 .tab-section .tab-nav .single-nav {
   width: 33.3333333333%;
-  height: 50px;
+  height: 36px;
   border-left: 0;
   font-size: 20px;
   font-weight: 500;
@@ -352,21 +352,17 @@ img {
 .tab-section .tab-contents .cart-total-panel .panel-body .calculate-area .def-btn:disabled:hover, .tab-section .tab-contents .cart-total-panel .panel-body .calculate-area .def-btn:disabled:focus {
   background: #333333;
 }
-.tab-section .tab-contents .billing-details:not(:last-child) {
-  margin-bottom: 30px;
-}
+
 .tab-section .tab-contents .billing-details .title {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 100%;
   font-weight: 600;
   color: #222222;
-  margin-top: -2px;
-  margin-bottom: 17px;
 }
 .tab-section .tab-contents .billing-details .form-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 19px;
 }
 .tab-section .tab-contents .billing-details .form-row .form-col-10 {
   width: 100%;
@@ -385,14 +381,14 @@ img {
   left: 20px;
   transition: 0.4s ease;
   z-index: 2;
-  color: #6c757d;
-  font-size: 16px;
+  color: #3c3d3e;
+  font-size: 13px;
 }
 .tab-section .tab-contents .billing-details .form-row .form-control {
   font-size: 14px;
-  height: 45px;
-  line-height: 45px;
-  padding: 0 25px;
+  height: 33px;
+  line-height: 28px;
+  padding: 0 8px;
   background: rgba(241, 241, 241, 0.5);
   border: 1px solid rgba(221, 221, 221, 0.5);
   border-radius: 0;
@@ -747,9 +743,9 @@ img {
   height: 100%;
   background-color: #ddd;
   padding: 0 15px;
-  font-size: 20px;
+  font-size: 19px;
   top: 0;
-  line-height: 1.8;
+  line-height: 1.4;
 }
 
 .cart-coupon-form {
@@ -757,7 +753,7 @@ img {
   gap: 10px;
 }
 .cart-coupon-form input {
-  height: 50px;
+  height: 39px;
   border: 1px solid #e4e4e4;
   padding: 0 15px;
   border-radius: 0;

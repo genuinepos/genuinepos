@@ -14,9 +14,10 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('id');
         return [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.$this->user->id,
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
             'phone' => 'nullable|max:255',
             'photo' => ['nullable', 'mimes:png,jpeg,jpg', 'max:2048'],
             'address' => 'nullable',
@@ -33,6 +34,6 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('users_update');
     }
 }

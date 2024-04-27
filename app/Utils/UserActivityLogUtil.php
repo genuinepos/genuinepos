@@ -43,6 +43,7 @@ class UserActivityLogUtil
             25 => 'Warranties',
             35 => 'Selling Price Groups',
             36 => 'Location Switch',
+            37 => 'Stock Issue',
         ];
     }
 
@@ -191,6 +192,10 @@ class UserActivityLogUtil
             36 => [ // Location Switch
                 'fields' => ['location_switch_log_description'],
                 'texts' => [''],
+            ],
+            37 => [ // Stock Issue
+                'fields' => ['date', 'voucher_no', 'total_item', 'total_qty', 'net_total_amount'],
+                'texts' => ['Date: ', 'Voucher No: ', 'Total Item: ', 'Total Qty: ', 'Net Total Amount: '],
             ],
         ];
     }

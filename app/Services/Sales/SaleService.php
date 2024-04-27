@@ -280,8 +280,8 @@ class SaleService
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',
-            'saleProducts.purchaseSaleProductChains',
-            'saleProducts.purchaseSaleProductChains.purchaseProduct',
+            'saleProducts.stockChains',
+            'saleProducts.stockChains.purchaseProduct',
         ]);
 
         $voucherName = SaleStatus::tryFrom($deleteSale->status)->name;

@@ -2,285 +2,270 @@
 
 namespace Modules\SAAS\Services;
 
-use Exception;
 use Carbon\Carbon;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Payment;
 use App\Enums\BooleanType;
-use App\Models\GeneralSetting;
-use Modules\SAAS\Entities\Plan;
 use App\Mail\NewSubscriptionMail;
 use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
+use App\Services\Users\UserService;
 use Illuminate\Support\Facades\Log;
+use Stancl\Tenancy\Facades\Tenancy;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Subscriptions\Subscription;
+use Yajra\DataTables\Facades\DataTables;
+use App\Enums\SubscriptionTransactionType;
+use App\Services\GeneralSettingServiceInterface;
 use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Database\factories\AdminFactory;
-use App\Models\Subscriptions\ShopExpireDateHistory;
-use App\Models\Subscriptions\SubscriptionTransaction;
+use Modules\SAAS\Interfaces\PlanServiceInterface;
+use Modules\SAAS\Interfaces\UserServiceInterface;
+use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
+use App\Services\Subscriptions\SubscriptionService;
+use Modules\SAAS\Interfaces\CouponServiceInterface;
+use App\Services\Setups\ShopExpireDateHistoryService;
+use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
+use App\Services\Subscriptions\SubscriptionTransactionService;
+use Modules\SAAS\Interfaces\UserSubscriptionTransactionServiceInterface;
 
 class TenantService implements TenantServiceInterface
 {
-    public function create(array $tenantRequest): ?Tenant
+    public function __construct(
+        private PlanServiceInterface $planServiceInterface,
+        private UserServiceInterface $userServiceInterface,
+        private GeneralSettingServiceInterface $generalSettingServiceInterface,
+        private UserService $appUserService,
+        private CouponServiceInterface $couponServiceInterface,
+        private UserSubscriptionServiceInterface $userSubscriptionServiceInterface,
+        private UserSubscriptionTransactionServiceInterface $userSubscriptionTransactionServiceInterface,
+        private SubscriptionService $subscriptionService,
+        private SubscriptionTransactionService $subscriptionTransactionService,
+        private ShopExpireDateHistoryService $shopExpireDateHistoryService,
+    ) {
+    }
+
+    public function addTenant(object $request): ?Tenant
     {
         try {
-            DB::beginTransaction();
-            $plan = Plan::find($tenantRequest['plan_id']);
-
-            $expireDate = '';
-            if ($plan->is_trial_plan == BooleanType::False->value) {
-
-                if ($tenantRequest['shop_price_period'] == 'month') {
-
-                    $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['shop_price_period_count']);
-                } else if ($tenantRequest['shop_price_period'] == 'year') {
-
-                    $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['shop_price_period_count']);
-                } else if ($tenantRequest['shop_price_period'] == 'lifetime') {
-
-                    $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
-                }
-            } else if($plan->is_trial_plan == BooleanType::True->value) {
-
-                $expireDate = $this->getExpireDate(period: 'day', periodCount: $plan->trial_days);
-            }
+            $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
 
             $tenant = Tenant::create([
-                'id' => $tenantRequest['domain'],
-                'name' => $tenantRequest['name'],
+                'id' => $request->domain,
+                'name' => $request->name,
                 'impersonate_user' => 1,
-                'plan_id' => $tenantRequest['plan_id'],
-                // 'shop_count' => $tenantRequest['shop_count'],
-                'start_date' => Carbon::now(),
-                'expire_date' => $expireDate ? $expireDate : null,
                 'user_id' => 1,
             ]);
 
             if (isset($tenant)) {
 
-                $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
+                $domain = $tenant->domains()->create(['domain' => $request->domain]);
+
                 if ($domain) {
 
-                    // Primary/Owner user
-                    // $user = User::create([
-                    //     'name' => $tenantRequest['fullname'],
-                    //     'email' => $tenantRequest['email'],
-                    //     'password' => bcrypt($tenantRequest['password']),
-                    //     'phone' => $tenantRequest['phone'],
-                    //     'primary_tenant_id' => $tenant->id,
-                    //     'ip_address' => request()->ip(),
-                    // ]);
+                    $addSubscriberUser = $this->userServiceInterface->addSubscriberUser(request: $request, tenantId: $tenant->id);
+                    $tenant->update(['user_id' => $addSubscriberUser->id]);
 
-                    // $tenant->update([
-                    //     'user_id' => $user->id,
-                    // ]);
+                    $addUserSubscription = $this->userSubscriptionServiceInterface->addUserSubscription(request: $request, subscriberUserId: $addSubscriberUser->id, plan: $plan);
+
+                    if ($plan->is_trial_plan == BooleanType::False->value) {
+
+                        if (isset($request->coupon_code) && isset($request->coupon_id)) {
+
+                            $this->couponServiceInterface->increaseCouponNumberOfUsed(code: $request->coupon_code);
+                        }
+
+                        $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $addUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: SubscriptionTransactionDetailsType::DirectBuyPlan->value, plan: $plan);
+                    }
 
                     DB::statement('use ' . $tenant->tenancy_db_name);
-                    $this->makeSuperAdminForTenant($tenantRequest);
-                    // Insert settings coming from tenant creation form
-                    $this->saveBusinessSettings($tenantRequest, $plan);
 
-                    $this->storeSubscription($tenantRequest, $plan);
+                    $this->appUserService->addAppSuperAdminUser(request: $request);
+                    // Insert settings coming from tenant creation form
+                    $this->generalSettingServiceInterface->partiallyUpdateBusinessSettings(request: $request);
+
+                    $addSubscription = $this->subscriptionService->addSubscription(request: $request, plan: $plan);
+
+                    if ($plan->is_trial_plan == BooleanType::False->value) {
+
+                        $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $addSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: SubscriptionTransactionDetailsType::DirectBuyPlan->value, plan: $plan);
+                    }
+
+                    if ($plan->is_trial_plan == BooleanType::False->value) {
+
+                        $business = isset($request->has_business) ? 1 : 0;
+                        $shopPlusBusiness = $request->shop_count + $business;
+                        $totalPayableInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->total_payable);
+                        $adjustablePrice = $totalPayableInUsd / $shopPlusBusiness;
+
+                        for ($i = 0; $i < $request->shop_count; $i++) {
+
+                            $this->shopExpireDateHistoryService->addShopExpireDateHistory(shopPricePeriod: $request->shop_price_period, shopPricePeriodCount: $request->shop_price_period_count, plan: $plan, adjustablePrice: $adjustablePrice);
+                        }
+                    }
 
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
-                    dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(to: $tenantRequest['email'], user: $tenant));
+                    dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(to: $request->email, user: $tenant));
 
                     return $tenant;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+
             Log::debug($e->getMessage());
             Log::info($e->getMessage());
-            DB::rollBack();
             return null;
         }
     }
 
-    public function saveBusinessSettings(array $tenantRequest, object $plan): void
+    public function tenantsTable(): object
     {
-        $settings = [
-            'business_or_shop__business_name' => $tenantRequest['name'],
-            'business_or_shop__phone' => $tenantRequest['phone'],
-            'business_or_shop__email' => $tenantRequest['email'],
-            'business_or_shop__address' => $tenantRequest['address'],
-        ];
+        $tenants = DB::table('tenants')
+            ->leftJoin('domains', 'tenants.id', 'domains.tenant_id')
+            ->leftJoin('users', 'tenants.id', 'users.tenant_id')
+            ->leftJoin('user_subscriptions', 'users.id', 'user_subscriptions.user_id')
+            ->leftJoin('plans', 'user_subscriptions.plan_id', 'plans.id')
+            ->select(
+                'tenants.id',
+                'tenants.data',
+                'tenants.created_at',
+                'domains.domain',
+                'users.name as user_name',
+                'users.email',
+                'users.phone',
+                'user_subscriptions.trial_start_date',
+                'user_subscriptions.initial_plan_start_date',
+                'user_subscriptions.has_due_amount',
+                'user_subscriptions.due_repayment_date',
+                'user_subscriptions.has_business',
+                'user_subscriptions.current_shop_count',
+                'plans.name as plan_name',
+                'plans.is_trial_plan',
+                'plans.trial_days',
+            );
 
-        foreach ($settings as $key => $setting) {
+        return DataTables::of($tenants)
+            ->addColumn('action', function ($row) {
 
-            GeneralSetting::where('key', $key)->update(['value' => $setting]);
-        }
+                $html = '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+
+                $domain = \Modules\SAAS\Utils\UrlGenerator::generateFullUrlFromDomain($row->domain);
+
+                if (auth()->user()->can('tenants_show')) {
+
+                    $html .= '<a href="#" class="dropdown-item">' . __('View') . '</a>';
+                }
+
+                $html .= '<a href="' . $domain . '" target="_blank" class="dropdown-item">' . __('Open Application') . '</a>';
+
+                if ($row->has_due_amount == 1) {
+
+                    $html .= '<a href="#" class="dropdown-item" id="receiveDueAmount">' . __('Receive Due Amount') . '</a>';
+                }
+
+                if (auth()->user()->can('tenants_destroy')) {
+
+                    $html .= '<a href="' . route('saas.tenants.delete', $row->id) . '" class="dropdown-item">' . __('Delete') . '</a>';
+                }
+
+                $html .= '</div>';
+                $html .= '</div>';
+
+                return $html;
+            })
+            ->editColumn('created_at', function ($row) {
+
+                return date('d-m-Y', strtotime($row->created_at));
+            })
+            ->editColumn('business_name', function ($row) {
+
+                $data = json_decode($row->data, true);
+                return $data['name'];
+            })
+            ->editColumn('domain', function ($row) {
+
+                $domain = \Modules\SAAS\Utils\UrlGenerator::generateFullUrlFromDomain($row->domain);
+                return '<a href="' . $domain . '" target="_blank" class="dropdown-item text-primary">' . $domain . '</a>';
+            })
+
+            ->editColumn('plan', function ($row) {
+
+                if ($row->is_trial_plan) {
+
+                    $startDate = new \DateTime($row->trial_start_date);
+                    $endDate = clone $startDate;
+                    // Add 7 days to today's date
+                    $lastDate = $endDate->modify('+1 ' . $row->is_trial_plan . ' days');
+                    // $lastDate = $lastDate->modify('+1 days');
+
+                    $expireOn = $lastDate->format('d-m-Y');
+
+                    return $row->plan_name . '(<span class="text-danger">Expire On: ' . $expireOn . '</span>)';
+                } else {
+
+                    return $row->plan_name;
+                }
+            })
+
+            ->editColumn('has_business', function ($row) {
+
+                if ($row->has_business == 1) {
+
+                    return '<span class="text-success">Yes</span>';
+                } else {
+
+                    return '<span class="text-danger">No</span>';
+                }
+            })
+
+            ->editColumn('payment_status', function ($row) {
+
+                if ($row->has_due_amount == 1) {
+
+                    $dueRepaymentDate = date('d-m-Y', strtotime($row->due_repayment_date));
+                    return '<span class="text-danger">Due</span>' . '(<span class="text-danger">Repayment Date On: ' . $dueRepaymentDate . '</span>)';
+                } else {
+
+                    return '<span class="text-success">Paid</span>';
+                }
+            })
+
+            ->rawColumns(['action', 'created_at', 'domain', 'plan', 'has_business', 'payment_status'])
+            ->make(true);
     }
 
-    private function makeSuperAdminForTenant(array $tenantRequest): int
+    public function deleteTenant(?string $id, bool $checkPassword = false, ?string $password = null): array
     {
-        $admin = $this->getAdmin($tenantRequest);
-        $tenantAdminUser = User::create($admin);
-        $adminRole = Role::first();
-        $tenantAdminUser->assignRole($adminRole);
-        return $tenantAdminUser->id;
-    }
+        if ($checkPassword == true) {
 
-    public function getAdmin(array $tenantRequest): array
-    {
-        // strtolower(str_replace(' ', '', str_replace('.', '', $tenantRequest['fullname'])));
-        $admin = [
-            'name' => $tenantRequest['fullname'],
-            'username' => explode('@', $tenantRequest['email'])[0],
-            'email' => $tenantRequest['email'],
-            'password' => bcrypt($tenantRequest['password']),
-            'role_type' => 1,
-            'allow_login' => 1,
-            'status' => 1,
-            'phone' => 'XXXXXXXXX',
-            'date_of_birth' => '0000-00-00',
-            'language' => 'en',
-            'is_belonging_an_area' => 0,
-            'currency_id' => $tenantRequest['currency_id'],
-            'city' => $tenantRequest['city'],
-            'postal_code' => $tenantRequest['postal_code'],
-            'permanent_address' => $tenantRequest['address'],
-            'current_address' => $tenantRequest['address'],
-            'created_at' => Carbon::now(),
-        ];
+            if (!Hash::check($password, auth()->user()->password)) {
 
-        // $admin = (new AdminFactory)->definition(request: $tenantRequest);
-        // $admin['username'] = $tenantRequest['email'];
-        // $admin['email'] = $tenantRequest['email'];
-        // $admin['password'] = bcrypt($tenantRequest['password']);
-
-        return $admin;
-    }
-
-    protected function storeSubscription($tenantRequest, $plan)
-    {
-        $subscribe = new Subscription();
-        $subscribe->user_id = 1;
-        $subscribe->plan_id = $plan->id;
-        $subscribe->status = BooleanType::True->value;
-        $subscribe->initial_plan_start_date = Carbon::now();
-        $subscribe->current_shop_count = $plan->is_trial_plan == BooleanType::True->value ? $plan->trial_shop_count : $tenantRequest['shop_count'];
-
-        if ($plan->is_trial_plan == BooleanType::False->value) {
-
-            if (isset($tenantRequest['has_business'])) {
-
-                $subscribe->has_business = BooleanType::True->value;
-                $subscribe->business_start_date = Carbon::now();
-                $subscribe->business_price_period = $tenantRequest['business_price_period'];
-                $expireDate = $this->getExpireDate(period: $tenantRequest['business_price_period'] == 'lifetime' ? 'year' : $tenantRequest['business_price_period'], periodCount: $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_price_period_count']);
-
-                $subscribe->business_expire_date = $expireDate;
-
-                $business = isset($tenantRequest['has_business']) ? 1 : 0;
-                $shopPlusBusiness = $tenantRequest['shop_count'] + $business;
-                $adjustablePrice = $tenantRequest['total_payable'] / $shopPlusBusiness;
-
-                $subscribe->business_adjustable_price = $adjustablePrice;
+                return ['pass' => false, 'msg' => 'Password does not match.'];
             }
-
-            $subscribe->has_due_amount = $tenantRequest['payment_status'] == BooleanType::False->value ? BooleanType::True->value : BooleanType::False->value;
-            if ($tenantRequest['payment_status'] == BooleanType::False->value) {
-
-                $subscribe->due_repayment_date = $tenantRequest['repayment_date'] ? date('Y-m-d', strtotime($tenantRequest['repayment_date'])) : null;
-            }
-        } elseif ($plan->is_trial_plan == BooleanType::True->value) {
-
-            $subscribe->trial_start_date = Carbon::now();
-            $subscribe->has_business = BooleanType::True->value;
         }
 
-        $subscribe->save();
+        Tenancy::find($id)?->delete();
 
-        if ($plan->is_trial_plan == BooleanType::False->value) {
+        if (file_exists(public_path('uploads/' . $id))) {
 
-            $this->storeSubscriptionTransaction($subscribe, $plan, $tenantRequest);
+            rmdir(public_path('uploads/' . $id));
         }
 
-        if ($plan->is_trial_plan == BooleanType::False->value) {
-
-            $this->storeShopExpireHistory($tenantRequest, $plan);
-        }
+        return ['pass' => true];
     }
 
-    protected function storeSubscriptionTransaction($subscribe, $plan, $tenantRequest)
+    public function singleTenant(string $id, ?array $with = null): ?Tenant
     {
-        $payment = new SubscriptionTransaction();
-        $payment->transaction_type = 0;
-        $payment->subscription_id = $subscribe->id;
-        $payment->plan_id = $subscribe->plan_id;
-        $payment->payment_method_name = $tenantRequest['payment_method_name'];
-        $payment->payment_trans_id = $tenantRequest['payment_trans_id'];
-        $payment->net_total = $tenantRequest['net_total'];
-        $payment->discount = isset($tenantRequest['discount']) ? $tenantRequest['discount'] : 0;
-        $payment->total_payable_amount = $tenantRequest['total_payable'];
-        $payment->paid = $tenantRequest['payment_status'] == BooleanType::True->value ? $tenantRequest['total_payable'] : 0;
-        $payment->due = $tenantRequest['payment_status'] == BooleanType::False->value ? $tenantRequest['total_payable'] : 0;
-        $payment->payment_status = $tenantRequest['payment_status'];
-        $payment->payment_date = $tenantRequest['payment_status'] == BooleanType::True->value ? Carbon::now() : null;
-        $payment->details_type = SubscriptionTransactionDetailsType::DirectBuyPlan->value;
+        $query = Tenant::query();
 
-        $subscriptionTransactionService = new \App\Services\Subscriptions\SubscriptionTransactionService();
-        $request = (object) $tenantRequest;
-        $transactionDetails = $subscriptionTransactionService->transactionDetails(request: $request, detailsType: SubscriptionTransactionDetailsType::DirectBuyPlan->value, plan: $plan);
+        if (isset($with)) {
 
-        $payment->details = $transactionDetails;
-
-        $payment->save();
-    }
-
-    protected function storeShopExpireHistory($tenantRequest, $plan)
-    {
-        $expireDate = '';
-        if ($tenantRequest['shop_price_period'] == 'month') {
-
-            $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['shop_price_period_count']);
-        } else if ($tenantRequest['shop_price_period'] == 'year') {
-
-            $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['shop_price_period_count']);
-        } else if ($tenantRequest['shop_price_period'] == 'lifetime') {
-
-            $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
+            $query->with($with);
         }
 
-        $business = isset($tenantRequest['has_business']) ? 1 : 0;
-        $shopPlusBusiness = $tenantRequest['shop_count'] + $business;
-        $adjustablePrice = $tenantRequest['total_payable'] / $shopPlusBusiness;
-
-        $shopHistory = new ShopExpireDateHistory();
-        $shopHistory->shop_count = $tenantRequest['shop_count'];
-        $shopHistory->price_period = $tenantRequest['shop_price_period'];
-        $shopHistory->adjustable_price = $adjustablePrice;
-        $shopHistory->start_date = Carbon::now();
-        $shopHistory->expire_date = $expireDate;
-        $shopHistory->created_count = 0;
-        $shopHistory->left_count = $tenantRequest['shop_count'];
-        $shopHistory->save();
-    }
-
-    private function getExpireDate(string $period, int $periodCount)
-    {
-        $today = new \DateTime();
-        $lastDate = '';
-        if ($period == 'day') {
-
-            $lastDate = $today->modify('+' . $periodCount . ' days');
-            $lastDate = $today->modify('+1 days');
-        } elseif ($period == 'month') {
-
-            $lastDate = $today->modify('+' . $periodCount . ' months');
-            $lastDate = $today->modify('+1 days');
-        } elseif ($period == 'year') {
-
-            $lastDate = $today->modify('+' . $periodCount . ' years');
-            $lastDate = $today->modify('+1 days');
-        }
-
-        // Format the date
-        return $lastDate->format('Y-m-d');
+        return $query->where('id', $id)->first();
     }
 }

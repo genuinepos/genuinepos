@@ -97,7 +97,6 @@ class DraftController extends Controller
 
     public function edit($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
-
         $editMethodContainer = $draftControllerMethodContainersInterface->editMethodContainer(
             id: $id,
             draftService: $this->draftService,

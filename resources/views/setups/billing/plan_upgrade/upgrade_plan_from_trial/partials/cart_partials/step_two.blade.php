@@ -2,7 +2,7 @@
     <div class="col-xl-4 col-lg-5 col-md-6">
         <div class="payment-method">
             <div class="cart-total-panel">
-                <h3 class="title">Cart Total</h3>
+                <h3 class="title">{{ __("Cart Total") }}</h3>
                 <div class="panel-body">
                     <div class="row gy-5">
                         <div class="col-12">
@@ -15,17 +15,17 @@
                                         </span>
                                     </li>
                                     <li>{{ __('Sub Total') }}
-                                        <span class="price-txt">
+                                        <span class="price-txt">{{ $planPriceCurrency }}
                                             <span class="span_net_total">{{ $plan->price }}</span>
                                         </span>
                                     </li>
                                     <li>{{ __('Discount') }}
-                                        <span class="price-txt">
+                                        <span class="price-txt">{{ $planPriceCurrency }}
                                             <span class="span_discount">0.00</span>
                                         </span>
                                     </li>
                                     <li class="total-price-wrap">{{ __('Total Payable') }}
-                                        <span class="price-txt">
+                                        <span class="price-txt">{{ $planPriceCurrency }} 
                                             <span class="span_total_payable">{{ $plan->price }}</span>
                                         </span>
                                     </li>

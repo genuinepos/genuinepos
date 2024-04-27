@@ -211,6 +211,7 @@ class GeneralSettingController extends Controller
             'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
             'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix ? $request->payroll_voucher_prefix : 'PRL',
             'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix ? $request->payroll_payment_voucher_prefix : 'RRLP',
+            'prefix__stock_issue_voucher_prefix' => $request->stock_issue_voucher_prefix ? $request->stock_issue_voucher_prefix : 'ST',
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];

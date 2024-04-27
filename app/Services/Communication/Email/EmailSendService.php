@@ -2,10 +2,12 @@
 
 namespace App\Services\Communication\Email;
 
-use App\Jobs\SendEmailJob;
+use App\Jobs\Communication\Email\SendEmailJob;
 use App\Models\Communication\Email\SendEmail;
+use App\Models\Communication\Email\EmailServer;
 use App\Models\Contacts\Contact;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class EmailSendService
 {
@@ -25,12 +27,32 @@ class EmailSendService
         }
 
         return view('communication.email.send.index', compact('data'));
-
     }
 
     public function store($request)
     {
         try {
+            // Validation rules
+            $validator = Validator::make($request->all(), [
+                'mail.*' => 'required|email',
+                'subject' => 'required',
+                'message' => 'required',
+                'attachment.*' => 'nullable|max:1024',
+            ], [
+                'mail.*.required' => 'The email field is required.',
+                'mail.*.email' => 'The email must be a valid email address.',
+                'subject.required' => 'The subject field is required.',
+                'message.required' => 'The message field is required.',
+                'attachment.*.max' => 'The attachment may not be greater than 1024 kilobytes.',
+            ]);
+
+
+            // Check if validation fails
+            if ($validator->fails()) {
+                return ['status' => 'error', 'message' => $validator->errors()->first()];
+            }
+
+
             $subject = $request->input('subject');
             $message = $request->input('message');
             $formEmails = $request->input('mail');
@@ -38,13 +60,16 @@ class EmailSendService
             $emailRecipients = [];
             $emailsSent = false;
             $attachments = [];
+            $attachmentNames = [];
 
             if ($request->hasFile('attachment')) {
                 foreach ($request->attachment as $images) {
+                    $attach_name = $images->getClientOriginalName();
+                    $attachmentNames[] = $attach_name;
                     $fileName = uniqid() . '.' . $images->getClientOriginalExtension();
-                    $tenantFolder = 'attachment/' . tenant('id');
+                    $tenantFolder = 'uploads/communication/' . tenant('id') . '/email/attachment/';
                     $images->move(public_path($tenantFolder), $fileName);
-                    $attachmentUrl = public_path('attachment/patho/'.$fileName);
+                    $attachmentUrl = public_path($tenantFolder . '/' . $fileName);
                     $attachments[] = $attachmentUrl;
                 }
             }
@@ -61,14 +86,41 @@ class EmailSendService
                 $emailRecipients = User::whereNotNull('email')->pluck('email')->toArray();
             }
 
+
+            $sever = EmailServer::where('status', 1)->first();
+            if (!isset($sever)) {
+                return ['status' => 'error', 'message' => 'Email Server not active'];
+            }
+
+            $userRecipients = '';
+            $contactRecipients = '';
+
+            if (!empty($formEmails)) {
+                $user_email = json_encode($formEmails);
+                $userRecipients = implode(',', json_decode($user_email, true));
+            }
+
+            if (!empty($emailRecipients)) {
+                $contact_email = json_encode($emailRecipients);
+                $contactRecipients = implode(',', json_decode($contact_email, true));
+            }
+
+            $allRecipients = $userRecipients . ($userRecipients && $contactRecipients ? ',' : '') . $contactRecipients;
+
+            $attachmentsJson = json_encode($attachmentNames);
+
+            SendEmail::create([
+                'mail' => $allRecipients,
+                'group_name' => $group,
+                'subject' => $subject,
+                'message' => $message,
+                'attachment' =>  $attachmentsJson,
+                'status' => 1,
+            ]);
+
+
             if (!empty($formEmails)) {
                 foreach ($formEmails as $email) {
-                    SendEmail::create([
-                        'mail' => $email,
-                        'subject' => $subject,
-                        'message' => $message,
-                        'status' => 1,
-                    ]);
                     SendEmailJob::dispatch($email, $subject, $message, $attachments);
                     $emailsSent = true;
                 }
@@ -76,12 +128,6 @@ class EmailSendService
 
             if (!empty($emailRecipients)) {
                 foreach ($emailRecipients as $email) {
-                    SendEmail::create([
-                        'mail' => $email,
-                        'subject' => $subject,
-                        'message' => $message,
-                        'status' => 1,
-                    ]);
                     SendEmailJob::dispatch($email, $subject, $message, $attachments);
                     $emailsSent = true;
                 }
@@ -92,7 +138,6 @@ class EmailSendService
             } else {
                 return ['status' => 'error', 'message' => 'No recipients provided'];
             }
-
         } catch (\Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage(), 'On line' => $e->getLine()];
         }
@@ -100,8 +145,8 @@ class EmailSendService
 
     public function edit($id)
     {
-        $data = EmailBody::findOrFail($id);
-        return $data;
+        // $data = EmailBody::findOrFail($id);
+        // return $data;
     }
 
     public function restore($id)
@@ -150,5 +195,4 @@ class EmailSendService
             return ['status' => 'error', 'message' => 'Failed to delete email'];
         }
     }
-
 }

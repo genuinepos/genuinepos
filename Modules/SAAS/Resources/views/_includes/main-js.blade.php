@@ -57,6 +57,7 @@
             console.log('Restored');
         }
     });
+    
     $(document).on('click', '.trash-btn', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
@@ -66,6 +67,7 @@
             console.log('Restored');
         }
     });
+
     $(document).on('click', '.delete-btn', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');

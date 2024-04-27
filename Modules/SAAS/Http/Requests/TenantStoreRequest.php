@@ -27,6 +27,7 @@ class TenantStoreRequest extends FormRequest
             'phone' => 'required|max:60',
             'payment_status' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
             'repayment_date' => Rule::when($request->is_trial_plan == 0 &&  $request->payment_status == 0, 'required'),
+            'username' => 'required|min:5|max:25',
             'password' => 'required|confirmed',
         ];
     }
@@ -38,7 +39,7 @@ class TenantStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('tenants_store');
     }
 
     public function messages()

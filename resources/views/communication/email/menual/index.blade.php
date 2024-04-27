@@ -3,6 +3,10 @@
     <style>
         .top-menu-area ul li {display: inline-block; margin-right: 3px;}
         .top-menu-area a {border: 1px solid lightgray; padding: 1px 5px; border-radius: 3px; font-size: 11px;}
+        .bg-navy-blue {
+            background-color: black;
+            color: white; 
+        }
     </style>
 @endpush
 @section('title', 'Manual Mail - ')
@@ -19,14 +23,13 @@
         </div>
     </div>
     <div class="p-3">
+     <form id="add_data" class="" method="post" action="{{route('menual.store')}}">
+        @csrf
        <div class="row">
-
        <div class="col-md-5 card mb-3">
-       
          <div class="row mt-3">
-
             <div class="col-md-2">
-                <div class="form-check">
+                <div class="form-check"> 
                     <input class="form-check-input" type="radio" name="status" id="active" value="1" onchange="handleRadioChange(this)">
                     <label class="form-check-label" for="active"> <span class="ml-3 mt-3"> All </span></label>
                 </div>
@@ -52,38 +55,45 @@
                     <label class="form-check-label" for="other2"> <span class="ml-3 mt-3"> User </span></label>
                 </div>
             </div>
-              <div class="table-responsive" id="data_list">
-                 <table class="display table-hover data_tbl data__table">
+            <div class="table-responsive" id="data_list">
+             <input class="btn btn-info btn-sm" type="button" onclick='selects()' value="Check All"/>  
+             <input class="btn btn-default btn-sm" type="button" onclick='deSelect()' value="Uncheck All"/>  
+                <table class="display table-hover data_tbl data__table">
                     <thead>
-                        <tr class="bg-navey-blue">
+                        <tr style="background:black;color:white;">
                             <th>{{ __('Check') }}</th>
                             <th>{{ __('Email') }}</th>
-                         </tr>
-                       </thead>
-                       <tbody></tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
          </div>
       </div>
 
        <div class="col-md-7 card mb-3">
-       <strong> Manual Mail </strong>
-         <form id="add_data" class="">
+       <strong> Manual Mail</strong>
                 <input type="hidden" name="id" id="edit_input" value="">
                 <div class="col-md-12 row">
                     <div class="col-md-6">
                     <div class="form-group">
                         <label>Select Sender</label>
-                        <select class="form-control">
-                            <option value="">Select</option>
+                        <select class="form-control" name="sender_id">
+                           <option value="">Select Sender</option>
+                            @foreach($sender as $senders)
+                              <option value="{{$senders->id}}">{{$senders->host}} - {{$senders->name}}</option>
+                            @endforeach 
                         </select>
                     </div>
                     </div>
                     <div class="col-md-6">
                     <div class="form-group">
                         <label>Select Body</label>
-                        <select class="form-control">
-                            <option value="">Select</option>
+                        <select id="bodyId" class="form-control" onchange="handlebody(this)">
+                            <option value="">Select Body</option>
+                            @foreach($body as $bodys)
+                              <option value="{{$bodys->id}}">{{$bodys->format}}</option>
+                            @endforeach 
                         </select>
                     </div>
                 </div>
@@ -92,29 +102,32 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>To</label>
-                            <input type="email" name="port"  class="form-control" autocomplete="off" placeholder="Ex. demo@email.com">
+                              <div id="emailContainer">
+                                <input type="text" name="mail[]" class="form-control add_input" placeholder="Ex. demo@email.com">
+                                <span class="error error_to"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                       <button style="margin-top:3px;" type="button" class="btn btn-info brn-sm mt-3">+</button>
+                       <button id="addMoreButton" style="margin-top:3px;margin-left:12px;" type="button" class="btn btn-info brn-sm mt-3">+</button>
                    </div>
                 </div>
                 <br><br> <br>
                 <div class="col-md-12 row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="email" name="port"  class="form-control" autocomplete="off" placeholder="CC: E.x. abs@example.com, xyz@wxample.com">
+                            <input type="email" name="cc"  class="form-control" autocomplete="off" placeholder="CC: E.x. cc@email.com">
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <input type="email" name="port"  class="form-control" autocomplete="off" placeholder="BCC: E.x. abs@example.com, xyz@wxample.com">
+                        <input type="email" name="bcc"  class="form-control" autocomplete="off" placeholder="BCC: E.x. bcc@email.com">
                    </div>
                 </div>
                 <br><br>
                 <div class="col-md-12 row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="email" name="port"  class="form-control" autocomplete="off" placeholder="Enter Subject">
+                            <input id="subject" type="text" name="subject"  class="form-control" autocomplete="off" placeholder="Enter Subject">
                         </div>
                     </div>
                 </div>
@@ -122,38 +135,22 @@
                   <div class="row">
                         <div class="col-md-12">
                             <label><strong>Body </strong><span class="text-danger">*</span></label>
-                            <textarea name="message" class="ckEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;" data-next="save_and_new"></textarea>
+                            <textarea id="message" name="message" class="ckEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;" data-next="save_and_new"></textarea>
                         </div>
                     </div>
-
 
                 <div class="form-group mt-3 mb-5">
                      <button style="margin:-1px 22px" type="submit" id="add" class="btn btn-success float-end">Send Email</button>
                 </div>
                 <br>
-          </form>
-       </div>
-    </div>
+           </div>
+        </div>
+    </form>
 </div> 
 
 @endsection
 
 @push('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-  <script>
-        window.editors = {};
-        document.querySelectorAll('.ckEditor').forEach((node, index) => {
-            ClassicEditor
-              .create(node, {})
-                .then(newEditor => {
-                   newEditor.editing.view.change(writer => {
-                     var height = node.getAttribute('data-height');
-                   writer.setStyle('min-height', height + 'px', newEditor.editing.view.document
-                    .getRoot());
-             });
-                window.editors[index] = newEditor
-            });
-        });
-   </script>
+   <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
    @include('communication.email.menual.ajax_view.list_js')
 @endpush

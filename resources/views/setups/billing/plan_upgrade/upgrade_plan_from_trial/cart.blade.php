@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
-    <title>{{ __("Upgrade Plan Cart") }} - GPOSS</title>
+    <title>{{ __('Upgrade Plan Cart') }} - GPOS</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
-        $rtl  = app()->isLocale('ar');
+        $rtl = app()->isLocale('ar');
     @endphp
 
-    @if($rtl)
+    @if ($rtl)
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,20 +27,24 @@
     <link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
+@php
+    $planPriceCurrency = \Modules\SAAS\Utils\PlanPriceCurrencySymbol::currencySymbol();
+@endphp
+
 <body class="inner">
     <div class="tab-section py-120">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="tab-nav">
-                        <button class="single-nav active" data-tab="cartTab">
-                            <span class="txt">{{ __("Step One") }}</span>
-                            <span class="sl-no">{{ __("01") }}</span>
+                        <button class="single-nav single-tab stepOneTab active" data-tab="stepOneTab">
+                            <span class="txt">{{ __('Step One') }}</span>
+                            <span class="sl-no">{{ __('01') }}</span>
                         </button>
 
-                        <button class="single-nav" data-tab="checkOutTab" disabled>
-                            <span class="txt">{{ __("Step Two") }}</span>
-                            <span class="sl-no">{{ __("02") }}</span>
+                        <button class="single-nav single-tab stepTwoTab" data-tab="stepTwoTab">
+                            <span class="txt">{{ __('Step Two') }}</span>
+                            <span class="sl-no">{{ __('02') }}</span>
                         </button>
 
                         {{-- <button class="single-nav" data-tab="orderCompletedTab" disabled>
@@ -52,16 +56,20 @@
                     <div class="tab-contents">
                         <form id="plan_upgrade_form" action="{{ route('software.service.billing.upgrade.plan.confirm') }}" method="POST">
                             @csrf
-                            <div class="single-tab active" id="cartTab">
+                            <input type="hidden" name="payment_status" value="1">
+                            <input type="hidden" name="payment_method_name" value="Cash-On-Delivery">
+                            <input type="hidden" name="payment_trans_id" value="N/A">
+
+                            <div class="single-tab active" id="stepOneTab">
                                 @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.cart_partials.step_one')
                             </div>
 
-                            <div class="single-tab" id="checkOutTab">
+                            <div class="single-tab" id="stepTwoTab">
                                 @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.cart_partials.step_two')
                             </div>
                         </form>
 
-                        <div class="single-tab" id="orderCompletedTab">
+                        <div class="single-tab" id="stepThreeTab">
                             <div class="check-icon">
                                 <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                                     <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
@@ -69,7 +77,7 @@
                                 </svg>
                             </div>
                             <div class="order-complete-msg">
-                                <h2>{{ __("Plan is upgraded successfully.") }}</h2>
+                                <h2>{{ __('Plan is upgraded successfully.') }}</h2>
                             </div>
                         </div>
                     </div>
@@ -80,11 +88,12 @@
     <!--------------------------------- CART SECTION END --------------------------------->
 
     <!-- js files -->
-    <script src="{{asset('backend/js/jquery-1.7.1.min.js')}}"></script>
+    <script src="{{ asset('backend/js/jquery-1.7.1.min.js') }}"></script>
     <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
+    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/cart.js') }}"></script> --}}
-    @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.js_partial.js')
+    @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.cart_partials.js_partial.js')
 </body>
 
 </html>

@@ -5,6 +5,7 @@ namespace Modules\SAAS\Entities;
 use Modules\SAAS\Scope\IsActive;
 use Modules\SAAS\Entities\Currency;
 use Illuminate\Database\Eloquent\Model;
+use Modules\SAAS\Entities\UserSubscription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
@@ -34,6 +35,11 @@ class Plan extends Model
         return $this->belongsTo(Currency::class, 'currency_id');
     }
 
+    public function userSubscriptions()
+    {
+        return $this->hasMany(UserSubscription::class, 'plan_id');
+    }
+
     // public function features()
     // {
     //     return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
@@ -42,7 +48,7 @@ class Plan extends Model
 
     public function getPriceLabelAttribute()
     {
-        return $this->price . ' '. $this->currency_code;
+        return $this->price . ' ' . $this->currency_code;
     }
 
     public function getPeriodTypeAttribute()
@@ -53,18 +59,18 @@ class Plan extends Model
             $periodType = match ($this->period_value) {
                 1 => __('Monthly'),
                 12 => __('Yearly'),
-                default => $this->period_value.' '.__('Months'),
+                default => $this->period_value . ' ' . __('Months'),
             };
         }
         if ($this->period_unit === 'year') {
             $periodType = match ($this->period_value) {
                 1 => __('Yearly'),
-                default => $this->period_value.' '.__('Years'),
+                default => $this->period_value . ' ' . __('Years'),
             };
         }
         if ($this->period_unit === 'day') {
             $periodType = match ($this->period_value) {
-                default => $this->period_value.' '.__('Days'),
+                default => $this->period_value . ' ' . __('Days'),
             };
         }
 
@@ -76,7 +82,7 @@ class Plan extends Model
         $expireAt = now();
         $this->period_unit = strtolower($this->period_unit);
         if ($this->period_unit === 'month' && isset($this->period_value)) {
-           $expireAt = $expireAt->addMonths($this->period_value);
+            $expireAt = $expireAt->addMonths($this->period_value);
         }
         if ($this->period_unit === 'year' && isset($this->period_value)) {
             $expireAt = $expireAt->addYears($this->period_value);

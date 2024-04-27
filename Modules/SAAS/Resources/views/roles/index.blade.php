@@ -8,7 +8,9 @@
         <div class="panel-header">
             <h5>{{ __('Roles') }}</h5>
             <div>
-                <a href="{{ route('saas.roles.create') }}" class="btn btn-sm btn-primary">{{ __('Create Role') }}</a>
+                @if (auth()->user()->can('roles_create'))
+                    <a href="{{ route('saas.roles.create') }}" class="btn btn-sm btn-primary">{{ __('Create Role') }}</a>
+                @endif
             </div>
         </div>
         <div class="panel-body">
@@ -22,9 +24,7 @@
                                 <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

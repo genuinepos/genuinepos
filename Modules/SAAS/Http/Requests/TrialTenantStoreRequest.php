@@ -19,6 +19,7 @@ class TrialTenantStoreRequest extends FormRequest
             'email' => 'required|string|max:60',
             'currency_id' => 'required',
             'phone' => 'required|max:60',
+            'username' => 'required|min:5|max:25',
             'password' => 'required|string|min:6|confirmed',
         ];
     }

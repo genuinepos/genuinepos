@@ -19,7 +19,7 @@ class TrialController extends Controller
         private PlanServiceInterface $planServiceInterface,
         private EmailVerificationServiceInterface $emailVerificationServiceInterface,
         private TenantServiceInterface $tenantService,
-        private DeleteUnusedTenantService $deleteUnusedTenantService,
+        // private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
 
@@ -32,8 +32,7 @@ class TrialController extends Controller
 
     public function store(TrialTenantStoreRequest $request)
     {
-        $tenantRequest = $request->all();
-        $emailIsVerified = $this->emailVerificationServiceInterface->singleEmailVerification(email: $tenantRequest['email'], isVerified: true);
+        $emailIsVerified = $this->emailVerificationServiceInterface->singleEmailVerification(email: $request->email, isVerified: true);
 
         if (isset($emailIsVerified)) {
 
@@ -43,17 +42,17 @@ class TrialController extends Controller
             throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
         }
 
-        $tenant = $this->tenantService->create($tenantRequest);
-        if (isset($tenant)) {
+        $tenant = $this->tenantService->addTenant($request);
+        if (isset($tenant) && $tenant) {
 
-            $domain = $tenant->domains()->where('domain', $tenantRequest['domain'])->first();
+            $domain = $tenant->domains()->where('domain', $request->domain)->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
 
             return response()->json($returningUrl, 201);
             // return redirect()->intended($returningUrl);
         }
 
-        $this->deleteUnusedTenantService->deleteTenant(domainName: $tenantRequest['domain']);
+        $this->tenantService->deleteTenant(id: $request->domain);
         throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
     }
 

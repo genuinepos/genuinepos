@@ -140,6 +140,14 @@
                                 <div class="card">
                                     <div class="content-inner">
                                         <div class="row align-items-end">
+                                            <div class="hidden_field">
+                                                <input type="hidden" id="e_unique_id">
+                                                <input type="hidden" id="e_item_name">
+                                                <input type="hidden" id="e_base_unit_name">
+                                                <input type="hidden" id="e_product_id">
+                                                <input type="hidden" id="e_variant_id">
+                                            </div>
+
                                             <div class="col-xl-3">
                                                 <div class="searching_area" style="position: relative;">
                                                     <label class="col-form-label">{{ __('Search Product') }}</label>
@@ -147,7 +155,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="{{ __('Search Product by Name/Code') }}" autofocus>
+                                                        <input type="text" name="search_product" class="form-control" autocomplete="off" id="search_product" placeholder="{{ __('Search Product by Name/Code') }}" autofocus>
                                                     </div>
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
@@ -155,56 +163,44 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-xl-9">
-                                                <div class="hidden_field">
-                                                    <input type="hidden" id="e_unique_id">
-                                                    <input type="hidden" id="e_item_name">
-                                                    <input type="hidden" id="e_base_unit_name">
-                                                    <input type="hidden" id="e_product_id">
-                                                    <input type="hidden" id="e_variant_id">
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Quantity') }}</label>
+                                                <div class="input-group">
+                                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="0.00" value="0.00">
+                                                    <input type="hidden" id="e_quantity" value="0.00">
+                                                    <select id="e_unit_id" class="form-control w-40">
+                                                        <option value="">{{ __('Unit') }}</option>
+                                                    </select>
                                                 </div>
+                                            </div>
 
-                                                <div class="row mt-1 align-items-end">
-                                                    <div class="col-xl-3 col-md-4">
-                                                        <label class="fw-bold">{{ __('Quantity') }}</label>
-                                                        <div class="input-group">
-                                                            <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="0.00" value="0.00">
-                                                            <input type="hidden" id="e_quantity" value="0.00">
-                                                            <select id="e_unit_id" class="form-control w-40">
-                                                                <option value="">{{ __('Unit') }}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Unit Cost Inc. Tax') }}</label>
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_inc_tax" value="0.00">
+                                            </div>
 
-                                                    <div class="col-xl-2 col-md-4">
-                                                        <label class="fw-bold">{{ __('Unit Cost Inc. Tax') }}</label>
-                                                        <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_inc_tax" value="0.00">
-                                                    </div>
-
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Stock Location') }}</label>
+                                                <select class="form-control" id="e_warehouse_id">
+                                                    <option value="">{{ $branchName }}</option>
                                                     @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                        <div class="col-xl-2 col-md-4">
-                                                            <label class="fw-bold">{{ __('Warehouse') }}</label>
-                                                            <select id="e_warehouse_id" class="form-control w-40">
-                                                                <option value="">{{ __('Select Warehouse') }}</option>
-                                                                @foreach ($warehouses as $w)
-                                                                    @php
-                                                                        $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                                    @endphp
-                                                                    <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                                        @foreach ($warehouses as $w)
+                                                            @php
+                                                                $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                            @endphp
+                                                            <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                                        @endforeach
                                                     @endif
+                                                </select>
+                                            </div>
 
-                                                    <div class="col-xl-2 col-md-4">
-                                                        <label class="fw-bold">{{ __('Subtotal') }}</label>
-                                                        <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
-                                                    </div>
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Subtotal') }}</label>
+                                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
+                                            </div>
 
-                                                    <div class="col-xl-1 col-md-4">
-                                                        <a href="#" class="btn btn-sm btn-success px-2" id="add_item">{{ __('Add') }}</a>
-                                                    </div>
-                                                </div>
+                                            <div class="col-xl-1 col-md-4">
+                                                <a href="#" class="btn btn-sm btn-success px-2" id="add_item">{{ __('Add') }}</a>
                                             </div>
                                         </div>
 

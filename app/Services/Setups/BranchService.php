@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Accounts\AccountGroup;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Subscriptions\ShopExpireDateHistory;
 
 class BranchService
 {
@@ -114,7 +113,7 @@ class BranchService
         $generalSettings = config('generalSettings');
         $subscription = $generalSettings['subscription'];
 
-        $shopHistory = ShopExpireDateHistory::where('left_count', '>', 0)->first();
+        $shopHistory = (new \App\Services\Setups\ShopExpireDateHistoryService)->shopExpireDateHistoryByAnyCondition()->where('is_created', BooleanType::False->value)->first();
 
         $addBranch = new Branch();
         $addBranch->branch_type = $request->branch_type;
@@ -151,7 +150,7 @@ class BranchService
 
         if ($subscription->is_trial_plan == BooleanType::False->value) {
 
-            $this->shopExpireHistoryCheckUpdate($shopHistory);
+            (new \App\Services\Setups\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $shopHistory->id, isCreated: BooleanType::True->value);
         }
 
         return $this->singleBranch(id: $addBranch->id, with: ['parentBranch']);
@@ -226,9 +225,7 @@ class BranchService
 
         if ($deleteBranch?->shopExpireDateHistory) {
 
-            $deleteBranch->shopExpireDateHistory->created_count -= 1;
-            $deleteBranch->shopExpireDateHistory->left_count += 1;
-            $deleteBranch->shopExpireDateHistory->save();
+            (new \App\Services\Setups\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $deleteBranch?->shopExpireDateHistory?->id, isCreated: BooleanType::False->value);
         }
 
         $deleteBranch->delete();
@@ -438,15 +435,5 @@ class BranchService
             'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
             'logo' => 'sometimes|image|max:1',
         ]);
-    }
-
-    protected function shopExpireHistoryCheckUpdate($shopHistory)
-    {
-        if (!empty($shopHistory)) {
-
-            $shopHistory->created_count += 1;
-            $shopHistory->left_count = $shopHistory->shop_count - ($shopHistory->created_count);
-            $shopHistory->save();
-        }
     }
 }

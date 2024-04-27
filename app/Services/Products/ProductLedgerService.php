@@ -20,6 +20,7 @@ class ProductLedgerService
             7 => 'TransferStock',
             8 => 'ReceiveStock',
             9 => 'Exchange',
+            10 => 'Stock Issue',
         ];
     }
 
@@ -36,6 +37,7 @@ class ProductLedgerService
             7 => ['name' => 'TransferStock', 'id' => 'transfer_stock_product_id', 'voucher_no' => 'transfer_stock_voucher', 'details_id' => 'transfer_stock_id', 'link' => null],
             8 => ['name' => 'ReceiveStock', 'id' => 'transfer_stock_product_id', 'voucher_no' => 'transfer_stock_voucher', 'details_id' => 'transfer_stock_id', 'link' => null],
             9 => ['name' => 'Exchange', 'id' => 'sale_product_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'sale_id', 'link' => null],
+            10 => ['name' => 'Stock Issue', 'id' => 'stock_issue_product_id', 'voucher_no' => 'stock_issue_voucher_no', 'details_id' => 'stock_issue_id', 'link' => 'stock.issues.show'],
         ];
 
         return $data[$voucherTypeId];

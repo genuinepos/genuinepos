@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="email-container">
-        <h2 class="page-title">Subscription Upgraded Successfully</h2>
+        <h2 class="page-title">Subscription Plan Upgraded Successfully</h2>
         <table>
             <tbody>
                 <tr>

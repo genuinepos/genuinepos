@@ -10,7 +10,7 @@
                 <div class="notify-menu">
                     <div class="company-name">
                         <p class="text-uppercase">
-                            {{ __('Startup') }}
+                            {{ __('Setup') }}
                         </p>
                     </div>
 

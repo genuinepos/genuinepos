@@ -33,6 +33,6 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->can('users_create');
     }
 }

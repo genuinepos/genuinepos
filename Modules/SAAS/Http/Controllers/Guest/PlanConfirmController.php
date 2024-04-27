@@ -4,10 +4,12 @@ namespace Modules\SAAS\Http\Controllers\Guest;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Modules\SAAS\Utils\UrlGenerator;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Interfaces\CouponServiceInterface;
 use Modules\SAAS\Services\DeleteUnusedTenantService;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
@@ -17,10 +19,11 @@ class PlanConfirmController extends Controller
 {
     public function __construct(
         private CurrencyServiceInterface $currencyServiceInterface,
+        private CouponServiceInterface $couponServiceInterface,
         private PlanServiceInterface $planServiceInterface,
         private EmailVerificationServiceInterface $emailVerificationServiceInterface,
         private TenantServiceInterface $tenantService,
-        private DeleteUnusedTenantService $deleteUnusedTenantService,
+        // private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
     /**
@@ -39,9 +42,7 @@ class PlanConfirmController extends Controller
 
     public function confirm(GuestTenantStoreRequest $request)
     {
-        $tenantRequest = $request->all();
-        // dd($tenantRequest);
-        $emailIsVerified = $this->emailVerificationServiceInterface->singleEmailVerification(email: $tenantRequest['email'], isVerified: true);
+        $emailIsVerified = $this->emailVerificationServiceInterface->singleEmailVerification(email: $request->email, isVerified: true);
 
         if (isset($emailIsVerified)) {
 
@@ -51,21 +52,36 @@ class PlanConfirmController extends Controller
             throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
         }
 
-        $tenant = $this->tenantService->create($tenantRequest);
+        $tenant = $this->tenantService->addTenant($request);
         if (isset($tenant)) {
-            $domain = $tenant->domains()->where('domain', $tenantRequest['domain'])->first();
+
+            $domain = $tenant->domains()->where('domain', $request->domain)->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
 
             return response()->json($returningUrl, 201);
             // return redirect()->intended($returningUrl);
         }
 
-        $this->deleteUnusedTenantService->deleteTenant(domainName: $tenantRequest['domain']);
+        $this->tenantService->deleteTenant(id: $request->domain);
         throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
     }
 
-    public function validation(GuestTenantStoreRequest $request) {
+    public function checkCouponCode(Request $request)
+    {
+        DB::statement('use ' . env('DB_DATABASE'));
+        $checkCouponCode = $this->couponServiceInterface->checkCouponCode(request: $request);
+        DB::reconnect();
 
+        if (isset($checkCouponCode['pass']) && $checkCouponCode['pass'] == false) {
+
+            return response()->json(['errorMsg' => $checkCouponCode['msg']]);
+        }
+
+        return $checkCouponCode;
+    }
+
+    public function validation(GuestTenantStoreRequest $request)
+    {
         return true;
     }
 }

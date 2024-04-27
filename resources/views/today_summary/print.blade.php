@@ -1,8 +1,6 @@
 <style>
     @media print {
-        table {
-            page-break-after: auto;
-        }
+        table { page-break-after: auto; }
 
         tr {
             page-break-inside: avoid;
@@ -11,7 +9,7 @@
 
         td {
             page-break-inside: avoid;
-            page-break-after: auto, font-size:9px !important;
+            page-break-after: auto, font-size: 9px !important;
         }
 
         thead {
@@ -200,6 +198,11 @@
                     <tr>
                         <th class="text-start">{{ __('Total Purchase Due') }}</th>
                         <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPurchaseDue']) }}</td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-start">{{ __('Total Stock Issue') }}</th>
+                        <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockIssue']) }}</td>
                     </tr>
 
                     <tr>

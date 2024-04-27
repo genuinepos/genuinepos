@@ -154,6 +154,11 @@
             </div>
         </div>
     </div>
+
+    <form id="deleteFailedTenant" action="{{ route('saas.delete.failed.tenant.destroy') }}" method="POST">
+        @csrf
+        <input type="hidden" name="delete_domain" id="delete_domain" value="">
+    </form>
     @push('js')
         @include('saas::guest.trial.partials.js_partials.trial_js')
     @endpush

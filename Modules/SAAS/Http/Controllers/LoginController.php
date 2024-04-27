@@ -24,25 +24,35 @@ class LoginController extends Controller
     {
         $userRequest = $request->validated();
         $user = User::where('email', $userRequest['email'])->first();
+
         if (!$user || !Hash::check($userRequest['password'], $user->password)) {
+
             throw ValidationException::withMessages([
+
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        if (isset($user->primary_tenant_id)) {
-            $redirectUrl = RouteServiceProvider::HOME;
-            $tenant = \App\Models\Tenant::find($user->primary_tenant_id);
-            $domain = UrlGenerator::generateFullUrlFromDomain($tenant->domains()?->first()?->domain);
-            $token = tenancy()->impersonate($tenant, $tenant->impersonate_user, $redirectUrl);
-            if (isset($token) && isset($domain)) {
-                Auth::guard()->login($user);
-                return redirect("$domain/impersonate/{$token->token}");
-            }
-        } else {
-            Auth::guard()->login($user);
-            return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
-        }
+        // if (isset($user->primary_tenant_id)) {
+
+        //     $redirectUrl = RouteServiceProvider::HOME;
+        //     $tenant = \App\Models\Tenant::find($user->primary_tenant_id);
+        //     $domain = UrlGenerator::generateFullUrlFromDomain($tenant->domains()?->first()?->domain);
+        //     $token = tenancy()->impersonate($tenant, $tenant->impersonate_user, $redirectUrl);
+
+        //     if (isset($token) && isset($domain)) {
+
+        //         Auth::guard()->login($user);
+        //         return redirect("$domain/impersonate/{$token->token}");
+        //     }
+        // } else {
+
+        //     Auth::guard()->login($user);
+        //     return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
+        // }
+
+        Auth::guard()->login($user);
+        return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
     }
 
     public function logout(Request $request)

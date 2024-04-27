@@ -50,11 +50,6 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         return $query->pluck('value', 'key')->toArray();
     }
 
-    public function singleGeneralSetting(string $key = null, ?int $branchId = null): ?object
-    {
-        return GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
-    }
-
     public function generalSettingsPermission(): ?bool
     {
         if (
@@ -80,6 +75,18 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         }
     }
 
+    public function partiallyUpdateBusinessSettings(object $request): void
+    {
+        $settings = [
+            'business_or_shop__business_name' => $request->name,
+            'business_or_shop__phone' => $request->phone,
+            'business_or_shop__email' => $request->email,
+            'business_or_shop__address' => $request->address,
+        ];
+
+        $this->updateAndSync(settings: $settings);
+    }
+
     public function deleteBusinessLogo(): bool
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
@@ -96,5 +103,10 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         $businessLogo->save();
 
         return true;
+    }
+
+    public function singleGeneralSetting(string $key = null, ?int $branchId = null): ?object
+    {
+        return GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
     }
 }

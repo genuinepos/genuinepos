@@ -9,12 +9,11 @@
                 [10, 25, 50, 100, 500, 1000, "All"]
             ],
             "ajax": {
-                "url": "{{ route('body.index') }}",
+                "url": "{{ route('sms-body.index') }}",
             },
             columns: [
                 { data: 'is_important', name: 'is_important' },
                 { data: 'format', name: 'format' },
-                { data: 'subject', name: 'subject' },
                 { data: 'action', name: 'action' },
             ],
         });

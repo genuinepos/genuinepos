@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('email_send', function (Blueprint $table) {
             $table->id();
             $table->string('mail')->nullable();
+            $table->string('group_name')->nullable();
             $table->string('subject')->nullable();
             $table->text('message')->nullable();
             $table->string('attachment')->nullable();

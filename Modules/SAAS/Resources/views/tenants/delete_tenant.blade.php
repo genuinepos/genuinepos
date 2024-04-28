@@ -3,7 +3,14 @@
 <x-saas::admin-layout title="Delete Customer">
     @push('css')
         <style>
-
+             .details_table th{
+                font-size: 11px!important;
+                font-weight: 600;
+            }
+            
+            .details_table td {
+                font-size: 11px !important;
+            }
         </style>
     @endpush
     <div class="panel">
@@ -16,7 +23,7 @@
         <div class="panel-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <table class="table table-sm">
+                    <table class="table table-sm details_table">
                         <tr>
                             <th>{{ __('Customer Name') }}</th>
                             <td class="text-start">: {{ $tenant?->user?->name }}</td>
@@ -33,7 +40,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <table class="table table-sm">
+                    <table class="table table-sm details_table">
                         <tr>
                             <th>{{ __('Business Name') }}</th>
                             <td class="text-start">: {{ $tenant->name }}</td>

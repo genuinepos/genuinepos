@@ -54,9 +54,9 @@
                     </td>
 
                     <td>
-                        <input type="hidden" name="plan_price" id="plan_price" value="{{ \Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->price_per_month) }}">
+                        <input type="hidden" name="shop_price" id="shop_price" value="{{ \Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->price_per_month) }}">
                         <span class="price-txt">{{ $planPriceCurrency }}
-                            <span id="span_plan_price">{{ \App\Utils\Converter::format_in_bdt(\Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->price_per_month)) }}</span>
+                            <span id="span_shop_price">{{ \App\Utils\Converter::format_in_bdt(\Modules\SAAS\Utils\PlanPriceIfLocationIsBd::amount($plan->price_per_month)) }}</span>
                         </span>
                     </td>
 

@@ -206,7 +206,7 @@
                         <div class="col-md-12">
                             <div class="table_area">
                                 <div class="table-responsive">
-                                    <table id="sales-table" class="display data_tbl data__table common-reloader w-100">
+                                    <table id="sales-table" class="display data_tbl data__table table-striped w-100">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('Serial') }}</th>
@@ -224,7 +224,7 @@
                                             @forelse ($transactions as $transaction)
                                                 <tr>
                                                     <td>{{ $transaction->id }}</td>
-                                                    <td>{{ str(\App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name)->headline() }}</td>
+                                                    <td class="fw-bold">{{ str(\App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name)->headline() }}</td>
                                                     <td>{{ $transaction->payment_date }}</td>
                                                     <td>{{ $transaction->payment_trans_id }}</td>
                                                     <td>{{ $transaction->payment_method_name }}</td>
@@ -233,13 +233,17 @@
                                                     <td class="text-danger fw-bold">{{ App\Utils\Converter::format_in_bdt($transaction->due) }}</td>
 
                                                     <td>
-                                                        <a href="{{ route('software.service.billing.invoice.view', $transaction->id) }}">
+                                                        {{-- <a href="{{ route('software.service.billing.invoice.view', $transaction->id) }}">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </a> --}}
+
+                                                        <a href="{{ route('software.service.billing.invoice.pdf', $transaction->id) }}" target="_blank">
                                                             <i class="fa-solid fa-eye"></i>
                                                         </a>
 
-                                                        <a href="{{ route('software.service.billing.invoice.download', $transaction->id) }}">
+                                                        {{-- <a href="{{ route('software.service.billing.invoice.download', $transaction->id) }}" target="_blank">
                                                             <i class="fa-solid fa-download"></i>
-                                                        </a>
+                                                        </a> --}}
                                                     </td>
                                                 </tr>
                                             @empty

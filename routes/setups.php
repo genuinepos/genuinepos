@@ -152,7 +152,7 @@ Route::prefix('setups')->group(function () {
 
         Route::get('/', 'index')->name('software.service.billing.index');
         Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
-        Route::get('invoice/download/{id}', 'invoiceDownload')->name('software.service.billing.invoice.download');
+        Route::get('invoice/pdf/{id}', 'invoicePdf')->name('software.service.billing.invoice.pdf');
 
         Route::controller(CheckCouponCodeController::class)->prefix('check-coupon-code')->group(function () {
             Route::get('/', 'checkCouponCode')->name('check.coupon.code');

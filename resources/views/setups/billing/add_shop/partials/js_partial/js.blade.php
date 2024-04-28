@@ -77,22 +77,22 @@
         if (shop_price_period == 'month') {
 
             $('#period_count_header').html('Months');
-            $('#plan_price').val(parseFloat(shop_price_per_month));
-            $('#span_plan_price').html(bdFormat(shop_price_per_month));
+            $('#shop_price').val(parseFloat(shop_price_per_month));
+            $('#span_shop_price').html(bdFormat(shop_price_per_month));
             $('.shop_price_period_count').removeClass('d-none');
             $('#fixed_shop_price_period_text').html('');
         } else if (shop_price_period == 'year') {
 
             $('#period_count_header').html('Years');
-            $('#plan_price').val(parseFloat(shop_price_per_year));
-            $('#span_plan_price').html(bdFormat(shop_price_per_year));
+            $('#shop_price').val(parseFloat(shop_price_per_year));
+            $('#span_shop_price').html(bdFormat(shop_price_per_year));
             $('.shop_price_period_count').removeClass('d-none');
             $('#fixed_shop_price_period_text').html('');
         } else if (shop_price_period == 'lifetime') {
 
             $('#period_count_header').html('Years');
-            $('#plan_price').val(parseFloat(shop_lifetime_price));
-            $('#span_plan_price').html(bdFormat(shop_lifetime_price));
+            $('#shop_price').val(parseFloat(shop_lifetime_price));
+            $('#span_shop_price').html(bdFormat(shop_lifetime_price));
             $('.shop_price_period_count').addClass('d-none');
             $('#fixed_shop_price_period_text').removeClass('d-none');
             $('#fixed_shop_price_period_text').html('Lifetime');
@@ -104,13 +104,13 @@
     function calculateCartAmount() {
 
         var shop_price_period = $('#shop_price_period:checked').val() ? $('#shop_price_period:checked').val() : 0;
-        var plan_price = $('#plan_price').val() ? $('#plan_price').val() : 0;
+        var shop_price = $('#shop_price').val() ? $('#shop_price').val() : 0;
         var increase_shop_count = $('#increase_shop_count').val() ? $('#increase_shop_count').val() : 0;
         var discount = $('#discount').val() ? $('#discount').val() : 0;
         var shop_price_period_count = $('#shop_price_period_count').val() ? $('#shop_price_period_count').val() : 0;
         var __shop_price_period_count = shop_price_period == 'month' || shop_price_period == 'year' ? parseFloat(shop_price_period_count) : 1;
 
-        var shop_subtotal = (parseFloat(plan_price) * parseFloat(increase_shop_count)) * parseFloat(__shop_price_period_count);
+        var shop_subtotal = (parseFloat(shop_price) * parseFloat(increase_shop_count)) * parseFloat(__shop_price_period_count);
         $('#shop_subtotal').val(parseFloat(shop_subtotal).toFixed(2));
         $('#span_shop_subtotal').html(bdFormat(shop_subtotal));
 

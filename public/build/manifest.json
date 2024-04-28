@@ -1,4 +1,9 @@
 {
+  "Modules/SAAS/Resources/assets/css/style.css": {
+    "file": "assets/style-8f0f306c.css",
+    "isEntry": true,
+    "src": "Modules/SAAS/Resources/assets/css/style.css"
+  },
   "Modules/SAAS/Resources/assets/images/arrow-down.png": {
     "file": "assets/arrow-down-d96f9dc0.png",
     "src": "Modules/SAAS/Resources/assets/images/arrow-down.png"
@@ -61,12 +66,12 @@
     "src": "Modules/SAAS/Resources/assets/js/guest.js"
   },
   "Modules/SAAS/Resources/assets/sass/admin.scss": {
-    "file": "assets/admin-a3d5b475.css",
+    "file": "assets/admin-fe1e9ad8.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/sass/admin.scss"
   },
   "Modules/SAAS/Resources/assets/sass/guest.scss": {
-    "file": "assets/guest-9fe85d1b.css",
+    "file": "assets/guest-b4bbf13f.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/sass/guest.scss"
   },

@@ -230,9 +230,9 @@
                 $('#stepThreeTab').addClass('active');
 
                 @if (auth()->user()->can('has_access_to_all_area'))
-                    window.location = "{{ route('route('setup.startup.form')') }}";
+                    window.location = "{{ route('setup.startup.form') }}";
                 @else
-                    window.location = "{{ route('route('software.service.billing.index')') }}";
+                    window.location = "{{ route('software.service.billing.index') }}";
                 @endif
             },
             error: function(err) {

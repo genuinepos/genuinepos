@@ -18,7 +18,7 @@ return new class extends Migration
             Schema::create('stock_chains', function (Blueprint $table) {
 
                 $table->bigIncrements('id');
-                $table->unsignedBigInteger('branch_id')->after('id')->nullable()->index('branches_branch_id_foreign');
+                $table->unsignedBigInteger('branch_id')->nullable()->index('branches_branch_id_foreign');
                 $table->unsignedBigInteger('purchase_product_id')->nullable()->index('stock_chains_purchase_product_id_foreign');
                 $table->unsignedBigInteger('sale_product_id')->nullable()->index('stock_chains_sale_product_id_foreign');
                 $table->unsignedBigInteger('stock_issue_product_id')->nullable()->index('stock_chains_stock_issue_product_id_foreign');

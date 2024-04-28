@@ -17,7 +17,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('short_menu_id')->nullable()->index('short_menu_users_short_menu_id_foreign');
             $table->unsignedBigInteger('user_id')->nullable()->index('short_menu_users_user_id_foreign');
-            $table->boolean('is_delete_in_update')->default(false);
+            $table->tinyInteger('screen_type')->default(1);
+            $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
 
             $table->foreign(['short_menu_id'])->references(['id'])->on('short_menus')->onDelete('CASCADE');

@@ -890,9 +890,7 @@
     </div>
 @else
     <style>
-        @page {
-            margin: 5px;
-        }
+        @page { margin: 6px; }
     </style>
     <!-- Packing slip print templete-->
     <div class="sale_print_template">
@@ -1021,7 +1019,7 @@
                     <table class="w-100">
                         <thead class="t-head">
                             <tr>
-                                <th style="width: 50%;font-size:8px;" class="text-center">{{ __('Description') }}</th>
+                                <th style="font-size:8px;" class="text-start">{{ __('Description') }}</th>
                                 <th class="text-center" style="font-size:8px;">{{ __('Qty') }}</th>
                                 <th class="text-center" style="font-size:8px;">{{ __('Price') }}</th>
                                 <th class="text-end" style="font-size:8px;">{{ __('Total') }}</th>
@@ -1033,10 +1031,13 @@
                                     @php
                                         $variant = $saleProduct->variant_id ? ' ' . $saleProduct->variant_name : '';
                                     @endphp
-                                    <th style="width: 50%;font-size:8px;line-height:1.5!important;padding-top:5px!important;" class="text-center">{{ $loop->index + 1 }}. {{ $saleProduct->p_name . $variant }}</th>
-                                    <th class="text-center" style="font-size:8px;">{{ (float) $saleProduct->quantity }}</th>
-                                    <th class="text-center" style="font-size:8px;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
-                                    <th class="text-end" style="font-size:8px;">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
+                                    <th style="font-size:8px;line-height:2!important;" class="text-start">{{ $loop->index + 1 }}.</th>
+                                    <th class="text-center" style="font-size:8px;line-height:2!important;">{{ (float) $saleProduct->quantity }}</th>
+                                    <th class="text-center" style="font-size:8px;line-height:2!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
+                                    <th class="text-end" style="font-size:8px;line-height:2!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
+                                </tr>
+                                <tr style="padding: 0px!important;margin:0px!important;">
+                                    <th colspan="4" style="font-size:8px;line-height:1.5!important;border-bottom: 1px solid #000;padding:0px!important;margin:0px!important;" class="text-start"> {{ $saleProduct->p_name . $variant }}</th>
                                 </tr>
                             @endforeach
                         </thead>

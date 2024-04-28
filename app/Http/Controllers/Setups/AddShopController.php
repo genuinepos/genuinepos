@@ -111,7 +111,7 @@ class AddShopController extends Controller
             $this->subscriptionMailService->sendSubscriptionAddShopInvoiceMail(
                 user: $tenant?->user,
                 increasedShopCount: $request->increase_shop_count,
-                pricePerShop: $request->plan_price,
+                pricePerShop: $request->shop_price,
                 pricePeriod: $request->shop_price_period,
                 pricePeriodCount: $request->shop_price_period_count,
                 subtotal: $request->shop_subtotal,

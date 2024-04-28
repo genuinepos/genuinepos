@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
+use Exception;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Modules\SAAS\Entities\Plan;
@@ -31,6 +32,12 @@ class TenantController extends Controller
         }
 
         return view('saas::tenants.index');
+    }
+
+    public function show($id)
+    {
+        $tenant = $this->tenantService->singleTenant(id: $id, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
+        return view('saas::tenants.show', compact('tenant'));
     }
 
     public function create()

@@ -1,5 +1,40 @@
 <x-saas::admin-layout title="All Customer">
     @push('css')
+        <style>
+            .main-content .digi-dataTable thead th {
+                font-weight: 400;
+                padding: 4px 22px 5px 4px;
+                background-position-x: calc(100% - 10px);
+                background-size: 9px;
+                font-size: 11px;
+            }
+
+            .main-content .digi-dataTable tr td {
+                vertical-align: middle;
+                padding: 6px 5px 4px 3px;
+                font-size: 11px;
+            }
+
+            table.dataTable tfoot th, table.dataTable tfoot td {
+                padding: 4px 17px 4px 4px;
+                border-top: 1px solid #111;
+                font-size: 11px;
+            }
+
+            table td .btn-sm {
+                padding: 1px 6px!important;
+                font-size: 11px!important;
+            }
+
+            .dropdown-menu {
+                padding: 2px 0;
+            }
+
+            .dropdown-menu .dropdown-item {
+                font-size: 11px;
+                padding: 2px 7px;
+            }
+        </style>
     @endpush
     <div class="panel">
         <div class="panel-header">

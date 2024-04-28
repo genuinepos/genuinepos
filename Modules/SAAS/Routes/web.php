@@ -25,6 +25,7 @@ use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
+use Modules\SAAS\Http\Controllers\UserSubscriptionTransactionController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -94,6 +95,7 @@ Route::middleware(['is_verified'])->group(function () {
     Route::controller(TenantController::class)->prefix('tenants')->group(function () {
 
         Route::get('/', 'index')->name('tenants.index');
+        Route::get('show/{id}', 'show')->name('tenants.show');
         Route::get('create', 'create')->name('tenants.create');
         Route::post('store', 'store')->name('tenants.store');
         Route::get('delete/{id}', 'delete')->name('tenants.delete');
@@ -115,6 +117,12 @@ Route::middleware(['is_verified'])->group(function () {
 
             Route::get('index/{tenantId}', 'index')->name('tenants.update.payment.status.index');
             Route::post('update/{tenantId}', 'update')->name('tenants.update.payment.status.update');
+        });
+
+        Route::controller(UserSubscriptionTransactionController::class)->prefix('user-subscription-transactions')->group(function () {
+
+            Route::get('index/{userId?}', 'index')->name('tenants.user.subscription.transaction.index');
+            Route::get('pdf/details/{id}', 'pdfDetails')->name('tenants.user.subscription.transaction.pdf.details');
         });
     });
 

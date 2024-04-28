@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->string('name')->nullable();
             $table->string('icon')->nullable();
+            $table->string('permission', 80)->nullable();
             $table->timestamps();
         });
     }

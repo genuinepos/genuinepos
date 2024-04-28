@@ -25,6 +25,7 @@ class SubscriptionTransactionService
 
     public function addSubscriptionTransaction(object $request, object $subscription, int $transactionType, $transactionDetailsType, ?object $plan = null): void
     {
+        $gioInfo = GioInfo::getInfo();
         $addTransaction = new SubscriptionTransaction();
         $addTransaction->transaction_type = $transactionType;
         $addTransaction->subscription_id = $subscription->id;
@@ -40,6 +41,8 @@ class SubscriptionTransactionService
         $addTransaction->due = $request->payment_status == BooleanType::False->value ? $request->total_payable : 0;
         $addTransaction->payment_status = $request->payment_status;
         $addTransaction->payment_date = $request->payment_status == BooleanType::True->value ? Carbon::now() : null;
+        // $addTransaction->currency = $gioInfo['country'] == 'bangladesh' ? 'TK' : 'USD';
+        // $addTransaction->currency_rate_in_bdt = $gioInfo['currency_rate'];
         $addTransaction->details_type = $transactionDetailsType;
 
         $transactionDetails = $this->transactionDetails(request: $request, detailsType: $transactionDetailsType, plan: $plan);
@@ -145,6 +148,7 @@ class SubscriptionTransactionService
             return [
                 'country' => $gioInfo['country'],
                 'increase_shop_count' => isset($request->increase_shop_count) ? $request->increase_shop_count : 0,
+                'shop_price' => isset($request->shop_price) ? $request->shop_price : 0,
                 'shop_price_period' => isset($request->shop_price_period) ? $request->shop_price_period : null,
                 'shop_price_period_count' => $request->shop_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_count,
                 'net_total' => isset($request->net_total) ? $request->net_total : 0,
@@ -192,5 +196,17 @@ class SubscriptionTransactionService
             $dueSubscriptionTransaction->payment_trans_id = $request->payment_trans_id;
             $dueSubscriptionTransaction->save();
         }
+    }
+
+    public function singleSubscriptionTransaction(int $id, array $with = null)
+    {
+        $query = SubscriptionTransaction::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->first();
     }
 }

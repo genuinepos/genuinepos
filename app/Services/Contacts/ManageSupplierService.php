@@ -30,6 +30,7 @@ class ManageSupplierService
             ->where('contacts.type', \App\Enums\ContactType::Supplier->value)
             ->select(
                 'contacts.id',
+                'contacts.type',
                 'contacts.contact_id',
                 'contacts.prefix',
                 'contacts.name',
@@ -124,6 +125,7 @@ class ManageSupplierService
             )
             ->groupBy(
                 'contacts.id',
+                'contacts.type',
                 'contacts.contact_id',
                 'contacts.prefix',
                 'contacts.name',
@@ -131,7 +133,7 @@ class ManageSupplierService
                 'contacts.status',
                 'contacts.phone',
                 'account_groups.default_balance_type',
-            )->orderBy('contacts.id', 'asc');
+            )->orderBy('contacts.id', 'desc');
 
         return DataTables::of($suppliers)
             ->addColumn('action', function ($row) {
@@ -150,7 +152,7 @@ class ManageSupplierService
 
                 if (auth()->user()->can('supplier_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id]) . '">' . __('Delete') . '</a>';
+                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id, $row->type]) . '">' . __('Delete') . '</a>';
                 }
 
                 $html .= '</div>';

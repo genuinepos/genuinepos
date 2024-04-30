@@ -42,9 +42,9 @@ Route::group(['prefix' => 'accounting'], function () {
     Route::controller(AccountController::class)->prefix('accounts')->group(function () {
 
         Route::get('/', 'index')->name('accounts.index');
-        Route::get('create', 'create')->name('accounts.create');
+        Route::get('create{type}', 'create')->name('accounts.create');
         Route::post('store', 'store')->name('accounts.store');
-        Route::get('edit/{id}', 'edit')->name('accounts.edit');
+        Route::get('edit/{id}/{type}', 'edit')->name('accounts.edit');
         Route::post('update/{id}', 'update')->name('accounts.update');
         Route::delete('delete/{accountId}', 'delete')->name('accounts.delete');
 

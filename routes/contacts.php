@@ -17,7 +17,7 @@ Route::group(['prefix' => 'contacts'], function () {
     Route::get('edit/{id}/{type}', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::post('update/{id}/{type}', [ContactController::class, 'update'])->name('contacts.update');
     Route::post('change/status/{id}', [ContactController::class, 'changeStatus'])->name('contacts.change.status');
-    Route::delete('delete/{id}', [ContactController::class, 'delete'])->name('contacts.delete');
+    Route::delete('delete/{id}/{type}', [ContactController::class, 'delete'])->name('contacts.delete');
 
     Route::group(['prefix' => 'manage-customers'], function () {
 

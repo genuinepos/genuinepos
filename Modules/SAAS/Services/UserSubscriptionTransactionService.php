@@ -208,7 +208,7 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
         $addTransaction->details_type = $transactionDetailsType;
 
         $transactionDetails = $this->transactionDetails(request: $request, detailsType: $transactionDetailsType, plan: $plan);
-        $addTransaction->details = json_encode($transactionDetails);
+        $addTransaction->details = $transactionDetails;
 
         $addTransaction->save();
     }

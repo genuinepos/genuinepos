@@ -15,19 +15,9 @@ class Contact extends Model
         'type' => ContactType::class,
     ];
 
-    public function openingBalances()
-    {
-        return $this->hasMany(ContactOpeningBalance::class, 'contact_id');
-    }
-
     public function account()
     {
         return $this->hasOne(Account::class, 'contact_id');
-    }
-
-    public function openingBalance()
-    {
-        return $this->hasOne(ContactOpeningBalance::class, 'contact_id')->where('branch_id', auth()->user()->branch_id);
     }
 
     public function customerGroup()

@@ -111,8 +111,10 @@ class SubscriptionRestrictionsMiddleware
             }
         } elseif (
             !auth()->user()?->branch_id &&
+            $generalSettings['subscription']->has_business == BooleanType::True->value &&
             date('Y-m-d') > $generalSettings['subscription']->business_expire_date
         ) {
+
             if (auth()->user()->can('billing_renew_branch')) {
 
                 return redirect()->route('software.service.billing.shop.renew.cart')->with(['businessExpired' => __('Business is expired please renew your business')]);

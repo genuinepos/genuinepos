@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Enums\BooleanType;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\MoneyReceiptService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Contacts\MoneyReceiptStoreRequest;
+use App\Http\Requests\Contacts\MoneyReceiptUpdateRequest;
 
 class MoneyReceiptController extends Controller
 {
@@ -20,7 +22,7 @@ class MoneyReceiptController extends Controller
 
     public function index($contactId)
     {
-        abort_if(!auth()->user()->can('money_receipt_index') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('money_receipt_index') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch', 'moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch', 'moneyReceiptsOfOwnBranch.branch.parentBranch']);
 
@@ -29,19 +31,15 @@ class MoneyReceiptController extends Controller
 
     public function create($contactId)
     {
-        abort_if(!auth()->user()->can('money_receipt_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('money_receipt_add') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch']);
 
         return view('contacts.money_receipts.create', compact('contact'));
     }
 
-    public function store(Request $request, $contactId, CodeGenerationServiceInterface $codeGenerator)
+    public function store($contactId, MoneyReceiptStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        abort_if(!auth()->user()->can('money_receipt_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
-
-        $this->validate($request, ['date' => 'required|date']);
-
         try {
             DB::beginTransaction();
 
@@ -75,12 +73,8 @@ class MoneyReceiptController extends Controller
         return view('contacts.money_receipts.edit', compact('moneyReceipt'));
     }
 
-    public function update(Request $request, $receiptId)
+    public function update($receiptId, MoneyReceiptUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('money_receipt_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
-
-        $this->validate($request, ['date' => 'required|date']);
-
         $updateMoneyReceipt = $this->moneyReceiptService->updateMoneyReceipt(moneyReceiptId: $receiptId, request: $request);
         $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
 

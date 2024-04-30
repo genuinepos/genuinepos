@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Http\Controllers\Controller;
-use App\Services\Contacts\CustomerGroupService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Setups\BranchService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Contacts\CustomerGroupService;
+use App\Http\Requests\Contacts\CustomerGroupStoreRequest;
+use App\Http\Requests\Contacts\CustomerGroupUpdateRequest;
 
 class CustomerGroupController extends Controller
 {
@@ -41,14 +43,8 @@ class CustomerGroupController extends Controller
         return view('contacts.customer_group.ajax_view.create', compact('priceGroups'));
     }
 
-    public function store(Request $request)
+    public function store(CustomerGroupStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
-
-        $this->validate($request, [
-            'name' => 'required|unique:customer_groups,name',
-        ]);
-
         $this->customerGroupService->addCustomerGroup(request: $request);
 
         return response()->json(__('Customer group added successfully'));
@@ -64,14 +60,8 @@ class CustomerGroupController extends Controller
         return view('contacts.customer_group.ajax_view.edit', compact('customerGroup', 'priceGroups'));
     }
 
-    public function update(Request $request, $id)
+    public function update(CustomerGroupUpdateRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
-
-        $this->validate($request, [
-            'name' => 'required|unique:customer_groups,name,' . $id,
-        ]);
-
         $this->customerGroupService->updateCustomerGroup(id: $id, request: $request);
 
         return response()->json(__('Customer group updated successfully'));

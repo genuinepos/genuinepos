@@ -11,7 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contact_opening_balances', function (Blueprint $table) {
+        Schema::table('contact_opening_balances', function (Blueprint $table) {
+            Schema::disableForeignKeyConstraints();
+            Schema::dropIfExists('contact_opening_balances');
+            Schema::enableForeignKeyConstraints();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('contact_opening_balances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('contact_id');
@@ -26,13 +38,5 @@ return new class extends Migration
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('contact_opening_balances');
     }
 };

@@ -16,9 +16,11 @@ use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
+use App\Interfaces\Accounts\AccountControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
 use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
+use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
@@ -31,9 +33,11 @@ use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainers
 use App\Services\Sales\MethodContainerServices\PosSaleControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
+use App\Services\Accounts\MethodContainerServices\AccountControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ReceiptControllerMethodContainersService;
+use App\Services\Contacts\MethodContainerServices\ContactControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
 use App\Services\Hrm\MethodContainerServices\PayrollPaymentControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseControllerMethodContainersService;
@@ -54,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
             return new GeneralSetting();
         });
 
+        $this->app->bind(ContactControllerMethodContainersInterface::class, ContactControllerMethodContainersService::class);
         $this->app->bind(AddSaleControllerMethodContainersInterface::class, AddSaleControllerMethodContainersService::class);
         $this->app->bind(PosSaleControllerMethodContainersInterface::class, PosSaleControllerMethodContainersService::class);
         $this->app->bind(SalesOrderControllerMethodContainersInterface::class, SalesOrderControllerMethodContainersService::class);
@@ -61,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DraftControllerMethodContainersInterface::class, DraftControllerMethodContainersService::class);
         $this->app->bind(StockAdjustmentControllerMethodContainersInterface::class, StockAdjustmentControllerMethodContainersService::class);
         $this->app->bind(ProductionControllerMethodContainersInterface::class, ProductionControllerMethodContainersService::class);
+        $this->app->bind(AccountControllerMethodContainersInterface::class, AccountControllerMethodContainersService::class);
         $this->app->bind(ReceiptControllerMethodContainersInterface::class, ReceiptControllerMethodContainersService::class);
         $this->app->bind(PaymentControllerMethodContainersInterface::class, PaymentControllerMethodContainersService::class);
         $this->app->bind(ExpenseControllerMethodContainersInterface::class, ExpenseControllerMethodContainersService::class);

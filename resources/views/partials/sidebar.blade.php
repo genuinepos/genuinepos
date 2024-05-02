@@ -1500,7 +1500,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('profit_loss_account'))
+                                            {{-- @if (auth()->user()->can('profit_loss_account'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('accounting.profit.loss.account') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
@@ -1511,9 +1511,9 @@
                                                         <p class="switch_text">{{ __('Profit Loss Account') }}</p>
                                                     </a>
                                                 </div>
-                                            @endif
+                                            @endif --}}
 
-                                            @if (auth()->user()->can('balance_sheet'))
+                                            {{-- @if (auth()->user()->can('balance_sheet'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('accounting.balance.sheet') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
@@ -1524,7 +1524,7 @@
                                                         <p class="switch_text">{{ __('Balance Sheet') }}</p>
                                                     </a>
                                                 </div>
-                                            @endif
+                                            @endif --}}
 
                                             @if (auth()->user()->can('trial_balance'))
                                                 <div class="sub-menu-col">

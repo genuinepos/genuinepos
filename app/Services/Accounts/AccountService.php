@@ -13,6 +13,21 @@ class AccountService
 {
     public function accountListTable($request)
     {
+        $filteredBranchId = '';
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $filteredBranchId = 'NULL';
+            } else {
+
+                $filteredBranchId = (int)$request->branch_id;
+            }
+        } else {
+
+            $filteredBranchId = auth()->user()->branch_id;
+        }
+
         $generalSettings = config('generalSettings');
         $accounts = '';
         $query = DB::table('accounts')
@@ -21,24 +36,21 @@ class AccountService
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
-            ->leftJoin('bank_access_branches', function ($join) {
+            ->leftJoin('bank_access_branches', function ($join) use ($filteredBranchId) {
+
+                $__filteredBranchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
                 $join->on('accounts.id', '=', 'bank_access_branches.bank_account_id')
-                    ->where('bank_access_branches.branch_id', '=', auth()->user()->branch_id);
+                    ->where('bank_access_branches.branch_id', '=', $__filteredBranchId);
             })
             ->leftJoin('branches as bankBranch', 'bank_access_branches.branch_id', 'bankBranch.id')
             ->leftJoin('branches as bankParentBranch', 'bankBranch.parent_branch_id', 'bankParentBranch.id')
             ->where('accounts.is_global', BooleanType::False->value);
 
-        $filteredBranchId = null;
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
                 $query->where('accounts.branch_id', null);
-            } else {
-
-                $filteredBranchId = $request->branch_id;
-                $query->where('accounts.branch_id', $request->branch_id);
             }
         }
 
@@ -49,8 +61,8 @@ class AccountService
 
         $branchId = null;
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
             $branchId = auth()->user()->branch_id;
-            // $query->where('accounts.branch_id', auth()->user()->branch_id);
         } else {
 
             $branchId = $filteredBranchId;
@@ -58,8 +70,9 @@ class AccountService
 
         $query->where(function ($query) use ($branchId) {
 
-            $query->where('accounts.branch_id', '=', $branchId)
-                ->orWhere('bank_access_branches.branch_id', '=', $branchId);
+            $__branchId = $branchId == 'NULL' ? null : $branchId;
+            $query->where('accounts.branch_id', '=', $__branchId)
+                ->orWhere('bank_access_branches.branch_id', '=', $__branchId);
         });
 
         $accounts = $query->select(
@@ -133,7 +146,7 @@ class AccountService
                 'bankBranch.area_name',
                 'bankParentBranch.name',
             )->orderBy('account_groups.sorting_number', 'asc')
-            ->orderBy('accounts.name', 'asc');
+            ->orderBy('accounts.name', 'asc')->get();
 
         return DataTables::of($accounts)
             ->addIndexColumn()
@@ -308,7 +321,7 @@ class AccountService
 
     public function updateAccount($accountId, $name, $accountGroup, $phone = null, $address = null, $accountNumber = null, $bankId = null, $bankAddress = null, $bankCode = null, $swiftCode = null, $bankBranch = null, $taxPercent = null, $openingBalance = 0, $openingBalanceType = 'dr', $remarks = null, $contactId = null)
     {
-        $updateAccount = $this->singleAccountById(id: $accountId, with:['bankAccessBranches', 'contact', 'accountOpeningBalance']);
+        $updateAccount = $this->singleAccountById(id: $accountId, with: ['bankAccessBranches', 'contact', 'accountOpeningBalance']);
 
         $updateAccount->name = $name;
         $updateAccount->account_number = $accountNumber ? $accountNumber : null;
@@ -331,7 +344,7 @@ class AccountService
 
     public function deleteAccount(int $id): array
     {
-        $deleteAccount = $this->singleAccountById(id: $id, with:['accountLedgersWithOutOpeningBalances', 'contact']);
+        $deleteAccount = $this->singleAccountById(id: $id, with: ['accountLedgersWithOutOpeningBalances', 'contact']);
 
         if ($deleteAccount->is_fixed == 1) {
 

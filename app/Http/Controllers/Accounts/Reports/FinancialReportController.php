@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Http\Controllers\Accounts\Reports;
 
-use App\Http\Controllers\Controller;
-use App\Utils\FinancialAmountsUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Utils\FinancialAmountsUtil;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Accounts\Reports\FinancialReport\AssetAmountsService;
 
-class FinancialReportControllerReport extends Controller
+class FinancialReportController extends Controller
 {
-    protected $financialAmountsUtil;
-
     public function __construct(
-        FinancialAmountsUtil $financialAmountsUtil
+        private AssetAmountsService $assetAmountsService,
+        private BranchService $branchService,
+        private FinancialAmountsUtil $financialAmountsUtil
     ) {
 
         $this->financialAmountsUtil = $financialAmountsUtil;
@@ -20,30 +22,21 @@ class FinancialReportControllerReport extends Controller
 
     public function index()
     {
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-
-        return view(
-            'reports.financial_report.index_v2',
-            compact(
-                'branches',
-            )
-        );
+        return view('accounting.reports.financial_report.index', compact('branches'));
     }
 
     public function financialAmounts(Request $request)
     {
+        $generalSettings = config('generalSettings');
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
 
-        $allFinancialAmounts = $this->financialAmountsUtil->allFinancialAmounts($request);
-        $from_date = $request->from_date;
+        $assetDetails = $this->assetAmountsService->details(request: $request, accountStartDate: $accountStartDate);
+        // $allFinancialAmounts = $this->financialAmountsUtil->allFinancialAmounts($request);
+        // $from_date = $request->from_date;
 
-        return view(
-            'reports.financial_report.ajax_view.financial_amounts',
-            compact(
-                'allFinancialAmounts',
-                'from_date',
-            )
-        );
+        return view('accounting.reports.financial_report.ajax_view.financial_amounts', compact('assetDetails'));
     }
 
     public function print(Request $request)
@@ -68,11 +61,6 @@ class FinancialReportControllerReport extends Controller
         //     DB::raw("sum(IF(type = '2', due, 0)) as total_receive_loan_due"),
         // )->get();
 
-        return view(
-            'reports.financial_report.ajax_view.print',
-            compact(
-                'allFinancialAmounts', 'branch_id', 'fromDate', 'toDate'
-            )
-        );
+        return view('reports.financial_report.ajax_view.print', compact('allFinancialAmounts', 'branch_id', 'fromDate', 'toDate'));
     }
 }

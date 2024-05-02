@@ -438,13 +438,7 @@ Route::group(['prefix' => 'accounting'], function () {
         //     Route::get('print', [ProfitLossReportController::class, 'printProfitLoss'])->name('reports.profit.loss.print');
         // });
 
-        Route::group(['prefix' => 'financial'], function () {
-
-            Route::get('/', [FinancialReportControllerReport::class, 'index'])->name('reports.financial.index');
-            Route::get('amounts', [FinancialReportControllerReport::class, 'financialAmounts'])->name('reports.financial.amounts');
-            Route::get('filter/amounts', [FinancialReportControllerReport::class, 'filterFinancialAmounts'])->name('reports.financial.filter.amounts');
-            Route::get('report/print', [FinancialReportControllerReport::class, 'print'])->name('reports.financial.report.print');
-        });
+        
     });
 });
 

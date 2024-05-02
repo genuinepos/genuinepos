@@ -14,6 +14,7 @@ use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\CapitalAccountController;
 use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
 use App\Http\Controllers\Accounts\Reports\VatTaxReportController;
+use App\Http\Controllers\Accounts\Reports\FinancialReportController;
 use App\Http\Controllers\Accounts\Reports\ProfitLossReportController;
 
 Route::group(['prefix' => 'accounting'], function () {
@@ -139,6 +140,13 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('output/table', 'vatTaxOutputTable')->name('reports.vat.tax.output.table');
             Route::get('vat/tax/amounts', 'vatTaxAmounts')->name('reports.vat.tax.amounts');
             Route::get('print', 'printVatTax')->name('reports.vat.tax.print');
+        });
+
+        Route::controller(FinancialReportController::class)->prefix('financial')->group(function () {
+
+            Route::get('/', 'index')->name('reports.financial.index');
+            Route::get('amounts', 'financialAmounts')->name('reports.financial.amounts');
+            Route::get('report/print', 'print')->name('reports.financial.report.print');
         });
     });
 });

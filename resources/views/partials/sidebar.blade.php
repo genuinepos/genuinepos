@@ -1470,7 +1470,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('profit_loss') || auth()->user()->can('financial_report') || auth()->user()->can('profit_loss_account') || auth()->user()->can('balance_sheet') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
+                                @if (auth()->user()->can('profit_loss') ||  auth()->user()->can('vat_tax_report') || auth()->user()->can('financial_report') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Account Reports') }}</p>
                                         <div class="sub-menu-row">

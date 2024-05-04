@@ -70,6 +70,14 @@
     .print_area small {
         font-size: 8px !important;
     }
+
+    td.aiability_area td {
+        font-size: 11px;
+        padding: 0px;
+        margin: 0px !important;
+        line-height: 1.5;
+        height: 20px;
+    }
 </style>
 
 @php
@@ -139,7 +147,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __('Profit/Loss') }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __('Financial Report') }}</strong></h6>
         </div>
     </div>
 
@@ -176,112 +184,32 @@
     </div>
 
     <div class="row mt-2">
-        <div class="col-8 offset-2">
-            <table class="table report-table table-sm table-bordered print_table">
-                <tbody>
-                    <tr>
-                        <td class="text-end">
-                            <span class="fw-bold">{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
-                        </td>
+        <div class="col-12">
+            <table class="table report-table table-sm">
+                <tr>
+                    <td class="aiability_area">
+                        <table class="table report-table table-sm print_table">
+                            <tbody>
+                                {{-- Assets --}}
+                                @include('accounting.reports.financial_report.ajax_view.print_partials.assets')
+                                {{-- Assets End --}}
 
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalSale']) }}
-                        </td>
-                    </tr>
+                                {{-- Liabilities --}}
+                                @include('accounting.reports.financial_report.ajax_view.print_partials.liabilities')
+                                {{-- Liabilities End --}}
 
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalUnitTax']) }})
-                        </td>
-                    </tr>
+                                {{-- Expenses --}}
+                                @include('accounting.reports.financial_report.ajax_view.print_partials.expenses')
+                                {{-- Expenses End --}}
 
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Total Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalOrderTax']) }})
-                        </td>
-                    </tr>
+                                {{-- Expenses --}}
+                                @include('accounting.reports.financial_report.ajax_view.print_partials.incomes')
+                                {{-- Expenses End --}}
 
-                    <tr>
-                        <td class="text-end">
-                            <span class="fw-bold">{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
-                        </td>
-
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalUnitCost']) }})
-                        </td>
-                    </tr>
-
-                    @if ($profitLossAmounts['grossProfit'] >= 0)
-                        <tr>
-                            <td class="text-end fw-bold"><span class="fw-bold">{{ __('Gross Profit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['grossProfit']) }}
-                            </td>
-                        </tr>
-                    @elseif ($profitLossAmounts['grossProfit'] < 0)
-                        <tr>
-                            <td class="text-end fw-bold"><span class="fw-bold">{{ __('Gross Loss') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['grossProfit']) }}
-                            </td>
-                        </tr>
-                    @endif
-
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalStockAdjustmentAmount']) }})
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalStockAdjustmentRecovered']) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Total Expense') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalExpense']) }})
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Total Sales Return') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalSaleReturn']) }})
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-end"><span class="fw-bold">{{ __('Total Expense By Payroll') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                        <td class="text-end">
-                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalPayrollPayment']) }})
-                        </td>
-                    </tr>
-
-                    @if ($profitLossAmounts['netProfit'] >= 0)
-                        <tr>
-                            <td class="text-end fw-bold"><span class="fw-bold">{{ __('Net Profit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['netProfit']) }}
-                            </td>
-                        </tr>
-                    @elseif ($profitLossAmounts['netProfit'] < 0)
-                        <tr>
-                            <td class="text-end fw-bold"><span class="fw-bold">{{ __('Net Loss') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['netProfit']) }}
-                            </td>
-                        </tr>
-                    @endif
-                </tbody>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>

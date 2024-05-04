@@ -44,7 +44,8 @@ class AccountService
             })
             ->leftJoin('branches as bankBranch', 'bank_access_branches.branch_id', 'bankBranch.id')
             ->leftJoin('branches as bankParentBranch', 'bankBranch.parent_branch_id', 'bankParentBranch.id')
-            ->where('accounts.is_global', BooleanType::False->value);
+            ->where('accounts.is_global', BooleanType::False->value)
+            ->where('account_groups.id', '!=', 8);
 
         if ($request->branch_id) {
 
@@ -146,7 +147,7 @@ class AccountService
                 'bankBranch.area_name',
                 'bankParentBranch.name',
             )->orderBy('account_groups.sorting_number', 'asc')
-            ->orderBy('accounts.name', 'asc')->get();
+            ->orderBy('accounts.name', 'asc');
 
         return DataTables::of($accounts)
             ->addIndexColumn()

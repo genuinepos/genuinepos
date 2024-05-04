@@ -29,6 +29,7 @@ class AssetAmountsService
 
             $closingBalance = $totalDebit - $totalCredit;
         } else if ($totalCredit > $totalDebit) {
+
             $closingBalance = $totalCredit - $totalDebit;
             $closingBalanceSide = 'cr';
         }
@@ -45,6 +46,9 @@ class AssetAmountsService
     private function currentAsset($request, $accountStartDate)
     {
         $filteredBranchId = '';
+        $filteredChildBranchId = isset($request->child_branch_id)
+            && $request->child_branch_id && !empty($request->child_branch_id) ?
+            $request->child_branch_id : null;
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
@@ -73,6 +77,8 @@ class AssetAmountsService
             ->where('account_groups.sub_group_number', 1)
             ->where('account_groups.sub_sub_group_number', '!=', 6)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
+            ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('bank_access_branches', function ($join) use ($filteredBranchId) {
 
                 $__filteredBranchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
@@ -100,12 +106,23 @@ class AssetAmountsService
             $branchId = $filteredBranchId;
         }
 
-        $query->where(function ($query) use ($branchId) {
+        if ($filteredBranchId && !isset($filteredChildBranchId)) {
 
-            $__branchId = $branchId == 'NULL' ? null : $branchId;
-            $query->where('accounts.branch_id', '=', $__branchId)
-                ->orWhere('bank_access_branches.branch_id', '=', $__branchId);
-        });
+            $query->where(function ($query) use ($branchId) {
+
+                $__branchId = $branchId == 'NULL' ? null : $branchId;
+                $query->where('accounts.branch_id', '=', $__branchId)
+                    ->orWhere('parentBranch.id', '=', $__branchId)
+                    ->orWhere('bank_access_branches.branch_id', '=', $__branchId);
+            });
+        } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
+
+            $query->where(function ($query) use ($filteredChildBranchId) {
+
+                $query->where('accounts.branch_id', '=', $filteredChildBranchId)
+                    ->orWhere('bank_access_branches.branch_id', '=', $filteredChildBranchId);
+            });
+        }
 
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
 
@@ -223,7 +240,9 @@ class AssetAmountsService
 
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('accounts.branch_id', auth()->user()->branch_id);
+            $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+            $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
         }
 
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
@@ -315,19 +334,38 @@ class AssetAmountsService
         $query = DB::table('account_groups')
             ->where('account_groups.sub_group_number', 2)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
+            ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
+        $filteredBranchId = null;
+        $filteredChildBranchId = isset($request->child_branch_id)
+            && $request->child_branch_id && !empty($request->child_branch_id) ?
+            $request->child_branch_id : null;
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('accounts.branch_id', null);
+                $filteredBranchId = 'NULL';
             } else {
 
-                $query->where('accounts.branch_id', $request->branch_id);
+                $filteredBranchId = $request->branch_id;
             }
+        }
+
+        if (isset($filteredBranchId) && !isset($filteredChildBranchId)) {
+
+            $query->where(function ($query) use ($filteredBranchId) {
+
+                $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
+                $query->where('accounts.branch_id', '=', $__branchId)
+                    ->orWhere('parentBranch.id', '=', $__branchId);
+            });
+        } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
+
+            $query->where('accounts.branch_id', '=', $filteredChildBranchId);
         }
 
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
@@ -386,7 +424,7 @@ class AssetAmountsService
 
         $mappedArray = [
             'main_group_id' => '',
-            'main_group_name' => 'Capital A/c',
+            'main_group_name' => 'Fixed Asset',
             'sub_group_number' => '',
             'sub_sub_group_number' => '',
             'opening_total_debit' => 0,
@@ -424,19 +462,38 @@ class AssetAmountsService
         $query = DB::table('account_groups')
             ->where('account_groups.sub_group_number', 3)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
+            ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
+        $filteredBranchId = null;
+        $filteredChildBranchId = isset($request->child_branch_id)
+            && $request->child_branch_id && !empty($request->child_branch_id) ?
+            $request->child_branch_id : null;
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('accounts.branch_id', null);
+                $filteredBranchId = 'NULL';
             } else {
 
-                $query->where('accounts.branch_id', $request->branch_id);
+                $filteredBranchId = $request->branch_id;
             }
+        }
+
+        if (isset($filteredBranchId) && !isset($filteredChildBranchId)) {
+
+            $query->where(function ($query) use ($filteredBranchId) {
+
+                $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
+                $query->where('accounts.branch_id', '=', $__branchId)
+                    ->orWhere('parentBranch.id', '=', $__branchId);
+            });
+        } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
+
+            $query->where('accounts.branch_id', '=', $filteredChildBranchId);
         }
 
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
@@ -495,7 +552,7 @@ class AssetAmountsService
 
         $mappedArray = [
             'main_group_id' => '',
-            'main_group_name' => 'Capital A/c',
+            'main_group_name' => 'Investments',
             'sub_group_number' => '',
             'sub_sub_group_number' => '',
             'opening_total_debit' => 0,

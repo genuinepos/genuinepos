@@ -2,6 +2,7 @@
 
 namespace App\Services\Accounts\MethodContainerServices;
 
+use App\Enums\ContactType;
 use App\Services\Accounts\BankService;
 use App\Services\Setups\BranchService;
 use App\Enums\AccountCreateAndEditType;

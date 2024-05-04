@@ -55,6 +55,17 @@
         $(this).addClass('active_tr');
     });
 
+    $(document).on('click', '.selectable tbody tr', function() {
+
+        var data = $(this).data('active_disabled');
+
+        if (data == undefined) {
+
+            $('.selectable tbody tr').removeClass('active_tr');
+            $(this).addClass('active_tr');
+        }
+    });
+
     $(document).on('click', '#hard_reload', function() {
         window.location.reload(true);
     });

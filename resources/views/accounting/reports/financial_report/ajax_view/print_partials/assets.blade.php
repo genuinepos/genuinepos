@@ -6,7 +6,7 @@
 </tr>
 
 <tr>
-    <td class="text-start ps-2 fw-bold" style="display:flex;margin-left: 10px!important;">
+    <td class="text-start ps-2 fw-bold" style="padding-left: 20px!important;">
         <span>{{ __('Current Assets') }} : </span>
     </td>
     <td class="text-start"></td>
@@ -14,7 +14,7 @@
 
 @foreach ($assetDetails['currentAsset']->groups as $group)
     <tr>
-        <td style="display:flex;margin-left: 20px!important;">{{ $group->group_name }}</td>
+        <td style="padding-left: 40px!important;">{{ $group->group_name }}</td>
         <td>:
             @if ($group->closing_balance_side == 'cr')
                 <span>(-) {{ \App\Utils\Converter::format_in_bdt($group->closing_balance) }}</span>
@@ -26,7 +26,7 @@
 @endforeach
 
 <tr>
-    <td class="text-start fw-bold" style="display:flex;margin-left: 10px!important;">{{ $assetDetails['fixedAsset']->main_group_name }} :</td>
+    <td class="text-start fw-bold" style="padding-left: 20px!important;">{{ $assetDetails['fixedAsset']->main_group_name }} :</td>
     <td class="text-start">:
         @if ($assetDetails['fixedAsset']->closing_balance_side == 'cr')
             <span>(-) {{ \App\Utils\Converter::format_in_bdt($assetDetails['fixedAsset']->closing_balance) }}</span>
@@ -37,7 +37,7 @@
 </tr>
 
 <tr>
-    <td class="text-start fw-bold" style="display:flex;margin-left: 10px!important;">{{ $assetDetails['investments']->main_group_name }} :</td>
+    <td class="text-start fw-bold" style="padding-left: 20px!important;">{{ $assetDetails['investments']->main_group_name }} :</td>
     <td class="text-start">:
         @if ($assetDetails['investments']->closing_balance_side == 'cr')
             <span>(-) {{ \App\Utils\Converter::format_in_bdt($assetDetails['investments']->closing_balance) }}</span>

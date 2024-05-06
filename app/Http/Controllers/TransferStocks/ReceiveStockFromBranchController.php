@@ -88,7 +88,7 @@ class ReceiveStockFromBranchController extends Controller
             config('generalSettings')['subscription']->current_shop_count == 1 &&
             config('generalSettings')['subscription']->features['warehouse_count'] == 0
         , 403);
-        
+
         try {
             DB::beginTransaction();
 
@@ -102,7 +102,7 @@ class ReceiveStockFromBranchController extends Controller
             $transferStock->receiver_note = $request->receiver_note;
             $transferStock->save();
 
-            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::ReceivedStock->value, date: $transferStock->receive_date, accountId: null, transId: $transferStock->id, amount: $transferStock->received_stock_value, amountType: 'debit');
+            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::ReceivedStock->value, date: $transferStock->receive_date, accountId: null, transId: $transferStock->id, amount: $transferStock->received_stock_value, amountType: 'debit', productId: $transferStock?->transferStockProducts?->first()?->product_id, variantId: $transferStock?->transferStockProducts?->first()?->variant_id);
 
             foreach ($request->transfer_stock_product_ids as $index => $transfer_stock_product_id) {
 

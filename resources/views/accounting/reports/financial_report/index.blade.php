@@ -235,6 +235,8 @@
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
 
+            var currentTitle = document.title;
+
             $.ajax({
                 url: url,
                 type: 'get',
@@ -247,6 +249,7 @@
                     to_date
                 },
                 success: function(data) {
+                    
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
@@ -256,6 +259,16 @@
                         printDelay: 700,
                         header: null,
                     });
+
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = data;
+                    var filename = tempElement.querySelector('#title');
+
+                    document.title = filename.innerHTML;
+
+                    setTimeout(function() {
+                        document.title = currentTitle;
+                    }, 2000);
                 }
             });
         });

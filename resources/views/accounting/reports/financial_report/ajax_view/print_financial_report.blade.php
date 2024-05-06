@@ -232,3 +232,12 @@
         </div>
     </div>
 </div>
+
+@php
+    $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
+    $fileChildBranchName = $filteredChildBranchName ? '__Child Shop:' . $filteredChildBranchName : '';
+    $dateRange = $fromDate && $toDate ? '__' . $fromDate . '_To_' . $toDate : '';
+    $filename = __('Financial Report') . $dateRange . '__' . $fileBranchName.$fileChildBranchName;
+@endphp
+<span id="title" class="d-none">{{ $filename }}</span>
+<!-- Stock Issue print templete end-->

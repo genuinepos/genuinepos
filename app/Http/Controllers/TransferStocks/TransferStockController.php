@@ -34,13 +34,14 @@ class TransferStockController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('transfer_stock_index') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+        abort_if(!auth()->user()->can('transfer_stock_index') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
 
         abort_if(
-            config('generalSettings')['subscription']->has_business == 0 &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        , 403);
+            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
+                config('generalSettings')['subscription']->current_shop_count == 1 &&
+                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
+            403
+        );
 
         if ($request->ajax()) {
 
@@ -98,32 +99,36 @@ class TransferStockController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
 
         abort_if(
-            config('generalSettings')['subscription']->has_business == 0 &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        , 403);
+            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
+                config('generalSettings')['subscription']->current_shop_count == 1 &&
+                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
+            403
+        );
 
         $branchName = $this->branchService->branchName();
+        
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
         $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         return view('transfer_stocks.create', compact('branches', 'warehouses', 'branchName'));
     }
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
 
         abort_if(
-            config('generalSettings')['subscription']->has_business == 0 &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        , 403);
+            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
+                config('generalSettings')['subscription']->current_shop_count == 1 &&
+                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
+            403
+        );
 
         $this->transferStockService->transferStockValidation(request: $request);
 
@@ -135,7 +140,8 @@ class TransferStockController extends Controller
 
             $addTransferStock = $this->transferStockService->addTransferStock(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
-            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::TransferStock->value, date: $addTransferStock->date, accountId: null, transId: $addTransferStock->id, amount: $addTransferStock->total_stock_value, amountType: 'credit');
+            $variantId = isset($request->variant_ids[0]) && $request->variant_ids[0] != 'noid' ? $request->variant_ids[0] : null;
+            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::TransferStock->value, date: $addTransferStock->date, accountId: null, transId: $addTransferStock->id, amount: $addTransferStock->total_stock_value, amountType: 'credit', productId: isset($request->product_ids[0]) ? $request->product_ids[0] : null, variantId: $variantId);
 
             foreach ($request->product_ids as $index => $product_id) {
 
@@ -193,13 +199,14 @@ class TransferStockController extends Controller
 
     public function edit($id)
     {
-        abort_if( !auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+        abort_if(!auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
 
         abort_if(
-            config('generalSettings')['subscription']->has_business == 0 &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        , 403);
+            config('generalSettings')['subscription']->has_business == BooleanType::True->value &&
+                config('generalSettings')['subscription']->current_shop_count == 1 &&
+                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
+            403
+        );
 
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -233,13 +240,14 @@ class TransferStockController extends Controller
 
     public function update($id, Request $request)
     {
-        abort_if( !auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+        abort_if(!auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
 
         abort_if(
-            config('generalSettings')['subscription']->has_business == 0 &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        , 403);
+            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
+                config('generalSettings')['subscription']->current_shop_count == 1 &&
+                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
+            403
+        );
 
         $this->transferStockService->transferStockValidation(request: $request);
 
@@ -248,7 +256,8 @@ class TransferStockController extends Controller
 
             $updateTransferStock = $this->transferStockService->updateTransferStock(request: $request, id: $id);
 
-            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::TransferStock->value, date: $updateTransferStock->date, accountId: null, transId: $updateTransferStock->id, amount: $updateTransferStock->total_stock_value, amountType: 'credit');
+            $variantId = isset($request->variant_ids[0]) && $request->variant_ids[0] != 'noid' ? $request->variant_ids[0] : null;
+            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::TransferStock->value, date: $updateTransferStock->date, accountId: null, transId: $updateTransferStock->id, amount: $updateTransferStock->total_stock_value, amountType: 'credit', productId: (isset($request->product_ids[0]) ? $request->product_ids[0] : null), variantId: $variantId);
 
             foreach ($request->product_ids as $index => $product_id) {
 
@@ -297,13 +306,14 @@ class TransferStockController extends Controller
 
     public function delete($id)
     {
-        abort_if( !auth()->user()->can('transfer_stock_delete') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+        abort_if(!auth()->user()->can('transfer_stock_delete') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
 
         abort_if(
-            config('generalSettings')['subscription']->has_business == 0 &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        , 403);
+            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
+                config('generalSettings')['subscription']->current_shop_count == 1 &&
+                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
+            403
+        );
 
         try {
             DB::beginTransaction();

@@ -173,7 +173,7 @@
 
                                                             <td>
                                                                 <div class="input-group p-1">
-                                                                    <input required type="number" name="input_quantities[]" class="form-control fw-bold" id="input_quantity" value="{{ $ingredient->final_qty }}">
+                                                                    <input required type="number" step="any" name="input_quantities[]" class="form-control fw-bold" id="input_quantity" value="{{ $ingredient->final_qty }}">
                                                                     <input type="hidden" name="parameter_input_quantities[]" id="parameter_input_quantity" value="{{ $ingredient->final_qty }}">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text input-group-text-custom">{{ $ingredient?->unit?->name }}</span>

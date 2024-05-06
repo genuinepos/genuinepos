@@ -35,15 +35,39 @@
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <div class="sec-name">
-                <div class="name-head">
-                    <h5>{{ __('Add Production') }}</h5>
+            <div class="sec-name g-0">
+                <div class="col-md-7">
+                    <div class="name-head">
+                        <h6>{{ __('Add Production') }}</h6>
+                    </div>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+
+                <div class="col-md-5">
+                    <div class="row g-0">
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="col-4 offset-md-6"><b>{{ __('Print') }}</b></label>
+                                <div class="col-2">
+                                    <select id="select_print_page_size" class="form-control">
+                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                            <option @selected($generalSettings['print_page_size__bom_voucher_page_size'] == $item->value) value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button d-inline"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="p-1">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
+                <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['print_page_size__bom_voucher_page_size'] }}">
                 <input name="action_type" type="text" id="action_type" class="d-hide" value="">
                 <input name="product_id" type="text" id="product_id" class="d-hide" value="">
                 <input name="variant_id" type="text" id="variant_id" class="d-hide" value="">

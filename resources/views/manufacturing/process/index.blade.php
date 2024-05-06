@@ -1,13 +1,13 @@
 @extends('layout.master')
 @push('stylesheets')
 @endpush
-@section('title', 'Process/Bill Of Materials - ')
+@section('title', 'Process/Bill of Materials - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __('Process/Bill Of Materials') }}</h6>
+                    <h6>{{ __('Process/Bill of Materials') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('List Of Processes/BOM') }}</h6>
+                        <h6>{{ __('List of Processes/BOM') }}</h6>
                     </div>
 
                     @if (auth()->user()->can('process_add'))
@@ -78,26 +78,26 @@
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    text: '<i class="fas fa-file-excel"></i>' + "{{ __('Excel') }}",
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
                 {
                     extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    text: '<i class="fas fa-file-pdf"></i>' + "{{ __('Pdf') }}",
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
                 {
                     extend: 'print',
-                    text: '<i class="fas fa-print"></i> Print',
+                    text: '<i class="fas fa-print"></i>' + "{{ __('Print') }}",
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
             ],
@@ -218,23 +218,6 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
             });
         });
 

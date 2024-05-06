@@ -1470,7 +1470,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('profit_loss') ||  auth()->user()->can('vat_tax_report') || auth()->user()->can('financial_report') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
+                                @if (auth()->user()->can('profit_loss') || auth()->user()->can('vat_tax_report') || auth()->user()->can('financial_report') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Account Reports') }}</p>
                                         <div class="sub-menu-row">
@@ -1564,6 +1564,17 @@
                                                     </a>
                                                 </div>
                                             @endif
+
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('reports.day.book.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-money-bill-wave"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Day Book') }}</p>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -2342,6 +2353,7 @@
                                         <p class="switch_text">{{ __('Add Advertisement') }}</p>
                                     </a>
                                 </div>
+
                                 <div class="sub-menu-col">
                                     <a href="{{ route('advertise.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">

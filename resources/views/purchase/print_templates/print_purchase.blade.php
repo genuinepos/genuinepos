@@ -1,5 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
     $account = $purchase?->supplier;
@@ -136,7 +137,7 @@
                 <div class="col-6">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
-                            {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}
+                            {{ date($dateFormat, strtotime($purchase->date)) }}
                         </li>
 
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span>{{ $purchase->invoice_id }}</li>
@@ -186,7 +187,7 @@
                                     <p>{{ Str::limit($purchaseProduct->product->name, 25) . ' ' . $variant }}</p>
                                     <small class="d-block text-muted" style="font-size: 9px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                     @endif
                                 </td>
                                 <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -305,7 +306,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
+                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($dateFormat) }}</small>
                     </div>
 
                     <div class="col-4 text-center">
@@ -449,7 +450,7 @@
                 <div class="col-6">
                     <ul class="list-unstyled">
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Date') }} : </span>
-                            {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}
+                            {{ date($dateFormat, strtotime($purchase->date)) }}
                         </li>
 
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Invoice ID') }} : </span>{{ $purchase->invoice_id }}</li>
@@ -499,7 +500,7 @@
                                     <p>{{ Str::limit($purchaseProduct->product->name, 25) . ' ' . $variant }}</p>
                                     <small class="d-block text-muted" style="font-size: 9px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                     @endif
                                 </td>
                                 <td class="text-start" style="font-size:9px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -618,7 +619,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
+                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($dateFormat) }}</small>
                     </div>
 
                     <div class="col-4 text-center">

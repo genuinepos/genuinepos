@@ -14,6 +14,7 @@ use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\CapitalAccountController;
 use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
 use App\Http\Controllers\Accounts\Reports\VatTaxReportController;
+use App\Http\Controllers\Accounts\Reports\DayBookReportController;
 use App\Http\Controllers\Accounts\Reports\FinancialReportController;
 use App\Http\Controllers\Accounts\Reports\ProfitLossReportController;
 
@@ -147,6 +148,12 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('/', 'index')->name('reports.financial.index');
             Route::get('amounts', 'financialAmounts')->name('reports.financial.amounts');
             Route::get('report/print', 'print')->name('reports.financial.report.print');
+        });
+
+        Route::controller(DayBookReportController::class)->prefix('day-book')->group(function () {
+
+            Route::get('/', 'index')->name('reports.day.book.index');
+            Route::get('print', 'print')->name('reports.day.book.print');
         });
     });
 });

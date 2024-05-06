@@ -286,13 +286,10 @@
                     @if ($sale->sale_screen == App\Enums\SaleScreenType::AddSale->value)
 
                         @if (auth()->user()->can('edit_add_sale') && $sale->branch_id == auth()->user()->branch_id)
-
                             <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
-
                         @if (auth()->user()->can('pos_edit') && $sale->branch_id == auth()->user()->branch_id)
-
                             <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @endif

@@ -94,7 +94,7 @@
                                                     if ($transferStock?->receiverBranch?->parentBranch) {
                                                         $sendTo = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                     } else {
-                                                        $sendTo = $transferStock?->receiverBranch?->area_name . '(' . $transferStock?->receiverBranch?->area_name->area_name . ')';
+                                                        $sendTo = $transferStock?->receiverBranch?->area_name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                     }
                                                 } else {
                                                     $sendTo = $generalSettings['business_or_shop__business_name'];

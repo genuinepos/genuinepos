@@ -367,11 +367,6 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('trial/balance', [AccountingRelatedSectionController::class, 'trialBalance'])->name('accounting.trial.balance');
         Route::get('trial/balance/amounts', [AccountingRelatedSectionController::class, 'trialBalanceAmounts'])->name('accounting.trial.balance.amounts');
 
-        Route::get('cash/flow', [AccountingRelatedSectionController::class, 'cashFow'])->name('accounting.cash.flow');
-        Route::get('cash/flow/amounts', [AccountingRelatedSectionController::class, 'cashFlowAmounts'])->name('accounting.cash.flow.amounts');
-        Route::get('filter/cash/flow', [AccountingRelatedSectionController::class, 'filterCashflow'])->name('accounting.filter.cash.flow');
-        Route::get('print/cash/flow', [AccountingRelatedSectionController::class, 'printCashflow'])->name('accounting.print.cash.flow');
-
         Route::get('profit/loss/account', [AccountingRelatedSectionController::class, 'profitLossAccount'])->name('accounting.profit.loss.account');
         Route::get('profit/loss/account/amounts', [AccountingRelatedSectionController::class, 'profitLossAccountAmounts'])->name('accounting.profit.loss.account.amounts');
         Route::get('print/profit/loss/account', [AccountingRelatedSectionController::class, 'printProfitLossAccount'])->name('accounting.profit.loss.account.print');
@@ -438,7 +433,7 @@ Route::group(['prefix' => 'accounting'], function () {
         //     Route::get('print', [ProfitLossReportController::class, 'printProfitLoss'])->name('reports.profit.loss.print');
         // });
 
-        
+
     });
 });
 

@@ -27,6 +27,7 @@ use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
+use App\Interfaces\TransferStocks\TransferStockControllerMethodContainersInterface;
 use App\Services\Hrm\MethodContainerServices\PayrollControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\DraftControllerMethodContainersService;
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
@@ -40,12 +41,17 @@ use App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContain
 use App\Services\Accounts\MethodContainerServices\ReceiptControllerMethodContainersService;
 use App\Services\Contacts\MethodContainerServices\ContactControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
+use App\Interfaces\TransferStocks\ReceiveStockFromBranchControllerMethodContainersInterface;
 use App\Services\Hrm\MethodContainerServices\PayrollPaymentControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseControllerMethodContainersService;
 use App\Services\Products\MethodContainerServices\StockIssueControllerMethodContainersService;
+use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodContainersInterface;
 use App\Services\Manufacturing\MethodContainerServices\ProcessControllerMethodContainersService;
 use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
+use App\Services\TransferStocks\MethodContainerServices\TransferStockControllerMethodContainersService;
 use App\Services\StockAdjustments\MethodContainerServices\StockAdjustmentControllerMethodContainersService;
+use App\Services\TransferStocks\MethodContainerServices\ReceiveStockFromBranchControllerMethodContainersService;
+use App\Services\TransferStocks\MethodContainerServices\ReceiveStockFromWarehouseControllerMethodContainersService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -78,6 +84,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PayrollPaymentControllerMethodContainersInterface::class, PayrollPaymentControllerMethodContainersService::class);
         $this->app->bind(StockIssueControllerMethodContainersInterface::class, StockIssueControllerMethodContainersService::class);
         $this->app->bind(PurchaseControllerMethodContainersInterface::class, PurchaseControllerMethodContainersService::class);
+        $this->app->bind(TransferStockControllerMethodContainersInterface::class, TransferStockControllerMethodContainersService::class);
+        $this->app->bind(ReceiveStockFromBranchControllerMethodContainersInterface::class, ReceiveStockFromBranchControllerMethodContainersService::class);
+        $this->app->bind(ReceiveStockFromWarehouseControllerMethodContainersInterface::class, ReceiveStockFromWarehouseControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);

@@ -38,7 +38,6 @@
                                         </div>
                                     @endif
 
-
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">

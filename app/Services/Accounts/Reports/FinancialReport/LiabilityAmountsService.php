@@ -299,7 +299,7 @@ class LiabilityAmountsService
                     '
                     ),
                 );
-            } else if (isset($filteredChildBranchId)) {
+            } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
                 $childBranchId = $filteredChildBranchId;
 
@@ -957,6 +957,7 @@ class LiabilityAmountsService
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
             $request->child_branch_id : null;
+
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {

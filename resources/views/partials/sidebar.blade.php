@@ -1554,7 +1554,7 @@
 
                                             @if (auth()->user()->can('cash_flow'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('accounting.cash.flow') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.cash.flow.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-money-bill-wave"></i></span>

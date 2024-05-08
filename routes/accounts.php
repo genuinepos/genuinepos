@@ -12,6 +12,7 @@ use App\Http\Controllers\Accounts\AccountGroupController;
 use App\Http\Controllers\Accounts\AccountLedgerController;
 use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\CapitalAccountController;
+use App\Http\Controllers\Accounts\Reports\CashFlowController;
 use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
 use App\Http\Controllers\Accounts\Reports\VatTaxReportController;
 use App\Http\Controllers\Accounts\Reports\DayBookReportController;
@@ -154,6 +155,13 @@ Route::group(['prefix' => 'accounting'], function () {
 
             Route::get('/', 'index')->name('reports.day.book.index');
             Route::get('print', 'print')->name('reports.day.book.print');
+        });
+
+        Route::controller(CashFlowController::class)->prefix('cash-flow')->group(function () {
+
+            Route::get('/', 'index')->name('reports.cash.flow.index');
+            Route::get('data', 'cashFlowData')->name('reports.cash.flow.data');
+            Route::get('print', 'cashFlowPrint')->name('reports.cash.flow.print');
         });
     });
 });

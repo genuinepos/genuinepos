@@ -5,13 +5,9 @@ namespace App\Listeners;
 use Exception;
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Auth\Events\Authenticated;
-use App\Models\Subscriptions\Subscription;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class GeneralSettingsListener
@@ -40,7 +36,10 @@ class GeneralSettingsListener
             $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
                 ->orWhereIn('key', [
                     'business_or_shop__business_name',
+                    'business_or_shop__business_logo',
                     'business_or_shop__address',
+                    'business_or_shop__email',
+                    'business_or_shop__phone',
                 ])->pluck('value', 'key')->toArray();
 
             $branch = $event?->user?->branch;
@@ -147,7 +146,6 @@ class GeneralSettingsListener
                         'subscriptions.business_expire_date',
                     ]
                 )->first();
-
 
             $generalSettings['subscription'] = $subscription;
             // unset($generalSettings['subscription']->features);

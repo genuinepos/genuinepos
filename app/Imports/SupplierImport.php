@@ -16,7 +16,6 @@ class SupplierImport implements ToCollection
         private $contactService,
         private $accountService,
         private $accountLedgerService,
-        private $contactOpeningBalanceService,
     ) {
     }
 
@@ -59,12 +58,6 @@ class SupplierImport implements ToCollection
                         creditLimit: 0,
                         openingBalance: 0,
                         openingBalanceType: 'dr'
-                    );
-
-                    $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(
-                        contactId: $addContact->id,
-                        openingBalance: 0,
-                        openingBalanceType: 'cr'
                     );
 
                     $addAccount = $this->accountService->addAccount(

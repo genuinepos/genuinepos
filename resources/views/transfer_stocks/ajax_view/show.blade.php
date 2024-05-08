@@ -213,7 +213,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             @php
-                                $filename = __('Transfer Stock') . '__' . $transferStock->voucher_id . '__' . $transferStock->date . '__' . $senderBranchName;
+                                $filename = __('Transfer Stock') . '__' . $transferStock->voucher_no . '__' . $transferStock->date . '__' . $senderBranchName;
                             @endphp
                             <a href="{{ route('transfer.stocks.edit', [$transferStock->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             <a href="{{ route('transfer.stocks.print', $transferStock->id) }}" onclick="printTransferStock(this); return false;" class="footer_btn btn btn-sm btn-success" id="printTransferStockBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>

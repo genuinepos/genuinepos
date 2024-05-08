@@ -94,6 +94,7 @@ class ReceiveStockFromBranchService
             })
             ->editColumn('send_from', function ($row) use ($generalSettings) {
 
+                $senderBranch = '';
                 if ($row->sender_branch_id) {
 
                     if ($row->sender_parent_branch_name) {
@@ -108,6 +109,7 @@ class ReceiveStockFromBranchService
                     $senderBranch = '<strong>' . __('Send From') . ':</strong> ' . $generalSettings['business_or_shop__business_name'];
                 }
 
+                $senderWarehouse = '';
                 if ($row->sender_warehouse_id) {
 
                     $senderWarehouse = '<strong>' . __('At') . ':</strong> ' . $row->sender_warehouse_name . '(' . $row->sender_warehouse_code . ')';

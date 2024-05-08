@@ -82,8 +82,8 @@ class UserActivityLogService
                 'texts' => ['Bank Name : '],
             ],
             17 => [ // Accounts
-                'fields' => ['name', 'account_number', 'opening_balance', 'opening_balance_type'],
-                'texts' => ['Account Name : ', 'Account Number : ', 'Opening Balance : ', 'Type : '],
+                'fields' => ['name', 'account_number'],
+                'texts' => ['Account Name : ', 'Account Number : '],
             ],
             18 => [ // User login
                 'fields' => ['username'],

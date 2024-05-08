@@ -331,16 +331,6 @@ class TransferStockService
         return $query->where('id', $id)->first();
     }
 
-    public function transferStockValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required|date',
-            'receiver_branch_id' => 'required',
-        ], [
-            'receiver_branch_id.required' => __('Receiver branch is required.'),
-        ]);
-    }
-
     private function filter(object $request, object $query): object
     {
         if ($request->branch_id) {

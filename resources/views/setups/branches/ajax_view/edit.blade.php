@@ -140,7 +140,7 @@
 
                             @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
                                 <div class="col-lg-3 col-md-6">
-                                    <label><b>{{ __('Logo') }}</b> <small class="text-danger">{{ __('Logo size 200px * 70px') }}</small></label>
+                                    <label><b>{{ __('Logo') }}</b> <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H:40px * W:100px') }}</small></label>
                                     <input type="file" name="logo" class="form-control " id="logo" />
                                 </div>
                             @endif

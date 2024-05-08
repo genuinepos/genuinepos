@@ -103,7 +103,7 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
                     return '<span class="text-success">' . __('Paid') . '</span>';
                 } else {
 
-                    return '<span class="text-success">' . __('Due') . '</span>';
+                    return '<span class="text-danger">' . __('Due') . '</span>';
                 }
             })
 
@@ -175,7 +175,7 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
 
                     $due = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($row->due);
                 } else {
-                    
+
                     $due = $row->due;
                 }
 
@@ -208,7 +208,7 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
         $addTransaction->details_type = $transactionDetailsType;
 
         $transactionDetails = $this->transactionDetails(request: $request, detailsType: $transactionDetailsType, plan: $plan);
-        $addTransaction->details = json_encode($transactionDetails);
+        $addTransaction->details = $transactionDetails;
 
         $addTransaction->save();
     }

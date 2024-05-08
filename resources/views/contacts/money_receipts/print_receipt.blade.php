@@ -146,7 +146,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business_or_shop__currency'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
+                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business_or_shop__currency_symbol'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>

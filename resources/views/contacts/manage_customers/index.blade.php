@@ -395,23 +395,38 @@
             //data delete by ajax
             $(document).on('submit', '#delete_contact_form', function(e) {
                 e.preventDefault();
+
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
+
                 $.ajax({
                     url: url,
                     type: 'post',
                     async: false,
                     data: request,
                     success: function(data) {
+
                         if (!$.isEmptyObject(data.errorMsg)) {
 
-                            toastr.error(data.errorMsg, 'Attention');
+                            toastr.error(data.errorMsg);
                             return;
                         }
 
                         contactTable.ajax.reload();
                         toastr.error(data);
                         $('#delete_contact_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
+                        }
                     }
                 });
             });

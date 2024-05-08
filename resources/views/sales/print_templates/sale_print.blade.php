@@ -78,20 +78,20 @@
                             @if ($sale?->branch?->parent_branch_id)
 
                                 @if ($invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
                                 @if ($sale->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->name }}</span>
                                 @endif
                             @endif
                         @else
                             @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
@@ -528,20 +528,20 @@
                             @if ($sale?->branch?->parent_branch_id)
 
                                 @if ($sale->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
                                 @if ($sale->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->name }}</span>
                                 @endif
                             @endif
                         @else
                             @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
@@ -905,20 +905,20 @@
                                         @if ($sale?->branch?->parent_branch_id)
 
                                             @if ($sale?->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
+                                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:14px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                             @endif
                                         @else
                                             @if ($sale?->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->logo) }}">
+                                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $sale->branch?->logo) }}">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:14px;color:gray;">{{ $sale->branch?->name }}</span>
                                             @endif
                                         @endif
                                     @else
                                         @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:14px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                                         @endif
@@ -927,7 +927,7 @@
                             </tr>
 
                             @if ($sale?->branch)
-                                <tr>
+                                {{-- <tr>
                                     <th class="text-center" style="font-size:11px;">
                                         <h6>
                                             @if ($sale?->branch?->parent_branch_id)
@@ -937,15 +937,15 @@
                                             @endif
                                         </h6>
                                     </th>
-                                </tr>
+                                </tr> --}}
 
                                 <tr>
-                                    <th class="text-center" style="font-size:10px;">
+                                    <th class="text-center" style="font-size:10px; padding-top:5px;">
                                         {{ $sale->branch->address . ', ' }}
                                         {{ $invoiceLayout->branch_city == 1 ? $sale->branch->city . ', ' : '' }}
                                         {{ $invoiceLayout->branch_state == 1 ? $sale->branch->state . ', ' : '' }}
                                         {{ $invoiceLayout->branch_zipcode == 1 ? $sale->branch->zip_code . ', ' : '' }}
-                                        {{ $invoiceLayout->branch_country == 1 ? $sale->branch->country : '' }}
+                                        {{ $sale->branch->country }}
                                     </th>
                                 </tr>
 
@@ -966,7 +966,7 @@
                                 @endif
                             @else
                                 <tr>
-                                    <th class="text-center" style="font-size:10px;">
+                                    <th class="text-center" style="font-size:10px; margin-top:5px;">
                                         <span>{{ $generalSettings['business_or_shop__address'] }} </span>
                                     </th>
                                 </tr>
@@ -1031,12 +1031,12 @@
                                     @php
                                         $variant = $saleProduct->variant_id ? ' ' . $saleProduct->variant_name : '';
                                     @endphp
-                                    <th style="font-size:8px;line-height:2!important;" class="text-start">{{ $loop->index + 1 }}.</th>
-                                    <th class="text-center" style="font-size:8px;line-height:2!important;">{{ (float) $saleProduct->quantity }}</th>
-                                    <th class="text-center" style="font-size:8px;line-height:2!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
-                                    <th class="text-end" style="font-size:8px;line-height:2!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
+                                    <th style="font-size:8px;line-height:2!important;padding:0px!important;" class="text-start">{{ $loop->index + 1 }}.</th>
+                                    <th class="text-center" style="font-size:8px;line-height:2!important;padding:0px!important;">{{ (float) $saleProduct->quantity }}</th>
+                                    <th class="text-center" style="font-size:8px;line-height:2!important;padding:0px!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
+                                    <th class="text-end" style="font-size:8px;line-height:2!important;padding:0px!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
                                 </tr>
-                                <tr style="padding: 0px!important;margin:0px!important;">
+                                <tr style="padding: 0px!important;margin:0px!important;padding:0px!important;">
                                     <th colspan="4" style="font-size:8px;line-height:1.5!important;border-bottom: 1px solid #000;padding:0px!important;margin:0px!important;" class="text-start"> {{ $saleProduct->p_name . $variant }}</th>
                                 </tr>
                             @endforeach
@@ -1048,7 +1048,7 @@
                     <table class="w-100">
                         <thead>
                             <tr>
-                                <th class="text-end" style="font-size:9px;">{{ __('Net Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px;">{{ __('Net Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <th class="text-end" style="font-size:9px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}

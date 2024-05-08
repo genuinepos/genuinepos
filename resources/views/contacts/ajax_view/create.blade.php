@@ -144,7 +144,7 @@
                                 <div class="col-md-12 mt-1">
                                     <label><strong>{{ __('Opening Balance') }}</strong></label>
                                     <div class="input-group">
-                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="{{ __('Opening Balance') }}" />
+                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="0.00" />
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}
@@ -165,8 +165,8 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                            <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                             <button type="submit" id="contact_save_btn" class="btn btn-sm btn-success contact_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>

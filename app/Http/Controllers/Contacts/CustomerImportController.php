@@ -14,13 +14,11 @@ use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Contacts\CustomerImportRequest;
-use App\Services\Contacts\ContactOpeningBalanceService;
 
 class CustomerImportController extends Controller
 {
     public function __construct(
         private ContactService $contactService,
-        private ContactOpeningBalanceService $contactOpeningBalanceService,
         private AccountGroupService $accountGroupService,
         private AccountService $accountService,
         private AccountLedgerService $accountLedgerService,
@@ -45,7 +43,6 @@ class CustomerImportController extends Controller
                     accountGroupService: $this->accountGroupService,
                     codeGenerator: $this->codeGenerator,
                     contactService: $this->contactService,
-                    contactOpeningBalanceService: $this->contactOpeningBalanceService,
                     accountLedgerService: $this->accountLedgerService,
                     accountService: $this->accountService,
                 ),

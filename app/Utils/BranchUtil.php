@@ -3,7 +3,7 @@
 namespace App\Utils;
 
 use App\Models\Account;
-use App\Models\AccountBranch;
+
 use App\Models\AccountLedger;
 use App\Models\Setups\CashCounter;
 use App\Models\User;
@@ -38,13 +38,6 @@ class BranchUtil
                     $this->accountUtil->accountBalanceType($account_type) => 0,
                     'admin_id' => auth()->user()->id,
                 ]);
-
-                AccountBranch::insert(
-                    [
-                        'branch_id' => $branch_id,
-                        'account_id' => $addAccountGetId,
-                    ]
-                );
 
                 // Add Opening Stock Ledger
                 $accountLedger = new AccountLedger();

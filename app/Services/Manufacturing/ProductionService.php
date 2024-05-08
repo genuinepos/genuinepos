@@ -279,18 +279,6 @@ class ProductionService
         return $query;
     }
 
-    function productionValidation(object $request): ?array
-    {
-        return $request->validate([
-            'process_id' => 'required',
-            'date' => 'required|date',
-            'total_output_quantity' => 'required',
-            'total_final_output_quantity' => 'required',
-            'net_cost' => 'required',
-            'store_warehouse_id' => Rule::when(isset($request->store_warehouse_count) && $request->store_warehouse_count > 0, 'required'),
-        ], ['process_id.required' => 'Please select the product']);
-    }
-
     private function filter(object $request, object $query): object
     {
         if ($request->branch_id) {

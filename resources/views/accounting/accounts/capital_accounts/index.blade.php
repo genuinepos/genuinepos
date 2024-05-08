@@ -52,7 +52,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add Accounts") }}</a>
+                        <a href="{{ route('accounts.create', \App\Enums\AccountCreateAndEditType::Capitals->value) }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add Accounts") }}</a>
                     </div>
                 </div>
 

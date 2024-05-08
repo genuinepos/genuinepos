@@ -9,7 +9,7 @@
                 @csrf
                 <div class="form-group">
                     <label><strong>{{ __('Name') }}</strong> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="account_name" data-next="account_group_id" placeholder="@lang('menu.account_name')" autocomplete="off" />
+                    <input required type="text" name="name" class="form-control" id="account_name" data-next="account_group_id" placeholder="{{ __("Account Name") }}" autocomplete="off" />
                     <span class="error error_name"></span>
                 </div>
 
@@ -20,15 +20,15 @@
                             <option value="">{{ __("Select Account Group") }}</option>
                             @foreach ($groups as $group)
                                 @if (
-                                    ($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11)
-                                    && (auth()->user()->can('account_bank_account_create'))
+                                    ($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11) &&
+                                    (auth()->user()->can('account_bank_account_create'))
                                 )
 
                                     <option value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
                                         {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                                     </option>
                                 @else
-                                    <option value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
+                                    <option @disabled($group->is_main_group == 1) value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
                                         {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                                     </option>
                                 @endif
@@ -138,7 +138,7 @@
                     <label><strong>{{ __('Opening Balance') }}</strong></label>
                     <div class="input-group">
                         <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business_or_shop__account_start_date'])) }}" tabindex="-1" />
-                        <input type="number" step="any" name="opening_balance" class="form-control w-50" id="opening_balance" data-next="opening_balance_type" value="0.00" placeholder="0.00" />
+                        <input type="number" step="any" name="opening_balance" class="form-control w-50 fw-bold text-end" id="opening_balance" data-next="opening_balance_type" value="0.00" placeholder="0.00" />
                         <select name="opening_balance_type" class="form-control w-25" id="opening_balance_type" data-next="remarks">
                             <option value="dr">{{ __('Debit') }}</option>
                             <option value="cr">{{ __('Credit') }}</option>
@@ -156,7 +156,7 @@
                                 <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                     @php
                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                        $areaName = $branch->area_name ? '('.$branch->area_name . ')' : '';
                                         $branchCode = '-' . $branch->branch_code;
                                     @endphp
                                     {{ $branchName . $areaName . $branchCode }}

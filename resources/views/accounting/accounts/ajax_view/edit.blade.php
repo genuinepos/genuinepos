@@ -25,7 +25,7 @@
                                             {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                                         </option>
                                     @else
-                                        <option {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
+                                        <option @disabled($group->is_main_group == 1) {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
                                             {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                                         </option>
                                     @endif
@@ -142,8 +142,8 @@
                     <label><strong>{{ __('Opening Balance') }}</strong></label>
                     <div class="input-group">
                         @php
-                            $openingBalanceAmount = $account?->openingBalance?->debit + $account?->openingBalance?->credit;
-                            $openingBalanceType = $account?->openingBalance?->amount_type == 'debit' ? 'dr' : 'cr';
+                            $openingBalanceAmount = $account?->accountOpeningBalance ? $account?->accountOpeningBalance?->opening_balance : $account?->opening_balance;
+                            $openingBalanceType = $account?->accountOpeningBalance ? $account?->accountOpeningBalance?->opening_balance_type : $account?->opening_balance_type;
                         @endphp
                         <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business_or_shop__account_start_date'])) }}" tabindex="-1" />
                         <input type="number" step="any" name="opening_balance" class="form-control w-50 fw-bold text-end" id="opening_balance" value="{{ $openingBalanceAmount }}" data-next="opening_balance_type" />

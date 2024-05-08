@@ -111,57 +111,57 @@ class TodaySummaryController extends Controller
             if ($request->branch_id == 'NULL') {
 
                 $branchId = 'NULL';
-                $purchaseQuery->where('branch_id', null);
-                $paymentQuery->where('branch_id', null);
-                $purchaseReturnQuery->where('branch_id', null);
-                $saleQuery->where('branch_id', null);
-                $receiptQuery->where('branch_id', null);
-                $saleReturnQuery->where('branch_id', null);
-                $expenseQuery->where('branch_id', null);
-                $adjustmentQuery->where('branch_id', null);
-                $payrollQuery->where('branch_id', null);
-                $stockIssueQuery->where('branch_id', null);
+                $purchaseQuery->where('purchases.branch_id', null);
+                $paymentQuery->where('accounting_vouchers.branch_id', null);
+                $purchaseReturnQuery->where('purchase_returns.branch_id', null);
+                $saleQuery->where('sales.branch_id', null);
+                $receiptQuery->where('accounting_vouchers.branch_id', null);
+                $saleReturnQuery->where('sale_returns.branch_id', null);
+                $expenseQuery->where('accounting_vouchers.branch_id', null);
+                $adjustmentQuery->where('stock_adjustments.branch_id', null);
+                $payrollQuery->where('accounting_vouchers.branch_id', null);
+                $stockIssueQuery->where('stock_issues.branch_id', null);
             } else {
 
                 $branchId = $request->branch_id;
-                $purchaseQuery->where('branch_id', $request->branch_id);
-                $paymentQuery->where('branch_id', $request->branch_id);
-                $purchaseReturnQuery->where('branch_id', $request->branch_id);
-                $saleQuery->where('branch_id', $request->branch_id);
-                $receiptQuery->where('branch_id', $request->branch_id);
-                $saleReturnQuery->where('branch_id', $request->branch_id);
-                $expenseQuery->where('branch_id', $request->branch_id);
-                $adjustmentQuery->where('branch_id', $request->branch_id);
-                $payrollQuery->where('branch_id', $request->branch_id);
-                $stockIssueQuery->where('branch_id', $request->branch_id);
+                $purchaseQuery->where('purchases.branch_id', $request->branch_id);
+                $paymentQuery->where('accounting_vouchers.branch_id', $request->branch_id);
+                $purchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
+                $saleQuery->where('sales.branch_id', $request->branch_id);
+                $receiptQuery->where('accounting_vouchers.branch_id', $request->branch_id);
+                $saleReturnQuery->where('sale_returns.sale_returns.branch_id', $request->branch_id);
+                $expenseQuery->where('accounting_vouchers.branch_id', $request->branch_id);
+                $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
+                $payrollQuery->where('accounting_vouchers.branch_id', $request->branch_id);
+                $stockIssueQuery->where('stock_issues.branch_id', $request->branch_id);
             }
         }
 
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $branchId = auth()->user()->branch_id;
-            $purchaseQuery->where('branch_id', auth()->user()->branch_id);
-            $paymentQuery->where('branch_id', auth()->user()->branch_id);
-            $purchaseReturnQuery->where('branch_id', auth()->user()->branch_id);
-            $saleQuery->where('branch_id', auth()->user()->branch_id);
-            $receiptQuery->where('branch_id', auth()->user()->branch_id);
-            $saleReturnQuery->where('branch_id', auth()->user()->branch_id);
-            $expenseQuery->where('branch_id', auth()->user()->branch_id);
-            $adjustmentQuery->where('branch_id', auth()->user()->branch_id);
-            $payrollQuery->where('branch_id', auth()->user()->branch_id);
-            $stockIssueQuery->where('branch_id', auth()->user()->branch_id);
+            $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id);
+            $paymentQuery->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            $purchaseReturnQuery->where('purchase_returns.branch_id', auth()->user()->branch_id);
+            $saleQuery->where('sales.branch_id', auth()->user()->branch_id);
+            $receiptQuery->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            $saleReturnQuery->where('sale_returns.branch_id', auth()->user()->branch_id);
+            $expenseQuery->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id);
+            $payrollQuery->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            $stockIssueQuery->where('stock_issues.branch_id', auth()->user()->branch_id);
         }
 
-        $purchases = $purchaseQuery->whereDate('report_date', date('Y-m-d'))->get();
-        $payments = $paymentQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $purchaseReturns = $purchaseReturnQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $sales = $saleQuery->whereDate('sale_date_ts', date('Y-m-d'))->get();
-        $receipts = $receiptQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $salesReturns = $saleReturnQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $expenses = $expenseQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $stockAdjustments = $adjustmentQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $payrollPayments = $payrollQuery->whereDate('date_ts', date('Y-m-d'))->get();
-        $stockIssue = $stockIssueQuery->whereDate('date_ts', date('Y-m-d'))->get();
+        $purchases = $purchaseQuery->whereDate('purchases.report_date', date('Y-m-d'))->get();
+        $payments = $paymentQuery->whereDate('accounting_vouchers.date_ts', date('Y-m-d'))->get();
+        $purchaseReturns = $purchaseReturnQuery->whereDate('purchase_returns.date_ts', date('Y-m-d'))->get();
+        $sales = $saleQuery->whereDate('sales.sale_date_ts', date('Y-m-d'))->get();
+        $receipts = $receiptQuery->whereDate('accounting_vouchers.date_ts', date('Y-m-d'))->get();
+        $salesReturns = $saleReturnQuery->whereDate('sale_returns.date_ts', date('Y-m-d'))->get();
+        $expenses = $expenseQuery->whereDate('accounting_vouchers.date_ts', date('Y-m-d'))->get();
+        $stockAdjustments = $adjustmentQuery->whereDate('stock_adjustments.date_ts', date('Y-m-d'))->get();
+        $payrollPayments = $payrollQuery->whereDate('accounting_vouchers.date_ts', date('Y-m-d'))->get();
+        $stockIssue = $stockIssueQuery->whereDate('stock_issues.date_ts', date('Y-m-d'))->get();
 
         $profitLoss = $this->profitLossService->profitLossAmounts(branchId: $branchId, fromDate: date('Y-m-d'), toDate: date('Y-m-d'), getParentBranchData: false);
 

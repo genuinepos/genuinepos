@@ -398,6 +398,18 @@
                         contactTable.ajax.reload();
                         toastr.error(data);
                         $('#delete_contact_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
+                        }
                     }
                 });
             });

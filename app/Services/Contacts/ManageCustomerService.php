@@ -39,6 +39,7 @@ class ManageCustomerService
 
         $customers = $query->select(
             'contacts.id',
+            'contacts.type',
             'contacts.contact_id',
             'contacts.prefix',
             'contacts.name',
@@ -112,6 +113,7 @@ class ManageCustomerService
             ),
         )->groupBy(
             'contacts.id',
+            'contacts.type',
             'contacts.contact_id',
             'contacts.prefix',
             'contacts.name',
@@ -121,7 +123,7 @@ class ManageCustomerService
             'contacts.credit_limit',
             // 'customer_groups.name',
             'account_groups.default_balance_type',
-        )->orderBy('contacts.id', 'asc');
+        )->orderBy('contacts.id', 'desc');
 
         return DataTables::of($customers)
             ->addColumn('action', function ($row) {
@@ -146,7 +148,7 @@ class ManageCustomerService
 
                 if (auth()->user()->can('customer_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id]) . '">' . __('Delete') . '</a>';
+                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id, $row->type]) . '">' . __('Delete') . '</a>';
                 }
 
                 $html .= '</div>';

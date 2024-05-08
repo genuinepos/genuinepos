@@ -21,15 +21,15 @@ Route::controller(TransferStockController::class)->prefix('transfer-stocks')->gr
         Route::controller(ReceiveStockFromBranchController::class)->prefix('from-branch')->group(function () {
 
             Route::get('/', 'index')->name('receive.stock.from.branch.index');
-            Route::get('create/{transferStockId}', 'create')->name('receive.stock.from.branch.create');
-            Route::post('receive/{transferStockId}', 'receive')->name('receive.stock.from.branch.receive');
+            Route::get('create/{id}', 'create')->name('receive.stock.from.branch.create');
+            Route::post('receive/{id}', 'receive')->name('receive.stock.from.branch.receive');
         });
 
         Route::controller(ReceiveStockFromWarehouseController::class)->prefix('from-warehouse')->group(function () {
 
             Route::get('/', 'index')->name('receive.stock.from.warehouse.index');
-            Route::get('create/{transferStockId}', 'create')->name('receive.stock.from.warehouse.create');
-            Route::post('receive/{transferStockId}', 'receive')->name('receive.stock.from.warehouse.receive');
+            Route::get('create/{id}', 'create')->name('receive.stock.from.warehouse.create');
+            Route::post('receive/{id}', 'receive')->name('receive.stock.from.warehouse.receive');
         });
     });
 });

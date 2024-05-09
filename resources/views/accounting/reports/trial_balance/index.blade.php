@@ -2,22 +2,84 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .table {
-            font-family: Arial, Helvetica, sans-serif;
+        * {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            width: 100%;
+            padding: 0px;
+        }
+
+        /* Clearfix (clear floats) */
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: left;
+        }
+
+        table {
+            border: none !important;
+        }
+
+        .net_total_balance_footer tr {
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+            line-height: 16px;
+        }
+
+        td.trial_balance_area {
+            line-height: 17px !important;
+        }
+
+        .header_text {
+            letter-spacing: 3px;
+            border-bottom: 1px solid;
+            background-color: #fff !important;
+            color: #000 !important
+        }
+
+        tr.account_list td {
+            border-bottom: 1px solid lightgray;
+        }
+
+        tr.account_group_list td {
+            border-bottom: 1px solid lightgray;
+        }
+
+        .trial_balance_area tbody tr td {
+            line-height: 16px;
+        }
+
+        .footer_total {
+            font-size: 13px !important;
         }
     </style>
 @endpush
-@section('title', 'Financial Report - ')
+@section('title', 'Trial Balance - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
 
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>{{ __('Financial Report') }}</h5>
+                    <h5>{{ __('Trial Balance') }}</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -26,11 +88,10 @@
                 <div class="col-md-12">
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
-                            <form id="filter_financial_report">
+                            <form id="filter_trial_balance">
                                 <div class="form-group row">
-
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label><strong>{{ __('Shop/Business') }} </strong></label>
                                             <select name="branch_id" id="branch_id" class="form-control select2" autofocus>
                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
@@ -41,8 +102,8 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <label><strong>{{ __('Child Shop') }} </strong></label>
+                                        <div class="col-md-2">
+                                            <label><strong>{{ __('Chain Shop') }} </strong></label>
                                             <select name="child_branch_id" class="form-control select2" id="child_branch_id">
                                                 <option data-child_branch_name="" value="">{{ __('Select Shop First') }}</option>
                                             </select>
@@ -67,6 +128,24 @@
                                             </div>
                                             <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>{{ __('Format of Report') }}</strong></label>
+                                        <div class="input-group">
+                                            <select name="format_of_report" class="form-control" id="format_of_report">
+                                                <option value="detailed">{{ __('Detailed') }}</option>
+                                                <option value="condensed">{{ __('Condensed') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>{{ __("Type of Grouping") }}</strong></label>
+                                        <select name="showing_type" class="form-control" id="showing_type">
+                                            <option value="group_wise">{{ __("Group Wise") }}</option>
+                                            <option value="ledger_wise">{{ __("Ledger Wise") }}</option>
+                                        </select>
                                     </div>
 
                                     <div class="col-md-2">
@@ -95,85 +174,51 @@
                 </div>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="widget_content mt-2">
+                    <div class="card-body">
                         <div class="data_preloader">
-                            <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
+                            <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}</h6>
                         </div>
-                        <div class="table-responsive" id="data-list">
-                            <table class="table modal-table table-sm table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td class="aiability_area">
-                                            <table class="table table-sm">
-                                                <tbody>
-                                                    {{-- Cash Flow from investing --}}
-                                                    <tr>
-                                                        <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>{{ __("Assets") }} : </span>
-                                                        </th>
-                                                    </tr>
+                        <div class="trial_balance_area">
+                            <div id="data-list" class="table-responsive">
+                                <table class="w-100">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" class="header_text text-center" style="border-top:1px solid black;">{{ __("Particulars") }}</th>
+                                            <th colspan="2" class="header_text text-center" style="border:1px solid black;">{{ __("Opening Balance") }}</th>
+                                            <th colspan="2" class="header_text text-center" style="border:1px solid black;">{{ __("Closing Balance") }}</th>
+                                        </tr>
 
-                                                    <tr>
-                                                        <th class="text-start bg-secondary text-white ps-2" colspan="2">
-                                                            <span>{{ __("Current Assets") }} : </span>
-                                                        </th>
-                                                    </tr>
+                                        <tr>
+                                            <th class="header_text text-end pe-1" style="border-left:1px solid black;border-right:1px solid black;">{{ __("Debit") }}</th>
+                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __("Credit") }}</th>
+                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __("Debit") }}</th>
+                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __("Credit") }}</th>
+                                        </tr>
+                                    </thead>
 
-                                                    <tr>
-                                                        <td style="display:flex;margin-left: 20px!important;">{{ __("Bank A/c") }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
+                                    <tbody>
+                                        <tr class="account_group_list">
+                                            <td class="text-start fw-bold">{{ __("Current Asset :") }}</td>
+                                            <td class="text-end fw-bold debit_amount">0.00</td>
+                                            <td class="text-end fw-bold credit_amount">0.00</td>
+                                            <td class="text-end fw-bold credit_amount">0.00</td>
+                                            <td class="text-end fw-bold credit_amount">0.00</td>
+                                        </tr>
+                                    </tbody>
 
-                                                    <tr>
-                                                        <td style="display:flex;margin-left: 20px!important;">{{ __("Cash In Hand") }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td style="display:flex;margin-left: 20px!important;">{{ __("Deposits") }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td style="display:flex;margin-left: 20px!important;">{{ __("Loan And Advance") }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td style="display:flex;margin-left: 20px!important;">{{ __("Stock In Hand") }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td style="display:flex;margin-left: 20px!important;">{{ __("Account Receivable") }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <th class="text-start">{{ __("Fixed Assets") }} :</th>
-                                                        <td class="text-start">0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <th class="text-start">{{ __("Investments") }} :</th>
-                                                        <td class="text-start">0.00</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-end fw-bold"><span>{{ __("Total") }} : </span></td>
-
-                                                        <td>
-                                                            <span>0.00</span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    <tfoot class="net_total_balance_footer">
+                                        <tr style="font-size:20px!important;">
+                                            <td class="text-end fw-bold net_debit_total">{{ __("Total") }} :</td>
+                                            <td class="text-end fw-bold net_credit_total">0.00</td>
+                                            <td class="text-end">0.00</td>
+                                            <td class="text-end">0.00</td>
+                                            <td class="text-end">0.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,42 +236,48 @@
             }
         });
 
-        function getFinancialReport() {
+        function getTrialBalance() {
 
             $('.data_preloader').show();
+
             var branch_id = $('#branch_id').val();
             var child_branch_id = $('#child_branch_id').val() ? $('#child_branch_id').val() : null;
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
-            // console.log(branch_id);
+            var format_of_report = $('#format_of_report').val();
+            var showing_type = $('#showing_type').val();
+
             $.ajax({
-                url: "{{ route('reports.financial.amounts') }}",
+                url: "{{ route('reports.trial.balance.data') }}",
                 type: 'GET',
                 data: {
                     branch_id,
                     child_branch_id,
                     from_date,
-                    to_date
+                    to_date,
+                    format_of_report,
+                    showing_type
                 },
                 success: function(data) {
 
-                    $('#data-list').html(data);
-                    $('.data_preloader').hide();
+                    return;
+                    // $('#data-list').html(data);
+                    // $('.data_preloader').hide();
                 }
             });
         }
-        getFinancialReport();
+        getTrialBalance();
 
-        // //Print purchase Payment report
-        $(document).on('submit', '#filter_financial_report', function(e) {
+        //Print purchase Payment report
+        $(document).on('submit', '#filter_trial_balance', function(e) {
             e.preventDefault();
-            getFinancialReport();
+            getTrialBalance();
         });
 
         //Print financial report
         $(document).on('click', '#printReport', function(e) {
             e.preventDefault();
-            var url = "{{ route('reports.financial.report.print') }}";
+            var url = "{{ route('reports.trial.balance.print') }}";
 
             var branch_id = $('#branch_id').val();
             var branch_name = $('#branch_id').find('option:selected').data('branch_name');
@@ -234,6 +285,8 @@
             var child_branch_name = $('#child_branch_id').find('option:selected').data('child_branch_name');
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
+            var format_of_report = $('#format_of_report').val();
+            var showing_type = $('#showing_type').val();
 
             var currentTitle = document.title;
 
@@ -246,7 +299,9 @@
                     child_branch_id,
                     child_branch_name,
                     from_date,
-                    to_date
+                    to_date,
+                    format_of_report,
+                    showing_type,
                 },
                 success: function(data) {
 

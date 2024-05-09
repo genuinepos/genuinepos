@@ -1528,7 +1528,7 @@
 
                                             @if (auth()->user()->can('trial_balance'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('accounting.trial.balance') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.trial.balance.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-balance-scale-right"></i></span>

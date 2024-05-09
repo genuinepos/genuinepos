@@ -14,6 +14,7 @@ use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\CapitalAccountController;
 use App\Http\Controllers\Accounts\Reports\CashFlowController;
 use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
+use App\Http\Controllers\Accounts\Reports\TrialBalanceController;
 use App\Http\Controllers\Accounts\Reports\VatTaxReportController;
 use App\Http\Controllers\Accounts\Reports\DayBookReportController;
 use App\Http\Controllers\Accounts\Reports\FinancialReportController;
@@ -162,6 +163,13 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('/', 'index')->name('reports.cash.flow.index');
             Route::get('data', 'cashFlowData')->name('reports.cash.flow.data');
             Route::get('print', 'cashFlowPrint')->name('reports.cash.flow.print');
+        });
+
+        Route::controller(TrialBalanceController::class)->prefix('trial-balance')->group(function () {
+
+            Route::get('/', 'index')->name('reports.trial.balance.index');
+            Route::get('data', 'trialBalanceData')->name('reports.trial.balance.data');
+            Route::get('print', 'trialBalancePrint')->name('reports.trial.balance.print');
         });
     });
 });

@@ -6,16 +6,16 @@ use Carbon\Carbon;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 
-class AssetTrialBalanceService
+class GroupWiseTrialBalanceService
 {
-    public function details(object $request, string $accountStartDate)
+    public function accountGroups(object $request, string $accountStartDate)
     {
-        return $currentAsset = $this->currentAsset($request, $accountStartDate);
+        return $this->queryResult($request, $accountStartDate);
     }
 
-    private function currentAsset(object $request, string $accountStartDate)
+    private function queryResult(object $request, string $accountStartDate)
     {
-        $filteredBranchId = '';
+        $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
             $request->child_branch_id : null;
@@ -31,7 +31,10 @@ class AssetTrialBalanceService
             }
         } else {
 
-            $filteredBranchId = auth()->user()->branch_id;
+            if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+                $filteredBranchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+            }
         }
 
         $accountStartDateYmd = '';
@@ -55,14 +58,22 @@ class AssetTrialBalanceService
 
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('bank_access_branches', function ($join) use ($filteredBranchId) {
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+
+        if (isset($filteredBranchId) || isset($filteredChildBranchId)) {
+
+            $query->leftJoin('bank_access_branches', function ($join) use ($filteredBranchId, $filteredChildBranchId) {
 
                 $__filteredBranchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
+
+                $branchId = $filteredChildBranchId ? $filteredChildBranchId : $__filteredBranchId;
+
                 $join->on('accounts.id', '=', 'bank_access_branches.bank_account_id')
-                    ->where('bank_access_branches.branch_id', '=', $__filteredBranchId);
-            })
-            ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+                    ->where('bank_access_branches.branch_id', '=', $branchId);
+            });
+        }
+
+        $query->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id')
             ->whereNotIn('account_groups.id', function ($query) {
@@ -75,31 +86,28 @@ class AssetTrialBalanceService
                     ->whereIn('sub_group_number', [6]);
             });
 
-        if ($request->branch_id) {
+        // if ($request->branch_id) {
 
-            if ($request->branch_id == 'NULL') {
+        //     if ($request->branch_id == 'NULL') {
 
-                $query->where('accounts.branch_id', null);
-            }
-        }
+        //         $query->where('accounts.branch_id', null);
+        //     }
+        // }
 
-        $branchId = null;
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (isset($filteredBranchId) && !isset($filteredChildBranchId)) {
 
-            $branchId = auth()->user()->branch_id;
-        } else {
+            $query->where(function ($query) use ($filteredBranchId) {
 
-            $branchId = $filteredBranchId;
-        }
+                $__filteredBranchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
 
-        if ($filteredBranchId && !isset($filteredChildBranchId)) {
+                $query->where('accounts.branch_id', '=', $__filteredBranchId);
 
-            $query->where(function ($query) use ($branchId) {
+                if (isset($__branchId)) {
 
-                $__branchId = $branchId == 'NULL' ? null : $branchId;
-                $query->where('accounts.branch_id', '=', $__branchId)
-                    ->orWhere('parentBranch.id', '=', $__branchId)
-                    ->orWhere('bank_access_branches.branch_id', '=', $__branchId);
+                    $query->orWhere('parentBranch.id', '=', $__filteredBranchId);
+                }
+
+                $query->orWhere('bank_access_branches.branch_id', '=', $__filteredBranchId);
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
@@ -207,12 +215,13 @@ class AssetTrialBalanceService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
+            ->groupBy(
+                'parentGroup.id',
+                'account_groups.id',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'accounts.id'
+            )
             // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
@@ -240,7 +249,7 @@ class AssetTrialBalanceService
         $lastCurrentLiabilitiesIndex = -1;
         foreach ($queryResult as $index => $item) {
 
-            if ($item->sub_group_number == 2) {
+            if ($item->sub_group_number == 1) {
 
                 $lastBankAccountsIndex = $index;
             }
@@ -259,7 +268,7 @@ class AssetTrialBalanceService
         $accountReceivableCount = 0;
         if ($lastBankAccountsIndex != -1) {
 
-            $newData = $this->accountReceivable($request, $accountStartDate);
+            $newData = $this->accountReceivableQuery($request, $accountStartDate);
             $accountReceivableCount = count($newData);
             $__newData = json_decode($newData);
             // Insert new data after the last Bank Accounts entry
@@ -270,7 +279,7 @@ class AssetTrialBalanceService
         $capitalAccountCount = 0;
         if ($lastLiabilitiesIndex != -1) {
 
-            $newData1 = $this->capitalAccount($request, $accountStartDate);
+            $newData1 = $this->capitalAccountQuery($request, $accountStartDate);
             $capitalAccountCount = count($newData1);
             $__newData1 = json_decode($newData1);
             // Insert new data after the last Bank Accounts entry
@@ -283,7 +292,7 @@ class AssetTrialBalanceService
         $dutiesAndTaxCount = 0;
         if ($lastCurrentLiabilitiesIndex != -1) {
 
-            $newData2 = $this->dutiesAndTaxesAccount($request, $accountStartDate);
+            $newData2 = $this->dutiesAndTaxesAccountQuery($request, $accountStartDate);
             $__newData2 = json_decode($newData2);
             $dutiesAndTaxCount = count($__newData2);
             // Insert new data after the last Bank Accounts entry
@@ -294,7 +303,7 @@ class AssetTrialBalanceService
 
         if ($lastCurrentLiabilitiesIndex != -1) {
 
-            $newData3 = $this->accountPayable($request, $accountStartDate);
+            $newData3 = $this->accountPayableQuery($request, $accountStartDate);
             $__newData3 = json_decode($newData3);
             // Insert new data after the last Bank Accounts entry
             $i = $accountReceivableCount + $capitalAccountCount + $dutiesAndTaxCount;
@@ -307,7 +316,7 @@ class AssetTrialBalanceService
         return $prepareMappedArray = $this->prepareMappedArray($newJsonData, $mappedArray);
     }
 
-    private function accountReceivable(object $request, string $accountStartDate)
+    private function accountReceivableQuery(object $request, string $accountStartDate)
     {
         $accountStartDateYmd = '';
         $fromDateYmd = '';
@@ -460,7 +469,7 @@ class AssetTrialBalanceService
         return json_decode(json_encode($prepareMappedArray));
     }
 
-    private function capitalAccount($request, $accountStartDate)
+    private function capitalAccountQuery($request, $accountStartDate)
     {
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
@@ -713,7 +722,7 @@ class AssetTrialBalanceService
                             '
                         ),
                     );
-                }else {
+                } else {
 
                     $query->select(
                         'account_groups.id as group_id',
@@ -989,7 +998,7 @@ class AssetTrialBalanceService
                             '
                         ),
                     );
-                }else {
+                } else {
 
                     $query->select(
                         'account_groups.id as group_id',
@@ -1068,7 +1077,7 @@ class AssetTrialBalanceService
             ->get();
     }
 
-    private function dutiesAndTaxesAccount($request, $accountStartDate)
+    private function dutiesAndTaxesAccountQuery($request, $accountStartDate)
     {
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
@@ -1097,7 +1106,7 @@ class AssetTrialBalanceService
         }
 
         $query = DB::table('account_groups')
-        ->where('account_groups.sub_sub_group_number', 8)
+            ->where('account_groups.sub_sub_group_number', 8)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
@@ -1321,7 +1330,7 @@ class AssetTrialBalanceService
                             '
                         ),
                     );
-                }else {
+                } else {
 
                     $query->select(
                         'account_groups.id as group_id',
@@ -1597,7 +1606,7 @@ class AssetTrialBalanceService
                             '
                         ),
                     );
-                }else {
+                } else {
 
                     $query->select(
                         'account_groups.id as group_id',
@@ -1676,7 +1685,7 @@ class AssetTrialBalanceService
             ->get();
     }
 
-    private function accountPayable($request, $accountStartDate)
+    private function accountPayableQuery($request, $accountStartDate)
     {
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
@@ -1705,7 +1714,7 @@ class AssetTrialBalanceService
         }
 
         $query = DB::table('account_groups')
-        ->where('account_groups.sub_sub_group_number', 10)
+            ->where('account_groups.sub_sub_group_number', 10)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
@@ -1929,7 +1938,7 @@ class AssetTrialBalanceService
                             '
                         ),
                     );
-                }else {
+                } else {
 
                     $query->select(
                         'account_groups.id as group_id',
@@ -2205,7 +2214,7 @@ class AssetTrialBalanceService
                             '
                         ),
                     );
-                }else {
+                } else {
 
                     $query->select(
                         'account_groups.id as group_id',
@@ -2284,7 +2293,7 @@ class AssetTrialBalanceService
             ->get();
     }
 
-    public function prepareMappedArray($results, $mappedArray)
+    private function prepareMappedArray($results, $mappedArray)
     {
         foreach ($results as $res) {
 
@@ -2442,7 +2451,138 @@ class AssetTrialBalanceService
                 }
             } else {
 
-                if ($closingBalance != 0) {
+                $mainArrIndex = null;
+                foreach ($mappedArray as $key => $arr) {
+
+                    if ($arr['sub_group_number'] == $res->sub_group_number) {
+
+                        $mainArrIndex = $key;
+                    }
+
+                    if (isset($mainArrIndex)) {
+
+                        break;
+                    }
+                }
+
+                if (!isset($mainArrIndex)) {
+
+                    if ($res->account_id) {
+
+                        $mappedArray[] = [
+                            'main_group_id' => $res->parent_group_id,
+                            'main_group_name' => $res->parent_group_name,
+                            'sub_group_number' => $res->sub_group_number,
+                            'sub_sub_group_number' => null,
+                            'debit_opening_balance' => ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0),
+                            'credit_opening_balance' => ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0),
+                            'debit_closing_balance' => ($closingBalanceSide == 'dr' ? $closingBalance : 0),
+                            'credit_closing_balance' => ($closingBalanceSide == 'cr' ? $closingBalance : 0),
+                            'groups' => [
+                                [
+                                    "group_id" => $res->group_id,
+                                    "group_name" =>  $res->group_name,
+                                    "parent_group_name" => $res->parent_group_name,
+                                    "sub_group_number" => $res->sub_group_number,
+                                    "sub_sub_group_number" => $res->sub_sub_group_number,
+                                    "debit_opening_balance" => ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0),
+                                    "credit_opening_balance" => ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0),
+                                    "debit_closing_balance" => ($closingBalanceSide == 'dr' ? $closingBalance : 0),
+                                    "credit_closing_balance" => ($closingBalanceSide == 'cr' ? $closingBalance : 0)
+                                ]
+                            ],
+                            'accounts' => [
+                                // [
+                                //     'account_id' => $res->account_id,
+                                //     'account_name' => $res->account_name,
+                                //     'debit_opening_balance' => ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0),
+                                //     'credit_opening_balance' => ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0),
+                                //     'debit_closing_balance' => ($closingBalanceSide == 'dr' ? $closingBalance : 0),
+                                //     'credit_closing_balance' => ($closingBalanceSide == 'cr' ? $closingBalance : 0),
+                                // ],
+                            ],
+                        ];
+                    } else {
+
+                        $mappedArray[] = [
+                            'main_group_id' => $res->group_id,
+                            'main_group_name' => $res->group_name,
+                            'sub_group_number' => $res->sub_group_number,
+                            'sub_sub_group_number' => null,
+                            'debit_opening_balance' => ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0),
+                            'credit_opening_balance' => ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0),
+                            'debit_closing_balance' => ($closingBalanceSide == 'dr' ? $closingBalance : 0),
+                            'credit_closing_balance' => ($closingBalanceSide == 'cr' ? $closingBalance : 0),
+                            'groups' => [],
+                            'accounts' => [],
+                        ];
+                    }
+                } else if (isset($mainArrIndex)) {
+
+                    if ($res->account_id && $res->parent_group_id != $mappedArray[$mainArrIndex]['main_group_id'] && $res->account_group_id == $mappedArray[$mainArrIndex]['main_group_id']) {
+
+                        array_push($mappedArray[$mainArrIndex]['accounts'], [
+                            'account_id' => $res->account_id,
+                            'account_name' => $res->account_name,
+                            'debit_opening_balance' => ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0),
+                            'credit_opening_balance' => ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0),
+                            'debit_closing_balance' => ($closingBalanceSide == 'dr' ? $closingBalance : 0),
+                            'credit_closing_balance' => ($closingBalanceSide == 'cr' ? $closingBalance : 0),
+                        ]);
+                    } else {
+
+                        if ($res->parent_group_id == $mappedArray[$mainArrIndex]['main_group_id']) {
+
+                            $sameSubGroupKey = null;
+                            foreach ($mappedArray[$mainArrIndex]['groups'] as $key => $value) {
+
+                                if ($value['group_id'] == $res->group_id) {
+
+                                    $sameSubGroupKey = $key;
+                                }
+
+                                if (isset($sameSubGroupKey)) {
+
+                                    break;
+                                }
+                            }
+
+                            if (!isset($sameSubGroupKey)) {
+
+                                array_push($mappedArray[$mainArrIndex]['groups'], [
+                                    'group_id' => $res->group_id,
+                                    'group_name' => $res->group_name,
+                                    'parent_group_name' => $res->parent_group_name,
+                                    'sub_group_number' => $res->sub_group_number,
+                                    'sub_sub_group_number' => $res->sub_sub_group_number,
+                                    'debit_opening_balance' => ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0),
+                                    'credit_opening_balance' => ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0),
+                                    'debit_closing_balance' => ($closingBalanceSide == 'dr' ? $closingBalance : 0),
+                                    'credit_closing_balance' => ($closingBalanceSide == 'cr' ? $closingBalance : 0),
+                                ]);
+                            } else {
+
+                                $mappedArray[$mainArrIndex]['groups'][$sameSubGroupKey]['debit_opening_balance'] += ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0);
+                                $mappedArray[$mainArrIndex]['groups'][$sameSubGroupKey]['credit_opening_balance'] += ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0);
+                                $mappedArray[$mainArrIndex]['groups'][$sameSubGroupKey]['debit_closing_balance'] += ($closingBalanceSide == 'dr' ? $closingBalance : 0);
+                                $mappedArray[$mainArrIndex]['groups'][$sameSubGroupKey]['credit_closing_balance'] += ($closingBalanceSide == 'cr' ? $closingBalance : 0);
+                            }
+                        } else {
+
+                            $lastSubGroupKey = count($mappedArray[$mainArrIndex]['groups']) - 1;
+
+                            $mappedArray[$mainArrIndex]['groups'][$lastSubGroupKey]['debit_opening_balance'] += ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0);
+                            $mappedArray[$mainArrIndex]['groups'][$lastSubGroupKey]['credit_opening_balance'] += ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0);
+                            $mappedArray[$mainArrIndex]['groups'][$lastSubGroupKey]['debit_closing_balance'] += ($closingBalanceSide == 'dr' ? $closingBalance : 0);
+                            $mappedArray[$mainArrIndex]['groups'][$lastSubGroupKey]['credit_closing_balance'] += ($closingBalanceSide == 'cr' ? $closingBalance : 0);
+                        }
+                    }
+
+                    $mappedArray[$mainArrIndex]['debit_opening_balance'] += ($acOpeningBalanceSide == 'dr' ? $acOpeningBalance : 0);
+                    $mappedArray[$mainArrIndex]['credit_opening_balance'] += ($acOpeningBalanceSide == 'cr' ? $acOpeningBalance : 0);
+                    $mappedArray[$mainArrIndex]['debit_closing_balance'] += ($closingBalanceSide == 'dr' ? $closingBalance : 0);
+                    $mappedArray[$mainArrIndex]['credit_closing_balance'] += ($closingBalanceSide == 'cr' ? $closingBalance : 0);
+                } else if ($closingBalance != 0) {
 
                     $mainArrIndex = null;
                     foreach ($mappedArray as $key => $arr) {
@@ -2483,7 +2623,7 @@ class AssetTrialBalanceService
                         $subGroupArrIndex = null;
                         foreach ($mappedArray[$mainArrIndex]['groups'] as $key => $value) {
 
-                            if ($value['sub_group_number'] === $res->sub_group_number && $value['sub_sub_group_number'] === $res->sub_sub_group_number) {
+                            if (isset($value['sub_group_number']) && $value['sub_group_number'] === $res->sub_group_number && $value['sub_sub_group_number'] === $res->sub_sub_group_number) {
 
                                 $subGroupArrIndex = $key;
                             }

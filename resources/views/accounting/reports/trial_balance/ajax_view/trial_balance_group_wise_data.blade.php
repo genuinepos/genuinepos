@@ -71,22 +71,22 @@
                                 @if ($group['debit_closing_balance'] > 0 || $group['credit_closing_balance'] > 0)
 
                                     <tr class="account_group_list">
-                                        <td class="text-start ps-1"><b>{{ $group['group_name'] }}</b></td>
+                                        <td class="text-start ps-1">{{ $group['group_name'] }}</td>
 
                                         <td class="text-end">
-                                            <b>{{ ($group['debit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($group['debit_opening_balance']) : '' ) }}</b>
+                                            {{ ($group['debit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($group['debit_opening_balance']) : '' ) }}
                                         </td>
 
                                         <td class="text-end">
-                                            <b>{{ ($group['credit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($group['credit_opening_balance']) : '' ) }}</b>
+                                            {{ ($group['credit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($group['credit_opening_balance']) : '' ) }}
                                         </td>
 
                                         <td class="text-end">
-                                            <b>{{ $group['debit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($group['debit_closing_balance']) : '' }}</b>
+                                            {{ $group['debit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($group['debit_closing_balance']) : '' }}
                                         </td>
 
                                         <td class="text-end">
-                                            <b>{{ $group['credit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($group['credit_closing_balance']) : '' }}</b>
+                                            {{ $group['credit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($group['credit_closing_balance']) : '' }}
                                         </td>
                                     </tr>
                                 @endif
@@ -102,22 +102,22 @@
 
                                 @if ($account['debit_closing_balance'] > 0 || $account['credit_closing_balance'] > 0)
                                     <tr class="account_group_list">
-                                        <td class="text-start ps-1"><b>{{ $account['account_name'] }}</b></td>
+                                        <td class="text-start ps-1">{{ $account['account_name'] }}</td>
 
                                         <td class="text-end">
-                                            <b>{{ ($account['debit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($account['debit_opening_balance']) : '' ) }}</b>
+                                            {{ ($account['debit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($account['debit_opening_balance']) : '' ) }}
                                         </td>
 
                                         <td class="text-end">
-                                            <b>{{ ($account['credit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($account['credit_opening_balance']) : '' ) }}</b>
+                                            {{ ($account['credit_opening_balance'] > 0 ? \App\Utils\Converter::format_in_bdt($account['credit_opening_balance']) : '' ) }}
                                         </td>
 
                                         <td class="text-end">
-                                            <b>{{ $account['debit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($account['debit_closing_balance']) : '' }}</b>
+                                            {{ $account['debit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($account['debit_closing_balance']) : '' }}
                                         </td>
 
                                         <td class="text-end">
-                                            <b>{{ $account['credit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($account['credit_closing_balance']) : '' }}</b>
+                                            {{ $account['credit_closing_balance'] > 0 ? App\Utils\Converter::format_in_bdt($account['credit_closing_balance']) : '' }}
                                         </td>
                                     </tr>
                                 @endif
@@ -147,7 +147,7 @@
             $totalCreditClosingBalance += $differenceInOpeningBalanceSide == 'dr' ? $differenceInOpeningBalance : 0;
         @endphp
         <tr class="difference_in_opening_balance_area">
-            <td class="text-start fw-bold" style="text-align: right!important;">@lang('menu.differenceInOpeningBalance') :</td>
+            <td class="text-start fw-bold" style="text-align: right!important;">{{ __("Difference In Opening Balance") }} :</td>
             <td class="text-end debit_amount fw-bold">{{ $differenceInOpeningBalanceSide == 'cr' ? \App\Utils\Converter::format_in_bdt($differenceInOpeningBalance) : '' }}</td>
             <td class="text-end credit_amount fw-bold">{{ $differenceInOpeningBalanceSide == 'dr' ? \App\Utils\Converter::format_in_bdt($differenceInOpeningBalance) : '' }}</td>
             <td class="text-end debit_amount fw-bold">{{ $differenceInOpeningBalanceSide == 'cr' ? \App\Utils\Converter::format_in_bdt($differenceInOpeningBalance) : '' }}</td>
@@ -156,7 +156,7 @@
     </tbody>
 
     <tfoot class="net_total_balance_footer">
-        <td class="text-end footer_total fw-bold" >@lang('menu.total') :</td>
+        <td class="text-end footer_total fw-bold">{{ __("Total") }} :</td>
         <td class="text-end footer_total footer_total_debit fw-bold">{{ \App\Utils\Converter::format_in_bdt($totalDebitOpeningBalance) }}</td>
         <td class="text-end footer_total footer_total_credit fw-bold">{{ \App\Utils\Converter::format_in_bdt($totalCreditOpeningBalance) }}</td>
         <td class="text-end footer_total footer_total_debit fw-bold">{{ \App\Utils\Converter::format_in_bdt($totalDebitClosingBalance) }}</td>

@@ -6,12 +6,6 @@
             box-sizing: border-box;
         }
 
-        .column {
-            float: left;
-            width: 100%;
-            padding: 0px;
-        }
-
         /* Clearfix (clear floats) */
         .row::after {
             content: "";
@@ -20,19 +14,17 @@
         }
 
         table {
+            font-family: Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             border-spacing: 0;
             width: 100%;
             border: 1px solid #ddd;
+            border: none !important;
         }
 
         th,
         td {
             text-align: left;
-        }
-
-        table {
-            border: none !important;
         }
 
         .net_total_balance_footer tr {
@@ -134,19 +126,19 @@
                                         <label><strong>{{ __('Format of Report') }}</strong></label>
                                         <div class="input-group">
                                             <select name="format_of_report" class="form-control" id="format_of_report">
-                                                <option value="detailed">{{ __('Detailed') }}</option>
                                                 <option value="condensed">{{ __('Condensed') }}</option>
+                                                <option value="detailed">{{ __('Detailed') }}</option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <label><strong>{{ __("Type of Grouping") }}</strong></label>
+                                    {{-- <div class="col-md-2">
+                                        <label><strong>{{ __('Type of Grouping') }}</strong></label>
                                         <select name="showing_type" class="form-control" id="showing_type">
-                                            <option value="group_wise">{{ __("Group Wise") }}</option>
-                                            <option value="ledger_wise">{{ __("Ledger Wise") }}</option>
+                                            <option value="group_wise">{{ __('Group Wise') }}</option>
+                                            <option value="ledger_wise">{{ __('Ledger Wise') }}</option>
                                         </select>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-md-2">
                                         <div class="row">
@@ -174,33 +166,33 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
                         <div class="data_preloader">
-                            <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}</h6>
+                            <h6><i class="fas fa-spinner"></i> {{ __('Processing') }}</h6>
                         </div>
                         <div class="trial_balance_area">
                             <div id="data-list" class="table-responsive">
                                 <table class="w-100">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2" class="header_text text-center" style="border-top:1px solid black;">{{ __("Particulars") }}</th>
-                                            <th colspan="2" class="header_text text-center" style="border:1px solid black;">{{ __("Opening Balance") }}</th>
-                                            <th colspan="2" class="header_text text-center" style="border:1px solid black;">{{ __("Closing Balance") }}</th>
+                                            <th rowspan="2" class="header_text text-center" style="border-top:1px solid black;">{{ __('Particulars') }}</th>
+                                            <th colspan="2" class="header_text text-center" style="border:1px solid black;">{{ __('Opening Balance') }}</th>
+                                            <th colspan="2" class="header_text text-center" style="border:1px solid black;">{{ __('Closing Balance') }}</th>
                                         </tr>
 
                                         <tr>
-                                            <th class="header_text text-end pe-1" style="border-left:1px solid black;border-right:1px solid black;">{{ __("Debit") }}</th>
-                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __("Credit") }}</th>
-                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __("Debit") }}</th>
-                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __("Credit") }}</th>
+                                            <th class="header_text text-end pe-1" style="border-left:1px solid black;border-right:1px solid black;">{{ __('Debit') }}</th>
+                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __('Credit') }}</th>
+                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __('Debit') }}</th>
+                                            <th class="header_text text-end pe-1" style="border-right:1px solid black;">{{ __('Credit') }}</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         <tr class="account_group_list">
-                                            <td class="text-start fw-bold">{{ __("Current Asset :") }}</td>
+                                            <td class="text-start fw-bold">{{ __('Current Asset :') }}</td>
                                             <td class="text-end fw-bold debit_amount">0.00</td>
                                             <td class="text-end fw-bold credit_amount">0.00</td>
                                             <td class="text-end fw-bold credit_amount">0.00</td>
@@ -210,7 +202,7 @@
 
                                     <tfoot class="net_total_balance_footer">
                                         <tr style="font-size:20px!important;">
-                                            <td class="text-end fw-bold net_debit_total">{{ __("Total") }} :</td>
+                                            <td class="text-end fw-bold net_debit_total">{{ __('Total') }} :</td>
                                             <td class="text-end fw-bold net_credit_total">0.00</td>
                                             <td class="text-end">0.00</td>
                                             <td class="text-end">0.00</td>
@@ -260,9 +252,32 @@
                 },
                 success: function(data) {
 
-                    return;
-                    // $('#data-list').html(data);
-                    // $('.data_preloader').hide();
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg, 'ERROR');
+                        return;
+                    }
+
+                    $('#data-list').html(data);
+                    $('.data_preloader').hide();
+                },
+                error: function(err) {
+
+                    $('.data_preloader').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         }

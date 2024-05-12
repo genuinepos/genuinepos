@@ -137,7 +137,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
                 if ($addProduction->status == ProductionStatus::Final->value) {
 
-                    $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Production->value, date: $addProduction->date, productId: $addProductionIngredient->product_id, transId: $addProduction->id, rate: $addProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $addProductionIngredient->final_qty, subtotal: $addProductionIngredient->subtotal, variantId: $addProductionIngredient->variant_id, optionalColName: 'production_ingredient_id', optionalColValue: $addProductionIngredient->id, warehouseId: $addProduction->stock_warehouse_id);
+                    $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::UsedInProduction->value, date: $addProduction->date, productId: $addProductionIngredient->product_id, transId: $addProduction->id, rate: $addProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $addProductionIngredient->final_qty, subtotal: $addProductionIngredient->subtotal, variantId: $addProductionIngredient->variant_id, optionalColName: 'production_ingredient_id', optionalColValue: $addProductionIngredient->id, warehouseId: $addProduction->stock_warehouse_id);
 
                     $this->productStockService->adjustMainProductAndVariantStock($addProductionIngredient->product_id, $addProductionIngredient->variant_id);
 
@@ -259,7 +259,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
             if ($updateProduction->status == ProductionStatus::Final->value) {
 
-                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Production->value, date: $updateProduction->date, productId: $updateProductionIngredient->product_id, transId: $updateProduction->id, rate: $updateProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $updateProductionIngredient->final_qty, subtotal: $updateProductionIngredient->subtotal, variantId: $updateProductionIngredient->variant_id, optionalColName: 'production_ingredient_id', optionalColValue: $updateProductionIngredient->id, warehouseId: $updateProduction->stock_warehouse_id);
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::UsedInProduction->value, date: $updateProduction->date, productId: $updateProductionIngredient->product_id, transId: $updateProduction->id, rate: $updateProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $updateProductionIngredient->final_qty, subtotal: $updateProductionIngredient->subtotal, variantId: $updateProductionIngredient->variant_id, optionalColName: 'production_ingredient_id', optionalColValue: $updateProductionIngredient->id, warehouseId: $updateProduction->stock_warehouse_id);
 
                 $this->productStockService->adjustMainProductAndVariantStock($updateProductionIngredient->product_id, $updateProductionIngredient->variant_id);
 

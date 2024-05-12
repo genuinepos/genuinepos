@@ -150,7 +150,7 @@ class ProductService
 
                     if (auth()->user()->can('product_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
 
                     if (auth()->user()->can('product_delete')) {
@@ -166,7 +166,7 @@ class ProductService
                     //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                     // }
 
-                    $html .= '<a href="#" class="dropdown-item">' . __('Product Ledger') . '</a>';
+                    $html .= '<a href="' . route('products.ledger.index', [$row->id]) . '" class="dropdown-item">' . __('Product Ledger') . '</a>';
 
                     if ($countPriceGroup > 0) {
 

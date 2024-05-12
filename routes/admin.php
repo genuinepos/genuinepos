@@ -49,10 +49,8 @@ use App\Http\Controllers\Report\FinancialReportControllerReport;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 
-
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
-
 
 Route::group(['prefix' => 'common/ajax/call'], function () {
     Route::get('branch/authenticated/users/{branchId}', [CommonAjaxCallController::class, 'branchAuthenticatedUsers']);
@@ -363,9 +361,6 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('balance/sheet', [AccountingRelatedSectionController::class, 'balanceSheet'])->name('accounting.balance.sheet');
         Route::get('balance/sheet/amounts', [AccountingRelatedSectionController::class, 'balanceSheetAmounts'])->name('accounting.balance.sheet.amounts');
-
-        Route::get('trial/balance', [AccountingRelatedSectionController::class, 'trialBalance'])->name('accounting.trial.balance');
-        Route::get('trial/balance/amounts', [AccountingRelatedSectionController::class, 'trialBalanceAmounts'])->name('accounting.trial.balance.amounts');
 
         Route::get('profit/loss/account', [AccountingRelatedSectionController::class, 'profitLossAccount'])->name('accounting.profit.loss.account');
         Route::get('profit/loss/account/amounts', [AccountingRelatedSectionController::class, 'profitLossAccountAmounts'])->name('accounting.profit.loss.account.amounts');

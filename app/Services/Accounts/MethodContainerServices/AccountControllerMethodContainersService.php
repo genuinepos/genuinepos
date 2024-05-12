@@ -2,6 +2,7 @@
 
 namespace App\Services\Accounts\MethodContainerServices;
 
+use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use App\Services\Accounts\BankService;
 use App\Services\Setups\BranchService;
@@ -44,9 +45,15 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        $data['accountGroups'] = $this->accountGroupService->singleAccountGroupByAnyCondition(with: ['parentGroup'])->where('is_main_group', 0)->get();
+        $data['accountGroups'] = $this->accountGroupService->singleAccountGroupByAnyCondition(with: ['parentGroup'])
+        ->where('is_main_group', BooleanType::False->value)->get();
 
         return $data;
+    }
+
+    public function expenseAccountsContainer(object $request): ?object
+    {
+        return $this->accountService->expenseAccounts(request: $request);
     }
 
     public function createMethodContainer(int $type): array

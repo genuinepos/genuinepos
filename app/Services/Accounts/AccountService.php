@@ -671,6 +671,53 @@ class AccountService
             ->get();
     }
 
+    public function expenseAccounts(object $request): ?object
+    {
+        $expenseAccounts = null;
+        $query = DB::table('accounts')
+            ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->whereIn('account_groups.sub_group_number', [10, 11]);
+
+        if ($request->branch_id && !$request->child_branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('accounts.branch_id', null);
+            } else {
+
+                $query->where('accounts.branch_id', $request->branch_id);
+            }
+        }else if ($request->branch_id && $request->child_branch_id) {
+
+            $query->where('accounts.branch_id', $request->child_branch_id);
+        }
+
+        if ($request->expense_group_id) {
+
+            $query->where('accounts.account_group_id', $request->expense_group_id);
+        }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('accounts.branch_id', auth()->user()->branch_id);
+        }
+
+        $expenseAccounts = $query->select(
+            'accounts.id',
+            'accounts.branch_id',
+            'accounts.name',
+            'account_groups.name as group_name',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'branches.area_name',
+            'parentBranch.name as parent_branch_name',
+        )->get();
+
+        return $expenseAccounts;
+    }
+
     public function singleAccount(int $id, array $with = null)
     {
         $query = Account::query();

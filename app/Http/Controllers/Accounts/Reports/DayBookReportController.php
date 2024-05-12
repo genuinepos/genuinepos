@@ -16,6 +16,8 @@ class DayBookReportController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('day_book'), 403);
+
         if ($request->ajax()) {
 
             return $this->dayBookReportService->daybookTable(request: $request);

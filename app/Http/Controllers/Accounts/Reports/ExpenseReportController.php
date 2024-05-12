@@ -20,6 +20,8 @@ class ExpenseReportController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('expense_report'), 403);
+
         if ($request->ajax()) {
 
             return $this->expenseReportService->expenseReportTable(request: $request);

@@ -43,6 +43,7 @@ class CashFlowController extends Controller
 
     public function index()
     {
+        abort_if(!auth()->user()->can('cash_flow'), 403);
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         return view('accounting.reports.cash_flow.index', compact('branches'));
     }

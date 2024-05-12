@@ -436,8 +436,8 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '271', 'name' => 'profit_loss'],
             ['id' => '272', 'name' => 'financial_report'],
-            ['id' => '273', 'name' => 'profit_loss_account'],
-            ['id' => '274', 'name' => 'balance_sheet'],
+            // ['id' => '273', 'name' => 'profit_loss_account'],
+            // ['id' => '274', 'name' => 'balance_sheet'],
             ['id' => '275', 'name' => 'trial_balance'],
             ['id' => '276', 'name' => 'cash_flow'],
 
@@ -590,6 +590,9 @@ class RolePermissionSeeder extends Seeder
             ['id' => '402', 'name' => 'stock_issues_add'],
             ['id' => '403', 'name' => 'stock_issues_edit'],
             ['id' => '404', 'name' => 'stock_issues_delete'],
+
+            ['id' => '405', 'name' => 'expense_report'],
+            ['id' => '406', 'name' => 'day_book'],
         ];
 
         return $permissions;

@@ -31,6 +31,7 @@ class ProfitLossReportController extends Controller
     public function printProfitLoss(Request $request)
     {
         abort_if(!auth()->user()->can('profit_loss'), 403);
+        
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 

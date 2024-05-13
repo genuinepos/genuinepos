@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use Carbon\Carbon;
 use App\Enums\BooleanType;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
@@ -206,5 +207,124 @@ class ProductStockService
             ->where('variant_id', $variantId)
             ->where('branch_id', $branchId)
             ->where('warehouse_id', null)->first();
+    }
+
+    public function productStock(?int $id, object $request): array
+    {
+        $converter = new \App\Utils\Converter();
+        $amounts = '';
+        $query = DB::table('product_ledgers')->where('product_ledgers.product_id', $id);
+
+        $accountStartDateYmd = '';
+        $fromDateYmd = '';
+        $toDateYmd = '';
+        if ($request->from_date && $request->to_date) {
+
+            $generalSettings = config('generalSettings');
+            $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
+
+            $fromDateYmd = Carbon::parse($request->from_date)->startOfDay();
+            $toDateYmd = Carbon::parse($request->to_date)->endOfDay();
+            $accountStartDateYmd = Carbon::parse($accountStartDate)->startOfDay();
+        }
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('product_ledgers.branch_id', null);
+            } else {
+
+                $query->where('product_ledgers.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->warehouse_id) {
+
+            $query->where('product_ledgers.warehouse_id', $request->warehouse_id);
+        }
+
+        if ($request->variant_id) {
+
+            $query->where('product_ledgers.variant_id', $request->variant_id);
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('product_ledgers.branch_id', auth()->user()->branch_id);
+        }
+
+        if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
+
+            $query->select(
+                DB::raw("IFNULL(SUM(case when timestamp(product_ledgers.date_ts) < '$fromDateYmd' then product_ledgers.in end), 0) as opening_total_in"),
+                DB::raw("IFNULL(SUM(case when timestamp(product_ledgers.date_ts) < '$fromDateYmd' then product_ledgers.out end), 0) as opening_total_out"),
+                DB::raw("IFNULL(SUM(case when timestamp(product_ledgers.date_ts) > '$fromDateYmd' and timestamp(product_ledgers.date_ts) < '$toDateYmd' then product_ledgers.in end), 0) as curr_total_in"),
+                DB::raw("IFNULL(SUM(case when timestamp(product_ledgers.date_ts) > '$fromDateYmd' and timestamp(product_ledgers.date_ts) < '$toDateYmd' then product_ledgers.out end), 0) as curr_total_out"),
+            );
+        } elseif ($fromDateYmd && $toDateYmd && $fromDateYmd <= $accountStartDateYmd) {
+
+            $query->select(
+                DB::raw("IFNULL(SUM(case when product_ledgers.voucher_type = 0 and timestamp(product_ledgers.date_ts) > '$fromDateYmd' and timestamp(product_ledgers.date_ts) < '$toDateYmd' then product_ledgers.in end), 0) as opening_total_in"),
+                DB::raw("IFNULL(SUM(case when product_ledgers.voucher_type = 0 and timestamp(product_ledgers.date_ts) > '$fromDateYmd' and timestamp(product_ledgers.date_ts) < '$toDateYmd' then product_ledgers.out end), 0) as opening_total_out"),
+                DB::raw("IFNULL(SUM(case when product_ledgers.voucher_type != 0 and timestamp(product_ledgers.date_ts) > '$fromDateYmd' and timestamp(product_ledgers.date_ts) < '$toDateYmd' then product_ledgers.in end), 0) as curr_total_in"),
+                DB::raw("IFNULL(SUM(case when product_ledgers.voucher_type != 0 and timestamp(product_ledgers.date_ts) > '$fromDateYmd' and timestamp(product_ledgers.date_ts) < '$toDateYmd' then product_ledgers.out end), 0) as curr_total_out"),
+            );
+        } else {
+
+            $query->select(
+                DB::raw('IFNULL(SUM(case when product_ledgers.voucher_type = 0 then product_ledgers.in end), 0) as opening_total_in'),
+                DB::raw('IFNULL(SUM(case when product_ledgers.voucher_type = 0 then product_ledgers.out end), 0) as opening_total_out'),
+                DB::raw('IFNULL(SUM(case when product_ledgers.voucher_type != 0 then product_ledgers.in end), 0) as curr_total_in'),
+                DB::raw('IFNULL(SUM(case when product_ledgers.voucher_type != 0 then product_ledgers.out end), 0) as curr_total_out'),
+            );
+        }
+
+        $amounts = $query->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
+
+        $openingStockIn = $amounts->sum('opening_total_in');
+        $__openingStockIn = $amounts->sum('opening_total_in');
+        $openingStockOut = $amounts->sum('opening_total_out');
+        $__openingStockOut = $amounts->sum('opening_total_out');
+
+        $currTotalIn = $amounts->sum('curr_total_in');
+        $__currTotalIn = $amounts->sum('curr_total_in');
+        $currTotalOut = $amounts->sum('curr_total_out');
+        $__currTotalOut = $amounts->sum('curr_total_out');
+
+        $currOpeningStock = $openingStockIn - $openingStockOut;
+
+        $currTotalIn += $currOpeningStock >= 0 ? $currOpeningStock : 0;
+        $currTotalOut += $currOpeningStock < 0 ? abs($currOpeningStock) : 0;
+
+        $closingStock = $currTotalIn - $currTotalOut;
+
+        $allTotalIn = 0;
+        $allTotalOut = 0;
+        if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
+
+            $allTotalIn = $__currTotalIn + ($currOpeningStock >= 0 ? $currOpeningStock : 0);
+            $allTotalOut = $__currTotalOut + ($currOpeningStock < 0 ? abs($currOpeningStock) : 0);
+        } else {
+
+            $allTotalIn = $__currTotalIn + $__openingStockIn;
+            $allTotalOut = $__currTotalOut + $__openingStockOut;
+        }
+
+        return [
+            'opening_stock' => $currOpeningStock ? $currOpeningStock : $converter::format_in_bdt(0),
+            'opening_stock_string' => $currOpeningStock ? $converter::format_in_bdt($currOpeningStock < 0 ? abs($currOpeningStock) : $currOpeningStock) : $converter::format_in_bdt(0),
+            'curr_total_in' => $__currTotalIn ? $__currTotalIn : $converter::format_in_bdt(0),
+            'curr_total_in_string' => $__currTotalIn ? $converter::format_in_bdt($__currTotalIn) : $converter::format_in_bdt(0),
+            'curr_total_out' => $__currTotalOut ? $__currTotalOut : $converter::format_in_bdt(0),
+            'curr_total_out_string' => $__currTotalOut ? $converter::format_in_bdt($__currTotalOut) : $converter::format_in_bdt(0),
+            'all_total_in' => $allTotalIn ? $allTotalIn : $converter::format_in_bdt(0),
+            'all_total_in_string' => $allTotalIn ? $converter::format_in_bdt($allTotalIn) : $converter::format_in_bdt(0),
+            'all_total_out' => $allTotalOut ? $allTotalOut : $converter::format_in_bdt(0),
+            'all_total_out_string' => $allTotalOut ? $converter::format_in_bdt($allTotalOut) : $converter::format_in_bdt(0),
+            'closing_stock' => $closingStock,
+            'closing_stock_string' => $converter::format_in_bdt($closingStock < 0 ? abs($closingStock) : $closingStock),
+        ];
     }
 }

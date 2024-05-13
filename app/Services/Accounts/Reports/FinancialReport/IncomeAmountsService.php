@@ -104,10 +104,58 @@ class IncomeAmountsService
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
 
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.debit end), 0) as opening_total_debit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.credit end), 0) as opening_total_credit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.debit end), 0) as curr_total_debit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.credit end), 0) as curr_total_credit"),
+                DB::raw(
+                    '
+                    IFNULL(
+                        SUM(
+                            CASE
+                                WHEN
+                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                THEN account_ledgers.debit
+                            END
+                        ), 0
+                    ) AS opening_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                    IFNULL(
+                        SUM(
+                            CASE
+                                WHEN
+                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                THEN account_ledgers.credit
+                            END
+                        ), 0
+                    ) AS opening_total_credit
+                    '
+                ),
+                DB::raw(
+                    '
+                    IFNULL(
+                        SUM(
+                            CASE
+                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                THEN account_ledgers.debit
+                            END
+                        ), 0
+                    ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                    IFNULL(
+                        SUM(
+                            CASE
+                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                THEN account_ledgers.credit
+                            END
+                        ), 0
+                    ) AS curr_total_credit
+                    '
+                ),
             );
         } else {
 

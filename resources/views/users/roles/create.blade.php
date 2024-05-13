@@ -1726,15 +1726,15 @@
                                                         <label for="financial_report">{{ __('Financial Report') }}</label>
                                                     </p>
 
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="profit_loss_account" id="profit_loss_account" class="accounting account_reports">
                                                         <label for="profit_loss_account">{{ __('Profit Loss Account') }}</label>
-                                                    </p>
+                                                    </p> --}}
 
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="balance_sheet" id="balance_sheet" class="accounting account_reports">
                                                         <label for="balance_sheet">{{ __('Balance Sheet') }}</label>
-                                                    </p>
+                                                    </p> --}}
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="trial_balance" id="trial_balance" class="accounting account_reports">
@@ -1749,6 +1749,16 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="cash_flow" id="cash_flow" class="accounting account_reports">
                                                         <label for="cash_flow">{{ __('Cash Flow') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="expense_report" id="expense_report" class="accounting account_reports">
+                                                        <label for="expense_report">{{ __('Expense Report') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="day_book" id="day_book" class="accounting account_reports">
+                                                        <label for="day_book">{{ __('Day Book') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

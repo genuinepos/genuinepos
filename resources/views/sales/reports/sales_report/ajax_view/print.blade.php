@@ -213,6 +213,7 @@
                     @endphp
 
                     @foreach ($sales as $sale)
+                    
                         @if ($previousDate != $sale->date)
                             @php
                                 $previousDate = $sale->date;

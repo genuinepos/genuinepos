@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\CodeGenerationService;
 use App\Http\Requests\Accounts\AccountStoreRequest;
+use App\Http\Requests\Accounts\AccountDeleteRequest;
 use App\Http\Requests\Accounts\AccountUpdateRequest;
 use App\Interfaces\Accounts\AccountControllerMethodContainersInterface;
 
@@ -31,6 +32,11 @@ class AccountController extends Controller
         extract($indexMethodContainer);
 
         return view('accounting.accounts.index', compact('branches', 'accountGroups'));
+    }
+
+    public function expenseAccounts(Request $request, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
+    {
+        return $accountControllerMethodContainersInterface->expenseAccountsContainer(request: $request);
     }
 
     public function create($type, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
@@ -92,10 +98,8 @@ class AccountController extends Controller
         return response()->json(__('Account updated successfully'));
     }
 
-    public function delete($id, Request $request, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
+    public function delete($id, AccountDeleteRequest $request, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('accounts_delete'), 403);
-
         try {
             DB::beginTransaction();
 

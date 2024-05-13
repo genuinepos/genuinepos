@@ -347,7 +347,7 @@ class AccountLedgerEntryService
 
             if ($account?->group?->sub_sub_group_number != 6) {
 
-                $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+                $accountOpeningBalanceQ->where('account_ledgers.branch_id', auth()->user()->branch_id);
             }
         }
 

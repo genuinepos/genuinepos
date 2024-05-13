@@ -39,7 +39,6 @@ class VatTaxReportController extends Controller
 
     public function vatTaxInputTable(Request $request)
     {
-
         if ($request->ajax()) {
 
             return $this->vatTaxReportService->vatTaxInputTable(request: $request);
@@ -48,7 +47,6 @@ class VatTaxReportController extends Controller
 
     public function vatTaxOutputTable(Request $request)
     {
-
         if ($request->ajax()) {
 
             return $this->vatTaxReportService->vatTaxOutputTable(request: $request);
@@ -57,14 +55,13 @@ class VatTaxReportController extends Controller
 
     public function vatTaxAmounts(Request $request)
     {
-
         return $this->vatTaxReportService->VatTaxAmounts(request: $request);
     }
 
     public function printVatTax(Request $request)
     {
         abort_if(!auth()->user()->can('vat_tax_report'), 403);
-        
+
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 

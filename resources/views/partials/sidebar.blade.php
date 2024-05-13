@@ -1528,7 +1528,7 @@
 
                                             @if (auth()->user()->can('trial_balance'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('accounting.trial.balance') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.trial.balance.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-balance-scale-right"></i></span>
@@ -1565,16 +1565,31 @@
                                                 </div>
                                             @endif
 
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('reports.day.book.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-money-bill-wave"></i></span>
+                                            @if (auth()->user()->can('day_book'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('reports.day.book.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-money-bill-wave"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Day Book') }}</p>
-                                                </a>
-                                            </div>
+                                                        <p class="switch_text">{{ __('Day Book') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('expense_report'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('reports.expenses.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-money-bill-wave"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __('Expense Report') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif

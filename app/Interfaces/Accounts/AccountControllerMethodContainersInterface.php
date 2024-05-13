@@ -10,6 +10,8 @@ interface AccountControllerMethodContainersInterface
 
     public function indexMethodContainer(object $request): array|object;
 
+    public function expenseAccountsContainer(object $request): ?object;
+
     public function createMethodContainer(int $type): array;
 
     public function storeMethodContainer(object $request, object $codeGenerator): object;

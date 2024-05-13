@@ -2,281 +2,150 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
-use App\Services\Products\BrandService;
-use App\Enums\UserActivityLogActionType;
-use App\Enums\UserActivityLogSubjectType;
-use App\Services\Accounts\AccountService;
-use App\Services\Products\ProductService;
-use App\Services\Products\CategoryService;
-use App\Services\Products\WarrantyService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\BulkVariantService;
-use App\Services\Products\ProductUnitService;
-use App\Services\Users\UserActivityLogService;
-use App\Services\Products\ProductVariantService;
+use App\Http\Requests\Products\ProductDeleteRequest;
 use App\Http\Requests\Products\ProductStoreRequest;
 use App\Http\Requests\Products\ProductUpdateRequest;
-use App\Services\Products\ProductAccessBranchService;
+use App\Interfaces\Products\ProductControllerMethodContainersInterface;
 
 class ProductController extends Controller
 {
-    public function __construct(
-        private ProductService $productService,
-        private ProductUnitService $productUnitService,
-        private UnitService $unitService,
-        private CategoryService $categoryService,
-        private BrandService $brandService,
-        private BulkVariantService $bulkVariantService,
-        private WarrantyService $warrantyService,
-        private ProductVariantService $productVariantService,
-        private ProductAccessBranchService $productAccessBranchService,
-        private AccountService $accountService,
-        private BranchService $branchService,
-        private PriceGroupService $priceGroupService,
-        private UserActivityLogService $userActivityLogService,
-    ) {
+    public function __construct()
+    {
         $this->middleware('subscriptionRestrictions');
     }
 
-    public function index(Request $request, $isForCreatePage = 0)
+    public function index(Request $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $isForCreatePage = 0)
     {
         abort_if(!auth()->user()->can('product_all'), 403);
 
+        $indexMethodContainer = $productControllerMethodContainersInterface->indexMethodContainer(request: $request, isForCreatePage: $isForCreatePage);
+
         if ($request->ajax()) {
 
-            return $this->productService->productListTable($request, $isForCreatePage);
+            return $indexMethodContainer;;
         }
 
-        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
-        $brands = $this->brandService->brands()->get(['id', 'name']);
-        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
-            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
-
-        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+        extract($indexMethodContainer);
 
         return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
     }
 
-    public function show($id)
+    public function show($id, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        $productShowQueries = $this->productService->productShowQueries(id: $id);
-        extract($productShowQueries);
+        $showMethodContainer = $productControllerMethodContainersInterface->showMethodContainer(id: $id);
 
-        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+        extract($showMethodContainer);
 
         return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks', 'priceGroups'));
     }
 
-    public function create(Request $request, $id = null)
+    public function create(Request $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $id = null)
     {
         abort_if(!auth()->user()->can('product_add'), 403);
 
+        $createMethodContainer = $productControllerMethodContainersInterface->createMethodContainer(request: $request, id: $id);
+
         if ($request->ajax()) {
 
-            return $this->productService->createProductListOfProducts();
+            return $createMethodContainer;;
         }
 
-        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
-        $brands = $this->brandService->brands()->get(['id', 'name']);
-        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
-        $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
-            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
-
-        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
-        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
-        $lastProductSerialCode = $this->productService->getLastProductSerialCode();
-
-        $product = null;
-        if ($id) {
-
-            $product = $this->productService->singleProduct(id: $id, with: ['variants', 'category', 'category.subcategories']);
-        }
+        extract($createMethodContainer);
 
         return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
-    public function store(ProductStoreRequest $request)
+    public function store(ProductStoreRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
         try {
             DB::beginTransaction();
 
-            $restrictions = $this->productService->restrictions($request);
+            $storeMethodContainer = $productControllerMethodContainersInterface->storeMethodContainer(request: $request);
 
-            if ($restrictions['pass'] == false) {
+            if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
-                return response()->json(['errorMsg' => $restrictions['msg']]);
+                return response()->json(['errorMsg' => $storeMethodContainer['msg']]);
             }
-
-            $addProduct = $this->productService->addProduct($request);
-
-            if ($request->has_multiple_unit == BooleanType::True->value && isset($request->base_unit_ids)) {
-
-                $this->productUnitService->addProductUnits(request: $request, productId: $addProduct->id);
-            }
-
-            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
-
-                foreach ($request->variant_combinations as $index => $variantCombination) {
-
-                    $addVariant = $this->productVariantService->addProductVariant(request: $request, productId: $addProduct->id, index: $index);
-
-                    if ($request->has_multiple_unit == BooleanType::True->value && isset($request->variant_base_unit_ids)) {
-
-                        $this->productUnitService->addProductVariantUnits(request: $request, productId: $addProduct->id, variantId: $addVariant->id, variantIndexNumber: $request->index_numbers[$index]);
-                    }
-                }
-            }
-
-            $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
-
-            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Product->value, dataObj: $addProduct);
 
             DB::commit();
         } catch (Exception $e) {
-
             DB::rollBack();
         }
 
-        return $addProduct;
+        return $storeMethodContainer;
     }
 
-    public function edit($id)
+    public function edit($id, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('product_edit'), 403);
 
-        $product = $this->productService->singleProduct(id: $id, with: ['productUnits', 'productUnits.baseUnit', 'variants', 'variants.variantUnits', 'variants.variantUnits.assignedUnit', 'variants.productLedgers', 'productAccessBranches']);
+        $editMethodContainer = $productControllerMethodContainersInterface->editMethodContainer(id: $id);
 
-        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
-        $subCategories = $this->categoryService->categories()->where('parent_category_id', ($product->category_id ? $product->category_id : 0))->get(['id', 'name']);
-        $brands = $this->brandService->brands()->get(['id', 'name']);
-        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
-        $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
-            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
-
-        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
-        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
-        $lastProductSerialCode = $this->productService->getLastProductSerialCode();
+        extract($editMethodContainer);
 
         return view('product.products.edit', compact('units', 'categories', 'subCategories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
-    public function update(ProductUpdateRequest $request, $id)
+    public function update($id, ProductUpdateRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
         try {
             DB::beginTransaction();
 
-            $restrictions = $this->productService->restrictions($request);
+            $updateMethodContainer = $productControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request);
 
-            if ($restrictions['pass'] == false) {
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
-                return response()->json(['errorMsg' => $restrictions['msg']]);
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
             }
-
-            $updateProduct = $this->productService->updateProduct(request: $request, productId: $id);
-
-            if ($updateProduct->has_multiple_unit == BooleanType::True->value) {
-
-                $this->productUnitService->updateProductUnits(request: $request, product: $updateProduct);
-            }
-
-            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
-
-                foreach ($request->variant_combinations as $index => $variantCombination) {
-
-                    $updateProductVariant = $this->productVariantService->updateProductVariant(request: $request, productId: $updateProduct->id, index: $index);
-
-                    if ($request->has_multiple_unit == BooleanType::True->value && isset($request->variant_base_unit_ids)) {
-
-                        $this->productUnitService->updateProductVariantUnits(request: $request, productId: $updateProduct->id, variantId: $updateProductVariant->id, variantIndexNumber: $request->index_numbers[$index]);
-                    }
-                }
-            }
-
-            $this->productVariantService->deleteUnusedProductVariants(productId: $updateProduct->id);
-            $this->productUnitService->deleteUnusedProductAndVariantUnits(productId: $updateProduct->id);
-
-            $this->productAccessBranchService->updateProductAccessBranches(request: $request, product: $updateProduct);
-
-            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Product->value, dataObj: $updateProduct);
 
             DB::commit();
         } catch (Exception $e) {
-
             DB::rollBack();
         }
 
         return response()->json(__('Product updated successfully.'));
     }
 
-    public function formPart($type)
+    public function formPart($type, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        $type = $type;
-        $generalSettings = config('generalSettings');
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
-            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
+        $formPartMethodContainer = $productControllerMethodContainersInterface->formPartMethodContainer(id: $id);
 
-        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
-        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
-        $defaultUnitId = $generalSettings['product__default_unit_id'] ? $generalSettings['product__default_unit_id'] : null;
-        $defaultUnit = $this->unitService->singleUnit(id: $defaultUnitId);
-        $defaultUnitName = isset($defaultUnit) ? $defaultUnit->name : null;
+        extract($formPartMethodContainer);
 
         return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants', 'units', 'defaultUnitId', 'defaultUnitName'));
     }
 
-    public function changeStatus($id)
+    public function changeStatus($id, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        $changeStatus = $this->productService->changeProductStatus(id: $id);
-
-        return response()->json($changeStatus['msg']);
+        $changeStatusMethodContainer = $productControllerMethodContainersInterface->changeStatusMethodContainer(id: $id);
+        return response()->json($changeStatusMethodContainer['msg']);
     }
 
-    public function delete($id)
+    public function delete($id, ProductDeleteRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('product_delete'), 403);
-
         try {
             DB::beginTransaction();
 
-            $deleteProduct = $this->productService->deleteProduct(id: $id);
-            if (isset($deleteProduct['pass']) && $deleteProduct['pass'] == false) {
+            $deleteMethodContainer = $productControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
-                return response()->json(['errorMsg' => $deleteProduct['msg']]);
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
             }
-
-            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Product->value, dataObj: $deleteProduct);
 
             DB::commit();
         } catch (Exception $e) {
-
             DB::rollBack();
         }
 
         return response()->json(__('Product deleted successfully.'));
     }
 
-    public function getLastProductId()
+    public function getLastProductId(ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        return $this->productService->getLastProductSerialCode();
+        return $productControllerMethodContainersInterface->getLastProductIdMethodContainer();
     }
 }

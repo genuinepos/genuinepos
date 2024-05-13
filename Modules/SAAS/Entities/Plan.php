@@ -40,12 +40,6 @@ class Plan extends Model
         return $this->hasMany(UserSubscription::class, 'plan_id');
     }
 
-    // public function features()
-    // {
-    //     return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
-    //         ->withPivot('capacity');
-    // }
-
     public function getPriceLabelAttribute()
     {
         return $this->price . ' ' . $this->currency_code;

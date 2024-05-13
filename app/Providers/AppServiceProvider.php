@@ -21,6 +21,7 @@ use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
 use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
 use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
+use App\Interfaces\Products\ProductControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
@@ -40,6 +41,7 @@ use App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContain
 use App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ReceiptControllerMethodContainersService;
 use App\Services\Contacts\MethodContainerServices\ContactControllerMethodContainersService;
+use App\Services\Products\MethodContainerServices\ProductControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
 use App\Interfaces\TransferStocks\ReceiveStockFromBranchControllerMethodContainersInterface;
 use App\Services\Hrm\MethodContainerServices\PayrollPaymentControllerMethodContainersService;
@@ -66,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
             return new GeneralSetting();
         });
 
+        $this->app->bind(ProductControllerMethodContainersInterface::class, ProductControllerMethodContainersService::class);
         $this->app->bind(ContactControllerMethodContainersInterface::class, ContactControllerMethodContainersService::class);
         $this->app->bind(AddSaleControllerMethodContainersInterface::class, AddSaleControllerMethodContainersService::class);
         $this->app->bind(PosSaleControllerMethodContainersInterface::class, PosSaleControllerMethodContainersService::class);

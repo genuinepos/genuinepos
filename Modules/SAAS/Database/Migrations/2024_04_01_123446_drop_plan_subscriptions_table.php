@@ -21,16 +21,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('plan_subscriptions', function (Blueprint $table) {
-
-            $table->id();
-            $table->string('tenant_id');
-            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
-            $table->foreignIdFor(Plan::class)->nullable()->constrained()->nullOnDelete();
-            $table->foreignIdFor(Payment::class)->nullable()->constrained()->nullOnDelete();
-            $table->timestamp('start_at');
-            $table->timestamp('end_at');
-            $table->timestamps();
-        });
     }
 };

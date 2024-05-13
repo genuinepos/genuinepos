@@ -740,7 +740,7 @@ class ProductService
         }
     }
 
-    public function getLastProductSerialCode()
+    public function getLastProductSerialCode(): string
     {
         $id = 1;
         $lastEntry = DB::table('products')->orderBy('id', 'desc')->first(['id']);

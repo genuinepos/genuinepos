@@ -37,7 +37,7 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
 
     Route::controller(ProductLedgerController::class)->prefix('ledger')->group(function () {
         Route::get('index/{id}', 'index')->name('products.ledger.index');
-        Route::post('print', 'print')->name('products.ledger.print');
+        Route::get('print/{id}', 'print')->name('products.ledger.print');
     });
 
     Route::controller(ProductStockController::class)->prefix('stock')->group(function () {

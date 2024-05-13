@@ -112,10 +112,10 @@
                                             <div class="form-group row g-2 align-items-end filter-area">
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->current_shop_count > 1)
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-2">
                                                         <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">{{ __('All') }}</option>
+                                                            <option data-branch_name="{{ __("All") }}" value="">{{ __('All') }}</option>
                                                             @if ($generalSettings['subscription']->has_business == 1)
                                                                 <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @endif
@@ -134,6 +134,32 @@
                                                     </div>
                                                 @endif
 
+                                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                                    <div class="col-md-2">
+                                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                                            <label><strong>{{ __('Warehouse') }}</strong></label>
+                                                            <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
+                                                                <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
+                                                            </select>
+                                                        @else
+                                                            @php
+                                                                $wh = DB::table('warehouses')
+                                                                    ->where('branch_id', auth()->user()->branch_id)
+                                                                    ->orWhere('is_global', 1)
+                                                                    ->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+                                                            @endphp
+
+                                                            <label><strong>{{ __('Warehouse') }}</strong></label>
+                                                            <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
+                                                                <option data-warehouse_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                @foreach ($wh as $row)
+                                                                    <option data-warehouse_name="{{ $row->warehouse_name . '/' . $row->warehouse_code }}" value="{{ $row->id }}">{{ $row->warehouse_name . '/' . $row->warehouse_code }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        @endif
+                                                    </div>
+                                                @endif
+
                                                 @if (count($product->variants) > 0)
                                                     <div class="col-md-2">
                                                         <label><strong>{{ __('Variant') }}</strong></label>
@@ -147,6 +173,8 @@
                                                         </select>
                                                     </div>
                                                 @endif
+
+
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>
@@ -209,6 +237,7 @@
                                                     <th class="text-start">{{ __('Variant') }}</th>
                                                 @endif
                                                 <th class="text-start">{{ __('Shop/Business') }}</th>
+                                                <th class="text-start">{{ __('Warehouse') }}</th>
                                                 <th class="text-start">{{ __('Voucher Type') }}</th>
                                                 <th class="text-start">{{ __('Voucher No') }}</th>
                                                 <th class="text-start">{{ __('In') }}</th>
@@ -219,7 +248,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="4" class="text-white" style="text-align: right!important;"> {{ __('Current Stock') }} : </th>
+                                                <th colspan="5" class="text-white" style="text-align: right!important;"> {{ __('Current Stock') }} : </th>
                                                 <th id="table_total_in" class="text-white"></th>
                                                 <th id="table_total_out" class="text-white"></th>
                                                 <th id="table_current_stock" class="text-white"></th>
@@ -272,6 +301,8 @@
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.branch_name = $('#branch_id').find('option:selected').data('branch_name');
+                    d.warehouse_id = $('#warehouse_id').val();
+                    d.warehouse_name = $('#warehouse_id').find('option:selected').data('warehouse_name');
                     d.variant_id = $('#variant_id').val();
                     d.variant_name = $('#variant_id').find('option:selected').data('variant_name');
                     d.from_date = $('#from_date').val();
@@ -290,6 +321,10 @@
                 @endif {
                     data: 'branch',
                     name: 'branch_name'
+                },
+                {
+                    data: 'warehouse',
+                    name: 'warehouse_name'
                 },
                 {
                     data: 'voucher_type',
@@ -332,6 +367,7 @@
         function getProductClosingStock() {
 
             var branch_id = $('#branch_id').val();
+            var warehouse_id = $('#warehouse_id').val();
             var variant_id = $('#variant_id').val();
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
@@ -343,6 +379,7 @@
                 type: 'get',
                 data: {
                     branch_id,
+                    warehouse_id,
                     variant_id,
                     from_date,
                     to_date,
@@ -381,6 +418,115 @@
             });
         }
         getProductClosingStock();
+
+        $(document).on('click', '#print_report', function(e) {
+            e.preventDefault();
+
+            var url = "{{ route('products.ledger.print', [$product->id]) }}";
+
+            var branch_id = $('#branch_id').val();
+            var branch_name = $('#branch_id').find('option:selected').data('branch_name');
+            var warehouse_id = $('#warehouse_id').val();
+            var warehouse_name = $('#warehouse_id').find('option:selected').data('warehouse_name');
+            var variant_id = $('#variant_id').val();
+            var variant_name = $('#variant_id').find('option:selected').data('variant_name');
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+
+            var currentTitle = document.title;
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: {
+                    branch_id,
+                    branch_name,
+                    warehouse_id,
+                    warehouse_name,
+                    variant_id,
+                    variant_name,
+                    from_date,
+                    to_date,
+                },
+                success: function(data) {
+
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
+                        pageTitle: "",
+                        // footer: 'Footer Text',
+                    });
+
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = data;
+                    var filename = tempElement.querySelector('#title');
+
+                    document.title = filename.innerHTML;
+
+                    setTimeout(function() {
+                        document.title = currentTitle;
+                    }, 2000);
+                }
+            });
+        });
+
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+            $(document).on('change', '#branch_id', function(e) {
+                e.preventDefault();
+
+                var branchId = $(this).val();
+                getWarehouseByBranch(branchId);
+            });
+        @endif
+
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+            function getWarehouseByBranch(branchId = '') {
+
+                var branchId = branchId ? branchId : 'noid';
+
+                // if (branchId == '') {
+                //     return;
+                // }
+
+                var route = '';
+                var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
+                route = url.replace(':branchId', branchId);
+
+                $.ajax({
+                    url: route,
+                    type: 'get',
+                    success: function(warehouses) {
+
+                        $('#warehouse_id').empty();
+                        $('#warehouse_id').append('<option data-warehouse_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
+
+                        $.each(warehouses, function(key, warehouse) {
+
+                            $('#warehouse_id').append('<option data-warehouse_name="' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                        });
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                            return;
+                        }
+                    }
+                });
+            }
+
+            getWarehouseByBranch(branchId = '');
+        @endif
 
         // Show details modal with data
         $(document).on('click', '#details_btn', function(e) {

@@ -239,6 +239,11 @@ class ProductStockService
             }
         }
 
+        if ($request->warehouse_id) {
+
+            $query->where('product_ledgers.warehouse_id', $request->warehouse_id);
+        }
+
         if ($request->variant_id) {
 
             $query->where('product_ledgers.variant_id', $request->variant_id);

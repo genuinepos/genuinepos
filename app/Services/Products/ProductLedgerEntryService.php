@@ -68,7 +68,13 @@ class ProductLedgerEntryService
                     $branchName = $generalSettings['business_or_shop__business_name'];
                 }
 
-                return $branchName.$areaName;
+                return $branchName . $areaName;
+            })
+
+            ->editColumn('warehouse', function ($row) use ($generalSettings) {
+
+                $warehouseCode = $row->warehouse_code ? '-('.$row->warehouse_code.')' : '';
+               return $row->warehouse_name.$warehouseCode;
             })
 
             ->editColumn('voucher_type', function ($row) {
@@ -103,7 +109,7 @@ class ProductLedgerEntryService
                     return '<span class="running_stock fw-bold">' . \App\Utils\Converter::format_in_bdt(abs($row->running_stock)) . '</span>';
                 }
             })
-            ->rawColumns(['date', 'variant', 'branch', 'voucher_type', 'voucher_no', 'in', 'out', 'running_stock'])
+            ->rawColumns(['date', 'variant', 'branch', 'warehouse', 'voucher_type', 'voucher_no', 'in', 'out', 'running_stock'])
             ->make(true);
     }
 
@@ -112,11 +118,6 @@ class ProductLedgerEntryService
         $query = DB::table('product_ledgers')
             ->whereRaw('concat(product_ledgers.in,product_ledgers.out) > 0')
             ->where('product_ledgers.product_id', $id);
-
-        if ($request->variant_id) {
-
-            $query->where('product_ledgers.variant_id', $request->variant_id);
-        }
 
         if ($request->branch_id) {
 
@@ -127,6 +128,16 @@ class ProductLedgerEntryService
 
                 $query->where('product_ledgers.branch_id', $request->branch_id);
             }
+        }
+
+        if ($request->warehouse_id) {
+
+            $query->where('product_ledgers.warehouse_id', $request->warehouse_id);
+        }
+
+        if ($request->variant_id) {
+
+            $query->where('product_ledgers.variant_id', $request->variant_id);
         }
 
         if ($request->from_date) {
@@ -189,6 +200,9 @@ class ProductLedgerEntryService
                 'branches.branch_code',
                 'parentBranch.name as parent_branch_name',
 
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+
                 'sales.id as sale_id',
                 'sales.invoice_id as sales_voucher',
                 'sale_returns.id as sale_return_id',
@@ -211,6 +225,43 @@ class ProductLedgerEntryService
         return $query->orderBy('product_ledgers.date_ts', 'asc')->orderBy('product_ledgers.id', 'asc')->get();
     }
 
+    public function ledgerEntriesPrint(object $request, int $id): ?object
+    {
+        $ledgers = '';
+        $generalSettings = config('generalSettings');
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
+
+        $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id);
+
+        $accountStartDateYmd = '';
+        $fromDateYmd = '';
+        $toDateYmd = '';
+        if ($request->from_date && $request->to_date) {
+
+            $fromDateYmd = Carbon::parse($request->from_date)->startOfDay();
+            $toDateYmd = Carbon::parse($request->to_date)->endOfDay();
+            $accountStartDateYmd = Carbon::parse($accountStartDate)->startOfDay();
+        }
+
+        if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
+
+            $this->generateOpeningStock(id: $id, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
+        }
+
+        $runningIn = 0;
+        $runningOut = 0;
+        foreach ($ledgers as $ledger) {
+
+            $runningIn += $ledger->in;
+            $runningOut += $ledger->out;
+
+            $runningStock = $runningIn - $runningOut;
+            $ledger->running_stock = $runningStock;
+        }
+
+        return $ledgers;
+    }
+
     private function generateOpeningStock(int $id, object $ledgers, string $fromDateYmd, object $request, array $generalSettings): void
     {
         $productOpeningStock = '';
@@ -225,6 +276,11 @@ class ProductLedgerEntryService
 
                 $productOpeningStockQ->where('product_ledgers.branch_id', $request->branch_id);
             }
+        }
+
+        if ($request->warehouse_id) {
+
+            $productOpeningStockQ->where('product_ledgers.warehouse_id', $request->warehouse_id);
         }
 
         if ($request->variant_id) {
@@ -276,6 +332,8 @@ class ProductLedgerEntryService
             }
         }
 
+        $warehouseName = $request->warehouse_name != 'All' ? $request->warehouse_name: '';
+
         $arr = [
             'id' => 0,
             'branch_id' => 'branch_id',
@@ -283,6 +341,8 @@ class ProductLedgerEntryService
             'area_name' => $branchAreaName,
             'branch_code' => $branchCode,
             'parent_branch_name' => $parentBranchName,
+            'warehouse_name' => $warehouseName,
+            'warehouse_code' => null,
             'voucher_type' => 0,
             'sales_voucher' => null,
             'variant_name' => null,

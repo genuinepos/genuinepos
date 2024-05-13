@@ -32,4 +32,31 @@ class ProductLedgerController extends Controller
 
         return view('product.products.ledger.index', compact('product', 'branches'));
     }
+
+    public function print($id, Request $request)
+    {
+        $ownOrParentBranch = '';
+        if (auth()->user()?->branch) {
+
+            if (auth()->user()?->branch->parentBranch) {
+
+                $branchName = auth()->user()?->branch->parentBranch;
+            } else {
+
+                $branchName = auth()->user()?->branch;
+            }
+        }
+
+        $filteredBranchName = $request->branch_name;
+        $filteredWarehouseName = $request->warehouse_name;
+        $filteredVariantName = $request->variant_name;
+        $fromDate = $request->from_date;
+        $toDate = $request->to_date ? $request->to_date : $request->from_date;
+
+        $product = $this->productService->singleProduct(id: $id, with: ['unit', 'category', 'subcategory', 'brand']);
+
+        $entries = $this->productLedgerEntryService->ledgerEntriesPrint(request: $request, id: $id);
+
+        return view('product.products.ledger.ajax_view.print', compact('entries', 'request', 'fromDate', 'toDate', 'filteredBranchName', 'filteredWarehouseName', 'filteredVariantName', 'product'));
+    }
 }

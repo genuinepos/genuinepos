@@ -81,20 +81,20 @@
                     @if (auth()->user()?->branch?->parentBranch?->logo)
                         <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
                         <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
                     <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
             @endif
         </div>
@@ -202,12 +202,9 @@
             @php
                 $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
-
                     if (auth()->user()?->branch->parentBranch) {
-
                         $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
                     } else {
-
                         $ownOrParentbranchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
                     }
                 }
@@ -280,16 +277,12 @@
                                     $branchName = null;
                                     $areaName = $row->area_name ? '(' . $row->area_name . ')' : '';
                                     if ($row->branch_id) {
-
                                         if ($row->parent_branch_name) {
-
                                             $branchName = $row->parent_branch_name;
                                         } else {
-
                                             $branchName = $row->branch_name;
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -298,9 +291,9 @@
 
                             <td>
                                 @php
-                                    $warehouseCode = $row->warehouse_code ? '-('.$row->warehouse_code.')' : '';
+                                    $warehouseCode = $row->warehouse_code ? '-(' . $row->warehouse_code . ')' : '';
                                 @endphp
-                                {{ $row->warehouse_name.$warehouseCode; }}
+                                {{ $row->warehouse_name . $warehouseCode }}
                             </td>
 
                             <td class="text-start main_td">
@@ -354,13 +347,11 @@
                         <td class="text-end fw-bold">{{ __('Opening Stock') }}</td>
                         <td class="text-end fw-bold">
                             @if ($amounts['opening_stock'] >= 0)
-
                                 {{ App\Utils\Converter::format_in_bdt($amounts['opening_stock']) }}
                             @endif
                         </td>
                         <td class="text-end fw-bold">
                             @if ($amounts['opening_stock'] < 0)
-
                                 ({{ App\Utils\Converter::format_in_bdt(abs($amounts['opening_stock'])) }})
                             @endif
                         </td>
@@ -383,7 +374,6 @@
                         </td>
                         <td class="text-end fw-bold">
                             @if ($amounts['closing_stock'] < 0)
-
                                 ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_stock'])) }})
                             @endif
                         </td>

@@ -68,20 +68,20 @@
                             @if ($order->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($order->branch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
                             <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -382,20 +382,20 @@
                             @if ($order?->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($order?->branch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
                             <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>

@@ -194,10 +194,10 @@ class PurchaseService
         $addPurchase->shipment_details = $request->shipment_details;
         $addPurchase->purchase_note = $request->purchase_note;
         $addPurchase->purchase_status = PurchaseStatus::Purchase->value;
-        $addPurchase->is_purchased = 1;
+        $addPurchase->is_purchased = BooleanType::True->value;
         $addPurchase->date = $request->date;
         $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-        $addPurchase->is_last_created = 1;
+        $addPurchase->is_last_created = BooleanType::True->value;
         $addPurchase->save();
 
         return $addPurchase;
@@ -207,7 +207,7 @@ class PurchaseService
     {
         foreach ($updatePurchase->purchaseProducts as $purchaseProduct) {
 
-            $purchaseProduct->delete_in_update = 1;
+            $purchaseProduct->delete_in_update = BooleanType::True->value;
             $purchaseProduct->save();
         }
 

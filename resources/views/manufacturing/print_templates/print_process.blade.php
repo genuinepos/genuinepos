@@ -60,13 +60,13 @@
                             @php
                                 $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
                             @endphp
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $branchName }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $branchName }}</span>
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
                             <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -297,13 +297,13 @@
                             @php
                                 $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
                             @endphp
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $branchName }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $branchName }}</span>
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
                             <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>

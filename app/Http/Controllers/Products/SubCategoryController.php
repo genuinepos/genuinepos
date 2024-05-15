@@ -55,7 +55,6 @@ class SubCategoryController extends Controller
             DB::beginTransaction();
 
             $addSubCategory = $this->subCategoryService->addSubcategory(request: $request, codeGenerator: $codeGenerator);
-
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $addSubCategory);
 
             DB::commit();
@@ -83,7 +82,6 @@ class SubCategoryController extends Controller
             DB::beginTransaction();
 
             $updateCategory = $this->subCategoryService->updateSubcategory(id: $id, request: $request);
-
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $updateCategory);
 
             DB::commit();
@@ -108,7 +106,6 @@ class SubCategoryController extends Controller
             DB::beginTransaction();
 
             $deleteSubcategory = $this->subCategoryService->deleteSubcategory(id: $id, request: $request);
-
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $deleteSubcategory);
 
             DB::commit();

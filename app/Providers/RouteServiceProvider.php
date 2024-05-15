@@ -53,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware(['web', 'auth'])
                 ->namespace($this->namespace)
-                ->group(base_path('routes/essential.php'));
+                ->group(base_path('routes/task_management.php'));
 
             Route::middleware(['web', 'auth'])
                 ->namespace($this->namespace)
@@ -101,6 +101,18 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['web', 'auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/dashboard.php'));
+
+            Route::middleware(['web', 'auth'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/short_menus.php'));
+
+            Route::middleware(['web', 'auth'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/communication.php'));
+
+            Route::middleware(['web', 'auth'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/advertisement.php'));
 
             Route::middleware(['web', 'auth'])
                 ->namespace($this->namespace)

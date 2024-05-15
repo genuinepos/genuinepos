@@ -19,7 +19,6 @@ class WarrantyController extends Controller
         private WarrantyService $warrantyService,
         private UserActivityLogService $userActivityLogService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

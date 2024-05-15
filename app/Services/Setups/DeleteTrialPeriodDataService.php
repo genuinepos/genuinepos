@@ -57,7 +57,7 @@ class DeleteTrialPeriodDataService
 
             if ($branch->logo) {
 
-                $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+                $dir = public_path('uploads/branch_logo/');
 
                 if (file_exists($dir . $branch->logo)) {
 
@@ -163,7 +163,7 @@ class DeleteTrialPeriodDataService
 
             $product->delete();
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            $dir = public_path('uploads/product/thumbnail/');
             if (isset($product->thumbnail_photo) && file_exists($dir . $product->thumbnail_photo)) {
 
                 unlink($dir . $product->thumbnail_photo);
@@ -171,7 +171,7 @@ class DeleteTrialPeriodDataService
 
             if (count($product->variants) > 0) {
 
-                $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+                $variantImgDir = public_path('uploads/product/variant_image/');
                 foreach ($product->variants as $variant) {
 
                     if ($variant->variant_image) {

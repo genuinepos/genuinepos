@@ -64,7 +64,7 @@
 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
     <div class="col-4" style="border-right: 1px solid black;!important;">
         @if ($generalSettings['business_or_shop__business_logo'] != null)
-            <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+            <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
         @else
             <h4 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h4>
         @endif

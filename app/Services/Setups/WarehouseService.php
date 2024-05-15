@@ -159,20 +159,6 @@ class WarehouseService
         return $query->where('id', $id)->first();
     }
 
-    public function restriction(): ?array
-    {
-        $generalSettings = config('generalSettings');
-        $warehouseCount = (int)$generalSettings['subscription']->features['warehouse_count'];
-        $count = $this->warehouses()->where('branch_id', auth()->user()->branch_id)->count();
-
-        if ($count == $warehouseCount) {
-
-            return ['pass' => false, 'msg' => __("Warehouse limit is ${warehouseCount} for every shop")];
-        }
-
-        return ['pass' => true];
-    }
-
     public function warehouseValidation(object $request): ?array
     {
         return $request->validate([

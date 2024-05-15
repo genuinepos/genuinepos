@@ -23,12 +23,11 @@ class WorkSpaceController extends Controller
         private BranchService $branchService,
         private UserService $userService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_index'), 403);
 
         if ($request->ajax()) {
 
@@ -43,7 +42,7 @@ class WorkSpaceController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('workspaces_create') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_create'), 403);
 
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)
             ->select(['id', 'prefix', 'name', 'last_name'])->get();
@@ -72,7 +71,7 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('workspaces_edit') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_edit'), 403);
 
         $workspace = $this->workspaceService->singleWorkspace(id: $id, with: ['users']);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
@@ -100,7 +99,7 @@ class WorkSpaceController extends Controller
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('workspaces_delete') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_delete'), 403);
 
         try {
             DB::beginTransaction();

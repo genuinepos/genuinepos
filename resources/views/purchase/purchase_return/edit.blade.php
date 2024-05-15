@@ -186,20 +186,18 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                        <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
-                                            <div class="col-8">
-                                                <select class="form-control" name="warehouse_id" id="e_warehouse_id" data-next="date">
-                                                    <option value="">{{ __('Select Warehouse') }}</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
-                                                            {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
+                                        <div class="col-8">
+                                            <select class="form-control" name="warehouse_id" id="e_warehouse_id" data-next="date">
+                                                <option value="">{{ __('Select Warehouse') }}</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
+                                                        {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                    @endif
+                                    </div>
                                 </div>
 
                                 <div class="col-xl-3 col-md-6">

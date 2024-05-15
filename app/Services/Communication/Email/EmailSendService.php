@@ -71,7 +71,7 @@ class EmailSendService
                     $attach_name = $images->getClientOriginalName();
                     $attachmentNames[] = $attach_name;
                     $fileName = uniqid() . '.' . $images->getClientOriginalExtension();
-                    $tenantFolder = 'uploads/' . tenant('id') . '.' . 'communication/' . 'email/attachment/';
+                    $tenantFolder = 'uploads/communication/' . 'email/attachment/';
                     $images->move(public_path($tenantFolder), $fileName);
                     $attachmentUrl = public_path($tenantFolder . $fileName);
                     $attachments[] = $attachmentUrl;

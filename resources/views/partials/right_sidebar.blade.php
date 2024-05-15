@@ -17,10 +17,7 @@
 
         <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                @if (
-                    ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1) &&
-                    auth()->user()->can('has_access_to_all_area')
-                )
+                @if (auth()->user()->can('has_access_to_all_area'))
                     @php
                         $branchService = new App\Services\Setups\BranchService();
                         $branches = $branchService->branches(with: ['parentBranch'])
@@ -33,11 +30,7 @@
                             @csrf
                             <div class="select-dropdown">
                                 <select name="branch_id" id="switch_branch_id">
-
-                                    @if ($generalSettings['subscription']->has_business == 1)
-
-                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
-                                    @endif
+                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
 
                                     @foreach ($branches as $branch)
 

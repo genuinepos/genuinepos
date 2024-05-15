@@ -14,7 +14,7 @@
                                 {{-- <div class="form-head">
                                     <div class="head p-1">
                                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                                            <img src="{{ asset('uploads/' . tenant('id') .  '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">
                                                 {{ $generalSettings['business_or_shop__business_name'] }}
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{--
+
                             <div class="col-lg-6 col-md-6 col-12 d-none">
                                 <div class="form-head addr">
                                     <div class="head addr-t">
@@ -120,7 +120,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                 </div>

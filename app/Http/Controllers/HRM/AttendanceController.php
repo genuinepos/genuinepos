@@ -22,12 +22,11 @@ class AttendanceController extends Controller
         private ShiftService $shiftService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('attendances_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_index'), 403);
 
         if ($request->ajax()) {
 
@@ -43,7 +42,7 @@ class AttendanceController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_create'), 403);
 
         $departments = DB::table('hrm_departments')->get(['id', 'name']);
         $users = DB::table('users')->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
@@ -53,7 +52,7 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
-        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_create'), 403);
 
         if ($request->user_ids == null) {
 
@@ -76,7 +75,7 @@ class AttendanceController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_edit'), 403);
 
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
@@ -96,7 +95,7 @@ class AttendanceController extends Controller
 
     public function update($id, Request $request)
     {
-        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_edit'), 403);
 
         $this->attendanceService->validation(request: $request);
         $this->attendanceService->updateAttendance(request: $request, id: $id);
@@ -105,7 +104,7 @@ class AttendanceController extends Controller
 
     public function delete($id, Request $request)
     {
-        abort_if(!auth()->user()->can('attendances_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_delete'), 403);
 
         $this->attendanceService->deleteAttendance(id: $id);
         return response()->json(__('Attendance deleted successfully'));

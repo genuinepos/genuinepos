@@ -40,7 +40,6 @@ class PurchaseOrderController extends Controller
         private AccountLedgerService $accountLedgerService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, $supplierAccountId = null)

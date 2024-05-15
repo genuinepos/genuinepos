@@ -7,9 +7,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-4">
-                    <h5>{{ __('Shops') }}
-                        <span>({{ __('Limit') }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['subscription']->current_shop_count }})</span>
-                    </h5>
+                    <h5>{{ __('Shops') }}</h5>
                 </div>
 
                 <div class="col-md-4 text-start">
@@ -31,7 +29,7 @@
                         <h6>{{ __('Shop List') }}</h6>
                     </div>
 
-                    @if (auth()->user()->can('branches_create') && $currentCreatedBranchCount < $generalSettings['subscription']->current_shop_count)
+                    @if (auth()->user()->can('branches_create'))
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="addBtn" href="{{ route('branches.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus-square"></i> {{ __('Add New Shop') }}
@@ -54,7 +52,6 @@
                                     <th>{{ __('Phone') }}</th>
                                     <th>{{ __('Address') }}</th>
                                     <th>{{ __('Shop Logo') }}</th>
-                                    <th>{{ __('Expire Date') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
@@ -139,10 +136,6 @@
                 {
                     data: 'logo',
                     name: 'branches.state'
-                },
-                {
-                    data: 'expire_date',
-                    name: 'branches.name'
                 },
                 {
                     data: 'action'

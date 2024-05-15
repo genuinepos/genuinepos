@@ -17,12 +17,11 @@ class MoneyReceiptController extends Controller
         private MoneyReceiptService $moneyReceiptService,
         private ContactService $contactService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($contactId)
     {
-        abort_if(!auth()->user()->can('money_receipt_index') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('money_receipt_index'), 403);
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch', 'moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch', 'moneyReceiptsOfOwnBranch.branch.parentBranch']);
 
@@ -31,7 +30,7 @@ class MoneyReceiptController extends Controller
 
     public function create($contactId)
     {
-        abort_if(!auth()->user()->can('money_receipt_add') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('money_receipt_add'), 403);
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch']);
 
@@ -57,7 +56,7 @@ class MoneyReceiptController extends Controller
 
     public function edit($receiptId)
     {
-        abort_if(!auth()->user()->can('money_receipt_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('money_receipt_edit'), 403);
 
         try {
             DB::beginTransaction();
@@ -83,7 +82,7 @@ class MoneyReceiptController extends Controller
 
     public function delete($receiptId)
     {
-        abort_if(!auth()->user()->can('money_receipt_delete') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('money_receipt_delete'), 403);
 
         try {
             DB::beginTransaction();

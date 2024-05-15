@@ -12,7 +12,6 @@ class PosSaleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)

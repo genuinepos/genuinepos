@@ -23,7 +23,7 @@
                                             @php
                                                 $photoSrc = null;
                                                 if ($user->photo) {
-                                                    $photoSrc = asset('uploads/' . tenant('id') . '/' . 'user_photo/' . $user->photo);
+                                                    $photoSrc = asset('uploads/user_photo/' . $user->photo);
                                                 } else {
                                                     $photoSrc = asset('images/user_default.png');
                                                 }

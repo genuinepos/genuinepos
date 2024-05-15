@@ -76,8 +76,8 @@
         }
 
         /*.select2-selection:focus {
-                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                    } */
+                             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                        } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -164,7 +164,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -247,7 +247,7 @@
                                                         <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                                         @if (auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -283,13 +283,13 @@
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                                <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Discount') }}</label>
                                                 <div class="input-group">
-                                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
+                                                    <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
 
                                                     <select id="e_discount_type" class="form-control">
                                                         <option value="1">{{ __('Fixed') }}(0.00)</option>
@@ -330,14 +330,12 @@
                                                 <label class="fw-bold">{{ __('Stock Location') }}</label>
                                                 <select class="form-control" id="e_warehouse_id">
                                                     <option value="">{{ $branchName }}</option>
-                                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                        @foreach ($warehouses as $w)
-                                                            @php
-                                                                $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                            @endphp
-                                                            <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                        @endforeach
-                                                    @endif
+                                                    @foreach ($warehouses as $w)
+                                                        @php
+                                                            $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                        @endphp
+                                                        <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
 
@@ -387,7 +385,6 @@
                                                                     @php
 
                                                                         if (isset($saleProduct->product_id)) {
-
                                                                             $itemUnitsArray[$saleProduct->product_id][] = [
                                                                                 'unit_id' => $saleProduct->product->unit->id,
                                                                                 'unit_name' => $saleProduct->product->unit->name,

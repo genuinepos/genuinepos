@@ -11,9 +11,9 @@
 
         $variantName = $product->variant_name ? $product->variant_name : '';
 
-        $productImage = $product->thumbnail_photo ? asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $product->thumbnail_photo) : asset('images/general_default.png');
+        $productImage = $product->thumbnail_photo ? asset('uploads/product/thumbnail/' . $product->thumbnail_photo) : asset('images/general_default.png');
 
-        $variantImage = $product->variant_image ? asset('uploads/' . tenant('id') . '/' . 'product/variant_image/' . $product->variant_image) : $productImage;
+        $variantImage = $product->variant_image ? asset('uploads/product/variant_image/' . $product->variant_image) : $productImage;
 
         $impUrl = $product->is_variant == 1 ? $variantImage : $productImage;
     @endphp

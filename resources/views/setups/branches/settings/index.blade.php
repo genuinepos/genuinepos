@@ -63,7 +63,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
+                                        @if (auth()->user()->can('manufacturing_settings'))
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="manufacturing_settings_form" href="#">{{ __('Manufacturing Settings') }}</a>
                                             </li>
@@ -155,7 +155,7 @@
                                     @include('setups.branches.settings.partials.view_partials.purchase_settings')
                                 @endif
 
-                                @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
+                                @if (auth()->user()->can('manufacturing_settings'))
                                     @include('setups.branches.settings.partials.view_partials.manufacturing_settings')
                                 @endif
 

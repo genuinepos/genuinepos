@@ -220,14 +220,13 @@
                                         <label class="fw-bold">{{ __('Stock Location') }}</label>
                                         <select class="form-control" id="e_warehouse_id">
                                             <option value="">{{ $branchName }}</option>
-                                            @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                @foreach ($warehouses as $w)
-                                                    @php
-                                                        $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                    @endphp
-                                                    <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                @endforeach
-                                            @endif
+                                            @foreach ($warehouses as $w)
+                                                @php
+                                                    $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                @endphp
+                                                <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                            @endforeach
+
                                         </select>
                                     </div>
 
@@ -268,7 +267,6 @@
                                                 @foreach ($stockIssue->stockIssuedProducts as $issuedProduct)
                                                     @php
                                                         if (isset($issuedProduct->product_id)) {
-
                                                             $itemUnitsArray[$issuedProduct->product_id][] = [
                                                                 'unit_id' => $issuedProduct->product->unit->id,
                                                                 'unit_name' => $issuedProduct->product->unit->name,
@@ -306,21 +304,15 @@
                                                             @php
                                                                 $stockLocationName = '';
                                                                 if ($issuedProduct?->stockWarehouse) {
-
                                                                     $stockLocationName = $issuedProduct?->stockWarehouse?->warehouse_name . '-(' . $issuedProduct?->stockWarehouse?->warehouse_code . ')';
                                                                 } else {
-
                                                                     if ($stockIssue?->branch) {
-
                                                                         if ($stockIssue?->branch?->parentBranch) {
-
                                                                             $stockLocationName = $stockIssue?->branch?->parentBranch->name . '(' . $stockIssue?->branch?->area_name;
                                                                         } else {
-
                                                                             $stockLocationName = $stockIssue?->branch?->name . '(' . $stockIssue?->branch?->area_name;
                                                                         }
                                                                     } else {
-
                                                                         $stockLocationName = $generalSettings['business_or_shop__business_name'];
                                                                     }
                                                                 }

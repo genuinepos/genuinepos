@@ -55,7 +55,7 @@
                 <div class="col-4">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
                         @else
                             @php
                                 $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
@@ -64,7 +64,7 @@
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -292,7 +292,7 @@
                 <div class="col-4">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
                         @else
                             @php
                                 $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
@@ -301,7 +301,7 @@
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif

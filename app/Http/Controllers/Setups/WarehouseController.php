@@ -13,13 +13,12 @@ class WarehouseController extends Controller
 {
     public function __construct(private WarehouseService $warehouseService, private BranchService $branchService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
         $generalSettings = config('generalSettings');
-        abort_if(!auth()->user()->can('warehouses_index') && $generalSettings['subscription']->features['warehouse_count'] == 0, 403);
+        abort_if(!auth()->user()->can('warehouses_index'), 403);
 
         if ($request->ajax()) {
 

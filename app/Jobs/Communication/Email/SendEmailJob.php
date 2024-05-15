@@ -49,7 +49,7 @@ class SendEmailJob implements ShouldQueue
 
             if (file_exists($file)) {
 
-                $imagePath = public_path('uploads/' . tenant('id') . '/' . 'communication/' . 'email/attachment/' . $file);
+                $imagePath = public_path('uploads/communication/email/attachment/' . $file);
 
                 if (file_exists($imagePath)) {
 

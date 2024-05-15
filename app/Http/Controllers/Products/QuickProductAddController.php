@@ -46,7 +46,6 @@ class QuickProductAddController extends Controller
         private PurchaseProductService $purchaseProductService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function create()

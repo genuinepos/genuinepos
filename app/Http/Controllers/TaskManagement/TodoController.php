@@ -21,12 +21,11 @@ class TodoController extends Controller
         private UserService $userService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('todo_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_index'), 403);
 
         if ($request->ajax()) {
 
@@ -41,7 +40,7 @@ class TodoController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('todo_create') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_create'), 403);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         return view('task_management.todo.ajax_view.create', compact('users'));
     }
@@ -66,7 +65,7 @@ class TodoController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('todo_edit') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_edit'), 403);
 
         $todo = $this->todoService->singleTodo(id: $id, with: ['users']);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
@@ -93,7 +92,7 @@ class TodoController extends Controller
 
     public function changeStatusModal($id)
     {
-        abort_if(!auth()->user()->can('todo_change_status') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_change_status'), 403);
 
         $todo = $this->todoService->singleTodo(id: $id);
 
@@ -102,7 +101,7 @@ class TodoController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('todo_change_status') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_change_status'), 403);
 
         $changeStatus = $this->todoService->changeTodoStatus(request: $request, id: $id);
         if ($changeStatus['pass'] == false) {
@@ -121,7 +120,7 @@ class TodoController extends Controller
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('todo_delete') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_delete'), 403);
         $this->todoService->deleteTodo(id: $id);
         return response()->json(__('Todo deleted successfully.'));
     }

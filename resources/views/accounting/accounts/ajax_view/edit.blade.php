@@ -154,7 +154,7 @@
                     </div>
                 </div>
 
-                @if (auth()->user()->can('has_access_to_all_area') && $generalSettings['subscription']->current_shop_count > 1)
+                @if (auth()->user()->can('has_access_to_all_area'))
 
                     <div class="form-group mt-1 {{ ($account->group->sub_sub_group_number == 1 || $account->group->sub_sub_group_number == 11) && $account->group->is_allowed_bank_details == 1 ? '' : 'd-hide' }}" id="access_branches">
                         <label><strong>{{ __('Access Shop') }}</strong></label>

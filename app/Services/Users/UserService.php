@@ -136,7 +136,6 @@ class UserService
         if (
             auth()->user()->can('has_access_to_all_area') &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value &&
-            config('generalSettings')['subscription']->has_business == BooleanType::True->value &&
             $request->branch_count
         ) {
 
@@ -197,7 +196,7 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+            $dir = public_path('uploads/user_photo/');
 
             $addUser->photo = FileUploader::upload($request->file('photo'), $dir);
         }
@@ -219,7 +218,6 @@ class UserService
         if (
             auth()->user()->can('has_access_to_all_area') &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value &&
-            config('generalSettings')['subscription']->has_business == BooleanType::True &&
             $request->branch_count
         ) {
 
@@ -291,7 +289,7 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+            $dir = public_path('uploads/user_photo/');
 
             $newFile = FileUploader::upload($request->file('photo'), $dir);
             if (
@@ -322,7 +320,7 @@ class UserService
                 return ['pass' => false, 'msg' => __('Superadmin can not be deleted')];
             }
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+            $dir = public_path('uploads/user_photo/');
 
             if (
                 isset($deleteUser->photo) &&
@@ -434,121 +432,6 @@ class UserService
         }
 
         return $query;
-    }
-
-    public function storeRestrictions(object $request): ?array
-    {
-        $userLimit = (int) config('generalSettings')['subscription']->features['user_count'];
-        $employeeLimit = (int) config('generalSettings')['subscription']->features['employee_count'];
-        $branchId = isset($request->branch_id) && !empty($request->branch_id) ? $request->branch_id : auth()->user()->branch_id;
-        $__branchId = $branchId == 'NULL' ? null : $branchId;
-
-        $currentUserCount = $this->users()->whereIn('user_type', [UserType::User->value, UserType::Both->value])
-            ->where('branch_id', $__branchId)->count();
-
-        $currentEmployeeCount = $this->users()->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
-            ->where('branch_id', $__branchId)->count();
-
-        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected shop/business') : __('in your current shop/business.');
-
-        if ($request->user_type == UserType::User->value && $currentUserCount >= $userLimit) {
-
-            return ['pass' => false, 'msg' => __('Selected type is user. User Limit is ' . $userLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-        }
-
-        if ($request->user_type == UserType::Employee->value && $currentEmployeeCount >= $employeeLimit) {
-
-            return ['pass' => false, 'msg' => __('Selected type is employee. Employee Limit is ' . $employeeLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-        }
-
-        if ($request->user_type == UserType::Both->value) {
-
-            if ($currentUserCount >= $userLimit) {
-
-                return ['pass' => false, 'msg' => __('Selected type is both (User And Employee). But User Limit is ' . $userLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-            }
-
-            if ($currentEmployeeCount >= $employeeLimit) {
-
-                return ['pass' => false, 'msg' => __('Selected type is both (User And Employee). But Employee Limit is ' . $employeeLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-            }
-        }
-
-        return ['pass' => true];
-    }
-
-    public function updateRestrictions(object $request, int $id): ?array
-    {
-        $user = $this->singleUser(id: $id);
-
-        $userLimit = (int) config('generalSettings')['subscription']->features['user_count'];
-        $employeeLimit = (int) config('generalSettings')['subscription']->features['employee_count'];
-        $branchId = isset($request->branch_id) && !empty($request->branch_id) ? $request->branch_id : auth()->user()->branch_id;
-        $__branchId = $branchId == 'NULL' ? null : $branchId;
-
-        if ($user->user_type == UserType::Both->value) {
-
-            return ['pass' => true];
-        } else if ($user->user_type == $request->user_type) {
-
-            return ['pass' => true];
-        } else if ($user->user_type == UserType::User->value && $request->user_type == UserType::Both->value) {
-
-            $userLimit += 1;
-        } else if ($user->user_type == UserType::Employee->value && $request->user_type == UserType::Both->value) {
-
-            $employeeLimit += 1;
-        }
-
-        $currentUserCount = $this->users()->whereIn('user_type', [UserType::User->value, UserType::Both->value])
-            ->where('branch_id', $__branchId)->count();
-
-        $currentEmployeeCount = $this->users()->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
-            ->where('branch_id', $__branchId)->count();
-
-        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected shop/business') : __('in your current shop/business.');
-
-        if ($request->user_type == UserType::User->value && $currentUserCount >= $userLimit) {
-
-            return ['pass' => false, 'msg' => __('Selected type is user. User Limit is ' . $userLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-        }
-
-        if ($request->user_type == UserType::Employee->value && $currentEmployeeCount >= $employeeLimit) {
-
-            return ['pass' => false, 'msg' => __('Selected type is employee. Employee Limit is ' . $employeeLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-        }
-
-        if ($request->user_type == UserType::Both->value) {
-
-            if ($currentUserCount >= $userLimit) {
-
-                return ['pass' => false, 'msg' => __('Selected type is both (User And Employee). But User Limit is ' . $userLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-            }
-
-            if ($currentEmployeeCount >= $employeeLimit) {
-
-                return ['pass' => false, 'msg' => __('Selected type is both (User And Employee). But Employee Limit is ' . $employeeLimit . ' ' . $additionalMsg . ', The Limit has already full.')];
-            }
-        }
-
-        return ['pass' => true];
-    }
-
-    public function currentUserAndEmployeeCount(mixed $branchId = null)
-    {
-        $branchId = isset($branchId) && !empty($branchId) && $branchId != 'undefined' ? $branchId : auth()->user()->branch_id;
-        $__branchId = $branchId == 'NULL' ? null : $branchId;
-
-        $currentUserCount = $this->users()->whereIn('user_type', [UserType::User->value, UserType::Both->value])
-            ->where('branch_id', $__branchId)->count();
-
-        $currentEmployeeCount = $this->users()->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
-            ->where('branch_id', $__branchId)->count();
-
-        return [
-            'current_user_count' => $currentUserCount,
-            'current_employee_count' => $currentEmployeeCount,
-        ];
     }
 
     public function addAppSuperAdminUser(object $request): void

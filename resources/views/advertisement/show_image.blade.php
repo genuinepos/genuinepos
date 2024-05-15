@@ -21,7 +21,7 @@
                         {{-- Assuming captions are represented as strings --}}
                         <img src="" data-thumb="" alt="" title="{{ $item }}" />
                     @else
-                        <img style="width: 100%;height:100vh;" src="{{ asset('uploads/'.tenant('id').'/'.'advertisement/' . $item->image) }}" data-thumb="{{ asset('slider/image/' . $item->image) }}" alt="" data-transition="{{ $randomTransition }}" />
+                        <img style="width: 100%;height:100vh;" src="{{ asset('uploads/advertisement/' . $item->image) }}" data-thumb="{{ asset('slider/image/' . $item->image) }}" alt="" data-transition="{{ $randomTransition }}" />
                     @endif
                 @endforeach
             </div>

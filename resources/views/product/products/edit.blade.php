@@ -216,7 +216,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
+                                    @if (auth()->user()->can('has_access_to_all_area') == 1)
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Access Shop') }}</b> </label>
@@ -476,7 +476,7 @@
                                         <div class="input-group">
                                             <label class="col-2"><b>{{ __('Thumbnail Photo') }}</b> </label>
                                             <div class="col-10">
-                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ $product->thumbnail_photo ? asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $product->thumbnail_photo) : '' }}">
+                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ $product->thumbnail_photo ? asset('uploads/product/thumbnail/' . $product->thumbnail_photo) : '' }}">
                                                 <span class="error error_photo"></span>
                                             </div>
                                         </div>

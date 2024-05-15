@@ -135,7 +135,7 @@ class ProductService
 
                 if ($row->thumbnail_photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $row->thumbnail_photo);
+                    $photo = asset('uploads/product/thumbnail/' . $row->thumbnail_photo);
                 }
 
                 return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $photo . '">';
@@ -260,7 +260,7 @@ class ProductService
                 $text = '';
                 foreach ($productAccessBranches as $productAccessBranch) {
 
-                    if ($productAccessBranch?->branch_id == null && $generalSettings['subscription']->has_business == 0) {
+                    if ($productAccessBranch?->branch_id == null) {
 
                         continue;
                     }
@@ -434,7 +434,7 @@ class ProductService
             $productThumbnailPhoto = $request->file('photo');
             $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            $dir = public_path('uploads/product/thumbnail/');
 
             if (!\File::isDirectory($dir)) {
 
@@ -509,7 +509,7 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            $dir = public_path('uploads/product/thumbnail/');
 
             if ($updateProduct->thumbnail_photo) {
 
@@ -618,7 +618,7 @@ class ProductService
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
             }
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            $dir = public_path('uploads/product/thumbnail/');
             if (isset($deleteProduct->thumbnail_photo) && file_exists($dir . $deleteProduct->thumbnail_photo)) {
 
                 unlink($dir . $deleteProduct->thumbnail_photo);
@@ -626,7 +626,7 @@ class ProductService
 
             if (count($deleteProduct->variants) > 0) {
 
-                $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+                $variantImgDir = public_path('uploads/product/variant_image/');
                 foreach ($deleteProduct->variants as $variant) {
 
                     if ($variant->variant_image) {

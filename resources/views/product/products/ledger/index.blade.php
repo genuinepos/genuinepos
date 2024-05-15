@@ -111,14 +111,13 @@
                                         <form id="filter_product_ledgers" method="get">
                                             <div class="form-group row g-2 align-items-end filter-area">
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
-                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->current_shop_count > 1)
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
                                                         <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option data-branch_name="{{ __("All") }}" value="">{{ __('All') }}</option>
-                                                            @if ($generalSettings['subscription']->has_business == 1)
-                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
-                                                            @endif
+                                                            <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+
+                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
 
                                                             @foreach ($branches as $branch)
                                                                 @php
@@ -134,31 +133,29 @@
                                                     </div>
                                                 @endif
 
-                                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                    <div class="col-md-2">
-                                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
-                                                            <label><strong>{{ __('Warehouse') }}</strong></label>
-                                                            <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
-                                                                <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
-                                                            </select>
-                                                        @else
-                                                            @php
-                                                                $wh = DB::table('warehouses')
-                                                                    ->where('branch_id', auth()->user()->branch_id)
-                                                                    ->orWhere('is_global', 1)
-                                                                    ->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
-                                                            @endphp
+                                                <div class="col-md-2">
+                                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
+                                                        <label><strong>{{ __('Warehouse') }}</strong></label>
+                                                        <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
+                                                            <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
+                                                        </select>
+                                                    @else
+                                                        @php
+                                                            $wh = DB::table('warehouses')
+                                                                ->where('branch_id', auth()->user()->branch_id)
+                                                                ->orWhere('is_global', 1)
+                                                                ->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+                                                        @endphp
 
-                                                            <label><strong>{{ __('Warehouse') }}</strong></label>
-                                                            <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
-                                                                <option data-warehouse_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                @foreach ($wh as $row)
-                                                                    <option data-warehouse_name="{{ $row->warehouse_name . '/' . $row->warehouse_code }}" value="{{ $row->id }}">{{ $row->warehouse_name . '/' . $row->warehouse_code }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        @endif
-                                                    </div>
-                                                @endif
+                                                        <label><strong>{{ __('Warehouse') }}</strong></label>
+                                                        <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
+                                                            <option data-warehouse_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                            @foreach ($wh as $row)
+                                                                <option data-warehouse_name="{{ $row->warehouse_name . '/' . $row->warehouse_code }}" value="{{ $row->id }}">{{ $row->warehouse_name . '/' . $row->warehouse_code }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
+                                                </div>
 
                                                 @if (count($product->variants) > 0)
                                                     <div class="col-md-2">
@@ -173,8 +170,6 @@
                                                         </select>
                                                     </div>
                                                 @endif
-
-
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>
@@ -475,58 +470,55 @@
             });
         });
 
-        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-            $(document).on('change', '#branch_id', function(e) {
-                e.preventDefault();
+        $(document).on('change', '#branch_id', function(e) {
+            e.preventDefault();
 
-                var branchId = $(this).val();
-                getWarehouseByBranch(branchId);
-            });
-        @endif
+            var branchId = $(this).val();
+            getWarehouseByBranch(branchId);
+        });
 
-        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-            function getWarehouseByBranch(branchId = '') {
+        function getWarehouseByBranch(branchId = '') {
 
-                var branchId = branchId ? branchId : 'noid';
+            var branchId = branchId ? branchId : 'noid';
 
-                // if (branchId == '') {
-                //     return;
-                // }
+            // if (branchId == '') {
+            //     return;
+            // }
 
-                var route = '';
-                var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
-                route = url.replace(':branchId', branchId);
+            var route = '';
+            var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
+            route = url.replace(':branchId', branchId);
 
-                $.ajax({
-                    url: route,
-                    type: 'get',
-                    success: function(warehouses) {
+            $.ajax({
+                url: route,
+                type: 'get',
+                success: function(warehouses) {
 
-                        $('#warehouse_id').empty();
-                        $('#warehouse_id').append('<option data-warehouse_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
+                    $('#warehouse_id').empty();
+                    $('#warehouse_id').append('<option data-warehouse_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
 
-                        $.each(warehouses, function(key, warehouse) {
+                    $.each(warehouses, function(key, warehouse) {
 
-                            $('#warehouse_id').append('<option data-warehouse_name="' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
-                        });
-                    },
-                    error: function(err) {
+                        $('#warehouse_id').append('<option data-warehouse_name="' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                    });
+                },
+                error: function(err) {
 
-                        if (err.status == 0) {
+                    if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
-                            return;
-                        } else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
 
-                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                            return;
-                        }
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
                     }
-                });
-            }
+                }
+            });
+        }
 
-            getWarehouseByBranch(branchId = '');
-        @endif
+        getWarehouseByBranch(branchId = '');
+
 
         // Show details modal with data
         $(document).on('click', '#details_btn', function(e) {

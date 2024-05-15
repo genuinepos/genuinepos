@@ -180,10 +180,7 @@ class BranchSettingService
 
                 if (isset($key) && isset($value)) {
 
-                    if (
-                        ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
-                        config('generalSettings')['subscription']->features['hrm'] == 0
-                    ) {
+                    if (($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix')) {
                         continue;
                     }
 

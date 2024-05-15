@@ -16,19 +16,11 @@ class TransferStockController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_index') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_index'), 403);
 
         $indexMethodContainer = $transferStockControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
@@ -62,14 +54,7 @@ class TransferStockController extends Controller
 
     public function create(TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_create'), 403);
 
         $createMethodContainer = $transferStockControllerMethodContainersInterface->createMethodContainer();
 
@@ -104,14 +89,7 @@ class TransferStockController extends Controller
 
     public function edit($id, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::True->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_edit'), 403);
 
         $editMethodContainer = $transferStockControllerMethodContainersInterface->editMethodContainer(id: $id);
 

@@ -1,49 +1,87 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4; margin-top: 0.8cm;margin-bottom: 35px; margin-left: 15px;margin-right: 15px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .header,
+    .header-space,
+    .footer,
+    .footer-space {
+        height: 20px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .noBorder {
+        border: 0px !important;
+    }
+
+    tr.noBorder td {
+        border: 0px !important;
+    }
+
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
 </style>
 
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-
             <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-
             <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
-
             @php
-                $branch = DB::table('branches')
-                    ->where('id', $branch_id)
-                    ->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')
-                    ->first();
+                $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')->first();
             @endphp
 
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
-
             <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
@@ -59,65 +97,63 @@
             <tbody>
                 <tr>
                     <td class="text-start">
-                    <em>@lang('menu.total_sale') </em>
+                        <em>@lang('menu.total_sale') </em>
                     </td>
 
                     <td class="text-start">
-                    <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale']) }}</em>
+                        <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_sale']) }}</em>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-start">
-                    <em>@lang('menu.purchase_return') </em>
+                        <em>@lang('menu.purchase_return') </em>
                     </td>
 
                     <td class="text-start">
-                    <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_purchase_return']) }}</em>
+                        <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_purchase_return']) }}</em>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-start">
-                    <em>@lang('menu.total_purchase') </em>
+                        <em>@lang('menu.total_purchase') </em>
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_purchase']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_purchase']) }})</em>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-start">
-                    <em>@lang('menu.sale_return') </em>
+                        <em>@lang('menu.sale_return') </em>
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale_return']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_sale_return']) }})</em>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-start">
-                    <em>@lang('menu.direct_expense') </em>
+                        <em>@lang('menu.direct_expense') </em>
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_direct_expense']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_direct_expense']) }})</em>
                     </td>
                 </tr>
 
-                @if ($generalSettings['subscription']->features['manufacturing'] == 1)
-                    <tr>
-                        <td class="text-start">
+                <tr>
+                    <td class="text-start">
                         <em>@lang('menu.total_production_cost') </em>
-                        </td>
+                    </td>
 
-                        <td class="text-start">
-                            <em>(0.00)</em>
-                        </td>
-                    </tr>
-                @endif
+                    <td class="text-start">
+                        <em>(0.00)</em>
+                    </td>
+                </tr>
 
                 {{-- <tr>
                     <td class="text-start">
@@ -145,7 +181,7 @@
                     </th>
 
                     <td class="text-start">
-                        <b><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['gross_profit']) }}</em></b>
+                        <b><em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['gross_profit']) }}</em></b>
                     </td>
                 </tr>
 
@@ -160,7 +196,7 @@
                     <td class="text-start">
                         <em>@lang('menu.gross_profit') </em>
                     </td>
-                    <td class="text-start"><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['gross_profit']) }}</em> </td>
+                    <td class="text-start"><em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['gross_profit']) }}</em> </td>
                 </tr>
 
                 <tr>
@@ -169,7 +205,7 @@
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_adjusted']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_adjusted']) }})</em>
                     </td>
                 </tr>
 
@@ -179,7 +215,7 @@
                     </td>
 
                     <td class="text-start">
-                        <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_adjusted_recovered']) }}</em>
+                        <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_adjusted_recovered']) }}</em>
                     </td>
                 </tr>
 
@@ -189,27 +225,27 @@
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale_order_tax']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_sale_order_tax']) }})</em>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-start">
-                    <em>@lang('menu.item_sold_individual_tax') </em>
+                        <em>@lang('menu.item_sold_individual_tax') </em>
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['individual_product_sale_tax']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['individual_product_sale_tax']) }})</em>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-start">
-                       <em>@lang('menu.indirect_expense') </em>
+                        <em>@lang('menu.indirect_expense') </em>
                     </td>
 
                     <td class="text-start">
-                        <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_indirect_expense']) }})</em>
+                        <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['total_indirect_expense']) }})</em>
                     </td>
                 </tr>
 
@@ -219,7 +255,7 @@
                     </th>
 
                     <td class="text-start">
-                        <b><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['net_profit']) }}</em> </b>
+                        <b><em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit']) }}</em> </b>
                     </td>
                 </tr>
             </tbody>

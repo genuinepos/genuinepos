@@ -12,12 +12,11 @@ class MessageController extends Controller
 {
     public function __construct(private MessageService $messageService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
     {
-        abort_if(!auth()->user()->can('messages_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('messages_index'), 403);
 
         return view('task_management.messages.index');
     }
@@ -30,7 +29,7 @@ class MessageController extends Controller
 
     public function delete($id)
     {
-        abort_if(!auth()->user()->can('messages_delete') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('messages_delete'), 403);
 
         $this->messageService->deleteMessage(id: $id);
 
@@ -39,7 +38,7 @@ class MessageController extends Controller
 
     public function allMessage()
     {
-        abort_if(!auth()->user()->can('messages_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('messages_index'), 403);
 
         $messages = DB::table('messages')
             ->leftJoin('users', 'messages.user_id', 'users.id')

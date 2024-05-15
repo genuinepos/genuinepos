@@ -16,7 +16,7 @@ class WorkspaceAttachmentService
 
             if (count($request->file('attachments')) > 0) {
 
-                $dir = public_path('uploads/' . tenant('id') . '/' . 'workspace_attachments');
+                $dir = public_path('uploads/workspace_attachments');
 
                 if (!\File::isDirectory($dir)) {
 
@@ -46,7 +46,7 @@ class WorkspaceAttachmentService
 
         if (isset($deleteWorkspaceAttachment)) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'workspace_attachments/');
+            $dir = public_path('uploads/workspace_attachments/');
 
             if (file_exists($dir . $deleteWorkspaceAttachment->attachment)) {
 

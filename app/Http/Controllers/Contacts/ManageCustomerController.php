@@ -16,12 +16,11 @@ class ManageCustomerController extends Controller
         private BranchService $branchService,
         private ManageCustomerService $manageCustomerService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('customer_manage') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_manage'), 403);
 
         if ($request->ajax()) {
 
@@ -39,7 +38,7 @@ class ManageCustomerController extends Controller
 
     public function manage($id)
     {
-        abort_if(!auth()->user()->can('customer_manage') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_manage'), 403);
 
         $contact = $this->contactService->singleContact(id: $id, with: [
             'account:id,contact_id,branch_id',

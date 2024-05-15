@@ -31,7 +31,7 @@ class SubCategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
+                    $photo = asset('uploads/category/' . $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -67,7 +67,7 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            $dir = public_path('uploads/category/');
 
             if (!\File::isDirectory($dir)) {
 
@@ -94,7 +94,7 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            $dir = public_path('uploads/category/');
 
             if ($updateSubcategory->photo && file_exists($dir . $updateSubcategory->photo)) {
 
@@ -123,7 +123,7 @@ class SubCategoryService
 
         if (isset($deleteSubcategory)) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            $dir = public_path('uploads/category/');
             if ($deleteSubcategory->photo && file_exists($dir . $deleteSubcategory->photo)) {
 
                 unlink($dir . $deleteSubcategory->photo);

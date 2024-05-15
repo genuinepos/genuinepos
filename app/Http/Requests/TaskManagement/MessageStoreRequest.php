@@ -11,7 +11,7 @@ class MessageStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('messages_create') && config('generalSettings')['subscription']->features['task_management'] == 1;
+        return auth()->user()->can('messages_create');
     }
 
     /**

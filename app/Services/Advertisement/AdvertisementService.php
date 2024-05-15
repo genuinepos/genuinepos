@@ -29,9 +29,9 @@ class AdvertisementService
 
                         if ($row->content_type == 1) {
                             // Display image
-                            $imageUrl = asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->image);
+                            $imageUrl = asset('uploads/advertisement/' . $attachment->image);
 
-                            if (file_exists(public_path('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->image))) {
+                            if (file_exists(public_path('uploads/advertisement/' . $attachment->image))) {
 
                                 $html .= '<img width="60px" height="60px" class="rounded" src="' . $imageUrl . '" />';
                             } else {
@@ -40,9 +40,9 @@ class AdvertisementService
                             }
                         } else {
                             // Display video
-                            $videoUrl = asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->video);
+                            $videoUrl = asset('uploads/advertisement/' . $attachment->video);
 
-                            if (file_exists(public_path('uploads/' . tenant('id') . '/' . 'advertisement/' . $attachment->video))) {
+                            if (file_exists(public_path('uploads/advertisement/' . $attachment->video))) {
 
                                 $html .= '<video width="100px" height="70px" controls>';
                                 $html .= '<source src="' . $videoUrl . '" type="video/mp4">';
@@ -121,7 +121,7 @@ class AdvertisementService
             'status' => $request->status,
         ]);
 
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
+        $dir = public_path('uploads/advertisement/');
 
         if ($request->hasFile('image')) {
 
@@ -197,7 +197,7 @@ class AdvertisementService
                 'status' => $validatedData['status'],
             ]);
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
+            $dir = public_path('uploads/advertisement/');
 
             // Handle image or video update
             if ($advertisement->content_type == 1) {
@@ -284,7 +284,7 @@ class AdvertisementService
 
         $advertisement = Advertisements::findOrFail($advertiseAttachment->advertisement_id);
 
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
+        $dir = public_path('uploads/advertisement/');
 
         if ($advertisement->content_type == 1) {
 

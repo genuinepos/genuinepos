@@ -12,11 +12,6 @@ use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 
 class PurchaseController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface, $supplierAccountId = null)
     {
         abort_if(!auth()->user()->can('purchase_all'), 403);

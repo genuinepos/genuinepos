@@ -16,17 +16,16 @@ class ContactController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function create($type, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
     {
         if ($type == ContactType::Customer->value) {
 
-            abort_if(!auth()->user()->can('customer_add') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+            abort_if(!auth()->user()->can('customer_add'), 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            abort_if(!auth()->user()->can('supplier_add') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+            abort_if(!auth()->user()->can('supplier_add'), 403);
         }
 
         $createMethodContainer = $contactControllerMethodContainersInterface->createMethodContainer(type: $type);
@@ -56,10 +55,10 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            abort_if(!auth()->user()->can('customer_edit') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+            abort_if(!auth()->user()->can('customer_edit'), 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            abort_if(!auth()->user()->can('supplier_edit') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+            abort_if(!auth()->user()->can('supplier_edit'), 403);
         }
 
         $editMethodContainer = $contactControllerMethodContainersInterface->editMethodContainer(id: $id, type: $type);
@@ -94,10 +93,10 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            abort_if(!auth()->user()->can('customer_delete') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+            abort_if(!auth()->user()->can('customer_delete'), 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            abort_if(!auth()->user()->can('supplier_delete') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
+            abort_if(!auth()->user()->can('supplier_delete'), 403);
         }
 
         try {

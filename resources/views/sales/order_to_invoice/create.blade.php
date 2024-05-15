@@ -75,8 +75,8 @@
         }
 
         /*.select2-selection:focus {
-                                                                                                 box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                                                                                            } */
+                                                                                                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                                                                                                } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -321,14 +321,12 @@
                                                 <label class="fw-bold">{{ __('Stock Location') }}</label>
                                                 <select class="form-control" id="e_warehouse_id">
                                                     <option value="">{{ $branchName }}</option>
-                                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                        @foreach ($warehouses as $w)
-                                                            @php
-                                                                $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                            @endphp
-                                                            <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                        @endforeach
-                                                    @endif
+                                                    @foreach ($warehouses as $w)
+                                                        @php
+                                                            $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                        @endphp
+                                                        <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
 
@@ -1024,10 +1022,10 @@
                 }
             });
 
-            var extra = totalTr > 1 ? '<span class="text-dark"> (Total Del. : '+parseFloat(totalDelivedQty).toFixed(2)+')</span>' : '';
+            var extra = totalTr > 1 ? '<span class="text-dark"> (Total Del. : ' + parseFloat(totalDelivedQty).toFixed(2) + ')</span>' : '';
 
             lastTr.find('#span_ordered_quantity').html(parseFloat(lastOrderedQty).toFixed(2));
-            lastTr.find('#span_left_quantity').html(parseFloat(lastRunningDeliverQty).toFixed(2)+extra);
+            lastTr.find('#span_left_quantity').html(parseFloat(lastRunningDeliverQty).toFixed(2) + extra);
         }
 
         function getProductLastIndex(productId, variantId) {

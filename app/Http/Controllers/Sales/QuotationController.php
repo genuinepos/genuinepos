@@ -44,7 +44,6 @@ class QuotationController extends Controller
         private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

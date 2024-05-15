@@ -89,7 +89,7 @@
                                          <tr>
                                              <input type="hidden" name="attach_id[]" value="{{ $item->id }}">
                                              <td>
-                                                 <img class="mt-3 mb-3" width="100" height="100" src="{{ asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $item->image) }}">
+                                                 <img class="mt-3 mb-3" width="100" height="100" src="{{ asset('uploads/advertisement/' . $item->image) }}">
                                              </td>
                                              <td>
                                                  <input type="text" name="default_content_title[]" value="{{ $item->content_title }}" class="form-control mt-2" placeholder="{{ __('Enter Slider Title') }}">
@@ -122,7 +122,7 @@
                                      <tr>
                                          <td>
                                              <video style="width: 200px;height:150px;" controls autoplay>
-                                                 <source src="{{ asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $data->attachments[0]->video) }}" type="video/mp4">
+                                                 <source src="{{ asset('uploads/advertisement/' . $data->attachments[0]->video) }}" type="video/mp4">
                                                  {{ __('Your browser does not support the video tag.') }}
                                              </video>
                                          </td>

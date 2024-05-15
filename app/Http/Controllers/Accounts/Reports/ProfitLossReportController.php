@@ -11,7 +11,6 @@ class ProfitLossReportController extends Controller
 {
     public function __construct(private BranchService $branchService, private ProfitLossService $profitLossService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
@@ -31,7 +30,7 @@ class ProfitLossReportController extends Controller
     public function printProfitLoss(Request $request)
     {
         abort_if(!auth()->user()->can('profit_loss'), 403);
-        
+
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 

@@ -12,7 +12,7 @@
     </style>
 
     <video style="width: 100%;height:95%;" controls autoplay>
-        <source src="{{ asset('uploads/' . tenant('id') . '/' . 'advertisement/' . $data[0]->video) }}" type="video/mp4">
+        <source src="{{ asset('uploads/advertisement/' . $data[0]->video) }}" type="video/mp4">
         {{ __('Your browser does not support the video tag.') }}
     </video>
 

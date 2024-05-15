@@ -156,7 +156,7 @@
                         </div>
 
                         <div class="row mt-1">
-                            @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
+                            @if (auth()->user()->can('has_access_to_all_area') == 1)
                                 <div class="col-md-4">
                                     <label><b>{{ __('Access Shop') }}</b> </label>
                                     <input type="hidden" name="access_branch_count" value="access_branch_count">

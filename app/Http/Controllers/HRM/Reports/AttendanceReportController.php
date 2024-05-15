@@ -20,12 +20,11 @@ class AttendanceReportController extends Controller
         private DepartmentService $departmentService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('attendance_report') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendance_report'), 403);
 
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();

@@ -16,12 +16,11 @@ class ProductionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('production_view'), 403);
 
         $indexMethodContainer = $productionControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
@@ -37,7 +36,7 @@ class ProductionController extends Controller
 
     public function show($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('production_view'), 403);
 
         $showMethodContainer = $productionControllerMethodContainersInterface->showMethodContainer(id: $id);
 
@@ -57,7 +56,7 @@ class ProductionController extends Controller
 
     public function create(ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_add') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('production_add'), 403);
 
         $createMethodContainer = $productionControllerMethodContainersInterface->createMethodContainer();
 
@@ -97,7 +96,7 @@ class ProductionController extends Controller
 
     public function edit($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_edit') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('production_edit'), 403);
 
         $editMethodContainer = $productionControllerMethodContainersInterface->editMethodContainer(id: $id);
 

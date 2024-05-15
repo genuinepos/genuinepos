@@ -118,7 +118,7 @@
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 li += '<li>';
                                 li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
@@ -162,7 +162,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 if (product.is_variant == 1) {
 
@@ -662,49 +662,46 @@
         $('#print_page_size').val(value);
     });
 
-    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+    $(document).on('click', '#receiver_branch_id', function(e) {
+        e.preventDefault();
 
-        $(document).on('click', '#receiver_branch_id', function(e) {
-            e.preventDefault();
+        var branchId = $(this).val() ? $(this).val() : 'noid';
 
-            var branchId = $(this).val() ? $(this).val() : 'noid';
+        // if (branchId == '') {
+        //     return;
+        // }
 
-            // if (branchId == '') {
-            //     return;
-            // }
+        var route = '';
+        var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
+        route = url.replace(':branchId', branchId);
 
-            var route = '';
-            var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
-            route = url.replace(':branchId', branchId);
+        $.ajax({
+            url: route,
+            type: 'get',
+            success: function(warehouses) {
 
-            $.ajax({
-                url: route,
-                type: 'get',
-                success: function(warehouses) {
+                $('#receiver_warehouse_id').empty();
+                $('#receiver_warehouse_id').append('<option value="">Select Warehouse</option>');
 
-                    $('#receiver_warehouse_id').empty();
-                    $('#receiver_warehouse_id').append('<option value="">Select Warehouse</option>');
+                $.each(warehouses, function(key, warehouse) {
 
-                    $.each(warehouses, function(key, warehouse) {
+                    $('#receiver_warehouse_id').append('<option value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                });
+            },
+            error: function(err) {
 
-                        $('#receiver_warehouse_id').append('<option value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
-                    });
-                },
-                error: function(err) {
+                if (err.status == 0) {
 
-                    if (err.status == 0) {
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                        return;
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
                 }
-            });
+            }
         });
-    @endif
+    });
 
     var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';

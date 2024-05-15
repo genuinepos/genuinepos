@@ -1,29 +1,72 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
 
-        .input-group-text-sale { font-size: 7px !important; }
+        .input-group-text-sale {
+            font-size: 7px !important;
+        }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid #706a6d;
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 0px 2px;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid lightgray;
+            margin: 2px 0px;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
 
-        .selectProduct { background-color: #746e70 !important; color: #fff !important; }
+        .selectProduct {
+            background-color: #746e70 !important;
+            color: #fff !important;
+        }
 
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 { text-align: right; padding-right: 10px; }
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
 
-        .checkbox_input_wrap { text-align: right; }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -71,19 +114,17 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                        <div class="input-group mt-1">
-                                            <label class="col-5"><b>{{ __('Send At') }}</b></label>
-                                            <div class="col-7">
-                                                <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
-                                                    <option value="">{{ __('Select Warehouse') }}</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-5"><b>{{ __('Send At') }}</b></label>
+                                        <div class="col-7">
+                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
+                                                <option value="">{{ __('Select Warehouse') }}</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                    @endif
+                                    </div>
                                 </div>
 
                                 @if ($transferStock->total_received_qty == 0)
@@ -110,19 +151,17 @@
                                             </div>
                                         </div>
 
-                                        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                            <div class="input-group mt-1">
-                                                <label class="col-5"><b>{{ __('Receive At') }}</b></label>
-                                                <div class="col-7">
-                                                    <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
-                                                        <option value="">{{ __('Select Warehouse') }}</option>
-                                                        @foreach ($selectedBranchWarehouses as $warehouse)
-                                                            <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                        <div class="input-group mt-1">
+                                            <label class="col-5"><b>{{ __('Receive At') }}</b></label>
+                                            <div class="col-7">
+                                                <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
+                                                    <option value="">{{ __('Select Warehouse') }}</option>
+                                                    @foreach ($selectedBranchWarehouses as $warehouse)
+                                                        <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
                                 @else
                                     @php
@@ -146,7 +185,7 @@
                                             </div>
                                         </div>
 
-                                        @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && $transferStock->receiver_warehouse_id)
+                                        @if ($transferStock->receiver_warehouse_id)
                                             <div class="input-group mt-1">
                                                 <label class="col-5"><b>{{ __('Receive At') }}</b></label>
                                                 <div class="col-7">

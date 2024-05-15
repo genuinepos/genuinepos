@@ -37,7 +37,7 @@ class UserProfileService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+            $dir = public_path('uploads/user_photo/');
 
             $newFile = FileUploader::upload($request->file('photo'), $dir);
             if (

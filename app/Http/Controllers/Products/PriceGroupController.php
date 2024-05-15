@@ -18,7 +18,6 @@ class PriceGroupController extends Controller
         private PriceGroupService $priceGroupService,
         private UserActivityLogService $userActivityLogService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

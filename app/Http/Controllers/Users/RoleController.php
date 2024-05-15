@@ -12,13 +12,12 @@ class RoleController extends Controller
     public function __construct(
         private RoleService $roleService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
         if (!auth()->user()->can('role_view')) {
-            
+
             abort(403, 'Access Forbidden.');
         }
 

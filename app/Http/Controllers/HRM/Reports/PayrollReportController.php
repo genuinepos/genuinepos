@@ -20,12 +20,11 @@ class PayrollReportController extends Controller
         private DepartmentService $departmentService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('payroll_report') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payroll_report'), 403);
 
         if ($request->ajax()) {
 
@@ -143,7 +142,7 @@ class PayrollReportController extends Controller
 
     public function print(Request $request)
     {
-        abort_if(!auth()->user()->can('payroll_report') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payroll_report'), 403);
 
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {

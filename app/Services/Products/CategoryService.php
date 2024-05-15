@@ -21,7 +21,7 @@ class CategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
+                    $photo = asset('uploads/category/' . $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -60,7 +60,7 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            $dir = public_path('uploads/category/');
 
             if (!\File::isDirectory($dir)) {
 
@@ -87,7 +87,7 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            $dir = public_path('uploads/category/');
 
             if ($updateCategory->photo && file_exists($dir . $updateCategory->photo)) {
 
@@ -119,7 +119,7 @@ class CategoryService
             return ['pass' => false, 'msg' => 'Category can not be deleted. One or more sub-categories is belonging under this category.'];
         }
 
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+        $dir = public_path('uploads/category/');
         if ($deleteCategory->photo && file_exists($dir . $deleteCategory->photo)) {
 
             unlink($dir . $deleteCategory->photo);

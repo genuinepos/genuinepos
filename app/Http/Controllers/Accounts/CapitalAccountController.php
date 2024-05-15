@@ -13,7 +13,6 @@ class CapitalAccountController extends Controller
         private CapitalAccountService $capitalAccountService,
         private AccountGroupService $accountGroupService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

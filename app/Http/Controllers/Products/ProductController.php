@@ -14,7 +14,6 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $isForCreatePage = 0)

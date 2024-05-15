@@ -17,7 +17,6 @@ class ChangeBusinessOrBranchLocationController extends Controller
 {
     public function __construct(private BranchService $branchService, private UserService $userService, private UserActivityLogService $userActivityLogService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
@@ -25,11 +24,7 @@ class ChangeBusinessOrBranchLocationController extends Controller
         if (
             !Session::get('chooseBusinessOrShop') &&
             auth()->user()->can('has_access_to_all_area') &&
-            auth()->user()->is_belonging_an_area == BooleanType::False->value &&
-            (
-                config('generalSettings')['subscription']->has_business == BooleanType::True->value ||
-                config('generalSettings')['subscription']->current_shop_count > 1
-            )
+            auth()->user()->is_belonging_an_area == BooleanType::False->value
         ) {
 
             $branches = $this->branchService->branches(with: ['parentBranch'])

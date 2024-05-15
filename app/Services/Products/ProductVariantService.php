@@ -24,7 +24,7 @@ class ProductVariantService
             $variantImage = $request->variant_image[$index];
             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+            $dir = public_path('uploads/product/variant_image/');
 
             if (!\File::isDirectory($dir)) {
 
@@ -65,7 +65,7 @@ class ProductVariantService
 
         if (isset($request->variant_image[$index])) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+            $dir = public_path('uploads/product/variant_image/');
 
             if (isset($addOrUpdateVariant->variant_image)) {
 
@@ -98,7 +98,7 @@ class ProductVariantService
 
         foreach ($deleteAbleVariants as $deleteAbleVariant) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+            $dir = public_path('uploads/product/variant_image/');
 
             if (isset($deleteAbleVariant->variant_image)) {
 

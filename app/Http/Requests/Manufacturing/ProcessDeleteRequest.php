@@ -12,7 +12,7 @@ class ProcessDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('process_delete') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
+        return auth()->user()->can('process_delete');
     }
 
     /**

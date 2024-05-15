@@ -19,7 +19,6 @@ class BrandController extends Controller
         private BrandService $brandService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

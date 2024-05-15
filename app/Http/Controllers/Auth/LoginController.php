@@ -76,18 +76,6 @@ class LoginController extends Controller
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
 
-        if (
-            $user?->branch &&
-            isset($user?->branch?->expire_date) &&
-            date('Y-m-d') > $user?->branch?->expire_date &&
-            !$role->hasPermissionTo('billing_renew_branch')
-        ) {
-
-            $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
-            session()->flash('errorMsg', $msg);
-            return redirect()->back();
-        }
-
         if (isset($user) && $user->allow_login == BooleanType::True->value) {
 
             if (

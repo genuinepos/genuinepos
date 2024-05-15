@@ -29,12 +29,11 @@ class PayrollController extends Controller
         private AccountService $accountService,
         private DayBookService $dayBookService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('payrolls_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_index'), 403);
 
         if ($request->ajax()) {
 
@@ -42,7 +41,7 @@ class PayrollController extends Controller
         }
 
         $departments = $this->departmentService->departments()->get(['id', 'name']);
-        
+
         $users = $this->userService->users()
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
@@ -74,7 +73,7 @@ class PayrollController extends Controller
 
     public function create(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_create'), 403);
 
         $createMethodContainer = $payrollControllerMethodContainersInterface->createMethodContainer(
             request: $request,
@@ -95,7 +94,7 @@ class PayrollController extends Controller
 
     public function store(Request $request, CodeGenerationServiceInterface $codeGenerator, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_create'), 403);
 
         $this->payrollService->storeAndUpdateValidation(request: $request);
 
@@ -123,7 +122,7 @@ class PayrollController extends Controller
 
     public function edit($id, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_edit'), 403);
 
         $editMethodContainer = $payrollControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -138,7 +137,7 @@ class PayrollController extends Controller
 
     public function update($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_edit'), 403);
 
         $this->payrollService->storeAndUpdateValidation(request: $request);
 
@@ -166,7 +165,7 @@ class PayrollController extends Controller
 
     public function delete($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_delete'), 403);
 
         $deleteMethodContainer = $payrollControllerMethodContainersInterface->deleteMethodContainer(id: $id, payrollService: $this->payrollService);
 

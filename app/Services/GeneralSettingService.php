@@ -19,10 +19,8 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
                 if (isset($key) && isset($value)) {
 
-                    if (
-                        ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
-                        config('generalSettings')['subscription']->features['hrm'] == 0
-                    ) {
+                    if (($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix')) {
+
                         continue;
                     }
 
@@ -90,7 +88,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     public function deleteBusinessLogo(): bool
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+        $dir = public_path('uploads/business_logo/');
 
         if (isset($businessLogo->value)) {
 

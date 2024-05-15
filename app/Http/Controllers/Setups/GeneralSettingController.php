@@ -25,7 +25,6 @@ class GeneralSettingController extends Controller
         private InvoiceLayoutService $invoiceLayoutService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
@@ -67,7 +66,7 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('business_logo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+            $dir = public_path('uploads/business_logo/');
 
             if (isset($generalSettings['business_or_shop__business_logo'])) {
 
@@ -283,12 +282,6 @@ class GeneralSettingController extends Controller
 
     public function moduleSettings(Request $request)
     {
-
-        $generalSettings = config('generalSettings');
-        $subscription = $generalSettings['subscription'];
-        $hrm = $subscription->features['hrm'] == 1 ? (isset($request->hrms) ? 1 : 0) : 1;
-        $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
-        $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
             'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
@@ -297,9 +290,9 @@ class GeneralSettingController extends Controller
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
-            'modules__hrms' => $hrm,
-            'modules__manage_task' => $task_management,
-            'modules__manufacturing' => $manufacturing,
+            'modules__hrms' => isset($request->hrms) ? 1 : 0,
+            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
+            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

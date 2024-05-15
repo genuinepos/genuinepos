@@ -67,38 +67,33 @@
             </div>
         </div>
 
-        @if ($generalSettings['subscription']->features['hrm'] == 1)
-            <div class="col-md-4">
-                <div class="row">
-                    <p class="checkbox_input_wrap">
-                        <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>{{ __('Human Resource Management') }}</b>
-                    </p>
-                </div>
+        <div class="col-md-4">
+            <div class="row">
+                <p class="checkbox_input_wrap">
+                    <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>{{ __('Human Resource Management') }}</b>
+                </p>
             </div>
-        @endif
+        </div>
     </div>
 
     <div class="form-group row mt-2">
-        @if ($generalSettings['subscription']->features['task_management'] == 1)
-            <div class="col-md-4">
-                <div class="row">
-                    <p class="checkbox_input_wrap">
-                        <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
-                    </p>
-                </div>
-            </div>
-        @endif
 
-        @if ($generalSettings['subscription']->features['manufacturing'] == 1)
-            <div class="col-md-4">
-                <div class="row">
-                    <p class="checkbox_input_wrap">
-                        <input type="checkbox" @if (isset($generalSettings['modules__manufacturing'])) {{ $generalSettings['modules__manufacturing'] == '1' ? 'CHECKED' : '' }} @endif name="manufacturing" autocomplete="off">
-                        &nbsp;<b>{{ __('Manufacturing') }}</b>
-                    </p>
-                </div>
+        <div class="col-md-4">
+            <div class="row">
+                <p class="checkbox_input_wrap">
+                    <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
+                </p>
             </div>
-        @endif
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+                <p class="checkbox_input_wrap">
+                    <input type="checkbox" @if (isset($generalSettings['modules__manufacturing'])) {{ $generalSettings['modules__manufacturing'] == '1' ? 'CHECKED' : '' }} @endif name="manufacturing" autocomplete="off">
+                    &nbsp;<b>{{ __('Manufacturing') }}</b>
+                </p>
+            </div>
+        </div>
     </div>
 
     <div class="row mt-2">

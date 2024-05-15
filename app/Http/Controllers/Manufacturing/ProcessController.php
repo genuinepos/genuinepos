@@ -15,12 +15,11 @@ class ProcessController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('process_view'), 403);
 
         $indexMethodContainer = $processControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
@@ -34,7 +33,7 @@ class ProcessController extends Controller
 
     public function show($id, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('process_view'), 403);
 
         $showMethodContainer = $processControllerMethodContainersInterface->showMethodContainer(id: $id);
 
@@ -63,7 +62,7 @@ class ProcessController extends Controller
 
     public function create(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('process_add'), 403);
 
         $createMethodContainer = $processControllerMethodContainersInterface->createMethodContainer(request: $request);
 
@@ -95,7 +94,7 @@ class ProcessController extends Controller
 
     public function edit($id, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('process_edit'), 403);
 
         $editMethodContainer = $processControllerMethodContainersInterface->editMethodContainer(id: $id);
 

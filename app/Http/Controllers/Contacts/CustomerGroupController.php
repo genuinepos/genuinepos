@@ -17,12 +17,11 @@ class CustomerGroupController extends Controller
         private PriceGroupService $priceGroupService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group'), 403);
 
         if ($request->ajax()) {
 
@@ -36,7 +35,7 @@ class CustomerGroupController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group'), 403);
 
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -52,7 +51,7 @@ class CustomerGroupController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group'), 403);
 
         $customerGroup = $this->customerGroupService->singleCustomerGroup(id: $id);
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
@@ -69,7 +68,7 @@ class CustomerGroupController extends Controller
 
     public function delete($id)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group'), 403);
 
         $this->customerGroupService->deleteCustomerGroup(id: $id);
 

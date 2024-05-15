@@ -19,7 +19,6 @@ class CategoryController extends Controller
         private CategoryService $categoryService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

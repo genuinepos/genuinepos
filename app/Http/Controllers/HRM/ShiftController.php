@@ -11,12 +11,11 @@ class ShiftController extends Controller
 {
     public function __construct(private ShiftService $shiftService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('shifts_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('shifts_index'), 403);
 
         if ($request->ajax()) {
 
@@ -28,14 +27,14 @@ class ShiftController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('shifts_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('shifts_create'), 403);
 
         return view('hrm.shifts.ajax.create');
     }
 
     public function store(Request $request)
     {
-        abort_if(!auth()->user()->can('shifts_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('shifts_create'), 403);
 
         $this->shiftService->addValidation(request: $request);
         return $this->shiftService->addShift($request);
@@ -43,7 +42,7 @@ class ShiftController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('shifts_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('shifts_edit'), 403);
 
         $shift = DB::table('hrm_shifts')->where('id', $id)->first();
 
@@ -52,7 +51,7 @@ class ShiftController extends Controller
 
     public function update($id, Request $request)
     {
-        abort_if(!auth()->user()->can('shifts_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('shifts_edit'), 403);
 
         $this->shiftService->updateValidation(request: $request, id: $id);
         $this->shiftService->updateShift(request: $request, id: $id);
@@ -62,7 +61,7 @@ class ShiftController extends Controller
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('shifts_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('shifts_delete'), 403);
 
         $this->shiftService->deleteShift(id: $id);
 

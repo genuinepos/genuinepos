@@ -19,7 +19,6 @@ class UnitController extends Controller
         private UnitService $unitService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

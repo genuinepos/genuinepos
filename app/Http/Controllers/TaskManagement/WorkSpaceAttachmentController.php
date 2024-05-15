@@ -11,12 +11,11 @@ class WorkSpaceAttachmentController extends Controller
     public function __construct(
         private WorkspaceAttachmentService $workspaceAttachmentService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($workspaceId)
     {
-        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_index'), 403);
 
         $attachments = $this->workspaceAttachmentService->workspaceAttachments()
             ->where('workspace_id', $workspaceId)
@@ -29,7 +28,7 @@ class WorkSpaceAttachmentController extends Controller
 
     public function delete($id)
     {
-        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_index'), 403);
 
         $this->workspaceAttachmentService->deleteWorkspaceAttachment(id: $id);
 

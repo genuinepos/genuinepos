@@ -10,7 +10,7 @@
         <div class="modal-body" id="today_summery_modal_body">
             <div class="row align-items-end mb-2">
                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
-                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                     <div class="col-md-6">
                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                         <select name="branch_id" class="form-control select2" id="today_summary_branch_id" autofocus>
@@ -110,12 +110,10 @@
                                     <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalExpense']) }}</td>
                                 </tr>
 
-                                @if ($generalSettings['subscription']->features['hrm'] == 1)
-                                    <tr>
-                                        <th class="text-start">{{ __('Total Expense By Payroll') }}</th>
-                                        <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPayrollPayment']) }}</td>
-                                    </tr>
-                                @endif
+                                <tr>
+                                    <th class="text-start">{{ __('Total Expense By Payroll') }}</th>
+                                    <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPayrollPayment']) }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

@@ -30,14 +30,13 @@ class BranchController extends Controller
         private GeneralSettingService $generalSettingService,
         private CodeGenerationServiceInterface $codeGenerator,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
         $generalSettings = config('generalSettings');
 
-        abort_if(!auth()->user()->can('branches_create') && $generalSettings['subscription']->current_shop_count == 1, 403);
+        abort_if(!auth()->user()->can('branches_create'), 403);
 
         $currentCreatedBranchCount = $this->branchService->branches()->count();
 
@@ -72,13 +71,6 @@ class BranchController extends Controller
 
         try {
             DB::beginTransaction();
-
-            $restrictions = $this->branchService->restrictions();
-
-            if ($restrictions['pass'] == false) {
-
-                return response()->json(['errorMsg' => $restrictions['msg']]);
-            }
 
             $addBranch = $this->branchService->addBranch($request);
 

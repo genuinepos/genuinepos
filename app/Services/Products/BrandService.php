@@ -21,7 +21,7 @@ class BrandService
 
                 if ($row->photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'brand/' . $row->photo);
+                    $photo = asset('uploads/brand/' . $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -53,7 +53,7 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
+            $dir = public_path('uploads/brand/');
 
             if (!\File::isDirectory($dir)) {
 
@@ -78,7 +78,7 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
+            $dir = public_path('uploads/brand/');
 
             if (isset($updateBrand->photo) && file_exists($dir . $updateBrand->photo)) {
 
@@ -107,7 +107,7 @@ class BrandService
 
         if (isset($deleteBrand)) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
+            $dir = public_path('uploads/brand/');
             if (isset($deleteBrand->photo) && file_exists($dir . $deleteBrand->photo)) {
 
                 unlink($dir . $deleteBrand->photo);

@@ -24,7 +24,6 @@ class UserController extends Controller
         private RoleService $roleService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -65,13 +64,6 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $restrictions = $this->userService->storeRestrictions(request: $request);
-
-        if ($restrictions['pass'] == false) {
-
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
-
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
         $this->userService->addUser(request: $request, role: $role);
@@ -98,13 +90,6 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
-        $restrictions = $this->userService->updateRestrictions(request: $request, id: $id);
-
-        if ($restrictions['pass'] == false) {
-
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
-
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
 

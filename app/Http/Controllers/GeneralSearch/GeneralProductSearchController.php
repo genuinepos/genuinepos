@@ -12,7 +12,6 @@ class GeneralProductSearchController extends Controller
         private GeneralProductSearchService $generalProductSearchService,
         private ProductService $productService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function commonSearch($keyWord, $isShowNotForSaleItem = 1, $priceGroupId = null, $branchId = null)

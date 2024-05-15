@@ -11,7 +11,6 @@ class ProductStockController extends Controller
     public function __construct(
         private ProductStockService $productStockService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function productStock($id, Request $request)

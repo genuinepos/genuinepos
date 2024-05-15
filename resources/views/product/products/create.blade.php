@@ -232,7 +232,7 @@
                                             </div>
                                         @endif
 
-                                        @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
+                                        @if (auth()->user()->can('has_access_to_all_area') == 1)
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>

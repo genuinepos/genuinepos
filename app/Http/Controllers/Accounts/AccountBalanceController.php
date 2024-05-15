@@ -11,7 +11,6 @@ class AccountBalanceController extends Controller
     public function __construct(
         private AccountBalanceService $accountBalanceService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function accountBalance(Request $request, $accountId)

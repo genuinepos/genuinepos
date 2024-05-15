@@ -13,19 +13,11 @@ class ReceiveStockFromBranchController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);
 
         $indexMethodContainer = $receiveStockFromBranchControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
@@ -39,14 +31,7 @@ class ReceiveStockFromBranchController extends Controller
 
     public function create($id, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);
 
         $createMethodContainer = $receiveStockFromBranchControllerMethodContainersInterface->createMethodContainer(id: $id);
 

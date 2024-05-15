@@ -11,7 +11,7 @@ class WorkspaceUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('workspaces_edit') && config('generalSettings')['subscription']->features['task_management'] == 1;
+        return auth()->user()->can('workspaces_edit');
     }
 
     /**

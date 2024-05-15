@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class); // 2
         $this->call(ShortMenusSeeder::class); // 3
         $this->call(RolePermissionSeeder::class); // 5
-        // $this->call(DefaultUsersSeeder::class); // 6
+        $this->call(DefaultUsersSeeder::class); // 6
         // $this->call(UserRoleSeeder::class); // 7
         $this->call(UnitSeeder::class); // 8
         $this->call(BarcodeSettingsSeeder::class); // 9

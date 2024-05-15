@@ -17,7 +17,6 @@ class CashRegisterReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        $this->middleware('subscriptionRestrictions');
     }
 
     // Index view of cash register report

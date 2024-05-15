@@ -7,14 +7,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-6">
-                    <h6>{{ __('Users') }}
-                        <span style="font-size: 12px;">({{ __('User Limit') }}
-                            : <span class="text-danger" id="current_user_count"> --- </span>/{{ $generalSettings['subscription']->features['user_count'] }})
-                        </span> |
-                        <span style="font-size: 12px;">({{ __('Employee Limit') }}
-                            : <span class="text-danger" id="current_employee_count"> --- </span>/{{ $generalSettings['subscription']->features['employee_count'] }})
-                        </span>
-                    </h6>
+                    <h6>{{ __('Users') }}</h6>
                 </div>
 
                 <div class="col-md-6">
@@ -28,7 +21,7 @@
 
         <div class="p-1">
             {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_area == 0) --}}
-            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">

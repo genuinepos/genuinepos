@@ -12,19 +12,11 @@ class ReceiveStockFromWarehouseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);
 
         $indexMethodContainer = $receiveStockFromWarehouseControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
@@ -40,14 +32,7 @@ class ReceiveStockFromWarehouseController extends Controller
 
     public function create($id, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);
-
-        abort_if(
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-                config('generalSettings')['subscription']->current_shop_count == 1 &&
-                config('generalSettings')['subscription']->features['warehouse_count'] == 0,
-            403
-        );
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') , 403);
 
         $createMethodContainer = $receiveStockFromWarehouseControllerMethodContainersInterface->createMethodContainer(id: $id);
 

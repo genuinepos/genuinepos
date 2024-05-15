@@ -11,6 +11,7 @@ use App\Services\Accounts\AccountService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountBalanceService;
 
 class SalesOrderToInvoiceController extends Controller
 {
@@ -18,6 +19,7 @@ class SalesOrderToInvoiceController extends Controller
         private SaleService $saleService,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,
+        private AccountBalanceService $accountBalanceService,
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
@@ -27,10 +29,10 @@ class SalesOrderToInvoiceController extends Controller
     public function create($id = null)
     {
         abort_if(!auth()->user()->can('sales_order_to_invoice'), 403);
-        
+
         $order = null;
         if (isset($id)) {
-            $order = $this->saleService->singleSale(id: $id, with: ['saleProducts']);
+            $order = $this->saleService->singleSale(id: $id, with: ['customer', 'customer.group', 'saleProducts']);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
@@ -65,6 +67,8 @@ class SalesOrderToInvoiceController extends Controller
             ->where('account_groups.sub_sub_group_number', 8)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        return view('sales.order_to_invoice.create', compact('ownBranchIdOrParentBranchId', 'branchName', 'accounts', 'methods', 'saleAccounts', 'warehouses', 'taxAccounts', 'order'));
+        $accountBalance = $this->accountBalanceService->accountBalance(accountId: $order?->customer_account_id);
+
+        return view('sales.order_to_invoice.create', compact('ownBranchIdOrParentBranchId', 'branchName', 'accounts', 'methods', 'saleAccounts', 'warehouses', 'taxAccounts', 'order', 'accountBalance'));
     }
 }

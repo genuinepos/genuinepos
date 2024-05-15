@@ -1,6 +1,12 @@
 @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $purchase?->supplier;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -25,7 +31,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($dateFormat, strtotime($purchase->date)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
                                 @php
@@ -216,8 +222,8 @@
 
                                 <tr>
                                     <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt(0) }}
+                                    <td class="text-end fw-bold">
+                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>
                                 </tr>
                             </table>
@@ -249,7 +255,7 @@
                             <div class="col-2">
                                 <select id="print_page_size" class="form-control">
                                     @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                        <option {{ $generalSettings['print_page_size__purchase_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                                        <option @selected($generalSettings['print_page_size__purchase_page_size'] == $item->value) value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -266,7 +272,6 @@
                                 $filename = __('Purchase') . '__' . $purchase->invoice_id . '__' . $purchase->date . '__' . $branchName;
                             @endphp
                             @if (auth()->user()->can('purchase_edit') && $purchase->branch_id == auth()->user()->branch_id)
-
                                 <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
                             <a href="{{ route('purchases.print', $purchase->id) }}" onclick="printPurchase(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPurchaseBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>

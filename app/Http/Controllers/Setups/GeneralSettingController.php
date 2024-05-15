@@ -11,6 +11,8 @@ use App\Services\Accounts\AccountService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
+use App\Http\Requests\Setups\GeneralSettingsRequest;
+use Intervention\Image\Facades\Image;
 
 class GeneralSettingController extends Controller
 {
@@ -23,6 +25,7 @@ class GeneralSettingController extends Controller
         private InvoiceLayoutService $invoiceLayoutService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
@@ -57,30 +60,37 @@ class GeneralSettingController extends Controller
         ));
     }
 
-    public function businessSettings(Request $request)
+    public function businessSettings(GeneralSettingsRequest $request)
     {
         $generalSettings = config('generalSettings');
-        $business_logo = null;
+        $businessLogo = null;
 
         if ($request->hasFile('business_logo')) {
 
-            if ($generalSettings['business_or_shop__business_logo'] != null) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
 
-                $bLogo = $generalSettings['business_or_shop__business_logo'];
+            if (isset($generalSettings['business_or_shop__business_logo'])) {
 
-                if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
+                $businessLogo = $generalSettings['business_or_shop__business_logo'];
 
-                    unlink(public_path('uploads/business_logo/' . $bLogo));
+                if (file_exists($dir . $businessLogo)) {
+
+                    unlink($dir . $businessLogo);
                 }
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $logo = $request->file('business_logo');
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-            $logo->move(public_path('uploads/business_logo/'), $logoName);
-            $business_logo = $logoName;
+            Image::make($logo)->resize(200, 60)->save($dir . $logoName);
+            $businessLogo = $logoName;
         } else {
 
-            $business_logo = $generalSettings['business_or_shop__business_logo'] != null ? $generalSettings['business_or_shop__business_logo'] : null;
+            $businessLogo = isset($generalSettings['business_or_shop__business_logo']) ? $generalSettings['business_or_shop__business_logo'] : null;
         }
 
         $settings = [
@@ -96,7 +106,7 @@ class GeneralSettingController extends Controller
             'business_or_shop__date_format' => $request->date_format,
             'business_or_shop__stock_accounting_method' => $request->stock_accounting_method,
             'business_or_shop__time_format' => $request->time_format,
-            'business_or_shop__business_logo' => $business_logo,
+            'business_or_shop__business_logo' => $businessLogo,
             'business_or_shop__timezone' => $request->timezone,
         ];
 
@@ -110,6 +120,7 @@ class GeneralSettingController extends Controller
         $settings = [
             'dashboard__view_stock_expiry_alert_for' => $request->view_stock_expiry_alert_for,
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json(__('Dashboard settings updated successfully.'));
@@ -205,8 +216,9 @@ class GeneralSettingController extends Controller
             'prefix__purchase_order_prefix' => $request->purchase_order_prefix,
             'prefix__purchase_return_prefix' => $request->purchase_return_prefix,
             'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
-            'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix,
-            'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix,
+            'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix ? $request->payroll_voucher_prefix : 'PRL',
+            'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix ? $request->payroll_payment_voucher_prefix : 'RRLP',
+            'prefix__stock_issue_voucher_prefix' => $request->stock_issue_voucher_prefix ? $request->stock_issue_voucher_prefix : 'ST',
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];
@@ -271,18 +283,23 @@ class GeneralSettingController extends Controller
 
     public function moduleSettings(Request $request)
     {
+
+        $generalSettings = config('generalSettings');
+        $subscription = $generalSettings['subscription'];
+        $hrm = $subscription->features['hrm'] == 1 ? (isset($request->hrms) ? 1 : 0) : 1;
+        $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
+        $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
             'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
-            'modules__pos' => isset($request->add_sale) ? 1 : 0,
+            'modules__pos' => isset($request->pos) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
-            'modules__hrms' => isset($request->hrms) ? 1 : 0,
-            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
-            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
-            'modules__service' => isset($request->service) ? 1 : 0,
+            'modules__hrms' => $hrm,
+            'modules__manage_task' => $task_management,
+            'modules__manufacturing' => $manufacturing,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -335,5 +352,12 @@ class GeneralSettingController extends Controller
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json(__('Reward point settings updated successfully'));
+    }
+
+    public function deleteBusinessLogo(Request $request)
+    {
+        $this->generalSettingService->deleteBusinessLogo();
+
+        return response()->json(__('Business logo is removed successfully'));
     }
 }

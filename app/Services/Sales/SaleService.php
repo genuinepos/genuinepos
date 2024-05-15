@@ -280,8 +280,8 @@ class SaleService
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',
-            'saleProducts.purchaseSaleProductChains',
-            'saleProducts.purchaseSaleProductChains.purchaseProduct',
+            'saleProducts.stockChains',
+            'saleProducts.stockChains.purchaseProduct',
         ]);
 
         $voucherName = SaleStatus::tryFrom($deleteSale->status)->name;
@@ -527,12 +527,13 @@ class SaleService
             $query->where('sales.sale_screen', $saleScreen);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->can('view_own_sale')) {
 
-            if (auth()->user()->can('view_own_sale')) {
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
 
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }
@@ -576,8 +577,8 @@ class SaleService
             'sale_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'sale_account_id.required' => 'Sales A/c is required',
-            'account_id.required' => 'Debit A/c is required',
+            'sale_account_id.required' => __('Sales A/c is required'),
+            'account_id.required' => __('Debit A/c is required'),
         ]);
     }
 }

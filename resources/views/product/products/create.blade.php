@@ -232,31 +232,29 @@
                                             </div>
                                         @endif
 
-                                        @if ($generalSettings['addons__branch_limit'] > 1)
-                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>
-                                                        <div class="col-8">
-                                                            <input type="hidden" name="access_branch_count" value="access_branch_count">
-                                                            <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
-                                                                @foreach ($branches as $branch)
-                                                                    <option
-                                                                        @if (isset($product) && count($product->productAccessBranches) > 0)
-                                                                            @foreach ($product->productAccessBranches as $productAccessBranche)
-                                                                                {{ $branch->id == $productAccessBranche->branch_id ? 'SELECTED' : '' }}
-                                                                            @endforeach
-                                                                        @endif
-                                                                        value="{{ $branch->id }}">
-                                                                        {{ $branch->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                            <span class="error error_access_branch_ids"></span>
-                                                        </div>
+                                        @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>
+                                                    <div class="col-8">
+                                                        <input type="hidden" name="access_branch_count" value="access_branch_count">
+                                                        <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
+                                                            @foreach ($branches as $branch)
+                                                                <option
+                                                                    @if (isset($product) && count($product->productAccessBranches) > 0)
+                                                                        @foreach ($product->productAccessBranches as $productAccessBranche)
+                                                                            {{ $branch->id == $productAccessBranche->branch_id ? 'SELECTED' : '' }}
+                                                                        @endforeach
+                                                                    @endif
+                                                                    value="{{ $branch->id }}">
+                                                                    {{ $branch->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="error error_access_branch_ids"></span>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            </div>
                                         @endif
                                     </div>
 

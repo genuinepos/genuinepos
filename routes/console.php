@@ -1,51 +1,98 @@
 <?php
 
-use App\Mail\NewProductArrived;
-use App\Mail\CustomerRegistered;
 
+use App\Models\User;
+use App\Models\Setups\Branch;
+use App\Models\GeneralSetting;
+use App\Models\Products\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Schema\Blueprint;
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+require_once base_path('deployment/db-migrations/001.php');
 
-// Artisan::command('hello', function(EmailServiceInterface  $emailService) {
-//     $customer = new Customer();
-//     $customer->name = '...';
-//     .....
-//     $customer->save();
+Artisan::command('dev:m', function () {
 
-//     $customer = Customer::first();
-//     if(isset($customer)) {
-//         $emailService->send($customer->email, new CustomerRegistered($customer));
-//     }
-// });
-// Artisan::command('product', function(EmailServiceInterface  $emailService) {
-//     $customers = Customer::pluck('email', 'id')->toArray();
-//     $product = Product::latest()->first();
-//     $emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $product));
+    $migration = DB::table('migrations')
+        ->where('migration', '2023_01_02_113358_create_purchase_sale_product_chains_table')
+        ->delete();
 
-// });
+    DB::table('migrations')->insert([
+        'migration' => '2024_03_23_163909_create_stock_chains_table',
+        'batch' => 6
+    ]);
+});
 
-Artisan::command('test', function () {
+Artisan::command('sync:gs', function () {
 
-    $key = "";
-    $keyLength = 8;
-    for ($x = 1; $x <= $keyLength; $x++) {
-        // Set each digit
-        $key .= random_int(0, 9);
+    $generalSettings = GeneralSetting::where('key', 'prefix__stock_issue_voucher_prefix')->where('branch_id', null)->first();
+
+    if (!isset($generalSettings)) {
+
+        $add = new GeneralSetting();
+        $add->key = 'prefix__stock_issue_voucher_prefix';
+        $add->value = 'STI';
+        $add->save();
     }
-    echo $key;
+
+    $branches = Branch::with('parentBranch', 'childBranches')->get();
+    foreach ($branches as $key => $branch) {
+
+        $generalSettings = GeneralSetting::where('key', 'prefix__stock_issue_voucher_prefix')
+            ->where('branch_id', $branch->id)->first();
+
+        if (!isset($generalSettings)) {
+
+            $numberOfChildBranch = $branch?->parentBranch && count($branch?->parentBranch?->childBranches) > 0 ? count($branch->parentBranch->childBranches) : '';
+
+            $branchName = $branch?->parentBranch ? $branch?->parentBranch->name : $branch->name;
+
+            $exp = explode(' ', $branchName);
+
+            $branchPrefix = '';
+            foreach ($exp as $ex) {
+                $str = str_split($ex);
+                $branchPrefix .= $str[0];
+            }
+
+            $add = new GeneralSetting();
+            $add->key = 'prefix__stock_issue_voucher_prefix';
+            $add->value = $branchPrefix . $numberOfChildBranch . 'STI';
+            $add->branch_id = $branch->id;
+            $add->save();
+        }
+    }
+
+    $products = Product::all();
+});
+
+Artisan::command('sync:table', function () {
+
+    $products = Product::all();
+    foreach ($products as $product) {
+        $product->thumbnail_photo = null;
+        $product->save();
+    }
+
+    $branches = Branch::all();
+    foreach ($branches as $branch) {
+
+        $branch->logo = null;
+        $branch->save();
+    }
+
+    $users = User::all();
+    foreach ($users as $user) {
+
+        $user->photo = null;
+        $user->save();
+    }
+});
+
+Artisan::command('dev:init', function () {
+    Artisan::call('db:seed --class=TenancyDatabaseSeeder');
 });
 
 // Just merged this line of text.

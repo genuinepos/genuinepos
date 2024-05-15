@@ -331,16 +331,6 @@ class TransferStockService
         return $query->where('id', $id)->first();
     }
 
-    public function transferStockValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required|date',
-            'receiver_branch_id' => 'required',
-        ], [
-            'receiver_branch_id.required' => __('Receiver branch is required.'),
-        ]);
-    }
-
     private function filter(object $request, object $query): object
     {
         if ($request->branch_id) {
@@ -367,7 +357,8 @@ class TransferStockService
             $query->whereBetween('transfer_stocks.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
 
             $query->where('transfer_stocks.branch_id', auth()->user()->branch_id);
         }

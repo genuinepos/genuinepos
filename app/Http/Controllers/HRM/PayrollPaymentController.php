@@ -32,6 +32,7 @@ class PayrollPaymentController extends Controller
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function show($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
@@ -61,7 +62,7 @@ class PayrollPaymentController extends Controller
 
     public function create($payrollId, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payroll_payments_create'),403);
+        abort_if(!auth()->user()->can('payroll_payments_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $createMethodContainer = $payrollPaymentControllerMethodContainersInterface->createMethodContainer(
             payrollId: $payrollId,
@@ -81,8 +82,7 @@ class PayrollPaymentController extends Controller
         CodeGenerationServiceInterface $codeGenerator,
         PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
     ) {
-
-        abort_if(!auth()->user()->can('payroll_payments_create'),403);
+        abort_if(!auth()->user()->can('payroll_payments_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->payrollPaymentService->storeValidation(request: $request);
 
@@ -125,7 +125,7 @@ class PayrollPaymentController extends Controller
 
     public function edit($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payroll_payments_edit'),403);
+        abort_if(!auth()->user()->can('payroll_payments_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $editMethodContainer = $payrollPaymentControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -142,7 +142,7 @@ class PayrollPaymentController extends Controller
 
     public function update($id, Request $request, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payroll_payments_edit'),403);
+        abort_if(!auth()->user()->can('payroll_payments_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->payrollPaymentService->updateValidation(request: $request);
 
@@ -177,7 +177,7 @@ class PayrollPaymentController extends Controller
 
     public function delete($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payroll_payments_delete'),403);
+        abort_if(!auth()->user()->can('payroll_payments_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         try {
             DB::beginTransaction();

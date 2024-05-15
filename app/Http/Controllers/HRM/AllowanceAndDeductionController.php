@@ -13,14 +13,15 @@ class AllowanceAndDeductionController extends Controller
 {
     public function __construct(private AllowanceAndDeductionService $allowanceAndDeductionService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('allowances_index') && !auth()->user()->can('deductions_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(
+            (!auth()->user()->can('allowances_index') && !auth()->user()->can('deductions_index')) ||
+            config('generalSettings')['subscription']->features['hrm'] == 0,
+        403);
 
         if ($request->ajax()) {
 
@@ -32,20 +33,20 @@ class AllowanceAndDeductionController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('allowances_create') && !auth()->user()->can('deductions_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(
+            (!auth()->user()->can('allowances_create') && !auth()->user()->can('allowances_create')) ||
+            config('generalSettings')['subscription']->features['hrm'] == 0,
+        403);
 
         return view('hrm.allowances_and_deductions.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('allowances_create') && !auth()->user()->can('deductions_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(
+            (!auth()->user()->can('allowances_create') && !auth()->user()->can('allowances_create')) ||
+            config('generalSettings')['subscription']->features['hrm'] == 0,
+        403);
 
         $this->allowanceAndDeductionService->storeValidation(request: $request);
         $addAllowanceOrDeduction = $this->allowanceAndDeductionService->addAllowanceOrDeduction(request: $request);
@@ -55,10 +56,10 @@ class AllowanceAndDeductionController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('allowances_edit') && !auth()->user()->can('deductions_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(
+            (!auth()->user()->can('allowances_edit') && !auth()->user()->can('allowances_edit')) ||
+            config('generalSettings')['subscription']->features['hrm'] == 0,
+        403);
 
         $allowance = $this->allowanceAndDeductionService->singleAllowanceOrDeduction(id: $id);
         return view('hrm.allowances_and_deductions.ajax_view.edit', compact('allowance'));
@@ -66,10 +67,10 @@ class AllowanceAndDeductionController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('allowances_edit') && !auth()->user()->can('deductions_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(
+            (!auth()->user()->can('allowances_edit') && !auth()->user()->can('allowances_edit')) ||
+            config('generalSettings')['subscription']->features['hrm'] == 0,
+        403);
 
         $this->allowanceAndDeductionService->updateValidation(request: $request, id: $id);
         $updateAllowanceOrDeduction = $this->allowanceAndDeductionService->updateAllowanceOrDeduction(request: $request, id: $id);
@@ -79,10 +80,10 @@ class AllowanceAndDeductionController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('allowances_delete') && !auth()->user()->can('allowances_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(
+            (!auth()->user()->can('allowances_delete') && !auth()->user()->can('allowances_delete')) ||
+            config('generalSettings')['subscription']->features['hrm'] == 0,
+        403);
 
         $deleteAllowanceOrDeduction = $this->allowanceAndDeductionService->deleteAllowanceOrDeduction(id: $id);
         return response()->json($deleteAllowanceOrDeduction . ' ' . __('deleted successfully'));

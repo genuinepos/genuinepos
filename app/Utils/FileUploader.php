@@ -8,7 +8,7 @@ class FileUploader
 {
     public static function uploadWithFullPath(object $file, string $filePath = 'uploads/'): string
     {
-        if (! file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             try {
                 mkdir($filePath);
             } catch (Exception $e) {
@@ -18,7 +18,7 @@ class FileUploader
         $arr = preg_split('/\./', $fileFullNameWithExtension);
         $extension = array_pop($arr);
         $fullName = implode('.', $arr);
-        $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
+        $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
         $file->move($filePath, $fileName);
         $fullPathToStoreInDb = "{$filePath}/{$fileName}";
 
@@ -27,7 +27,7 @@ class FileUploader
 
     public static function upload(object $file, string $filePath = 'uploads/'): string
     {
-        if (! file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             try {
                 mkdir($filePath);
             } catch (Exception $e) {
@@ -37,8 +37,9 @@ class FileUploader
         $arr = preg_split('/\./', $fileFullNameWithExtension);
         $extension = array_pop($arr);
         $fullName = implode('.', $arr);
-        $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
-        $file->move(public_path($filePath), $fileName);
+        $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
+        // $file->move(public_path($filePath), $fileName);
+        $file->move($filePath, $fileName);
 
         // \Log::info($filePath);
         // \Log::info($fileName);
@@ -48,7 +49,7 @@ class FileUploader
     public static function uploadMultiple(?array $files, string $filesPath = 'uploads/'): ?string
     {
         if (isset($files)) {
-            if (! file_exists($filesPath)) {
+            if (!file_exists($filesPath)) {
                 try {
                     mkdir($filesPath);
                 } catch (Exception $e) {
@@ -60,7 +61,7 @@ class FileUploader
                 $arr = preg_split('/\./', $fileFullNameWithExtension);
                 $extension = array_pop($arr);
                 $fullName = implode('.', $arr);
-                $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
+                $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
                 $file->move($filesPath, $fileName);
                 $filesNameArr[$key] = $fileName;
             }
@@ -73,7 +74,7 @@ class FileUploader
 
     public static function uploadThumbnail(object $file, ?string $filePath = 'uploads/', ?int $width = 250, ?int $height = 250): string
     {
-        if (! file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             try {
                 mkdir($filePath);
             } catch (Exception $e) {
@@ -83,7 +84,7 @@ class FileUploader
         $arr = preg_split('/\./', $fileFullNameWithExtension);
         $extension = array_pop($arr);
         $fullName = implode('.', $arr);
-        $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
+        $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
         $file->move($filePath, $fileName);
 
         return $fileName;

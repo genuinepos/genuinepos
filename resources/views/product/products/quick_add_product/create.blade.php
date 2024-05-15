@@ -156,19 +156,17 @@
                         </div>
 
                         <div class="row mt-1">
-                            @if ($generalSettings['addons__branch_limit'] > 1)
-                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                    <div class="col-md-4">
-                                        <label><b>{{ __('Access Shop') }}</b> </label>
-                                        <input type="hidden" name="access_branch_count" value="access_branch_count">
-                                        <select class="form-control select2" name="access_branch_ids[]" id="quick_product_access_branch_id" multiple>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="error error_quick_product_access_branch_ids"></span>
-                                    </div>
-                                @endif
+                            @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
+                                <div class="col-md-4">
+                                    <label><b>{{ __('Access Shop') }}</b> </label>
+                                    <input type="hidden" name="access_branch_count" value="access_branch_count">
+                                    <select class="form-control select2" name="access_branch_ids[]" id="quick_product_access_branch_id" multiple>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_quick_product_access_branch_ids"></span>
+                                </div>
                             @endif
 
                             <div class="col-md-4">

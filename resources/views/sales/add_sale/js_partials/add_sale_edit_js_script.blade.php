@@ -140,7 +140,7 @@
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
 
@@ -254,7 +254,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 
@@ -447,8 +447,8 @@
         var e_descriptions = $('#e_descriptions').val();
         var stock_quantity = $('#stock_quantity').val();
 
-        var e_current_warehouse_id = $('#e_current_warehouse_id').val();
-        var e_warehouse_id = $('#e_warehouse_id').val();
+        var e_current_warehouse_id = $('#e_current_warehouse_id').val() ? $('#e_current_warehouse_id').val() : '';
+        var e_warehouse_id = $('#e_warehouse_id').val() ? $('#e_warehouse_id').val() : '';
         var warehouse_name = $('#e_warehouse_id').find('option:selected').data('w_name');
 
         var stock_location_name = '';
@@ -540,6 +540,7 @@
                         tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
                         tr += '<input type="hidden" name="sale_product_ids[]">';
                         tr += '<input type="hidden" id="current_stock" value="' + stock_quantity + '">';
+                        tr += '<input type="hidden" id="current_quantity" value="0">';
                         tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' + e_unit_name + '" id="stock_limit" value="' + data.stock + '">';
                         tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + e_warehouse_id + '">';
                         tr += '</td>';
@@ -631,7 +632,7 @@
         var tr = $(this);
         var unique_id = tr.find('#unique_id').val();
         var warehouse_id = tr.find('#warehouse_id').val();
-        var current_quantity = tr.find('#current_quantity').val();
+        var current_quantity = tr.find('#current_quantity').val() ? tr.find('#current_quantity').val() : 0;
         var current_warehouse_id = tr.find('#current_warehouse_id').val();
         var stock_location_name = tr.find('#stock_location_name').html();
         var item_name = tr.find('#item_name').val();
@@ -785,7 +786,14 @@
 
                     if (status == 1 || status == '') {
 
-                        $('#e_warehouse_id').focus();
+                        var warehouse = $('#e_warehouse_id').val();
+                        if (warehouse != undefined) {
+
+                            $('#e_warehouse_id').focus();
+                        } else {
+
+                            $('#add_item').focus();
+                        }
                     } else {
 
                         $('#add_item').focus();
@@ -810,7 +818,14 @@
 
                 if (status == 1 || status == '') {
 
-                    $('#e_warehouse_id').focus();
+                    var warehouse = $('#e_warehouse_id').val();
+                    if (warehouse != undefined) {
+
+                        $('#e_warehouse_id').focus();
+                    } else {
+
+                        $('#add_item').focus();
+                    }
                 } else {
 
                     $('#add_item').focus();
@@ -828,7 +843,14 @@
 
             if (status == 1 || status == '') {
 
-                $('#e_warehouse_id').focus();
+                var warehouse = $('#e_warehouse_id').val();
+                if (warehouse != undefined) {
+
+                    $('#e_warehouse_id').focus();
+                } else {
+
+                    $('#add_item').focus();
+                }
             } else {
 
                 $('#add_item').focus();
@@ -957,7 +979,8 @@
 
         var previous_received = $('#previous_received').val() ? $('#previous_received').val() : 0;
         var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
-        var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(previous_received);
+        var current_invoice_amount = $('#current_invoice_amount').val() ? $('#current_invoice_amount').val() : 0;
+        var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(current_invoice_amount) - parseFloat(previous_received);
         var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
 
         var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');

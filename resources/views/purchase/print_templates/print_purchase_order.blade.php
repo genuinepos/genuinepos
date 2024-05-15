@@ -2,6 +2,12 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $order?->supplier;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
@@ -59,23 +65,23 @@
 
                         @if ($order?->branch?->parent_branch_id)
 
-                            @if ($order->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->parentBranch?->logo) }}">
+                            @if ($order->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($order->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->logo) }}">
+                            @if ($order->branch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -133,7 +139,7 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span> {{ $order->invoice_id }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) . ' ' . date($timeFormat, strtotime($order->time)) }}</li>
+                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) }}</li>
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $order?->admin?->prefix . ' ' . $order?->admin?->name . ' ' . $order?->admin?->last_name }}
                         </li>
@@ -266,8 +272,8 @@
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
+                                <td class="text-end fw-bold" style="font-size:11px!important;">
+                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -373,23 +379,23 @@
 
                         @if ($order?->branch?->parent_branch_id)
 
-                            @if ($order?->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
+                            @if ($order?->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($order?->branch?->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->logo) }}">
+                            @if ($order?->branch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -411,7 +417,7 @@
 
                     <p style="font-size:9px;">
                         @if ($order?->branch)
-                            {{ $order?->branch?->city . ', ' . $order?->branch?->state . ', ' . $order?->branch?->zip_code . ', ' . $order?->branch?->country }}
+                            {{ $order?->branch?->address . ', ' . $order?->branch?->city . ', ' . $order?->branch?->state . ', ' . $order?->branch?->zip_code . ', ' . $order?->branch?->country }}
                         @else
                             {{ $generalSettings['business_or_shop__address'] }}
                         @endif
@@ -447,7 +453,7 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('P/o ID') }} : </span> {{ $order->invoice_id }}</li>
-                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) . ' ' . date($timeFormat, strtotime($order->time)) }}</li>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) }}</li>
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $order?->admin?->prefix . ' ' . $order?->admin?->name . ' ' . $order?->admin?->last_name }}
                         </li>
@@ -580,8 +586,8 @@
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
+                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
                             </tr>
                         </thead>

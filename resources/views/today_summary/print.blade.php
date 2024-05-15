@@ -11,7 +11,7 @@
 
         td {
             page-break-inside: avoid;
-            page-break-after: auto, font-size:9px !important;
+            page-break-after: auto, font-size: 9px !important;
         }
 
         thead {
@@ -74,7 +74,7 @@
 @php
     $dateFormat = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $currency = $generalSettings['business_or_shop__currency'];
+    $currency = $generalSettings['business_or_shop__currency_symbol'];
 @endphp
 <div class="print_area">
     <div class="row" style="border-bottom: 1px solid black;">
@@ -82,23 +82,23 @@
             @if (auth()->user()?->branch)
                 @if (auth()->user()?->branch?->parent_branch_id)
 
-                    @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                    @if (auth()->user()?->branch?->parentBranch?->logo)
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
-                    @if (auth()->user()?->branch?->logo != 'default.png')
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                    @if (auth()->user()?->branch?->logo)
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
             @endif
         </div>
@@ -203,6 +203,11 @@
                     </tr>
 
                     <tr>
+                        <th class="text-start">{{ __('Total Stock Issue') }}</th>
+                        <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockIssue']) }}</td>
+                    </tr>
+
+                    <tr>
                         <th class="text-start">{{ __('Total Stock Adjustment') }}</th>
                         <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockAdjustment']) }}</td>
                     </tr>
@@ -217,7 +222,7 @@
                         <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalExpense']) }}</td>
                     </tr>
 
-                    @if ($generalSettings['addons__hrm'] == 1)
+                    @if ($generalSettings['subscription']->features['hrm'] == 1)
                         <tr>
                             <th class="text-start">{{ __('Total Expense By Payroll') }}</th>
                             <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPayrollPayment']) }}</td>

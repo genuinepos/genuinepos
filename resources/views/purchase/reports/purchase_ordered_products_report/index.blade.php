@@ -68,7 +68,7 @@
                                 <div class="col-md-12">
                                     <div class="form_element rounded mt-0 mb-1">
                                         <div class="element-body">
-                                            <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                            <form id="sale_purchase_profit_filter" method="get">
                                                 <div class="form-group row align-items-end">
                                                     <div class="col-md-2 search_area">
                                                         <label><strong>{{ __('Search Product') }} </strong></label>
@@ -82,7 +82,8 @@
                                                         </div>
                                                     </div>
 
-                                                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                    {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                         <div class="col-md-2">
                                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
@@ -221,6 +222,9 @@
             ],
             "processing": true,
             "serverSide": true,
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],

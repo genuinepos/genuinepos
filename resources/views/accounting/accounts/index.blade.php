@@ -20,7 +20,8 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
+                                    {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
+                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Shop/Business') }} </strong></label>
                                             <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
@@ -71,7 +72,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Accounts') }}</a>
+                        <a href="{{ route('accounts.create', \App\Enums\AccountCreateAndEditType::Others->value) }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Accounts') }}</a>
                     </div>
                 </div>
 
@@ -404,39 +405,30 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
+
+                        if (!$.isEmptyObject(data.errorMsg)) {
+
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
                         accounts_table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                        } else {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        }
                     }
                 });
             });
         });
-
-        // $(document).on('change', '#account_type', function() {
-        //     var account_type = $(this).val();
-        //     if (account_type == 2) {
-        //         $('.bank_account_field').show();
-        //     }else {
-        //         $('.bank_account_field').hide();
-        //     }
-        // });
-
-        // $('#add').on('click', function() {
-        //     setTimeout(function () {
-        //         $('#name').focus();
-        //     }, 500);
-        // });
-
-        // document.onkeyup = function () {
-        //     var e = e || window.event; // for IE to cover IEs window event-object
-        //     //console.log(e);
-        //     if(e.ctrlKey && e.which == 13) {
-        //         $('#addModal').modal('show');
-        //         setTimeout(function () {
-        //             $('#name').focus();
-        //         }, 500);
-        //         //return false;
-        //     }
-        // }
     </script>
 @endpush

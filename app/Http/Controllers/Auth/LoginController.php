@@ -3,21 +3,26 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Enums\RoleType;
 use App\Enums\BooleanType;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Utils\UserActivityLogUtil;
+
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use App\Services\Users\UserActivityLogService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-    protected $userActivityLogUtil;
+    public function __construct(private UserActivityLogService $userActivityLogService)
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -44,11 +49,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(UserActivityLogUtil $userActivityLogUtil)
-    {
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('guest')->except('logout');
-    }
+
 
     public function showLoginForm()
     {
@@ -67,49 +68,69 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required',
+            'username_or_email' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->where('allow_login', 1)->first();
-        if (isset($user) && $user->allow_login == 1) {
+        $user = User::with('branch', 'roles', 'roles.permissions')
+            ->where('username', $request->username_or_email)
+            ->orWhere('email', $request->username_or_email)->first();
 
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (
+            $user?->branch &&
+            isset($user?->branch?->expire_date) &&
+            date('Y-m-d') > $user?->branch?->expire_date &&
+            !$role->hasPermissionTo('billing_renew_branch')
+        ) {
 
+            $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
+            session()->flash('errorMsg', $msg);
+            return redirect()->back();
+        }
+
+        if (isset($user) && $user->allow_login == BooleanType::True->value) {
+
+            if (
+                Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
+                Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
+            ) {
                 if (!Session::has($user->language)) {
 
                     session(['lang' => $user->language]);
                 }
 
-                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id,  user_id: $user->id);
-
-                if ($user->role_type == RoleType::SuperAdmin->value || $user->role_type == RoleType::Admin->value) {
-
-                    $user->branch_id = null;
-                    $user->is_belonging_an_area = BooleanType::False->value;
-                    $user->save();
-                }
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
 
                 return redirect()->intended(route('dashboard.index'));
             } else {
-                session()->flash('errorMsg', __('Sorry! Username or Password not matched!'));
+
+                session()->flash('errorMsg', __('Sorry! Username/Email or Password not matched!'));
                 return redirect()->back();
             }
         } else {
-            session()->flash('errorMsg', __('Login failed. Please try with correct username and password'));
+
+            session()->flash('errorMsg', __('Login failed. Please try with correct username/email and password'));
             return redirect()->back();
         }
     }
 
     public function logout(Request $request)
     {
-        $this->userActivityLogUtil->addLog(action: 5, subject_type: 19, data_obj: auth()->user());
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogout->value, subjectType: UserActivityLogSubjectType::UserLogout->value, dataObj: auth()->user());
+
+        if (auth()->user()->can('has_access_to_all_area')) {
+
+            auth()->user()->branch_id = null;
+            auth()->user()->is_belonging_an_area = BooleanType::False->value;
+            auth()->user()->save();
+        }
 
         $this->guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         if ($response = $this->loggedOut($request)) {
+
             return $response;
         }
 

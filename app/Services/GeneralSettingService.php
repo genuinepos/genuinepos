@@ -14,11 +14,22 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     public function updateAndSync(array $settings): bool
     {
         if (is_array($settings)) {
+
             foreach ($settings as $key => $value) {
+
                 if (isset($key) && isset($value)) {
-                    GeneralSetting::where('key', $key)->update(['value' => $value]);
+
+                    if (
+                        ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
+                        config('generalSettings')['subscription']->features['hrm'] == 0
+                    ) {
+                        continue;
+                    }
+
+                    GeneralSetting::where('key', $key)->where('branch_id', null)->update(['value' => $value]);
                 }
             }
+
             $this->cacheService->syncGeneralSettings();
 
             return true;
@@ -59,8 +70,44 @@ class GeneralSettingService implements GeneralSettingServiceInterface
             !auth()->user()->can('send_sms_settings')
         ) {
             return false;
-        }else{
+        } else {
             return true;
         }
+    }
+
+    public function partiallyUpdateBusinessSettings(object $request): void
+    {
+        $settings = [
+            'business_or_shop__business_name' => $request->name,
+            'business_or_shop__phone' => $request->phone,
+            'business_or_shop__email' => $request->email,
+            'business_or_shop__address' => $request->address,
+        ];
+
+        $this->updateAndSync(settings: $settings);
+    }
+
+    public function deleteBusinessLogo(): bool
+    {
+        $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+
+        if (isset($businessLogo->value)) {
+
+            if (file_exists($dir . $businessLogo->value)) {
+
+                unlink($dir . $businessLogo->value);
+            }
+        }
+
+        $businessLogo->value = null;
+        $businessLogo->save();
+
+        return true;
+    }
+
+    public function singleGeneralSetting(string $key = null, ?int $branchId = null): ?object
+    {
+        return GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
     }
 }

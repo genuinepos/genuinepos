@@ -6,54 +6,6 @@ use App\Models\UserActivityLog;
 
 class UserActivityLogService
 {
-    public function subjectTypes()
-    {
-        return [
-            26 => 'Product',
-            1 => 'Customers',
-            2 => 'Suppliers',
-            3 => 'Users',
-            18 => 'User Login',
-            19 => 'User Logout',
-            27 => 'Receipt',
-            28 => 'Payment',
-            31 => 'Contra',
-            4 => 'Purchase',
-            5 => 'Purchase Order',
-            6 => 'Purchase Return',
-            7 => 'Sales',
-            29 => 'Draft',
-            30 => 'Quotation',
-            32 => 'Hold Invoice',
-            33 => 'Suspend Invoice',
-            8 => 'Sales Order',
-            9 => 'Sale Return',
-            34 => 'Exchange Invoice',
-            10 => 'Transfer Stock',
-            13 => 'Stock Adjustment',
-            15 => 'Expense',
-            16 => 'Bank',
-            17 => 'Accounts',
-            20 => 'Categories',
-            21 => 'Sub-Categories',
-            22 => 'Brands',
-            23 => 'Units',
-            24 => 'Variants',
-            25 => 'Warranties',
-        ];
-    }
-
-    public function actions()
-    {
-        return [
-            1 => 'Added',
-            2 => 'Updated',
-            3 => 'Deleted',
-            4 => 'User Login',
-            5 => 'User Logout',
-        ];
-    }
-
     public function descriptionModel()
     {
         return [
@@ -130,8 +82,8 @@ class UserActivityLogService
                 'texts' => ['Bank Name : '],
             ],
             17 => [ // Accounts
-                'fields' => ['name', 'account_number', 'opening_balance', 'opening_balance_type'],
-                'texts' => ['Account Name : ', 'Account Number : ', 'Opening Balance : ', 'Type : '],
+                'fields' => ['name', 'account_number'],
+                'texts' => ['Account Name : ', 'Account Number : '],
             ],
             18 => [ // User login
                 'fields' => ['username'],
@@ -170,16 +122,28 @@ class UserActivityLogService
                 'texts' => ['Name : ', 'P.Code(SKU) : ', 'Cost.inc Tax : ', 'Price.Exc Tax : '],
             ],
             27 => [ // Receipt Voucher
-                'fields' => ['date', 'voucher_no',   'total_amount'],
+                'fields' => ['date', 'voucher_no', 'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Received Amount'],
             ],
             28 => [ // Payment
-                'fields' => ['date', 'voucher_no',   'total_amount'],
+                'fields' => ['date', 'voucher_no',  'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Paid Amount : '],
             ],
             31 => [ // Contra
-                'fields' => ['date', 'voucher_no',   'total_amount'],
+                'fields' => ['date', 'voucher_no', 'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
+            ],
+            35 => [ // Selling Price Group
+                'fields' => ['name', 'description',],
+                'texts' => ['Name : ', 'Description : '],
+            ],
+            36 => [ // Location Switch
+                'fields' => ['location_switch_log_description'],
+                'texts' => [''],
+            ],
+            37 => [ // Stock Issue
+                'fields' => ['date', 'voucher_no', 'total_item', 'total_qty', 'net_total_amount'],
+                'texts' => ['Date: ', 'Voucher No: ', 'Total Item: ', 'Total Qty: ', 'Net Total Amount: '],
             ],
         ];
     }
@@ -192,8 +156,8 @@ class UserActivityLogService
 
         $descriptionModel = $this->descriptionModel();
         $addLog = new UserActivityLog();
-        $addLog->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
-        $addLog->user_id = $userId ? $userId : auth()->user()->id;
+        $addLog->branch_id = isset($branchId) ? $branchId : auth()->user()->branch_id;
+        $addLog->user_id = isset($userId) ? $userId : auth()->user()->id;
         $addLog->action = $action;
         $addLog->subject_type = $subjectType;
         $addLog->date = date($__dateFormat);

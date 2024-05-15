@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\PrintPageSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,7 @@ class BranchSettingController extends Controller
         private PriceGroupService $priceGroupService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($id)
@@ -48,7 +50,7 @@ class BranchSettingController extends Controller
 
         $branch = $this->branchService->singleBranch(id: $id, with: ['parentBranch']);
 
-        if(!auth()->user()->branch_id){
+        if (!auth()->user()->branch_id) {
 
             return redirect()->route('settings.general.index');
         }
@@ -102,10 +104,10 @@ class BranchSettingController extends Controller
             'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
             'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size,
             'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
-            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
-            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,
-            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size,
+            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size ? $request->payroll_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size ? $request->payroll_payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size ? $request->bom_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size ? $request->production_voucher_page_size : PrintPageSize::AFourPage->value,
         ];
 
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
@@ -185,6 +187,7 @@ class BranchSettingController extends Controller
             'prefix__purchase_return_prefix' => $request->purchase_return_prefix,
             'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix,
             'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix,
+            'prefix__stock_issue_voucher_prefix' => $request->stock_issue_voucher_prefix,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];
@@ -227,6 +230,12 @@ class BranchSettingController extends Controller
 
     public function moduleSettings($id, Request $request)
     {
+        $generalSettings = config('generalSettings');
+        $subscription = $generalSettings['subscription'];
+        $hrm = $subscription->features['hrm'] == 1 ? (isset($request->hrms) ? 1 : 0) : 1;
+        $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
+        $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
+
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
             'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
@@ -235,10 +244,9 @@ class BranchSettingController extends Controller
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
-            'modules__hrms' => isset($request->hrms) ? 1 : 0,
-            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
-            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
-            'modules__service' => isset($request->service) ? 1 : 0,
+            'modules__hrms' => $hrm,
+            'modules__manage_task' => $task_management,
+            'modules__manufacturing' => $manufacturing,
         ];
 
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);

@@ -71,7 +71,12 @@ class PurchaseService
             $query->where('purchases.supplier_account_id', $supplierAccountId);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+        //     $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id);
+        // }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id);
         }
@@ -120,10 +125,10 @@ class PurchaseService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name . '(' . $row->branch_area_name . ')';
                     }
                 } else {
 
@@ -189,10 +194,10 @@ class PurchaseService
         $addPurchase->shipment_details = $request->shipment_details;
         $addPurchase->purchase_note = $request->purchase_note;
         $addPurchase->purchase_status = PurchaseStatus::Purchase->value;
-        $addPurchase->is_purchased = 1;
+        $addPurchase->is_purchased = BooleanType::True->value;
         $addPurchase->date = $request->date;
         $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-        $addPurchase->is_last_created = 1;
+        $addPurchase->is_last_created = BooleanType::True->value;
         $addPurchase->save();
 
         return $addPurchase;
@@ -202,7 +207,7 @@ class PurchaseService
     {
         foreach ($updatePurchase->purchaseProducts as $purchaseProduct) {
 
-            $purchaseProduct->delete_in_update = 1;
+            $purchaseProduct->delete_in_update = BooleanType::True->value;
             $purchaseProduct->save();
         }
 
@@ -269,7 +274,7 @@ class PurchaseService
             'purchaseProducts',
             'purchaseProducts.product',
             'purchaseProducts.variant',
-            'purchaseProducts.purchaseSaleChains',
+            'purchaseProducts.stockChains',
         ]);
 
         if (count($deletePurchase->references) > 0) {
@@ -279,7 +284,7 @@ class PurchaseService
 
         foreach ($deletePurchase->purchaseProducts as $purchaseProduct) {
 
-            if (count($purchaseProduct->purchaseSaleChains) > 0) {
+            if (count($purchaseProduct->stockChains) > 0) {
 
                 $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->name : '';
                 $product = $purchaseProduct->product->name . $variant;
@@ -287,20 +292,6 @@ class PurchaseService
                 return ['pass' => false, 'msg' => __('Can not delete is purchase. Mismatch between sold and purchase stock account method. Product:') . $product];
             }
         }
-
-        // foreach ($deletePurchase->purchaseProducts as $purchaseProduct) {
-
-        //     $SupplierProduct = SupplierProduct::where('supplier_id', $deletePurchase->supplier_id)
-        //         ->where('product_id', $purchaseProduct->product_id)
-        //         ->where('product_variant_id', $purchaseProduct->product_variant_id)
-        //         ->first();
-
-        //     if ($SupplierProduct) {
-
-        //         $SupplierProduct->label_qty -= $purchase_product->quantity;
-        //         $SupplierProduct->save();
-        //     }
-        // }
 
         $deletePurchase->delete();
 
@@ -381,23 +372,6 @@ class PurchaseService
         return $html;
     }
 
-    public function purchaseStoreValidation(object $request): ?array
-    {
-        return $request->validate([
-            'supplier_account_id' => 'required',
-            'invoice_id' => 'sometimes|unique:purchases,invoice_id',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
-    }
-
     public function purchaseUpdateValidation(object $request): ?array
     {
         return $request->validate([
@@ -408,7 +382,7 @@ class PurchaseService
             'account_id' => 'required',
         ], [
             'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
+            'account_id.required' => __('Credit Account field must not be is empty.'),
             'payment_method_id.required' => __('Payment method field is required.'),
             'supplier_account_id.required' => __('Supplier is required.'),
         ]);

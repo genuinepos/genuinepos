@@ -40,10 +40,10 @@
                             </a>
                         </div>
 
-                        <div class="p-3">
+                        <div class="p-1">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form_element rounded mt-0 mb-3">
+                                    <div class="form_element rounded mt-0 mb-1">
                                         <div class="element-body">
                                             <div class="row align-items-end">
                                                 <div class="col-md-10">
@@ -66,7 +66,6 @@
                                                             @else
                                                                 <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                             @endif
-
 
                                                             <div class="col-md-3">
                                                                 <label><strong>@lang('menu.from_date') : </strong></label>

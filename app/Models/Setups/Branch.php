@@ -10,9 +10,11 @@ use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
 use App\Models\Setups\BranchSetting;
 use App\Models\Products\ProductOpeningStock;
+use App\Models\Subscriptions\ShopExpireDateHistory;
 
 class Branch extends BaseModel
 {
+    protected $table = 'branches';
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
@@ -20,6 +22,11 @@ class Branch extends BaseModel
     protected $casts = [
         'expire_at' => 'date',
     ];
+
+    public function shopExpireDateHistory()
+    {
+        return $this->belongsTo(ShopExpireDateHistory::class, 'shop_expire_date_history_id');
+    }
 
     public function invoiceSchema()
     {

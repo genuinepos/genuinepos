@@ -2,7 +2,9 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
+use App\Enums\AccountCreateAndEditType;
 use Yajra\DataTables\Facades\DataTables;
 
 class CapitalAccountService
@@ -23,70 +25,113 @@ class CapitalAccountService
             $query = $query->where('accounts.account_group_id', $request->account_group_id);
         }
 
-        $accounts = $query->select(
-            'accounts.id',
-            'accounts.name',
-            'account_groups.default_balance_type',
-            'account_groups.name as group_name',
-            'account_groups.sub_sub_group_number',
-            DB::raw(
-                '
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type = 0
-                            THEN account_ledgers.debit
-                            ELSE 0
-                        END
-                    ) AS opening_total_debit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type = 0
-                            THEN account_ledgers.credit
-                            ELSE 0
-                        END
-                    ) AS opening_total_credit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type != 0
-                            THEN account_ledgers.debit
-                            ELSE 0
-                        END
-                    ) AS curr_total_debit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type != 0
-                            THEN account_ledgers.credit
-                            ELSE 0
-                        END
-                    ) AS curr_total_credit
-                '
-            ),
-        )
-            ->groupBy(
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->select(
                 'accounts.id',
                 'accounts.name',
                 'account_groups.default_balance_type',
-                'account_groups.name',
+                'account_groups.name as group_name',
                 'account_groups.sub_sub_group_number',
-            )
-            ->orderBy('account_groups.sorting_number', 'asc')
-            ->orderBy('accounts.name', 'asc');
+                DB::raw(
+                    '
+                        SUM(
+                            CASE
+                                WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . ' and account_ledgers.voucher_type = 0
+                                THEN account_ledgers.debit
+                                ELSE 0
+                            END
+                        ) AS opening_total_debit,
+                        SUM(
+                            CASE
+                                WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . ' and account_ledgers.voucher_type = 0
+                                THEN account_ledgers.credit
+                                ELSE 0
+                            END
+                        ) AS opening_total_credit,
+                        SUM(
+                            CASE
+                                WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . ' and account_ledgers.voucher_type != 0
+                                THEN account_ledgers.debit
+                                ELSE 0
+                            END
+                        ) AS curr_total_debit,
+                        SUM(
+                            CASE
+                                WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . ' and account_ledgers.voucher_type != 0
+                                THEN account_ledgers.credit
+                                ELSE 0
+                            END
+                        ) AS curr_total_credit
+                    '
+                ),
+            );
+        } else {
+
+            $query->select(
+                'accounts.id',
+                'accounts.name',
+                'account_groups.default_balance_type',
+                'account_groups.name as group_name',
+                'account_groups.sub_sub_group_number',
+                DB::raw(
+                    '
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type = 0
+                                THEN account_ledgers.debit
+                                ELSE 0
+                            END
+                        ) AS opening_total_debit,
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type = 0
+                                THEN account_ledgers.credit
+                                ELSE 0
+                            END
+                        ) AS opening_total_credit,
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type != 0
+                                THEN account_ledgers.debit
+                                ELSE 0
+                            END
+                        ) AS curr_total_debit,
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type != 0
+                                THEN account_ledgers.credit
+                                ELSE 0
+                            END
+                        ) AS curr_total_credit
+                    '
+                ),
+            );
+        }
+
+        $accounts = $query->groupBy(
+            'accounts.id',
+            'accounts.name',
+            'account_groups.default_balance_type',
+            'account_groups.name',
+            'account_groups.sub_sub_group_number',
+        )->orderBy('account_groups.sorting_number', 'asc')->orderBy('accounts.name', 'asc');
 
         return DataTables::of($accounts)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="editAccount" class="dropdown-item" href="'.route('accounts.edit', [$row->id]).'" > '.__('Edit').'</a>';
-                $html .= '<a class="dropdown-item" href="'.route('accounts.ledger.index', [$row->id]).'">'.__('Ledger').'</a>';
-                $html .= '<a class="dropdown-item" href="'.route('accounts.delete', [$row->id]).'" id="delete">'.__('Delete').'</a>';
+                $html .= '<a id="editAccount" class="dropdown-item" href="' . route('accounts.edit', [$row->id, AccountCreateAndEditType::Capitals->value]) . '" > ' . __('Edit') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('accounts.ledger.index', [$row->id]) . '">' . __('Ledger') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('accounts.delete', [$row->id]) . '" id="delete">' . __('Delete') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
                 return $html;
             })
-            ->editColumn('group', fn ($row) => '<b>'.$row->group_name.'</b>')
+            ->editColumn('group', fn ($row) => '<b>' . $row->group_name . '</b>')
 
             ->editColumn('opening_balance', function ($row) {
                 $openingBalanceDebit = isset($row->opening_total_debit) ? (float) $row->opening_total_debit : 0;
@@ -107,19 +152,19 @@ class CapitalAccountService
 
                 if ($currOpeningBalanceSide == 'dr') {
 
-                    return '<span class="dr_opening_balance" data-value="'.$currOpeningBalance.'">'.\App\Utils\Converter::format_in_bdt($currOpeningBalance).' '.ucfirst($currOpeningBalanceSide).'.</span>';
+                    return '<span class="dr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
                 } elseif ($currOpeningBalanceSide == 'cr') {
 
-                    return '<span class="cr_opening_balance" data-value="'.$currOpeningBalance.'">'.\App\Utils\Converter::format_in_bdt($currOpeningBalance).' '.ucfirst($currOpeningBalanceSide).'.</span>';
+                    return '<span class="cr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
                 }
             })
             ->editColumn('debit', function ($row) {
 
-                return '<span class="debit" data-value="'.$row->curr_total_debit.'">'.\App\Utils\Converter::format_in_bdt($row->curr_total_debit).'</span>';
+                return '<span class="debit" data-value="' . $row->curr_total_debit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_debit) . '</span>';
             })
             ->editColumn('credit', function ($row) {
 
-                return '<span class="credit" data-value="'.$row->curr_total_credit.'">'.\App\Utils\Converter::format_in_bdt($row->curr_total_credit).'</span>';
+                return '<span class="credit" data-value="' . $row->curr_total_credit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_credit) . '</span>';
             })
             ->editColumn('closing_balance', function ($row) {
 
@@ -159,10 +204,10 @@ class CapitalAccountService
 
                 if ($closingBalanceSide == 'dr') {
 
-                    return '<span class="dr_closing_balance" data-value="'.$closingBalance.'">'.\App\Utils\Converter::format_in_bdt($closingBalance).' '.ucfirst($closingBalanceSide).'.</span>';
+                    return '<span class="dr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
                 } elseif ($closingBalanceSide == 'cr') {
 
-                    return '<span class="cr_closing_balance" data-value="'.$closingBalance.'">'.\App\Utils\Converter::format_in_bdt($closingBalance).' '.ucfirst($closingBalanceSide).'.</span>';
+                    return '<span class="cr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
                 }
             })
             ->rawColumns(['action', 'group', 'opening_balance', 'debit', 'credit', 'closing_balance'])

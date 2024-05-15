@@ -13,6 +13,7 @@ class InvoiceLayoutController extends Controller
 {
     public function __construct(private InvoiceLayoutService $invoiceLayoutService, private BranchService $branchService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -57,7 +58,7 @@ class InvoiceLayoutController extends Controller
     public function edit($id)
     {
         abort_if(!auth()->user()->can('invoice_layouts_edit'), 403);
-        
+
         $invoiceLayout = $this->invoiceLayoutService->singleInvoiceLayout(id: $id);
 
         return view('setups.invoices.layouts.edit', compact('invoiceLayout'));

@@ -5,6 +5,7 @@ namespace App\Models\StockAdjustments;
 use App\Models\BaseModel;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
+use App\Models\Products\StockChain;
 use App\Models\Products\Unit;
 use App\Models\Setups\Branch;
 use App\Models\Setups\Warehouse;
@@ -43,5 +44,10 @@ class StockAdjustmentProduct extends BaseModel
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
+    }
+
+    public function stockChains()
+    {
+        return $this->hasMany(StockChain::class, 'stock_adjustment_product_id');
     }
 }

@@ -1,5 +1,5 @@
 @php
-    $currency = $generalSettings['business_or_shop__currency'];
+    $currency = $generalSettings['business_or_shop__currency_symbol'];
 @endphp
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -8,8 +8,9 @@
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body" id="today_summery_modal_body">
-            <div class="row align-items-end">
-                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+            <div class="row align-items-end mb-2">
+                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                     <div class="col-md-6">
                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                         <select name="branch_id" class="form-control select2" id="today_summary_branch_id" autofocus>
@@ -43,7 +44,7 @@
                                 $branch = $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
                             }
                         @endphp
-                        <input readonly type="text" class="form-control" value="{{ $branch }}">
+                        <input readonly type="text" class="form-control fw-bold" value="{{ $branch }}">
                     </div>
                 @endif
 
@@ -90,6 +91,11 @@
                                 </tr>
 
                                 <tr>
+                                    <th class="text-start">{{ __('Total Stock Issue') }}</th>
+                                    <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockIssue']) }}</td>
+                                </tr>
+
+                                <tr>
                                     <th class="text-start">{{ __('Total Stock Adjustment') }}</th>
                                     <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalStockAdjustment']) }}</td>
                                 </tr>
@@ -104,7 +110,7 @@
                                     <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalExpense']) }}</td>
                                 </tr>
 
-                                @if ($generalSettings['addons__hrm'] == 1)
+                                @if ($generalSettings['subscription']->features['hrm'] == 1)
                                     <tr>
                                         <th class="text-start">{{ __('Total Expense By Payroll') }}</th>
                                         <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPayrollPayment']) }}</td>

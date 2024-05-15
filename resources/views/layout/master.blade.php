@@ -11,7 +11,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <title>@yield('title') {{ config('app.name') }}</title>
-
+    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
     @include('layout._stylesheet')
     @stack('stylesheets')
 
@@ -55,6 +56,24 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
             <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>
         </footer>
     </div>
+
+    <div class="modal fade" id="appInstallModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="appInstallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="appInstallModalLabel">Welcome to GPOS!</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              If you want to add a shortcut on your desktop, click the OK button.
+            </div>
+            <div class="modal-footer">
+              {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}
+              <button type="button" id="installPwa" class="btn btn-primary">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <div class="modal fade" id="todaySummeryModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
@@ -151,6 +170,8 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
     <!-- Logout form for global -->
     <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
     <!-- Logout form for global end -->
+    <script src="{{ asset('/sw.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/install-pwa-app.js') }}"></script>
 </body>
 
 </html>

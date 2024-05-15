@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
-    <title>{{ __('Point Of Sale - GPOSS') }}</title>
+    <title>{{ __('Point Of Sale - GPOS') }}</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
@@ -29,20 +29,10 @@
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
     <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
-    <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
-    <!--Toaster.js js link-->
-    <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
-    <!--Toaster.js js link end-->
 
-    <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
-    <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
-    <!--alert js link-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
-    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
     <style>
         .d-hide {
             display: none;
@@ -505,22 +495,27 @@
     <!-- Exchange modal End-->
 
     <!--Add shortcut menu modal-->
-    <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="payment_heading">@lang('menu.add_shortcut_menus')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="modal-body_shortcuts"></div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
         @csrf
     </form>
+
+    <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
+    <!--Toaster.js js link-->
+    <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
+    <!--Toaster.js js link end-->
+
+    <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
+
+    <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
+    <script src="{{ asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
+    <!--alert js link-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
+    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script type="text/javascript" src="{{ asset('backend/asset/cdn/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
@@ -529,18 +524,6 @@
     <script src="{{ asset('') }}/backend/asset/js/sale.exchange.js"></script>
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
-        // Get all pos shortcut menus by ajax
-        function allPosShortcutMenus() {
-            $.ajax({
-                url: "{{ route('pos.short.menus.show') }}",
-                type: 'get',
-                success: function(data) {
-                    $('#pos-shortcut-menus').html(data);
-                }
-            });
-        }
-        allPosShortcutMenus();
-
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
 

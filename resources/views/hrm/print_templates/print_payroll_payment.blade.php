@@ -6,24 +6,60 @@
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
+            table {
+                page-break-after: auto;
+            }
 
-            tr { page-break-inside: avoid; page-break-after: auto; }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
 
-            td { page-break-inside: avoid; page-break-after: auto; }
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
 
-            thead { display: table-header-group; }
+            thead {
+                display: table-header-group;
+            }
 
-            tfoot { display: table-footer-group; }
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
+        .print_table th {
+            font-size: 11px !important;
+            font-weight: 550 !important;
+            line-height: 12px !important;
+        }
 
-        .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
+        .print_table tr td {
+            color: black;
+            font-size: 10px !important;
+            line-height: 12px !important;
+        }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
 
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Payment print templete-->
     <div class="payroll_payment_print_template">
@@ -34,23 +70,23 @@
 
                         @if ($payment?->branch?->parent_branch_id)
 
-                            @if ($payment->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->parentBranch?->logo) }}">
+                            @if ($payment->branch?->parentBranch?->logo)
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $payment->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payment->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($payment->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->logo) }}">
+                            @if ($payment->branch?->logo)
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $payment->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payment->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -61,12 +97,12 @@
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->parentBranch?->name.'('.$payment?->branch?->area_name.')';
+                                    $branchName = $payment?->branch?->parentBranch?->name . '(' . $payment?->branch?->area_name . ')';
                                 @endphp
                             @else
                                 {{ $payment?->branch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->name.'('.$payment?->branch?->area_name.')';
+                                    $branchName = $payment?->branch?->name . '(' . $payment?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else
@@ -279,24 +315,60 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
+            table {
+                page-break-after: auto;
+            }
 
-            tr { page-break-inside: avoid; page-break-after: auto; }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
 
-            td { page-break-inside: avoid; page-break-after: auto; }
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
 
-            thead { display: table-header-group; }
+            thead {
+                display: table-header-group;
+            }
 
-            tfoot { display: table-footer-group; }
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
+        .print_table th {
+            font-size: 11px !important;
+            font-weight: 550 !important;
+            line-height: 12px !important;
+        }
 
-        .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
+        .print_table tr td {
+            color: black;
+            font-size: 10px !important;
+            line-height: 12px !important;
+        }
 
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
 
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Payment print templete-->
     <div class="payroll_payment_print_template">
@@ -307,23 +379,23 @@
 
                         @if ($payment?->branch?->parent_branch_id)
 
-                            @if ($payment->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->parentBranch?->logo) }}">
+                            @if ($payment->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $payment->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payment->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($payment->branch?->logo != 'default.png')
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->logo) }}">
+                            @if ($payment->branch?->logo)
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $payment->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payment->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -334,12 +406,12 @@
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->parentBranch?->name.'('.$payment?->branch?->area_name.')';
+                                    $branchName = $payment?->branch?->parentBranch?->name . '(' . $payment?->branch?->area_name . ')';
                                 @endphp
                             @else
                                 {{ $payment?->branch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->name.'('.$payment?->branch?->area_name.')';
+                                    $branchName = $payment?->branch?->name . '(' . $payment?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else

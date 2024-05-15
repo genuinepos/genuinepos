@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Enums\UserType;
 use App\Enums\BooleanType;
-use App\Utils\FileUploader;
 use Illuminate\Http\Request;
-use App\Models\Setups\Branch;
-use App\Models\AdminUserBranch;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\RoleService;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Services\Setups\BranchService;
-use Yajra\DataTables\Facades\DataTables;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Http\Requests\Users\UserStoreRequest;
+use App\Http\Requests\Users\UserUpdateRequest;
+use App\Services\Users\UserActivityLogService;
 
 class UserController extends Controller
 {
@@ -23,15 +22,14 @@ class UserController extends Controller
         private BranchService $branchService,
         private UserService $userService,
         private RoleService $roleService,
+        private UserActivityLogService $userActivityLogService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('user_view')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('user_view'), 403);
 
         if ($request->ajax()) {
 
@@ -44,11 +42,15 @@ class UserController extends Controller
         return view('users.index', compact('branches'));
     }
 
+    public function show($id)
+    {
+        $user = $this->userService->singleUser(id: $id);
+        return view('users.show', compact('user'));
+    }
+
     public function create()
     {
-        if (!auth()->user()->can('user_add')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('user_add'), 403);
 
         $roles = $this->roleService->roles()->get();
         $departments = DB::table('hrm_departments')->orderBy('id', 'desc')->get();
@@ -61,15 +63,17 @@ class UserController extends Controller
         return view('users.create', compact('departments', 'designations', 'shifts', 'branches', 'roles'));
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        if (!auth()->user()->can('user_add')) {
-            abort(403, 'Access Forbidden.');
+        $restrictions = $this->userService->storeRestrictions(request: $request);
+
+        if ($restrictions['pass'] == false) {
+
+            return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
-        $this->userService->addUserValidation(request: $request, role: $role);
         $this->userService->addUser(request: $request, role: $role);
 
         return response()->json(__('User created successfully'));
@@ -77,9 +81,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('user_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('user_edit'), 403);
 
         $user = $this->userService->singleUser(id: $id);
 
@@ -94,16 +96,17 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles', 'branches', 'departments', 'designations', 'shifts'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        if (!auth()->user()->can('user_edit')) {
-            abort(403, 'Access Forbidden.');
+        $restrictions = $this->userService->updateRestrictions(request: $request, id: $id);
+
+        if ($restrictions['pass'] == false) {
+
+            return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
-
-        $this->userService->updateUserValidation(request: $request, id: $id, role: $role);
 
         $this->userService->updateUser(request: $request, id: $id, role: $role);
 
@@ -114,10 +117,7 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('user_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('user_delete'), 403);
 
         $deleteUser = $this->userService->deleteUser(id: $id);
 
@@ -132,16 +132,23 @@ class UserController extends Controller
     public function changeBranch(Request $request)
     {
         $this->userService->changeBranch(request: $request);
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::LocationSwitch->value, subjectType: UserActivityLogSubjectType::LocationSwitch->value, dataObj: auth()->user());
+        if (auth()->user()?->location_switch_log_description) {
+
+            unset(auth()->user()->location_switch_log_description);
+        }
+
         return response()->json(__('Succeed'));
     }
 
-    public function show($id)
+    public function branchUsers($isOnlyAuthenticatedUser, $allowAll, $branchId = null)
     {
-        if (!auth()->user()->can('user_view')) {
-            abort(403, 'Access Forbidden.');
-        }
+        return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
+    }
 
-        $user = $this->userService->singleUser(id: $id);
-        return view('users.show', compact('user'));
+    function currentUserAndEmployeeCount($branchId = null)
+    {
+        return $this->userService->currentUserAndEmployeeCount($branchId);
     }
 }

@@ -23,10 +23,13 @@ class PayrollPaymentReportController extends Controller
         private DepartmentService $departmentService,
         private BranchService $branchService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('payroll_payment_report') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');
@@ -121,6 +124,8 @@ class PayrollPaymentReportController extends Controller
 
     public function print(Request $request)
     {
+        abort_if(!auth()->user()->can('payroll_payment_report') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 
@@ -199,7 +204,8 @@ class PayrollPaymentReportController extends Controller
             $query->whereBetween('accounting_vouchers.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
         }

@@ -27,6 +27,10 @@
         .card-counter {
             height: auto;
         }
+
+        a#addShortcutBtn {
+            background: #0ec726 !important;
+        }
     </style>
 @endpush
 @section('title', 'Dashboard - ')
@@ -42,7 +46,7 @@
                     </div>
                     <div class="d-flex flex-wrap mt-2 switch_bar_cards">
                         <div class="switch_bar">
-                            <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
+                            <a href="{{ route('short.menus.modal.form', \App\Enums\ShortMenuScreenType::DashboardScreen->value) }}" class="bar-link" id="addShortcutBtn">
                                 <span><i class="fa-light fa-plus-square text-white"></i></span>
                             </a>
                             <p>{{ __('Add Shortcut') }}</p>
@@ -356,17 +360,7 @@
         </div>
 
         <!--Add shortcut menu modal-->
-        <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">{{ __('Add Shortcut Menus') }}</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="modal-body_shortcuts"></div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @else
         <div id="dashboard" class="pb-5">
             <div class="row">
@@ -473,7 +467,7 @@
                     },
                     {
                         data: 'customer',
-                        name: 'accounts.name'
+                        name: 'customers.name'
                     },
                     {
                         data: 'delivery_status',
@@ -504,7 +498,7 @@
                     },
                     {
                         data: 'customer',
-                        name: 'accounts.name'
+                        name: 'customers.name'
                     },
                     {
                         data: 'invoice_id',
@@ -547,7 +541,7 @@
                     },
                     {
                         data: 'supplier',
-                        name: 'accounts.name'
+                        name: 'suppliers.name'
                     },
                     {
                         data: 'branch',
@@ -598,16 +592,16 @@
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $.get(url, function(data) {
-                    $('#modal-body_shortcuts').html(data);
+                    $('#shortcutMenuModal').html(data);
                     $('#shortcutMenuModal').modal('show');
                 });
             });
 
             $(document).on('change', '#check_menu', function() {
-                $('#add_shortcut_menu').submit();
+                $('#add_shortcut_menu_form').submit();
             });
 
-            $(document).on('submit', '#add_shortcut_menu', function(e) {
+            $(document).on('submit', '#add_shortcut_menu_form', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
@@ -617,7 +611,7 @@
                     data: request,
                     success: function(data) {
                         allShortcutMenus();
-                        //toastr.success(data);
+                        toastr.success(data);
                     }
                 });
             });
@@ -625,7 +619,7 @@
             // Get all shortcut menus by ajax
             function allShortcutMenus() {
                 $.ajax({
-                    url: "{{ route('short.menus.show') }}",
+                    url: "{{ route('short.menus.show', \App\Enums\ShortMenuScreenType::DashboardScreen->value) }}",
                     type: 'get',
                     success: function(data) {
                         $('.switch_bar_cards').html(data);

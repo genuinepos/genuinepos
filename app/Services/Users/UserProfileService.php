@@ -36,14 +36,16 @@ class UserProfileService
         $updateProfile->language = $request->language;
 
         if ($request->hasFile('photo')) {
-            $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
+
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+
+            $newFile = FileUploader::upload($request->file('photo'), $dir);
             if (
                 isset($updateProfile->photo) &&
-                file_exists(public_path('uploads/user_photo/' . $updateProfile->photo)) &&
-                $updateProfile->photo != 'default.png'
+                file_exists($dir . $updateProfile->photo)
             ) {
                 try {
-                    unlink(public_path('uploads/user_photo/' . $updateProfile->photo));
+                    unlink($dir . $updateProfile->photo);
                 } catch (Exception $e) {
                 }
             }

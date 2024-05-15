@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountService;
-use App\Services\Setups\BranchService;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\AccountFilterService;
 
 class SalesReturnedProductReportController extends Controller
 {
@@ -19,6 +20,7 @@ class SalesReturnedProductReportController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     // Index view of supplier report
@@ -261,7 +263,8 @@ class SalesReturnedProductReportController extends Controller
             $query->whereBetween('sale_returns.date_ts', $date_range);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sale_returns.branch_id', auth()->user()->branch_id);
         }

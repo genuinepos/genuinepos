@@ -15,7 +15,8 @@
         </div>
 
         <div class="p-1">
-            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">
@@ -394,23 +395,38 @@
             //data delete by ajax
             $(document).on('submit', '#delete_contact_form', function(e) {
                 e.preventDefault();
+
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
+
                 $.ajax({
                     url: url,
                     type: 'post',
                     async: false,
                     data: request,
                     success: function(data) {
+
                         if (!$.isEmptyObject(data.errorMsg)) {
 
-                            toastr.error(data.errorMsg, 'Attention');
+                            toastr.error(data.errorMsg);
                             return;
                         }
 
                         contactTable.ajax.reload();
                         toastr.error(data);
                         $('#delete_contact_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
+                        }
                     }
                 });
             });

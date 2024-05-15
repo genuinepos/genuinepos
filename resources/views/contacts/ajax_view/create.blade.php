@@ -130,7 +130,7 @@
                                 <div class="col-md-12">
                                     <label><strong>{{ __('Pay Term') }}</strong></label>
                                     <div class="input-group">
-                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="{{ __('Number') }}" />
+                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="0" />
                                         <select name="pay_term" class="form-control" id="contact_pay_term" data-next="contact_opening_balance">
                                             <option value="1">{{ __('Select Term') }}</option>
                                             <option value="2">{{ __('Days') }}</option>
@@ -144,7 +144,7 @@
                                 <div class="col-md-12 mt-1">
                                     <label><strong>{{ __('Opening Balance') }}</strong></label>
                                     <div class="input-group">
-                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="{{ __('Opening Balance') }}" />
+                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="0.00" />
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}
@@ -165,8 +165,8 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                            <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                             <button type="submit" id="contact_save_btn" class="btn btn-sm btn-success contact_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
 
                 if (customer_account_id != undefined) {
 
-                    $('#customer_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
+                    $('#customer_account_id').append('<option data-default_balance_type="dr" data-sub_sub_group_number="6" data-pay_term="'+data.payTerm+'" data-pay_term_number="'+data.payTermNumber+'" value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
                     $('#customer_account_id').val(data.id);
 
                     var closingBalance = (data.balanceType == 'cr' ? '-' : '') + data.balance;
@@ -238,7 +238,7 @@
                     $('#' + nextId).focus().select();
                 } else if (supplier_account_id != undefined) {
 
-                    $('#supplier_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
+                    $('#supplier_account_id').append('<option data-default_balance_type="cr" data-sub_sub_group_number="10" data-pay_term="'+data.payTerm+'" data-pay_term_number="'+data.payTermNumber+'" value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
                     $('#supplier_account_id').val(data.id);
 
                     var closingBalance = (data.balanceType == 'dr' ? '-' : '') + data.balance;

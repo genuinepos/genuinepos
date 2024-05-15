@@ -20,16 +20,16 @@ class BarcodeController extends Controller
         private AccountService $accountService,
         private PurchaseProductService $purchaseProductService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
     {
-        if (!auth()->user()->can('generate_barcode')) {
+        abort_if(!auth()->user()->can('generate_barcode'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-
-        $barcodeSettings = $this->barcodeSettingService->barcodeSettings()->select('id', 'name', 'is_default')->orderBy('is_continuous', 'desc')->get();
+        $barcodeSettings = $this->barcodeSettingService->barcodeSettings()
+            ->select('id', 'name', 'is_default')
+            ->orderBy('is_continuous', 'desc')->get();
 
         $purchasedProducts = DB::table('purchase_products')
             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
@@ -83,6 +83,7 @@ class BarcodeController extends Controller
     public function preview(Request $request)
     {
         $req = $request;
+
         if (!isset($req->product_ids)) {
 
             session()->flash('errorMsg', 'Product list is empty.');

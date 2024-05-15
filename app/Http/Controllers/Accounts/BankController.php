@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\BankService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\BankService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Accounts\BankStoreRequest;
+use App\Http\Requests\Accounts\BankUpdateRequest;
 
 class BankController extends Controller
 {
     public function __construct(
         private BankService $bankService,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserActivityLogService $userActivityLogService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('banks_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('banks_index'), 403);
 
         if ($request->ajax()) {
 
@@ -32,29 +35,19 @@ class BankController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('banks_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('banks_create'), 403);
+
         return view('accounting.banks.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(BankStoreRequest $request)
     {
-        if (! auth()->user()->can('banks_create')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate(
-            $request,
-            ['name' => 'required|unique:banks,name']
-        );
-
         try {
             DB::beginTransaction();
 
-            $addBank = $this->bankService->addBank($request);
+            $addBank = $this->bankService->addBank(request: $request);
 
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 16, data_obj: $addBank);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Bank->value, dataObj: $addBank);
 
             DB::commit();
         } catch (Exception $e) {
@@ -67,30 +60,21 @@ class BankController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('banks_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('banks_edit'), 403);
 
         $bank = $this->bankService->singleBank(id: $id);
 
         return view('accounting.banks.ajax_view.edit', compact('bank'));
     }
 
-    public function update(Request $request, $id)
+    public function update(BankUpdateRequest $request, $id)
     {
-        if (! auth()->user()->can('banks_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'name' => 'required|unique:banks,name,'.$id,
-        ]);
-
         try {
             DB::beginTransaction();
 
             $updateBank = $this->bankService->updateBank(id: $id, request: $request);
-            $this->userActivityLogUtil->addLog(action: 2, subject_type: 16, data_obj: $updateBank);
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Bank->value, dataObj: $updateBank);
 
             DB::commit();
         } catch (Exception $e) {
@@ -103,9 +87,7 @@ class BankController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('banks_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('banks_delete'), 403);
 
         try {
             DB::beginTransaction();
@@ -117,7 +99,7 @@ class BankController extends Controller
                 return response()->json(['errorMsg' => $deleteBank['msg']]);
             }
 
-            $this->userActivityLogUtil->addLog(action: 3, subject_type: 16, data_obj: $deleteBank);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Bank->value, dataObj: $deleteBank);
 
             DB::commit();
         } catch (Exception $e) {

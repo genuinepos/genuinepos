@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __('List Of Warranties/Guaranties') }}</h6>
+                                <h6>{{ __('List of Warranties/Guaranties') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
@@ -38,8 +38,8 @@
                             <div class="table-responsive" id="data-list">
                                 <table class="display data_tbl data__table">
                                     <thead>
-                                        <tr class="text-center">
-                                            <th>{{ __('S/L') }}</th>
+                                        <tr>
+                                            <th>{{ __('Warranty ID') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Duration') }}</th>
                                             <th>{{ __('Desctiption') }}</th>
@@ -97,15 +97,23 @@
                     }
                 },
             ],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="'+"{{  asset('images/data_not_found_default_photo.png') }}"+'">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
                 [10, 25, 50, 100, 500, 1000, "All"]
             ],
             ajax: "{{ route('warranties.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+            columns: [
+                // {
+                //     data: 'DT_RowIndex',
+                //     name: 'DT_RowIndex'
+                // },
+                {
+                    data: 'code',
+                    name: 'warranties.code'
                 },
                 {
                     data: 'name',

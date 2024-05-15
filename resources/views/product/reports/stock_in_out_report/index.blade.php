@@ -79,7 +79,8 @@
                                             </div>
                                         </div>
 
-                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                             <div class="col-md-2">
                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
@@ -151,31 +152,31 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                             </div>
                             <div class="table-responsive" id="data-list">
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
                                             <th>{{ __('Product') }}</th>
-                                            <th>{{ __('Sale Date') }}</th>
-                                            <th>{{ __('Sale') }}</th>
-                                            <th>{{ __('Shop') }}</th>
-                                            <th>{{ __('Sold Qty') }}</th>
-                                            <th>{{ __('Sold Price') }}</th>
+                                            <th>{{ __('Stock Out Date') }}</th>
+                                            <th>{{ __('Stock Out By') }}</th>
+                                            <th>{{ __('Shop/Business') }}</th>
+                                            <th>{{ __('Out Qty') }}</th>
+                                            <th>{{ __('Price/Cost (Inc. Tax)') }}</th>
                                             <th>{{ __('Customer') }}</th>
                                             <th>{{ __('Stock In By') }}</th>
                                             <th>{{ __('Stock In Date') }}</th>
                                             <th>{{ __('Lot No') }}</th>
                                             {{-- <th>Stock In Qty</th> --}}
-                                            <th>{{ __('Unit Cost') }}</th>
+                                            <th>{{ __('Unit Cost(Inc. Tax)') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr class="bg-secondary">
-                                            <th colspan="4" class="text-white text-end">{{ __('Total Sold Qty') }}</th>
-                                            <th id="sold_qty" class="text-white text-end"></th>
+                                            <th colspan="4" class="text-white text-end">{{ __('Total Out Qty') }}</th>
+                                            <th id="out_qty" class="text-white text-end"></th>
                                             <th class="text-white text-end">---</th>
                                             <th class="text-white text-start">---</th>
                                             <th class="text-white text-start">---</th>
@@ -201,7 +202,7 @@
     <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var table = $('.data_tbl').DataTable({
+        var stockChainTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
@@ -210,12 +211,15 @@
                 },
                 {
                     extend: 'pdf',
-                    text: "{{ __('Excel') }}",
+                    text: "{{ __('Pdf') }}",
                     className: 'btn btn-primary'
                 },
             ],
             "processing": true,
             "serverSide": true,
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -237,11 +241,11 @@
                     name: 'products.name'
                 },
                 {
-                    data: 'date',
-                    name: 'sales.date'
+                    data: 'stock_out_date',
+                    name: 'stock_chain.created_at'
                 },
                 {
-                    data: 'sale',
+                    data: 'stock_out_by',
                     name: 'sales.invoice_id'
                 },
                 {
@@ -249,13 +253,13 @@
                     name: 'branches.name'
                 },
                 {
-                    data: 'sold_qty',
-                    name: 'purchase_sale_product_chains.sold_qty',
+                    data: 'out_qty',
+                    name: 'stock_issues.voucher_no',
                     className: 'text-end fw-bold'
                 },
                 {
-                    data: 'unit_price_inc_tax',
-                    name: 'sale_products.unit_price_inc_tax',
+                    data: 'stock_out_unit_cost_or_price_inc_tax',
+                    name: 'stock_adjustments.voucher_no',
                     className: 'text-end fw-bold'
                 },
                 {
@@ -277,17 +281,15 @@
                     className: 'text-end'
                 },
                 {
-                    data: 'net_unit_cost',
+                    data: 'stock_in_unit_cost_inc_tax',
                     name: 'purchase_products.net_unit_cost',
                     className: 'text-end fw-bold'
                 },
             ],
             fnDrawCallback: function() {
 
-                var sold_qty = sum_table_col($('.data_tbl'), 'sold_qty');
-                $('#sold_qty').text(bdFormat(sold_qty));
-                // var stock_in_qty = sum_table_col($('.data_tbl'), 'stock_in_qty');
-                // $('#stock_in_qty').text(bdFormat(stock_in_qty));
+                var out_qty = sum_table_col($('.data_tbl'), 'out_qty');
+                $('#out_qty').text(bdFormat(out_qty));
                 $('.data_preloader').hide();
             }
         });
@@ -312,7 +314,7 @@
 
             e.preventDefault();
             $('.data_preloader').show();
-            table.ajax.reload();
+            stockChainTable.ajax.reload();
         });
 
         //Submit filter form by date-range field blur

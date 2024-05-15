@@ -13,13 +13,11 @@ use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ShortMenuController;
 use App\Http\Controllers\SaleReturnController;
 use App\Http\Controllers\LoanCompanyController;
 use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\MoneyReceiptController;
-use App\Http\Controllers\PosShortMenuController;
 use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\InvoiceSchemaController;
 use App\Http\Controllers\ProductImportController;
@@ -48,14 +46,11 @@ use App\Http\Controllers\Report\CashRegisterReportController;
 use App\Http\Controllers\Report\SaleReturnStatementController;
 use App\Http\Controllers\TransferStockBranchToBranchController;
 use App\Http\Controllers\Report\FinancialReportControllerReport;
-use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 
-
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
-
 
 Route::group(['prefix' => 'common/ajax/call'], function () {
     Route::get('branch/authenticated/users/{branchId}', [CommonAjaxCallController::class, 'branchAuthenticatedUsers']);
@@ -117,11 +112,6 @@ Route::group(['prefix' => 'product'], function () {
     // Barcode route group
 
     // Import product route group
-    Route::group(['prefix' => 'imports'], function () {
-
-        Route::get('create', [ProductImportController::class, 'create'])->name('product.import.create');
-        Route::post('store', [ProductImportController::class, 'store'])->name('product.import.store');
-    });
 });
 
 // Contact route group
@@ -149,11 +139,6 @@ Route::group(['prefix' => 'contacts'], function () {
         // Route::get('payment/details/{paymentId}', [SupplierController::class, 'paymentDetails'])->name('suppliers.view.details');
         // Route::delete('payment/delete/{paymentId}', [SupplierController::class, 'paymentDelete'])->name('suppliers.payment.delete');
         // Route::get('amountsBranchWise/{supplierId}', [SupplierController::class, 'supplierAmountsBranchWise'])->name('contacts.supplier.amounts.branch.wise');
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', [SupplierImportController::class, 'create'])->name('contacts.suppliers.import.create');
-            Route::post('store', [SupplierImportController::class, 'store'])->name('contacts.suppliers.import.store');
-        });
     });
 
     // Customers route group
@@ -193,11 +178,6 @@ Route::group(['prefix' => 'contacts'], function () {
         //     Route::post('voucher/status/change/{receiptId}', [MoneyReceiptController::class, 'changeStatus'])->name('money.receipt.voucher.status.change');
         //     Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
         // });
-
-        Route::group(['prefix' => 'import'], function () {
-            Route::get('/', [CustomerImportController::class, 'create'])->name('contacts.customers.import.create');
-            Route::post('store', [CustomerImportController::class, 'store'])->name('contacts.customers.import.store');
-        });
     });
 
     Route::group(['prefix' => 'reports'], function () {
@@ -382,14 +362,6 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('balance/sheet', [AccountingRelatedSectionController::class, 'balanceSheet'])->name('accounting.balance.sheet');
         Route::get('balance/sheet/amounts', [AccountingRelatedSectionController::class, 'balanceSheetAmounts'])->name('accounting.balance.sheet.amounts');
 
-        Route::get('trial/balance', [AccountingRelatedSectionController::class, 'trialBalance'])->name('accounting.trial.balance');
-        Route::get('trial/balance/amounts', [AccountingRelatedSectionController::class, 'trialBalanceAmounts'])->name('accounting.trial.balance.amounts');
-
-        Route::get('cash/flow', [AccountingRelatedSectionController::class, 'cashFow'])->name('accounting.cash.flow');
-        Route::get('cash/flow/amounts', [AccountingRelatedSectionController::class, 'cashFlowAmounts'])->name('accounting.cash.flow.amounts');
-        Route::get('filter/cash/flow', [AccountingRelatedSectionController::class, 'filterCashflow'])->name('accounting.filter.cash.flow');
-        Route::get('print/cash/flow', [AccountingRelatedSectionController::class, 'printCashflow'])->name('accounting.print.cash.flow');
-
         Route::get('profit/loss/account', [AccountingRelatedSectionController::class, 'profitLossAccount'])->name('accounting.profit.loss.account');
         Route::get('profit/loss/account/amounts', [AccountingRelatedSectionController::class, 'profitLossAccountAmounts'])->name('accounting.profit.loss.account.amounts');
         Route::get('print/profit/loss/account', [AccountingRelatedSectionController::class, 'printProfitLossAccount'])->name('accounting.profit.loss.account.print');
@@ -456,43 +428,8 @@ Route::group(['prefix' => 'accounting'], function () {
         //     Route::get('print', [ProfitLossReportController::class, 'printProfitLoss'])->name('reports.profit.loss.print');
         // });
 
-        Route::group(['prefix' => 'financial'], function () {
 
-            Route::get('/', [FinancialReportControllerReport::class, 'index'])->name('reports.financial.index');
-            Route::get('amounts', [FinancialReportControllerReport::class, 'financialAmounts'])->name('reports.financial.amounts');
-            Route::get('filter/amounts', [FinancialReportControllerReport::class, 'filterFinancialAmounts'])->name('reports.financial.filter.amounts');
-            Route::get('report/print', [FinancialReportControllerReport::class, 'print'])->name('reports.financial.report.print');
-        });
     });
-});
-
-Route::group(['prefix' => 'reports'], function () {
-
-    Route::group(['prefix' => 'taxes'], function () {
-
-        Route::get('/', [TaxReportController::class, 'index'])->name('reports.taxes.index');
-        Route::get('get', [TaxReportController::class, 'getTaxReport'])->name('reports.taxes.get');
-    });
-
-    Route::group(['prefix' => 'user/activities/log'], function () {
-
-        Route::get('/', [UserActivityLogReportController::class, 'index'])->name('reports.user.activities.log.index');
-    });
-});
-
-Route::group(['prefix' => 'short-menus'], function () {
-
-    Route::get('modal/form', [ShortMenuController::class, 'showModalForm'])->name('short.menus.modal.form');
-    Route::get('show', [ShortMenuController::class, 'show'])->name('short.menus.show');
-    Route::post('store', [ShortMenuController::class, 'store'])->name('short.menus.store');
-});
-
-Route::group(['prefix' => 'pos-short-menus'], function () {
-
-    Route::get('modal/form', [PosShortMenuController::class, 'showModalForm'])->name('pos.short.menus.modal.form');
-    Route::get('show', [PosShortMenuController::class, 'show'])->name('pos.short.menus.show');
-    Route::get('edit/page/show', [PosShortMenuController::class, 'editPageShow'])->name('pos.short.menus.edit.page.show');
-    Route::post('store', [PosShortMenuController::class, 'store'])->name('pos.short.menus.store');
 });
 
 Route::group(['prefix' => 'communication'], function () {

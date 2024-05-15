@@ -2,29 +2,31 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\CategoryService;
-use App\Services\Products\SubCategoryService;
-use App\Utils\UserActivityLogUtil;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Products\CategoryService;
+use App\Services\Products\SubCategoryService;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\SubcategoryStoreRequest;
+use App\Http\Requests\Products\SubcategoryUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class SubCategoryController extends Controller
 {
     public function __construct(
         private CategoryService $categoryService,
         private SubCategoryService $subCategoryService,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserActivityLogService $userActivityLogService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_category_index')) {
-
-            return response()->json(__('Access Denied'));
-        }
+        abort_if(!auth()->user()->can('product_category_index'), 403);
 
         if ($request->ajax()) {
 
@@ -34,10 +36,7 @@ class SubCategoryController extends Controller
 
     public function create($fixedParentCategoryId = null)
     {
-        if (!auth()->user()->can('product_category_add')) {
-
-            return response()->json(__('Access Denied'));
-        }
+        abort_if(!auth()->user()->can('product_category_add'), 403);
 
         $fixedParentCategory = '';
         if (isset($fixedParentCategoryId)) {
@@ -50,29 +49,13 @@ class SubCategoryController extends Controller
         return view('product.categories.ajax_view.subcategory.create', compact('categories', 'fixedParentCategory'));
     }
 
-    public function store(Request $request)
+    public function store(SubcategoryStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        if (!auth()->user()->can('product_category_add')) {
-
-            return response()->json(__('Access Denied'));
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'parent_category_id' => 'required',
-            'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => __('Parent category field is required.')]);
-
         try {
-
             DB::beginTransaction();
 
-            $addSubCategory = $this->subCategoryService->addSubcategory($request);
-
-            if ($addSubCategory) {
-
-                $this->userActivityLogUtil->addLog(action: 1, subject_type: 21, data_obj: $addSubCategory);
-            }
+            $addSubCategory = $this->subCategoryService->addSubcategory(request: $request, codeGenerator: $codeGenerator);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $addSubCategory);
 
             DB::commit();
         } catch (Exception $e) {
@@ -85,10 +68,7 @@ class SubCategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_category_edit')) {
-
-            return response()->json(__('Access Denied'));
-        }
+        abort_if(!auth()->user()->can('product_category_edit'), 403);
 
         $subcategory = $this->subCategoryService->singleSubcategory(id: $id);
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->get();
@@ -96,29 +76,13 @@ class SubCategoryController extends Controller
         return view('product.categories.ajax_view.subcategory.edit', compact('categories', 'subcategory'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, SubcategoryUpdateRequest $request)
     {
-        if (!auth()->user()->can('product_category_edit')) {
-
-            return response()->json(__('Access Denied'));
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'parent_category_id' => 'required',
-            'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => __('Parent category field is required')]);
-
         try {
-
             DB::beginTransaction();
 
             $updateCategory = $this->subCategoryService->updateSubcategory(id: $id, request: $request);
-
-            if ($updateCategory) {
-
-                $this->userActivityLogUtil->addLog(action: 2, subject_type: 21, data_obj: $updateCategory);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $updateCategory);
 
             DB::commit();
         } catch (Exception $e) {
@@ -136,21 +100,13 @@ class SubCategoryController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('product_category_delete')) {
-
-            return response()->json(__('Access Denied'));
-        }
+        abort_if(!auth()->user()->can('product_category_delete'), 403);
 
         try {
-
             DB::beginTransaction();
 
             $deleteSubcategory = $this->subCategoryService->deleteSubcategory(id: $id, request: $request);
-
-            if (!is_null($deleteSubcategory)) {
-
-                $this->userActivityLogUtil->addLog(action: 3, subject_type: 21, data_obj: $deleteSubcategory);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SubCategories->value, dataObj: $deleteSubcategory);
 
             DB::commit();
         } catch (Exception $e) {

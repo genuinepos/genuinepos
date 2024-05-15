@@ -13,14 +13,12 @@ class DesignationController extends Controller
     public function __construct(
         private DesignationService $designationService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('designations_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('designations_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -33,20 +31,14 @@ class DesignationController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('designations_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('designations_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         return view('hrm.designations.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('designations_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('designations_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->designationService->storeValidation(request: $request);
         return $this->designationService->addDesignation(request: $request);
@@ -54,10 +46,7 @@ class DesignationController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('designations_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('designations_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $designation = $this->designationService->singleDesignation(id: $id);
 
@@ -66,10 +55,7 @@ class DesignationController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('designations_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('designations_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->designationService->updateValidation(request: $request, id: $id);
         $this->designationService->updateDesignation(request: $request, id: $id);
@@ -79,11 +65,8 @@ class DesignationController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('designations_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
+        abort_if(!auth()->user()->can('designations_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+    
         $this->designationService->deleteDesignation(id: $id);
 
         return response()->json(__('Designation deleted successfully'));

@@ -15,10 +15,32 @@
             $('.single-nav.active').next('.single-nav').addClass('active').removeAttr('disabled');
         });
         $('#palceOrder').on('click', function () {
-            // $(this).prop('disabled', true);
-            $('#orderCompletedTab').addClass('active').siblings().removeClass('active');
-            $('.single-nav.active').next('.single-nav').addClass('active').removeAttr('disabled');
+            if ($('#cash-on-delivery').is(':checked')) {
+                console.log('cod checked');
+                submitPlan();
+                // $(this).prop('disabled', true);
+                $('#orderCompletedTab').addClass('active').siblings().removeClass('active');
+                $('.single-nav.active').next('.single-nav').addClass('active').removeAttr('disabled');
+            }
         });
+
+        function submitPlan() {
+            console.log('submit Plan');
+            let planId = $('#plan-id').val();
+
+            $.ajax({
+                url: '/setups/billing/cart/for/upgrade/plan/' + planId,
+                type: 'POST',
+                data: {
+                    payment_method_provide_name: 'COD',
+                    payment_method_name: 'COD',
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    console.log(response.success);
+                }
+            });
+        }
 
 
         /*---------------------------

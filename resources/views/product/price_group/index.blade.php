@@ -17,7 +17,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('All Selling Price Group') }}</h6>
+                        <h6>{{ __('List of Selling Price Groups') }}</h6>
                     </div>
 
                     @if (auth()->user()->can('selling_price_group_index'))
@@ -84,6 +84,9 @@
                     }
                 },
             ],
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -234,6 +237,12 @@
                 async: false,
                 data: request,
                 success: function(data) {
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
 
                     toastr.error(data);
                     priceGroupsTable.ajax.reload(null, false);

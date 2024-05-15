@@ -23,9 +23,25 @@
         }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px; margin-right: 5px; }
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 
-    div#footer { position: fixed; bottom: 24px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 24px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 
     .print_table th {
         font-size: 11px !important;
@@ -62,23 +78,23 @@
             @if (auth()->user()?->branch)
                 @if (auth()->user()?->branch?->parent_branch_id)
 
-                    @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                    @if (auth()->user()?->branch?->parentBranch?->logo)
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
-                    @if (auth()->user()?->branch?->logo != 'default.png')
-                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                    @if (auth()->user()?->branch?->logo)
+                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . auth()->user()?->branch?->logo) }}">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ auth()->user()?->branch?->name }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
             @endif
         </div>
@@ -174,16 +190,16 @@
                 <thead>
                     <tr>
                         <th>{{ __('Employee') }}</th>
-                        <th>{{ __("Payroll Voucher") }}</th>
-                        <th>{{ __("Shop/Business") }}</th>
-                        <th>{{ __("Pay Status") }}</th>
-                        <th>{{ __("Duration Unit") }}</th>
-                        <th class="text-end">{{ __("Total Amount") }}</th>
-                        <th class="text-end">{{ __("Allowance") }}</th>
-                        <th class="text-end">{{ __("Deduction") }}</th>
-                        <th class="text-end">{{ __("Gross Amount") }}</th>
-                        <th class="text-end">{{ __("Paid") }}</th>
-                        <th class="text-end">{{ __("Due") }}</th>
+                        <th>{{ __('Payroll Voucher') }}</th>
+                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ __('Pay Status') }}</th>
+                        <th>{{ __('Duration Unit') }}</th>
+                        <th class="text-end">{{ __('Total Amount') }}</th>
+                        <th class="text-end">{{ __('Allowance') }}</th>
+                        <th class="text-end">{{ __('Deduction') }}</th>
+                        <th class="text-end">{{ __('Gross Amount') }}</th>
+                        <th class="text-end">{{ __('Paid') }}</th>
+                        <th class="text-end">{{ __('Due') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -193,7 +209,7 @@
 
                     @foreach ($payrolls as $payroll)
                         @php
-                            $monthYear = $payroll->month.'-'.$payroll->year;
+                            $monthYear = $payroll->month . '-' . $payroll->year;
                         @endphp
                         @if ($previousMonthYear != $monthYear)
                             @php
@@ -211,7 +227,7 @@
                             <td class="text-start">
                                 @php
                                     $empId = $payroll->user_emp_id ? ' (' . $payroll->user_emp_id . ')' : '';
-                                    $userName = $payroll->user_prefix . ' ' . $payroll->user_name . ' ' . $payroll->user_last_name .  $empId;
+                                    $userName = $payroll->user_prefix . ' ' . $payroll->user_name . ' ' . $payroll->user_last_name . $empId;
                                 @endphp
                                 {{ $userName }}
                             </td>
@@ -219,17 +235,13 @@
                             <td class="text-start">
                                 @php
                                     $branch = '';
-                                     if ($payroll->branch_id) {
-
+                                    if ($payroll->branch_id) {
                                         if ($payroll->parent_branch_name) {
-
                                             $branch = $payroll->parent_branch_name . '(' . $payroll->branch_area_name . ')';
                                         } else {
-
                                             $branch = $payroll->branch_name . '(' . $payroll->branch_area_name . ')';
                                         }
                                     } else {
-
                                         $branch = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -240,14 +252,11 @@
                                 @php
                                     $payStatus = '';
                                     if ($payroll->due <= 0) {
-
-                                        $payStatus = __("Paid");
+                                        $payStatus = __('Paid');
                                     } elseif ($payroll->due > 0 && $payroll->due < $payroll->gross_amount) {
-
-                                        $payStatus = __("Partial");
+                                        $payStatus = __('Partial');
                                     } elseif ($payroll->gross_amount == $payroll->due) {
-
-                                        $payStatus = __("Due");
+                                        $payStatus = __('Due');
                                     }
                                 @endphp
                                 {{ $payStatus }}

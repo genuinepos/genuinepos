@@ -52,7 +52,8 @@
                                                     </div>
                                                 </div>
 
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-md-2">
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
@@ -225,7 +226,7 @@
             },
             columns: [
                 { data: 'date', name: 'purchases.date' },
-                { data: 'branch', name: 'branch.name' },
+                { data: 'branch', name: 'branches.name' },
                 { data: 'product', name: 'products.name' },
                 { data: 'supplier_name', name: 'suppliers.name as supplier_name' },
                 { data: 'invoice_id', name: 'purchases.invoice_id' },

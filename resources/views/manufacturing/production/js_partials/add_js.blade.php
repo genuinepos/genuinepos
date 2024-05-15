@@ -263,6 +263,8 @@
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
+        var currentTitle = document.title;
+
         var allTr = $('#ingredient_list').find('tr');
         allTr.each(function() {
 
@@ -315,6 +317,16 @@
                         printDelay: 1000,
                         header: null,
                     });
+
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = data;
+                    var filename = tempElement.querySelector('#title');
+
+                    document.title = filename.innerHTML;
+
+                    setTimeout(function() {
+                        document.title = currentTitle;
+                    }, 2000);
                 }
             },
             error: function(err) {
@@ -374,6 +386,12 @@
         var nextId = $(this).data('next');
 
         if (e.which == 13) {
+
+            if (nextId == 'stock_warehouse_id' && $('#stock_warehouse_id').val() == undefined) {
+
+                $('#process_id').focus();
+                return;
+            }
 
             $('#' + nextId).focus().select();
         }

@@ -9,20 +9,48 @@
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
+            table {
+                page-break-after: auto;
+            }
 
-            tr { page-break-inside: avoid; page-break-after: auto; }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
 
-            td { page-break-inside: avoid; page-break-after: auto; }
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
 
-            thead { display: table-header-group; }
+            thead {
+                display: table-header-group;
+            }
 
-            tfoot { display: table-footer-group; }
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
 
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="sale_print_template">
@@ -34,23 +62,23 @@
 
                             @if ($draft?->branch?->parent_branch_id)
 
-                                @if ($draft->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch?->parentBranch?->logo) }}">
+                                @if ($draft->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $draft->branch?->parentBranch?->logo) }}">
                                 @else
-                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $draft->branch?->parentBranch?->name }}</span>
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $draft->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($draft->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch?->logo) }}">
+                                @if ($draft->branch?->logo && $invoiceLayout->show_shop_logo == 1)
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $draft->branch?->logo) }}">
                                 @else
-                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $draft->branch?->name }}</span>
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $draft->branch?->name }}</span>
                                 @endif
                             @endif
                         @else
                             @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -72,6 +100,7 @@
 
                         <p>
                             @if ($draft?->branch)
+                                {{ $draft->branch->address . ', ' }}
                                 {{ $invoiceLayout->branch_city == 1 ? $draft->branch->city . ', ' : '' }}
                                 {{ $invoiceLayout->branch_state == 1 ? $draft->branch->state . ', ' : '' }}
                                 {{ $invoiceLayout->branch_zipcode == 1 ? $draft->branch->zip_code . ', ' : '' }}
@@ -388,23 +417,23 @@
 
                             @if ($draft?->branch?->parent_branch_id)
 
-                                @if ($draft->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch?->parentBranch?->logo) }}">
+                                @if ($draft->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $draft->branch?->parentBranch?->logo) }}">
                                 @else
-                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $draft->branch?->parentBranch?->name }}</span>
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $draft->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
-                                @if ($draft->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $draft->branch?->logo) }}">
+                                @if ($draft->branch?->logo && $invoiceLayout->show_shop_logo == 1)
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $draft->branch?->logo) }}">
                                 @else
-                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $draft->branch?->name }}</span>
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $draft->branch?->name }}</span>
                                 @endif
                             @endif
                         @else
                             @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -424,6 +453,7 @@
 
                         <p style="font-size:9px;">
                             @if ($draft?->branch)
+                                {{ $draft->branch->address . ', ' }}
                                 {{ $invoiceLayout->branch_city == 1 ? $draft->branch->city . ', ' : '' }}
                                 {{ $invoiceLayout->branch_state == 1 ? $draft->branch->state . ', ' : '' }}
                                 {{ $invoiceLayout->branch_zipcode == 1 ? $draft->branch->zip_code . ', ' : '' }}

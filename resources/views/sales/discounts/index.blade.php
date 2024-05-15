@@ -104,6 +104,9 @@
             "serverSide": true,
             // aaSorting: [[0, 'asc']],
             ajax: "{{ route('sales.discounts.index') }}",
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],

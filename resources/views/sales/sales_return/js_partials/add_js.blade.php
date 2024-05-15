@@ -145,9 +145,9 @@
         $('.variant_list_area').empty();
         $('.select_area').hide();
 
-        if ($('#supplier_account_id').val() == '') {
+        if ($('#customer_account_id').val() == '') {
 
-            toastr.error('Please select a listed supplier first.');
+            toastr.error("{{ __('Please select a listed customer first.') }}");
             $(this).val('');
             return;
         }
@@ -265,7 +265,7 @@
                                     price = variant.variant_price;
                                 }
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 li += '<li>';
                                 li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_code="' + variant.variant_code + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" data-p_price_exc_tax="' + price + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
@@ -328,7 +328,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 if (product.is_variant == 1) {
 
@@ -1091,6 +1091,12 @@
         var nextId = $(this).data('next');
 
         if (e.which == 13) {
+
+            if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
+
+                $('#sale_account_id').focus();
+                return;
+            }
 
             $('#' + nextId).focus().select();
         }

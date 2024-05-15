@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\BulkVariantChildService;
-use App\Services\Products\BulkVariantService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Products\BulkVariantService;
+use App\Services\Users\UserActivityLogService;
+use App\Services\Products\BulkVariantChildService;
+use App\Http\Requests\Products\BulkVariantStoreRequest;
+use App\Http\Requests\Products\BulkVariantUpdateRequest;
 
 class BulkVariantController extends Controller
 {
     public function __construct(
         private BulkVariantService $bulkVariantService,
         private BulkVariantChildService $bulkVariantChildService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_variant_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('product_variant_index'), 403);
 
         if ($request->ajax()) {
 
@@ -35,24 +37,19 @@ class BulkVariantController extends Controller
 
     public function create()
     {
+        abort_if(!auth()->user()->can('product_variant_add'), 403);
+
         return view('product.bulk_variants.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(BulkVariantStoreRequest $request)
     {
-        if (! auth()->user()->can('product_variant_add')) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, ['name' => 'required']);
-
         try {
             DB::beginTransaction();
 
             $addBulkVariant = $this->bulkVariantService->addBulkVariant(request: $request);
             $this->bulkVariantChildService->addBulkVariantChild(request: $request, bulkVariantId: $addBulkVariant->id);
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 24, data_obj: $addBulkVariant);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Variants->value, dataObj: $addBulkVariant);
 
             DB::commit();
         } catch (Exception $e) {
@@ -64,26 +61,21 @@ class BulkVariantController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('product_variant_edit'), 403);
+
         $bulkVariant = $this->bulkVariantService->singleBulkVariant(id: $id, with: ['bulkVariantChild']);
 
         return view('product.bulk_variants.ajax_view.edit', compact('bulkVariant'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, BulkVariantUpdateRequest $request)
     {
-        if (! auth()->user()->can('product_variant_edit')) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, ['name' => 'required']);
-
         try {
             DB::beginTransaction();
 
             $updateBulkVariant = $this->bulkVariantService->updateBulkVariant(request: $request, id: $id);
             $this->bulkVariantChildService->updateBulkVariantChild(request: $request, bulkVariantId: $updateBulkVariant->id);
-            $this->userActivityLogUtil->addLog(action: 2, subject_type: 24, data_obj: $updateBulkVariant);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Variants->value, dataObj: $updateBulkVariant);
 
             DB::commit();
         } catch (Exception $e) {
@@ -95,16 +87,13 @@ class BulkVariantController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (! auth()->user()->can('product_variant_delete')) {
-
-            return response()->json('Access Denied');
-        }
+        abort_if(!auth()->user()->can('product_variant_delete'), 403);
 
         try {
             DB::beginTransaction();
 
             $deleteBulkVariant = $this->bulkVariantService->deleteBulkVariant(id: $id);
-            $this->userActivityLogUtil->addLog(action: 3, subject_type: 24, data_obj: $deleteBulkVariant);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Variants->value, dataObj: $updateBulkVariant);
 
             DB::commit();
         } catch (Exception $e) {

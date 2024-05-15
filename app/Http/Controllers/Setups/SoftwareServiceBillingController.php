@@ -2,28 +2,42 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Subscriptions\SubscriptionTransactionService;
 
 class SoftwareServiceBillingController extends Controller
 {
-    public function index() {
-        return view('setups.billing.index');
+    public function __construct(
+        private BranchService $branchService,
+        private SubscriptionTransactionService $subscriptionTransactionService,
+    ) {
     }
 
-    public function upgradePlan() {
-        return view('setups.billing.upgrade_plan');
+    public function index()
+    {
+        $branches = $this->branchService->branches(with: ['parentBranch', 'shopExpireDateHistory'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        $transactions = $this->subscriptionTransactionService->subscriptionTransactions()->latest()->get();
+
+        return view('setups.billing.index', compact('branches', 'transactions'));
     }
 
-    public function cartFoUpgradePlan() {
-        return view('setups.billing.cart_for_upgrade_plan');
+    public function invoiceView($id)
+    {
+        $transaction = $this->subscriptionTransactionService->singleSubscriptionTransaction(id: $id, with: ['subscription', 'subscription.user', 'plan']);
+        DB::reconnect();
+        return view('setups.invoices.invoice_view', compact('transaction'));
     }
 
-    public function cartFoAddBranch() {
-        return view('setups.billing.cart_for_add_branch');
-    }
-
-    public function cartForRenewBranch() {
-        return view('setups.billing.cart_for_branch_renew');
+    public function invoicePdf($id)
+    {
+        $transaction = $this->subscriptionTransactionService->singleSubscriptionTransaction(id: $id, with: ['subscription', 'subscription.user', 'plan']);
+        DB::reconnect();
+        $pdf = Pdf::loadView('setups.billing.pdf.transaction_details', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']);;
+        return $pdf->stream('invoice.pdf');
     }
 }

@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\PriceGroupService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Products\PriceGroupService;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\PriceGroupStoreRequest;
+use App\Http\Requests\Products\PriceGroupUpdateRequest;
 
 class PriceGroupController extends Controller
 {
     public function __construct(
         private PriceGroupService $priceGroupService,
+        private UserActivityLogService $userActivityLogService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('selling_price_group_index'), 403);
 
         if ($request->ajax()) {
 
@@ -30,76 +35,84 @@ class PriceGroupController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('selling_price_group_add'), 403);
 
         return view('product.price_group.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(PriceGroupStoreRequest $request)
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
+        try {
+            DB::beginTransaction();
 
-            abort(403, __('Access Forbidden.'));
+            $addPriceGroup = $this->priceGroupService->addPriceGroup($request);
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::SellingPriceGroups->value, dataObj: $addPriceGroup);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $this->validate($request, [
-            'name' => 'required|unique:price_groups,name',
-        ]);
-
-        $addPriceGroup = $this->priceGroupService->addPriceGroup($request);
 
         return $addPriceGroup;
     }
 
     public function edit($id)
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('selling_price_group_edit'), 403);
 
         $priceGroup = $this->priceGroupService->singlePriceGroup(id: $id);
 
         return view('product.price_group.ajax_view.edit', compact('priceGroup'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, PriceGroupUpdateRequest $request)
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
+        try {
+            DB::beginTransaction();
 
-            abort(403, __('Access Forbidden.'));
+            $updatePriceGroup = $this->priceGroupService->updatePriceGroup(id: $id, request: $request);
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::SellingPriceGroups->value, dataObj: $updatePriceGroup);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $this->validate($request, [
-            'name' => 'required|unique:price_groups,name,'.$id,
-        ]);
-
-        $this->priceGroupService->updatePriceGroup(id: $id, request: $request);
 
         return response()->json(__('Price group updated Successfully'));
     }
 
     public function delete($id, Request $request)
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
+        abort_if(!auth()->user()->can('selling_price_group_delete'), 403);
 
-            abort(403, __('Access Forbidden.'));
+        try {
+            DB::beginTransaction();
+
+            $deletePriceGroup = $this->priceGroupService->deletePriceGroup(id: $id);
+
+            if (isset($deletePriceGroup['pass']) && $deletePriceGroup['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deletePriceGroup['msg']]);
+            }
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SellingPriceGroups->value, dataObj: $deletePriceGroup);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $this->priceGroupService->deletePriceGroup(id: $id);
 
         return response()->json(__('Price group delete Successfully.'));
     }
 
     public function changeStatus($id)
     {
-        if (! auth()->user()->can('selling_price_group_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('selling_price_group_index'), 403);
 
         $changeStatus = $this->priceGroupService->changeStatus(id: $id);
 

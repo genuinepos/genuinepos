@@ -14,7 +14,7 @@
                                 <h5>{{ __("Customer Groups") }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                         </div>
                     </div>
 
@@ -25,7 +25,8 @@
                                     <div class="element-body">
                                         <form id="filter_form">
                                             <div class="form-group row">
-                                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-md-4">
                                                         <label><strong>{{ __("Shop") }}</strong></label>
                                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
@@ -56,7 +57,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-10">
-                                    <h6>{{ __('List Of Customer Groups') }}</h6>
+                                    <h6>{{ __('List of Customer Groups') }}</h6>
                                 </div>
                                 @if(auth()->user()->can('customer_group'))
                                     <div class="col-2 d-flex justify-content-end">

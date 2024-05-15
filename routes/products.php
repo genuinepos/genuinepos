@@ -8,12 +8,17 @@ use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\WarrantyController;
 use App\Http\Controllers\Products\PriceGroupController;
+use App\Http\Controllers\Products\StockIssueController;
 use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\OpeningStockController;
+use App\Http\Controllers\Products\ProductStockController;
+use App\Http\Controllers\Products\ProductImportController;
+use App\Http\Controllers\Products\ProductLedgerController;
 use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\QuickProductAddController;
 use App\Http\Controllers\Products\PriceGroupManageController;
+use App\Http\Controllers\Products\StockIssueProductController;
 use App\Http\Controllers\Products\Reports\StockReportController;
 use App\Http\Controllers\Products\Reports\StockInOutReportController;
 
@@ -29,6 +34,16 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::delete('delete/{id}', 'delete')->name('products.delete');
     Route::get('form/part/{type}', 'formPart')->name('products.form.part');
     Route::get('get/last/product/id', 'getLastProductId')->name('products.get.last.product.id');
+
+    Route::controller(ProductLedgerController::class)->prefix('ledger')->group(function () {
+        Route::get('index/{id}', 'index')->name('products.ledger.index');
+        Route::get('print/{id}', 'print')->name('products.ledger.print');
+    });
+
+    Route::controller(ProductStockController::class)->prefix('stock')->group(function () {
+
+        Route::get('product/stock/{id}', 'productStock')->name('products.stock');
+    });
 
     Route::controller(OpeningStockController::class)->prefix('opening-stock')->group(function () {
         Route::get('create/or/edit/{productId}', 'createOrEdit')->name('product.opening.stocks.create');
@@ -111,6 +126,22 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         });
     });
 
+    Route::controller(StockIssueController::class)->prefix('stock-issues')->group(function () {
+
+        Route::get('/', 'index')->name('stock.issues.index');
+        Route::get('show/{id}', 'show')->name('stock.issues.show');
+        Route::get('print/{id}', 'print')->name('stock.issues.print');
+        Route::get('create', 'create')->name('stock.issues.create');
+        Route::post('store', 'store')->name('stock.issues.store');
+        Route::get('edit/{id}', 'edit')->name('stock.issues.edit');
+        Route::post('update/{id}', 'update')->name('stock.issues.update');
+        Route::delete('delete/{id}', 'delete')->name('stock.issues.delete');
+
+        Route::controller(StockIssueProductController::class)->prefix('stock-issued-products')->group(function () {
+            Route::get('/', 'index')->name('stock.issued.products.index');
+        });
+    });
+
     Route::controller(ExpiredProductController::class)->prefix('expired')->group(function () {
         Route::get('/', 'index')->name('expired.products.index');
     });
@@ -138,5 +169,11 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         Route::get('/', 'index')->name('barcode.index');
         Route::get('preview', 'preview')->name('barcode.preview');
         Route::post('empty/label/qty/{supplierAccountId}/{productId}/{variantId?}', 'emptyLabelQty')->name('barcode.empty.label.qty');
+    });
+
+    Route::controller(ProductImportController::class)->prefix('import')->group(function () {
+
+        Route::get('create', 'create')->name('product.import.create');
+        Route::post('store', 'store')->name('product.import.store');
     });
 });

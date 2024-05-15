@@ -10,10 +10,14 @@ class CacheService implements CacheServiceInterface
     public function syncGeneralSettings(): void
     {
         $generalSettings = Cache::get('generalSettings');
+
         if (isset($generalSettings) && ! empty($generalSettings)) {
+            
             Cache::forget('generalSettings');
         }
+
         if (! isset($generalSettings) || empty($generalSettings)) {
+
             Cache::rememberForever('generalSettings', function () {
                 return GeneralSetting::first()->toArray();
             });

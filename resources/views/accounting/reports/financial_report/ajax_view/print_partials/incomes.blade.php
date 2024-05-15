@@ -1,0 +1,32 @@
+<tr>
+    <th class="text-start">
+        <span>{{ __('Incomes') }} : </span>
+    </th>
+
+    <td class="text-start"></td>
+</tr>
+
+@foreach ($incomeDetails['incomeAccounts']->groups as $group)
+    <tr>
+        <td style="padding-left: 20px!important;">{{ $group->group_name }}</td>
+        <td>:
+            @if ($group->closing_balance_side == 'dr')
+                <span>(-) {{ \App\Utils\Converter::format_in_bdt($group->closing_balance) }}</span>
+            @else
+                <span>{{ \App\Utils\Converter::format_in_bdt($group->closing_balance) }}</span>
+            @endif
+        </td>
+    </tr>
+@endforeach
+
+<tr>
+    <td class="text-end fw-bold"><span>{{ __('Total') }} </span></td>
+
+    <td class="fw-bold">:
+        @if ($incomeDetails['closingBalanceSide'] == 'dr')
+            <span>(-) {{ \App\Utils\Converter::format_in_bdt($incomeDetails['closingBalance']) }}</span>
+        @else
+            <span>{{ \App\Utils\Converter::format_in_bdt($incomeDetails['closingBalance']) }}</span>
+        @endif
+    </td>
+</tr>

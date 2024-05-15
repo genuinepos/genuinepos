@@ -11,12 +11,13 @@
                 <div class="name-head">
                     <h5>{{ __('Suppliers') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
         <div class="p-1">
-            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">
@@ -24,7 +25,7 @@
                                 <form id="filter_form">
                                     <div class="form-group row align-items-end">
                                         <div class="col-xl-6 col-lg-6 col-md-12">
-                                            <label><strong>{{ __('Shop') }}</strong></label>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
@@ -42,7 +43,7 @@
                                         </div>
 
                                         <div class="col-xl-2 col-lg-3 col-md-4">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -55,21 +56,28 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-4">
-                        <h6>{{ __('List Of Suppliers') }}</h6>
+                        <h6>{{ __('List of Suppliers') }}</h6>
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
-                        <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> @lang('menu.add')
-                        </a>
-                        <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
+                        @if (auth()->user()->can('supplier_add'))
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus-square"></i> {{ __('Add') }}
+                            </a>
+                        @endif
+
+                        @if (auth()->user()->can('supplier_import'))
+
+                            <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Import Suppliers") }}</a>
+                        @endif
+
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                     </div>
                 </div>
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                        <h6><i class="fas fa-spinner"></i> {{ __('Processing') }}...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
@@ -92,7 +100,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
@@ -127,18 +135,18 @@
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    text: '<i class="fas fa-file-excel"></i> '+"{{ __('Excel') }}"+'',
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
                 {
                     extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    text: '<i class="fas fa-file-pdf"></i> '+"{{ __('Pdf') }}"+'',
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                        columns: 'th:not(:first-child)'
                     }
                 },
             ],
@@ -293,8 +301,7 @@
                             $('#contact_name').focus();
                         }, 500);
 
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
 
                         if (err.status == 0) {
 
@@ -391,6 +398,18 @@
                         contactTable.ajax.reload();
                         toastr.error(data);
                         $('#delete_contact_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
+                        }
                     }
                 });
             });

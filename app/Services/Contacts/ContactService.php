@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use App\Models\Contacts\Contact;
 
@@ -9,10 +10,11 @@ class ContactService
 {
     public function addContact($type, $codeGenerator, $contactIdPrefix, $name, $phone, $businessName = null, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType = 'dr')
     {
-        $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4);
+        $isCheckBranch = $type == ContactType::Supplier->value ? false : true;
+        $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4, isCheckBranch: $isCheckBranch, branchId: auth()->user()->branch_id);
 
         $prefixTypeSign = $type == ContactType::Supplier->value ? 'S' : 'C';
-        $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter : ':');
+        $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter: ':', isCheckBranch: $isCheckBranch, branchId: auth()->user()->branch_id);
 
         $addContact = new Contact();
         $addContact->contact_id = $contactId;
@@ -50,7 +52,7 @@ class ContactService
 
     public function updateContact($contactId, $type, $name, $phone, $businessName = null, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType = 'dr')
     {
-        $updateContact = Contact::with('openingBalance', 'account')->where('id', $contactId)->first();
+        $updateContact = $this->singleContact(id: $contactId, with: ['account', 'account.accountOpeningBalance']);
         $updateContact->type = $type;
         $updateContact->name = $name;
         $updateContact->phone = $phone;
@@ -92,32 +94,43 @@ class ContactService
         }
     }
 
-    public function changeStatus($contactId)
+    public function changeStatus(int $id): string
     {
-        $statusChange = Contact::where('id', $contactId)->first();
-        if ($statusChange->status == 1) {
+        $statusChange = $this->singleContact(id: $id);
 
-            $statusChange->status = 0;
+        if ($statusChange->status == BooleanType::True->value) {
+
+            $statusChange->status = BooleanType::False->value;
             $statusChange->save();
 
-            return response()->json(__('Contact deactivated successfully'));
+            return  __('Contact deactivated successfully');
         } else {
 
-            $statusChange->status = 1;
+            $statusChange->status = BooleanType::True->value;
             $statusChange->save();
 
-            return response()->json(__('Contact activated successfully'));
+            return __('Contact activated successfully');
         }
     }
 
-    public function deleteContact(int $id): void
+    public function deleteContact(int $id): array|object
     {
-        $deleteContact = $this->singleContact(id: $id);
+        $deleteContact = $this->singleContact(id: $id, with: ['account', 'account.accountLedgersWithOutOpeningBalances']);
 
-        if (!is_null($deleteContact)) {
+        if (isset($deleteContact)) {
+
+            if (isset($deleteContact?->account)) {
+
+                if (count($deleteContact?->account?->accountLedgersWithOutOpeningBalances) > 0) {
+
+                    return ['pass' => false, 'msg' => __('Contact can not be deleted. One or more ledger entries are belonging in this contact.')];
+                }
+            }
 
             $deleteContact->delete();
         }
+
+        return $deleteContact;
     }
 
     public function singleContact(int $id, array $with = null)

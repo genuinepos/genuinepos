@@ -107,6 +107,9 @@
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
                                                     <option data-default_balance_type="cr" value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
+                                                        @if ($supplierAccount->is_walk_in_customer == 1)
+                                                            @continue
+                                                        @endif
                                                         <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" {{ $supplierAccount->id == $purchase->supplier_account_id ? 'SELECTED' : '' }} value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                     @endforeach
                                                 </select>
@@ -135,7 +138,7 @@
                                         </div>
                                     </div>
 
-                                    @if ($purchase->warehouse_id)
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && $purchase->warehouse_id)
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b><span class="text-danger">*</span></label>
@@ -564,6 +567,8 @@
                                                     <div class="input-group">
                                                         <label class="col-4"><b>{{ __('Total Invoice Amount') }}</b></label>
                                                         <div class="col-8">
+                                                            <input readonly type="hidden" step="any" id="current_purchased_amount" value="{{ $purchase->total_purchase_amount }}" >
+
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control fw-bold" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
                                                             <input type="hidden" name="purchase_ledger_amount" id="purchase_ledger_amount" value="0">
                                                         </div>

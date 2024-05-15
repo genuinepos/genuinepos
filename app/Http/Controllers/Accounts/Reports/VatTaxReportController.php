@@ -15,10 +15,13 @@ class VatTaxReportController extends Controller
         private BranchService $branchService,
         private AccountService $accountService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
     {
+        abort_if(!auth()->user()->can('vat_tax_report'), 403);
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $branches = $this->branchService->branches(with: ['parentBranch'])
@@ -34,28 +37,30 @@ class VatTaxReportController extends Controller
         return view('accounting.reports.vat_tax_report.index', compact('branches', 'taxAccounts', 'contacts'));
     }
 
-    public function vatTaxInputTable(Request $request) {
-
+    public function vatTaxInputTable(Request $request)
+    {
         if ($request->ajax()) {
 
             return $this->vatTaxReportService->vatTaxInputTable(request: $request);
         }
     }
 
-    public function vatTaxOutputTable(Request $request) {
-
+    public function vatTaxOutputTable(Request $request)
+    {
         if ($request->ajax()) {
 
             return $this->vatTaxReportService->vatTaxOutputTable(request: $request);
         }
     }
 
-    public function vatTaxAmounts(Request $request) {
-
+    public function vatTaxAmounts(Request $request)
+    {
         return $this->vatTaxReportService->VatTaxAmounts(request: $request);
     }
 
-    public function printVatTax(Request $request) {
+    public function printVatTax(Request $request)
+    {
+        abort_if(!auth()->user()->can('vat_tax_report'), 403);
 
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {

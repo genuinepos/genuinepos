@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
@@ -28,14 +29,12 @@ class PayrollController extends Controller
         private AccountService $accountService,
         private DayBookService $dayBookService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('payrolls_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('payrolls_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -43,7 +42,12 @@ class PayrollController extends Controller
         }
 
         $departments = $this->departmentService->departments()->get(['id', 'name']);
-        $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+        
+        $users = $this->userService->users()
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
+            ->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -70,10 +74,7 @@ class PayrollController extends Controller
 
     public function create(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('payrolls_create')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $createMethodContainer = $payrollControllerMethodContainersInterface->createMethodContainer(
             request: $request,
@@ -94,10 +95,7 @@ class PayrollController extends Controller
 
     public function store(Request $request, CodeGenerationServiceInterface $codeGenerator, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('payrolls_create')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->payrollService->storeAndUpdateValidation(request: $request);
 
@@ -125,10 +123,7 @@ class PayrollController extends Controller
 
     public function edit($id, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('payrolls_edit')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $editMethodContainer = $payrollControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -143,10 +138,7 @@ class PayrollController extends Controller
 
     public function update($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('payrolls_edit')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->payrollService->storeAndUpdateValidation(request: $request);
 
@@ -174,10 +166,7 @@ class PayrollController extends Controller
 
     public function delete($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('payrolls_delete')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('payrolls_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $deleteMethodContainer = $payrollControllerMethodContainersInterface->deleteMethodContainer(id: $id, payrollService: $this->payrollService);
 

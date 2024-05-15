@@ -58,6 +58,14 @@ class SalesOrderService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
+                    if (auth()->user()->can('sales_order_to_invoice')) {
+                        
+                        $html .= '<a class="dropdown-item" href="' . route('sales.order.to.invoice.create', [$row->id]) . '">' . __('Sales Order To Invoice') . '</a>';
+                    }
+                }
+
+                if (auth()->user()->branch_id == $row->branch_id) {
+
                     if (auth()->user()->can('edit_add_sale')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sale.orders.edit', [$row->id]) . '">' . __('Edit') . '</a>';
@@ -284,7 +292,8 @@ class SalesOrderService
             $query->where('sales.customer_account_id', $customerAccountId);
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if (auth()->user()->can('view_own_sale')) {
 

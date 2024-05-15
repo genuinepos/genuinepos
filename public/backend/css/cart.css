@@ -46,17 +46,17 @@ img {
 }
 
 .def-btn {
-  height: 50px;
-  line-height: 50px;
+  height: 39px;
+  line-height: 37px;
   padding: 0 40px;
   background: #333333;
   color: #ffffff;
   font-size: 15px;
   font-weight: 500;
-  text-transform: uppercase;
   transition: 0.3s;
   border: 1px solid #333333;
 }
+
 .def-btn.btn-border {
   border: 1px solid #333333;
   line-height: 48px;
@@ -216,7 +216,7 @@ img {
 }
 .tab-section .tab-nav .single-nav {
   width: 33.3333333333%;
-  height: 50px;
+  height: 38px;
   border-left: 0;
   font-size: 20px;
   font-weight: 500;
@@ -264,7 +264,7 @@ img {
   border-color: #333333;
 }
 .tab-section .tab-nav .single-nav .sl-no {
-  font-size: 48px;
+  font-size: 38px;
   font-weight: 600;
   opacity: 0.1;
 }
@@ -339,7 +339,7 @@ img {
 .tab-section .tab-contents .cart-total-panel .panel-body .calculate-area ul li {
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 100%;
   font-weight: 500;
   color: #606060;
@@ -690,20 +690,22 @@ img {
   margin-bottom: 0;
 }
 .revel-table .table-responsive th {
-  padding: 20px 30px;
-  padding-bottom: 18px;
+  padding: 12px 30px;
+  padding-bottom: 12px;
   text-align: center;
+  font-size: 12px;
 }
 .revel-table .table-responsive tr:first-child td {
   padding-top: 30px;
 }
 .revel-table .table-responsive tr:last-child td {
-  padding-bottom: 30px;
+  padding-bottom: 12px;
 }
 .revel-table .table-responsive tr td {
   text-align: center;
-  padding: 15px 20px;
+  padding: 5px 8px;
   padding-right: 0;
+  font-size: 12px;
 }
 .revel-table .table-responsive .product-img {
   width: 100px;
@@ -718,7 +720,7 @@ img {
 }
 .revel-table .table-responsive .price-txt {
   width: auto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 100%;
   font-weight: 600;
   color: #333333;
@@ -748,6 +750,13 @@ img {
   align-items: start;
 }
 
+.single-tab.active#stepOneTab {
+  display: grid;
+  grid-template-columns: 69% auto;
+  gap: 30px;
+  align-items: start;
+}
+
 .domain-field span.txt {
   position: absolute;
   right: 0;
@@ -765,7 +774,7 @@ img {
 }
 
 .cart-coupon-form input {
-  height: 50px;
+  height: 40px;
   border: 1px solid #e4e4e4;
   padding: 0 15px;
   border-radius: 0;
@@ -812,6 +821,11 @@ img {
     transform: scale(1);
   }
 }
+
+tr#add_business_tr {
+    border-top: 1px solid lightgray;
+}
+
 @keyframes checkBig {
   0% {
     top: 50%;

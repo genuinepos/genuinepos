@@ -2,7 +2,7 @@
 
 namespace App\Services\Products;
 
-use Illuminate\Validation\Rule;
+use App\Enums\CategoryType;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -12,21 +12,32 @@ class CategoryService
 {
     public function categoriesTable()
     {
-        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('name', 'asc')->get();
-
-        $img_url = asset('uploads/category/');
+        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('name', 'asc');
 
         return DataTables::of($categories)
-            ->addIndexColumn()
-            ->editColumn('photo', function ($row) use ($img_url) {
+            // ->addIndexColumn()
+            ->editColumn('photo', function ($row) {
 
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
+                $photo = asset('images/general_default.png');
+                if ($row->photo) {
+
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
+                }
+                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('categories.edit', [$row->id]) . '" class="action-btn c-edit" id="editCategory" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('categories.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteCategory" title="Delete"><span class="fas fa-trash "></span></a>';
+
+                if (auth()->user()->can('product_category_edit')) {
+
+                    $html .= '<a href="' . route('categories.edit', [$row->id]) . '" class="action-btn c-edit" id="editCategory" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('product_category_delete')) {
+
+                    $html .= '<a href="' . route('categories.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteCategory" title="Delete"><span class="fas fa-trash "></span></a>';
+                }
                 $html .= '</div>';
 
                 return $html;
@@ -39,17 +50,26 @@ class CategoryService
             ->rawColumns(['photo', 'action'])->smart(true)->make(true);
     }
 
-    public function addCategory(object $request): ?object
+    public function addCategory(object $request, object $codeGenerator): ?object
     {
+        $code = $codeGenerator->categoryCode(type: CategoryType::MainCategory->value);
         $addCategory = new Category();
+        $addCategory->code = $code;
         $addCategory->name = $request->name;
         $addCategory->description = $request->description;
 
         if ($request->file('photo')) {
 
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            Image::make($categoryPhoto)->resize(250, 250)->save($dir . $categoryPhotoName);
 
             $addCategory->photo = $categoryPhotoName;
         }
@@ -67,18 +87,22 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            if ($updateCategory->photo !== 'default.png') {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
 
-                if (file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
+            if ($updateCategory->photo && file_exists($dir . $updateCategory->photo)) {
 
-                    unlink(public_path('uploads/category/' . $updateCategory->photo));
-                }
+                unlink($dir . $updateCategory->photo);
+            }
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
             }
 
             $categoryPhoto = $request->file('photo');
             $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
-            $updateCategory->phone = $categoryPhotoName;
+            Image::make($categoryPhoto)->resize(250, 250)->save($dir . $categoryPhotoName);
+            $updateCategory->photo = $categoryPhotoName;
         }
 
         $updateCategory->save();
@@ -95,12 +119,10 @@ class CategoryService
             return ['pass' => false, 'msg' => 'Category can not be deleted. One or more sub-categories is belonging under this category.'];
         }
 
-        if ($deleteCategory->photo !== 'default.png') {
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+        if ($deleteCategory->photo && file_exists($dir . $deleteCategory->photo)) {
 
-            if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {
-
-                unlink(public_path('uploads/category/' . $deleteCategory->photo));
-            }
+            unlink($dir . $deleteCategory->photo);
         }
 
         if (!is_null($deleteCategory)) {
@@ -145,25 +167,5 @@ class CategoryService
         }
 
         return $query;
-    }
-
-    function storeValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', null);
-            })],
-            'photo' => 'sometimes|image|max:2048',
-        ]);
-    }
-
-    function updateValidation(object $request, int $id): ?array
-    {
-        return $request->validate([
-            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($id) {
-                return $query->where('parent_category_id', null)->where('id', '!=', $id);
-            })],
-            'photo' => 'sometimes|image|max:2048',
-        ]);
     }
 }

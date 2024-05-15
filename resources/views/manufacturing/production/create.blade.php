@@ -35,15 +35,39 @@
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <div class="sec-name">
-                <div class="name-head">
-                    <h5>{{ __('Add Production') }}</h5>
+            <div class="sec-name g-0">
+                <div class="col-md-7">
+                    <div class="name-head">
+                        <h6>{{ __('Add Production') }}</h6>
+                    </div>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+
+                <div class="col-md-5">
+                    <div class="row g-0">
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="col-4 offset-md-6"><b>{{ __('Print') }}</b></label>
+                                <div class="col-2">
+                                    <select id="select_print_page_size" class="form-control">
+                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                            <option @selected($generalSettings['print_page_size__bom_voucher_page_size'] == $item->value) value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button d-inline"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="p-1">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
+                <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['print_page_size__bom_voucher_page_size'] }}">
                 <input name="action_type" type="text" id="action_type" class="d-hide" value="">
                 <input name="product_id" type="text" id="product_id" class="d-hide" value="">
                 <input name="variant_id" type="text" id="variant_id" class="d-hide" value="">
@@ -53,21 +77,23 @@
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row gx-2">
-                                <div class="col-md-2">
-                                    <input type="hidden" name="store_warehouse_count" value="{{ count($warehouses) }}">
-                                    <label><b>{{ __('Store Location') }}</b>
-                                        @if (count($warehouses) > 0)
-                                            <span class="text-danger">*</span>
-                                        @endif
-                                    </label>
-                                    <select {{ count($warehouses) > 0 ? 'required' : '' }} class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
-                                        <option value="">{{ __('Select Warehouse') }}</option>
-                                        @foreach ($warehouses as $w)
-                                            <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error error_store_warehouse_id"></span>
-                                </div>
+                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                    <div class="col-md-2">
+                                        <input type="hidden" name="store_warehouse_count" value="{{ count($warehouses) }}">
+                                        <label><b>{{ __('Store Location') }}</b>
+                                            @if (count($warehouses) > 0)
+                                                <span class="text-danger">*</span>
+                                            @endif
+                                        </label>
+                                        <select {{ count($warehouses) > 0 ? 'required' : '' }} class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
+                                            <option value="">{{ __('Select Warehouse') }}</option>
+                                            @foreach ($warehouses as $w)
+                                                <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="error error_store_warehouse_id"></span>
+                                    </div>
+                                @endif
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Voucher No') }}</b></label>
@@ -76,20 +102,22 @@
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Date') }}</b></label>
-                                    <input type="text" name="date" class="form-control" id="date" data-next="stock_warehouse_id" value="{{ date($generalSettings['business_or_shop__date_format']) }}">
+                                    <input type="text" name="date" class="form-control" id="date" data-next="stock_warehouse_id" value="{{ date($generalSettings['business_or_shop__date_format']) }}" autofocus>
                                     <span class="error error_date"></span>
                                 </div>
 
-                                <div class="col-md-2">
-                                    <label> <b>{{ __('Ingredient Stock Location') }} </b></label>
-                                    <select class="form-control" name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id" data-next="process_id">
-                                        <option value="">{{ __('Select Warehouse') }}</option>
-                                        @foreach ($warehouses as $w)
-                                            <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error error_warehouse_id"></span>
-                                </div>
+                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                    <div class="col-md-2">
+                                        <label><b>{{ __('Ingredient Stock Location') }}</b></label>
+                                        <select class="form-control" name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id" data-next="process_id">
+                                            <option value="">{{ __('Select Warehouse') }}</option>
+                                            @foreach ($warehouses as $w)
+                                                <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="error error_warehouse_id"></span>
+                                    </div>
+                                @endif
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Product') }} </b> <span class="text-danger">*</span></label>

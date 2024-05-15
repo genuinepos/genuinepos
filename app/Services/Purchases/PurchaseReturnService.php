@@ -47,7 +47,8 @@ class PurchaseReturnService
             $query->whereBetween('purchase_returns.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('purchase_returns.branch_id', auth()->user()->branch_id);
         }
@@ -56,7 +57,7 @@ class PurchaseReturnService
             'purchase_returns.*',
             'purchases.invoice_id as parent_invoice_id',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'suppliers.name as supplier_name',

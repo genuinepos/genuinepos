@@ -27,7 +27,12 @@ class WarehouseService
             }
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+        //     $warehouses = $query->where('warehouses.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', BooleanType::True->value);
+        // }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
 
             $warehouses = $query->where('warehouses.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', BooleanType::True->value);
         }
@@ -152,6 +157,20 @@ class WarehouseService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function restriction(): ?array
+    {
+        $generalSettings = config('generalSettings');
+        $warehouseCount = (int)$generalSettings['subscription']->features['warehouse_count'];
+        $count = $this->warehouses()->where('branch_id', auth()->user()->branch_id)->count();
+
+        if ($count == $warehouseCount) {
+
+            return ['pass' => false, 'msg' => __("Warehouse limit is ${warehouseCount} for every shop")];
+        }
+
+        return ['pass' => true];
     }
 
     public function warehouseValidation(object $request): ?array

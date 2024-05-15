@@ -22,9 +22,12 @@
 
                                 {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                             @else
+
                                 @if (auth()?->user()?->branch)
+
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                 @else
+
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             @endif
@@ -32,37 +35,150 @@
                         <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
 
+                    @if (
+                        $generalSettings['subscription']->is_trial_plan == 1 ||
+                        ($generalSettings['subscription']->has_due_amount == 1 && $generalSettings['subscription']->due_repayment_date)
+                    )
+                        @if ($generalSettings['subscription']->is_trial_plan == 1)
+                            @php
+                                $planStartDate = $generalSettings['subscription']->trial_start_date;
+                                $trialDays = $generalSettings['subscription']->trial_days;
+                                $startDate = new DateTime($planStartDate);
+                                $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
+                                $expireDate = $lastDate->format('Y-m-d');
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                            @endphp
+
+                            <p class="text-white mt-1">{{ __('Trial | Expire on') }} :
+                                <span class="text-danger">{{ date($dateFormat, strtotime($expireDate)) }}</span>
+                                <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
+                            </p>
+                        @elseif (
+                            $generalSettings['subscription']->has_due_amount == 1 &&
+                            $generalSettings['subscription']->due_repayment_date
+                        )
+                            @php
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                            @endphp
+
+                            <p class="text-white mt-1">
+                                {{ __('Due Repayment Date') }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->due_repayment_date)) }}</span>
+                                <a href="{{ route('software.service.billing.due.repayment.index') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
+                            </p>
+                        @endif
+                    @else
+                        @if (auth()?->user()?->branch)
+                            @php
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                                $branchExpireDate = auth()?->user()?->branch?->expire_date;
+                                $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
+                            @endphp
+                            <p class="text-white mt-1">
+                                <span class="text-white">{{ __("Shop | Expire On") }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
+                            </p>
+                        @else
+                            @php
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                                $businessExpireDate = $generalSettings['subscription']->business_expire_date;
+                                $__businessExpireDate = date($dateFormat, strtotime($businessExpireDate));
+                            @endphp
+                            <p class="text-white mt-1">
+                                <span class="text-white">{{ __("Business | Expire On") }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
+                            </p>
+                        @endif
+                    @endif
+
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-hide d-md-block">
-                                <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
-                                    <span>
-                                        <i class="fa fa-plus"></i>
-                                        <br>{{ __("Quick Add") }}</span>
-                                    </span>
-                                </a>
+                            @if (
+                                auth()->user()->can('product_add') ||
+                                auth()->user()->can('create_add_sale') ||
+                                auth()->user()->can('create_sales_return') ||
+                                auth()->user()->can('purchase_add') ||
+                                auth()->user()->can('purchase_return_add') ||
+                                (
+                                    auth()->user()->can('transfer_stock_create') &&
+                                    (
+                                        $generalSettings['subscription']->has_business == 1 ||
+                                        $generalSettings['subscription']->current_shop_count > 1 ||
+                                        $generalSettings['subscription']->features['warehouse_count'] > 0
+                                    )
+                                ) ||
+                                auth()->user()->can('stock_adjustment_add') ||
+                                auth()->user()->can('production_add') ||
+                                auth()->user()->can('user_add') ||
+                                auth()->user()->can('role_add')
+                            )
+                                <li class="top-icon d-hide d-md-block">
+                                    <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
+                                        <span>
+                                            <i class="fa fa-plus"></i>
+                                            <br>{{ __('Quick Add') }}</span>
+                                        </span>
+                                    </a>
 
-                                <ul class="dropdown-menu short_create_btn_list">
-                                    <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __("Quick Add") }}</span></li>
-                                    <hr class="m-0">
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Product") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Product Pricing/Costing") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Sale") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Sales Return") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Purchase") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Purchase Return") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Transfer Stock") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Stock Adjustment") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Production") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add User") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Role") }}</a></li>
-                                </ul>
-                            </li>
+                                    <ul class="dropdown-menu short_create_btn_list">
+                                        <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __('Quick Add') }}</span></li>
+                                        <hr class="m-0">
+                                        @if (auth()->user()->can('product_add'))
+
+                                            <li><a href="{{ route('products.create') }}" class="dropdown-item text-dark">{{ __('Add Product') }}</a></li>
+                                        @endif
+                                        {{-- <li><a href="#" class="dropdown-item text-dark">{{ __('Product Pricing/Costing') }}</a></li> --}}
+                                        @if (auth()->user()->can('create_add_sale'))
+
+                                            <li><a href="{{ route('sales.create') }}" class="dropdown-item text-dark">{{ __('Add Sale') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('create_sales_return'))
+
+                                            <li><a href="{{ route('sales.returns.create') }}" class="dropdown-item text-dark">{{ __('Add Sales Return') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('purchase_add'))
+
+                                            <li><a href="{{ route('purchases.create') }}" class="dropdown-item text-dark">{{ __('Add Purchase') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('purchase_return_add'))
+
+                                            <li><a href="{{ route('purchase.returns.create') }}" class="dropdown-item text-dark">{{ __('Add Purchase Return') }}</a></li>
+                                        @endif
+
+                                        @if ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->features['warehouse_count'] > 0)
+                                            @if (auth()->user()->can('transfer_stock_create'))
+
+                                                <li><a href="{{ route('transfer.stocks.create') }}" class="dropdown-item text-dark">{{ __('Add Transfer Stock') }}</a></li>
+                                            @endif
+                                        @endif
+
+                                        @if (auth()->user()->can('stock_adjustment_add'))
+
+                                            <li><a href="{{ route('stock.adjustments.create') }}" class="dropdown-item text-dark">{{ __('Add Stock Adjustment') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('production_add'))
+
+                                            <li><a href="{{ route('manufacturing.productions.create') }}" class="dropdown-item text-dark">{{ __('Add Production') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('user_add'))
+
+                                            <li><a href="{{ route('users.create') }}" class="dropdown-item text-dark">{{ __('Add User') }}</a></li>
+                                        @endif
+
+                                        @if (auth()->user()->can('user_add'))
+
+                                            <li><a href="{{ route('users.role.create') }}" class="dropdown-item text-dark">{{ __('Add Role') }}</a></li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            @endif
 
                             <li class="top-icon d-hide d-md-block" id="hard_reload">
-                                <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __("Reload") }}</span></a>
+                                <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __('Reload') }}</span></a>
                             </li>
-                            {{-- @if ($generalSettings['addons__e_commerce'] == 1)
+                            {{-- @if ($generalSettings['subscription']->features['manufacturing'] == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
 
@@ -83,30 +199,29 @@
 
                             <li class="top-icon dropdown notification-dropdown">
                                 <a href="" class="nav-btn" id="dropdownMenuButton0" data-bs-toggle="dropdown">
-                                    <span><i class="far fa-bell"></i><br>{{ __("Notification") }}</span>
+                                    <span><i class="far fa-bell"></i><br>{{ __('Notification') }}</span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton0">
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
-                                    <a href="#" class="btn btn-sm btn-primary">@lang('menu.view_all')</a>
-
+                                    <a href="#" class="btn btn-sm btn-primary">{{ __("View All") }}</a>
                                 </ul>
                             </li>
 
                             @if ($generalSettings['modules__pos'] == '1')
-                                @if (auth()->user()->can('pos_add') && auth()->user()->branch_id)
-                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __("POS") }}</span></a></li>
+                                @if (auth()->user()->can('pos_add'))
+                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                                 @endif
                             @endif
 
@@ -115,7 +230,7 @@
                                     <span>
                                         <i class="fas fa-calculator"></i>
                                         <br>
-                                        {{ __("Calculator") }}
+                                        {{ __('Calculator') }}
                                     </span>
                                 </a>
                                 <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -158,7 +273,7 @@
                                     <span>
                                         <i class="fas fa-language"></i>
                                         <br>
-                                        {{ __("Language") }}
+                                        {{ __('Language') }}
                                     </span>
                                 </a>
 
@@ -178,14 +293,14 @@
                                 </ul>
                             </li>
                             <li class="top-icon d-hide d-md-block">
-                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __("Help") }}</span></a>
+                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __('Help') }}</span></a>
                             </li>
                             <li class="dp__top top-icon">
                                 <a role="button" class="nav-btn" id="openRightSidebar" title="User">
                                     <span>
                                         <i class="fas fa-user"></i>
                                         <br>
-                                        User
+                                        {{ __("User") }}
                                     </span>
                                 </a>
 
@@ -218,7 +333,6 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>

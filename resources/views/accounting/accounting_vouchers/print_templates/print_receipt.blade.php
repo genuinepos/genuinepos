@@ -6,17 +6,60 @@
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table {  page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
-        .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        .print_table th {
+            font-size: 11px !important;
+            font-weight: 550 !important;
+            line-height: 12px !important;
+        }
+
+        .print_table tr td {
+            color: black;
+            font-size: 10px !important;
+            line-height: 12px !important;
+        }
+
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Receipt print templete-->
     <div class="receipt_voucher_print_template">
@@ -27,23 +70,23 @@
 
                         @if ($receipt?->branch?->parent_branch_id)
 
-                            @if ($receipt->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
+                            @if ($receipt->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($receipt->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
+                            @if ($receipt->branch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $receipt->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -57,12 +100,12 @@
                             @if ($receipt?->branch?->parent_branch_id)
                                 {{ $receipt?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $receipt?->branch?->parentBranch?->name . '('.$receipt?->branch?->area_name.')';
+                                    $branchName = $receipt?->branch?->parentBranch?->name . '(' . $receipt?->branch?->area_name . ')';
                                 @endphp
                             @else
                                 {{ $receipt?->branch?->name }}
                                 @php
-                                    $branchName = $receipt?->branch?->name . '('.$receipt?->branch?->area_name.')';
+                                    $branchName = $receipt?->branch?->name . '(' . $receipt?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else
@@ -83,11 +126,11 @@
 
                     <p>
                         @if ($receipt?->branch)
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $receipt?->branch?->email }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $receipt?->branch?->phone }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $receipt?->branch?->email }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $receipt?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $generalSettings['business_or_shop__email'] }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -222,10 +265,7 @@
             </div>
 
             @php
-                $creditDescription = $receipt
-                    ->voucherDescriptions()
-                    ->where('amount_type', 'cr')
-                    ->first();
+                $creditDescription = $receipt->voucherDescriptions()->where('amount_type', 'cr')->first();
             @endphp
 
             <div class="purchase_product_table mt-2">
@@ -451,7 +491,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('company.print_on_company'))
-                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __("SpeedDigit Software Solution.") }}</span></small>
+                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __('SpeedDigit Software Solution.') }}</span></small>
                         @endif
                     </div>
 
@@ -471,17 +511,60 @@
 @else
     <style>
         @media print {
-            table {  page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
-        .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        .print_table th {
+            font-size: 11px !important;
+            font-weight: 550 !important;
+            line-height: 12px !important;
+        }
+
+        .print_table tr td {
+            color: black;
+            font-size: 10px !important;
+            line-height: 12px !important;
+        }
+
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Receipt print templete-->
     <div class="receipt_voucher_print_template">
@@ -492,23 +575,23 @@
 
                         @if ($receipt?->branch?->parent_branch_id)
 
-                            @if ($receipt->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
+                            @if ($receipt->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($receipt->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
+                            @if ($receipt->branch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $receipt->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -522,12 +605,12 @@
                             @if ($receipt?->branch?->parent_branch_id)
                                 {{ $receipt?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $receipt?->branch?->parentBranch?->name . '('.$receipt?->branch?->area_name.')';
+                                    $branchName = $receipt?->branch?->parentBranch?->name . '(' . $receipt?->branch?->area_name . ')';
                                 @endphp
                             @else
                                 {{ $receipt?->branch?->name }}
                                 @php
-                                    $branchName = $receipt?->branch?->name . '('.$receipt?->branch?->area_name.')';
+                                    $branchName = $receipt?->branch?->name . '(' . $receipt?->branch?->area_name . ')';
                                 @endphp
                             @endif
                         @else
@@ -548,11 +631,11 @@
 
                     <p style="font-size:9px;">
                         @if ($receipt?->branch)
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $receipt?->branch?->email }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $receipt?->branch?->phone }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $receipt?->branch?->email }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $receipt?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $generalSettings['business_or_shop__email'] }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -687,10 +770,7 @@
             </div>
 
             @php
-                $creditDescription = $receipt
-                    ->voucherDescriptions()
-                    ->where('amount_type', 'cr')
-                    ->first();
+                $creditDescription = $receipt->voucherDescriptions()->where('amount_type', 'cr')->first();
             @endphp
 
             <div class="purchase_product_table mt-2">
@@ -916,7 +996,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('company.print_on_company'))
-                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __("SpeedDigit Software Solution.") }}</span></small>
+                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __('SpeedDigit Software Solution.') }}</span></small>
                         @endif
                     </div>
 

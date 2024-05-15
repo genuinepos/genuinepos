@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\CategoryType;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -14,22 +15,39 @@ class SubCategoryService
         $subCategories = DB::table('categories')
             ->leftJoin('categories as parentCategory', 'categories.id', 'parentCategory.id')
             ->whereNotNull('categories.parent_category_id')
-            ->select('categories.id', 'categories.name', 'categories.photo', 'categories.description', 'parentCategory.name as parent_category_name')
-            ->orderBy('id', 'desc')->get();
-
-        $imgUrl = asset('uploads/category/');
+            ->select(
+                'categories.id',
+                'categories.code',
+                'categories.name',
+                'categories.photo',
+                'categories.description',
+                'parentCategory.name as parent_category_name'
+            )->orderBy('id', 'desc');
 
         return DataTables::of($subCategories)
-            ->addIndexColumn()
-            ->editColumn('photo', function ($row) use ($imgUrl) {
+            // ->addIndexColumn()
+            ->editColumn('photo', function ($row) {
 
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$imgUrl.'/'.$row->photo.'">';
+                $photo = asset('images/general_default.png');
+                if ($row->photo) {
+
+                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
+                }
+                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="'.route('subcategories.edit', [$row->id]).'" class="action-btn c-edit" id="editSubcategory"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="'.route('subcategories.delete', [$row->id]).'" class="action-btn c-delete" id="deleteSubcategory"><span class="fas fa-trash "></span></a>';
+
+                if (auth()->user()->can('product_category_edit')) {
+
+                    $html .= '<a href="' . route('subcategories.edit', [$row->id]) . '" class="action-btn c-edit" id="editSubcategory"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('product_category_delete')) {
+
+                    $html .= '<a href="' . route('subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteSubcategory"><span class="fas fa-trash "></span></a>';
+                }
                 $html .= '</div>';
 
                 return $html;
@@ -38,19 +56,28 @@ class SubCategoryService
             ->make(true);
     }
 
-    public function addSubCategory($request): ?object
+    public function addSubcategory(object $request, object $codeGenerator): ?object
     {
+        $code = $codeGenerator->categoryCode(type: CategoryType::Subcategory->value);
         $addSubCategory = new Category();
+        $addSubCategory->code = $code;
         $addSubCategory->name = $request->name;
         $addSubCategory->description = $request->description;
         $addSubCategory->parent_category_id = $request->parent_category_id ? $request->parent_category_id : null;
 
         if ($request->file('photo')) {
 
-            $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid().'.'.$categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/'.$categoryPhotoName);
-            $addSubCategory = $categoryPhotoName;
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
+            $subcategoryPhoto = $request->file('photo');
+            $subcategoryPhotoName = uniqid() . '.' . $subcategoryPhoto->getClientOriginalExtension();
+            Image::make($subcategoryPhoto)->resize(250, 250)->save($dir . $subcategoryPhotoName);
+            $addSubCategory->photo = $subcategoryPhotoName;
         }
 
         $addSubCategory->save();
@@ -67,18 +94,22 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
-            if ($updateSubcategory->photo !== 'default.png') {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
 
-                if (file_exists(public_path('uploads/category/'.$updateSubcategory->photo))) {
+            if ($updateSubcategory->photo && file_exists($dir . $updateSubcategory->photo)) {
 
-                    unlink(public_path('uploads/category/'.$updateSubcategory->photo));
-                }
+                unlink($dir . $updateSubcategory->photo);
             }
 
-            $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid().'.'.$categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/'.$categoryPhotoName);
-            $updateSubcategory->photo = $categoryPhotoName;
+            if (!\File::isDirectory($dir)) {
+
+                \File::makeDirectory($dir, 493, true);
+            }
+
+            $subcategoryPhoto = $request->file('photo');
+            $subcategoryPhotoName = uniqid() . '.' . $subcategoryPhoto->getClientOriginalExtension();
+            Image::make($subcategoryPhoto)->resize(250, 250)->save($dir . $subcategoryPhotoName);
+            $updateSubcategory->photo = $subcategoryPhotoName;
         }
 
         $updateSubcategory->save();
@@ -90,15 +121,16 @@ class SubCategoryService
     {
         $deleteSubcategory = $this->singleSubcategory(id: $id);
 
-        if ($deleteSubcategory->photo !== 'default.png') {
+        if (isset($deleteSubcategory)) {
 
-            if (file_exists(public_path('uploads/category/'.$deleteSubcategory->photo))) {
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            if ($deleteSubcategory->photo && file_exists($dir . $deleteSubcategory->photo)) {
 
-                unlink(public_path('uploads/category/'.$deleteSubcategory->photo));
+                unlink($dir . $deleteSubcategory->photo);
             }
-        }
 
-        $deleteSubcategory->delete();
+            $deleteSubcategory->delete();
+        }
 
         return $deleteSubcategory;
     }

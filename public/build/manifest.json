@@ -1,4 +1,9 @@
 {
+  "Modules/SAAS/Resources/assets/css/style.css": {
+    "file": "assets/style-8f0f306c.css",
+    "isEntry": true,
+    "src": "Modules/SAAS/Resources/assets/css/style.css"
+  },
   "Modules/SAAS/Resources/assets/images/arrow-down.png": {
     "file": "assets/arrow-down-d96f9dc0.png",
     "src": "Modules/SAAS/Resources/assets/images/arrow-down.png"
@@ -48,7 +53,7 @@
     "src": "Modules/SAAS/Resources/assets/images/circle-3.png"
   },
   "Modules/SAAS/Resources/assets/js/admin.js": {
-    "file": "assets/admin-117bb173.js",
+    "file": "assets/admin-768ee0b2.js",
     "imports": [
       "Modules/SAAS/Resources/assets/js/guest.js"
     ],
@@ -56,17 +61,17 @@
     "src": "Modules/SAAS/Resources/assets/js/admin.js"
   },
   "Modules/SAAS/Resources/assets/js/guest.js": {
-    "file": "assets/guest-a3a965c3.js",
+    "file": "assets/guest-e708f492.js",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/js/guest.js"
   },
   "Modules/SAAS/Resources/assets/sass/admin.scss": {
-    "file": "assets/admin-2dabf3bd.css",
+    "file": "assets/admin-fe1e9ad8.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/sass/admin.scss"
   },
   "Modules/SAAS/Resources/assets/sass/guest.scss": {
-    "file": "assets/guest-c9dbba8b.css",
+    "file": "assets/guest-b4bbf13f.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/sass/guest.scss"
   },

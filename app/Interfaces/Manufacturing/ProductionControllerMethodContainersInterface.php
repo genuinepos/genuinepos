@@ -7,52 +7,20 @@ interface ProductionControllerMethodContainersInterface
     /**
      * @return \App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService
      */
-    public function showMethodContainer(
-        int $id,
-        object $productionService,
-    ): ?array;
 
-    public function createMethodContainer(
-        object $warehouseService,
-        object $accountService,
-        object $processService,
-    ): ?array;
+    public function indexMethodContainer(object $request): array|object;
 
-    public function storeMethodContainer(
-        object $request,
-        object $productionService,
-        object $productionIngredientService,
-        object $productService,
-        object $productLedgerService,
-        object $productStockService,
-        object $purchaseProductService,
-        object $dayBookService,
-        object $codeGenerator,
-    ): ?array;
+    public function showMethodContainer(int $id): ?array;
 
-    public function editMethodContainer(
-        int $id,
-        object $productionService,
-        object $warehouseService,
-        object $accountService,
-        object $processService,
-    ): ?array;
+    public function printMethodContainer(int $id, object $request): ?array;
 
-    public function updateMethodContainer(
-        int $id,
-        object $request,
-        object $productionService,
-        object $productionIngredientService,
-        object $productService,
-        object $productLedgerService,
-        object $productStockService,
-        object $purchaseProductService,
-        object $dayBookService,
-    ): ?array;
+    public function createMethodContainer(): ?array;
 
-    public function deleteMethodContainer(
-        int $id,
-        object $productionService,
-        object $productStockService,
-    ): ?array;
+    public function storeMethodContainer(object $request, object $codeGenerator): ?array;
+
+    public function editMethodContainer(int $id): ?array;
+
+    public function updateMethodContainer(int $id, object $request): ?array;
+
+    public function deleteMethodContainer(int $id): ?array;
 }

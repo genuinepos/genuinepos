@@ -119,7 +119,7 @@
 
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 li += '<li>';
                                 li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_code="' + variant.variant_code + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
@@ -163,7 +163,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 if (product.is_variant == 1) {
 
@@ -260,7 +260,7 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
 
-        var senderWarehouseId = $('#sender_warehouse_id').val();
+        var senderWarehouseId = $('#sender_warehouse_id').val() ? $('#sender_warehouse_id').val() : '';
 
         if (e_quantity == '') {
 
@@ -550,7 +550,8 @@
 
                 toastr.success(data);
                 window.location = "{{ url()->previous() }}";
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.loading_button').hide();
                 $('.error').html('');
@@ -565,7 +566,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -582,7 +583,7 @@
 
         if (e.which == 0) {
 
-            if ($(this).attr('id') == 'sender_warehouse_id' && parseFloat(totalReceivedQty) > 0) {
+            if ($(this).attr('id') == 'sender_warehouse_id' && $('#sender_warehouse_id').val() != undefined && parseFloat(totalReceivedQty) > 0) {
 
                 $('#date').focus().select();
                 return;
@@ -646,7 +647,7 @@
             success: function(warehouses) {
 
                 $('#receiver_warehouse_id').empty();
-                $('#receiver_warehouse_id').append('<option value="">'+"{{ __('Select Warehouse') }}"+'</option>');
+                $('#receiver_warehouse_id').append('<option value="">' + "{{ __('Select Warehouse') }}" + '</option>');
 
                 $.each(warehouses, function(key, warehouse) {
 

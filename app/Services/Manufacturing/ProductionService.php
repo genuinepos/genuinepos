@@ -2,12 +2,13 @@
 
 namespace App\Services\Manufacturing;
 
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductionStatus;
-use App\Models\Manufacturing\Production;
-use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Models\Manufacturing\Production;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionService

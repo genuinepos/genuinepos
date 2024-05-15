@@ -128,7 +128,7 @@
 
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 li += '<li class="mt-1">';
                                 li += '<a onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" data-v_name="' + variant.variant_name + '" href="#"><img style="width:20px; height:20px;"src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
@@ -178,7 +178,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                 if (product.is_variant == 1) {
 
@@ -269,7 +269,7 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
 
-        var e_warehouse_id = $('#e_warehouse_id').val();
+        var e_warehouse_id = $('#e_warehouse_id').val() ? $('#e_warehouse_id').val() : '';
         var warehouse_name = $('#e_warehouse_id').find('option:selected').data('w_name');
 
         var stock_location_name = '';
@@ -472,7 +472,13 @@
 
             if ($(this).val() != '' && parseFloat($(this).val()) > 0) {
 
-                $('#e_warehouse_id').focus();
+                if ($('#e_warehouse_id').val() == undefined) {
+
+                    $('#add_item').focus();
+                } else {
+
+                    $('#e_warehouse_id').focus();
+                }
             }
         }
     });

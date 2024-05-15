@@ -41,6 +41,9 @@ class UserActivityLogUtil
             23 => 'Units',
             24 => 'Variants',
             25 => 'Warranties',
+            35 => 'Selling Price Groups',
+            36 => 'Location Switch',
+            37 => 'Stock Issue',
         ];
     }
 
@@ -131,8 +134,8 @@ class UserActivityLogUtil
                 'texts' => ['Bank Name : '],
             ],
             17 => [ // Accounts
-                'fields' => ['name', 'account_number', 'opening_balance', 'opening_balance_type'],
-                'texts' => ['Account Name : ', 'Account Number : ', 'Opening Balance : ', 'Type : '],
+                'fields' => ['name', 'account_number'],
+                'texts' => ['Account Name : ', 'Account Number : '],
             ],
             18 => [ // User login
                 'fields' => ['username'],
@@ -181,6 +184,18 @@ class UserActivityLogUtil
             31 => [ // Contra
                 'fields' => ['date', 'voucher_no',   'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
+            ],
+            35 => [ // Selling Price Group
+                'fields' => ['name', 'description',],
+                'texts' => ['Name : ', 'Description : '],
+            ],
+            36 => [ // Location Switch
+                'fields' => ['location_switch_log_description'],
+                'texts' => [''],
+            ],
+            37 => [ // Stock Issue
+                'fields' => ['date', 'voucher_no', 'total_item', 'total_qty', 'net_total_amount'],
+                'texts' => ['Date: ', 'Voucher No: ', 'Total Item: ', 'Total Qty: ', 'Net Total Amount: '],
             ],
         ];
     }

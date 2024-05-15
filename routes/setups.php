@@ -2,18 +2,32 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\AddShopController;
+use App\Http\Controllers\Setups\StartupController;
+use App\Http\Controllers\Setups\ShopRenewController;
 use App\Http\Controllers\Setups\WarehouseController;
+use App\Http\Controllers\Setups\AddBusinessController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
+use App\Http\Controllers\Setups\UpgradePlanController;
+use App\Http\Controllers\Setups\DueRepaymentController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\Setups\BarcodeSettingController;
 use App\Http\Controllers\Setups\GeneralSettingController;
+use App\Http\Controllers\Setups\CheckCouponCodeController;
 use App\Http\Controllers\Setups\PaymentMethodSettingsController;
 use App\Http\Controllers\Setups\SoftwareServiceBillingController;
+use App\Http\Controllers\Setups\ChangeBusinessOrBranchLocationController;
 
 Route::prefix('setups')->group(function () {
+
+    Route::controller(StartupController::class)->prefix('startup')->group(function () {
+
+        Route::get('form', 'startupFrom')->name('setup.startup.form');
+        Route::post('finish', 'finish')->name('setup.startup.finish');
+    });
 
     Route::controller(GeneralSettingController::class)->prefix('general-settings')->group(function () {
 
@@ -33,6 +47,7 @@ Route::prefix('setups')->group(function () {
         Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
         Route::post('send/sms/settings', 'sendSmsSettings')->name('settings.send.sms.settings');
         Route::post('rp/settings', 'rewardPointSettings')->name('settings.reward.point.settings');
+        Route::delete('delete/business/logo', 'deleteBusinessLogo')->name('settings.business.logo.delete');
     });
 
     Route::controller(BranchController::class)->prefix('branches')->group(function () {
@@ -44,6 +59,7 @@ Route::prefix('setups')->group(function () {
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
         Route::get('parent/with/child/branches/{id}', 'parentWithChildBranches')->name('branches.parent.with.child.branches');
+        Route::get('branch/code/{parentBranchId?}', 'branchCode')->name('branches.code');
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
@@ -132,12 +148,51 @@ Route::prefix('setups')->group(function () {
         Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
     });
 
-    Route::group(['prefix' => 'billing'], function () {
+    Route::controller(SoftwareServiceBillingController::class)->prefix('billing')->group(function () {
 
-        Route::get('/', [SoftwareServiceBillingController::class, 'index'])->name('software.service.billing.index');
-        Route::get('upgrade/plan', [SoftwareServiceBillingController::class, 'upgradePlan'])->name('software.service.billing.upgrade.plan');
-        Route::get('cart/for/upgrade/plan', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
-        Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
-        Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
+        Route::get('/', 'index')->name('software.service.billing.index');
+        Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
+        Route::get('invoice/pdf/{id}', 'invoicePdf')->name('software.service.billing.invoice.pdf');
+
+        Route::controller(CheckCouponCodeController::class)->prefix('check-coupon-code')->group(function () {
+            Route::get('/', 'checkCouponCode')->name('check.coupon.code');
+        });
+
+        Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
+
+            Route::get('/', 'index')->name('software.service.billing.upgrade.plan.index');
+            Route::get('cart/{id}/{pricePeriod?}', 'cart')->name('software.service.billing.upgrade.plan.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.upgrade.plan.confirm');
+        });
+
+        Route::controller(AddShopController::class)->prefix('add-shop')->group(function () {
+
+            Route::get('cart', 'cart')->name('software.service.billing.add.shop.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.add.shop.confirm');
+        });
+
+        Route::controller(AddBusinessController::class)->prefix('add-business')->group(function () {
+
+            Route::get('cart', 'cart')->name('software.service.billing.add.business.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.add.business.confirm');
+        });
+
+        Route::controller(ShopRenewController::class)->prefix('shop-renew')->group(function () {
+
+            Route::get('cart', 'cart')->name('software.service.billing.shop.renew.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.shop.renew.confirm');
+        });
+
+        Route::controller(DueRepaymentController::class)->prefix('due-repayment')->group(function () {
+
+            Route::get('/', 'index')->name('software.service.billing.due.repayment.index');
+            Route::post('confirm', 'confirm')->name('software.service.billing.due.repayment.confirm');
+        });
+    });
+
+    Route::controller(ChangeBusinessOrBranchLocationController::class)->prefix('choose-business-branch')->group(function () {
+
+        Route::get('/', 'index')->name('change.business.branch.location.index');
+        Route::post('redirect/location', 'redirectLocation')->name('change.business.branch.location.redirect.location');
     });
 });

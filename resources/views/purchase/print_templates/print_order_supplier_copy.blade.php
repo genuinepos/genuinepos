@@ -58,23 +58,23 @@
 
                         @if ($order?->branch?->parent_branch_id)
 
-                            @if ($order->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
+                            @if ($order->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($order->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->logo) }}">
+                            @if ($order->branch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -275,23 +275,23 @@
 
                         @if ($order?->branch?->parent_branch_id)
 
-                            @if ($order->branch?->parentBranch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
+                            @if ($order->branch?->parentBranch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($order->branch?->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->logo) }}">
+                            @if ($order->branch?->logo)
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -311,7 +311,7 @@
 
                     <p style="font-size: 9px;">
                         @if ($order?->branch)
-                            {{ $order->branch->city . ', ' . $order->branch->state . ', ' . $order->branch->zip_code . ', ' . $order->branch->country }}
+                            {{ $order->branch->address . ', ' . $order->branch->city . ', ' . $order->branch->state . ', ' . $order->branch->zip_code . ', ' . $order->branch->country }}
                         @else
                             {{ $generalSettings['business_or_shop__address'] }}
                         @endif

@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\PosShortMenu;
 use App\Models\ShortMenu;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
@@ -30,8 +29,8 @@ class ShortMenuResolver extends Command
      */
     public function handle()
     {
-        echo 'Fixing menus'.PHP_EOL;
-        echo '--------------------'.PHP_EOL;
+        echo 'Fixing menus' . PHP_EOL;
+        echo '--------------------' . PHP_EOL;
 
         $collection = Route::getRoutes();
         $routes = [];
@@ -43,25 +42,14 @@ class ShortMenuResolver extends Command
         }
 
         $shortMenus = ShortMenu::get();
-        $posShortMenus = PosShortMenu::get();
-
         $shortMenus->map(function ($menu) use ($routes) {
-            if (! in_array($menu->url, $routes)) {
+            if (!in_array($menu->url, $routes)) {
                 echo "$menu->url is not in route definition ";
                 ShortMenu::where('id', $menu->id)->delete();
                 echo " DELETED\n";
             }
         });
 
-        echo '--------------------'.PHP_EOL;
-
-        $posShortMenus->map(function ($menu) use ($routes) {
-            if (! in_array($menu->url, $routes)) {
-                echo "$menu->url is not in route definition";
-                PosShortMenu::where('id', $menu->id)->delete();
-                echo " DELETED\n";
-            }
-        });
-
+        echo '--------------------' . PHP_EOL;
     }
 }

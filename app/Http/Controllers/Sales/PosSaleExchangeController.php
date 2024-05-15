@@ -47,6 +47,7 @@ class PosSaleExchangeController extends Controller
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function searchInvoice(Request $request)
@@ -160,7 +161,6 @@ class PosSaleExchangeController extends Controller
     public function exchangeConfirm(Request $request, CodeGenerationService $codeGenerator)
     {
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $request->ex_sale_id);

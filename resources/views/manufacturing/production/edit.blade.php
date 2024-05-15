@@ -52,21 +52,23 @@
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row gx-2">
-                                <div class="col-md-2">
-                                    <input type="hidden" name="store_warehouse_count" value="{{ $production->store_warehouses_id ? 1 : 0 }}">
-                                    <label><b>{{ __('Store Location') }}</b>
-                                        @if ($production->store_warehouses_id)
-                                            <span class="text-danger">*</span>
-                                        @endif
-                                    </label>
-                                    <select {{ $production->store_warehouses_id ? 'required' : '' }} class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
-                                        <option value="">{{ __('Select Warehouse') }}</option>
-                                        @foreach ($warehouses as $w)
-                                            <option {{ $production->store_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error error_store_warehouse_id"></span>
-                                </div>
+                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                    <div class="col-md-2">
+                                        <input type="hidden" name="store_warehouse_count" value="{{ $production->store_warehouses_id ? 1 : 0 }}">
+                                        <label><b>{{ __('Store Location') }}</b>
+                                            @if ($production->store_warehouses_id)
+                                                <span class="text-danger">*</span>
+                                            @endif
+                                        </label>
+                                        <select {{ $production->store_warehouses_id ? 'required' : '' }} class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
+                                            <option value="">{{ __('Select Warehouse') }}</option>
+                                            @foreach ($warehouses as $w)
+                                                <option {{ $production->store_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="error error_store_warehouse_id"></span>
+                                    </div>
+                                @endif
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Voucher No') }}</b></label>
@@ -75,23 +77,25 @@
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Date') }}</b></label>
-                                    <input type="text" name="date" class="form-control" id="date" data-next="stock_warehouse_id" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($production->date)) }}">
+                                    <input type="text" name="date" class="form-control" id="date" data-next="stock_warehouse_id" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($production->date)) }}" autocomplete="off" autofocus>
                                     <span class="error error_date"></span>
                                 </div>
 
-                                <div class="col-md-2">
-                                    <label> <b>{{ __('Ingredient Stock Location') }} </b></label>
-                                    <select class="form-control" name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id" data-next="process_id">
-                                        <option value="">{{ __('Select Warehouse') }}</option>
-                                        @foreach ($warehouses as $w)
-                                            <option {{ $w->id == $production->stock_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="error error_warehouse_id"></span>
-                                </div>
+                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                    <div class="col-md-2">
+                                        <label> <b>{{ __('Ingredient Stock Location') }} </b></label>
+                                        <select class="form-control" name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id" data-next="process_id">
+                                            <option value="">{{ __('Select Warehouse') }}</option>
+                                            @foreach ($warehouses as $w)
+                                                <option {{ $w->id == $production->stock_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="error error_warehouse_id"></span>
+                                    </div>
+                                @endif
 
                                 <div class="col-md-2">
-                                    <label><b>{{ __('Product') }} </b> <span class="text-danger">*</span></label>
+                                    <label><b>{{ __('Product') }}</b> <span class="text-danger">*</span></label>
                                     <select name="process_id" class="form-control" id="process_id" data-next="total_output_quantity">
                                         <option value="">{{ __('Select A Product Process') }}</option>
                                         @foreach ($processes as $process)
@@ -169,7 +173,7 @@
 
                                                             <td>
                                                                 <div class="input-group p-1">
-                                                                    <input required type="number" name="input_quantities[]" class="form-control fw-bold" id="input_quantity" value="{{ $ingredient->final_qty }}">
+                                                                    <input required type="number" step="any" name="input_quantities[]" class="form-control fw-bold" id="input_quantity" value="{{ $ingredient->final_qty }}">
                                                                     <input type="hidden" name="parameter_input_quantities[]" id="parameter_input_quantity" value="{{ $ingredient->final_qty }}">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text input-group-text-custom">{{ $ingredient?->unit?->name }}</span>

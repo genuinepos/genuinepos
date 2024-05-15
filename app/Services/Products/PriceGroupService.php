@@ -66,12 +66,31 @@ class PriceGroupService
         return $addPriceGroup;
     }
 
-    public function updatePriceGroup(int $id, object $request): void
+    public function updatePriceGroup(int $id, object $request): object
     {
         $updatePriceGroup = $this->singlePriceGroup(id: $id);
         $updatePriceGroup->name = $request->name;
         $updatePriceGroup->description = $request->description;
         $updatePriceGroup->save();
+
+        return $updatePriceGroup;
+    }
+
+    public function deletePriceGroup(int $id): array|object
+    {
+        $deletePriceGroup = $this->singlePriceGroup(id: $id, with: ['priceGroupProducts']);
+
+        if (isset($deletePriceGroup)) {
+
+            if (count($deletePriceGroup->priceGroupProducts) > 0) {
+
+                return ['pass' => false, 'msg' => __('The selling price group can not be deleted. This price has already been assigned to one or many products.')];
+            }
+
+            $deletePriceGroup->delete();
+        }
+
+        return $deletePriceGroup;
     }
 
     public function changeStatus(int $id): array

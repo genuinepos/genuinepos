@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Enums\UserActivityLogActionType;
-use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\CategoryService;
 use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\CategoryStoreRequest;
+use App\Http\Requests\Products\CategoryUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class CategoryController extends Controller
 {
@@ -16,14 +19,12 @@ class CategoryController extends Controller
         private CategoryService $categoryService,
         private UserActivityLogService $userActivityLogService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_category_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_category_index'), 403);
 
         if ($request->ajax()) {
 
@@ -35,33 +36,19 @@ class CategoryController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('product_category_add')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_category_index'), 403);
 
         return view('product.categories.ajax_view.category.create');
     }
 
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        if (!auth()->user()->can('product_category_add')) {
-
-            return response()->json(__('Access Forbidden'));
-        }
-
-        $this->categoryService->storeValidation(request: $request);
-
         try {
-
             DB::beginTransaction();
 
-            $addCategory = $this->categoryService->addCategory($request);
+            $addCategory = $this->categoryService->addCategory(request: $request, codeGenerator: $codeGenerator);
 
-            if ($addCategory) {
-
-                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $addCategory);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $addCategory);
 
             DB::commit();
         } catch (Exception $e) {
@@ -74,35 +61,21 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_category_edit')) {
-
-            return response()->json(__('Access Forbidden'));
-        }
+        abort_if(!auth()->user()->can('product_category_edit'), 403);
 
         $category = $this->categoryService->singleCategory($id);
 
         return view('product.categories.ajax_view.category.edit', compact('category'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, CategoryUpdateRequest $request)
     {
-        if (!auth()->user()->can('product_category_edit')) {
-
-            return response()->json(__('Access Forbidden'));
-        }
-
-        $this->categoryService->updateValidation(request: $request, id: $id);
-
         try {
-
             DB::beginTransaction();
 
             $updateCategory = $this->categoryService->updateCategory(id: $id, request: $request);
 
-            if ($updateCategory) {
-
-                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $updateCategory);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $updateCategory);
 
             DB::commit();
         } catch (Exception $e) {
@@ -115,13 +88,9 @@ class CategoryController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('product_category_delete')) {
-
-            return response()->json(__('Access Forbidden'));
-        }
+        abort_if(!auth()->user()->can('product_category_delete'), 403);
 
         try {
-
             DB::beginTransaction();
 
             $deleteCategory = $this->categoryService->deleteCategory(id: $id);
@@ -131,10 +100,7 @@ class CategoryController extends Controller
                 return response()->json(['errorMsg' => $deleteCategory['msg']]);
             }
 
-            if ($deleteCategory['pass'] == true) {
-
-                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $deleteCategory['data']);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $deleteCategory['data']);
 
             DB::commit();
         } catch (Exception $e) {

@@ -22,11 +22,11 @@
                             <div class="element-body">
                                 <form id="filter_form">
                                     <div class="form-group row">
-                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                             <div class="col-md-2">
                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="">{{ __('All') }}</option>
                                                     <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
@@ -81,17 +81,19 @@
                 <div class="card">
                     <div class="section-header">
                         <div class="col-6">
-                            <h6>{{ __('List Of Stock Adjustments') }}</h6>
+                            <h6>{{ __('List of Stock Adjustments') }}</h6>
                         </div>
 
                         <div class="col-6 d-flex justify-content-end">
-                            <a href="{{ route('stock.adjustments.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                            @if (auth()->user()->can('stock_adjustment_add'))
+                                <a href="{{ route('stock.adjustments.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                            @endif
                         </div>
                     </div>
 
                     <div class="widget_content">
                         <div class="data_preloader">
-                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                         </div>
                         <div class="table-responsive" id="data-list">
                             <table class="display data_tbl data__table">
@@ -138,7 +140,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        var adjustment_table = $('.data_tbl').DataTable({
+        var stockAdjustmentsTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
@@ -167,6 +169,9 @@
             ],
             "processing": true,
             "serverSide": true,
+            "language": {
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+            },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
                 [10, 25, 50, 100, 500, 1000, -1],
@@ -250,7 +255,7 @@
         $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
-            adjustment_table.ajax.reload();
+            stockAdjustmentsTable.ajax.reload();
         });
 
         $(document).on('click', '#details_btn', function(e) {
@@ -304,8 +309,8 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Confirmation',
-                'content': 'Are you sure?',
+                'title': "{{ __('Confirmation') }}",
+                'content': "{{ __('Are you sure?') }}",
                 'buttons': {
                     'Yes': {
                         'class': 'yes btn-danger',
@@ -340,7 +345,7 @@
                         return;
                     }
 
-                    adjustment_table.ajax.reload();
+                    stockAdjustmentsTable.ajax.reload(null, false);
                     toastr.error(data);
                 }
             });

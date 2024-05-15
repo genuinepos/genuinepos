@@ -1,7 +1,8 @@
-const bdFormat = function(num) {
+const bdFormat = function(num, fractionDigits = 2) {
+
     const formatter = new Intl.NumberFormat('bn-Bd', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        minimumFractionDigits: fractionDigits,
+        maximumFractionDigits: fractionDigits,
     });
 
     const bnToEng = function(bnNumber) {
@@ -15,5 +16,6 @@ const bdFormat = function(num) {
             return "০১২৩৪৫৬৭৮৯"[d];
         });
     }
+
     return bnToEng(formatter.format(num));
 }

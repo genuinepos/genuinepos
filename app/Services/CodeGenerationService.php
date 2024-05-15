@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
-use App\Interfaces\CodeGenerationServiceInterface;
+use App\Enums\CategoryType;
+use App\Models\Setups\Branch;
 use Illuminate\Support\Facades\DB;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class CodeGenerationService implements CodeGenerationServiceInterface
 {
@@ -35,8 +37,8 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $dateTimeStrPrefix . $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
@@ -76,8 +78,8 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $dateTimeStrPrefix . $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
@@ -116,18 +118,22 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $dateTimeStrPrefix . $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
 
-    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = ''): string
+    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = '', bool $isCheckBranch = false, ?int $branchId = null): string
     {
-        $entryRaw = DB::table($table)
-            ->whereNotNull($column)
-            ->where($typeColName, $typeValue)
-            ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+        $entryRaw = null;
+        $query = DB::table($table)->whereNotNull($column)->where($typeColName, $typeValue);
+        if ($isCheckBranch == true) {
+
+            $query->where('branch_id', $branchId);
+        }
+
+        $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 
@@ -153,9 +159,9 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsLength = ($size - ($prefixLength)) - 1;
         // $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $suffixSeparator.$lastDigitsFinal;
+        $finalSuffix = $suffixSeparator . $lastDigitsFinal;
         // $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
     }
@@ -187,9 +193,145 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         $lastDigitsLength = ($size - ($prefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $suffixSeparator.$lastDigitsFinal;
-        $finalStr = $prefix.$splitter.$finalSuffix;
+        $finalSuffix = $suffixSeparator . $lastDigitsFinal;
+        $finalStr = $prefix . $splitter . $finalSuffix;
 
         return $finalStr;
+    }
+
+    public function branchCode(?int $parentBranchId = null)
+    {
+        $childBranchCount = 0;
+        $parentBranchCode = null;
+        if (isset($parentBranchId)) {
+
+            $parentBranch = Branch::with('childBranches')->where('id', $parentBranchId)->first();
+
+            $count = count($parentBranch->childBranches);
+            $childBranchCount = $count > 0 ? ++$count : 1;
+            $parentBranchCode = $parentBranch->branch_code;
+        }
+
+        $lastBranchCode = DB::table('branches')->whereNull('parent_branch_id')->orderBy('branch_code', 'desc')->first(['branch_code']);
+
+        $differentBranchCode = isset($lastBranchCode) ? ++$lastBranchCode->branch_code : 1;
+
+        $branchCode = str_pad($differentBranchCode, 2, '0', STR_PAD_LEFT);
+        $childBranchCode = $childBranchCount > 0 ? $childBranchCount : null;
+        $__childBranchCode = isset($childBranchCode) ? '/' . $childBranchCode : null;
+
+        if (isset($parentBranchCode)) {
+
+            return str_pad($parentBranchCode, 2, '0', STR_PAD_LEFT) . $__childBranchCode;
+        } else {
+
+            return $branchCode;
+        }
+    }
+
+    public function categoryCode(int $type): ?string
+    {
+        $splitter = '-';
+        $entryRaw = null;
+        $prefix = '';
+        $query = DB::table('categories');
+
+        if ($type == CategoryType::MainCategory->value) {
+
+            $query->whereNull('parent_category_id');
+            $prefix = 'C-';
+        } elseif ($type == CategoryType::Subcategory->value) {
+
+            $prefix = 'SC-';
+            $query->whereNotNull('parent_category_id');
+        }
+
+        $entryRaw = $query
+        ->orderByRaw("SUBSTRING(code, POSITION('-' IN code) + 1, CHAR_LENGTH(code)) DESC")
+        // ->orderByRaw("CAST((SUBSTRING_INDEX(code, '-', -1)) as UNSIGNED) DESC")
+        ->first(['code']);
+
+        $lastDigitsNextValue = 1;
+        $lastDigitsLength = 3;
+
+        if (isset($entryRaw)) {
+
+            $entry = trim($entryRaw->code);
+            $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
+            $serial = $splitterSplittedArray[1];
+            $lastDigitsNextValue = intval($serial) + 1;
+        }
+
+        return $lastDigitsFinal = $prefix . str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
+        // dd($lastDigitsFinal);
+    }
+
+    public function brandCode(): ?string
+    {
+        $splitter = '-';
+        $entryRaw = null;
+        $prefix = 'B-';
+        $query = DB::table('brands');
+
+        $entryRaw = $query->orderByRaw("SUBSTRING(code, POSITION('-' IN code) + 1, CHAR_LENGTH(code)) DESC")->first(['code']);
+
+        $lastDigitsNextValue = 1;
+        $lastDigitsLength = 3;
+
+        if (isset($entryRaw)) {
+
+            $entry = trim($entryRaw->code);
+            $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
+            $serial = $splitterSplittedArray[1];
+            $lastDigitsNextValue = intval($serial) + 1;
+        }
+
+        return $lastDigitsFinal = $prefix . str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
+    }
+
+    public function unitCode(): ?string
+    {
+        $splitter = '-';
+        $entryRaw = null;
+        $prefix = 'U-';
+        $query = DB::table('units');
+
+        $entryRaw = $query->orderByRaw("SUBSTRING(code, POSITION('-' IN code) + 1, CHAR_LENGTH(code)) DESC")->first(['code']);
+
+        $lastDigitsNextValue = 1;
+        $lastDigitsLength = 3;
+
+        if (isset($entryRaw)) {
+
+            $entry = trim($entryRaw->code);
+            $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
+            $serial = $splitterSplittedArray[1];
+            $lastDigitsNextValue = intval($serial) + 1;
+        }
+
+        return $lastDigitsFinal = $prefix . str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
+    }
+
+    public function warrantyCode(): ?string
+    {
+        $splitter = '-';
+        $entryRaw = null;
+        $prefix = 'W-';
+        $query = DB::table('warranties');
+
+        $entryRaw = $query->orderByRaw("SUBSTRING(code, POSITION('-' IN code) + 1, CHAR_LENGTH(code)) DESC")->first(['code']);
+
+        $lastDigitsNextValue = 1;
+        $lastDigitsLength = 3;
+
+        if (isset($entryRaw)) {
+
+            $entry = trim($entryRaw->code);
+            $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
+            $serial = $splitterSplittedArray[1];
+            $lastDigitsNextValue = intval($serial) + 1;
+        }
+
+        return $lastDigitsFinal = $prefix . str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
     }
 }

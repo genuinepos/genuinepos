@@ -86,9 +86,9 @@
 
                     toastr.error(data.errorMsg, 'Attention');
                     return;
-                } else if (data.suspendMsg) {
+                } else if (data.suspendedInvoiceMsg) {
 
-                    toastr.success(data.suspendMsg);
+                    toastr.success(data.suspendedInvoiceMsg);
                     afterSubmitForm();
                     document.getElementById('search_product').focus();
                 } else if (data.holdInvoiceMsg) {

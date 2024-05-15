@@ -275,15 +275,17 @@
                                             </div>
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
-                                                <label class="fw-bold">{{ __('Warehouse') }}</label>
+                                                <label class="fw-bold">{{ __('Stock Location') }}</label>
                                                 <select class="form-control" id="e_warehouse_id">
-                                                    <option value="">{{ __('Select Warehouse') }}</option>
-                                                    @foreach ($warehouses as $w)
-                                                        @php
-                                                            $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                        @endphp
-                                                        <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                    @endforeach
+                                                    <option value="">{{ $branchName }}</option>
+                                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                                        @foreach ($warehouses as $w)
+                                                            @php
+                                                                $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                            @endphp
+                                                            <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
 

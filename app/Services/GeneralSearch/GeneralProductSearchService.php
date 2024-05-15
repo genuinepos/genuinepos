@@ -225,7 +225,7 @@ class GeneralProductSearchService
         $product = DB::table('products')->where('id', $productId)
             ->select('id', 'is_manage_stock', 'quantity')->first();
 
-        if ($product->is_manage_stock == BooleanType::True->value) {
+        if ($product->is_manage_stock == BooleanType::False->value) {
 
             return response()->json(['stock' => PHP_INT_MAX]);
         }
@@ -374,6 +374,7 @@ class GeneralProductSearchService
                 'products.is_manage_stock',
                 'products.is_show_emi_on_pos',
                 'products.has_batch_no_expire_date',
+                'products.is_for_sale',
                 'products.is_variant',
                 'products.product_cost',
                 'products.product_cost_with_tax',

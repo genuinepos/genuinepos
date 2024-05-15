@@ -2,66 +2,107 @@
 
 namespace App\Imports;
 
-use App\Models\Customer;
-use App\Utils\CustomerUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Enums\BooleanType;
+use App\Enums\ContactType;
 use Illuminate\Support\Collection;
+use App\Enums\CustomerImportExcelCol;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class CustomerImport implements ToCollection
 {
-    protected $invoiceVoucherRefIdUtil;
-
-    protected $customerUtil;
+    public function __construct(
+        private $accountGroupService,
+        private $codeGenerator,
+        private $contactService,
+        private $accountService,
+        private $accountLedgerService,
+    ) {
+    }
 
     public function collection(Collection $collection)
     {
-        $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
-
+        // dd($collection);
         $index = 0;
         $generalSettings = config('generalSettings');
-
-        $cusIdPrefix = $generalSettings['prefix__customer_id'];
-
-        $this->customerUtil = new CustomerUtil();
+        $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
+        $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
+        $customerAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
+            ->where('sub_sub_group_number', 6)->where('is_reserved', BooleanType::True->value)->first();
 
         foreach ($collection as $c) {
 
             if ($index != 0) {
 
-                if ($c[2] && $c[3]) {
+                if ($c[CustomerImportExcelCol::Name->value] && $c[CustomerImportExcelCol::Phone->value]) {
 
-                    $addCustomer = Customer::create([
-                        'contact_id' => $c[0] ? $c[0] : $cusIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, '0', STR_PAD_LEFT),
-                        'business_name' => $c[1],
-                        'name' => $c[2],
-                        'phone' => $c[3],
-                        'alternative_phone' => $c[4],
-                        'landline' => $c[5],
-                        'email' => $c[6],
-                        'date_of_birth' => $c[7],
-                        'tax_number' => $c[8],
-                        'opening_balance' => (float) $c[9] ? (float) $c[9] : 0,
-                        'address' => $c[10],
-                        'city' => $c[11],
-                        'state' => $c[12],
-                        'country' => $c[13],
-                        'zip_code' => $c[14],
-                        'shipping_address' => $c[15],
-                        'pay_term_number' => (float) $c[16],
-                        'pay_term' => (float) $c[17],
-                        'credit_limit' => (float) $c[18],
-                        'total_sale_due' => (float) $c[9] ? (float) $c[9] : 0,
-                    ]);
+                    $creditLimit = (float)$c[CustomerImportExcelCol::CreditLimit->value];
+                    $__creditLimit = 0;
+                    if (gettype($creditLimit) == 'integer' || gettype($creditLimit) == 'double') {
 
-                    // Add Customer Ledger
-                    $this->customerUtil->addCustomerLedger(
+                        $__creditLimit = $creditLimit;
+                    }
+
+                    $openingBalance = (float)$c[CustomerImportExcelCol::OpeningBalance->value];
+                    $__openingBalance = 0;
+                    if (gettype($openingBalance) == 'integer' || gettype($openingBalance) == 'double') {
+
+                        $__openingBalance = $openingBalance;
+                    }
+
+                    $openingBalanceType = strtolower($c[CustomerImportExcelCol::OpeningBalanceType->value]);
+                    $__openingBalanceType = 'dr';
+                    if ($openingBalanceType == 'debit' || $openingBalanceType == 'dr') {
+
+                        $__openingBalanceType = 'dr';
+                    } else if ($openingBalanceType == 'credit' || $openingBalanceType == 'cr') {
+
+                        $__openingBalanceType = 'cr';
+                    }
+
+                    $addContact = $this->contactService->addContact(
+                        type: ContactType::Customer->value,
+                        codeGenerator: $this->codeGenerator,
+                        contactIdPrefix: $cusIdPrefix,
+                        name: $c[CustomerImportExcelCol::Name->value],
+                        phone: $c[CustomerImportExcelCol::Phone->value],
+                        businessName: $c[CustomerImportExcelCol::Business->value],
+                        email: $c[CustomerImportExcelCol::Email->value],
+                        alternativePhone: $c[CustomerImportExcelCol::AlternativeNumber->value],
+                        landLine: $c[CustomerImportExcelCol::Landline->value],
+                        dateOfBirth: null,
+                        taxNumber: $c[CustomerImportExcelCol::TaxNumber->value],
+                        customerGroupId: null,
+                        address: $c[CustomerImportExcelCol::Address->value],
+                        city: $c[CustomerImportExcelCol::City->value],
+                        state: $c[CustomerImportExcelCol::State->value],
+                        country: $c[CustomerImportExcelCol::Country->value],
+                        zipCode: $c[CustomerImportExcelCol::ZipCode->value],
+                        shippingAddress: $c[CustomerImportExcelCol::ShippingAddress->value],
+                        payTerm: $c[CustomerImportExcelCol::PayTermNumber->value],
+                        payTermNumber: $c[CustomerImportExcelCol::PayTerm->value],
+                        creditLimit: $__creditLimit,
+                        openingBalance: $__openingBalance,
+                        openingBalanceType: $__openingBalanceType
+                    );
+
+                    $addAccount = $this->accountService->addAccount(
+                        name: $c[CustomerImportExcelCol::Name->value],
+                        accountGroup: $customerAccountGroup,
+                        phone: $c[CustomerImportExcelCol::Phone->value],
+                        address: $c[CustomerImportExcelCol::Address->value],
+                        openingBalance: $__openingBalance,
+                        openingBalanceType: $__openingBalanceType,
+                        contactId: $addContact->id
+                    );
+
+                    $this->accountLedgerService->addAccountLedgerEntry(
                         voucher_type_id: 0,
-                        customer_id: $addCustomer->id,
-                        date: date('Y-m-d'),
-                        trans_id: null,
-                        branch_id: auth()->user()->branch_id,
-                        amount: (float) $c[9] ? (float) $c[9] : 0
+                        date: $accountStartDate,
+                        account_id: $addAccount->id,
+                        trans_id: $addAccount->id,
+                        amount: $__openingBalance,
+                        amount_type: $__openingBalanceType == 'dr' ? 'debit' : 'credit',
+                        branch_id: $addAccount->branch_id,
                     );
                 }
             }

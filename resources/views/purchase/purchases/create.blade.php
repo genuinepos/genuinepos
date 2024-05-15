@@ -83,6 +83,9 @@
                                                 <select required name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
                                                     <option data-default_balance_type="cr" value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
+                                                        @if ($supplierAccount->is_walk_in_customer == 1)
+                                                            @continue
+                                                        @endif
                                                         <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                     @endforeach
                                                 </select>
@@ -111,8 +114,7 @@
                                         </div>
                                     </div>
 
-                                    @if (count($warehouses) > 0)
-
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && count($warehouses) > 0)
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>

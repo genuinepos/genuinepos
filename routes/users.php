@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\RoleController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserProfileController;
+use App\Http\Controllers\Users\Reports\UserActivityLogReportController;
 
 Route::controller(UserController::class)->prefix('users')->group(function () {
 
@@ -15,6 +16,8 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::delete('delete/{id}', 'delete')->name('users.delete');
     Route::get('show/{id}', 'show')->name('users.show');
     Route::post('change/branch', 'changeBranch')->name('users.change.branch');
+    Route::get('branch/users/{isOnlyAuthenticatedUser}/{allowAll}/{branchId?}', 'branchUsers')->name('users.branch.users');
+    Route::get('current/user/and/employee/count/{branchId?}', 'currentUserAndEmployeeCount')->name('users.current.user.and.employee.count');
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {
 
@@ -31,5 +34,13 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::get('/', 'index')->name('users.profile.index');
         Route::post('update', 'update')->name('users.profile.update');
         Route::get('view/{id}', 'view')->name('users.profile.view');
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+
+        Route::controller(UserActivityLogReportController::class)->prefix('user-activities-log')->group(function () {
+
+            Route::get('/', 'index')->name('reports.user.activities.log.index');
+        });
     });
 });

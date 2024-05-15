@@ -16,13 +16,13 @@
                         @endif
                     </h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
-        <div class="p-3">
-
-            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+        <div class="p-1">
+            {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-3">
@@ -31,8 +31,8 @@
                                     <div class="form-group row">
                                         <div class="col-xl-2 col-lg-3 col-md-4">
                                             <label><strong>@lang('menu.business_location') </strong></label>
-                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
-                                                <option value="">@lang('menu.all')</option>
+                                            <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
+                                                <option value="">{{ __("All") }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
@@ -45,7 +45,7 @@
                                         <div class="col-xl-2 col-lg-3 col-md-4">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -64,6 +64,9 @@
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
+                        @if ()
+
+                        @endif
                         <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary">
                             <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
@@ -74,22 +77,22 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                        <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="text-start">
-                                    <th>@lang('menu.action')</th>
-                                    <th>@lang('menu.customer_id')</th>
-                                    <th>@lang('menu.name')</th>
-                                    <th>@lang('menu.business')</th>
-                                    <th>@lang('menu.phone')</th>
-                                    <th>@lang('menu.group')</th>
-                                    <th>@lang('menu.credit_limit')</th>
-                                    <th>@lang('menu.opening_balance')</th>
-                                    <th>@lang('menu.total_sale')</th>
-                                    <th>@lang('menu.total_paid')</th>
+                                    <th>{{ __("Action") }}</th>
+                                    <th>{{ __("Customer ID") }}</th>
+                                    <th>{{ __("Name") }}</th>
+                                    <th>{{ __("Business") }}</th>
+                                    <th>{{ __("Phone") }}</th>
+                                    <th>{{ __("Group") }}</th>
+                                    <th>{{ __("Credit Limit") }}</th>
+                                    <th>{{ __("Opening Balance") }}</th>
+                                    <th>{{ __("Total Sale") }}</th>
+                                    <th>{{ __("Total Paid") }}</th>
                                     <th>{{ __('Sale Due') }}</th>
                                     <th>@lang('menu.total_return')</th>
                                     <th>@lang('menu.return_due')</th>

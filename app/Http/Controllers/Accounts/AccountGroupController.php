@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountGroupService;
-use App\Services\Setups\BranchService;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Accounts\AccountGroupService;
+use App\Http\Requests\Accounts\AccountGroupStoreRequest;
+use App\Http\Requests\Accounts\AccountGroupUpdateRequest;
 
 class AccountGroupController extends Controller
 {
@@ -14,13 +17,12 @@ class AccountGroupController extends Controller
         private AccountGroupService $accountGroupService,
         private BranchService $branchService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
     {
-        if (!auth()->user()->can('account_groups_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('account_groups_index'), 403);
 
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
@@ -31,34 +33,23 @@ class AccountGroupController extends Controller
     public function groupList(Request $request)
     {
         $groups = $this->accountGroupService->accountGroups(request: $request, with: ['subgroups'])
-            ->where('account_groups.is_main_group', 1)->get();
+            ->where('account_groups.is_main_group', BooleanType::True->value)->get();
 
         return view('accounting.groups.ajax_view.list_of_groups', compact('groups'));
     }
 
     public function create()
     {
-        if (!auth()->user()->can('account_groups_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('account_groups_create'), 403);
 
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
-            ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
+            ->where('is_main_group', BooleanType::False->value)->orWhere('is_global', BooleanType::True->value)->get();
 
         return view('accounting.groups.ajax_view.create', compact('formGroups'));
     }
 
-    public function store(Request $request)
+    public function store(AccountGroupStoreRequest $request)
     {
-        if (!auth()->user()->can('account_groups_create')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'parent_group_id' => 'required',
-        ]);
-
         try {
             DB::beginTransaction();
 
@@ -75,28 +66,17 @@ class AccountGroupController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('account_groups_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('account_groups_edit'), 403);
 
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
-            ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
+            ->where('is_main_group', BooleanType::False->value)->orWhere('is_global', BooleanType::True->value)->get();
         $group = $this->accountGroupService->singleAccountGroup(id: $id, with: ['parentGroup']);
 
         return view('accounting.groups.ajax_view.edit', compact('formGroups', 'group'));
     }
 
-    public function update(Request $request, $id)
+    public function update(AccountGroupUpdateRequest $request, $id)
     {
-        if (!auth()->user()->can('account_groups_create')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'parent_group_id' => 'required',
-        ]);
-
         try {
             DB::beginTransaction();
 
@@ -113,9 +93,7 @@ class AccountGroupController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('account_groups_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('account_groups_delete'), 403);
 
         try {
             DB::beginTransaction();

@@ -12,15 +12,18 @@ class RoleController extends Controller
     public function __construct(
         private RoleService $roleService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
         if (!auth()->user()->can('role_view')) {
+            
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->roleService->rolesTable();
         }
 
@@ -30,6 +33,7 @@ class RoleController extends Controller
     public function create()
     {
         if (!auth()->user()->can('role_add')) {
+
             abort(403, 'Access Forbidden.');
         }
 

@@ -21,7 +21,7 @@ class Converter
     /**
      * Format in BDT from floating numbers
      */
-    public static function format_in_bdt($number)
+    public static function format_in_bdt($number, $fractionDigit = 2)
     {
         // return \number_format($number, 2, '.', ',');
         if (\extension_loaded('intl')) {

@@ -120,7 +120,6 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
         if ($restrictions['pass'] == false) {
 
             return ['pass' => false, 'msg' => $restrictions['msg']];
-            // return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
         $addSale = $this->saleService->addSale(request: $request, saleScreenType: SaleScreenType::AddSale->value, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: null, salesOrderPrefix: null);

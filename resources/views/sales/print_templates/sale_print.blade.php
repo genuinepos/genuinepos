@@ -215,6 +215,12 @@
                             <span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $sale->invoice_id }}
                         </li>
 
+                        @if (isset($sale->salesOrder))
+                            <li style="font-size:11px!important;">
+                                <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $sale?->salesOrder->order_id }}
+                            </li>
+                        @endif
+
                         <li style="font-size:11px!important;">
                             <span class="fw-bold">{{ __('Created By') }} : </span> {{ $sale?->createdBy?->prefix . ' ' . $sale?->createdBy?->name . ' ' . $sale?->createdBy?->last_name }}
                         </li>
@@ -522,7 +528,7 @@
                 </div>
 
                 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
-                    <div class="col-4">
+                    <div class="col-5">
                         @if ($sale->branch)
 
                             @if ($sale?->branch?->parent_branch_id)
@@ -548,7 +554,7 @@
                         @endif
                     </div>
 
-                    <div class="col-8 text-end">
+                    <div class="col-7 text-end">
                         <p style="text-transform: uppercase;font-size:9px;" class="p-0 m-0 fw-bold">
                             @if ($sale?->branch)
                                 @if ($sale?->branch?->parent_branch_id)

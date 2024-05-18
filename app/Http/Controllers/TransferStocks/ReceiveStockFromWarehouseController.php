@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TransferStocks;
 
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransferStocks\TransferStockReceiveFromWarehouseRequest;
 use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodContainersInterface;

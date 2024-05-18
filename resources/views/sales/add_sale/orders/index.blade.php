@@ -122,12 +122,15 @@
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Order ID') }}</th>
-                                                <th>{{ __('Shop') }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Delivery Status') }}</th>
                                                 <th>{{ __('Total Item') }}</th>
-                                                <th>{{ __('Total Qty') }}</th>
-                                                <th>{{ __('Total Ordered Amt') }}</th>
+                                                <th>{{ __('Ordered Qty') }}</th>
+                                                <th>{{ __('Delivered Qty') }}</th>
+                                                <th>{{ __('Left Qty') }}</th>
+                                                <th>{{ __('Total Amt') }}</th>
                                                 <th>{{ __('Advance Received') }}</th>
                                                 <th>{{ __('Due') }}</th>
                                                 <th>{{ __('Created By') }}</th>
@@ -136,9 +139,10 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
-                                                <th id="total_item" class="text-white text-end"></th>
-                                                <th id="total_qty" class="text-white text-end"></th>
+                                                <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                                <th id="total_ordered_qty" class="text-white text-end"></th>
+                                                <th id="total_delivered_qty" class="text-white text-end"></th>
+                                                <th id="total_left_qty" class="text-white text-end"></th>
                                                 <th id="total_invoice_amount" class="text-white text-end"></th>
                                                 <th id="received_amount" class="text-white text-end"></th>
                                                 <th id="due" class="text-white text-end"></th>
@@ -249,14 +253,29 @@
                     className: 'text-start'
                 },
                 {
+                    data: 'delivery_status',
+                    name: 'created_by.name',
+                    className: 'text-start'
+                },
+                {
                     data: 'total_item',
                     name: 'sales.quotation_id',
                     className: 'text-end fw-bold'
                 },
                 {
-                    data: 'total_qty',
-                    name: 'total_qty',
+                    data: 'total_ordered_qty',
+                    name: 'total_ordered_qty',
                     className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_delivered_qty',
+                    name: 'total_delivered_qty',
+                    className: 'text-end text-success fw-bold'
+                },
+                {
+                    data: 'total_left_qty',
+                    name: 'total_left_qty',
+                    className: 'text-end text-danger fw-bold'
                 },
                 {
                     data: 'total_invoice_amount',
@@ -284,8 +303,14 @@
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
                 $('#total_item').text(bdFormat(total_item));
 
-                var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-                $('#total_qty').text(bdFormat(total_qty));
+                var total_ordered_qty = sum_table_col($('.data_tbl'), 'total_ordered_qty');
+                $('#total_ordered_qty').text(bdFormat(total_ordered_qty));
+
+                var total_delivered_qty = sum_table_col($('.data_tbl'), 'total_delivered_qty');
+                $('#total_delivered_qty').text(bdFormat(total_delivered_qty));
+
+                var total_left_qty = sum_table_col($('.data_tbl'), 'total_left_qty');
+                $('#total_left_qty').text(bdFormat(total_left_qty));
 
                 var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
                 $('#total_invoice_amount').text(bdFormat(total_invoice_amount));

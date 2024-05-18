@@ -102,7 +102,7 @@
 
                     <p>
                         @if ($return?->branch)
-                            {{ $return->branch->address . ', ' . $return->branch->city . ', ' . $return->branch->state . ', ' . $return->branch->zip_code . ', ' . $return->branch->country }}
+                            {{ $return->branch->address . ', ' . $return->branch->city . ', ' . $return->branch->state . ', '  . $return->branch->zip_code . ', ' . $return->branch->country }}
                         @else
                             {{ $generalSettings['business_or_shop__address'] }}
                         @endif

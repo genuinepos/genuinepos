@@ -80,7 +80,7 @@
             },
             {
                 data: 'total_item',
-                name: 'total_item',
+                name: 'salesOrder.order_id',
                 className: 'text-end fw-bold'
             },
             {

@@ -115,7 +115,9 @@
                                     <tr class="bg-secondary">
                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('S/L') }}</th>
                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Product') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Quantity') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Ordered Qty') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Delivered Qty') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Left Qty') }}</th>
                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Price Exc. Tax') }}</th>
                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Discount') }}</th>
                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
@@ -137,7 +139,11 @@
                                                 <small>{{ $orderProduct->description }}</small>
                                             </td>
 
-                                            <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->quantity . '/' . $orderProduct?->unit?->code_name }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity . '/' . $orderProduct?->unit?->code_name }}</td>
+
+                                            <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->delivered_quantity . '/' . $orderProduct?->unit?->code_name }}</td>
+
+                                            <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->left_quantity . '/' . $orderProduct?->unit?->code_name }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_exc_tax) }}
@@ -157,6 +163,19 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" class="text-end fw-bold">{{ __("Total") }}:</td>
+                                        <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->total_ordered_qty) }}</td>
+                                        <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->total_delivered_qty) }}</td>
+                                        <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->total_left_qty) }}</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}</td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

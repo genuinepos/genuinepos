@@ -2,12 +2,13 @@
 
 namespace App\Models\Sales;
 
+use App\Models\User;
+use App\Models\BaseModel;
+use App\Models\Sales\Sale;
+use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
-use App\Models\BaseModel;
-use App\Models\Setups\Branch;
-use App\Models\User;
 
 class Sale extends BaseModel
 {
@@ -29,6 +30,11 @@ class Sale extends BaseModel
     public function customer()
     {
         return $this->belongsTo(Account::class, 'customer_account_id');
+    }
+
+    public function salesOrder()
+    {
+        return $this->belongsTo(Sale::class, 'sales_order_id');
     }
 
     public function saleReturn()

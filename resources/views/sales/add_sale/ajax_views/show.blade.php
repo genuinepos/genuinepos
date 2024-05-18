@@ -33,7 +33,11 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($dateFormat . ' ' . $timeFormat, strtotime($sale->sale_date_ts)) }}</li>
+
                             <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong> {{ $sale->invoice_id }}</li>
+                            @if (isset($sale->salesOrder))
+                                <li style="font-size:11px!important;"><strong>{{ __('Sales Order ID') }} : </strong> {{ $sale?->salesOrder?->order_id }}</li>
+                            @endif
 
                             <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
                                 @php

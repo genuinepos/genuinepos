@@ -70,7 +70,7 @@ class ReceiveStockFromWarehouseControllerMethodContainersService implements Rece
     public function receiveMethodContainer(int $id, object $request): void
     {
         $transferStock = $this->transferStockService->singleTransferStock(
-            id: $transferStockId,
+            id: $id,
             with: ['transferStockProducts']
         );
 

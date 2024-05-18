@@ -39,6 +39,7 @@ Route::prefix('sales')->group(function () {
 
             Route::get('/', 'index')->name('sale.products.index');
             Route::get('for/sales/return/{sale_id}', 'soldProductsForSalesReturn')->name('sale.products.for.sales.return');
+            Route::get('for/sales/order/to/invoice/{salesOrderId}', 'saleProductsForSalesOrderToInvoice')->name('sale.products.for.sales.order.to.invoice');
         });
     });
 
@@ -86,11 +87,13 @@ Route::prefix('sales')->group(function () {
         Route::get('show/{id}', 'show')->name('sale.orders.show');
         Route::get('edit/{id}', 'edit')->name('sale.orders.edit');
         Route::post('update/{id}', 'update')->name('sale.orders.update');
+        Route::get('search/by/{keyword}', 'searchByOrderId')->name('sale.orders.search');
     });
 
     Route::controller(SalesOrderToInvoiceController::class)->prefix('order-to-invoice')->group(function () {
 
         Route::get('create/{id?}', 'create')->name('sales.order.to.invoice.create');
+        Route::post('store', 'store')->name('sales.order.to.invoice.store');
     });
 
     Route::controller(QuotationController::class)->prefix('quotations')->group(function () {

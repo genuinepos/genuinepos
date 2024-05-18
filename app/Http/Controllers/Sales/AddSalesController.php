@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\CodeGenerationService;
 use App\Http\Requests\Sales\AddSaleStoreRequest;
+use App\Http\Requests\Sales\AddSaleDeleteRequest;
 use App\Http\Requests\Sales\AddSaleUpdateRequest;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 
@@ -115,10 +116,8 @@ class AddSalesController extends Controller
         return response()->json(__('Sale updated Successfully.'));
     }
 
-    public function delete($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
+    public function delete($id, AddSaleDeleteRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('delete_add_sale'), 403);
-
         try {
             DB::beginTransaction();
 
@@ -141,20 +140,15 @@ class AddSalesController extends Controller
         return response()->json(__("${__voucherName} deleted Successfully."));
     }
 
-    public function searchByInvoiceId($keyWord)
+    public function searchByInvoiceId($keyWord, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        $sales = DB::table('sales')
-            ->where('sales.invoice_id', 'like', "%{$keyWord}%")
-            ->where('sales.branch_id', auth()->user()->branch_id)
-            ->where('sales.status', SaleStatus::Final->value)
-            ->select('sales.id as sale_id', 'sales.invoice_id', 'sales.customer_account_id')->limit(35)->get();
+        $searchByInvoiceIdMethodContainer = $addSaleControllerMethodContainersInterface->searchByInvoiceIdMethodContainer(keyWord: $keyWord);
+        if (isset($searchByInvoiceIdMethodContainer['noResult'])) {
 
-        if (count($sales) > 0) {
-
-            return view('search_results_view.sale_invoice_search_result_list', compact('sales'));
+            return ['noResult' => 'no result'];
         } else {
 
-            return response()->json(['noResult' => 'no result']);
+            return $searchByInvoiceIdMethodContainer;
         }
     }
 }

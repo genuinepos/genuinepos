@@ -2,6 +2,7 @@
 
 namespace App\Services\Sales\MethodContainerServices;
 
+use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Enums\SaleScreenType;
 use App\Enums\DayBookVoucherType;
@@ -124,50 +125,36 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
 
         $addSale = $this->saleService->addSale(request: $request, saleScreenType: SaleScreenType::AddSale->value, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: null, salesOrderPrefix: null);
 
-        if ($request->status == SaleStatus::Final->value || $request->status == SaleStatus::Order->value) {
+        // Add Day Book entry for Final Sale or Sales Order
+        $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: $request->date, accountId: $request->customer_account_id, transId: $addSale->id, amount: $request->total_invoice_amount, amountType: 'debit');
 
-            $dayBookVoucherType = $request->status == SaleStatus::Final->value ? DayBookVoucherType::Sales->value : DayBookVoucherType::SalesOrder->value;
+        // Add Sale A/c Ledger Entry
+        $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $request->date, account_id: $request->sale_account_id, trans_id: $addSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit');
 
-            // Add Day Book entry for Final Sale or Sales Order
-            $this->dayBookService->addDayBook(voucherTypeId: $dayBookVoucherType, date: $request->date, accountId: $request->customer_account_id, transId: $addSale->id, amount: $request->total_invoice_amount, amountType: 'debit');
+        // Add supplier A/c ledger Entry For Sales
+        $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $addSale->id, amount: $request->total_invoice_amount, amount_type: 'debit');
+
+        if ($request->sale_tax_ac_id) {
+
+            // Add Tax A/c ledger Entry For Sales
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->sale_tax_ac_id, date: $request->date, trans_id: $addSale->id, amount: $request->order_tax_amount, amount_type: 'credit');
         }
 
-        if ($request->status == SaleStatus::Final->value) {
-
-            // Add Sale A/c Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $request->date, account_id: $request->sale_account_id, trans_id: $addSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit');
-
-            // Add supplier A/c ledger Entry For Sales
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $addSale->id, amount: $request->total_invoice_amount, amount_type: 'debit');
-
-            if ($request->sale_tax_ac_id) {
-
-                // Add Tax A/c ledger Entry For Sales
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->sale_tax_ac_id, date: $request->date, trans_id: $addSale->id, amount: $request->order_tax_amount, amount_type: 'credit');
-            }
-        }
-
-        $index = 0;
-        foreach ($request->product_ids as $productId) {
+        foreach ($request->product_ids as $index => $productId) {
 
             $addSaleProduct = $this->saleProductService->addSaleProduct(request: $request, sale: $addSale, index: $index);
 
-            if ($request->status == SaleStatus::Final->value) {
+            // Add Product Ledger Entry
+            $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Sales->value, date: $request->date, productId: $productId, transId: $addSaleProduct->id, rate: $addSaleProduct->unit_price_inc_tax, quantityType: 'out', quantity: $addSaleProduct->quantity, subtotal: $addSaleProduct->subtotal, variantId: $addSaleProduct->variant_id, warehouseId: (isset($request->warehouse_ids[$index]) ? $request->warehouse_ids[$index] : null));
 
-                // Add Product Ledger Entry
-                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Sales->value, date: $request->date, productId: $productId, transId: $addSaleProduct->id, rate: $addSaleProduct->unit_price_inc_tax, quantityType: 'out', quantity: $addSaleProduct->quantity, subtotal: $addSaleProduct->subtotal, variantId: $addSaleProduct->variant_id, warehouseId: (isset($request->warehouse_ids[$index]) ? $request->warehouse_ids[$index] : null));
+            if ($addSaleProduct->tax_ac_id) {
 
-                if ($addSaleProduct->tax_ac_id) {
-
-                    // Add Tax A/c ledger Entry
-                    $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SaleProductTax->value, date: $request->date, account_id: $addSaleProduct->tax_ac_id, trans_id: $addSaleProduct->id, amount: ($addSaleProduct->unit_tax_amount * $addSaleProduct->quantity), amount_type: 'credit');
-                }
+                // Add Tax A/c ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SaleProductTax->value, date: $request->date, account_id: $addSaleProduct->tax_ac_id, trans_id: $addSaleProduct->id, amount: ($addSaleProduct->unit_tax_amount * $addSaleProduct->quantity), amount_type: 'credit');
             }
-
-            $index++;
         }
 
-        if ($request->status == SaleStatus::Final->value && $request->received_amount > 0) {
+        if ($request->received_amount > 0) {
 
             $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $addSale->id);
 
@@ -193,6 +180,7 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
         $sale = $this->saleService->singleSale(
             id: $addSale->id,
             with: [
+                'salesOrder',
                 'branch',
                 'branch.parentBranch',
                 'customer',
@@ -201,34 +189,29 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
             ]
         );
 
-        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value) {
+        if ($sale->due > 0) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $sale);
         }
 
-        if ($request->status == SaleStatus::Final->value) {
+        foreach ($request->product_ids as $index => $productId) {
 
-            $__index = 0;
-            foreach ($request->product_ids as $productId) {
+            $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
+            $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
-                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
-                $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
+            $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
 
-                $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
+            if (isset($request->warehouse_ids[$index])) {
 
-                if (isset($request->warehouse_ids[$__index])) {
+                $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$index]);
+            } else {
 
-                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
-                } else {
-
-                    $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
-                }
-
-                $this->stockChainService->addStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
-
-                $__index++;
+                $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
             }
+
+            $this->stockChainService->addStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
         }
+
 
         $order = $this->salesOrderService->singleSalesOrder(id: $sale->sales_order_id);
         $this->salesOrderService->calculateDeliveryLeftQty(order: $order);
@@ -241,6 +224,6 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
         $changeAmount = 0;
         $receivedAmount = $request->received_amount;
 
-        return ['printPageSize' => $printPageSize, 'changeAmount' => $changeAmount, 'receivedAmount' => $receivedAmount, 'sale' => $sale];
+        return ['printPageSize' => $printPageSize, 'changeAmount' => $changeAmount, 'receivedAmount' => $receivedAmount, 'sale' => $sale, 'customerCopySaleProducts' => $customerCopySaleProducts];
     }
 }

@@ -11,11 +11,6 @@ use App\Interfaces\Sales\SalesOrderToInvoiceControllerMethodContainersInterface;
 
 class SalesOrderToInvoiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function create(
         CodeGenerationServiceInterface $codeGenerator,
         SalesOrderToInvoiceControllerMethodContainersInterface $salesOrderToInvoiceControllerMethodContainersInterface,

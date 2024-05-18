@@ -131,7 +131,7 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
         // Add Sale A/c Ledger Entry
         $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $request->date, account_id: $request->sale_account_id, trans_id: $addSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit');
 
-        // Add supplier A/c ledger Entry For Sales
+        // Add Customer A/c ledger Entry For Sales
         $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $addSale->id, amount: $request->total_invoice_amount, amount_type: 'debit');
 
         if ($request->sale_tax_ac_id) {

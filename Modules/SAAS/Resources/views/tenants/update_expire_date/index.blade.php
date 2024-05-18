@@ -9,45 +9,41 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="table-responsive">
-                        <table>
-                            <tr>
-                                <th class="text-start" style="font-size: 12px;">{{ __('Customer') }}</th>
-                                <td class="text-start" style="font-size: 12px;">: {{ $tenant?->user?->name }}</td>
-                            </tr>
+                    <table>
+                        <tr>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Customer') }}</th>
+                            <td class="text-start" style="font-size: 12px;">: {{ $tenant?->user?->name }}</td>
+                        </tr>
 
-                            <tr>
-                                <th class="text-start" style="font-size: 12px;">{{ __('Business') }}</th>
-                                <td class="text-start" style="font-size: 12px;">: {{ $tenant?->name }}</td>
-                            </tr>
+                        <tr>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Business') }}</th>
+                            <td class="text-start" style="font-size: 12px;">: {{ $tenant?->name }}</td>
+                        </tr>
 
-                            <tr>
-                                <th class="text-start" style="font-size: 12px;">{{ __('Email') }}</th>
-                                <td class="text-start" style="font-size: 12px;">: {{ $tenant?->user?->email }}</td>
-                            </tr>
+                        <tr>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Email') }}</th>
+                            <td class="text-start" style="font-size: 12px;">: {{ $tenant?->user?->email }}</td>
+                        </tr>
 
-                            <tr>
-                                <th class="text-start" style="font-size: 12px;">{{ __('Phone') }}</th>
-                                <td class="text-start" style="font-size: 12px;">: {{ $tenant?->user?->phone }}</td>
-                            </tr>
-                        </table>
-                    </div>
+                        <tr>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Phone') }}</th>
+                            <td class="text-start" style="font-size: 12px;">: {{ $tenant?->user?->phone }}</td>
+                        </tr>
+                    </table>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="table-responsive">
-                        <table>
-                            <tr>
-                                <th class="text-start" style="font-size: 12px;">{{ __('Subdomain') }}</th>
-                                <td class="text-start" style="font-size: 12px;">: {{ $tenant?->id }}</td>
-                            </tr>
+                    <table>
+                        <tr>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Subdomain') }}</th>
+                            <td class="text-start" style="font-size: 12px;">: {{ $tenant?->id }}</td>
+                        </tr>
 
-                            <tr>
-                                <th class="text-start" style="font-size: 12px;">{{ __('App Url') }}</th>
-                                <td class="text-start" style="font-size: 12px;">: {{ \Modules\SAAS\Utils\UrlGenerator::generateFullUrlFromDomain($tenant->id) }}</td>
-                            </tr>
-                        </table>
-                    </div>
+                        <tr>
+                            <th class="text-start" style="font-size: 12px;">{{ __('App Url') }}</th>
+                            <td class="text-start" style="font-size: 12px;">: {{ \Modules\SAAS\Utils\UrlGenerator::generateFullUrlFromDomain($tenant->id) }}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 

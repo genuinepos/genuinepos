@@ -1,18 +1,19 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Purchases\PurchaseOrderController;
-use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
-use App\Http\Controllers\Purchases\Reports\PaymentAgainstPurchaseReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
+use App\Http\Controllers\Purchases\PurchaseProductController;
+use App\Http\Controllers\Purchases\PurchaseOrderToInvoiceController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
 use App\Http\Controllers\Purchases\Reports\SalePurchaseReportController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
+use App\Http\Controllers\Purchases\Reports\PaymentAgainstPurchaseReportController;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
@@ -42,6 +43,12 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::post('update/{id}', 'update')->name('purchase.orders.update');
         Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
         Route::get('print/supplier/copy/{id}', 'printSupplierCopy')->name('purchases.order.print.supplier.copy');
+    });
+
+    Route::controller(PurchaseOrderToInvoiceController::class)->prefix('order-to-invoice')->group(function () {
+
+        Route::get('create/{id?}', 'create')->name('purchase.order.to.invoice.create');
+        Route::post('store', 'store')->name('purchase.order.to.invoice.store');
     });
 
     Route::controller(PurchaseReturnController::class)->prefix('returns')->group(function () {
@@ -101,7 +108,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         });
 
         Route::group(['prefix' => 'sales/purchase'], function () {
-            
+
             Route::get('/', [SalePurchaseReportController::class, 'index'])->name('reports.sales.purchases.index');
             Route::get('sale/purchase/amounts', [SalePurchaseReportController::class, 'salePurchaseAmounts'])->name('reports.profit.sales.purchases.amounts');
             Route::get('filter/sale/purchase/amounts', [SalePurchaseReportController::class, 'filterSalePurchaseAmounts'])->name('reports.profit.sales.filter.purchases.amounts');

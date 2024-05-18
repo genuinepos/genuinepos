@@ -6,7 +6,6 @@
 - `php artisan tenants:migrate`
 - `php artisan tenants:run {command}`
 
-
 ## Landlord Level Commands
 
 - `php artisan saas:rp-sync`

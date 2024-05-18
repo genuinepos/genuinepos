@@ -332,6 +332,14 @@ class PurchaseOrderService
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
+            if (auth()->user()->can('purchase_order_to_invoice')) {
+
+                $html .= '<a class="dropdown-item" href="' . route('purchase.orders.to.invoice.create', [$row->id]) . ' ">' . __('P/o To Purchase Invoice') . '</a>';
+            }
+        }
+
+        if (auth()->user()->branch_id == $row->branch_id) {
+
             if (auth()->user()->can('purchase_order_edit')) {
 
                 $html .= '<a class="dropdown-item" href="' . route('purchase.orders.edit', [$row->id]) . ' ">' . __('Edit') . '</a>';

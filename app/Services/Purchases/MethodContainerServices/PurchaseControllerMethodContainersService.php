@@ -23,7 +23,6 @@ use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Accounts\AccountingVoucherService;
-use Modules\Communication\Interface\EmailServiceInterface;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
@@ -33,7 +32,6 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
     public function __construct(
         private PurchaseService $purchaseService,
         private PurchaseProductService $purchaseProductService,
-        private EmailServiceInterface $emailService,
         private UserActivityLogService $userActivityLogService,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,

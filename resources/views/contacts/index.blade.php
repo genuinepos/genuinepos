@@ -68,7 +68,7 @@
 
                         @endif
                         <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> @lang('menu.add')
+                            <i class="fas fa-plus-square"></i> {{ __("Add") }}
                         </a>
                         <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i>@lang('menu.print')</a>
@@ -94,7 +94,7 @@
                                     <th>{{ __("Total Sale") }}</th>
                                     <th>{{ __("Total Paid") }}</th>
                                     <th>{{ __('Sale Due') }}</th>
-                                    <th>@lang('menu.total_return')</th>
+                                    <th>{{ __("Total Return") }}</th>
                                     <th>@lang('menu.return_due')</th>
                                     <th>@lang('menu.status')</th>
                                 </tr>

@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use App\Enums\AccountingVoucherType;
-use App\Enums\AccountLedgerVoucherType;
+use Illuminate\Http\Request;
+use App\Enums\PurchaseStatus;
 use App\Enums\DayBookVoucherType;
+use Illuminate\Support\Facades\DB;
+use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountLedgerService;
+use App\Services\Setups\BranchService;
+use App\Enums\AccountLedgerVoucherType;
+use App\Services\CodeGenerationService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Purchases\PurchaseOrderProductService;
-use App\Services\Purchases\PurchaseOrderService;
 use App\Services\Purchases\PurchaseService;
-use App\Services\Setups\BranchService;
 use App\Services\Setups\PaymentMethodService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Users\UserActivityLogService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Purchases\PurchaseOrderService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Purchases\PurchaseOrderProductService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PurchaseOrderController extends Controller
 {
@@ -38,7 +41,7 @@ class PurchaseOrderController extends Controller
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private AccountLedgerService $accountLedgerService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
@@ -209,7 +212,7 @@ class PurchaseOrderController extends Controller
             }
 
             // Add user Log
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 5, data_obj: $addPurchaseOrder);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::PurchaseOrder->value, dataObj: $addPurchaseOrder);
 
             DB::commit();
         } catch (Exception $e) {
@@ -364,7 +367,8 @@ class PurchaseOrderController extends Controller
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
             }
 
-            $this->userActivityLogUtil->addLog(action: 2, subject_type: 5, data_obj: $updatePurchaseOrder);
+            // Add user Log
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::PurchaseOrder->value, dataObj: $updatePurchaseOrder);
 
             DB::commit();
         } catch (Exception $e) {
@@ -393,7 +397,7 @@ class PurchaseOrderController extends Controller
             }
 
             // Add user Log
-            $this->userActivityLogUtil->addLog(action: 3, subject_type: 5, data_obj: $deletePurchaseOrder);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::PurchaseOrder->value, dataObj: $deletePurchaseOrder);
 
             DB::commit();
         } catch (Exception $e) {
@@ -402,5 +406,31 @@ class PurchaseOrderController extends Controller
         }
 
         return response()->json(__('Purchase order is deleted successfully'));
+    }
+
+    public function searchByPoId($keyWord)
+    {
+        $orders = DB::table('purchases')
+            ->leftJoin('accounts', 'purchases.supplier_account_id', 'accounts.id')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('purchases.invoice_id', 'like', "%{$keyWord}%")
+            ->where('purchases.branch_id', auth()->user()->branch_id)
+            ->where('purchases.purchase_status', PurchaseStatus::PurchaseOrder->value)
+            ->select(
+                'purchases.id as purchase_order_id',
+                'purchases.invoice_id as po_id',
+                'purchases.supplier_account_id',
+                'accounts.name as supplier_name',
+                'accounts.phone as supplier_phone',
+                'account_groups.default_balance_type',
+            )->limit(35)->get();
+
+        if (count($orders) > 0) {
+
+            return view('search_results_view.purchase_order_search_result_list', compact('orders'));
+        } else {
+
+            return ['noResult' => 'no result'];
+        }
     }
 }

@@ -6,7 +6,7 @@ var index = -1;
 document.addEventListener('keydown', function (event) {
 
     if (ul.getElementsByTagName('a').length != 0) {
-        
+
         var len = ul.getElementsByTagName('a').length - 1;
         if (event.which === 40) {
             document.getElementById('search_product').value = '';

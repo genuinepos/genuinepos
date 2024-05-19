@@ -5,6 +5,7 @@ use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Purchases\PurchaseOrderController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
+use App\Http\Controllers\Purchases\PurchaseOrderProductController;
 use App\Http\Controllers\Purchases\PurchaseOrderToInvoiceController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
 use App\Http\Controllers\Purchases\Reports\SalePurchaseReportController;
@@ -43,6 +44,12 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::post('update/{id}', 'update')->name('purchase.orders.update');
         Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
         Route::get('print/supplier/copy/{id}', 'printSupplierCopy')->name('purchases.order.print.supplier.copy');
+        Route::get('search/by/{keyword}', 'searchByPoId')->name('purchases.orders.search');
+    });
+
+    Route::controller(PurchaseOrderProductController::class)->prefix('order-products')->group(function () {
+
+        Route::get('for/purchase/order/to/invoice//{purchaseOrderId}', 'purchaseOrderProductsForPoToInvoice')->name('purchase.order.products.for.purchase.order.to.invoice');
     });
 
     Route::controller(PurchaseOrderToInvoiceController::class)->prefix('order-to-invoice')->group(function () {

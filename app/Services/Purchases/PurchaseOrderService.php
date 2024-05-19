@@ -280,6 +280,35 @@ class PurchaseOrderService
         return ['pass' => true];
     }
 
+    public function updatePoReceivingStatus(int $purchaseOrderId)
+    {
+        $purchaseOrderProducts = DB::table('purchase_order_products')->where('purchase_order_products.purchase_id', $purchaseOrderId)
+            ->select(
+                DB::raw('sum(order_quantity) as ordered_qty'),
+                DB::raw('sum(pending_quantity) as pending_quantity'),
+                DB::raw('sum(received_quantity) as received_quantity')
+            )->groupBy('purchase_order_products.purchase_id')->get();
+
+        $purchaseOrder = $this->singlePurchaseOrder(id: $purchaseOrderId);
+
+        $purchaseOrder->po_qty = $purchaseOrderProducts->sum('ordered_qty');
+        $purchaseOrder->po_pending_qty = $purchaseOrderProducts->sum('pending_quantity');
+        $purchaseOrder->po_received_qty = $purchaseOrderProducts->sum('received_quantity');
+
+        if ($purchaseOrderProducts->sum('pending_quantity') == 0) {
+
+            $purchaseOrder->po_receiving_status = 'Completed';
+        } elseif ($purchaseOrderProducts->sum('ordered_qty') == $purchaseOrderProducts->sum('pending_quantity')) {
+
+            $purchaseOrder->po_receiving_status = 'Pending';
+        } elseif ($purchaseOrderProducts->sum('received_quantity') > 0) {
+
+            $purchaseOrder->po_receiving_status = 'Partial';
+        }
+
+        $purchaseOrder->save();
+    }
+
     public function singlePurchaseOrder(int $id, array $with = null): ?object
     {
         $query = Purchase::query();
@@ -292,33 +321,6 @@ class PurchaseOrderService
         return $query->where('id', $id)->first();
     }
 
-    public function updatePoReceivingStatus(object $purchaseOrder): void
-    {
-        $purchaseOrderProducts = DB::table('purchase_order_products')->where('purchase_id', $purchaseOrder->id)
-            ->select(
-                DB::raw('sum(ordered_quantity) as ordered_qty'),
-                DB::raw('sum(received_quantity) as received_qty'),
-                DB::raw('sum(pending_quantity) as pending_qty')
-            )->groupBy('purchase_id')->get();
-
-        $purchaseOrder->po_qty = $purchaseOrderProducts->sum('ordered_qty');
-        $purchaseOrder->po_pending_qty = $purchaseOrderProducts->sum('pending_qty');
-        $purchaseOrder->po_received_qty = $purchaseOrderProducts->sum('received_qty');
-
-        if ($purchaseOrderProducts->sum('pending_qty') == 0) {
-
-            $purchaseOrder->po_receiving_status = 'Completed';
-        } elseif ($purchaseOrderProducts->sum('ordered_qty') == $purchaseOrderProducts->sum('pending_qty')) {
-
-            $purchaseOrder->po_receiving_status = 'Pending';
-        } elseif ($purchaseOrderProducts->sum('received_qty') > 0) {
-
-            $purchaseOrder->po_receiving_status = 'Partial';
-        }
-
-        $purchaseOrder->save();
-    }
-
     private function createPurchaseOrderAction($row)
     {
         $html = '<div class="btn-group" role="group">';
@@ -327,14 +329,9 @@ class PurchaseOrderService
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
-            $html .= '<a class="dropdown-item" href="#">' . __('P/o To Receive Stock') . '</a>';
-        }
-
-        if (auth()->user()->branch_id == $row->branch_id) {
-
             if (auth()->user()->can('purchase_order_to_invoice')) {
 
-                $html .= '<a class="dropdown-item" href="' . route('purchase.orders.to.invoice.create', [$row->id]) . ' ">' . __('P/o To Purchase Invoice') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchase.order.to.invoice.create', [$row->id]) . ' ">' . __('P/o To Purchase Invoice') . '</a>';
             }
         }
 

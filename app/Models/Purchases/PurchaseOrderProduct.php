@@ -3,9 +3,10 @@
 namespace App\Models\Purchases;
 
 use App\Models\BaseModel;
+use App\Models\Products\Unit;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
-use App\Models\Products\Unit;
+use App\Models\Purchases\PurchaseProduct;
 
 class PurchaseOrderProduct extends BaseModel
 {
@@ -33,8 +34,8 @@ class PurchaseOrderProduct extends BaseModel
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
-    public function receives()
+    public function purchaseProducts()
     {
-        return $this->hasMany(PurchaseOrderProductReceive::class, 'order_product_id');
+        return $this->hasMany(PurchaseProduct::class, 'purchase_order_product_id');
     }
 }

@@ -171,6 +171,7 @@ class PurchaseService
 
         $addPurchase = new Purchase();
         $addPurchase->invoice_id = $invoiceId;
+        $addPurchase->challan_no = isset($request->challan_no) ? $request->challan_no : null;
         $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : null;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_account_id = $request->supplier_account_id;
@@ -198,6 +199,7 @@ class PurchaseService
         $addPurchase->date = $request->date;
         $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchase->is_last_created = BooleanType::True->value;
+        $addPurchase->purchase_order_id = isset($request->purchase_order_id) ? $request->purchase_order_id : null;
         $addPurchase->save();
 
         return $addPurchase;

@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
         .input-group-text {
-            font-size: 12px !important;
+            font-size: 12px!important;
         }
 
         .select_area {
@@ -40,6 +40,39 @@
         .select_area ul li a:hover {
             background-color: #999396;
             color: #fff;
+        }
+
+        .selected_po {
+            background-color: #645f61;
+            color: #fff !important;
+        }
+
+        .po_search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 3px;
+            margin-top: 1px;
+        }
+
+        .po_search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 2px;
+        }
+
+        .po_search_result ul li a {
+            color: #6b6262;
+            font-size: 10px;
+            display: block;
+            padding: 0px 3px;
+        }
+
+        .po_search_result ul li a:hover {
+            color: var(--white-color);
+            background-color: #ada9a9;
         }
 
         b {
@@ -112,21 +145,21 @@
                                         <label class="col-4"><b>{{ __('P/o ID') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" id="order_id" class="form-control fw-bold" placeholder="{{ __('Search Purchase Order') }}" value="{{ $order?->invoice_id }}" autocomplete="off">
+                                                <input type="text" id="po_id" class="form-control fw-bold" placeholder="{{ __('Search Purchase Order') }}" value="{{ $order?->invoice_id }}" autocomplete="off">
 
-                                                <div class="order_search_result d-hide">
-                                                    <ul id="order_list" class="list-unstyled"></ul>
+                                                <div class="po_search_result d-hide">
+                                                    <ul id="list" class="list-unstyled"></ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('Supplier') }}</b> <span class="text-danger">*</span></label>
-                                        <input readonly type="text" id="supplier_name" class="form-control fw-bold text-danger" value="{{ $order?->supplier?->name . '/' . $order?->supplier?->phone }}">
+                                        <label class="col-4"><b>{{ __('Supplier') }}</b></label>
+                                        <input readonly type="text" id="supplier_name" class="form-control fw-bold" value="{{ $order?->supplier?->name . ($order?->supplier ? '/' . $order?->supplier?->phone : '') }}" placeholder="{{ __('Supplier Name') }}">
                                         <input type="hidden" name="supplier_account_id" id="supplier_account_id" value="{{ $order?->supplier_account_id }}">
                                         <input type="hidden" id="closing_balance" class="form-control fw-bold text-danger" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
-                                        <input type="hidden" id="default_balance_type" class="form-control fw-bold text-danger" value="{{ $order?->customer?->group?->default_balance_type }}">
+                                        <input type="hidden" id="default_balance_type" class="form-control fw-bold text-danger" value="{{ $order?->supplier?->group?->default_balance_type }}">
                                     </div>
                                 </div>
 
@@ -194,7 +227,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Purchase A/c') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select name="purchase_account_id" class="form-control" id="purchase_account_id" data-next="search_product">
+                                            <select name="purchase_account_id" class="form-control" id="purchase_account_id" data-next="challan_no">
                                                 @foreach ($purchaseAccounts as $purchaseAccount)
                                                     <option value="{{ $purchaseAccount->id }}">
                                                         {{ $purchaseAccount->name }}
@@ -205,7 +238,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="input-group mt-">
+                                    <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Challan No') }}</b></label>
                                         <div class="col-8">
                                             <input type="text" name="challan_no" class="form-control" id="challan_no" data-next="pay_term_number" placeholder="{{ __('Challan No') }}" autocomplete="off">
@@ -223,7 +256,7 @@
                             <div class="col-md-12">
                                 <div class="row align-items-end p-1">
                                     <input type="hidden" id="e_unique_id">
-                                    <input type="hidden" id="e_item_name">
+                                    <input type="hidden" id="e_product_name">
                                     <input type="hidden" id="e_product_id">
                                     <input type="hidden" id="e_variant_id">
                                     <input type="hidden" id="e_tax_amount">
@@ -243,14 +276,14 @@
                                     <div class="col-xl-2 col-md-4">
                                         <label class="fw-bold">{{ __('Pending Quantity') }}</label>
                                         <div class="input-group">
-                                            <input type="number" step="any" class="form-control w-60 fw-bold" id="e_pending_quantity" value="0.00" placeholder="0.00" autocomplete="off">
+                                            <input readonly type="number" step="any" class="form-control fw-bold text-danger" id="e_pending_quantity" value="0.00" placeholder="{{ __('0.00') }}" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
                                         <label class="fw-bold">{{ __('Receive Quantity') }}</label>
                                         <div class="input-group">
-                                            <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
+                                            <input type="number" step="any" class="form-control fw-bold" id="e_quantity" value="0.00" placeholder="{{ __('0.00') }}" autocomplete="off">
                                             <select id="e_unit_id" class="form-control w-40">
                                                 <option value="">{{ __('Unit') }}</option>
                                             </select>
@@ -259,13 +292,13 @@
 
                                     <div class="col-xl-2 col-md-4">
                                         <label class="fw-bold">{{ __('Unit Cost(Exc. Tax)') }}</label>
-                                        <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_exc_tax" value="0.00" placeholder="0.00" autocomplete="off">
+                                        <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_exc_tax" value="0.00" placeholder="{{ __('0.00') }}" autocomplete="off">
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
                                         <label class="fw-bold">{{ __('Discount') }}</label>
                                         <div class="input-group">
-                                            <input type="number" step="any" class="form-control w-60 fw-bold" id="e_discount" value="0.00" placeholder="0.00" autocomplete="off">
+                                            <input type="number" step="any" class="form-control w-60 fw-bold" id="e_discount" value="0.00" placeholder="{{ __('0.00') }}" autocomplete="off">
                                             <select id="e_discount_type" class="form-control w-40">
                                                 <option value="1">{{ __('Fixed') }}(0.00)</option>
                                                 <option value="2">{{ __('Percentage') }}(%)</option>
@@ -325,7 +358,7 @@
 
                                     <div class="col-xl-2 col-md-4">
                                         <label class="fw-bold">{{ __('Linetotal') }}</label>
-                                        <input readonly type="number" step="any" class="form-control fw-bold" id="e_linetotal" value="0.00" placeholder="0.00" tabindex="-1">
+                                        <input readonly type="number" step="any" class="form-control fw-bold" id="e_linetotal" value="0.00" placeholder="{{ __('0.00') }}" tabindex="-1">
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
@@ -352,15 +385,13 @@
                                                     <th class="text-start">{{ __('Unit Tax') }}</th>
                                                     <th class="text-start">{{ __('Net Unit Cost (Inc. Tax)') }}</th>
                                                     <th class="text-start">{{ __('Line-Total') }}</th>
-
                                                     @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
                                                         <th class="text-start">{{ __('Profit Margine') }}</th>
                                                         <th class="text-start">{{ __('Selling Price(Exc. Tax)') }}</th>
                                                     @endif
-                                                    <th class="text-start"><i class="fas fa-trash-alt"></i></th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="purchase_list">
+                                            <tbody id="purchase_product_list">
                                                 @php
                                                     $itemUnitsArray = [];
                                                 @endphp
@@ -399,7 +430,7 @@
 
                                                         <td>
                                                             <span id="span_pending_quantity_unit" class="fw-bold text-danger">{{ $orderProduct->pending_quantity . '/' . $orderProduct?->unit?->name }}</span>
-                                                            <input type="hidden" id="pending_quantity" value="{{ $orderProduct->ordered_quantity }}">
+                                                            <input type="hidden" id="pending_quantity" value="{{ $orderProduct->pending_quantity }}">
                                                         </td>
 
                                                         <td>
@@ -442,8 +473,8 @@
                                                         </td>
 
                                                         <td>
-                                                            <span id="span_linetotal" class="fw-bold">{{ $orderProduct->line_total }}</span>
-                                                            <input type="hidden" name="linetotals[]" id="linetotal" value="{{ $orderProduct->line_total }}">
+                                                            <span id="span_linetotal" class="fw-bold">0.00</span>
+                                                            <input type="hidden" name="linetotals[]" id="linetotal" value="0.00">
                                                         </td>
 
                                                         @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
@@ -659,7 +690,8 @@
             </form>
         </div>
     </div>
+    <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
 @endsection
 @push('scripts')
-    {{-- @include('purchase.purchases.partials.purchaseCreateJsScript') --}}
+    @include('purchase.order_to_invoice.js_partial.js')
 @endpush

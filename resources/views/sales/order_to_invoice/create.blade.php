@@ -192,7 +192,7 @@
                                                             <input type="text" id="order_id" class="form-control fw-bold" placeholder="{{ __('Search Order') }}" value="{{ $order?->order_id }}" autocomplete="off">
 
                                                             <div class="order_search_result d-hide">
-                                                                <ul id="order_list" class="list-unstyled"></ul>
+                                                                <ul id="list" class="list-unstyled"></ul>
                                                             </div>
                                                         </div>
                                                     </div>

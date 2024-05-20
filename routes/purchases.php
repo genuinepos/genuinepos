@@ -27,6 +27,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
     Route::post('update/{id}', 'update')->name('purchases.update');
     Route::delete('delete/{id}', 'delete')->name('purchases.delete');
     Route::get('search/by/invoice/id/{keyword}', 'searchPurchasesByInvoiceId')->name('purchases.search.by.invoice.id');
+    Route::get('invoice/id', 'purchaseInvoiceId')->name('purchases.invoice.id');
 
     Route::controller(PurchaseProductController::class)->prefix('products')->group(function () {
 
@@ -45,6 +46,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
         Route::get('print/supplier/copy/{id}', 'printSupplierCopy')->name('purchases.order.print.supplier.copy');
         Route::get('search/by/{keyword}', 'searchByPoId')->name('purchases.orders.search');
+        Route::get('po/id', 'poId')->name('purchases.orders.po.id');
     });
 
     Route::controller(PurchaseOrderProductController::class)->prefix('order-products')->group(function () {

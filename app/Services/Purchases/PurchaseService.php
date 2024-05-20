@@ -17,6 +17,7 @@ class PurchaseService
         $generalSettings = config('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
+            ->leftJoin('purchases as purchaseOrder', 'purchases.purchase_order_id', 'purchaseOrder.id')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
@@ -94,6 +95,8 @@ class PurchaseService
             'purchases.due',
             'purchases.paid',
             'purchases.purchase_status',
+            'purchases.purchase_order_id',
+            'purchaseOrder.invoice_id as po_id',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -118,7 +121,15 @@ class PurchaseService
                 $html .= $row->invoice_id;
                 $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
-                return '<a href="' . route('purchases.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+                $link = '';
+                $link .= '<a href="' . route('purchases.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+
+                if ($row->purchase_order_id) {
+
+                    $link .= '<p class="p-0 m-0">' . __("P/o") . ':<a href="' . route('purchase.orders.show', [$row->purchase_order_id]) . '" id="details_btn">' . $row->po_id . '</a>';
+                }
+
+                return $link;
             })->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -372,21 +383,5 @@ class PurchaseService
         $html .= '</div>';
 
         return $html;
-    }
-
-    public function purchaseUpdateValidation(object $request): ?array
-    {
-        return $request->validate([
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit Account field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
     }
 }

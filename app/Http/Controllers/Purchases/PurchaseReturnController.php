@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Purchases;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Enums\DayBookVoucherType;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
@@ -12,19 +12,24 @@ use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\CodeGenerationService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Products\ProductStockService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Purchases\PurchaseReturnService;
 use App\Services\Accounts\AccountingVoucherService;
 use App\Services\Purchases\PurchaseReturnProductService;
-use Modules\Communication\Interface\EmailServiceInterface;
+use App\Http\Requests\Purchases\PurchaseReturnStoreRequest;
+use App\Http\Requests\Purchases\PurchaseReturnDeleteRequest;
+use App\Http\Requests\Purchases\PurchaseReturnUpdateRequest;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
@@ -34,8 +39,7 @@ class PurchaseReturnController extends Controller
         private PurchaseReturnService $purchaseReturnService,
         private PurchaseReturnProductService $purchaseReturnProductService,
         private PurchaseService $purchaseService,
-        private EmailServiceInterface $emailService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
@@ -157,7 +161,7 @@ class PurchaseReturnController extends Controller
             ->get(['accounts.id', 'accounts.name']);
 
         $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -170,12 +174,8 @@ class PurchaseReturnController extends Controller
         return view('purchase.purchase_return.create', compact('accounts', 'methods', 'purchaseAccounts', 'warehouses', 'taxAccounts', 'supplierAccounts', 'branchName'));
     }
 
-    public function store(Request $request, CodeGenerationService $codeGenerator)
+    public function store(PurchaseReturnStoreRequest $request, CodeGenerationService $codeGenerator)
     {
-        abort_if(!auth()->user()->can('purchase_return_add'), 403);
-
-        $this->purchaseReturnService->purchaseReturnValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
@@ -268,7 +268,7 @@ class PurchaseReturnController extends Controller
                 $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $purchase);
             }
 
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 6, data_obj: $addReturn);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::PurchaseReturn->value, dataObj: $addReturn);
 
             DB::commit();
         } catch (Exception $e) {
@@ -360,21 +360,16 @@ class PurchaseReturnController extends Controller
         return view('purchase.purchase_return.edit', compact('return', 'accounts', 'methods', 'purchaseAccounts', 'warehouses', 'taxAccounts', 'supplierAccounts', 'branchName'));
     }
 
-    public function update($id, Request $request, CodeGenerationService $codeGenerator)
+    public function update($id, PurchaseReturnUpdateRequest $request, CodeGenerationService $codeGenerator)
     {
-        abort_if(!auth()->user()->can('purchase_return_edit'), 403);
-
-        $this->purchaseReturnService->purchaseReturnValidation(request: $request);
-
-        $restrictions = $this->purchaseReturnService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseReturnId: $id);
-        if ($restrictions['pass'] == false) {
-
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
-
         try {
-
             DB::beginTransaction();
+
+            $restrictions = $this->purchaseReturnService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseReturnId: $id);
+            if ($restrictions['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restrictions['msg']]);
+            }
 
             $generalSettings = config('generalSettings');
             $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
@@ -501,6 +496,8 @@ class PurchaseReturnController extends Controller
                 $this->purchaseService->adjustPurchaseInvoiceAmounts($purchase);
             }
 
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::PurchaseReturn->value, dataObj: $updateReturn);
+
             DB::commit();
         } catch (Exception $e) {
 
@@ -510,12 +507,9 @@ class PurchaseReturnController extends Controller
         return response()->json(__('Purchase return updated Successfully.'));
     }
 
-    public function delete($id)
+    public function delete($id, PurchaseReturnDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('purchase_return_delete'), 403);
-
         try {
-
             DB::beginTransaction();
 
             $deletePurchaseReturn = $this->purchaseReturnService->deletePurchaseReturn(id: $id);
@@ -544,6 +538,8 @@ class PurchaseReturnController extends Controller
 
                 $this->purchaseService->adjustPurchaseInvoiceAmounts($deletePurchaseReturn->purchase);
             }
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::PurchaseReturn->value, dataObj: $deletePurchaseReturn);
 
             DB::commit();
         } catch (Exception $e) {

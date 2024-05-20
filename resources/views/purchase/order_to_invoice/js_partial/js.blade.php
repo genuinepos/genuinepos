@@ -259,6 +259,7 @@
         var product_id = tr.find('#product_id').val();
         var variant_id = tr.find('#variant_id').val();
         var ordered_quantity = tr.find('#ordered_quantity').val();
+        var received_quantity = tr.find('#received_quantity').val();
         var pending_quantity = tr.find('#pending_quantity').val();
         var quantity = tr.find('#quantity').val();
         var unit_id = tr.find('#unit_id').val();
@@ -288,6 +289,7 @@
         $('#e_product_id').val(product_id);
         $('#e_variant_id').val(variant_id);
         $('#e_ordered_quantity').val(parseFloat(ordered_quantity).toFixed(2));
+        $('#e_received_quantity').val(parseFloat(received_quantity).toFixed(2));
         $('#e_pending_quantity').val(parseFloat(pending_quantity).toFixed(2));
         $('#e_quantity').val(parseFloat(quantity).toFixed(2)).focus().select();
         $('#e_current_quantity').val(parseFloat(quantity).toFixed(2));
@@ -646,6 +648,13 @@
     $('#add_purchase_form').on('submit', function(e) {
         e.preventDefault();
 
+        var total_qty = $('#total_qty').val();
+        if (parseFloat(total_qty) == 0) {
+
+            toastr.error("{{ __('Received qunatity must not be 0') }}");
+            return;
+        }
+
         $('.loading_button').show();
         var url = $(this).attr('action');
 
@@ -671,16 +680,18 @@
                 if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
-                } else if (data.successMsg) {
+                    return;
+                }
+
+                if (data.successMsg) {
 
                     toastr.success(data.successMsg);
-                    $('#add_purchase_form')[0].reset();
-                    $('#purchase_list').empty();
+                    afterCreatePurchase();
                 } else {
 
                     toastr.success("{{ __('Purchase created successfully.') }}");
-                    $('#add_purchase_form')[0].reset();
-                    $('#purchase_list').empty();
+
+                    afterCreatePurchase();
 
                     $(data).printThis({
                         debug: false,
@@ -724,6 +735,47 @@
             isAllowSubmit = true;
         }
     });
+
+    function afterCreatePurchase() {
+
+        @if (isset($order))
+
+            setTimeout(function() {
+                window.location = "{{ url()->previous() }}";
+            }, 2000);
+        @endif
+
+        $('.loading_button').hide();
+        $('.hidden').val(parseFloat(0).toFixed(2));
+        $('#add_purchase_form')[0].reset();
+        $('#purchase_product_list').empty();
+        getPurchaseInvoiceId();
+    }
+
+    function getPurchaseInvoiceId() {
+
+        $.ajax({
+            url: "{{ route('purchases.invoice.id') }}",
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                $('#invoice_id').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
 
     setInterval(function() {
         $('#search_product').removeClass('is-invalid');

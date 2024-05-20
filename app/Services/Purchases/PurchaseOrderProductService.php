@@ -108,7 +108,7 @@ class PurchaseOrderProductService
 
             $receivedQty = $received->sum('received_qty');
             $__receivedQty = isset($receivedQty) ? $receivedQty : 0;
-            $pendingQty = $orderedProduct->order_quantity - $__receivedQty;
+            $pendingQty = $orderedProduct->ordered_quantity - $__receivedQty;
             $orderedProduct->received_quantity = $__receivedQty;
             $orderedProduct->pending_quantity = $pendingQty;
             $orderedProduct->save();

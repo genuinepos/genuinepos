@@ -463,12 +463,12 @@
                     </div>
                 </section>
 
-                <div class="row justify-content-center mt-1">
+                <div class="row justify-content-center mt-2">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success submit_button">{{ __('Save And Print') }}</button>
-                            <button type="submit" id="save" value="save" class="btn btn-sm btn-success submit_button">{{ __('Save') }}</button>
+                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save" value="save" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>

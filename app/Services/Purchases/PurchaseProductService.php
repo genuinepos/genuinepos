@@ -262,7 +262,7 @@ class PurchaseProductService
         $updateOrAddPurchaseProduct->batch_number = $request->batch_numbers[$index];
         $updateOrAddPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
 
-        $updateOrAddPurchaseProduct->delete_in_update = 0;
+        $updateOrAddPurchaseProduct->delete_in_update = BooleanType::False->value;
         $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateOrAddPurchaseProduct->save();
 

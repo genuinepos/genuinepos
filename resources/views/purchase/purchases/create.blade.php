@@ -80,7 +80,7 @@
                                         <label class="col-4"><b>{{ __('Supplier') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
-                                                <select required name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
+                                                <select required name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="warehouse_id">
                                                     <option data-default_balance_type="cr" value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
                                                         @if ($supplierAccount->is_walk_in_customer == 1)
@@ -109,7 +109,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Invoice ID') }}</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="{{ __('If you keep this field empty, The Purchase Invoice ID will be generated automatically.') }}" class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" data-next="warehouse_id" placeholder="{{ __('Purchase Invoice ID') }}" autocomplete="off">
+                                            <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" data-next="warehouse_id" value="{{ $invoiceId }}" placeholder="{{ __('Purchase Invoice ID') }}" autocomplete="off">
                                             <span class="error error_invoice_id"></span>
                                         </div>
                                     </div>
@@ -522,8 +522,8 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">{{ __('Save And Print') }}</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">{{ __('Save') }}</button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save" value="2" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>

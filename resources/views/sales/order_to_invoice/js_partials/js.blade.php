@@ -970,10 +970,8 @@
         $('.hidden').val(parseFloat(0).toFixed(2));
         $('#add_sale_form')[0].reset();
         $('#sale_product_list').empty();
-        $("#sales_order_account_id").select2("destroy");
-        $("#sales_order_account_id").select2();
-        $("#sales_order_account_id").focus();
     }
+
 
     $('#payment_method_id').on('change', function() {
 

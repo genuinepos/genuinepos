@@ -2,17 +2,19 @@
 
 namespace App\Interfaces\Purchases;
 
-interface PurchaseControllerMethodContainersInterface
+interface PurchaseOrderControllerMethodContainersInterface
 {
     /**
-     * @return \App\Services\Purchases\MethodContainerServices\PurchaseControllerMethodContainersService
+     * @return \App\Services\Purchases\MethodContainerServices\PurchaseOrderControllerMethodContainersService
      */
 
     public function indexMethodContainer(object $request, ?int $supplierAccountId = null): array|object;
 
-    public function showMethodContainer($id): ?array;
+    public function showMethodContainer(int $id): ?array;
 
     public function printMethodContainer(object $request, int $id): ?array;
+
+    public function printSupplierCopyMethodContainer(object $request, int $id): ?array;
 
     public function createMethodContainer(object $codeGenerator): array;
 
@@ -24,7 +26,7 @@ interface PurchaseControllerMethodContainersInterface
 
     public function deleteMethodContainer(int $id): ?array;
 
-    public function searchPurchasesByInvoiceIdMethodContainer(int $keyWord): array|object;
+    public function searchByPoIdMethodContainer(int $keyWord): array|object;
 
-    public function purchaseInvoiceIdMethodContainer(object $codeGenerator): string;
+    public function poIdMethodContainer(object $codeGenerator): string;
 }

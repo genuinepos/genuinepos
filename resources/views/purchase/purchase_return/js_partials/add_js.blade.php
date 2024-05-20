@@ -87,7 +87,7 @@
         var warehouse_id = $(this).data('warehouse_id');
         var warehouse_name = $(this).data('warehouse_name');
         var supplier_account_id = $(this).data('supplier_account_id');
-        var supplier_curr_balance = $(this).data('current_balance');
+        var closing_balance = $(this).data('closing_balance');
 
         var url = "{{ route('purchases.products.for.purchase.return', [':purchase_id']) }}";
         var route = url.replace(':purchase_id', purchase_id);
@@ -111,7 +111,7 @@
                 $('#purchase_id').val(purchase_id);
                 $('#e_warehouse_id').val(warehouse_id);
                 $('#supplier_account_id').val(supplier_account_id).trigger('change');
-                $('#current_balance').val(supplier_curr_balance);
+                $('#closing_balance').val(closing_balance);
                 $('.invoice_search_result').hide();
                 $('#return_item_list').empty();
                 $('#search_product').prop('disabled', true);

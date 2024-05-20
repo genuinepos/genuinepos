@@ -131,10 +131,10 @@
         </div>
 
         <div class="p-1">
-            <form id="add_purchase_form" action="#" enctype="multipart/form-data" method="POST">
+            <form id="add_purchase_form" action="{{ route('purchase.order.to.invoice.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <input type="hidden" name="action" id="action" value="">
-                <input type="hidden" name="purchase_order_id" id="purchase_order_id" value="{{ $order?->id }}">
+                <input type="hidden" name="action" class="hidden" id="action" value="">
+                <input type="hidden" name="purchase_order_id" class="hidden" id="purchase_order_id" value="{{ $order?->id }}">
                 <input type="hidden" name="print_page_size" id="print_page_size" value="1">
                 <section>
                     <div class="form_element rounded mt-0 mb-2">
@@ -157,9 +157,9 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Supplier') }}</b></label>
                                         <input readonly type="text" id="supplier_name" class="form-control fw-bold" value="{{ $order?->supplier?->name . ($order?->supplier ? '/' . $order?->supplier?->phone : '') }}" placeholder="{{ __('Supplier Name') }}">
-                                        <input type="hidden" name="supplier_account_id" id="supplier_account_id" value="{{ $order?->supplier_account_id }}">
-                                        <input type="hidden" id="closing_balance" class="form-control fw-bold text-danger" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
-                                        <input type="hidden" id="default_balance_type" class="form-control fw-bold text-danger" value="{{ $order?->supplier?->group?->default_balance_type }}">
+                                        <input type="hidden" name="supplier_account_id" class="hidden" id="supplier_account_id" value="{{ $order?->supplier_account_id }}">
+                                        <input type="hidden" id="closing_balance" class="hidden" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
+                                        <input type="hidden" id="default_balance_type" class="hidden" value="{{ $order?->supplier?->group?->default_balance_type }}">
                                     </div>
                                 </div>
 
@@ -682,15 +682,15 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">{{ __('Save And Print') }}</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">{{ __('Save') }}</button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save" value="2" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
+    <input type="hidden" name="search_product" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
 @endsection
 @push('scripts')
     @include('purchase.order_to_invoice.js_partial.js')

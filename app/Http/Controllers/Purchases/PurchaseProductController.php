@@ -22,10 +22,7 @@ class PurchaseProductController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchased_product_list')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchased_product_list'), 403);
 
         if ($request->ajax()) {
 

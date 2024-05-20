@@ -1043,21 +1043,19 @@
                 if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
-                } else if (data.successMsg) {
+                    return;
+                }
+
+                if (data.successMsg) {
 
                     toastr.success(data.successMsg);
-                    $('#add_purchase_form')[0].reset();
-                    $('#purchase_list').empty();
-
-                    $("#supplier_account_id").select2("destroy");
-                    $("#supplier_account_id").select2();
+                    afterCreatePurchase();
+                    return;
                 } else {
 
                     toastr.success("{{ __('Purchase created successfully.') }}");
-                    $('#add_purchase_form')[0].reset();
-                    $('#purchase_list').empty();
-                    $("#supplier_account_id").select2("destroy");
-                    $("#supplier_account_id").select2();
+
+                    afterCreatePurchase();
 
                     $(data).printThis({
                         debug: false,
@@ -1068,6 +1066,8 @@
                         printDelay: 1000,
                         header: null,
                     });
+
+
                 }
             },
             error: function(err) {
@@ -1101,6 +1101,40 @@
             isAllowSubmit = true;
         }
     });
+
+    function afterCreatePurchase() {
+
+        $('#add_purchase_form')[0].reset();
+        $('#purchase_list').empty();
+        $("#supplier_account_id").select2("destroy");
+        $("#supplier_account_id").select2();
+        getPurchaseInvoiceId();
+    }
+
+    function getPurchaseInvoiceId() {
+
+        $.ajax({
+            url: "{{ route('purchases.invoice.id') }}",
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                $('#invoice_id').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
 
     setInterval(function() {
         $('#search_product').removeClass('is-invalid');
@@ -1153,7 +1187,6 @@
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");

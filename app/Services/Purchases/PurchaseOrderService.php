@@ -86,6 +86,9 @@ class PurchaseOrderService
             'purchases.due',
             'purchases.paid',
             'purchases.purchase_status',
+            'purchases.po_qty',
+            'purchases.po_pending_qty',
+            'purchases.po_received_qty',
             'purchases.po_receiving_status',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
@@ -128,6 +131,21 @@ class PurchaseOrderService
 
             ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
 
+            ->editColumn('po_qty', function ($row) {
+
+                return '<span class="po_qty" data-value="' . $row->po_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_qty) . '</span>';
+            })
+
+            ->editColumn('po_pending_qty', function ($row) {
+
+                return '<span class="po_pending_qty text-danger" data-value="' . $row->po_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_pending_qty) . '</span>';
+            })
+
+            ->editColumn('po_received_qty', function ($row) {
+
+                return '<span class="po_received_qty text-success" data-value="' . $row->po_received_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_received_qty) . '</span>';
+            })
+
             ->editColumn('receiving_status', function ($row) {
 
                 if ($row->po_receiving_status == 'Completed') {
@@ -157,16 +175,16 @@ class PurchaseOrderService
 
                 return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
-            ->rawColumns(['action', 'date', 'invoice_id', 'branch', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'receiving_status', 'created_by'])
+            ->rawColumns(['action', 'date', 'invoice_id', 'branch', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'receiving_status', 'po_qty', 'po_pending_qty','po_received_qty', 'created_by'])
             ->make(true);
     }
 
     public function addPurchaseOrder(object $request, object $codeGenerator, string $invoicePrefix): ?object
     {
-        $invoiceId = $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::PurchaseOrder->value, prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        $orderId = $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::PurchaseOrder->value, prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $invoiceId;
+        $addPurchase->invoice_id = $orderId;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_account_id = $request->supplier_account_id;
         $addPurchase->purchase_account_id = $request->purchase_account_id;
@@ -246,7 +264,12 @@ class PurchaseOrderService
 
         if (count($deletePurchaseOrder->references) > 0) {
 
-            return ['pass' => false, 'msg' => __('Purchase Order can not be deleted. There is one or more payment which is against this purchase order.')];
+            return ['pass' => false, 'msg' => __('Purchase Order can not be deleted. There is one or more payment against this purchase order.')];
+        }
+
+        if (count($deletePurchaseOrder->purchases) > 0) {
+
+            return ['pass' => false, 'msg' => __('Purchase Order can not be deleted. There is one or more purchase invoice against this purchase order.')];
         }
 
         $deletePurchaseOrder->delete();
@@ -284,7 +307,7 @@ class PurchaseOrderService
     {
         $purchaseOrderProducts = DB::table('purchase_order_products')->where('purchase_order_products.purchase_id', $purchaseOrderId)
             ->select(
-                DB::raw('sum(order_quantity) as ordered_qty'),
+                DB::raw('sum(ordered_quantity) as ordered_qty'),
                 DB::raw('sum(pending_quantity) as pending_quantity'),
                 DB::raw('sum(received_quantity) as received_quantity')
             )->groupBy('purchase_order_products.purchase_id')->get();
@@ -355,22 +378,5 @@ class PurchaseOrderService
         $html .= '</div>';
 
         return $html;
-    }
-
-    public function purchaseOrderValidation(object $request): ?array
-    {
-        return $request->validate([
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'delivery_date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit A/c is required.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_id.required' => __('Supplier is required.'),
-        ]);
     }
 }

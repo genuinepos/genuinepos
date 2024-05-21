@@ -689,7 +689,7 @@ class AccountService
 
                 $query->where('accounts.branch_id', $request->branch_id);
             }
-        }else if ($request->branch_id && $request->child_branch_id) {
+        } else if ($request->branch_id && $request->child_branch_id) {
 
             $query->where('accounts.branch_id', $request->child_branch_id);
         }

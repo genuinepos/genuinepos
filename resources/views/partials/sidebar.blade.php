@@ -668,16 +668,18 @@
                                                 </div>
                                             @endif
 
-                                            <div class="sub-menu-col">
-                                                <a href="" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
+                                            @if (auth()->user()->can('purchase_order_to_invoice'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('purchase.order.to.invoice.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('P/o To Receive Stock') }}</p>
-                                                </a>
-                                            </div>
+                                                        <p class="switch_text">{{ __('P/o To Purchase Invoice') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif

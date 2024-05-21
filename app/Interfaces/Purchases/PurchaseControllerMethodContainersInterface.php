@@ -14,7 +14,7 @@ interface PurchaseControllerMethodContainersInterface
 
     public function printMethodContainer(object $request, int $id): ?array;
 
-    public function createMethodContainer(): array;
+    public function createMethodContainer(object $codeGenerator): array;
 
     public function storeMethodContainer(object $request, object $codeGenerator): array;
 
@@ -23,4 +23,8 @@ interface PurchaseControllerMethodContainersInterface
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array;
 
     public function deleteMethodContainer(int $id): ?array;
+
+    public function searchPurchasesByInvoiceIdMethodContainer(int $keyWord): array|object;
+
+    public function purchaseInvoiceIdMethodContainer(object $codeGenerator): string;
 }

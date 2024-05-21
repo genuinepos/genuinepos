@@ -126,7 +126,7 @@
             </div>
 
             <div class="row mt-2">
-                <div class="col-6">
+                <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span>{{ $purchase->supplier->name }}</li>
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span>{{ $purchase->supplier->address }}</li>
@@ -134,7 +134,7 @@
                     </ul>
                 </div>
 
-                <div class="col-6">
+                <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
                             {{ date($dateFormat, strtotime($purchase->date)) }}
@@ -142,6 +142,14 @@
 
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span>{{ $purchase->invoice_id }}</li>
 
+                        @if ($purchase?->purchaseOrder)
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span>{{ $purchase?->purchaseOrder?->invoice_id }}</li>
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="col-4">
+                    <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
                             @php
                                 $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -178,6 +186,9 @@
                     </thead>
                     <tbody class="purchase_print_product_list">
                         @foreach ($purchase->purchaseProducts as $purchaseProduct)
+                            @if ($purchase?->purchaseOrder && $purchaseProduct->quantity <= 0)
+                                @continue
+                            @endif
                             <tr>
                                 @php
                                     $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->variant_name : '';

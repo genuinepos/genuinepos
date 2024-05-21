@@ -1084,7 +1084,6 @@
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");

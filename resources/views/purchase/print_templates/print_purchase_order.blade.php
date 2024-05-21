@@ -173,13 +173,13 @@
                         <tr>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ordered Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -193,7 +193,9 @@
                                     {{ Str::limit($orderProduct->product->name, 25) . ' ' . $variant }}
                                     <small>{!! $orderProduct->description ? '<br/>' . $orderProduct->description : '' !!}</small>
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>
                                 <td class="text-start" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_exc_tax) }}
                                 </td>
@@ -201,8 +203,7 @@
                                 <td class="text-start" style="font-size:11px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
                                 <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }}</td>
                                 <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->pending_quantity }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->received_quantity }}</td>
+
                             </tr>
                         @endforeach
                     </tbody>

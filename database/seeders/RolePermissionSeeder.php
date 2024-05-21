@@ -549,6 +549,7 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '405', 'name' => 'expense_report'],
             ['id' => '406', 'name' => 'day_book'],
+            ['id' => '407', 'name' => 'purchase_order_to_invoice'],
         ];
 
         return $permissions;

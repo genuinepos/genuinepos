@@ -14,7 +14,115 @@
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <title>Bill - {{ config('app.name') }}</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {{-- <link href="http://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
+    <style>
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(var(--bs-gutter-y) * -1);
+            margin-right: calc(var(--bs-gutter-x) * -.5);
+            margin-left: calc(var(--bs-gutter-x) * -.5)
+        }
+
+        .row>* {
+            flex-shrink: 0;
+            width: 100%;
+            max-width: 100%;
+            padding-right: calc(var(--bs-gutter-x) * .5);
+            padding-left: calc(var(--bs-gutter-x) * .5);
+            margin-top: var(--bs-gutter-y)
+        }
+
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-accent-bg: transparent;
+            --bs-table-striped-color: #212529;
+            --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+            --bs-table-active-color: #212529;
+            --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+            --bs-table-hover-color: #212529;
+            --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            vertical-align: top;
+            border-color: #dee2e6
+        }
+
+        .table>:not(caption)>*>* {
+            padding: .5rem .5rem;
+            background-color: var(--bs-table-bg);
+            border-bottom-width: 1px;
+            box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg)
+        }
+
+        .table>tbody {
+            vertical-align: inherit
+        }
+
+        .table>thead {
+            vertical-align: bottom
+        }
+
+        .table>:not(:last-child)>:last-child>* {
+            border-bottom-color: currentColor
+        }
+
+        .table-sm>:not(caption)>*>* {
+            padding: .25rem .25rem
+        }
+
+        .table-bordered>:not(caption)>* {
+            border-width: 1px 0
+        }
+
+        .table-bordered>:not(caption)>*>* {
+            border-width: 0 1px
+        }
+
+        .mt-1 {
+            margin-top: .25rem !important
+        }
+
+        .mt-2 {
+            margin-top: .5rem !important
+        }
+
+        table {
+            caption-side: bottom;
+            border-collapse: collapse
+        }
+
+        th {
+            text-align: inherit;
+            text-align: -webkit-match-parent
+        }
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
+            border-color: inherit;
+            border-style: solid;
+            border-width: 0
+        }
+
+        .text-start {
+            text-align: left !important
+        }
+
+        .text-end {
+            text-align: right !important
+        }
+
+        .text-center {
+            text-align: center !important
+        }
+    </style>
 </head>
 
 <body id="dashboard-8">
@@ -64,7 +172,7 @@
             margin: 0;
         }
 
-        p{
+        p {
             font-size: 11px;
             padding: 0px;
             margin: 0px;
@@ -76,7 +184,10 @@
         <div class="details_area">
             <table class="table table-sm">
                 <tr style="border-bottom: 1px solid;">
-                    <td><img src="{{ asset('assets/images/app_logo.png') }}" width="100" alt="Logo" style="background: gray;boarder-radius:20px;"></td>
+                    <td>
+                        {{-- <img src="{{ asset('modules/saas/images/logo_black.png') }}" width="100" alt="{{ config('app.name') }}" style="background: gray;boarder-radius:20px;"> --}}
+                        <h2 style="text-transform: uppercase;font-weight:bolder;padding:0px;margin:0px;">{{ config('app.name') }}</h2>
+                    </td>
                     <td class="text-end">
                         <p style="text-transform: uppercase;padding:0px;">
                             {{ config('speeddigit.name') }}
@@ -106,23 +217,39 @@
                         <td class="text-start">
                             <table>
                                 <tr>
-                                    <th><p>{{ __('Customer') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)?->user?->name }}</p></td>
+                                    <th>
+                                        <p>{{ __('Customer') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)?->user?->name }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Address') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)?->user?->address }}</p></td>
+                                    <th>
+                                        <p>{{ __('Address') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)?->user?->address }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Email') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)?->user?->email }}</p></td>
+                                    <th>
+                                        <p>{{ __('Email') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)?->user?->email }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Phone') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)?->user?->phone }}</p></td>
+                                    <th>
+                                        <p>{{ __('Phone') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)?->user?->phone }}</p>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -130,18 +257,30 @@
                         <td class="text-start">
                             <table>
                                 <tr>
-                                    <th><p>{{ __('Date') }}</p></th>
-                                    <td><p>: {{ $transaction->created_at->format('d-m-Y') }}</p></td>
+                                    <th>
+                                        <p>{{ __('Date') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ $transaction->created_at->format('d-m-Y') }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Invoice ID') }}</p></th>
-                                    <td><p>: #</p></td>
+                                    <th>
+                                        <p>{{ __('Invoice ID') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: #</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Transaction Type') }}</p></th>
-                                    <td><p>: {{ App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name }}</p></td>
+                                    <th>
+                                        <p>{{ __('Transaction Type') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name }}</p>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -166,7 +305,7 @@
             <br>
             <div class="row">
                 <div class="col-12 text-center">
-                    <p style="font-size: 10px!important;">{{ __("Thanks For Using Our Service.") }}</p>
+                    <p style="font-size: 10px!important;">{{ __('Thanks For Using Our Service.') }}</p>
                 </div>
             </div><br>
 

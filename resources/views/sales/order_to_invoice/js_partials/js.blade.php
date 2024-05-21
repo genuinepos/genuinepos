@@ -970,10 +970,8 @@
         $('.hidden').val(parseFloat(0).toFixed(2));
         $('#add_sale_form')[0].reset();
         $('#sale_product_list').empty();
-        $("#sales_order_account_id").select2("destroy");
-        $("#sales_order_account_id").select2();
-        $("#sales_order_account_id").focus();
     }
+
 
     $('#payment_method_id').on('change', function() {
 
@@ -1031,33 +1029,27 @@
     var selectObjClassName = 'selectProduct';
     $('#order_id').mousedown(function(e) {
 
-        afterClickOrFocusSaleInvoiceId();
+        afterClickOrFocusSalesOrderId();
     }).focus(function(e) {
 
-        ul = document.getElementById('order_list')
+        ul = document.getElementById('list')
         selectObjClassName = 'selected_order';
     });
 
-    function afterClickOrFocusSaleInvoiceId() {
+    function afterClickOrFocusSalesOrderId() {
 
-        ul = document.getElementById('order_list')
+        ul = document.getElementById('list')
         selectObjClassName = 'selected_order';
+        $('#customer_name').val('');
+        $('#customer_account_id').val('');
         $('#order_id').val('');
         $('#closing_balance').val(0.00);
         $('#sales_order_id').val('');
         $('#sale_product_list').empty();
         $('#sales_order_product_id').empty();
         $('.order_search_result').hide();
-        $('#order_list').empty();
+        $('#list').empty();
         calculateTotalAmount();
-    }
-
-    function afterFocusSearchItemField() {
-
-        ul = document.getElementById('list');
-        selectObjClassName = 'selectProduct';
-
-        $('#sales_order_id').val('');
     }
 
     $(document).on('keyup', 'body', function(e) {
@@ -1068,7 +1060,6 @@
             $('.order_search_result').hide();
             $('.select_area').hide();
             $('#list').empty();
-            $('#order_list').empty();
         }
     });
 
@@ -1097,10 +1088,11 @@
                 if (!$.isEmptyObject(data.noResult)) {
 
                     $('.order_search_result').hide();
+                    $('#list').empty();
                 } else {
 
                     $('.order_search_result').show();
-                    $('#order_list').html(data);
+                    $('#list').html(data);
                 }
             }
         });
@@ -1145,6 +1137,7 @@
 
                 $('#sales_order_product_id').html(data.view);
                 $('#sales_order_product_id').focus();
+                calculateTotalAmount();
             }
         });
     });
@@ -1157,14 +1150,7 @@
 
             if ($(this).attr('id') == 'account_id') {
 
-                if (status == 1 || status == '') {
-
-                    $('#final_and_print').focus().select();
-                } else if (status == 3) {
-
-                    $('#order').focus().select();
-                }
-
+                $('#final_and_print').focus().select();
                 return;
             }
 

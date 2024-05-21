@@ -701,6 +701,10 @@
                                                         <label for="purchase_order_edit">{{ __('Purchase Order Edit') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('purchase_order_to_invoice') ? 'CHECKED' : '' }} name="purchase_order_to_invoice" id="purchase_order_to_invoice" class="purchase purchase_order">
+                                                        <label for="purchase_order_to_invoice">{{ __('P/o To Purchase Invoice') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('purchase_order_delete') ? 'CHECKED' : '' }} name="purchase_order_delete" id="purchase_order_delete" class="purchase purchase_order">
                                                         <label for="purchase_order_delete">{{ __('Purchase Order Delete') }}</label>
                                                     </p>

@@ -2,214 +2,90 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use App\Enums\AccountingVoucherType;
-use App\Enums\AccountLedgerVoucherType;
-use App\Enums\DayBookVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Purchases\PurchaseOrderProductService;
-use App\Services\Purchases\PurchaseOrderService;
-use App\Services\Purchases\PurchaseService;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\PaymentMethodService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
+use App\Enums\PurchaseStatus;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Purchases\PurchaseOrderStoreRequest;
+use App\Http\Requests\Purchases\PurchaseOrderDeleteRequest;
+use App\Http\Requests\Purchases\PurchaseOrderUpdateRequest;
+use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
 
 class PurchaseOrderController extends Controller
 {
-    public function __construct(
-        private PurchaseOrderService $purchaseOrderService,
-        private PurchaseService $purchaseService,
-        private PurchaseOrderProductService $purchaseOrderProductService,
-        private AccountService $accountService,
-        private AccountFilterService $accountFilterService,
-        private BranchService $branchService,
-        private PaymentMethodService $paymentMethodService,
-        private DayBookService $dayBookService,
-        private AccountingVoucherService $accountingVoucherService,
-        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-        private AccountLedgerService $accountLedgerService,
-        private UserActivityLogUtil $userActivityLogUtil,
-    ) {
+    public function __construct()
+    {
         $this->middleware('subscriptionRestrictions');
     }
 
-    public function index(Request $request, $supplierAccountId = null)
+    public function index(Request $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface, $supplierAccountId = null)
     {
         abort_if(!auth()->user()->can('purchase_order_index'), 403);
 
+        $indexMethodContainer = $purchaseOrderControllerMethodContainersInterface->indexMethodContainer(request: $request, supplierAccountId: $supplierAccountId);
+
         if ($request->ajax()) {
 
-            return $this->purchaseOrderService->purchaseOrdersTable(request: $request, supplierAccountId: $supplierAccountId);
+            return $indexMethodContainer;;
         }
 
-        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
-
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
-
-        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        extract($indexMethodContainer);
 
         return view('purchase.orders.index', compact('branches', 'supplierAccounts'));
     }
 
-    public function show($id)
+    public function show($id, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
-            'supplier:id,name,phone,address',
-            'admin:id,prefix,name,last_name',
-            'purchaseAccount:id,name',
-            'purchaseOrderProducts',
-            'purchaseOrderProducts.product',
-            'purchaseOrderProducts.variant',
-            'purchaseOrderProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
-            'purchaseOrderProducts.unit.baseUnit:id,base_unit_id,code_name',
+        $showMethodContainer = $purchaseOrderControllerMethodContainersInterface->showMethodContainer(id: $id);
 
-            'references:id,voucher_description_id,purchase_id,amount',
-            'references.voucherDescription:id,accounting_voucher_id',
-            'references.voucherDescription.accountingVoucher:id,voucher_no,date,voucher_type',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions:id,accounting_voucher_id,account_id,payment_method_id',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.paymentMethod:id,name',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.account:id,name,account_number,account_group_id,bank_id,bank_branch',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.bank:id,name',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
-        ]);
+        extract($showMethodContainer);
 
         return view('purchase.orders.ajax_view.show', compact('order'));
     }
 
-    public function print($id, Request $request)
+    public function print($id, Request $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
-            'supplier:id,name,phone,address',
-            'admin:id,prefix,name,last_name',
-            'purchaseAccount:id,name',
-            'purchaseOrderProducts',
-            'purchaseOrderProducts.product',
-            'purchaseOrderProducts.variant',
-            'purchaseOrderProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
-            'purchaseOrderProducts.unit.baseUnit:id,base_unit_id,code_name',
-        ]);
+        $printMethodContainer = $purchaseOrderControllerMethodContainersInterface->printMethodContainer(request: $request, id: $id);
 
-        $printPageSize = $request->print_page_size;
+        extract($printMethodContainer);
 
         return view('purchase.print_templates.print_purchase_order', compact('order', 'printPageSize'));
     }
 
-    public function printSupplierCopy($id, Request $request)
+    public function printSupplierCopy($id, Request $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
-            'supplier:id,name,phone,address',
-            'admin:id,prefix,name,last_name',
-            'purchaseAccount:id,name',
-            'purchaseOrderProducts',
-            'purchaseOrderProducts.product',
-            'purchaseOrderProducts.variant',
-            'purchaseOrderProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
-            'purchaseOrderProducts.unit.baseUnit:id,base_unit_id,code_name',
-        ]);
+        $printSupplierCopyMethodContainer = $purchaseOrderControllerMethodContainersInterface->printSupplierCopyMethodContainer(request: $request, id: $id);
 
-        $printPageSize = $request->print_page_size;
+        extract($printSupplierCopyMethodContainer);
 
         return view('purchase.print_templates.print_order_supplier_copy', compact('order', 'printPageSize'));
     }
 
-    public function create()
+    public function create(CodeGenerationServiceInterface $codeGenerator, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('purchase_order_add'), 403);
 
-        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        $createMethodContainer = $purchaseOrderControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
-        $accounts = $this->accountService->accounts(with: [
-            'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch',
-        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->whereIn('account_groups.sub_sub_group_number', [2])
-            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
-            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
-            ->get();
+        extract($createMethodContainer);
 
-        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
-
-        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
-
-        $purchaseAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.sub_group_number', 12)
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->get(['accounts.id', 'accounts.name']);
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', auth()->user()->branch_id)
-            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
-
-        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
-
-        return view('purchase.orders.create', compact('methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
+        return view('purchase.orders.create', compact('orderId', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
     }
 
-    public function store(Request $request, CodeGenerationService $codeGenerator)
+    public function store(PurchaseOrderStoreRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_order_add'), 403);
-
-        $this->purchaseOrderService->purchaseOrderValidation($request);
-
-        $restrictions = $this->purchaseOrderService->restrictions($request);
-        if ($restrictions['pass'] == false) {
-
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
-
         try {
             DB::beginTransaction();
 
-            $generalSettings = config('generalSettings');
-            $invoicePrefix = $generalSettings['prefix__purchase_order_prefix'] ? $generalSettings['prefix__purchase_order_prefix'] : 'PO';
-            $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
-            $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
+            $storeMethodContainer = $purchaseOrderControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
 
-            $addPurchaseOrder = $this->purchaseOrderService->addPurchaseOrder(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
+            if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
-            // Add Day Book entry for Purchase
-            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PurchaseOrder->value, date: $request->date, accountId: $request->supplier_account_id, transId: $addPurchaseOrder->id, amount: $request->total_ordered_amount, amountType: 'credit');
-
-            $addPurchaseOrderProduct = $this->purchaseOrderProductService->addPurchaseOrderProduct(request: $request, isEditProductPrice: $isEditProductPrice, purchaseOrderId: $addPurchaseOrder->id);
-
-            if ($request->paying_amount > 0) {
-
-                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $addPurchaseOrder->id);
-
-                // Add Debit Account Accounting voucher Description
-                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
-
-                // Add Accounting VoucherDescription References
-                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$addPurchaseOrder->id]);
-
-                //Add Debit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
-
-                // Add Payment Description Credit Entry
-                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
-
-                //Add Credit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
+                return response()->json(['errorMsg' => $storeMethodContainer['msg']]);
             }
 
-            // Add user Log
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 5, data_obj: $addPurchaseOrder);
+            extract($storeMethodContainer);
 
             DB::commit();
         } catch (Exception $e) {
@@ -222,149 +98,32 @@ class PurchaseOrderController extends Controller
             return response()->json(['successMsg' => __('Purchase order is created successfully.')]);
         } else {
 
-            $order = $this->purchaseOrderService->singlePurchaseOrder(
-                with: [
-                    'branch',
-                    'branch.parentBranch',
-                    'supplier',
-                    'admin:id,prefix,name,last_name',
-                    'purchaseOrderProducts',
-                    'purchaseOrderProducts.product',
-                    'purchaseOrderProducts.variant',
-                    'purchaseOrderProducts.unit:id,code_name',
-                ],
-                id: $addPurchaseOrder->id
-            );
-
-            $printPageSize = $request->print_page_size;
-            $payingAmount = $request->paying_amount;
-
             return view('purchase.print_templates.print_purchase_order', compact('order', 'payingAmount', 'printPageSize'));
         }
     }
 
-    public function edit($id)
+    public function edit($id, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('purchase_order_edit'), 403);
 
-        $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
-            'branch',
-            'branch.parentBranch',
-            'supplier',
-            'supplier.group',
-            'purchaseOrderProducts',
-            'purchaseOrderProducts.product',
-            'purchaseOrderProducts.variant',
-            'purchaseOrderProducts.product.unit:id,name,code_name',
-            'purchaseOrderProducts.product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
-            'purchaseOrderProducts.unit:id,name,code_name,base_unit_multiplier',
-        ]);
+        $editMethodContainer = $purchaseOrderControllerMethodContainersInterface->editMethodContainer(id: $id);
 
-        $ownBranchIdOrParentBranchId = $order?->branch?->parent_branch_id ? $order?->branch?->parent_branch_id : $order->branch_id;
-
-        $accounts = $this->accountService->accounts(with: [
-            'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch',
-        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('branch_id', $order->branch_id)
-            ->whereIn('account_groups.sub_sub_group_number', [2])
-            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
-            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
-            ->get();
-
-        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
-
-        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
-
-        $purchaseAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.sub_group_number', 12)
-            ->where('accounts.branch_id', $order->branch_id)
-            ->get(['accounts.id', 'accounts.name']);
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.sub_sub_group_number', 8)
-            // ->where('accounts.branch_id', $order->branch_id)
-            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
-
-        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        extract($editMethodContainer);
 
         return view('purchase.orders.edit', compact('methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts', 'order', 'ownBranchIdOrParentBranchId'));
     }
 
-    public function update($id, Request $request, CodeGenerationService $codeGenerator)
+    public function update($id, PurchaseOrderUpdateRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_order_edit'), 403);
-
-        $this->purchaseOrderService->purchaseOrderValidation($request);
-
-        $restrictions = $this->purchaseOrderService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseOrderId: $id);
-        if ($restrictions['pass'] == false) {
-
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
-
         try {
-
             DB::beginTransaction();
 
-            $generalSettings = config('generalSettings');
-            $paymentVoucherPrefix = $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
-            $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
+            $updateMethodContainer = $purchaseOrderControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request, codeGenerator: $codeGenerator);
 
-            // get updatable purchase row
-            $purchaseOrder = $this->purchaseService->singlePurchase(id: $id, with: ['purchaseOrderProducts']);
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
-            $storedCurrPurchaseAccountId = $purchaseOrder->purchase_account_id;
-            $storedCurrSupplierAccountId = $purchaseOrder->supplier_account_id;
-            $storedCurrPurchaseTaxAccountId = $purchaseOrder->purchase_tax_ac_id;
-            $storePurchaseProducts = $purchaseOrder->purchaseOrderProducts;
-
-            $updatePurchaseOrder = $this->purchaseOrderService->updatePurchaseOrder(request: $request, updatePurchaseOrder: $purchaseOrder);
-            $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $updatePurchaseOrder);
-
-            // Add Day Book entry for Purchase
-            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::PurchaseOrder->value, date: $request->date, accountId: $request->supplier_account_id, transId: $updatePurchaseOrder->id, amount: $request->total_ordered_amount, amountType: 'credit');
-
-            $this->purchaseOrderProductService->updatePurchaseOrderProducts(request: $request, isEditProductPrice: $isEditProductPrice, purchaseOrderId: $updatePurchaseOrder->id);
-
-            $deletedUnusedPurchaseOrderProducts = $this->purchaseOrderProductService->purchaseOrderProducts()
-                ->where('purchase_id', $updatePurchaseOrder->id)
-                ->where('is_delete_in_update', 1)->get();
-
-            if (count($deletedUnusedPurchaseOrderProducts) > 0) {
-
-                foreach ($deletedUnusedPurchaseOrderProducts as $deletedPurchaseOrderProduct) {
-
-                    $storedProductId = $deletedPurchaseOrderProduct->product_id;
-                    $storedVariantId = $deletedPurchaseOrderProduct->variant_id;
-                    $deletedPurchaseOrderProduct->delete();
-                }
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
             }
-
-            if ($request->paying_amount > 0) {
-
-                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $updatePurchaseOrder->id);
-
-                // Add Debit Account Accounting voucher Description
-                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
-
-                // Add Accounting VoucherDescription References
-                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$updatePurchaseOrder->id]);
-
-                //Add Debit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
-
-                // Add Payment Description Credit Entry
-                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
-
-                //Add Credit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
-            }
-
-            $this->userActivityLogUtil->addLog(action: 2, subject_type: 5, data_obj: $updatePurchaseOrder);
 
             DB::commit();
         } catch (Exception $e) {
@@ -377,23 +136,17 @@ class PurchaseOrderController extends Controller
         return response()->json(__('Purchase order is updated successfully'));
     }
 
-    // delete purchase method
-    public function delete($id)
+    public function delete($id, PurchaseOrderDeleteRequest $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_order_delete'), 403);
-
         try {
             DB::beginTransaction();
 
-            $deletePurchaseOrder = $this->purchaseOrderService->deletePurchaseOrder(id: $id);
+            $deleteMethodContainer = $purchaseOrderControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
-            if (isset($deletePurchaseOrder['pass']) && $deletePurchaseOrder['pass'] == false) {
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
 
-                return response()->json(['errorMsg' => $deletePurchaseOrder['msg']]);
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
             }
-
-            // Add user Log
-            $this->userActivityLogUtil->addLog(action: 3, subject_type: 5, data_obj: $deletePurchaseOrder);
 
             DB::commit();
         } catch (Exception $e) {
@@ -402,5 +155,22 @@ class PurchaseOrderController extends Controller
         }
 
         return response()->json(__('Purchase order is deleted successfully'));
+    }
+
+    public function searchByPoId($keyWord, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
+    {
+        $searchByPoIdMethodContainer = $purchaseOrderControllerMethodContainersInterface->searchByPoIdMethodContainer(keyWord: $keyWord);
+        if (isset($searchByPoIdMethodContainer['noResult'])) {
+
+            return ['noResult' => 'no result'];
+        } else {
+
+            return $searchByPoIdMethodContainer;
+        }
+    }
+
+    public function poId(CodeGenerationServiceInterface $codeGenerator, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
+    {
+        return $purchaseOrderControllerMethodContainersInterface->poIdMethodContainer(codeGenerator: $codeGenerator);
     }
 }

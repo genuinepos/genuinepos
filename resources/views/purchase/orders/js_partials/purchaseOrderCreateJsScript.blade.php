@@ -843,22 +843,19 @@
                 if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
-                } else if (data.successMsg) {
+                    return;
+                }
+
+                if (data.successMsg) {
 
                     toastr.success(data.successMsg);
-                    $('#add_purchase_order_form')[0].reset();
-                    $('#purchase_order_product_list').empty();
-
-                    $("#supplier_account_id").select2("destroy");
-                    $("#supplier_account_id").select2();
+                    afterCreateOrder();
+                    return;
                 } else {
 
                     toastr.success("{{ __('Purchase order created successfully.') }}");
-                    $('#add_purchase_order_form')[0].reset();
-                    $('#purchase_order_product_list').empty();
 
-                    $("#supplier_account_id").select2("destroy");
-                    $("#supplier_account_id").select2();
+                    afterCreateOrder();
 
                     $(data).printThis({
                         debug: false,
@@ -888,7 +885,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -902,6 +899,41 @@
             isAllowSubmit = true;
         }
     });
+
+    function afterCreateOrder() {
+
+        $('#add_purchase_order_form')[0].reset();
+        $('#purchase_order_product_list').empty();
+
+        $("#supplier_account_id").select2("destroy");
+        $("#supplier_account_id").select2();
+        getPoId();
+    }
+
+    function getPoId() {
+
+        $.ajax({
+            url: "{{ route('purchases.orders.po.id') }}",
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                $('#order_id').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
 
     setInterval(function() {
         $('#search_product').removeClass('is-invalid');
@@ -954,7 +986,6 @@
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");

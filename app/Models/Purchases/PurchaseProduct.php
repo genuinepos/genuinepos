@@ -3,10 +3,11 @@
 namespace App\Models\Purchases;
 
 use App\Models\BaseModel;
-use App\Models\Products\Product;
-use App\Models\Products\ProductVariant;
-use App\Models\Products\StockChain;
 use App\Models\Products\Unit;
+use App\Models\Products\Product;
+use App\Models\Purchases\Purchase;
+use App\Models\Products\StockChain;
+use App\Models\Products\ProductVariant;
 
 class PurchaseProduct extends BaseModel
 {
@@ -16,7 +17,7 @@ class PurchaseProduct extends BaseModel
 
     public function purchase()
     {
-        return $this->belongsTo(Purchase::class, 'purchase_id', 'id');
+        return $this->belongsTo(Purchase::class, 'purchase_id');
     }
 
     public function stockChains()

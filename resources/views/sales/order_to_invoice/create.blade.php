@@ -173,9 +173,9 @@
         <div class="p-1">
             <form id="add_sale_form" action="{{ route('sales.order.to.invoice.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <input type="hidden" name="action" id="action">
-                <input type="hidden" name="status" id="status" value="1">
-                <input type="hidden" name="sales_order_id" id="sales_order_id" value="{{ $order?->id }}">
+                <input type="hidden" name="action" class="hidden" id="action">
+                <input type="hidden" name="status" id="status" class="hidden" value="1">
+                <input type="hidden" name="sales_order_id" class="hidden" id="sales_order_id" value="{{ $order?->id }}">
                 <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['print_page_size__add_sale_page_size'] }}">
                 <section>
                     <div class="sale-content">
@@ -192,7 +192,7 @@
                                                             <input type="text" id="order_id" class="form-control fw-bold" placeholder="{{ __('Search Order') }}" value="{{ $order?->order_id }}" autocomplete="off">
 
                                                             <div class="order_search_result d-hide">
-                                                                <ul id="order_list" class="list-unstyled"></ul>
+                                                                <ul id="list" class="list-unstyled"></ul>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -201,9 +201,9 @@
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>{{ __('Customer') }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="hidden" name="customer_account_id" id="customer_account_id" value="{{ $order?->customer_account_id }}">
+                                                        <input type="hidden" name="customer_account_id" class="hidden" id="customer_account_id" value="{{ $order?->customer_account_id }}">
                                                         <input type="hidden" id="closing_balance" class="form-control fw-bold text-danger" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
-                                                        <input type="hidden" id="default_balance_type" class="form-control fw-bold text-danger" value="{{ $order?->customer?->group?->default_balance_type }}">
+                                                        <input type="hidden" id="default_balance_type" class="hidden" class="form-control fw-bold text-danger" value="{{ $order?->customer?->group?->default_balance_type }}">
                                                         <input readonly type="text" id="customer_name" class="form-control fw-bold" value="{{ $order?->customer?->name .($order?->customer ? '/' . $order?->customer?->phone : '') }}" placeholder="{{ __("Customer Name") }}" autocomplete="off">
                                                     </div>
                                                 </div>

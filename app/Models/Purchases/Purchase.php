@@ -28,6 +28,16 @@ class Purchase extends BaseModel
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
+    public function purchaseOrder()
+    {
+        return $this->belongsTo(Purchase::class, 'purchase_order_id');
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class, 'purchase_order_id');
+    }
+
     public function purchaseProducts()
     {
         return $this->hasMany(PurchaseProduct::class, 'purchase_id');
@@ -62,16 +72,6 @@ class Purchase extends BaseModel
     {
         return $this->hasMany(AccountingVoucherDescriptionReference::class, 'purchase_id');
     }
-
-    // public function purchase_payments()
-    // {
-    //     return $this->hasMany(PurchasePayment::class);
-    // }
-
-    // public function ledger()
-    // {
-    //     return $this->hasOne(SupplierLedger::class);
-    // }
 
     public function accountingVouchers()
     {

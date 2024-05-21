@@ -2,6 +2,7 @@
 
 namespace App\Services\Purchases;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Purchases\PurchaseOrderProduct;
 
 class PurchaseOrderProductService
@@ -89,6 +90,41 @@ class PurchaseOrderProductService
             $addOrUpdatePurchaseProduct->save();
             $index++;
         }
+    }
+
+    public function adjustPurchaseOrderProductPendingAndReceiveQty($purchaseOrderProductId, $productId, $variantId)
+    {
+        $received = DB::table('purchase_products')
+            ->where('purchase_products.purchase_order_product_id', $purchaseOrderProductId)
+            ->where('purchase_products.product_id', $productId)
+            ->where('purchase_products.variant_id', $variantId)
+            ->select(DB::raw('SUM(purchase_products.quantity) as received_qty'))
+            ->groupBy('purchase_products.purchase_order_product_id', 'purchase_products.product_id', 'purchase_products.variant_id')
+            ->get();
+
+        $orderedProduct = $this->singlePurchaseOrderProduct(id: $purchaseOrderProductId);
+
+        if (isset($orderedProduct)) {
+
+            $receivedQty = $received->sum('received_qty');
+            $__receivedQty = isset($receivedQty) ? $receivedQty : 0;
+            $pendingQty = $orderedProduct->ordered_quantity - $__receivedQty;
+            $orderedProduct->received_quantity = $__receivedQty;
+            $orderedProduct->pending_quantity = $pendingQty;
+            $orderedProduct->save();
+        }
+    }
+
+    public function singlePurchaseOrderProduct(?int $id, array $with = null): ?object
+    {
+        $query = PurchaseOrderProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
     }
 
     public function purchaseOrderProducts(array $with = null): ?object

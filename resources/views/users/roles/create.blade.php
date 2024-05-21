@@ -663,7 +663,7 @@
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="purchased_product_list" id="purchased_product_list" class="purchase purchase_all">
-                                                        <label for="purchase_all">{{ __('Purchased_product_list') }}</label>
+                                                        <label for="purchase_all">{{ __('Purchased Product List') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
@@ -701,6 +701,10 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="purchase_order_edit" id="purchase_order_edit" class="purchase purchase_order">
                                                         <label for="purchase_order_edit">{{ __('Purchase Order Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="purchase_order_to_invoice" id="purchase_order_to_invoice" class="purchase purchase_order">
+                                                        <label for="purchase_order_to_invoice">{{ __('P/o To Purchase Invoice') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="purchase_order_delete" id="purchase_order_delete" class="purchase purchase_order">

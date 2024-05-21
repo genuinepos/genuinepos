@@ -136,7 +136,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" placeholder="{{ __('Voucher No') }}" autocomplete="off">
+                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" value="{{ $voucherNo }}" placeholder="{{ __('Voucher No') }}" autocomplete="off">
                                         </div>
                                     </div>
 

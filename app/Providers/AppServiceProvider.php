@@ -29,6 +29,7 @@ use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
+use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderToInvoiceControllerMethodContainersInterface;
 use App\Interfaces\TransferStocks\TransferStockControllerMethodContainersInterface;
 use App\Services\Hrm\MethodContainerServices\PayrollControllerMethodContainersService;
@@ -54,6 +55,7 @@ use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodConta
 use App\Services\Manufacturing\MethodContainerServices\ProcessControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseOrderControllerMethodContainersService;
 use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
+use App\Services\Purchases\MethodContainerServices\PurchaseReturnControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderToInvoiceControllerMethodContainersService;
 use App\Services\TransferStocks\MethodContainerServices\TransferStockControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseOrderToInvoiceControllerMethodContainersService;
@@ -96,6 +98,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PurchaseControllerMethodContainersInterface::class, PurchaseControllerMethodContainersService::class);
         $this->app->bind(PurchaseOrderControllerMethodContainersInterface::class, PurchaseOrderControllerMethodContainersService::class);
         $this->app->bind(PurchaseOrderToInvoiceControllerMethodContainersInterface::class, PurchaseOrderToInvoiceControllerMethodContainersService::class);
+        $this->app->bind(PurchaseReturnControllerMethodContainersInterface::class, PurchaseReturnControllerMethodContainersService::class);
         $this->app->bind(TransferStockControllerMethodContainersInterface::class, TransferStockControllerMethodContainersService::class);
         $this->app->bind(ReceiveStockFromBranchControllerMethodContainersInterface::class, ReceiveStockFromBranchControllerMethodContainersService::class);
         $this->app->bind(ReceiveStockFromWarehouseControllerMethodContainersInterface::class, ReceiveStockFromWarehouseControllerMethodContainersService::class);

@@ -118,7 +118,7 @@ class PurchaseOrderController extends Controller
         try {
             DB::beginTransaction();
 
-            $editMethodContainer = $purchaseOrderControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request, codeGenerator: $codeGenerator);
+            $updateMethodContainer = $purchaseOrderControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request, codeGenerator: $codeGenerator);
 
             if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 

@@ -91,8 +91,4 @@ Artisan::command('sync:table', function () {
     }
 });
 
-Artisan::command('dev:init', function () {
-    Artisan::call('db:seed --class=TenancyDatabaseSeeder');
-});
-
 // Just merged this line of text.

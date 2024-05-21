@@ -8,7 +8,6 @@ use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
-use Stancl\Tenancy\Facades\Tenancy;
 use App\Enums\AccountingVoucherType;
 use App\Models\ShortMenus\ShortMenu;
 use Illuminate\Support\Facades\File;

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Tenant;
 use App\Models\Hrm\Leave;
 use App\Models\Hrm\Shift;
 use App\Models\Setups\Branch;
@@ -82,10 +81,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_id');
-    }
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 }

@@ -175,7 +175,7 @@ class GeneralSettingsSeeder extends Seeder
      */
     public function run(CacheServiceInterface $cacheService)
     {
-        $cacheService->removeGeneralSettings();
+        $cacheService->forgetGeneralSettingsCache();
         GeneralSetting::truncate();
         $settings = $this->getSettings();
         foreach ($settings as $setting) {
@@ -185,6 +185,5 @@ class GeneralSettingsSeeder extends Seeder
                 'branch_id' => $setting['branch_id'],
             ]);
         }
-        $cacheService->syncGeneralSettings();
     }
 }

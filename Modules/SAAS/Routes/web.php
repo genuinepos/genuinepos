@@ -128,16 +128,6 @@ Route::middleware(['is_verified'])->group(function () {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
 
-        Route::get('users', 'index')->name('users.index');
-        Route::get('create', 'create')->name('users.create');
-        Route::post('store', 'store')->name('users.store');
-        Route::get('edit/{id}', 'edit')->name('users.edit');
-        Route::post('update/{id}', 'update')->name('users.update');
-        Route::delete('delete/{id}', 'delete')->name('users.delete');
-    });
-
-    Route::controller(UserController::class)->prefix('users')->group(function () {
-
         Route::get('/', 'index')->name('users.index');
         Route::get('create', 'create')->name('users.create');
         Route::post('store', 'store')->name('users.store');

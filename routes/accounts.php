@@ -177,7 +177,7 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::controller(ExpenseReportController::class)->prefix('expenses')->group(function () {
 
             Route::get('/', 'index')->name('reports.expenses.index');
-            Route::get('print', 'print')->name('reports.trial.balance.print');
+            Route::get('print', 'print')->name('reports.expenses.print');
         });
     });
 });

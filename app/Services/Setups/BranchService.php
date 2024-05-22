@@ -12,6 +12,7 @@ use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Accounts\AccountGroup;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class BranchService
@@ -174,6 +175,8 @@ class BranchService
             (new \App\Services\Setups\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $shopHistory->id, isCreated: BooleanType::True->value);
         }
 
+        $this->forgetCache();
+
         return $this->singleBranch(id: $addBranch->id, with: ['parentBranch']);
     }
 
@@ -219,6 +222,8 @@ class BranchService
         }
 
         $updateBranch->save();
+
+        $this->forgetCache();
     }
 
     public function deleteBranch(int $id): array
@@ -252,6 +257,8 @@ class BranchService
         }
 
         $deleteBranch->delete();
+
+        $this->forgetCache();
 
         return ['pass' => true];
     }
@@ -305,6 +312,17 @@ class BranchService
         }
 
         return $query;
+    }
+
+    public function switchableBranches()
+    {
+        $branchesMethod = $this->branches(with: ['parentBranch']);
+        $tenantId = tenant('id');
+        $cacheKey = "{$tenantId}_switchableBranches";
+        return Cache::rememberForever($cacheKey, function () use ($branchesMethod) {
+
+            return $branchesMethod->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        });
     }
 
     public function singleBranch(?int $id, array $with = null)
@@ -409,61 +427,10 @@ class BranchService
         return ['pass' => true];
     }
 
-    public function branchStoreValidation(object $request)
+    private function forgetCache(): void
     {
-        $request->validate([
-            'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
-            'area_name' => 'required',
-            'branch_code' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'timezone' => 'required',
-            'currency_id' => 'required',
-            'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
-            'logo' => 'sometimes|image|max:1024',
-            'user_first_name' => Rule::when($request->add_initial_user == 1, 'required'),
-            'user_phone' => Rule::when($request->add_initial_user == 1, 'required'),
-            'user_email' => Rule::when($request->add_initial_user == 1, 'required'),
-            'user_username' => Rule::when($request->add_initial_user == 1, 'required'),
-            'password' => Rule::when($request->add_initial_user == 1, 'required|confirmed'),
-        ]);
-
-        // if (BranchType::DifferentShop->value == $request->branch_type) {
-
-        //     $request->validate([
-        //         'name' => 'required',
-        //     ]);
-        // }
-
-        // if ($request->add_initial_user) {
-
-        //     $request->validate([
-        //         'first_name' => 'required',
-        //         'user_phone' => 'required',
-        //         'username' => 'required|unique:users,username',
-        //         'password' => 'required|confirmed',
-        //     ]);
-        // }
-    }
-
-    public function branchUpdateValidation(object $request)
-    {
-        $request->validate([
-            'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
-            'area_name' => 'required',
-            'branch_code' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'timezone' => 'required',
-            'currency_id' => 'required',
-            'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
-            'logo' => 'sometimes|image|max:1024',
-        ]);
+        $tenantId = tenant('id');
+        $cacheKey = "{$tenantId}_switchableBranches";
+        Cache::forget($cacheKey);
     }
 }

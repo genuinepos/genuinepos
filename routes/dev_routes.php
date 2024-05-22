@@ -1,31 +1,33 @@
 <?php
 
-use Carbon\Carbon;
-use App\Enums\RoleType;
-use App\Enums\BooleanType;
-use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
-use Modules\SAAS\Entities\Plan;
-use App\Models\Accounts\Account;
-use Modules\SAAS\Entities\Tenant;
-use Illuminate\Support\Facades\DB;
-use Stancl\Tenancy\Facades\Tenancy;
-use App\Enums\AccountingVoucherType;
-use App\Models\ShortMenus\ShortMenu;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
-use App\Models\Accounts\AccountLedger;
-use Illuminate\Support\Facades\Schema;
-use App\Enums\AccountLedgerVoucherType;
-use Illuminate\Support\Facades\Session;
-use App\Models\Subscriptions\Subscription;
-use App\Models\TransferStocks\TransferStock;
-use App\Models\Accounts\AccountingVoucherDescription;
+use Illuminate\Support\Facades\Cache;
 
 Route::get('my-test', function () {
 
-    $transferStock = TransferStock::with(['transferStockProducts'])->first();
-    return $transferStock?->transferStockProducts?->first()?->product_id;
+    $branchId = auth()->check() ? auth()->user()->branch_id : null;
+    $tenantId = tenant('id');  // Ensure this retrieves the current tenant's ID
+    $cacheKey = "{$tenantId}_generalSettings_{$branchId}";
+
+    Log::info("Checking cache for key: $cacheKey");
+
+    return Cache::rememberForever($cacheKey, function () use ($branchId, $cacheKey) {
+        Log::info("Cache miss for key: $cacheKey, querying database");
+        $settings = GeneralSetting::where('branch_id', $branchId)
+            ->orWhereIn('key', [
+                'business_or_shop__business_name',
+                'business_or_shop__business_logo',
+                'business_or_shop__address',
+                'business_or_shop__email',
+                'business_or_shop__phone',
+            ])->pluck('value', 'key')->toArray();
+
+        Log::info("Storing data in cache for key: $cacheKey");
+        return $settings;
+    });
+
+    return Cache::get($cacheKey);
+
 });
 
 Route::get('t-id', function () {

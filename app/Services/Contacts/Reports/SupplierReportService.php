@@ -1,78 +1,18 @@
 <?php
 
-namespace App\Services\Contacts;
+namespace App\Services\Contacts\Reports;
 
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
-class ManageSupplierService
+class SupplierReportService
 {
-    public function supplierListTable($request)
+    public function suppliersReportTable($request)
     {
-        $suppliers = '';
-
-        $query = DB::table('contacts')
-            ->leftJoin('accounts', 'contacts.id', 'accounts.contact_id')
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
-            ->where('contacts.type', \App\Enums\ContactType::Supplier->value);
-
-        $dbRaw = $this->dbRaw(request: $request);
-
-        $suppliers = $query->select(
-            'contacts.id',
-            'contacts.type',
-            'contacts.contact_id',
-            'contacts.prefix',
-            'contacts.name',
-            'contacts.business_name',
-            'contacts.status',
-            'contacts.phone',
-            'account_groups.default_balance_type',
-            $dbRaw
-        )->groupBy(
-            'contacts.id',
-            'contacts.type',
-            'contacts.contact_id',
-            'contacts.prefix',
-            'contacts.name',
-            'contacts.business_name',
-            'contacts.status',
-            'contacts.phone',
-            'account_groups.default_balance_type',
-        )->orderBy('contacts.id', 'desc');
+        $suppliers = $this->supplierReportQuery(request: $request);
 
         return DataTables::of($suppliers)
-            ->addColumn('action', function ($row) {
-                $html = '';
-                $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
-
-                if (auth()->user()->can('supplier_manage')) {
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.supplier.manage', [$row->id]) . '">' . __('Manage') . '</a>';
-                }
-
-                if (auth()->user()->can('supplier_edit')) {
-
-                    $html .= '<a class="dropdown-item" href="' . route('contacts.edit', [$row->id, \App\Enums\ContactType::Supplier->value]) . '" id="editContact">' . __('Edit') . '</a>';
-                }
-
-                if (auth()->user()->can('supplier_delete')) {
-
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id, $row->type]) . '">' . __('Delete') . '</a>';
-                }
-
-                $html .= '</div>';
-                $html .= '</div>';
-
-                return $html;
-            })
-
-            ->editColumn('contact_id', function ($row) {
-
-                return $row->contact_id . '-(' . $row->prefix . ')';
-            })
 
             ->editColumn('opening_balance', function ($row) {
 
@@ -88,7 +28,9 @@ class ManageSupplierService
                     $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
                 }
 
-                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount) . '</span>';
+                $__openingBalanceInFlatAmount = $openingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($openingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount);
+
+                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . $__openingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('total_purchase', function ($row) {
@@ -119,7 +61,9 @@ class ManageSupplierService
                     $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
                 }
 
-                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+                $__totalReturn = $totalReturn < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($totalReturn)) . '</span>)' : \App\Utils\Converter::format_in_bdt($totalReturn);
+
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . $__totalReturn . '</span>';
             })
 
             ->editColumn('total_received', function ($row) {
@@ -168,29 +112,43 @@ class ManageSupplierService
                     $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
                 }
 
-                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount) . '</span>';
+                $__closingBalanceInFlatAmount = $closingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($closingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount);
+
+                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . $__closingBalanceInFlatAmount . '</span>';
             })
-
-            ->editColumn('status', function ($row) {
-
-                if ($row->status == 1) {
-
-                    $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
-                    $html .= '</div>';
-
-                    return $html;
-                } else {
-
-                    $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
-                    $html .= '</div>';
-
-                    return $html;
-                }
-            })
-            ->rawColumns(['action', 'opening_balance', 'total_purchase', 'total_sale', 'total_return', 'total_received', 'total_paid',  'current_balance', 'status'])
+            ->rawColumns(['opening_balance', 'total_purchase', 'total_sale', 'total_return', 'total_received', 'total_paid',  'current_balance'])
             ->make(true);
+    }
+
+    public function supplierReportQuery(object $request): object
+    {
+        $suppliers = '';
+        $query = DB::table('accounts')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->where('account_groups.sub_sub_group_number', 10);
+
+        if ($request->supplier_account_id) {
+
+            $query->where('accounts.id', $request->supplier_account_id);
+        }
+
+        $dbRaw = $this->dbRaw(request: $request);
+
+        $suppliers = $query->select(
+            'accounts.id',
+            'accounts.name',
+            'accounts.phone',
+            'account_groups.default_balance_type',
+            $dbRaw
+        )->groupBy(
+            'accounts.id',
+            'accounts.name',
+            'accounts.phone',
+            'account_groups.default_balance_type',
+        )->orderBy('accounts.id', 'desc');
+
+        return $suppliers;
     }
 
     private function dbRaw(object $request): object

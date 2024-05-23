@@ -539,7 +539,7 @@
                                     <div class="sub-menu-row">
                                         @if (auth()->user()->can('supplier_report'))
                                             <div class="sub-menu-col">
-                                                <a href="#" class="switch-bar-wrap">
+                                                <a href="{{ route('reports.suppliers.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-id-card"></i></span>

@@ -142,74 +142,15 @@ class CustomerReportService
 
         $this->filter(request: $request, query: $query);
 
+        $dbRaw = $this->dbRaw();
+
         return $query->select(
             'accounts.id',
             'accounts.name',
             'accounts.phone',
             'account_groups.default_balance_type',
             'branches.name as branch_name',
-            DB::raw(
-                '
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type = 0
-                            THEN account_ledgers.debit
-                            ELSE 0
-                        END
-                    ) AS opening_total_debit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type = 0
-                            THEN account_ledgers.credit
-                            ELSE 0
-                        END
-                    ) AS opening_total_credit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type != 0
-                            THEN account_ledgers.debit
-                            ELSE 0
-                        END
-                    ) AS curr_total_debit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type != 0
-                            THEN account_ledgers.credit
-                            ELSE 0
-                        END
-                    ) AS curr_total_credit,
-                    SUM(
-                        CASE
-                        WHEN account_ledgers.voucher_type = 1
-                        THEN account_ledgers.debit ELSE 0 END
-                    ) AS total_sale,
-                    SUM(
-                        CASE
-                        WHEN account_ledgers.voucher_type = 2
-                        THEN account_ledgers.credit ELSE 0 END
-                    ) AS total_sales_return,
-                    SUM(
-                        CASE
-                        WHEN account_ledgers.voucher_type = 3
-                        THEN account_ledgers.credit ELSE 0 END
-                    ) AS total_purchase,
-                    SUM(
-                        CASE
-                        WHEN account_ledgers.voucher_type = 4
-                        THEN account_ledgers.debit ELSE 0 END
-                    ) AS total_purchase_return,
-                    SUM(
-                        CASE
-                        WHEN account_ledgers.voucher_type = 8
-                        THEN account_ledgers.credit ELSE 0 END
-                    ) AS total_received,
-                    SUM(
-                        CASE
-                        WHEN account_ledgers.voucher_type = 9
-                        THEN account_ledgers.debit ELSE 0 END
-                    ) AS total_paid
-                '
-            ),
+            $dbRaw
         )->groupBy(
             'accounts.id',
             'accounts.name',
@@ -217,6 +158,72 @@ class CustomerReportService
             'account_groups.default_balance_type',
             'branches.name',
         )->orderBy('accounts.id', 'desc');
+    }
+
+    private function dbRaw(): object
+    {
+        return  DB::raw(
+            '
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 0
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS opening_total_debit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 0
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS opening_total_credit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type != 0
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS curr_total_debit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type != 0
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS curr_total_credit,
+                SUM(
+                    CASE
+                    WHEN account_ledgers.voucher_type = 1
+                    THEN account_ledgers.debit ELSE 0 END
+                ) AS total_sale,
+                SUM(
+                    CASE
+                    WHEN account_ledgers.voucher_type = 2
+                    THEN account_ledgers.credit ELSE 0 END
+                ) AS total_sales_return,
+                SUM(
+                    CASE
+                    WHEN account_ledgers.voucher_type = 3
+                    THEN account_ledgers.credit ELSE 0 END
+                ) AS total_purchase,
+                SUM(
+                    CASE
+                    WHEN account_ledgers.voucher_type = 4
+                    THEN account_ledgers.debit ELSE 0 END
+                ) AS total_purchase_return,
+                SUM(
+                    CASE
+                    WHEN account_ledgers.voucher_type = 8
+                    THEN account_ledgers.credit ELSE 0 END
+                ) AS total_received,
+                SUM(
+                    CASE
+                    WHEN account_ledgers.voucher_type = 9
+                    THEN account_ledgers.debit ELSE 0 END
+                ) AS total_paid
+            '
+        );
     }
 
     private function filter(object $request, object $query): object

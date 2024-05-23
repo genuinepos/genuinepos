@@ -1,7 +1,7 @@
 <script>
     var businessName = "{{ $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')' }}";
 
-    var customersReportTable = $('.data_tbl').DataTable({
+    var suppliersReportTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [{
                 extend: 'excel',
@@ -22,10 +22,10 @@
             [10, 25, 50, 100, 500, 1000, "All"]
         ],
         "ajax": {
-            "url": "{{ route('reports.customers.index') }}",
+            "url": "{{ route('reports.suppliers.index') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
-                d.customer_account_id = $('#customer_account_id').val();
+                d.supplier_account_id = $('#supplier_account_id').val();
             }
         },
         columns: [{
@@ -37,22 +37,18 @@
                 name: 'phone.name'
             },
             {
-                data: 'branch',
-                name: 'branches.name'
-            },
-
-            {
                 data: 'opening_balance',
                 name: 'opening_balance',
                 className: 'text-end fw-bold'
             },
+
             {
-                data: 'total_sale',
+                data: 'total_purchase',
                 name: 'contacts.business_name',
                 className: 'text-end fw-bold'
             },
             {
-                data: 'total_purchase',
+                data: 'total_sale',
                 name: 'contacts.business_name',
                 className: 'text-end fw-bold'
             },
@@ -62,12 +58,12 @@
                 className: 'text-end fw-bold'
             },
             {
-                data: 'total_received',
+                data: 'total_paid',
                 name: 'contacts.business_name',
                 className: 'text-end fw-bold'
             },
             {
-                data: 'total_paid',
+                data: 'total_received',
                 name: 'contacts.business_name',
                 className: 'text-end fw-bold'
             },
@@ -83,24 +79,23 @@
             var __opening_balance = opening_balance < 0 ? '(' + bdFormat(Math.abs(opening_balance)) + ')' : bdFormat(opening_balance);
             $('#opening_balance').text(__opening_balance);
 
-            var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
-            $('#total_sale').text(bdFormat(total_sale));
-
             var total_purchase = sum_table_col($('.data_tbl'), 'total_purchase');
             $('#total_purchase').text(bdFormat(total_purchase));
+
+            var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
+            $('#total_sale').text(bdFormat(total_sale));
 
             var total_return = sum_table_col($('.data_tbl'), 'total_return');
             var __total_returne = total_return < 0 ? '(' + bdFormat(Math.abs(total_return)) + ')' : bdFormat(total_return);
             $('#total_return').text(__total_returne);
 
-            var total_received = sum_table_col($('.data_tbl'), 'total_received');
-            $('#total_received').text(bdFormat(total_received));
-
             var total_paid = sum_table_col($('.data_tbl'), 'total_paid');
             $('#total_paid').text(bdFormat(total_paid));
 
+            var total_received = sum_table_col($('.data_tbl'), 'total_received');
+            $('#total_received').text(bdFormat(total_received));
+
             var current_balance = sum_table_col($('.data_tbl'), 'current_balance');
-            console.log(bdFormat(Math.abs(current_balance)));
             var __current_balance = current_balance < 0 ? '(' + bdFormat(Math.abs(current_balance)) + ')' : bdFormat(current_balance);
             $('#current_balance').text(__current_balance);
 
@@ -128,57 +123,7 @@
     $(document).on('submit', '#filter_form', function(e) {
         e.preventDefault();
         $('.data_preloader').show();
-        customersReportTable.ajax.reload();
-    });
-
-    $(document).on('change', '#branch_id', function(e) {
-        e.preventDefault();
-
-        var branch_id = $(this).val();
-        var customer_account_id = $('#customer_account_id').val();
-
-        $('#customer_account_id').empty();
-        $('#customer_account_id').append('<option data-customer_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
-
-        var url = "{{ route('accounts.customer.accounts') }}";
-
-        $.ajax({
-            url: url,
-            type: 'get',
-            data: {
-                branch_id,
-                customer_account_id
-            },
-            success: function(customerAccounts) {
-
-                if (customerAccounts.length > 0) {
-
-                    $('#customer_account_id').empty();
-                    $('#customer_account_id').append('<option data-child_branch_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
-
-                    $.each(customerAccounts, function(key, customerAccount) {
-
-                        if (customerAccount.is_walk_in_customer == 0) {
-
-                            var branchName = customerAccount.branch_name != null ? customerAccount.branch_name : businessName;
-                            $('#customer_account_id').append('<option data-customer_name="' + customerAccount.name + '/' + customerAccount.phone + '" value="' + customerAccount.id + '">' + customerAccount.name + '/' + customerAccount.phone + ' (' + branchName + ')' + '</option>');
-                        }
-                    });
-                }
-            },
-            error: function(err) {
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
-                }
-            }
-        });
+        suppliersReportTable.ajax.reload();
     });
 
     $(document).on('click', '#printReport', function(e) {
@@ -188,8 +133,8 @@
 
         var branch_id = $('#branch_id').val();
         var branch_name = $('#branch_id').find('option:selected').data('branch_name');
-        var customer_account_id = $('#customer_account_id').val();
-        var customer_name = $('#customer_account_id').find('option:selected').data('customer_name');
+        var supplier_account_id = $('#supplier_account_id').val();
+        var supplier_name = $('#supplier_account_id').find('option:selected').data('customer_name');
 
         var currentTitle = document.title;
 
@@ -199,8 +144,8 @@
             data: {
                 branch_id,
                 branch_name,
-                customer_account_id,
-                customer_name,
+                supplier_account_id,
+                supplier_name,
             },
             success: function(data) {
 

@@ -495,6 +495,21 @@ class AccountService
         return $customerAccounts;
     }
 
+    public function supplierAccounts(): object
+    {
+        return DB::table('accounts')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 10)
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.phone',
+                'account_groups.sub_sub_group_number',
+                'account_groups.default_balance_type',
+            )->orderBy('name', 'asc')
+            ->get();
+    }
+
     public function branchAccessibleAccounts(?int $ownBranchIdOrParentBranchId, bool $isAllowedWalkInCustomer = true): ?object
     {
         $customerAccounts = '';

@@ -537,9 +537,9 @@
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Contact Reports') }}</p>
                                     <div class="sub-menu-row">
-                                        @if (auth()->user()->can('supplier_report') && auth()->user()->can('supplier_report'))
+                                        @if (auth()->user()->can('supplier_report'))
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('reports.supplier.index') }}" class="switch-bar-wrap">
+                                                <a href="#" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-id-card"></i></span>
@@ -552,7 +552,7 @@
 
                                         @if (auth()->user()->can('customer_report'))
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('reports.customer.index') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('reports.customers.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="far fa-id-card"></i></span>

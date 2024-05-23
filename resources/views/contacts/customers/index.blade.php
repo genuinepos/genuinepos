@@ -676,7 +676,7 @@
         $(document).on('click', '.print_report', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
-            var url = "{{ route('reports.customer.print') }}";
+            var url = "{{ route('reports.customers.print') }}";
             var customer_id = $('#customer_id').val();
             console.log(customer_id);
             $.ajax({

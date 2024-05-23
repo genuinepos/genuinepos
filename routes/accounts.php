@@ -53,6 +53,7 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::post('update/{id}', 'update')->name('accounts.update');
         Route::delete('delete/{accountId}', 'delete')->name('accounts.delete');
         Route::get('expense/accounts', 'expenseAccounts')->name('accounts.expense.accounts');
+        Route::get('customer/accounts', 'customerAccounts')->name('accounts.customer.accounts');
 
         Route::controller(CapitalAccountController::class)->prefix('capitals')->group(function () {
 

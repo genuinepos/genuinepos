@@ -12,6 +12,8 @@ interface AccountControllerMethodContainersInterface
 
     public function expenseAccountsContainer(object $request): ?object;
 
+    public function customerAccountsContainer(object $request): ?object;
+
     public function createMethodContainer(int $type): array;
 
     public function storeMethodContainer(object $request, object $codeGenerator): object;

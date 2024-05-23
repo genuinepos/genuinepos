@@ -5,7 +5,6 @@ namespace App\Listeners;
 use Exception;
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;

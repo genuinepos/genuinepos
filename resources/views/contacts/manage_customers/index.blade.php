@@ -26,22 +26,16 @@
                                         <div class="col-xl-6 col-lg-6 col-md-12">
                                             <label><strong>{{ __('Shop') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">
-                                                        @php
-                                                            $branchName = $branch->name;
-                                                            $branchCode = '-' . $branch->branch_code;
-                                                        @endphp
-                                                        {{ $branchName . $branchCode }}
-                                                    </option>
+                                                    <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
                                         <div class="col-xl-2 col-lg-3 col-md-4">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -66,7 +60,9 @@
                             <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
                         @endif
 
-                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __('Print') }}</a>
+                        @if (auth()->user()->can('customer_report'))
+                            <a href="{{ route('reports.customers.print') }}" class="btn btn-sm btn-primary" id="printReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
+                        @endif
                     </div>
                 </div>
 
@@ -536,21 +532,29 @@
         });
 
         //Print supplier report
-        $(document).on('click', '.print_report', function(e) {
+        $(document).on('click', '#printReport', function(e) {
             e.preventDefault();
-            $('.data_preloader').show();
-            var url = "{{ route('reports.customer.print') }}";
-            var customer_id = $('#customer_id').val();
-            console.log(customer_id);
+
+            var url = $(this).attr('href');
+
+            var branch_id = $('#branch_id').val();
+            var branch_name = $('#branch_id').find('option:selected').data('branch_name');
+            var customer_account_id = $('#customer_account_id').val();
+            var customer_name = $('#customer_account_id').find('option:selected').data('customer_name');
+
+            var currentTitle = document.title;
+
             $.ajax({
                 url: url,
                 type: 'get',
                 data: {
-                    customer_id
+                    branch_id,
+                    branch_name,
+                    customer_account_id,
+                    customer_name,
                 },
                 success: function(data) {
 
-                    $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
@@ -560,6 +564,16 @@
                         printDelay: 700,
                         header: null,
                     });
+
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = data;
+                    var filename = tempElement.querySelector('#title');
+
+                    document.title = filename.innerHTML;
+
+                    setTimeout(function() {
+                        document.title = currentTitle;
+                    }, 2000);
                 }
             });
         });

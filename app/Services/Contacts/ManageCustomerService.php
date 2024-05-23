@@ -161,7 +161,7 @@ class ManageCustomerService
 
             ->editColumn('contact_id', function ($row) {
 
-                return $row->contact_id.'('.$row->prefix.')';
+                return $row->contact_id . '(' . $row->prefix . ')';
             })
 
             ->editColumn('credit_limit', function ($row) {

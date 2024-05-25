@@ -318,21 +318,29 @@
     });
 
     //Print supplier report
-    $(document).on('click', '.print_report', function(e) {
+    $(document).on('click', '#printReport', function(e) {
         e.preventDefault();
-        $('.data_preloader').show();
-        var url = "{{ route('reports.customers.print') }}";
-        var customer_id = $('#customer_id').val();
-        console.log(customer_id);
+
+        var url = $(this).attr('href');
+
+        var branch_id = $('#branch_id').val();
+        var branch_name = $('#branch_id').find('option:selected').data('branch_name');
+        var supplier_account_id = $('#supplier_account_id').val();
+        var supplier_name = $('#supplier_account_id').find('option:selected').data('customer_name');
+
+        var currentTitle = document.title;
+
         $.ajax({
             url: url,
             type: 'get',
             data: {
-                customer_id
+                branch_id,
+                branch_name,
+                supplier_account_id,
+                supplier_name,
             },
             success: function(data) {
 
-                $('.data_preloader').hide();
                 $(data).printThis({
                     debug: false,
                     importCSS: true,
@@ -342,6 +350,28 @@
                     printDelay: 700,
                     header: null,
                 });
+
+                var tempElement = document.createElement('div');
+                tempElement.innerHTML = data;
+                var filename = tempElement.querySelector('#title');
+
+                document.title = filename.innerHTML;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
         });
     });

@@ -70,7 +70,7 @@
                             <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Suppliers') }}</a>
                         @endif
 
-                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __('Print') }}</a>
+                        <a href="{{ route('reports.suppliers.print') }}" class="btn btn-sm btn-primary" id="printReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                     </div>
                 </div>
 

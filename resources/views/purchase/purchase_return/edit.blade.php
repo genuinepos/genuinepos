@@ -154,7 +154,7 @@
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" value="{{ $return?->purchase?->invoice_id }}" data-next="purchase_account_id" placeholder="{{ __('Serach Purchase Invoice ID') }}" autocomplete="off">
-                                                <input type="hidden" name="purchase_id" id="purchase_id" value="{{ $return->purchase_id }}">
+                                                <input type="hidden" name="purchase_id" id="purchase_id" value="{{ $return?->purchase_id }}">
 
                                                 <div class="invoice_search_result d-hide">
                                                     <ul id="invoice_list" class="list-unstyled"></ul>
@@ -206,7 +206,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return->date)) }}" data-next="search_product" autocomplete="off">
+                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return?->date)) }}" data-next="search_product" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -361,7 +361,6 @@
                                                                             <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $returnProduct->unit_tax_amount }}">
                                                                             <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $returnProduct->unit_discount_type }}">
                                                                             <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $returnProduct->unit_discount }}">
-
                                                                             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $returnProduct->unit_discount_amount }}">
                                                                             <input type="hidden" name="purchase_product_ids[]" value="{{ $returnProduct->purchase_product_id }}">
                                                                             <input type="hidden" name="purchase_return_product_ids[]" value="{{ $returnProduct->id }}">
@@ -541,7 +540,6 @@
                                                         <input type="number" step="any" name="received_amount" class="form-control fw-bold w-75" id="received_amount" value="0.00" data-next="receipt_date" autocomplete="off">
                                                         <input type="text" name="receipt_date" class="form-control w-25" id="receipt_date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="payment_method_id" autocomplete="off">
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>

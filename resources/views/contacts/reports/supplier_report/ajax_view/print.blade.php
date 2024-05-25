@@ -162,7 +162,7 @@
         </div>
 
         <div class="col-6">
-            <p><strong>{{ __('Customer') }} : </strong> {{ $filteredSupplierName }} </p>
+            <p><strong>{{ __('Supplier') }} : </strong> {{ $filteredSupplierName }} </p>
         </div>
     </div>
 

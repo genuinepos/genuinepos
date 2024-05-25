@@ -2,33 +2,37 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\AccountingVoucherType;
-use App\Enums\AccountLedgerVoucherType;
+use App\Enums\BooleanType;
+use Illuminate\Http\Request;
 use App\Enums\DayBookVoucherType;
-use App\Enums\ProductLedgerVoucherType;
+use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
+use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountLedgerService;
+use App\Services\Setups\BranchService;
+use App\Enums\AccountLedgerVoucherType;
+use App\Enums\ProductLedgerVoucherType;
+use App\Services\CodeGenerationService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductStockService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Sales\SaleService;
-use App\Services\Sales\SalesReturnProductService;
-use App\Services\Sales\SalesReturnService;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SalesReturnService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Products\ProductStockService;
+use App\Services\Users\UserActivityLogService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Sales\SalesReturnProductService;
+use App\Services\Products\ManagePriceGroupService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Http\Requests\Sales\SalesReturnStoreRequest;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class SalesReturnController extends Controller
 {
@@ -51,17 +55,14 @@ class SalesReturnController extends Controller
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sales_return_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('sales_return_index'), 403);
 
         if ($request->ajax()) {
 
@@ -119,7 +120,6 @@ class SalesReturnController extends Controller
         ]);
 
         $printPageSize = $request->print_page_size;
-
         $paidAmount = $return->paid;
 
         return view('sales.print_templates.sales_return_print', compact('return', 'paidAmount', 'printPageSize'));
@@ -127,10 +127,7 @@ class SalesReturnController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('create_sales_return')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('create_sales_return'), 403);
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -158,7 +155,7 @@ class SalesReturnController extends Controller
             ->get(['accounts.id', 'accounts.name']);
 
         $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -175,33 +172,9 @@ class SalesReturnController extends Controller
         return view('sales.sales_return.create', compact('accounts', 'methods', 'saleAccounts', 'warehouses', 'priceGroups', 'priceGroupProducts', 'taxAccounts', 'customerAccounts', 'branchName'));
     }
 
-    public function store(Request $request, CodeGenerationService $codeGenerator)
+    public function store(SalesReturnStoreRequest $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('create_sales_return')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'customer_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'sale_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'sale_account_id.required' => __('Sale A/c is required.'),
-            'account_id.required' => __('Credit field must not be empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'customer_account_id.required' => __('Customer is required.'),
-        ]);
-
-        if (isset($request->warehouse_count)) {
-
-            $this->validate($request, ['warehouse_id' => 'required']);
-        }
-
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->salesReturnService->restrictions($request);
@@ -231,8 +204,7 @@ class SalesReturnController extends Controller
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $addReturn->id, amount: $request->return_tax_amount, amount_type: 'debit');
             }
 
-            $index = 0;
-            foreach ($request->product_ids as $productId) {
+            foreach ($request->product_ids as $index => $productId) {
 
                 $addSaleReturnProduct = $this->salesReturnProductService->addSalesReturnProduct(request: $request, saleReturnId: $addReturn->id, index: $index);
 
@@ -250,8 +222,6 @@ class SalesReturnController extends Controller
 
                     $this->purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'sale_return_product_id', transId: $addSaleReturnProduct->id, branchId: auth()->user()->branch_id, productId: $addSaleReturnProduct->product_id, variantId: $addSaleReturnProduct->variant_id, quantity: $addSaleReturnProduct->return_qty, unitCostIncTax: $addSaleReturnProduct->unit_cost_inc_tax, sellingPrice: $addSaleReturnProduct->unit_price_inc_tax, subTotal: $addSaleReturnProduct->return_subtotal, createdAt: $addReturn->date_ts);
                 }
-
-                $index++;
             }
 
             if ($request->paying_amount > 0) {
@@ -274,8 +244,7 @@ class SalesReturnController extends Controller
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit');
             }
 
-            $__index = 0;
-            foreach ($request->product_ids as $productId) {
+            foreach ($request->product_ids as $__index => $productId) {
 
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
@@ -289,8 +258,6 @@ class SalesReturnController extends Controller
 
                     $this->productStockService->adjustBranchStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
                 }
-
-                $__index++;
             }
 
             $return = $this->salesReturnService->singleSalesReturn(id: $addReturn->id, with: [
@@ -309,7 +276,7 @@ class SalesReturnController extends Controller
                 $this->saleService->adjustSaleInvoiceAmounts($return->sale);
             }
 
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 9, data_obj: $addReturn);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::SaleReturn->value, dataObj: $return);
 
             DB::commit();
         } catch (Exception $e) {
@@ -327,5 +294,65 @@ class SalesReturnController extends Controller
 
             return response()->json(['successMsg' => __('Sales Return Created Successfully.')]);
         }
+    }
+
+    public function edit($id)
+    {
+        abort_if(!auth()->user()->can('edit_sales_return'), 403);
+
+        $return = $this->salesReturnService->singleSalesReturn(id: $id, with: [
+            'branch',
+            'branch.parentBranch',
+            'sale',
+            'saleReturnProducts',
+            'saleReturnProducts.product',
+            'saleReturnProducts.variant',
+            'saleReturnProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'saleReturnProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id
+            ? auth()->user()?->branch?->parent_branch_id
+            : auth()->user()->branch_id;
+
+        $branchName = $this->branchService->branchName(transObject: $return);
+
+        $accounts = $this->accountService->accounts(with: [
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch',
+        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+            ->get();
+
+        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
+
+        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+
+        $saleAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 15)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name']);
+
+        $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+
+        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
+        $priceGroupProducts = $this->managePriceGroupService->priceGroupProducts();
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            // ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+
+        $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return view('sales.sales_return.edit', compact('return', 'accounts', 'methods', 'saleAccounts', 'warehouses', 'priceGroups', 'priceGroupProducts', 'taxAccounts', 'customerAccounts', 'branchName'));
     }
 }

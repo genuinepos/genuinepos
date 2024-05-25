@@ -1,7 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    var itemUnitsArray = [];
+    var itemUnitsArray = @json($itemUnitsArray);
     var branch_name = "{{ $branchName }}";
     $('.select2').select2();
 
@@ -501,6 +501,7 @@
             tr += '<input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="' + e_discount_type + '">';
             tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="' + e_discount + '">';
             tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
+            tr += '<input type="hidden" name="sale_return_product_ids[]" value="">';
             tr += '<input type="hidden" name="sale_product_ids[]" value="">';
             tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + '" value="' + e_product_id + e_variant_id + '">';
             tr += '</td>';
@@ -798,16 +799,18 @@
 
         $('#sale_ledger_amount').val(salesLedgerAmount);
 
+        var previousPaid = $('#previous_paid').val() ? $('#previous_paid').val() : 0;
+        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousPaid);
         var paidAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');
         var currentBalance = 0;
         if (accountDefaultBalanceType == 'dr') {
 
-            currentBalance = parseFloat(closingBalance) - parseFloat(calcTotalAmount) + parseFloat(paidAmount);
+            currentBalance = parseFloat(closingBalance) - parseFloat(returnedAmount) + parseFloat(paidAmount);
         } else {
 
-            currentBalance = parseFloat(closingBalance) + parseFloat(calcTotalAmount) - parseFloat(paidAmount);
+            currentBalance = parseFloat(closingBalance) + parseFloat(returnedAmount) - parseFloat(paidAmount);
         }
 
         $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
@@ -1127,6 +1130,25 @@
         format: _expectedDateFormat,
     });
 
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('payment_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
+    });
+
     $('#payment_method_id').on('change', function() {
 
         var account_id = $(this).find('option:selected').data('account_id');
@@ -1155,6 +1177,8 @@
         var value = $(this).val();
         $('#print_page_size').val(value);
     });
+
+    calculateTotalAmount();
 </script>
 
 <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>

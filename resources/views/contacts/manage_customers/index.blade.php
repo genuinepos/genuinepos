@@ -24,7 +24,7 @@
                                 <form id="filter_form">
                                     <div class="form-group row align-items-end">
                                         <div class="col-xl-6 col-lg-6 col-md-12">
-                                            <label><strong>{{ __('Shop') }}</strong></label>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
                                                 <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>

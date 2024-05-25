@@ -399,7 +399,7 @@
 
         calculateEditOrAddAmount();
 
-        $('#add_item').html('Update');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function recalculateRunningLeftQty(productId, variantId) {

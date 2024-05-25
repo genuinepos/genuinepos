@@ -223,6 +223,18 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
         });
     });

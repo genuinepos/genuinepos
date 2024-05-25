@@ -32,7 +32,6 @@ class GeneralSettingsListener
         //     $generalSettings = Cache::get($generalSettingsCacheKey);
         // $generalSettings = Cache::get('generalSettings');
         // dd($generalSettings);
-
         try {
 
             // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {

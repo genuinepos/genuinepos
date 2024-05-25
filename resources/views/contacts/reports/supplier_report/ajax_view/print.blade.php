@@ -142,7 +142,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __('Customer Report') }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __('Supplier Report') }}</strong></h6>
         </div>
     </div>
 
@@ -152,33 +152,31 @@
                 $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
                     if (auth()->user()?->branch->parentBranch) {
-                        $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
+                        $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name;
                     } else {
-                        $ownOrParentbranchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
+                        $ownOrParentbranchName = auth()->user()?->branch?->name;
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName }} </p>
+            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
-            <p><strong>{{ __('Customer') }} : </strong> {{ $filteredCustomerName }} </p>
+            <p><strong>{{ __('Customer') }} : </strong> {{ $filteredSupplierName }} </p>
         </div>
     </div>
-
 
     <div class="row mt-1">
         <div class="col-12">
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th>{{ __('Shop/Business') }}</th>
                         <th>{{ __('Opening Balance') }}</th>
-                        <th>{{ __('Total Sale') }}</th>
                         <th>{{ __('Total Purchase') }}</th>
+                        <th>{{ __('Total Sale') }}</th>
                         <th>{{ __('Total Return') }}</th>
-                        <th>{{ __('Total Received') }}</th>
                         <th>{{ __('Total Paid') }}</th>
+                        <th>{{ __('Total Received') }}</th>
                         <th>{{ __('Curr. Balance') }}</th>
                     </tr>
                 </thead>
@@ -192,20 +190,12 @@
                         $allTotalPaid = 0;
                         $allTotalCurrentBalance = 0;
                     @endphp
-                    @foreach ($customers as $row)
+                    @foreach ($suppliers as $row)
                         <tr>
                             <td class="text-start text-uppercase fw-bold" colspan="8">{{ $row->name . ' / ' . $row->phone }} </td>
                         </tr>
 
                         <tr>
-                            <td class="text-start">
-                                @if ($row->branch_name)
-                                    {{ $row->branch_name }}
-                                @else
-                                    {{ $generalSettings['business_or_shop__business_name'] }}
-                                @endif
-                            </td>
-
                             <td class="text-start fw-bold">
                                 @php
                                     $openingBalanceDebit = isset($row->opening_total_debit) ? (float) $row->opening_total_debit : 0;
@@ -228,18 +218,18 @@
 
                             <td class="text-start fw-bold">
                                 @php
-                                    $allTotalSale += $row->total_sale;
-                                @endphp
-
-                                {{ \App\Utils\Converter::format_in_bdt($row->total_sale) }}
-                            </td>
-
-                            <td class="text-start fw-bold">
-                                @php
                                     $allTotalPurchase = $row->total_purchase;
                                 @endphp
 
                                 {{ \App\Utils\Converter::format_in_bdt($row->total_purchase) }}
+                            </td>
+
+                            <td class="text-start fw-bold">
+                                @php
+                                    $allTotalSale += $row->total_sale;
+                                @endphp
+
+                                {{ \App\Utils\Converter::format_in_bdt($row->total_sale) }}
                             </td>
 
                             <td class="text-start fw-bold">
@@ -264,16 +254,16 @@
 
                             <td class="text-start fw-bold">
                                 @php
-                                    $allTotalReceived += $row->total_received;
+                                    $allTotalPaid += $row->total_paid;
                                 @endphp
-                                {{ \App\Utils\Converter::format_in_bdt($row->total_received) }}
+                                {{ \App\Utils\Converter::format_in_bdt($row->total_paid) }}
                             </td>
 
                             <td class="text-start fw-bold">
                                 @php
-                                    $allTotalPaid += $row->total_paid;
+                                    $allTotalReceived += $row->total_received;
                                 @endphp
-                                {{ \App\Utils\Converter::format_in_bdt($row->total_paid) }}
+                                {{ \App\Utils\Converter::format_in_bdt($row->total_received) }}
                             </td>
 
                             <td class="text-start fw-bold">
@@ -335,16 +325,16 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Sale') }} : </th>
+                        <th class="text-end">{{ __('Total Purchase') }} : </th>
                         <td class="text-end">
-                            {{ \App\Utils\Converter::format_in_bdt($allTotalSale) }}
+                            {{ \App\Utils\Converter::format_in_bdt($allTotalPurchase) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Purchase') }} : </th>
+                        <th class="text-end">{{ __('Total Sale') }} : </th>
                         <td class="text-end">
-                            {{ \App\Utils\Converter::format_in_bdt($allTotalPurchase) }}
+                            {{ \App\Utils\Converter::format_in_bdt($allTotalSale) }}
                         </td>
                     </tr>
 
@@ -359,16 +349,16 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Received') }} : </th>
+                        <th class="text-end">{{ __('Total Paid') }} : </th>
                         <td class="text-end">
-                            {{ \App\Utils\Converter::format_in_bdt($allTotalReceived) }}
+                            {{ \App\Utils\Converter::format_in_bdt($allTotalPaid) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Paid') }} : </th>
+                        <th class="text-end">{{ __('Total Received') }} : </th>
                         <td class="text-end">
-                            {{ \App\Utils\Converter::format_in_bdt($allTotalPaid) }}
+                            {{ \App\Utils\Converter::format_in_bdt($allTotalReceived) }}
                         </td>
                     </tr>
 
@@ -407,9 +397,9 @@
 
 @php
     $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
-    $fileCustomerName = $filteredCustomerName ? '__' . $filteredCustomerName : '';
+    $fileSupplierName = $filteredSupplierName ? '__' . $$filteredSupplierName : '';
 
-    $filename = __('Customer Report') . '__' . $fileBranchName . $fileCustomerName;
+    $filename = __('Supplier Report') . '__' . $fileBranchName . $fileSupplierName;
 @endphp
 <span id="title" class="d-none">{{ $filename }}</span>
 <!-- Stock Issue print templete end-->

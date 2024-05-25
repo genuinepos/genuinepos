@@ -24,7 +24,7 @@ class CustomerReportController extends Controller
     public function index(Request $request)
     {
         abort_if(!auth()->user()->can('customer_report'), 403);
-        
+
         if ($request->ajax()) {
 
             return $this->customerReportService->customersReportTable(request: $request);

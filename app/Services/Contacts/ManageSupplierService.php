@@ -88,7 +88,9 @@ class ManageSupplierService
                     $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
                 }
 
-                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount) . '</span>';
+                $__openingBalanceInFlatAmount = $openingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($openingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount);
+
+                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . $__openingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('total_purchase', function ($row) {
@@ -119,7 +121,9 @@ class ManageSupplierService
                     $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
                 }
 
-                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+                $__totalReturn = $totalReturn < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($totalReturn)) . '</span>)' : \App\Utils\Converter::format_in_bdt($totalReturn);
+
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . $__totalReturn . '</span>';
             })
 
             ->editColumn('total_received', function ($row) {
@@ -168,7 +172,9 @@ class ManageSupplierService
                     $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
                 }
 
-                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount) . '</span>';
+                $__closingBalanceInFlatAmount = $closingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($closingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount);
+
+                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . $__closingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('status', function ($row) {

@@ -44,5 +44,28 @@ class SupplierReportController extends Controller
 
     public function print(Request $request)
     {
+        $ownOrParentBranch = '';
+        if (auth()->user()?->branch) {
+
+            if (auth()->user()?->branch->parentBranch) {
+
+                $branchName = auth()->user()?->branch->parentBranch;
+            } else {
+
+                $branchName = auth()->user()?->branch;
+            }
+        }
+
+        $suppliers = $this->supplierReportService->supplierReportQuery(request: $request)->get();
+
+        $filteredBranchName = $request->branch_name;
+        $filteredSupplierName = $request->supplier_name;
+
+        return view('contacts.reports.supplier_report.ajax_view.print', compact(
+            'suppliers',
+            'ownOrParentBranch',
+            'filteredBranchName',
+            'filteredSupplierName',
+        ));
     }
 }

@@ -152,20 +152,19 @@
                 $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
                     if (auth()->user()?->branch->parentBranch) {
-                        $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
+                        $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name;
                     } else {
-                        $ownOrParentbranchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
+                        $ownOrParentbranchName = auth()->user()?->branch?->name;
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName }} </p>
+            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
             <p><strong>{{ __('Customer') }} : </strong> {{ $filteredCustomerName }} </p>
         </div>
     </div>
-
 
     <div class="row mt-1">
         <div class="col-12">

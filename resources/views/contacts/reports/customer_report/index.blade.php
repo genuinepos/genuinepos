@@ -27,7 +27,7 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription__has_business'] == 1)
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Shop/Business') }} </strong></label>
                                             <select name="branch_id" id="branch_id" class="form-control select2" autofocus>

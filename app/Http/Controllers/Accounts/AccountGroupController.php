@@ -6,7 +6,6 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountGroupService;
 use App\Http\Requests\Accounts\AccountGroupStoreRequest;
 use App\Http\Requests\Accounts\AccountGroupUpdateRequest;
@@ -23,10 +22,7 @@ class AccountGroupController extends Controller
     {
         abort_if(!auth()->user()->can('account_groups_index'), 403);
 
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
-
-        return view('accounting.groups.index', compact('branches'));
+        return view('accounting.groups.index');
     }
 
     public function groupList(Request $request)

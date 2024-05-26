@@ -597,7 +597,7 @@
         $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
         $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
         $('#e_descriptions').val(descriptions);
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     $('#e_quantity').on('input keypress', function(e) {

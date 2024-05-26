@@ -624,7 +624,7 @@
         $('#e_tax_amount').val(unit_tax_amount);
         $('#e_tax_type').val(tax_type);
         $('#e_subtotal').val(subtotal);
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function calculateEditOrAddAmount() {

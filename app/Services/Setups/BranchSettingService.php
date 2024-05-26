@@ -4,9 +4,15 @@ namespace App\Services\Setups;
 
 use App\Models\GeneralSetting;
 use App\Models\Setups\BranchSetting;
+use App\Services\CacheServiceInterface;
 
 class BranchSettingService
 {
+    public function __construct(
+        private CacheServiceInterface $cacheService
+    ) {
+    }
+
     public function addBranchSettings(int $branchId, ?int $parentBranchId = null, int $defaultInvoiceLayoutId, object $branchService, object $request): void
     {
         $branch = $branchService->singleBranch(id: $branchId, with: ['parentBranch', 'childBranches']);
@@ -201,6 +207,8 @@ class BranchSettingService
                 }
             }
         }
+
+        $this->cacheService->forgetGeneralSettingsCache();
     }
 
     public function deleteUnusedBranchSettings(?int $branchId, array $keys = []): void

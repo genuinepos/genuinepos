@@ -439,7 +439,7 @@
             );
         });
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     $('#e_quantity').on('input keypress', function(e) {

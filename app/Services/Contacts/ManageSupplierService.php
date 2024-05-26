@@ -10,130 +10,38 @@ class ManageSupplierService
 {
     public function supplierListTable($request)
     {
-        $branchId = $request->branch_id ? $request->branch_id : null;
-        $__branchId = $branchId == 'NULL' ? null : $branchId;
-        $sumQueryBranchId = null;
+        $suppliers = '';
 
-        // if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
-        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == BooleanType::False->value) {
-
-            $sumQueryBranchId = $__branchId ? $__branchId : null;
-        } else {
-
-            $sumQueryBranchId = auth()->user()->branch_id;
-        }
-
-        $suppliers = DB::table('contacts')
+        $query = DB::table('contacts')
             ->leftJoin('accounts', 'contacts.id', 'accounts.contact_id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
-            ->where('contacts.type', \App\Enums\ContactType::Supplier->value)
-            ->select(
-                'contacts.id',
-                'contacts.type',
-                'contacts.contact_id',
-                'contacts.prefix',
-                'contacts.name',
-                'contacts.business_name',
-                'contacts.status',
-                'contacts.phone',
-                'account_groups.default_balance_type',
-                DB::raw(
-                    "
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 0
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.debit
-                                ELSE 0
-                            END
-                        ) AS opening_total_debit,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 0
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.credit
-                                ELSE 0
-                            END
-                        ) AS opening_total_credit,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type != 0
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.debit
-                                ELSE 0
-                            END
-                        ) AS curr_total_debit,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type != 0
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.credit
-                                ELSE 0
-                            END
-                        ) AS curr_total_credit,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 1
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.debit
-                                ELSE 0
-                            END
-                        ) AS total_sale,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 2
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.credit
-                                ELSE 0
-                            END
-                        ) AS total_sales_return,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 3
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.credit
-                                ELSE 0
-                            END
-                        ) AS total_purchase,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 4
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.debit
-                                ELSE 0
-                            END
-                        ) AS total_purchase_return,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 8
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.credit
-                                ELSE 0
-                            END
-                        ) AS total_received,
-                        SUM(
-                            CASE
-                                WHEN account_ledgers.voucher_type = 9
-                                    AND (IFNULL('$sumQueryBranchId', 0) = 0 OR account_ledgers.branch_id = '$sumQueryBranchId')
-                                THEN account_ledgers.debit
-                                ELSE 0
-                            END
-                        ) AS total_paid
-                    "
-                ),
-            )
-            ->groupBy(
-                'contacts.id',
-                'contacts.type',
-                'contacts.contact_id',
-                'contacts.prefix',
-                'contacts.name',
-                'contacts.business_name',
-                'contacts.status',
-                'contacts.phone',
-                'account_groups.default_balance_type',
-            )->orderBy('contacts.id', 'desc');
+            ->where('contacts.type', \App\Enums\ContactType::Supplier->value);
+
+        $dbRaw = $this->dbRaw(request: $request);
+
+        $suppliers = $query->select(
+            'contacts.id',
+            'contacts.type',
+            'contacts.contact_id',
+            'contacts.prefix',
+            'contacts.name',
+            'contacts.business_name',
+            'contacts.status',
+            'contacts.phone',
+            'account_groups.default_balance_type',
+            $dbRaw
+        )->groupBy(
+            'contacts.id',
+            'contacts.type',
+            'contacts.contact_id',
+            'contacts.prefix',
+            'contacts.name',
+            'contacts.business_name',
+            'contacts.status',
+            'contacts.phone',
+            'account_groups.default_balance_type',
+        )->orderBy('contacts.id', 'desc');
 
         return DataTables::of($suppliers)
             ->addColumn('action', function ($row) {
@@ -180,7 +88,9 @@ class ManageSupplierService
                     $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
                 }
 
-                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount) . '</span>';
+                $__openingBalanceInFlatAmount = $openingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($openingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount);
+
+                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . $__openingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('total_purchase', function ($row) {
@@ -211,7 +121,9 @@ class ManageSupplierService
                     $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
                 }
 
-                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+                $__totalReturn = $totalReturn < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($totalReturn)) . '</span>)' : \App\Utils\Converter::format_in_bdt($totalReturn);
+
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . $__totalReturn . '</span>';
             })
 
             ->editColumn('total_received', function ($row) {
@@ -260,7 +172,9 @@ class ManageSupplierService
                     $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
                 }
 
-                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount) . '</span>';
+                $__closingBalanceInFlatAmount = $closingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($closingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount);
+
+                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . $__closingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('status', function ($row) {
@@ -283,5 +197,276 @@ class ManageSupplierService
             })
             ->rawColumns(['action', 'opening_balance', 'total_purchase', 'total_sale', 'total_return', 'total_received', 'total_paid',  'current_balance', 'status'])
             ->make(true);
+    }
+
+    private function dbRaw(object $request): object
+    {
+        $filteredBranchId = null;
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $filteredBranchId = 'NULL';
+            } else {
+
+                $filteredBranchId = (int)$request->branch_id;
+            }
+        }
+
+        if (isset($filteredBranchId)) {
+
+            $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
+
+            return DB::raw(
+                '
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 0
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS opening_total_debit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 0
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS opening_total_credit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type != 0
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS curr_total_debit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type != 0
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS curr_total_credit,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 1
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS total_sale,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 2
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS total_sales_return,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 3
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS total_purchase,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 4
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS total_purchase_return,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 8
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
+                ) AS total_received,
+                SUM(
+                    CASE
+                        WHEN account_ledgers.voucher_type = 9
+                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
+                ) AS total_paid
+                '
+            );
+        } else if (!isset($filteredBranchId)) {
+
+            if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+                return DB::raw(
+                    '
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 0
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS opening_total_debit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 0
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS opening_total_credit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type != 0
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS curr_total_debit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type != 0
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS curr_total_credit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 1
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS total_sale,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 2
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS total_sales_return,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 3
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS total_purchase,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 4
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS total_purchase_return,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 8
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS total_received,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 9
+                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS total_paid
+                    '
+                );
+            } else {
+
+                return DB::raw(
+                    '
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 0
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS opening_total_debit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 0
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS opening_total_credit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type != 0
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS curr_total_debit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type != 0
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS curr_total_credit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 1
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS total_sale,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 2
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS total_sales_return,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 3
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS total_purchase,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 4
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS total_purchase_return,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 8
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS total_received,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 9
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS total_paid
+                    '
+                );
+            }
+        }
     }
 }

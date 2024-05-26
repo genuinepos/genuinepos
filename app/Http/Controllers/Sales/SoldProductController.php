@@ -21,10 +21,7 @@ class SoldProductController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('view_add_sale')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('view_add_sale'), 403);
 
         if ($request->ajax()) {
 

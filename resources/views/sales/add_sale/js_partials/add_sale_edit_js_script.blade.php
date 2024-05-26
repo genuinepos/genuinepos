@@ -700,7 +700,7 @@
         $('#e_descriptions').val(descriptions);
         $('#stock_quantity').val(parseFloat(current_stock).toFixed(2));
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     $('#e_quantity').on('input keypress', function(e) {

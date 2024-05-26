@@ -38,6 +38,11 @@ class AccountController extends Controller
         return $accountControllerMethodContainersInterface->expenseAccountsContainer(request: $request);
     }
 
+    public function customerAccounts(Request $request, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
+    {
+        return $accountControllerMethodContainersInterface->customerAccountsContainer(request: $request);
+    }
+
     public function create($type, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('accounts_create'), 403);

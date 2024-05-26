@@ -1,6 +1,5 @@
 <?php
 
-
 use Carbon\Carbon;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;

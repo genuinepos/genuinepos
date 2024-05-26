@@ -1084,7 +1084,7 @@
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                    <th id="receipt_total_amount" class="text-white"></th>
+                                                    <th id="receipts_total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>
                                             </tfoot>

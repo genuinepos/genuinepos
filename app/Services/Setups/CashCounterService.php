@@ -90,7 +90,25 @@ class CashCounterService
             ->make(true);
     }
 
-    public function addCashCounter(int $branchId, string $cashCounterName, string $shortName): object
+
+    public function restriction(array|object $generalSettings): array
+    {
+        $generalSettings = config('generalSettings');
+        $cashCounterLimit = (int)$generalSettings['subscription']->features['cash_counter_count'];
+
+        $cashCounters = DB::table('cash_counters')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->count();
+
+        if ($cashCounterLimit == $cashCounters) {
+
+            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit} for every shop.")];
+        }
+
+        return ['pass' => true];
+    }
+
+    public function addCashCounter(?int $branchId, string $cashCounterName, string $shortName): object
     {
         return CashCounter::create([
             'branch_id' => $branchId,
@@ -107,14 +125,21 @@ class CashCounterService
         $updateCashCounter->save();
     }
 
-    public function deleteCashCounter(): void
+    public function deleteCashCounter($id): array
     {
-        $delete = CashCounter::find($id);
+        $delete = $this->singleCashCounter(id: $id, with: ['cashRegisters']);
 
         if (!is_null($delete)) {
 
+            if (count($delete->cashRegisters)) {
+
+                return ['pass' => false, 'msg' => __('Cash counter can not be deleted. This cash counter has one or more cash registers.')];
+            }
+
             $delete->delete();
         }
+
+        return ['pass' => true];
     }
 
     public function singleCashCounter(int $id, array $with = null)

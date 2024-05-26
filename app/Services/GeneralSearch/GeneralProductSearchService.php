@@ -2,7 +2,7 @@
 
 namespace App\Services\GeneralSearch;
 
-use App\Models\Product;
+use App\Models\Products\Product;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Enums\StockAccountingMethod;

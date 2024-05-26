@@ -409,7 +409,7 @@
         $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
         $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {

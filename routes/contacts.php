@@ -8,6 +8,8 @@ use App\Http\Controllers\Contacts\CustomerImportController;
 use App\Http\Controllers\Contacts\ManageCustomerController;
 use App\Http\Controllers\Contacts\ManageSupplierController;
 use App\Http\Controllers\Contacts\SupplierImportController;
+use App\Http\Controllers\Contacts\Reports\CustomerReportController;
+use App\Http\Controllers\Contacts\Reports\SupplierReportController;
 
 Route::group(['prefix' => 'contacts'], function () {
 
@@ -64,6 +66,19 @@ Route::group(['prefix' => 'contacts'], function () {
 
             Route::get('/', [CustomerImportController::class, 'create'])->name('contacts.customers.import.create');
             Route::post('store', [CustomerImportController::class, 'store'])->name('contacts.customers.import.store');
+        });
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+
+        Route::group(['prefix' => 'suppliers'], function () {
+            Route::get('/', [SupplierReportController::class, 'index'])->name('reports.suppliers.index');
+            Route::get('print', [SupplierReportController::class, 'print'])->name('reports.suppliers.print');
+        });
+
+        Route::group(['prefix' => 'customers'], function () {
+            Route::get('/', [CustomerReportController::class, 'index'])->name('reports.customers.index');
+            Route::get('print', [CustomerReportController::class, 'print'])->name('reports.customers.print');
         });
     });
 });

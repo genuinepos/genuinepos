@@ -174,6 +174,8 @@ class InvoiceLayoutService
         $updateInvoiceLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : null;
         $updateInvoiceLayout->footer_text = isset($request->footer_text) ? $request->footer_text : null;
         $updateInvoiceLayout->save();
+
+        $this->forgetCache(id: $id);
     }
 
     public function deleteInvoiceLayout(int $id): array
@@ -201,6 +203,8 @@ class InvoiceLayoutService
                 $deleteInvoice->delete();
             }
         }
+
+        $this->forgetCache(id: $id);
 
         return ['pass' => true];
     }
@@ -273,12 +277,20 @@ class InvoiceLayoutService
             'delivery_note_heading' => 'required',
         ]);
 
-        if ($request->is_header_less == 1) {
+        if ($request->is_header_less == BooleanType::True->value) {
 
             $request->validate([
 
                 'gap_from_top' => 'required',
             ]);
         }
+    }
+
+    private function forgetCache(int $id): void
+    {
+        $cacheKey = "{$tenantId}_invoiceAddSaleLayout_{$id}";
+        Cache::forget($cacheKey);
+        $cacheKey = "{$tenantId}_invoicePosSaleLayout_{$id}";
+        Cache::forget($cacheKey);
     }
 }

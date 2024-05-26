@@ -34,7 +34,7 @@ class DayBookService
     {
         $data = [
             1 => ['name' => 'Sales', 'id' => 'sale_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'sale_id', 'link' => 'sales.show'],
-            2 => ['name' => 'Sales Order', 'id' => 'sale_id', 'voucher_no' => 'sales_order_voucher', 'details_id' => 'sale_id', 'link' => 'sales.orders.show'],
+            2 => ['name' => 'Sales Order', 'id' => 'sale_id', 'voucher_no' => 'sales_order_voucher', 'details_id' => 'sale_id', 'link' => 'sale.orders.show'],
             3 => ['name' => 'Sales Return', 'id' => 'sale_return_id', 'voucher_no' => 'sale_return_voucher', 'details_id' => 'sale_return_id', 'link' => 'sales.returns.show'],
             4 => ['name' => 'Purchase', 'id' => 'purchase_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchases.show'],
             5 => ['name' => 'Purchase Order', 'id' => 'purchase_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchase.orders.show'],

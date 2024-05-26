@@ -48,7 +48,7 @@ class TodoService
 
                 if (auth()->user()->can('todo_change_status')) {
 
-                    $html .= '<a class="dropdown-item" id="changeStatus" href="' . route('todo.change.status', [$row->id]) . '">' . __("Change Status") . '</a>';
+                    $html .= '<a class="dropdown-item" id="changeStatus" href="' . route('todo.change.status.modal', [$row->id]) . '">' . __("Change Status") . '</a>';
                 }
 
                 if ($row->branch_id == auth()->user()->branch_id && auth()->user()->can('todo_delete')) {
@@ -97,7 +97,7 @@ class TodoService
                 }
             })
             ->editColumn('from', function ($row) use ($generalSettings) {
-                
+
                 if ($row->branch_id) {
 
                     if ($row->parent_branch_name) {

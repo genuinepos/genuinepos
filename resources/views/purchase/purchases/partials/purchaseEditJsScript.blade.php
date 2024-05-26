@@ -667,7 +667,7 @@
             $('.batch_no_expire_date_fields').addClass('d-none');
         }
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {

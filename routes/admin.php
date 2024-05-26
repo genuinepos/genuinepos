@@ -10,8 +10,6 @@ use App\Http\Controllers\LoanCompanyController;
 use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\CommonAjaxCallController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Report\CustomerReportController;
-use App\Http\Controllers\Report\SupplierReportController;
 use App\Http\Controllers\ImportPriceGroupProductController;
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
@@ -43,23 +41,6 @@ Route::group(['prefix' => 'product'], function () {
         Route::group(['prefix' => 'import/price/group/products'], function () {
 
             Route::get('export', [ImportPriceGroupProductController::class, 'export'])->name('products.export.price.group.products');
-        });
-    });
-});
-
-// Contact route group
-Route::group(['prefix' => 'contacts'], function () {
-
-    Route::group(['prefix' => 'reports'], function () {
-
-        Route::group(['prefix' => 'suppliers'], function () {
-            Route::get('/', [SupplierReportController::class, 'index'])->name('reports.supplier.index');
-            Route::get('print', [SupplierReportController::class, 'print'])->name('reports.supplier.print');
-        });
-
-        Route::group(['prefix' => 'customers'], function () {
-            Route::get('/', [CustomerReportController::class, 'index'])->name('reports.customer.index');
-            Route::get('print', [CustomerReportController::class, 'print'])->name('reports.customer.print');
         });
     });
 });

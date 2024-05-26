@@ -20,9 +20,7 @@
                 @if (auth()->user()->can('has_access_to_all_area'))
                     @php
                         $branchService = new App\Services\Setups\BranchService();
-                        $branches = $branchService->branches(with: ['parentBranch'])
-                            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')
-                            ->get();
+                        $branches = $branchService->switchableBranches();
                     @endphp
                     <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
                     <li class="my-1 me-2 ms-1 branch_switcher">

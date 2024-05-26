@@ -77,23 +77,21 @@
             {data: 'due', name: 'due', className: 'text-end fw-bold'},
             {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
         ],fnDrawCallback: function() {
-            var total_item = sum_table_col($('.data_tbl'), 'total_item');
-            $('#total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-            $('#total_qty').text(bdFormat(total_qty));
+            var total_qty = sum_table_col($('#sales-table'), 'total_qty');
+            $('#sales_total_qty').text(bdFormat(total_qty));
 
-            var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-            $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
+            var total_invoice_amount = sum_table_col($('#sales-table'), 'total_invoice_amount');
+            $('#sales_total_invoice_amount').text(bdFormat(total_invoice_amount));
 
-            var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
-            $('#received_amount').text(bdFormat(received_amount));
+            var received_amount = sum_table_col($('#sales-table'), 'received_amount');
+            $('#sales_received_amount').text(bdFormat(received_amount));
 
-            var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
-            $('#sale_return_amount').text(bdFormat(sale_return_amount));
+            var sale_return_amount = sum_table_col($('#sales-table'), 'sale_return_amount');
+            $('#sales_sale_return_amount').text(bdFormat(sale_return_amount));
 
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
+            var due = sum_table_col($('#sales-table'), 'due');
+            $('#sales_due').text(bdFormat(due));
 
             $('.data_preloader').hide();
         }
@@ -127,27 +125,28 @@
             {data: 'customer_name', name: 'customers.name'},
             {data: 'payment_status', name: 'created_by.name', className: 'text-start'},
             {data: 'total_item', name: 'total_item', className: 'text-end fw-bold'},
-            {data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold'},
+            {data: 'total_ordered_qty', name: 'total_ordered_qty', className: 'text-end fw-bold'},
+            { data: 'total_left_qty', name: 'total_left_qty', className: 'text-end text-danger fw-bold' },
             {data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold'},
             {data: 'received_amount', name: 'paid', className: 'text-end fw-bold'},
             {data: 'due', name: 'due', className: 'text-end fw-bold'},
             {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
-
         ],fnDrawCallback: function() {
-            var total_item = sum_table_col($('.data_tbl'), 'total_item');
-            $('#total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-            $('#total_qty').text(bdFormat(total_qty));
+            var total_ordered_qty = sum_table_col($('#sales-order-table'), 'total_ordered_qty');
+            $('#sales_order_total_ordered_qty').text(bdFormat(total_ordered_qty));
 
-            var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-            $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
+            var total_left_qty = sum_table_col($('#sales-order-table'), 'total_left_qty');
+            $('#sales_order_total_left_qty').text(bdFormat(total_left_qty));
 
-            var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
-            $('#received_amount').text(bdFormat(received_amount));
+            var total_invoice_amount = sum_table_col($('#sales-order-table'), 'total_invoice_amount');
+            $('#sales_order_total_invoice_amount').text(bdFormat(total_invoice_amount));
 
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
+            var received_amount = sum_table_col($('#sales-order-table'), 'received_amount');
+            $('#sales_order_received_amount').text(bdFormat(received_amount));
+
+            var due = sum_table_col($('#sales-order-table'), 'due');
+            $('#sales_order_due').text(bdFormat(due));
 
             $('.data_preloader').hide();
         }
@@ -188,14 +187,17 @@
             {data: 'created_by',name: 'created_by.name'},
         ],fnDrawCallback: function() {
 
-            var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
-            $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
-            var paid = sum_table_col($('.data_tbl'), 'paid');
-            $('#paid').text(bdFormat(paid));
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
-            var purchase_return_amount = sum_table_col($('.data_tbl'), 'purchase_return_amount');
-            $('#purchase_return_amount').text(bdFormat(purchase_return_amount));
+            var total_purchase_amount = sum_table_col($('#purchases-table'), 'total_purchase_amount');
+            $('#purchase_total_purchase_amount').text(bdFormat(total_purchase_amount));
+
+            var paid = sum_table_col($('#purchases-table'), 'paid');
+            $('#purchase_paid').text(bdFormat(paid));
+
+            var due = sum_table_col($('#purchases-table'), 'due');
+            $('#purchase_due').text(bdFormat(due));
+
+            var purchase_return_amount = sum_table_col($('#purchases-table'), 'purchase_return_amount');
+            $('#purchase_purchase_return_amount').text(bdFormat(purchase_return_amount));
 
             $('.data_preloader').hide();
         }
@@ -236,12 +238,12 @@
             {data: 'due', name: 'purchases.due', className: 'text-end fw-bold'},
         ],fnDrawCallback: function() {
 
-            var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
-            $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
-            var paid = sum_table_col($('.data_tbl'), 'paid');
-            $('#paid').text(bdFormat(paid));
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
+            var total_purchase_amount = sum_table_col($('#purchase-orders-table'), 'total_purchase_amount');
+            $('#purchase_order_total_purchase_amount').text(bdFormat(total_purchase_amount));
+            var paid = sum_table_col($('#purchase-orders-table'), 'paid');
+            $('#purchase_order_paid').text(bdFormat(paid));
+            var due = sum_table_col($('#purchase-orders-table'), 'due');
+            $('#purchase_order_due').text(bdFormat(due));
             $('.data_preloader').hide();
         }
     });
@@ -283,8 +285,8 @@
             // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
         ],fnDrawCallback: function() {
 
-            var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
-            $('#total_amount').text(bdFormat(total_amount));
+            var total_amount = sum_table_col($('#receipts-table'), 'total_amount');
+            $('#receipts_total_amount').text(bdFormat(total_amount));
             $('.data_preloader').hide();
         }
     });
@@ -325,7 +327,7 @@
             // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
         ],fnDrawCallback: function() {
 
-            var total_amount = sum_table_col($('.payments-table'), 'total_amount');
+            var total_amount = sum_table_col($('#payments-table'), 'total_amount');
             $('#payments_total_amount').text(bdFormat(total_amount));
 
             $('.data_preloader').hide();

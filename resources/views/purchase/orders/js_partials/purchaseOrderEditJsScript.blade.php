@@ -568,7 +568,7 @@
         $('#e_selling_price').val(parseFloat(selling_price).toFixed(2));
         $('#e_description').val(description);
         $('#e_quantity').focus().select();
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {

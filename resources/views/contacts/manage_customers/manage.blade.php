@@ -458,12 +458,12 @@
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
-                                                    <th id="total_item" class="text-white text-end"></th>
-                                                    <th id="total_qty" class="text-white text-end"></th>
-                                                    <th id="total_invoice_amount" class="text-white text-end"></th>
-                                                    <th id="received_amount" class="text-white text-end"></th>
-                                                    <th id="sale_return_amount" class="text-white text-end"></th>
-                                                    <th id="due" class="text-white text-end"></th>
+                                                    <th id="sales_total_item" class="text-white text-end"></th>
+                                                    <th id="sales_total_qty" class="text-white text-end"></th>
+                                                    <th id="sales_total_invoice_amount" class="text-white text-end"></th>
+                                                    <th id="sales_received_amount" class="text-white text-end"></th>
+                                                    <th id="sales_sale_return_amount" class="text-white text-end"></th>
+                                                    <th id="sales_due" class="text-white text-end"></th>
                                                     <th class="text-white text-end">---</th>
                                                 </tr>
                                             </tfoot>
@@ -591,7 +591,8 @@
                                                     <th>{{ __('Customer') }}</th>
                                                     <th>{{ __('Payment Status') }}</th>
                                                     <th>{{ __('Total Item') }}</th>
-                                                    <th>{{ __('Total Qty') }}</th>
+                                                    <th>{{ __('Total Ordered Qty') }}</th>
+                                                    <th>{{ __('Total Left Qty') }}</th>
                                                     <th>{{ __('Total Ordered Amt') }}</th>
                                                     <th>{{ __('Advance Received') }}</th>
                                                     <th>{{ __('Due') }}</th>
@@ -601,12 +602,12 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
-                                                    <th id="total_item" class="text-white text-end"></th>
-                                                    <th id="total_qty" class="text-white text-end"></th>
-                                                    <th id="total_invoice_amount" class="text-white text-end"></th>
-                                                    <th id="received_amount" class="text-white text-end"></th>
-                                                    <th id="due" class="text-white text-end"></th>
+                                                    <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                                    <th id="sales_order_total_ordered_qty" class="text-white text-end"></th>
+                                                    <th id="sales_order_total_left_qty" class="text-white text-end"></th>
+                                                    <th id="sales_order_total_invoice_amount" class="text-white text-end"></th>
+                                                    <th id="sales_order_received_amount" class="text-white text-end"></th>
+                                                    <th id="sales_order_due" class="text-white text-end"></th>
                                                     <th class="text-white text-end">---</th>
                                                 </tr>
                                             </tfoot>
@@ -744,10 +745,10 @@
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                    <th id="total_purchase_amount" class="text-white"></th>
-                                                    <th id="paid" class="text-white"></th>
-                                                    <th id="purchase_return_amount" class="text-white"></th>
-                                                    <th id="due" class="text-white"></th>
+                                                    <th id="purchase_total_purchase_amount" class="text-white"></th>
+                                                    <th id="purchase_paid" class="text-white"></th>
+                                                    <th id="purchase_purchase_return_amount" class="text-white"></th>
+                                                    <th id="purchase_due" class="text-white"></th>
                                                     <th></th>
                                                 </tr>
                                             </tfoot>
@@ -885,9 +886,9 @@
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
-                                                    <th class="text-white text-end" id="total_purchase_amount"></th>
-                                                    <th class="text-white text-end" id="paid"></th>
-                                                    <th class="text-white text-end" id="due"></th>
+                                                    <th class="text-white text-end" id="purchase_order_total_purchase_amount"></th>
+                                                    <th class="text-white text-end" id="purchase_order_paid"></th>
+                                                    <th class="text-white text-end" id="purchase_order_due"></th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -1025,7 +1026,7 @@
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                    <th id="total_amount" class="text-white"></th>
+                                                    <th id="receipts_total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>
                                             </tfoot>

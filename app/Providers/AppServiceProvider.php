@@ -14,6 +14,7 @@ use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
+use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 use App\Interfaces\Accounts\AccountControllerMethodContainersInterface;
@@ -38,6 +39,7 @@ use App\Interfaces\Purchases\PurchaseOrderToInvoiceControllerMethodContainersInt
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\PosSaleControllerMethodContainersService;
+use App\Services\Setups\MethodContainerServices\BranchControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\AccountControllerMethodContainersService;
@@ -105,6 +107,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);
+        $this->app->bind(BranchControllerMethodContainersInterface::class, BranchControllerMethodContainersService::class);
         $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 

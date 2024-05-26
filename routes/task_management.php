@@ -17,7 +17,7 @@ Route::group(['prefix' => 'task-management'], function () {
         Route::post('store', 'store')->name('todo.store');
         Route::get('create', 'create')->name('todo.create');
         Route::get('assign/user/{id}', 'assignUser')->name('todo.assign.user');
-        Route::get('change/status/{id}', 'changeStatusModal')->name('todo.change.status');
+        Route::get('change/status/modal/{id}', 'changeStatusModal')->name('todo.change.status.modal');
         Route::post('change/status/{id}', 'changeStatus')->name('todo.change.status');
         Route::get('change/priority/{id}', 'changePriority')->name('todo.priority');
         Route::get('edit/{id}', 'edit')->name('todo.edit');

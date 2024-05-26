@@ -5,24 +5,27 @@ namespace App\Services\Subscriptions;
 use Carbon\Carbon;
 use App\Enums\BooleanType;
 use App\Enums\SubscriptionUpdateType;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Subscriptions\Subscription;
 use Modules\SAAS\Utils\ExpireDateAllocation;
 use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
 
 class SubscriptionService
 {
-    public function updateBusinessStartUpCompletingStatus()
+    public function updateBusinessStartUpCompletingStatus(): void
     {
         $updateSubscription = Subscription::first();
         $updateSubscription->is_completed_business_startup = BooleanType::True->value;
         $updateSubscription->save();
+        $this->forgetCache();
     }
 
-    public function updateBranchStartUpCompletingStatus()
+    public function updateBranchStartUpCompletingStatus(): void
     {
         $updateSubscription = Subscription::first();
         $updateSubscription->is_completed_branch_startup = BooleanType::True->value;
         $updateSubscription->save();
+        $this->forgetCache();
     }
 
     public function addSubscription(object $request, object $plan): object
@@ -194,6 +197,9 @@ class SubscriptionService
         }
 
         $updateSubscription->save();
+
+        $this->forgetCache();
+
         return $updateSubscription;
     }
 
@@ -207,5 +213,12 @@ class SubscriptionService
         }
 
         return $query->first();
+    }
+
+    private function forgetCache(): void
+    {
+        $tenantId = tenant('id');
+        $cacheKey = "{$tenantId}_GeneralSettings_subscription";
+        Cache::forget($cacheKey);
     }
 }

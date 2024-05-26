@@ -30,7 +30,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
                 }
             }
 
-            $this->cacheService->syncGeneralSettings();
+            $this->cacheService->forgetGeneralSettingsCache();
 
             return true;
         }

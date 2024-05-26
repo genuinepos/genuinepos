@@ -307,9 +307,27 @@
                     async: false,
                     data: request,
                     success: function(data) {
+
+                        if (!$.isEmptyObject(data.errorMsg)) {
+
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
                         toastr.error(data);
                         cashCounterTable.ajax.reload();
                         $('#deleted_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                        } else {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        }
                     }
                 });
             });

@@ -165,7 +165,7 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Invoice ID') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Sales Invoice') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __('Serach Sales Invoice ID') }}" autocomplete="off">

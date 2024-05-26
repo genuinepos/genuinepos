@@ -46,7 +46,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         $data['accountGroups'] = $this->accountGroupService->singleAccountGroupByAnyCondition(with: ['parentGroup'])
-        ->where('is_main_group', BooleanType::False->value)->get();
+            ->where('is_main_group', BooleanType::False->value)->get();
 
         return $data;
     }
@@ -54,6 +54,11 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
     public function expenseAccountsContainer(object $request): ?object
     {
         return $this->accountService->expenseAccounts(request: $request);
+    }
+
+    public function customerAccountsContainer(object $request): ?object
+    {
+        return $this->accountService->customerAccounts(request: $request);
     }
 
     public function createMethodContainer(int $type): array

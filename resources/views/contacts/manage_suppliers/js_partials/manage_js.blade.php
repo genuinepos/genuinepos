@@ -285,7 +285,7 @@
         ],fnDrawCallback: function() {
 
             var total_amount = sum_table_col($('.receipts-table'), 'total_amount');
-            $('#receipt_total_amount').text(bdFormat(total_amount));
+            $('#receipts_total_amount').text(bdFormat(total_amount));
             $('.data_preloader').hide();
         }
     });

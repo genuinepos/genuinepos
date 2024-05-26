@@ -410,7 +410,7 @@
         $('#e_unique_id').val(unique_id);
         $('#e_unit_cost_inc_tax').val(unit_cost_inc_tax);
         $('#e_subtotal').val(subtotal);
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {

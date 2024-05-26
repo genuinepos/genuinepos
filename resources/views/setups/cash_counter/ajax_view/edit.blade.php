@@ -6,6 +6,7 @@
         </div>
         <div class="modal-body">
             <form id="edit_cash_counter_form" action="{{ route('cash.counters.update', $cashCounter->id) }}" method="POST">
+                <input type="hidden" name="branch_id" value="{{ $cashCounter->branch_id }}">
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>

@@ -107,7 +107,6 @@ class AddBusinessController extends Controller
             auth()->user()->save();
         }
 
-
         return response()->json(__('Shop/Business renewed successfully'));
     }
 }

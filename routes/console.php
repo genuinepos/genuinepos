@@ -27,13 +27,53 @@ Artisan::command('dev:m', function () {
 
 Artisan::command('sync:gs', function () {
 
-    $generalSettings = GeneralSetting::where('key', 'prefix__stock_issue_voucher_prefix')->where('branch_id', null)->first();
+    $stockIssueVoucherPrefix = GeneralSetting::where('key', 'prefix__stock_issue_voucher_prefix')->where('branch_id', null)->first();
 
-    if (!isset($generalSettings)) {
+    if (!isset($stockIssueVoucherPrefix)) {
 
         $add = new GeneralSetting();
         $add->key = 'prefix__stock_issue_voucher_prefix';
         $add->value = 'STI';
+        $add->save();
+    }
+
+    $subscriptionHasBusiness = GeneralSetting::where('key', 'subscription__has_business')->where('branch_id', null)->first();
+
+    if (!isset($subscriptionHasBusiness)) {
+
+        $add = new GeneralSetting();
+        $add->key = 'subscription__has_business';
+        $add->value = 1;
+        $add->save();
+    }
+
+    $subscriptionBranchCount = GeneralSetting::where('key', 'subscription__branch_count')->where('branch_id', null)->first();
+
+    if (!isset($subscriptionBranchCount)) {
+
+        $add = new GeneralSetting();
+        $add->key = 'subscription__branch_count';
+        $add->value = 1;
+        $add->save();
+    }
+
+    $subscriptionIsCompletedBusinessSetup = GeneralSetting::where('key', 'subscription__is_completed_business_setup')->where('branch_id', null)->first();
+
+    if (!isset($subscriptionIsCompletedBusinessSetup)) {
+
+        $add = new GeneralSetting();
+        $add->key = 'subscription__is_completed_business_setup';
+        $add->value = 0;
+        $add->save();
+    }
+
+    $subscriptionIsCompletedBranchSetup = GeneralSetting::where('key', 'subscription__is_completed_branch_startup')->where('branch_id', null)->first();
+
+    if (!isset($subscriptionIsCompletedBranchSetup)) {
+
+        $add = new GeneralSetting();
+        $add->key = 'subscription__is_completed_branch_startup';
+        $add->value = 0;
         $add->save();
     }
 

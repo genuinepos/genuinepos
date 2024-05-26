@@ -25,13 +25,6 @@ class GeneralSettingsListener
      */
     public function handle(Authenticated $event)
     {
-        // $branchId = auth()?->user()?->branch_id ? auth()->user()->branch_id : null;
-        //     $tenantId = tenant('id');
-        //     $generalSettingsCacheKey = "{$tenantId}_generalSettings_{$branchId}";
-
-        //     $generalSettings = Cache::get($generalSettingsCacheKey);
-        // $generalSettings = Cache::get('generalSettings');
-        // dd($generalSettings);
         try {
             // $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
             //     ->orWhereIn('key', [
@@ -43,13 +36,16 @@ class GeneralSettingsListener
             //     ])->pluck('value', 'key')->toArray();
 
             $branchId = $event?->user?->branch_id ? $event?->user?->branch_id : null;
-            $tenantId = tenant('id');  // Ensure this retrieves the current tenant's ID
-            $cacheKey = "{$tenantId}_generalSettings_{$branchId}";
+            $cacheKey = "generalSettings_{$branchId}";
 
             $generalSettings = Cache::rememberForever($cacheKey, function () use ($branchId, $cacheKey) {
 
                 $settings = GeneralSetting::where('branch_id', $branchId)
                     ->orWhereIn('key', [
+                        'subscription__has_business',
+                        'subscription__branch_count',
+                        'subscription__is_completed_business_setup',
+                        'subscription__is_completed_branch_startup',
                         'business_or_shop__business_name',
                         'business_or_shop__business_logo',
                         'business_or_shop__address',
@@ -70,7 +66,7 @@ class GeneralSettingsListener
                     'send_sms__',
                 ];
 
-                $cacheKey = "{$tenantId}_parentBranchGeneralSettings_{$branch->parent_branch_id}";
+                $cacheKey = "parentBranchGeneralSettings_{$branch->parent_branch_id}";
 
                 $parentBranchGeneralSettings = Cache::rememberForever($cacheKey, function () use ($branch, $prefixes) {
 
@@ -154,7 +150,7 @@ class GeneralSettingsListener
                 //     ->select($selectedColumns)
                 //     ->first();
 
-                $cacheKey = "{$tenantId}_invoiceAddSaleLayout_{$generalSettings['invoice_layout__add_sale_invoice_layout_id']}";
+                $cacheKey = "invoiceAddSaleLayout_{$generalSettings['invoice_layout__add_sale_invoice_layout_id']}";
 
                 $invoiceAddSaleLayout = Cache::rememberForever($cacheKey, function () use ($generalSettings, $selectedColumns) {
 
@@ -174,7 +170,7 @@ class GeneralSettingsListener
                 //     ->select($selectedColumns)
                 //     ->first();
 
-                $cacheKey = "{$tenantId}_invoicePosSaleLayout_{$generalSettings['invoice_layout__pos_sale_invoice_layout_id']}";
+                $cacheKey = "invoicePosSaleLayout_{$generalSettings['invoice_layout__pos_sale_invoice_layout_id']}";
 
                 $invoicePosSaleLayout = Cache::rememberForever($cacheKey, function () use ($generalSettings, $selectedColumns) {
 

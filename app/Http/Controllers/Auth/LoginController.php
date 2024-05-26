@@ -50,7 +50,6 @@ class LoginController extends Controller
      * @return void
      */
 
-
     public function showLoginForm()
     {
         if (Auth::check('web')) {
@@ -76,6 +75,18 @@ class LoginController extends Controller
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
 
+        $generalSettings = DB::table('general_settings')->whereIn('key', ['subscription__has_business', 'subscription__branch_count'])->where('branch_id', null)->pluck('value', 'key')->toArray();
+
+        $firstBranch = DB::table('branches')->first();
+
+        $role = $user?->roles()?->first();
+        if (isset($role) && $role->hasPermissionTo('has_access_to_all_area') && ($generalSettings['subscription__has_business'] == BooleanType::True->value || $generalSettings['subscription__branch_count'] > 1)) {
+
+            $user->branch_id = null;
+            $user->is_belonging_an_area = BooleanType::False->value;
+            $user->save();
+        }
+
         if (isset($user) && $user->allow_login == BooleanType::True->value) {
 
             if (
@@ -87,7 +98,17 @@ class LoginController extends Controller
                     session(['lang' => $user->language]);
                 }
 
-                $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
+                if (isset($firstBranch) && $generalSettings['subscription__has_business'] == BooleanType::False->value && $generalSettings['subscription__branch_count'] == 1) {
+
+                    $user->branch_id = $firstBranch->id;
+                    $user->is_belonging_an_area = BooleanType::True->value;
+                    $user->save();
+                }
+
+                if ($user->branch_id) {
+
+                    $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
+                }
 
                 return redirect()->intended(route('dashboard.index'));
             } else {

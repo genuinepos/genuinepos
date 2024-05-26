@@ -1972,19 +1972,6 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('billing_index'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('software.service.billing.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-arrow-alt-circle-up"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Billing') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
                                     <div class="sub-menu-col">
                                         <a href="{{ route('settings.release.note.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">

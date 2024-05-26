@@ -11,6 +11,10 @@ class GeneralSettingsSeeder extends Seeder
     private function getSettings(): array
     {
         $generalSettings = [
+            ['key' => 'subscription__has_business', 'value' => 1, 'branch_id' => null],
+            ['key' => 'subscription__branch_count', 'value' => 1, 'branch_id' => null],
+            ['key' => 'subscription__is_completed_business_setup', 'value' => 0, 'branch_id' => null],
+            ['key' => 'subscription__is_completed_branch_startup', 'value' => 0, 'branch_id' => null],
             ['key' => 'business_or_shop__business_name', 'value' => 'Company Name', 'branch_id' => null],
             ['key' => 'business_or_shop__address', 'value' => 'Dhaka, Bangladesh', 'branch_id' => null],
             ['key' => 'business_or_shop__phone', 'value' => 'XXXXXXXXXX', 'branch_id' => null],

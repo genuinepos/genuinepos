@@ -13,10 +13,9 @@ class CacheService implements CacheServiceInterface
         if (isset($branchId)) {
             $__branchId = $branchId;
         }
-        $tenantId = tenant('id');  // Ensure this retrieves the current tenant's ID
-        $cacheKey = "{$tenantId}_generalSettings_{$__branchId}";
+        $cacheKey = "generalSettings_{$__branchId}";
         Cache::forget($cacheKey);
-        $cacheKey = "{$tenantId}_parentBranchGeneralSettings_{$__branchId}";
+        $cacheKey = "parentBranchGeneralSettings_{$__branchId}";
         Cache::forget($cacheKey);
     }
 }

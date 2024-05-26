@@ -24,7 +24,11 @@ class ChangeBusinessOrBranchLocationController extends Controller
         if (
             !Session::get('chooseBusinessOrShop') &&
             auth()->user()->can('has_access_to_all_area') &&
-            auth()->user()->is_belonging_an_area == BooleanType::False->value
+            auth()->user()->is_belonging_an_area == BooleanType::False->value &&
+            (
+                config('generalSettings')['subscription__has_business'] == BooleanType::True->value ||
+                config('generalSettings')['subscription__branch_count'] > 1
+            )
         ) {
 
             $branches = $this->branchService->branches(with: ['parentBranch'])

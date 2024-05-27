@@ -138,8 +138,8 @@
                 <div class="col-md-4">
                     <label for="branch_stock_accounting_method">{{ __('Stock Accounting Method') }}</label>
                     <select required name="branch_stock_accounting_method" id="branch_stock_accounting_method" class="form-control select wide">
-                        @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                            <option value="{{ $key }}">{{ $item }}</option>
+                        @foreach (App\Enums\StockAccountingMethod::cases() as $item)
+                            <option @selected($stockAccountingMethod == $item->value) value="{{ $item->value }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
                 </div>

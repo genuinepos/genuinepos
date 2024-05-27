@@ -30,6 +30,7 @@ use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
+use App\Interfaces\Products\QuickProductAddControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderToInvoiceControllerMethodContainersInterface;
 use App\Interfaces\TransferStocks\TransferStockControllerMethodContainersInterface;
@@ -57,6 +58,7 @@ use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodConta
 use App\Services\Manufacturing\MethodContainerServices\ProcessControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseOrderControllerMethodContainersService;
 use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
+use App\Services\Products\MethodContainerServices\QuickProductAddControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseReturnControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderToInvoiceControllerMethodContainersService;
 use App\Services\TransferStocks\MethodContainerServices\TransferStockControllerMethodContainersService;
@@ -79,6 +81,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ProductControllerMethodContainersInterface::class, ProductControllerMethodContainersService::class);
+        $this->app->bind(QuickProductAddControllerMethodContainersInterface::class, QuickProductAddControllerMethodContainersService::class);
         $this->app->bind(ContactControllerMethodContainersInterface::class, ContactControllerMethodContainersService::class);
         $this->app->bind(AddSaleControllerMethodContainersInterface::class, AddSaleControllerMethodContainersService::class);
         $this->app->bind(PosSaleControllerMethodContainersInterface::class, PosSaleControllerMethodContainersService::class);

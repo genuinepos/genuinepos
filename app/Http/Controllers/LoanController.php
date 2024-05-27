@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Utils\AccountUtil;
 use App\Utils\Converter;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\LoanUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,18 +19,14 @@ class LoanController extends Controller
 
     protected $converter;
 
-    protected $invoiceVoucherRefIdUtil;
-
     public function __construct(
         AccountUtil $accountUtil,
         LoanUtil $loanUtil,
         Converter $converter,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
         $this->converter = $converter;
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
 
     public function index(Request $request)
@@ -158,7 +153,7 @@ class LoanController extends Controller
         ]);
 
         // generate reference no
-        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('loans'), 4, '0', STR_PAD_LEFT);
+        $refId = 1;
 
         $prefix = $request->type == 1 ? 'LA' : 'LL';
         $addLoan = new Loan();

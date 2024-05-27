@@ -2,7 +2,7 @@
 
 namespace App\Interfaces\Products;
 
-interface ProductControllerMethodContainersInterface
+interface QuickProductAddControllerMethodContainersInterface
 {
     /**
      * @return \App\Services\Products\MethodContainerServices\ProductControllerMethodContainersService

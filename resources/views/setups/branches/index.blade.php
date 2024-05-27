@@ -7,7 +7,9 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-4">
-                    <h5>{{ __('Shops') }}</h5>
+                    <h5>{{ __('Shops') }}
+                        <span>({{ __('Limit') }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['subscription__branch_count']}})</span>
+                    </h5>
                 </div>
 
                 <div class="col-md-4 text-start">

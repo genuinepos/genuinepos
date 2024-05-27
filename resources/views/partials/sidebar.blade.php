@@ -9,7 +9,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->can('branches_index'))
+                @if (auth()->user()->can('branches_index') && $generalSettings['subscription__branch_count'] > 1)
                     <li data-menu="store" class="{{ request()->is('setups/branches*') ? 'menu_active' : '' }}">
                         <a href="{{ route('branches.index') }}" class=""><img src="{{ asset('backend/asset/img/icon/shop.svg') }}">
                             <p class="title">{{ __('Store') }}</p>

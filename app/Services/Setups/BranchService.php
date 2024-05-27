@@ -194,6 +194,13 @@ class BranchService
     {
         $deleteBranch = $this->singleBranch(id: $id, with: ['sales', 'purchases', 'childBranches']);
 
+        $branchCount = DB::table('branches')->count();
+
+        if ($branchCount == 1) {
+
+            return ['pass' => false, 'msg' => __('Shop can not be deleted. At least shop a is required.')];
+        }
+
         if (count($deleteBranch->childBranches) > 0) {
 
             return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more chain shop.')];
@@ -358,7 +365,7 @@ class BranchService
     public function restrictions(): array
     {
         $generalSettings = config('generalSettings');
-        $branchLimit = $generalSettings['subscription']->current_shop_count;
+        $branchLimit = $generalSettings['subscription__branch_count'];
 
         $branchCount = DB::table('branches')->count();
 
@@ -373,7 +380,7 @@ class BranchService
     public function updateRestrictions(): array
     {
         $generalSettings = config('generalSettings');
-        $branchLimit = $generalSettings['subscription']->current_shop_count;
+        $branchLimit = $generalSettings['subscription__branch_count'];
 
         $branchCount = DB::table('branches')->count();
 

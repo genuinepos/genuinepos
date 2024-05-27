@@ -12,19 +12,6 @@ use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
 
 class BranchController extends Controller
 {
-
-    public function __construct(
-        private BranchService $branchService,
-        private InvoiceLayoutService $invoiceLayoutService,
-        private CashCounterService $cashCounterService,
-        private CurrencyService $currencyService,
-        private TimezoneService $timezoneService,
-        private BranchSettingService $branchSettingService,
-        private GeneralSettingService $generalSettingService,
-        private CodeGenerationServiceInterface $codeGenerator,
-    ) {
-    }
-
     public function index(Request $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         $generalSettings = config('generalSettings');
@@ -59,7 +46,7 @@ class BranchController extends Controller
         try {
             DB::beginTransaction();
 
-            $storeMethodContainer = $branchControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
+            $storeMethodContainer = $branchControllerMethodContainersInterface->storeMethodContainer(request: $request);
 
             if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 

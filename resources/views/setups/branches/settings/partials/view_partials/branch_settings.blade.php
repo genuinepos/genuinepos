@@ -167,8 +167,8 @@
                             @php
                                 $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                             @endphp
-                            @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                <option {{ $generalSettings['business_or_shop__stock_accounting_method'] == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                            @foreach (\App\Enums\StockAccountingMethod::cases() as $item)
+                                <option @selected($stockAccountingMethod == $item->value) value="{{ $item->value }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                         <span class="error error_financial_year_start"></span>

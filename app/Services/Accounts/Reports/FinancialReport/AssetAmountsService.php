@@ -117,12 +117,11 @@ class AssetAmountsService
 
                 $query->where('accounts.branch_id', '=', $__filteredBranchId);
 
-                if (isset($__branchId)) {
+                if (isset($__filteredBranchId)) {
 
                     $query->orWhere('parentBranch.id', '=', $__filteredBranchId);
+                    $query->orWhere('bank_access_branches.branch_id', '=', $__filteredBranchId);
                 }
-
-                $query->orWhere('bank_access_branches.branch_id', '=', $__filteredBranchId);
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
@@ -152,7 +151,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -165,7 +164,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0
@@ -219,13 +218,25 @@ class AssetAmountsService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();
@@ -321,7 +332,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -334,7 +345,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0
@@ -387,13 +398,25 @@ class AssetAmountsService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();
@@ -464,8 +487,12 @@ class AssetAmountsService
             $query->where(function ($query) use ($filteredBranchId) {
 
                 $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
-                $query->where('accounts.branch_id', '=', $__branchId)
-                    ->orWhere('parentBranch.id', '=', $__branchId);
+                $query->where('accounts.branch_id', '=', $__branchId);
+
+                if (isset($__branchId)) {
+
+                    $query->orWhere('parentBranch.id', '=', $__branchId);
+                }
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
@@ -497,7 +524,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -510,7 +537,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0
@@ -563,13 +590,25 @@ class AssetAmountsService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();
@@ -640,8 +679,12 @@ class AssetAmountsService
             $query->where(function ($query) use ($filteredBranchId) {
 
                 $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
-                $query->where('accounts.branch_id', '=', $__branchId)
-                    ->orWhere('parentBranch.id', '=', $__branchId);
+                $query->where('accounts.branch_id', '=', $__branchId);
+
+                if (isset($__branchId)) {
+
+                    $query->orWhere('parentBranch.id', '=', $__branchId);
+                }
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
@@ -673,7 +716,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -686,7 +729,7 @@ class AssetAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0
@@ -739,13 +782,25 @@ class AssetAmountsService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();

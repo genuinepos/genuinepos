@@ -38,7 +38,7 @@ class TrialBalanceController extends Controller
         $formatOfReport = $request->format_of_report;
         $generalSettings = config('generalSettings');
         $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
-        $accountGroups = $this->groupWiseTrialBalanceService->accountGroups(request: $request, accountStartDate: $accountStartDate);
+         $accountGroups = $this->groupWiseTrialBalanceService->accountGroups(request: $request, accountStartDate: $accountStartDate);
 
         return view('accounting.reports.trial_balance.ajax_view.trial_balance_group_wise_data', compact(
             'accountGroups',

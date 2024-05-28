@@ -3,15 +3,17 @@
         <div class="panel__nav">
             <div class=" top-menu">
                 <div class="logo__sec">
-                    <a href="{{ route('dashboard.index') }}" class="logo">
-                        @if ($generalSettings['business_or_shop__business_logo'])
-                            <img style="height: height; width:auto;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo__img">
-                        @else
-                            <h6 class="text-white fw-bold text-uppercase">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
-                        @endif
-
-                        {{-- <img style="height: height; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img"> --}}
-                    </a>
+                    @if (config('speeddigit.dynamic_app_logo') == true)
+                        <a href="{{ route('dashboard.index') }}" class="logo">
+                            @if ($generalSettings['business_or_shop__business_logo'])
+                                <img style="height: height; width:auto;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo__img">
+                            @else
+                                <h6 class="text-white fw-bold text-uppercase">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+                            @endif
+                        </a>
+                    @else
+                        <img style="height: height; width:auto;" src="{{ asset(config('speeddigit.app_logo')) }}" alt="System Logo" class="logo__img">
+                    @endif
                 </div>
                 <div id="left_bar_toggle"><span class="fa-light fa-bars"></span></div>
                 <div class="notify-menu">

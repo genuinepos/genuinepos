@@ -3,6 +3,7 @@
 return [
     'name' => env('APP_NAME', 'GPOS SYSTEM'),
     'show_app_logo' => env('SHOW_APP_LOGO', true),
+    'dynamic_app_logo' => env('DYNAMIC_APP_LOGO', false),
     'app_logo' => env('APP_LOGO_PATH', 'assets/images/app_logo.png'),
     'app_logo_alt' => env('APP_LOGO_ALT', config('app.name')),
     'version' => env('APP_VERSION', 'v1.0.0'),

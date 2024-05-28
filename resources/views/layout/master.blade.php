@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @php
-    $rtl  = app()->isLocale('ar');
+    $rtl = app()->isLocale('ar');
 @endphp
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Cache-control" content="no-cache">
@@ -17,16 +18,11 @@
     @stack('stylesheets')
 
     <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
-    @vite([
-        'resources/sass/app.scss',
-        'resources/js/app.js',
-        'resources/scripts/main.ts',
-    ])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/scripts/main.ts'])
 </head>
 
-<body id="dashboard-8"
-class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
-@if($rtl) rtl @endif" @if($rtl) dir="rtl" @endif>
+<body id="dashboard-8" class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
+@if ($rtl) rtl @endif" @if ($rtl) dir="rtl" @endif>
 
     <div class="all__content">
         @include('partials.sidebar')
@@ -42,15 +38,15 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
 
         <footer>
             <div class="logo_wrapper">
-                @if ($generalSettings['business_or_shop__business_logo'])
-
-                    <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo">
+                @if (config('speeddigit.dynamic_app_logo') == true)
+                    @if ($generalSettings['business_or_shop__business_logo'])
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo">
+                    @else
+                        <h6 class="text-white fw-bold text-uppercase logo text-center">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+                    @endif
                 @else
-
-                    <h6 class="text-white fw-bold text-uppercase logo text-center">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+                    <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
                 @endif
-
-                {{-- <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}"> --}}
             </div>
 
             <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>
@@ -59,28 +55,28 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
 
     <div class="modal fade" id="appInstallModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="appInstallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="appInstallModalLabel">Welcome to GPOS!</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="appInstallModalLabel">{{ __("Welcome to GPOS!") }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ __("If you want to add a shortcut on your desktop, click the OK button.") }}
+                </div>
+                <div class="modal-footer">
+                    {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}
+                    <button type="button" id="installPwa" class="btn btn-primary">{{ __("OK") }}</button>
+                </div>
             </div>
-            <div class="modal-body">
-              If you want to add a shortcut on your desktop, click the OK button.
-            </div>
-            <div class="modal-footer">
-              {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}
-              <button type="button" id="installPwa" class="btn btn-primary">OK</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
     <div class="modal fade" id="todaySummeryModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     @include('layout._script')
     @stack('scripts')
     <script>
-        $(document).on('click', '#todaySummeryBtn',function (e) {
+        $(document).on('click', '#todaySummeryBtn', function(e) {
             e.preventDefault();
             todaySummery();
         });
@@ -92,14 +88,17 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
             $.ajax({
                 url: "{{ route('today.summary.index') }}",
                 type: 'get',
-                data: { branch_id },
+                data: {
+                    branch_id
+                },
                 success: function(data) {
 
                     $('.loader').hide();
                     $('#todaySummeryModal').empty();
                     $('#todaySummeryModal').html(data);
                     $('#todaySummeryModal').modal('show');
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loader').hide();
                     if (err.status == 0) {
@@ -113,7 +112,7 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
             });
         }
 
-        $(document).on('change', '#today_summary_branch_id',function () {
+        $(document).on('change', '#today_summary_branch_id', function() {
             todaySummery();
         });
 
@@ -130,7 +129,8 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
                 data: {
                     branch_id,
                     branch_name,
-                }, success: function(data) {
+                },
+                success: function(data) {
 
                     $(data).printThis({
                         debug: false,
@@ -150,7 +150,7 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
         $('.calculator-bg__main button').prop('type', 'button');
 
         // POS read manual button
-        $('#readDocument').click(function () {
+        $('#readDocument').click(function() {
 
             if ($('#readDocument div.doc').css('display', 'none')) {
 
@@ -158,12 +158,11 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
             }
         })
 
-        $(document).on('click', '#show_cost_button', function () {
+        $(document).on('click', '#show_cost_button', function() {
             $('#show_cost_section').toggle(500);
         });
 
-        $('#todaySummeryModal').on('hide.bs.modal', function(e)
-        {
+        $('#todaySummeryModal').on('hide.bs.modal', function(e) {
             $('#todaySummeryModal').empty();
         });
     </script>

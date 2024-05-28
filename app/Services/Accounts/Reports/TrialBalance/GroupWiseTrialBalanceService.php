@@ -197,16 +197,6 @@ class GroupWiseTrialBalanceService
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
 
-                'account_groups.id as group_id',
-                'account_groups.name as group_name',
-                'account_groups.sub_group_number',
-                'account_groups.sub_sub_group_number',
-                'parentGroup.id as parent_group_id',
-                'parentGroup.name as parent_group_name',
-                'accounts.id as account_id',
-                'accountGroup.id as account_group_id',
-                'accounts.name as account_name',
-
                 DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 0 then account_ledgers.debit end), 0) as opening_total_debit'),
                 DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 0 then account_ledgers.credit end), 0) as opening_total_credit'),
                 DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type != 0 then account_ledgers.debit end), 0) as curr_total_debit'),
@@ -216,12 +206,24 @@ class GroupWiseTrialBalanceService
 
         $results = $query
             ->groupBy(
-                'parentGroup.id',
                 'account_groups.id',
+                'account_groups.name',
                 'account_groups.sub_group_number',
                 'account_groups.sub_sub_group_number',
-                'accounts.id'
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
             )
+            // ->groupBy(
+            //     'parentGroup.id',
+            //     'account_groups.id',
+            //     'account_groups.sub_group_number',
+            //     'account_groups.sub_sub_group_number',
+            //     'accounts.id'
+            // )
             // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
@@ -438,13 +440,25 @@ class GroupWiseTrialBalanceService
         }
 
         return $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();
@@ -1065,13 +1079,25 @@ class GroupWiseTrialBalanceService
         }
 
         return $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();
@@ -1673,13 +1699,25 @@ class GroupWiseTrialBalanceService
         }
 
         return $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();
@@ -2281,13 +2319,25 @@ class GroupWiseTrialBalanceService
         }
 
         return $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();

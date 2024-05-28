@@ -86,7 +86,7 @@ class BarcodeController extends Controller
 
         if (!isset($req->product_ids)) {
 
-            session()->flash('errorMsg', 'Product list is empty.');
+            session()->flash('errorMsg', __('Product list is empty.'));
 
             return redirect()->back();
         }

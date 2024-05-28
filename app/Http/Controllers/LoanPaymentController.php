@@ -48,7 +48,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LAR'.'1';
+        $loanPayment->voucher_no = 'LAR' . '1';
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -137,7 +137,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LLP'.'1';
+        $loanPayment->voucher_no = 'LLP' . '1';
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -231,7 +231,6 @@ class LoanPaymentController extends Controller
         }
 
         if ($storedAccountId) {
-
         }
 
         DB::statement('ALTER TABLE loan_payments AUTO_INCREMENT = 1');

@@ -221,6 +221,7 @@ class AssetAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -378,6 +379,7 @@ class AssetAmountsService
                 'account_groups.sub_sub_group_number',
                 'parentGroup.id as parent_group_id',
                 'parentGroup.name as parent_group_name',
+                'parentGroup.default_balance_type',
                 'accounts.id as account_id',
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
@@ -390,6 +392,7 @@ class AssetAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -555,6 +558,7 @@ class AssetAmountsService
                 'account_groups.sub_sub_group_number',
                 'parentGroup.id as parent_group_id',
                 'parentGroup.name as parent_group_name',
+                'parentGroup.default_balance_type',
                 'accounts.id as account_id',
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
@@ -567,6 +571,7 @@ class AssetAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -732,6 +737,7 @@ class AssetAmountsService
                 'account_groups.sub_sub_group_number',
                 'parentGroup.id as parent_group_id',
                 'parentGroup.name as parent_group_name',
+                'parentGroup.default_balance_type',
                 'accounts.id as account_id',
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
@@ -744,6 +750,7 @@ class AssetAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')

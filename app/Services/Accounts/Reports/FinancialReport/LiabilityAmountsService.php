@@ -221,6 +221,7 @@ class LiabilityAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -736,6 +737,7 @@ class LiabilityAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -918,6 +920,7 @@ class LiabilityAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -1462,6 +1465,7 @@ class LiabilityAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -2372,6 +2376,7 @@ class LiabilityAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('parentGroup.name')
+            ->groupBy('parentGroup.default_balance_type')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')

@@ -177,15 +177,27 @@ class IncomeAmountsService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('parentGroup.name')
-            ->groupBy('parentGroup.default_balance_type')
-            ->groupBy('account_groups.id')
-            ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('parentGroup.name')
+            // ->groupBy('parentGroup.default_balance_type')
+            // ->groupBy('account_groups.id')
+            // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();

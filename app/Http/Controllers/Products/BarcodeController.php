@@ -58,6 +58,7 @@ class BarcodeController extends Controller
             )->groupBy([
                 'products.id',
                 'products.tax_ac_id',
+                'products.tax_type',
                 'products.name',
                 'products.product_code',
                 'products.product_price',

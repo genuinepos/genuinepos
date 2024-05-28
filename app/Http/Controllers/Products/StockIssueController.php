@@ -18,9 +18,7 @@ class StockIssueController extends Controller
 
     public function index(Request $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
-        $indexMethodContainer = $stockIssueControllerMethodContainersInterface->indexMethodContainer(
-            request: $request,
-        );
+        $indexMethodContainer = $stockIssueControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 

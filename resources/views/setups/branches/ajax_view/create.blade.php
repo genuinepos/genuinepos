@@ -165,7 +165,7 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
                                 <select name="stock_accounting_method" class="form-control" id="branch_stock_accounting_method" data-next="branch_account_start_date">
-                                    @foreach (\App\Enums\StockAccountingMethod::cases() as $item)
+                                    @foreach (App\Enums\StockAccountingMethod::cases() as $item)
                                         <option value="{{ $item->value }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>

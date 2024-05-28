@@ -6,7 +6,6 @@ use App\Models\Loan;
 use App\Models\LoanPayment;
 use App\Models\LoanPaymentDistribution;
 use App\Utils\AccountUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\LoanUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,17 +16,12 @@ class LoanPaymentController extends Controller
 
     protected $loanUtil;
 
-    protected $invoiceVoucherRefIdUtil;
-
     public function __construct(
         AccountUtil $accountUtil,
         LoanUtil $loanUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
         $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-
     }
 
     public function loanAdvanceReceiveModal($company_id)
@@ -59,7 +53,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LAR'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LAR'.'1';
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -157,7 +151,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LLP'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LLP'.'1';
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;

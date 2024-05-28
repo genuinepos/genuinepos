@@ -6,9 +6,13 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Services\Users\RoleService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\RoleStoreRequest;
+use App\Http\Requests\Users\RoleDeleteRequest;
+use App\Http\Requests\Users\RoleUpdateRequest;
 
 class RoleController extends Controller
 {
+
     public function __construct(
         private RoleService $roleService,
     ) {
@@ -16,10 +20,7 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('role_view')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('role_view'), 403);
 
         if ($request->ajax()) {
 
@@ -31,40 +32,21 @@ class RoleController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('role_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('role_add'), 403);
 
         return view('users.roles.create');
     }
 
-    public function store(Request $request)
+    public function store(RoleStoreRequest $request)
     {
-        if (!auth()->user()->can('role_add')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'role_name' => 'required|unique:roles,name',
-        ]);
-
         $this->roleService->addRole($request);
 
         session()->flash('successMsg', __('Role added successfully'));
         return redirect()->route('users.role.index');
     }
 
-    public function update(Request $request, $id)
+    public function update(RoleUpdateRequest $request, $id)
     {
-        if (!auth()->user()->can('user_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'role_name' => 'required|unique:roles,name,' . $id,
-        ]);
-
         $this->roleService->updateRole(id: $id, request: $request);
 
         session()->flash('successMsg', __('Role updated successfully'));
@@ -73,22 +55,15 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('role_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('user_edit'), 403);
 
         $role = $this->roleService->singleRole(id: $id);
 
         return view('users.roles.edit', compact('role'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(RoleDeleteRequest $request, $id)
     {
-        if (!auth()->user()->can('role_delete')) {
-            abort(403, 'Access Forbidden');
-        }
-
         $deletedRole = $this->roleService->deleteRole($id);
         if ($deletedRole['pass'] == false) {
 

@@ -179,7 +179,7 @@ class ExpenseAmountsService
         $results = $query
             ->groupBy('parentGroup.id')
             ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
+            ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
             ->groupBy('account_groups.sub_sub_group_number')
             ->groupBy('accounts.id')

@@ -5,22 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Models\LoanPayment;
 use App\Models\LoanPaymentDistribution;
-use App\Utils\AccountUtil;
 use App\Utils\LoanUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LoanPaymentController extends Controller
 {
-    protected $accountUtil;
-
     protected $loanUtil;
 
     public function __construct(
-        AccountUtil $accountUtil,
-        LoanUtil $loanUtil,
+        LoanUtil $loanUtil
     ) {
-        $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
     }
 
@@ -53,7 +48,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LAR'.'1';
+        $loanPayment->voucher_no = 'LAR' . '1';
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -64,15 +59,6 @@ class LoanPaymentController extends Controller
         $loanPayment->date = $request->date;
         $loanPayment->report_date = date('Y-m-d', strtotime($request->date));
         $loanPayment->save();
-
-        $this->accountUtil->addAccountLedger(
-            voucher_type_id: 16,
-            date: $request->date,
-            account_id: $request->account_id,
-            trans_id: $loanPayment->id,
-            amount: $request->paying_amount,
-            balance_type: 'debit'
-        );
 
         $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
 
@@ -151,7 +137,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LLP'.'1';
+        $loanPayment->voucher_no = 'LLP' . '1';
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -162,15 +148,6 @@ class LoanPaymentController extends Controller
         $loanPayment->date = $request->date;
         $loanPayment->report_date = date('Y-m-d', strtotime($request->date));
         $loanPayment->save();
-
-        $this->accountUtil->addAccountLedger(
-            voucher_type_id: 15,
-            date: $request->date,
-            account_id: $request->account_id,
-            trans_id: $loanPayment->id,
-            amount: $request->paying_amount,
-            balance_type: 'debit'
-        );
 
         $dueLoans = Loan::where('type', 2)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
 
@@ -255,7 +232,6 @@ class LoanPaymentController extends Controller
 
         if ($storedAccountId) {
 
-            $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
         DB::statement('ALTER TABLE loan_payments AUTO_INCREMENT = 1');

@@ -170,7 +170,7 @@
                                 tr += '<input type="hidden" name="subtotals[]" id="subtotal" value="' + parseFloat(unitPriceIncTax).toFixed(2) + '">';
                                 tr += '</td>';
 
-                                tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
+                                tr += '<td class="text-start"><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
                                 tr += '</tr>';
 
                                 $('#product_list').prepend(tr);

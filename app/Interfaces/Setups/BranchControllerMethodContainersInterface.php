@@ -20,6 +20,8 @@ interface BranchControllerMethodContainersInterface
 
     public function deleteMethodContainer(int $id): ?array;
 
+    public function deleteLogoMethodContainer(int $id): void;
+
     public function parentWithChildBranchesMethodContainer($id): ?object;
 
     public function branchCodeMethodContainer(?int $parentBranchId = null): string;

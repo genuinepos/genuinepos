@@ -51,7 +51,7 @@ class BranchController extends Controller
         try {
             DB::beginTransaction();
 
-            $storeMethodContainer = $branchControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
+            $storeMethodContainer = $branchControllerMethodContainersInterface->storeMethodContainer(request: $request);
 
             if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
@@ -112,7 +112,14 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop deleted deleted successfully'));
+        return response()->json(__('Shop deleted successfully'));
+    }
+
+    public function deleteLogo($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
+    {
+        $deleteLogoMethodContainer = $branchControllerMethodContainersInterface->deleteLogoMethodContainer(id: $id);
+
+        return response()->json(__('Shop logo is deleted successfully'));
     }
 
     public function parentWithChildBranches($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)

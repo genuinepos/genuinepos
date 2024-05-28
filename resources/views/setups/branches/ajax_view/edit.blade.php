@@ -64,15 +64,15 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __('Shop ID') }}</b> <span class="text-danger">*</span></label>
-                                <input required readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
-                                <span class="error error_branch_code"></span>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
                                 <label><b>{{ __('Phone') }}</b> <span class="text-danger">*</span></label>
                                 <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __('Phone No') }}" />
                                 <span class="error error_branch_phone"></span>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label><b>{{ __('Shop ID') }}</b></label>
+                                <input required readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
+                                <span class="error error_branch_code"></span>
                             </div>
                         </div>
 
@@ -139,9 +139,13 @@
                             </div>
 
                             @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
-                                <div class="col-lg-3 col-md-6">
-                                    <label><b>{{ __('Logo') }}</b> <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H:40px * W:100px') }}</small></label>
-                                    <input type="file" name="logo" class="form-control " id="logo" />
+                                <div class="col-lg-6 col-md-6">
+                                    <label><b>{{ __('Logo') }}</b> {{ __('Logo') }} <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H:40px * W:100px') }}</small></label>
+                                    <input type="file" name="logo" class="form-control " id="logo" @if ($branch->logo) data-default-file="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $branch?->logo) }}" @endif />
+                                    <span class="error error_branch_logo"></span>
+                                    @if ($branch->logo)
+                                        <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Shop Logo') }}</a>
+                                    @endif
                                 </div>
                             @endif
                         </div>
@@ -261,7 +265,23 @@
     </div>
 </div>
 
+<form id="delete_branch_logo_form" action="{{ route('branches.logo.delete', $branch->id) }}">
+    @csrf
+    @method('DELETE')
+</form>
+
 <script>
+    @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
+        $('#logo').dropify({
+            messages: {
+                'default': "{{ __('Drag and drop a file here or click') }}",
+                'replace': "{{ __('Drag and drop or click to replace') }}",
+                'remove': "{{ __('Remove') }}",
+                'error': "{{ __('Ooops, something wrong happended.') }}"
+            }
+        });
+    @endif
+
     $('#branch_timezone').select2();
     $('#branch_currency_id').select2();
     $('#branch_financial_year_start_month').select2();
@@ -324,10 +344,10 @@
                     return;
                 }
 
-                toastr.error('Please check all form fields.', 'Something Went Wrong');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
-                    $('.error_' + key + '').html(error[0]);
+                    $('.error_branch_' + key + '').html(error[0]);
                 });
             }
         });
@@ -409,6 +429,72 @@
     //         $('#branch_name').prop('required', true);
     //     }
     // });
+
+    @if ($branch->logo)
+        $(document).on('click', '#deleteBranchLogo', function(e) {
+            e.preventDefault();
+
+            $.confirm({
+                'title': "{{ __('Confirmation') }}",
+                'content': "{{ __('Are you sure to delete business logo?') }}",
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#delete_branch_logo_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#delete_branch_logo_form', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    toastr.error(data);
+                    $(".dropify-clear").click();
+                    branchTable.ajax.reload(null, false);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+                }
+
+            });
+        });
+    @endif
 
     $(document).on('change', '#branch_currency_id', function(e) {
         var currencySymbol = $(this).find('option:selected').data('currency_symbol');

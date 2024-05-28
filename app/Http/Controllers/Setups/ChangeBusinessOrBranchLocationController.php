@@ -31,7 +31,7 @@ class ChangeBusinessOrBranchLocationController extends Controller
                 config('generalSettings')['subscription']->current_shop_count > 1
             )
         ) {
-
+            
             $branches = $this->branchService->branches(with: ['parentBranch'])
                 ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')
                 ->get();

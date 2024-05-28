@@ -60,6 +60,7 @@ Route::prefix('setups')->group(function () {
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
         Route::get('parent/with/child/branches/{id}', 'parentWithChildBranches')->name('branches.parent.with.child.branches');
         Route::get('branch/code/{parentBranchId?}', 'branchCode')->name('branches.code');
+        Route::delete('delete/branch/logo/{id}', 'deleteLogo')->name('branches.logo.delete');
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 

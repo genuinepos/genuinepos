@@ -3,20 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanCompany;
-use App\Utils\AccountUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class LoanCompanyController extends Controller
 {
-    protected $accountUtil;
-
-    public function __construct(AccountUtil $accountUtil)
-    {
-        $this->accountUtil = $accountUtil;
-    }
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -110,7 +102,6 @@ class LoanCompanyController extends Controller
 
             foreach ($storedCompanyLoanPayments as $companyLoanPayment) {
                 // Adjust Bank/Cash-In-Hand A/C balance
-                $this->accountUtil->adjustAccountBalance('debit', $companyLoanPayment->account_id);
             }
 
             foreach ($storedCompanyLoans as $companyLoan) {
@@ -118,23 +109,19 @@ class LoanCompanyController extends Controller
 
                     if ($companyLoan->loan_account_id) {
                         // Adjust Loan A/C balance
-                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->loan_account_id);
                     }
 
                     if ($companyLoan->account_id) {
                         // Adjust Bank/Cash-In-Hand A/C balance
-                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->account_id);
                     }
                 } else {
 
                     if ($companyLoan->loan_account_id) {
                         // Adjust Loan A/C balance
-                        $this->accountUtil->adjustAccountBalance('credit', $companyLoan->loan_account_id);
                     }
 
                     if ($companyLoan->account_id) {
                         // Adjust Bank/Cash-In-Hand A/C balance
-                        $this->accountUtil->adjustAccountBalance('debit', $companyLoan->account_id);
                     }
                 }
             }

@@ -217,6 +217,7 @@ class BranchService
         }
 
         $dir = public_path('uploads/branch_logo/');
+
         if (file_exists($dir . $deleteBranch->logo)) {
 
             unlink($dir . $deleteBranch->logo);

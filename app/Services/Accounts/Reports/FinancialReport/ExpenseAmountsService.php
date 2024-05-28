@@ -77,8 +77,12 @@ class ExpenseAmountsService
             $query->where(function ($query) use ($filteredBranchId) {
 
                 $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
-                $query->where('accounts.branch_id', '=', $__branchId)
-                    ->orWhere('parentBranch.id', '=', $__branchId);
+                $query->where('accounts.branch_id', '=', $__branchId);
+
+                if (isset($__branchId)) {
+
+                    $query->orWhere('parentBranch.id', '=', $__branchId);
+                }
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
@@ -110,7 +114,7 @@ class ExpenseAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -123,7 +127,7 @@ class ExpenseAmountsService
                         SUM(
                             CASE
                                 WHEN
-                                    AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0
@@ -190,8 +194,6 @@ class ExpenseAmountsService
                 'accounts.name',
             )
             // ->groupBy('parentGroup.id')
-            // ->groupBy('parentGroup.name')
-            // ->groupBy('parentGroup.default_balance_type')
             // ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             // ->groupBy('account_groups.sub_group_number')

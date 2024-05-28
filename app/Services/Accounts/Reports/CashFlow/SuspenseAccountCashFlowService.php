@@ -49,8 +49,12 @@ class SuspenseAccountCashFlowService
             $query->where(function ($query) use ($filteredBranchId) {
 
                 $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
-                $query->where('accounts.branch_id', '=', $__branchId)
-                    ->orWhere('parentBranch.id', '=', $__branchId);
+                $query->where('accounts.branch_id', '=', $__branchId);
+                
+                if (isset($__branchId)) {
+
+                    $query->orWhere('parentBranch.id', '=', $__branchId);
+                }
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 

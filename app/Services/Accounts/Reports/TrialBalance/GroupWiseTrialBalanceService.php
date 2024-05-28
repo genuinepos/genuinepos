@@ -100,21 +100,20 @@ class GroupWiseTrialBalanceService
 
                 $__filteredBranchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
 
-                $query->where('accounts.branch_id', '=', $__filteredBranchId);
+                $query->where('accounts.branch_id', $__filteredBranchId);
 
-                if (isset($__branchId)) {
+                if (isset($__filteredBranchId)) {
 
-                    $query->orWhere('parentBranch.id', '=', $__filteredBranchId);
+                    $query->orWhere('parentBranch.id', $__filteredBranchId);
+                    $query->orWhere('bank_access_branches.branch_id', $__filteredBranchId);
                 }
-
-                $query->orWhere('bank_access_branches.branch_id', '=', $__filteredBranchId);
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
             $query->where(function ($query) use ($filteredChildBranchId) {
 
                 $query->where('accounts.branch_id', '=', $filteredChildBranchId)
-                    ->orWhere('bank_access_branches.branch_id', '=', $filteredChildBranchId);
+                    ->orWhere('bank_access_branches.branch_id', $filteredChildBranchId);
             });
         }
 
@@ -137,7 +136,7 @@ class GroupWiseTrialBalanceService
                     IFNULL(
                         SUM(
                             CASE
-                                WHEN timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -149,7 +148,7 @@ class GroupWiseTrialBalanceService
                     IFNULL(
                         SUM(
                             CASE
-                                WHEN timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0
@@ -373,7 +372,7 @@ class GroupWiseTrialBalanceService
                     IFNULL(
                         SUM(
                             CASE
-                                WHEN timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.debit
                             END
                         ), 0
@@ -385,7 +384,7 @@ class GroupWiseTrialBalanceService
                     IFNULL(
                         SUM(
                             CASE
-                                WHEN timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                 THEN account_ledgers.credit
                             END
                         ), 0

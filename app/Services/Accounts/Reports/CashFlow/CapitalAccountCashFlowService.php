@@ -14,7 +14,7 @@ class CapitalAccountCashFlowService
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
             $request->child_branch_id : null;
-            
+
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
@@ -418,13 +418,25 @@ class CapitalAccountCashFlowService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'parentGroup.default_balance_type',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name'
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();

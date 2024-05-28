@@ -48,8 +48,12 @@ class DirectExpenseCashFlowService
             $query->where(function ($query) use ($filteredBranchId) {
 
                 $__branchId = $filteredBranchId == 'NULL' ? null : $filteredBranchId;
-                $query->where('accounts.branch_id', '=', $__branchId)
-                    ->orWhere('parentBranch.id', '=', $__branchId);
+                $query->where('accounts.branch_id', '=', $__branchId);
+
+                if ($__branchId) {
+
+                    $query->orWhere('parentBranch.id', '=', $__branchId);
+                }
             });
         } else if (isset($filteredBranchId) && isset($filteredChildBranchId)) {
 
@@ -149,13 +153,24 @@ class DirectExpenseCashFlowService
         }
 
         $results = $query
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            ->groupBy(
+                'account_groups.id',
+                'account_groups.name',
+                'account_groups.sub_group_number',
+                'account_groups.sub_sub_group_number',
+                'parentGroup.id',
+                'parentGroup.name',
+                'accounts.id',
+                'accountGroup.id',
+                'accounts.name',
+            )
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();

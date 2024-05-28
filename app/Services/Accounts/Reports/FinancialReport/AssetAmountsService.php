@@ -220,6 +220,7 @@ class AssetAmountsService
 
         $results = $query
             ->groupBy('parentGroup.id')
+            ->groupBy('parentGroup.name')
             ->groupBy('account_groups.id')
             ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -388,6 +389,7 @@ class AssetAmountsService
 
         $results = $query
             ->groupBy('parentGroup.id')
+            ->groupBy('parentGroup.name')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -564,6 +566,7 @@ class AssetAmountsService
 
         $results = $query
             ->groupBy('parentGroup.id')
+            ->groupBy('parentGroup.name')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')
@@ -740,6 +743,7 @@ class AssetAmountsService
 
         $results = $query
             ->groupBy('parentGroup.id')
+            ->groupBy('parentGroup.name')
             ->groupBy('account_groups.id')
             // ->groupBy('account_groups.name')
             ->groupBy('account_groups.sub_group_number')

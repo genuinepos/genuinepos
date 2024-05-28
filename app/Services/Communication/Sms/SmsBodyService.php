@@ -28,7 +28,7 @@ class SmsBodyService
                 ->make(true);
         }
 
-        return view('communication.Sms.body.index', compact('data'));
+        return view('communication.sms.body.index', compact('data'));
 
     }
 

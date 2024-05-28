@@ -117,7 +117,7 @@ class BranchController extends Controller
 
     public function parentWithChildBranches($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
-        return $branchControllerMethodContainersInterface->deleteMethodContainer(id: $id);
+        return $branchControllerMethodContainersInterface->parentWithChildBranchesMethodContainer(id: $id);
     }
 
     public function branchCode(BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface, $parentBranchId = null)

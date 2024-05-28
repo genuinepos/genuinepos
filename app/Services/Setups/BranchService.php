@@ -245,7 +245,7 @@ class BranchService
             return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more purchases.')];
         }
 
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo');
         if (file_exists($dir . $deleteBranch->logo)) {
 
             unlink($dir . $deleteBranch->logo);

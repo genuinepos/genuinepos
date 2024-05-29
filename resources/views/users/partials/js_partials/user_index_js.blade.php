@@ -119,8 +119,9 @@
             type: 'post',
             data: request,
             success: function(data) {
-                table.ajax.reload();
+                table.ajax.reload(null, false);
                 toastr.error(data);
+                currentUserAndEmployeeCount();
             },
             error: function(error) {
                 toastr.error(error.responseJSON.message);

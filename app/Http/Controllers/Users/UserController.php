@@ -70,8 +70,6 @@ class UserController extends Controller
             DB::rollBack();
         }
 
-        extract($storeMethodContainer);
-
         return response()->json(__('User created successfully'));
     }
 

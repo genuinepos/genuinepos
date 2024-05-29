@@ -5,14 +5,14 @@ namespace App\Http\Requests\TaskManagement;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TodoStoreRequest extends FormRequest
+class TodoDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('todo_create') && config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value;
+        return auth()->user()->can('todo_delete') && config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value;
     }
 
     /**
@@ -23,12 +23,7 @@ class TodoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task' => 'required',
-            'priority' => 'required',
-            'status' => 'required',
-            'due_date' => 'required|date',
-            "user_ids"    => "required|array",
-            "user_ids.*"  => "required",
+            //
         ];
     }
 }

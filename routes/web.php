@@ -36,7 +36,7 @@ Route::middleware([
         Route::middleware('auth')->group(base_path('routes/manufacturing.php'));
         Route::middleware('auth')->group(base_path('routes/contacts.php'));
         Route::middleware('auth')->group(base_path('routes/accounts.php'));
-        Route::middleware('auth')->group(base_path('routes/sales.php'));
+        Route::middleware(['auth'])->group(base_path('routes/sales.php'));
         Route::middleware('auth')->group(base_path('routes/products.php'));
         Route::middleware('auth')->group(base_path('routes/setups.php'));
         Route::middleware('auth')->group(base_path('routes/purchases.php'));
@@ -49,7 +49,7 @@ Route::middleware([
         Route::middleware('auth')->group(base_path('routes/communication.php'));
         Route::middleware('auth')->group(base_path('routes/advertisement.php'));
         Route::middleware('auth')->group(base_path('routes/short_menus.php'));
-
+        Route::middleware('auth')->group(base_path('routes/startup.php'));
     });
 });
 

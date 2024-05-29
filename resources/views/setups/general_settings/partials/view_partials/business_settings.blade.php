@@ -59,7 +59,7 @@
                 @php
                     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                 @endphp
-                @foreach (App\Enums\StockAccountingMethod::cases() as $item)
+                @foreach (\App\Enums\StockAccountingMethod::cases() as $item)
                     <option @selected($stockAccountingMethod == $item->value) value="{{ $item->value }}">{{ $item->name }}</option>
                 @endforeach
             </select>

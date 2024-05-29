@@ -2376,16 +2376,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        $(document).on('click', '#select_all', function() {
-            var target = $(this).data('target');
-            if ($(this).is(':CHECKED', true)) {
-
-                $('.' + target).prop('checked', true);
-            } else {
-
-                $('.' + target).prop('checked', false);
-            }
-        });
-    </script>
+    @include('users.roles.js_partials.edit_js')
 @endpush

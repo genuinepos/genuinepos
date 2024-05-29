@@ -315,6 +315,53 @@ class SaleProductService
             ->get();
     }
 
+    public function exchangeableSaleProducts(?int $saleId)
+    {
+        return DB::table('sale_products')
+            ->where('sale_products.sale_id', $saleId)
+            ->leftJoin('products', 'sale_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
+            ->leftJoin('units', 'sale_products.unit_id', 'units.id')
+            ->select(
+                'sale_products.product_id',
+                'sale_products.variant_id',
+                'sale_products.description',
+                'sale_products.unit_price_exc_tax',
+                'sale_products.unit_price_inc_tax',
+                'sale_products.unit_discount_type',
+                'sale_products.unit_discount',
+                'sale_products.unit_discount_amount',
+                'sale_products.tax_ac_id',
+                'sale_products.tax_type',
+                'sale_products.unit_tax_percent',
+                'sale_products.unit_tax_amount',
+                'sale_products.unit_id',
+                'products.name as product_name',
+                'product_variants.variant_name',
+                'units.name as unit_name',
+                DB::raw('SUM(sale_products.quantity) as quantity'),
+                DB::raw('SUM(sale_products.subtotal) as subtotal'),
+            )
+            ->groupBy('sale_products.product_id')
+            ->groupBy('sale_products.variant_id')
+            ->groupBy('sale_products.description')
+            ->groupBy('sale_products.unit_price_exc_tax')
+            ->groupBy('sale_products.unit_price_inc_tax')
+            ->groupBy('sale_products.unit_discount_type')
+            ->groupBy('sale_products.unit_discount')
+            ->groupBy('sale_products.unit_discount_amount')
+            ->groupBy('sale_products.tax_ac_id')
+            ->groupBy('sale_products.tax_type')
+            ->groupBy('sale_products.unit_tax_percent')
+            ->groupBy('sale_products.unit_tax_amount')
+            ->groupBy('sale_products.unit_id')
+            ->groupBy('products.name')
+            ->groupBy('product_variants.variant_name')
+            ->groupBy('units.name')
+            ->orderBy('sale_products.product_id')
+            ->get();
+    }
+
     public function saleProducts(array $with = null): ?object
     {
         $query = SaleProduct::query();

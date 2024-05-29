@@ -104,7 +104,7 @@
                                     <h6>{{ __('List of Sales Orders') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)
+                                @if (auth()->user()->can('create_add_sale'))
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
@@ -139,7 +139,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                                <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th id="total_ordered_qty" class="text-white text-end"></th>
                                                 <th id="total_delivered_qty" class="text-white text-end"></th>
                                                 <th id="total_left_qty" class="text-white text-end"></th>

@@ -13,11 +13,6 @@ use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
 
 class PurchaseReturnController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('purchase_return_index'), 403);

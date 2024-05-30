@@ -13,7 +13,6 @@ class WarehouseController extends Controller
 {
     public function __construct(private WarehouseService $warehouseService, private BranchService $branchService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

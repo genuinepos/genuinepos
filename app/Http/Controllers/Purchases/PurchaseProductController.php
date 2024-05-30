@@ -17,7 +17,6 @@ class PurchaseProductController extends Controller
         private AccountService $accountService,
         private CategoryService $categoryService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

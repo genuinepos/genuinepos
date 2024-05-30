@@ -13,11 +13,6 @@ use App\Interfaces\Users\UserControllerMethodContainersInterface;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('user_view'), 403);

@@ -11,11 +11,6 @@ use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 
 class DraftController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('sale_draft'), 403);

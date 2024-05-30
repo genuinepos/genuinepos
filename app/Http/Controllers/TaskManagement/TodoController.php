@@ -24,7 +24,6 @@ class TodoController extends Controller
         private UserService $userService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

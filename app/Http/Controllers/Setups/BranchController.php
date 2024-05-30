@@ -12,11 +12,6 @@ use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
 
 class BranchController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         $generalSettings = config('generalSettings');

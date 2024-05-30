@@ -14,7 +14,6 @@ class MessageController extends Controller
 {
     public function __construct(private MessageService $messageService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

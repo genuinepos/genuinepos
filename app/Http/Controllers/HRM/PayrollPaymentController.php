@@ -32,7 +32,6 @@ class PayrollPaymentController extends Controller
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function show($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)

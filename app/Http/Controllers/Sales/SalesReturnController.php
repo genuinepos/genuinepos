@@ -57,7 +57,6 @@ class SalesReturnController extends Controller
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

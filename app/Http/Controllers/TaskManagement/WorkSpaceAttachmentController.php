@@ -10,10 +10,7 @@ use App\Http\Requests\TaskManagement\WorkSpaceAttachmentDeleteRequest;
 
 class WorkSpaceAttachmentController extends Controller
 {
-    public function __construct(
-        private WorkspaceAttachmentService $workspaceAttachmentService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private WorkspaceAttachmentService $workspaceAttachmentService) {
     }
 
     public function index($workspaceId)

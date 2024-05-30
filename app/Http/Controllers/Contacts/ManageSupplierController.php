@@ -16,7 +16,6 @@ class ManageSupplierController extends Controller
         private BranchService $branchService,
         private ManageSupplierService $manageSupplierService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

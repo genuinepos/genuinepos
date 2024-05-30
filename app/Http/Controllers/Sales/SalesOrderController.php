@@ -10,11 +10,6 @@ use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 
 class SalesOrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, $customerAccountId = null)
     {
         abort_if(!auth()->user()->can('sales_order_list'), 403);

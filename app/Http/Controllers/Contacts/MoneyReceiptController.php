@@ -17,7 +17,6 @@ class MoneyReceiptController extends Controller
         private MoneyReceiptService $moneyReceiptService,
         private ContactService $contactService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($contactId)

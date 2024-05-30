@@ -14,11 +14,6 @@ use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
 
 class PurchaseOrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface, $supplierAccountId = null)
     {
         abort_if(!auth()->user()->can('purchase_order_index'), 403);

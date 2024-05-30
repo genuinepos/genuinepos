@@ -11,11 +11,6 @@ use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
 class QuotationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('sale_quotation'), 403);

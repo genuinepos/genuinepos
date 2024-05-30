@@ -16,7 +16,6 @@ class HolidayController extends Controller
         private HolidayBranchService $holidayBranchService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -96,7 +95,7 @@ class HolidayController extends Controller
     public function delete(Request $request, $id)
     {
         abort_if(!auth()->user()->can('holidays_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-     
+
         $this->holidayService->deleteHoliday(id: $id);
 
         return response()->json(__('Holiday deletes successfully'));

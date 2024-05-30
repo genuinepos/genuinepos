@@ -24,7 +24,6 @@ class WorkSpaceController extends Controller
         private BranchService $branchService,
         private UserService $userService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

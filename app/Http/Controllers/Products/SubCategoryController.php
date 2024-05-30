@@ -21,7 +21,6 @@ class SubCategoryController extends Controller
         private SubCategoryService $subCategoryService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

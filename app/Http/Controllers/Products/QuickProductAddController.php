@@ -9,11 +9,6 @@ use App\Interfaces\Products\QuickProductAddControllerMethodContainersInterface;
 
 class QuickProductAddController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function create(QuickProductAddControllerMethodContainersInterface $quickProductAddControllerMethodContainersInterface)
     {
         $createMethodContainer = $quickProductAddControllerMethodContainersInterface->createMethodContainer();

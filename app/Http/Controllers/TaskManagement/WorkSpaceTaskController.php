@@ -14,7 +14,6 @@ class WorkSpaceTaskController extends Controller
 {
     public function __construct(private WorkspaceTaskService $workspaceTaskService, private WorkspaceService $workspaceService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($workspaceId)

@@ -10,11 +10,8 @@ use App\Services\Hrm\DepartmentService;
 
 class DepartmentController extends Controller
 {
-    public function __construct(
-        private DepartmentService $departmentService,
-        private UserService $userService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private DepartmentService $departmentService, private UserService $userService)
+    {
     }
 
     public function index(Request $request)

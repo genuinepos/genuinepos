@@ -22,7 +22,6 @@ class AttendanceController extends Controller
         private ShiftService $shiftService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

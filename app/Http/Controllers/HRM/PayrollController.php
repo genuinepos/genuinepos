@@ -29,7 +29,6 @@ class PayrollController extends Controller
         private AccountService $accountService,
         private DayBookService $dayBookService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -42,7 +41,7 @@ class PayrollController extends Controller
         }
 
         $departments = $this->departmentService->departments()->get(['id', 'name']);
-        
+
         $users = $this->userService->users()
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])

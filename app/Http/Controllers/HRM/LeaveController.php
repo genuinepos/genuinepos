@@ -10,10 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveController extends Controller
 {
-    public function __construct(
-        private LeaveService $leaveService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private LeaveService $leaveService)
+    {
     }
 
     public function index(Request $request)
@@ -72,7 +70,7 @@ class LeaveController extends Controller
     public function delete(Request $request, $id)
     {
         abort_if(!auth()->user()->can('leaves_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-        
+
         $this->leaveService->deleteLeave(id: $id);
         return response()->json(__('Leave Deleted successfully'));
     }

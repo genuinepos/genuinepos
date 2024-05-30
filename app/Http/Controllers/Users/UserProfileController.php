@@ -12,11 +12,8 @@ use App\Http\Requests\Users\UserProfileUpdateRequest;
 
 class UserProfileController extends Controller
 {
-    public function __construct(
-        private UserProfileService $userProfileService,
-        private UserService $userService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private UserProfileService $userProfileService, private UserService $userService)
+    {
     }
 
     public function index()

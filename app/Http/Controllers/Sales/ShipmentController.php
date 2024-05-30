@@ -23,7 +23,6 @@ class ShipmentController extends Controller
         private AccountService $accountService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

@@ -5,55 +5,33 @@ namespace App\Http\Controllers\Accounts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
-use App\Services\Accounts\ContraService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\DayBookService;
-use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Http\Requests\Accounts\ContraStoreRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Accounts\ContraDeleteRequest;
+use App\Http\Requests\Accounts\ContraUpdateRequest;
 use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
 
 class ContraController extends Controller
 {
-    public function __construct(
-        private ContraService $contraService,
-        private BranchService $branchService,
-        private AccountService $accountService,
-        private AccountFilterService $accountFilterService,
-        private AccountLedgerService $accountLedgerService,
-        private PaymentMethodService $paymentMethodService,
-        private DayBookService $dayBookService,
-        private AccountingVoucherService $accountingVoucherService,
-        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
-    }
-
-    public function index(Request $request)
+    public function index(Request $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('contras_index'), 403);
 
+        $indexMethodContainer = $contraControllerMethodContainersInterface->indexMethodContainer(request: $request);
+
         if ($request->ajax()) {
 
-            return $this->contraService->contraTable(request: $request);
+            return $indexMethodContainer;;
         }
 
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        extract($indexMethodContainer);
 
         return view('accounting.accounting_vouchers.contras.index', compact('branches'));
     }
 
     public function show(ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface, $id)
     {
-        $showMethodContainer = $contraControllerMethodContainersInterface->showMethodContainer(
-            id: $id,
-            accountingVoucherService: $this->accountingVoucherService,
-        );
+        $showMethodContainer = $contraControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
 
@@ -62,11 +40,7 @@ class ContraController extends Controller
 
     public function print($id, Request $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface)
     {
-        $printMethodContainer = $contraControllerMethodContainersInterface->printMethodContainer(
-            id: $id,
-            request: $request,
-            accountingVoucherService: $this->accountingVoucherService,
-        );
+        $printMethodContainer = $contraControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request);
 
         extract($printMethodContainer);
 
@@ -77,35 +51,19 @@ class ContraController extends Controller
     {
         abort_if(!auth()->user()->can('contras_create'), 403);
 
-        $createMethodContainer = $contraControllerMethodContainersInterface->createMethodContainer(
-            accountService: $this->accountService,
-            accountFilterService: $this->accountFilterService,
-            paymentMethodService: $this->paymentMethodService,
-        );
+        $createMethodContainer = $contraControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
 
         return view('accounting.accounting_vouchers.contras.ajax_view.create', compact('accounts', 'methods'));
     }
 
-    public function store(Request $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    public function store(ContraStoreRequest $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface, CodeGenerationServiceInterface $codeGenerator)
     {
-        abort_if(!auth()->user()->can('contras_create'), 403);
-
-        $this->contraService->contraValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
-            $storeMethodContainer = $contraControllerMethodContainersInterface->storeMethodContainer(
-                request: $request,
-                contraService: $this->contraService,
-                accountLedgerService: $this->accountLedgerService,
-                accountingVoucherService: $this->accountingVoucherService,
-                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
-                dayBookService: $this->dayBookService,
-                codeGenerator: $codeGenerator,
-            );
+            $storeMethodContainer = $contraControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
 
             if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
@@ -122,7 +80,6 @@ class ContraController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            $printPageSize = $request->print_page_size;
             return view('accounting.accounting_vouchers.print_templates.print_contra', compact('contra', 'printPageSize'));
         } else {
 
@@ -134,37 +91,19 @@ class ContraController extends Controller
     {
         abort_if(!auth()->user()->can('contras_edit'), 403);
 
-        $editMethodContainer = $contraControllerMethodContainersInterface->editMethodContainer(
-            id: $id,
-            accountingVoucherService: $this->accountingVoucherService,
-            accountService: $this->accountService,
-            accountFilterService: $this->accountFilterService,
-            paymentMethodService: $this->paymentMethodService,
-        );
+        $editMethodContainer = $contraControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);
 
         return view('accounting.accounting_vouchers.contras.ajax_view.edit', compact('accounts', 'methods', 'contra'));
     }
 
-    public function update($id, Request $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface)
+    public function update($id, ContraUpdateRequest $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('contras_edit'), 403);
-
-        $this->contraService->contraValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
-            $updateMethodContainer = $contraControllerMethodContainersInterface->updateMethodContainer(
-                id: $id,
-                request: $request,
-                contraService: $this->contraService,
-                accountLedgerService: $this->accountLedgerService,
-                accountingVoucherService: $this->accountingVoucherService,
-                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
-                dayBookService: $this->dayBookService,
-            );
+            $updateMethodContainer = $contraControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request);
 
             if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
@@ -180,14 +119,12 @@ class ContraController extends Controller
         return response()->json(__('Contra updated successfully.'));
     }
 
-    public function delete($id)
+    public function delete($id, ContraDeleteRequest $request, ContraControllerMethodContainersInterface $contraControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('contras_delete'), 403);
-
         try {
             DB::beginTransaction();
 
-            $deleteContra = $this->contraService->deleteContra(id: $id);
+            $contraControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
             DB::commit();
         } catch (Exception $e) {

@@ -15,7 +15,6 @@ class ProductLedgerController extends Controller
         private BranchService $branchService,
         private ProductLedgerEntryService $productLedgerEntryService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($id, Request $request)

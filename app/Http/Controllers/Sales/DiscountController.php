@@ -11,10 +11,6 @@ use App\Interfaces\Sales\DiscountControllerMethodContainersInterface;
 
 class DiscountController extends Controller
 {
-    public function __construct() {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('discounts'), 403);

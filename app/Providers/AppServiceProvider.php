@@ -17,6 +17,7 @@ use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
 use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
 use App\Interfaces\Sales\DiscountControllerMethodContainersInterface;
+use App\Interfaces\Startup\StartupControllerMethodContainerInterface;
 use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 use App\Interfaces\Accounts\AccountControllerMethodContainersInterface;
@@ -46,6 +47,7 @@ use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainers
 use App\Services\Sales\MethodContainerServices\PosSaleControllerMethodContainersService;
 use App\Services\Setups\MethodContainerServices\BranchControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\DiscountControllerMethodContainersService;
+use App\Services\Startup\MethodContainerServices\StartupControllerMethodContainerService;
 use App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\AccountControllerMethodContainersService;
@@ -120,6 +122,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);
         $this->app->bind(BranchControllerMethodContainersInterface::class, BranchControllerMethodContainersService::class);
+        $this->app->bind(StartupControllerMethodContainerInterface::class, StartupControllerMethodContainerService::class);
         $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 

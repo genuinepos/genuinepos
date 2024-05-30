@@ -13,11 +13,6 @@ use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 
 class ProcessController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);

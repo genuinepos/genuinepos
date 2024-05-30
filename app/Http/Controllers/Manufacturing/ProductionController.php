@@ -14,11 +14,6 @@ use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 
 class ProductionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);

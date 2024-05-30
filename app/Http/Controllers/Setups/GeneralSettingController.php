@@ -25,7 +25,6 @@ class GeneralSettingController extends Controller
         private InvoiceLayoutService $invoiceLayoutService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

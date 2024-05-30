@@ -10,11 +10,6 @@ use App\Interfaces\Sales\PosSaleExchangeControllerMethodContainersInterface;
 
 class PosSaleExchangeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function searchInvoice(Request $request, PosSaleExchangeControllerMethodContainersInterface $posSaleExchangeControllerMethodContainersInterface)
     {
         $searchInvoiceMethodContainer = $posSaleExchangeControllerMethodContainersInterface->searchInvoiceMethodContainer(request: $request);

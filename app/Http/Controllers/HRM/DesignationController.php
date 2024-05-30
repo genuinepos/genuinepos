@@ -10,10 +10,8 @@ use App\Services\Hrm\DesignationService;
 
 class DesignationController extends Controller
 {
-    public function __construct(
-        private DesignationService $designationService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private DesignationService $designationService)
+    {
     }
 
     public function index(Request $request)
@@ -66,7 +64,7 @@ class DesignationController extends Controller
     public function delete($id)
     {
         abort_if(!auth()->user()->can('designations_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-    
+
         $this->designationService->deleteDesignation(id: $id);
 
         return response()->json(__('Designation deleted successfully'));

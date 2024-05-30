@@ -14,7 +14,6 @@ class AccountGroupController extends Controller
 {
     public function __construct(private AccountGroupService $accountGroupService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

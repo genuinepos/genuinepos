@@ -13,15 +13,15 @@ class AllowanceAndDeductionController extends Controller
 {
     public function __construct(private AllowanceAndDeductionService $allowanceAndDeductionService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
         abort_if(
             (!auth()->user()->can('allowances_index') && !auth()->user()->can('deductions_index')) ||
-            config('generalSettings')['subscription']->features['hrm'] == 0,
-        403);
+                config('generalSettings')['subscription']->features['hrm'] == 0,
+            403
+        );
 
         if ($request->ajax()) {
 
@@ -35,8 +35,9 @@ class AllowanceAndDeductionController extends Controller
     {
         abort_if(
             (!auth()->user()->can('allowances_create') && !auth()->user()->can('allowances_create')) ||
-            config('generalSettings')['subscription']->features['hrm'] == 0,
-        403);
+                config('generalSettings')['subscription']->features['hrm'] == 0,
+            403
+        );
 
         return view('hrm.allowances_and_deductions.ajax_view.create');
     }
@@ -45,8 +46,9 @@ class AllowanceAndDeductionController extends Controller
     {
         abort_if(
             (!auth()->user()->can('allowances_create') && !auth()->user()->can('allowances_create')) ||
-            config('generalSettings')['subscription']->features['hrm'] == 0,
-        403);
+                config('generalSettings')['subscription']->features['hrm'] == 0,
+            403
+        );
 
         $this->allowanceAndDeductionService->storeValidation(request: $request);
         $addAllowanceOrDeduction = $this->allowanceAndDeductionService->addAllowanceOrDeduction(request: $request);
@@ -58,8 +60,9 @@ class AllowanceAndDeductionController extends Controller
     {
         abort_if(
             (!auth()->user()->can('allowances_edit') && !auth()->user()->can('allowances_edit')) ||
-            config('generalSettings')['subscription']->features['hrm'] == 0,
-        403);
+                config('generalSettings')['subscription']->features['hrm'] == 0,
+            403
+        );
 
         $allowance = $this->allowanceAndDeductionService->singleAllowanceOrDeduction(id: $id);
         return view('hrm.allowances_and_deductions.ajax_view.edit', compact('allowance'));
@@ -69,8 +72,9 @@ class AllowanceAndDeductionController extends Controller
     {
         abort_if(
             (!auth()->user()->can('allowances_edit') && !auth()->user()->can('allowances_edit')) ||
-            config('generalSettings')['subscription']->features['hrm'] == 0,
-        403);
+                config('generalSettings')['subscription']->features['hrm'] == 0,
+            403
+        );
 
         $this->allowanceAndDeductionService->updateValidation(request: $request, id: $id);
         $updateAllowanceOrDeduction = $this->allowanceAndDeductionService->updateAllowanceOrDeduction(request: $request, id: $id);
@@ -82,8 +86,9 @@ class AllowanceAndDeductionController extends Controller
     {
         abort_if(
             (!auth()->user()->can('allowances_delete') && !auth()->user()->can('allowances_delete')) ||
-            config('generalSettings')['subscription']->features['hrm'] == 0,
-        403);
+                config('generalSettings')['subscription']->features['hrm'] == 0,
+            403
+        );
 
         $deleteAllowanceOrDeduction = $this->allowanceAndDeductionService->deleteAllowanceOrDeduction(id: $id);
         return response()->json($deleteAllowanceOrDeduction . ' ' . __('deleted successfully'));

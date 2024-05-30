@@ -8,42 +8,10 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LoanCompanyController;
 use App\Http\Controllers\LoanPaymentController;
-use App\Http\Controllers\CommonAjaxCallController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\ImportPriceGroupProductController;
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
-
-Route::group(['prefix' => 'common/ajax/call'], function () {
-    Route::get('branch/authenticated/users/{branchId}', [CommonAjaxCallController::class, 'branchAuthenticatedUsers']);
-    Route::get('category/subcategories/{categoryId}', [CommonAjaxCallController::class, 'categorySubcategories']);
-    Route::get('only/search/product/for/reports/{product_name}', [CommonAjaxCallController::class, 'onlySearchProductForReports'])->name('common.ajax.call.search.products.only.for.report.filter');
-    Route::get('search/final/sale/invoices/{invoiceId}', [CommonAjaxCallController::class, 'searchFinalSaleInvoices']);
-    Route::get('get/sale/products/{saleId}', [CommonAjaxCallController::class, 'getSaleProducts']);
-    Route::get('customer_info/{customerId}', [CommonAjaxCallController::class, 'customerInfo']);
-    Route::get('recent/sales/{create_by}', [CommonAjaxCallController::class, 'recentSale']);
-    Route::get('recent/quotations/{create_by}', [CommonAjaxCallController::class, 'recentQuotations']);
-    Route::get('recent/drafts/{create_by}', [CommonAjaxCallController::class, 'recentDrafts']);
-    Route::get('branch/warehouse/{branch_id}', [CommonAjaxCallController::class, 'branchWarehouses']);
-    Route::get('branch/allow/login/users/{branchId}', [CommonAjaxCallController::class, 'branchAllowLoginUsers']);
-    Route::get('branch/users/{branchId}', [CommonAjaxCallController::class, 'branchUsers']);
-    Route::get('get/supplier/{supplierId}', [CommonAjaxCallController::class, 'getSupplier']);
-    Route::get('get/last/id/{table}/{placeholderLimit}', [CommonAjaxCallController::class, 'getLastId'])->name('common.ajax.call.get.last.id');
-});
-
-//Product section route group
-Route::group(['prefix' => 'product'], function () {
-
-    // Products route group
-    Route::group(['prefix' => '/'], function () {
-
-        Route::group(['prefix' => 'import/price/group/products'], function () {
-
-            Route::get('export', [ImportPriceGroupProductController::class, 'export'])->name('products.export.price.group.products');
-        });
-    });
-});
 
 Route::group(['prefix' => 'accounting'], function () {
 

@@ -51,7 +51,7 @@ class AccountingVoucherDescriptionService
 
     public function updateAccountingVoucherDescription(
         int $accountingVoucherId,
-        int $accountingVoucherDescriptionId,
+        ?int $accountingVoucherDescriptionId,
         int $accountId,
         ?int $paymentMethodId,
         string $amountType,

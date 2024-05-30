@@ -21,7 +21,6 @@ class ProductImportController extends Controller
         private PurchaseProductService $purchaseProductService,
         private ProductLedgerService $productLedgerService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function create()

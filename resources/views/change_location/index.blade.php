@@ -64,36 +64,36 @@
                 <ul class="step-list scrollable">
                     <li class="active">
                         <span class="step-txt">
-                            <span class="step-name">Account Type</span>
-                            <span class="step-info">Select your account type</span>
+                            <span class="step-name">{{ __("Account Type") }}</span>
+                            <span class="step-info">{{ __("Select your account type") }}</span>
                         </span>
                         <span class="step-number border-primary">1</span>
                     </li>
                     <li>
                         <span class="step-txt">
-                            <span class="step-name">Account Info</span>
-                            <span class="step-info">Setup your account settings</span>
+                            <span class="step-name">{{ __("Account Info") }}</span>
+                            <span class="step-info">{{ __("Setup your account settings") }}</span>
                         </span>
-                        <span class="step-number border-primary">2</span>
+                        <span class="step-number border-primary">{{ __("2") }}</span>
                     </li>
                     <li>
                         <span class="step-txt">
-                            <span class="step-name">Business Details</span>
-                            <span class="step-info">Setup your business details</span>
+                            <span class="step-name">{{ __("Business Details") }}</span>
+                            <span class="step-info">{{ __("Setup your business details") }}</span>
                         </span>
                         <span class="step-number border-primary">3</span>
                     </li>
                     <li>
                         <span class="step-txt">
-                            <span class="step-name">Billing Details</span>
-                            <span class="step-info">Provide your payment info</span>
+                            <span class="step-name">{{ __("Billing Details") }}</span>
+                            <span class="step-info">{{ __("Provide your payment info") }}</span>
                         </span>
                         <span class="step-number border-primary">4</span>
                     </li>
                     <li>
                         <span class="step-txt">
-                            <span class="step-name">Completed</span>
-                            <span class="step-info">Your account is created</span>
+                            <span class="step-name">{{ __("Completed") }}</span>
+                            <span class="step-info">{{ __("Your account is created") }}</span>
                         </span>
                         <span class="step-number border-primary">5</span>
                     </li>

@@ -209,13 +209,4 @@ class AttendanceService
 
         return $query;
     }
-
-    public function validation(object $request): ?array
-    {
-        return $request->validate([
-            'clock_in_date' => 'required|date',
-            'clock_in' => 'required',
-            'clock_out_date' => 'required|date',
-        ]);
-    }
 }

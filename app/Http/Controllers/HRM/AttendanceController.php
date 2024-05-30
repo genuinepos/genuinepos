@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\HRM;
 
-use Carbon\Carbon;
-use App\Models\User;
 use App\Enums\UserType;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
-use App\Models\Hrm\Attendance;
 use App\Services\Hrm\ShiftService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Hrm\AttendanceService;
-use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\HRM\AttendanceStoreRequest;
+use App\Http\Requests\HRM\AttendanceDeleteRequest;
+use App\Http\Requests\HRM\AttendanceUpdateRequest;
 
 class AttendanceController extends Controller
 {
@@ -26,7 +25,7 @@ class AttendanceController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('attendances_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
         if ($request->ajax()) {
 
@@ -42,7 +41,7 @@ class AttendanceController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
         $departments = DB::table('hrm_departments')->get(['id', 'name']);
         $users = DB::table('users')->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
@@ -50,10 +49,8 @@ class AttendanceController extends Controller
         return view('hrm.attendances.ajax_view.create', compact('users', 'departments'));
     }
 
-    public function store(Request $request)
+    public function store(AttendanceStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
         if ($request->user_ids == null) {
 
             return response()->json(['errorMsg' => __('Select employee first for attendance.')]);
@@ -75,7 +72,7 @@ class AttendanceController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
@@ -93,19 +90,14 @@ class AttendanceController extends Controller
         return view('hrm.attendances.ajax_view.edit', compact('attendance', 'shifts'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, AttendanceUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->attendanceService->validation(request: $request);
         $this->attendanceService->updateAttendance(request: $request, id: $id);
         return response()->json(__('Attendances updated successfully!'));
     }
 
-    public function delete($id, Request $request)
+    public function delete($id, AttendanceDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('attendances_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
         $this->attendanceService->deleteAttendance(id: $id);
         return response()->json(__('Attendance deleted successfully'));
     }

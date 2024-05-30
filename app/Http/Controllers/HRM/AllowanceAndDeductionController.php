@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Models\User;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Models\Hrm\Allowance;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\AllowanceAndDeductionService;
+use App\Http\Requests\HRM\AllowanceAndDeductionStoreRequest;
+use App\Http\Requests\HRM\AllowanceAndDeductionDeleteRequest;
+use App\Http\Requests\HRM\AllowanceAndDeductionUpdateRequest;
 
 class AllowanceAndDeductionController extends Controller
 {
@@ -18,8 +22,8 @@ class AllowanceAndDeductionController extends Controller
     public function index(Request $request)
     {
         abort_if(
-            (!auth()->user()->can('allowances_index') && !auth()->user()->can('deductions_index')) ||
-                config('generalSettings')['subscription']->features['hrm'] == 0,
+            !auth()->user()->can('allowances_and_deductions_index') ||
+                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
             403
         );
 
@@ -34,33 +38,25 @@ class AllowanceAndDeductionController extends Controller
     public function create()
     {
         abort_if(
-            (!auth()->user()->can('allowances_create') && !auth()->user()->can('allowances_create')) ||
-                config('generalSettings')['subscription']->features['hrm'] == 0,
+            !auth()->user()->can('allowances_and_deductions_create') ||
+                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
             403
         );
 
         return view('hrm.allowances_and_deductions.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(AllowanceAndDeductionStoreRequest $request)
     {
-        abort_if(
-            (!auth()->user()->can('allowances_create') && !auth()->user()->can('allowances_create')) ||
-                config('generalSettings')['subscription']->features['hrm'] == 0,
-            403
-        );
-
-        $this->allowanceAndDeductionService->storeValidation(request: $request);
         $addAllowanceOrDeduction = $this->allowanceAndDeductionService->addAllowanceOrDeduction(request: $request);
-
         return response()->json($addAllowanceOrDeduction . ' ' . __('is added successfully'));
     }
 
     public function edit($id)
     {
         abort_if(
-            (!auth()->user()->can('allowances_edit') && !auth()->user()->can('allowances_edit')) ||
-                config('generalSettings')['subscription']->features['hrm'] == 0,
+            !auth()->user()->can('allowances_and_deductions_edit') ||
+                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
             403
         );
 
@@ -68,28 +64,14 @@ class AllowanceAndDeductionController extends Controller
         return view('hrm.allowances_and_deductions.ajax_view.edit', compact('allowance'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, AllowanceAndDeductionUpdateRequest $request)
     {
-        abort_if(
-            (!auth()->user()->can('allowances_edit') && !auth()->user()->can('allowances_edit')) ||
-                config('generalSettings')['subscription']->features['hrm'] == 0,
-            403
-        );
-
-        $this->allowanceAndDeductionService->updateValidation(request: $request, id: $id);
         $updateAllowanceOrDeduction = $this->allowanceAndDeductionService->updateAllowanceOrDeduction(request: $request, id: $id);
-
         return response()->json($updateAllowanceOrDeduction . ' ' . __('is updated successfully'));
     }
 
-    public function delete($id, Request $request)
+    public function delete($id, AllowanceAndDeductionDeleteRequest $request)
     {
-        abort_if(
-            (!auth()->user()->can('allowances_delete') && !auth()->user()->can('allowances_delete')) ||
-                config('generalSettings')['subscription']->features['hrm'] == 0,
-            403
-        );
-
         $deleteAllowanceOrDeduction = $this->allowanceAndDeductionService->deleteAllowanceOrDeduction(id: $id);
         return response()->json($deleteAllowanceOrDeduction . ' ' . __('deleted successfully'));
     }

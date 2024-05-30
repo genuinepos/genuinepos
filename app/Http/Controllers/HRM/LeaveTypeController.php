@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\BooleanType;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\LeaveTypeService;
-use Illuminate\Http\Request;
+use App\Http\Requests\HRM\LeaveTypeStoreRequest;
+use App\Http\Requests\HRM\LeaveTypeDeleteRequest;
+use App\Http\Requests\HRM\LeaveTypeUpdateRequest;
 
 class LeaveTypeController extends Controller
 {
@@ -14,7 +18,7 @@ class LeaveTypeController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('leave_types_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('leave_types_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
         if ($request->ajax()) {
 
@@ -24,16 +28,13 @@ class LeaveTypeController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('leave_types_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('leave_types_create') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
         return view('hrm.leaves.ajax_view.types.create');
     }
 
-    public function store(Request $request)
+    public function store(LeaveTypeStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('leave_types_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->leaveTypeService->storeAndUpdateValidation(request: $request);
         $this->leaveTypeService->addLeaveType(request: $request);
 
         return response()->json(__('Leave type created successfully'));
@@ -41,29 +42,22 @@ class LeaveTypeController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('leave_types_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('leave_types_edit') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
         $leaveType = $this->leaveTypeService->singleLeaveType(id: $id);
 
         return view('hrm.leaves.ajax_view.types.edit', compact('leaveType'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, LeaveTypeUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('leave_types_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->leaveTypeService->storeAndUpdateValidation(request: $request);
         $this->leaveTypeService->updateLeaveType(request: $request, id: $id);
-
         return response()->json(__('Leave type updated successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(LeaveTypeDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('leave_types_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
         $this->leaveTypeService->deleteLeaveType(id: $id);
-
         return response()->json(__('Leave type deleted successfully'));
     }
 }

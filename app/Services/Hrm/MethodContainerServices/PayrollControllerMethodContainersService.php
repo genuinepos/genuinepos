@@ -3,23 +3,62 @@
 namespace App\Services\Hrm\MethodContainerServices;
 
 use Carbon\Carbon;
+use App\Enums\UserType;
 use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
+use App\Services\Users\UserService;
 use App\Enums\AccountingVoucherType;
+use App\Services\Hrm\PayrollService;
+use App\Services\Setups\BranchService;
 use App\Enums\ProductLedgerVoucherType;
+use App\Services\Hrm\DepartmentService;
 use App\Enums\AllowanceAndDeductionType;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
+use App\Services\Hrm\PayrollAllowanceService;
+use App\Services\Hrm\PayrollDeductionService;
 use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 
 class PayrollControllerMethodContainersService implements PayrollControllerMethodContainersInterface
 {
-    public function showMethodContainer(
-        int $id,
-        object $payrollService,
-    ): ?array {
+    public function __construct(
+        private PayrollService $payrollService,
+        private PayrollAllowanceService $payrollAllowanceService,
+        private PayrollDeductionService $payrollDeductionService,
+        private UserService $userService,
+        private DepartmentService $departmentService,
+        private BranchService $branchService,
+        private AccountService $accountService,
+        private DayBookService $dayBookService,
+    ) {
+    }
 
+    public function indexMethodContainer(object $request): object|array
+    {
         $data = [];
-        $data['payroll'] = $payrollService->singlePayroll(
+        if ($request->ajax()) {
+
+            return $this->payrollService->payrollsTable(request: $request);
+        }
+
+        $data['departments'] = $this->departmentService->departments()->get(['id', 'name']);
+
+        $data['users'] = $this->userService->users()
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
+            ->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+
+        $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        return $data;
+    }
+
+    public function showMethodContainer(int $id): ?array
+    {
+        $data = [];
+        $data['payroll'] = $this->payrollService->singlePayroll(
             with: [
                 'branch',
                 'branch.parentBranch',
@@ -43,14 +82,10 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         return $data;
     }
 
-    public function printMethodContainer(
-        int $id,
-        object $request,
-        object $payrollService,
-    ): ?array {
-
+    public function printMethodContainer(int $id, object $request): ?array
+    {
         $data = [];
-        $data['payroll'] = $payrollService->singlePayroll(
+        $data['payroll'] = $this->payrollService->singlePayroll(
             with: [
                 'branch',
                 'branch.parentBranch',
@@ -67,7 +102,7 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         return $data;
     }
 
-    public function createMethodContainer(object $request, object $payrollService, object $accountService, object $userService): ?array
+    public function createMethodContainer(object $request): ?array
     {
         $data = [];
         $month_year = explode('-', $request->month_year);
@@ -75,14 +110,14 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         $dateTime = \DateTime::createFromFormat('m', $month_year[1]);
         $data['month'] = $dateTime->format('F');
 
-        $data['payroll'] = $payrollService->singlePayroll()->where('user_id', $request->user_id)->where('month', $data['month'])->where('year', $data['year'])->first();
+        $data['payroll'] = $this->payrollService->singlePayroll()->where('user_id', $request->user_id)->where('month', $data['month'])->where('year', $data['year'])->first();
 
         if (isset($data['payroll'])) {
 
             return $data;
         }
 
-        $data['user'] = $userService->singleUser(id: $request->user_id);
+        $data['user'] = $this->userService->singleUser(id: $request->user_id);
         $data['attendances'] = DB::table('hrm_attendances')->where('user_id', $request->user_id)->where('month', $data['month'])->where('year', $data['year'])->get();
 
         $data['totalHours'] = 0;
@@ -102,7 +137,7 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
             $data['totalPresent'] += 1;
         }
 
-        $data['expenseAccounts'] = $accountService->accounts()
+        $data['expenseAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_group_number', [10, 11])
@@ -115,33 +150,22 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         return $data;
     }
 
-    public function storeMethodContainer(
-        object $request,
-        object $payrollService,
-        object $payrollAllowanceService,
-        object $payrollDeductionService,
-        object $dayBookService,
-        object $codeGenerator,
-    ): void {
-
+    public function storeMethodContainer(object $request, object $codeGenerator): void
+    {
         $generalSettings = config('generalSettings');
         $payrollVoucherPrefix = $generalSettings['prefix__payroll_voucher_prefix'] ? $generalSettings['prefix__payroll_voucher_prefix'] : 'PRL';
-        $addPayroll = $payrollService->addPayroll(request: $request, payrollVoucherPrefix: $payrollVoucherPrefix, codeGenerator: $codeGenerator);
-        $payrollAllowanceService->addPayrollAllowances(request: $request, payroll: $addPayroll);
-        $payrollDeductionService->addPayrollDeductions(request: $request, payroll: $addPayroll);
+        $addPayroll = $this->payrollService->addPayroll(request: $request, payrollVoucherPrefix: $payrollVoucherPrefix, codeGenerator: $codeGenerator);
+        $this->payrollAllowanceService->addPayrollAllowances(request: $request, payroll: $addPayroll);
+        $this->payrollDeductionService->addPayrollDeductions(request: $request, payroll: $addPayroll);
 
         // Add Day Book entry for Payroll
-        $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payroll->value, date: $addPayroll->date, accountId: $addPayroll->expense_account_id, transId: $addPayroll->id, amount: $addPayroll->gross_amount, amountType: 'debit');
+        $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payroll->value, date: $addPayroll->date, accountId: $addPayroll->expense_account_id, transId: $addPayroll->id, amount: $addPayroll->gross_amount, amountType: 'debit');
     }
 
-    public function editMethodContainer(
-        int $id,
-        object $payrollService,
-        object $accountService,
-    ): ?array {
-
+    public function editMethodContainer(int $id): ?array
+    {
         $data = [];
-        $data['payroll'] = $payrollService->singlePayroll(
+        $data['payroll'] = $this->payrollService->singlePayroll(
             with: [
                 'user',
                 'allowances',
@@ -170,7 +194,7 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
             $data['totalPresent'] += 1;
         }
 
-        $data['expenseAccounts'] = $accountService->accounts()
+        $data['expenseAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_group_number', [10, 11])
@@ -179,29 +203,19 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         return $data;
     }
 
-    public function updateMethodContainer(
-        int $id,
-        object $request,
-        object $payrollService,
-        object $payrollAllowanceService,
-        object $payrollDeductionService,
-        object $dayBookService,
-    ): void {
+    public function updateMethodContainer(int $id, object $request): void
+    {
+        $updatePayroll = $this->payrollService->updatePayroll(request: $request, id: $id);
+        $this->payrollAllowanceService->updatePayrollAllowances(request: $request, payroll: $updatePayroll);
+        $this->payrollDeductionService->updatePayrollDeductions(request: $request, payroll: $updatePayroll);
+        $this->payrollService->adjustPayrollAmounts(payroll: $updatePayroll);
 
-        $updatePayroll = $payrollService->updatePayroll(request: $request, id: $id);
-        $payrollAllowanceService->updatePayrollAllowances(request: $request, payroll: $updatePayroll);
-        $payrollDeductionService->updatePayrollDeductions(request: $request, payroll: $updatePayroll);
-        $payrollService->adjustPayrollAmounts(payroll: $updatePayroll);
-
-        $dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::Payroll->value, date: $updatePayroll->date, accountId: $updatePayroll->expense_account_id, transId: $updatePayroll->id, amount: $updatePayroll->gross_amount, amountType: 'debit', branchId: $updatePayroll->branchId);
+        $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::Payroll->value, date: $updatePayroll->date, accountId: $updatePayroll->expense_account_id, transId: $updatePayroll->id, amount: $updatePayroll->gross_amount, amountType: 'debit', branchId: $updatePayroll->branchId);
     }
 
-    public function deleteMethodContainer(
-        int $id,
-        object $payrollService,
-    ): ?array {
-
-        $deletePayroll = $payrollService->deletePayroll(id: $id);
+    public function deleteMethodContainer(int $id): ?array
+    {
+        $deletePayroll = $this->payrollService->deletePayroll(id: $id);
 
         if ($deletePayroll['pass'] == false) {
 

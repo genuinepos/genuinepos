@@ -1907,33 +1907,33 @@
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
-                                                            <input type="checkbox" class="hrms" id="select_all" data-target="allowances" autocomplete="off">
-                                                            <strong>{{ __('Allowances') }}</strong>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="allowances_and_deductions" autocomplete="off">
+                                                            <strong>{{ __('Allowances & Deductions') }}</strong>
                                                         </label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_index" id="allowances_index" class="hrms allowances">
-                                                        <label for="allowances_index">{{ __('Allowance List') }}</label>
+                                                        <input type="checkbox" name="allowances_and_deductions_index" id="allowances_and_deductions_index" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_index">{{ __('Allowance & Deduction List') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_create" id="allowances_index" class="hrms allowances">
-                                                        <label for="allowances_index"> {{ __('Allowance Add') }}</label>
+                                                        <input type="checkbox" name="allowances_and_deductions_create" id="allowances_and_deductions_create" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_create"> {{ __('Allowance & Deduction Add') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_edit" id="allowances_edit" class="hrms allowances">
-                                                        <label for="allowances_edit"> {{ __('Allowance Edit') }}</label>
+                                                        <input type="checkbox" name="allowances_and_deductions_edit" id="allowances_and_deductions_edit" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_edit"> {{ __('Allowance & Deduction Edit') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_delete" id="allowances_delete" class="hrms allowances">
-                                                        <label for="allowances_delete">{{ __('Allowance Delete') }}</label>
+                                                        <input type="checkbox" name="allowances_and_deductions_delete" id="allowances_and_deductions_delete" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_delete">{{ __('Allowance & Deduction Delete') }}</label>
                                                     </p>
                                                 </div>
 
-                                                <div class="col-lg-3 col-sm-6">
+                                                {{-- <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
                                                             <input type="checkbox" class="hrms" id="select_all" data-target="deductions" autocomplete="off">
@@ -1960,7 +1960,7 @@
                                                         <input type="checkbox" name="deductions_delete" id="deductions_delete" class="hrms deductions">
                                                         <label for="deductions_delete">{{ __('Deduction Delete') }}</label>
                                                     </p>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
@@ -2019,9 +2019,7 @@
                                                         <label for="departments_delete">{{ __('Department Delete') }}</label>
                                                     </p>
                                                 </div>
-                                            </div>
 
-                                            <div class="row mt-3">
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
@@ -2050,7 +2048,9 @@
                                                         <label for="designations_delete">{{ __('Designation Delete') }}</label>
                                                     </p>
                                                 </div>
+                                            </div>
 
+                                            <div class="row mt-3">
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>

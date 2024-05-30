@@ -234,16 +234,6 @@ class PayrollService
         return $query;
     }
 
-    public function storeAndUpdateValidation(object $request): ?array
-    {
-        return $request->validate([
-            'expense_account_id' => 'required',
-            'amount_per_unit' => 'required',
-            'duration_time' => 'required',
-            'duration_unit' => 'required',
-        ]);
-    }
-
     private function filter(object $request, object $query): object
     {
         if ($request->branch_id) {

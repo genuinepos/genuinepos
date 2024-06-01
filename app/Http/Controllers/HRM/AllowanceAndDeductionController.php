@@ -21,11 +21,7 @@ class AllowanceAndDeductionController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(
-            !auth()->user()->can('allowances_and_deductions_index') ||
-                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
-            403
-        );
+        abort_if(!auth()->user()->can('allowances_and_deductions_index'), 403);
 
         if ($request->ajax()) {
 
@@ -37,11 +33,7 @@ class AllowanceAndDeductionController extends Controller
 
     public function create()
     {
-        abort_if(
-            !auth()->user()->can('allowances_and_deductions_create') ||
-                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
-            403
-        );
+        abort_if(!auth()->user()->can('allowances_and_deductions_create'), 403);
 
         return view('hrm.allowances_and_deductions.ajax_view.create');
     }
@@ -54,11 +46,7 @@ class AllowanceAndDeductionController extends Controller
 
     public function edit($id)
     {
-        abort_if(
-            !auth()->user()->can('allowances_and_deductions_edit') ||
-                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
-            403
-        );
+        abort_if(!auth()->user()->can('allowances_and_deductions_edit'), 403);
 
         $allowance = $this->allowanceAndDeductionService->singleAllowanceOrDeduction(id: $id);
         return view('hrm.allowances_and_deductions.ajax_view.edit', compact('allowance'));

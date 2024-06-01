@@ -111,37 +111,6 @@
         }
     }
 
-    $(document).on('change', '#branch_id', function(e) {
-
-        currentUserAndEmployeeCount();
-    });
-
-     function currentUserAndEmployeeCount() {
-
-        var branchId = $('#branch_id').val();
-
-        var url = "{{ route('users.current.user.and.employee.count', [':branchId']) }}";
-        var route = url.replace(':branchId', branchId);
-
-        $.ajax({
-            url: route,
-            type: 'get',
-            success: function(data) {
-
-                $('#current_user_count').html(data.current_user_count);
-                $('#current_employee_count').html(data.current_employee_count);
-            }, error: function(err) {
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                }
-            }
-        });
-    }
-    currentUserAndEmployeeCount();
-
     document.onkeyup = function() {
         var e = e || window.event; // for IE to cover IEs window event-object
 

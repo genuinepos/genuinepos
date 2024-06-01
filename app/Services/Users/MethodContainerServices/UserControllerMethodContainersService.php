@@ -59,13 +59,6 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
 
     public function storeMethodContainer(object $request): ?array
     {
-        $restrictions = $this->userService->storeRestrictions(request: $request);
-
-        if ($restrictions['pass'] == false) {
-
-            return ['pass' => false, 'msg' => $restrictions['msg']];
-        }
-
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
         $this->userService->addUser(request: $request, role: $role);
@@ -90,13 +83,6 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
 
     public function updateMethodContainer(int $id, object $request): ?array
     {
-        $restrictions = $this->userService->updateRestrictions(request: $request, id: $id);
-
-        if ($restrictions['pass'] == false) {
-
-            return ['pass' => false, 'msg' => $restrictions['msg']];
-        }
-
         $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
         $role = $this->roleService->singleRole(id: $roleId);
 
@@ -131,10 +117,5 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
     public function branchUsersMethodContainer(int|string $isOnlyAuthenticatedUser, int|string $allowAll, mixed $branchId = null): ?object
     {
         return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
-    }
-
-    public function currentUserAndEmployeeCountMethodContainer(?int $branchId = null): array
-    {
-        return $this->userService->currentUserAndEmployeeCount($branchId);
     }
 }

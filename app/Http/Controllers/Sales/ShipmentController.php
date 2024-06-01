@@ -2,36 +2,32 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\SaleStatus;
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\SaleService;
-use App\Services\Sales\ShipmentService;
-use App\Services\Setups\BranchService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Sales\ShipmentService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Accounts\AccountService;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Sales\ShipmentUpdateRequest;
 
 class ShipmentController extends Controller
 {
     public function __construct(
         private ShipmentService $shipmentService,
         private SaleService $saleService,
-        private SaleProductService $saleProductService,
         private BranchService $branchService,
         private AccountService $accountService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('shipment_access')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shipment_access'), 403);
 
         if ($request->ajax()) {
 
@@ -55,25 +51,14 @@ class ShipmentController extends Controller
         return view('sales.add_sale.shipments.ajax_views.edit', compact('sale'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ShipmentUpdateRequest $request, $id)
     {
-        if (!auth()->user()->can('shipment_access')) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, [
-            'shipment_address' => 'required',
-            'shipment_status' => 'required',
-        ]);
-
         try {
-
             DB::beginTransaction();
 
             $updateShipmentDetails = $this->shipmentService->updateShipmentDetails(request: $request, id: $id);
 
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 1, data_obj: $updateShipmentDetails);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::UpdateShipmentDetails->value, dataObj: $updateShipmentDetails);
 
             DB::commit();
         } catch (Exception $e) {

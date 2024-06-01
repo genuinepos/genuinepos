@@ -17,7 +17,6 @@ class CustomerGroupController extends Controller
         private PriceGroupService $priceGroupService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

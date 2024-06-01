@@ -10,7 +10,6 @@ class PurchaseOrderProductController extends Controller
 {
     public function __construct(private PurchaseOrderProductService $purchaseOrderProductService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function purchaseOrderProductsForPoToInvoice($purchaseOrderId)

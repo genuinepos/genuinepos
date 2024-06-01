@@ -11,11 +11,6 @@ use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodConta
 
 class ReceiveStockFromWarehouseController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);

@@ -15,7 +15,6 @@ class CashCounterController extends Controller
 {
     public function __construct(private CashCounterService $cashCounterService, private BranchService $branchService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -97,7 +96,7 @@ class CashCounterController extends Controller
             DB::beginTransaction();
 
             $deleteCashCounter = $this->cashCounterService->deleteCashCounter($id);
-            
+
             if ($deleteCashCounter['pass'] == false) {
 
                 return response()->json(['errorMsg' => $deleteCashCounter['msg']]);

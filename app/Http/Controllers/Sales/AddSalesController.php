@@ -14,11 +14,6 @@ use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 
 class AddSalesController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, $customerAccountId = null, $saleScreen = null)
     {
         abort_if(!auth()->user()->can('view_add_sale'), 403);

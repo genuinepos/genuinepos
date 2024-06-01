@@ -26,7 +26,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>{{ __("Change Password") }}</h5>
+                    <h5>{{ __('Change Password') }}</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
@@ -390,7 +390,7 @@
                                         <div class="input-group">
                                             <label class="col-lg-3 col-5"><b>{{ __('Current Address') }}</b></label>
                                             <div class="col-lg-9 col-7">
-                                                <input type="text" name="current_address" class="form-control" placeholder="{{ __('Current Address') }}" value="{{auth()->user()->current_address }}">
+                                                <input type="text" name="current_address" class="form-control" placeholder="{{ __('Current Address') }}" value="{{ auth()->user()->current_address }}">
                                             </div>
                                         </div>
                                     </div>
@@ -411,101 +411,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        // Add user by ajax
-        $(document).on('submit', '#update_profile_form', function(e) {
-            e.preventDefault();
-
-            $('.update_profile_loading_btn').show();
-            var url = $(this).attr('action');
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-
-                    toastr.success(data);
-                    $('.update_profile_loading_btn').hide();
-                    $('.error').html('');
-                }, error: function(err) {
-
-                    isAjaxIn = true;
-                    isAllowSubmit = true;
-                    $('.update_profile_loading_btn').hide();
-
-                    $('.error').html('');
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                        return;
-                    } else if(err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-
-                    $.each(err.responseJSON.errors, function(key, error) {
-
-                        $('.error_' + key + '').html(error[0]);
-                    });
-                }
-            });
-        });
-
-        // Change password form submit by ajax
-        $(document).on('submit', '#reset_password_form', function(e) {
-            e.preventDefault();
-
-            $('.change_password_loading_btn').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    $('.change_password_loading_btn').hide();
-                    $('.error').html('');
-
-                    if (!$.isEmptyObject(data.errorMsg)) {
-
-                        toastr.error(data.errorMsg);
-                        return;
-
-                    }
-
-                    toastr.success(data.successMsg);
-                    window.location = "{{ route('login') }}";
-                }, error: function(err) {
-
-                    isAjaxIn = true;
-                    isAllowSubmit = true;
-                    $('.change_password_loading_btn').hide();
-
-                    $('.error').html('');
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                        return;
-                    } else if(err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-
-                    $.each(err.responseJSON.errors, function(key, error) {
-
-                        $('.error_' + key + '').html(error[0]);
-                    });
-                }
-            });
-        });
-    </script>
+    @include('users.partials.js_partials.user_profile_js')
 @endpush

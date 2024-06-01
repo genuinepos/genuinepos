@@ -14,11 +14,8 @@ use App\Http\Requests\Products\PriceGroupUpdateRequest;
 
 class PriceGroupController extends Controller
 {
-    public function __construct(
-        private PriceGroupService $priceGroupService,
-        private UserActivityLogService $userActivityLogService
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private PriceGroupService $priceGroupService, private UserActivityLogService $userActivityLogService)
+    {
     }
 
     public function index(Request $request)

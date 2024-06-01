@@ -11,8 +11,9 @@ use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\WorkspaceService;
 use App\Services\TaskManagement\WorkspaceUserService;
 use App\Http\Requests\TaskManagement\WorkspaceStoreRequest;
-use App\Http\Requests\TaskManagement\WorkspaceUpdateRequest;
 use App\Services\TaskManagement\WorkspaceAttachmentService;
+use App\Http\Requests\TaskManagement\WorkSpaceDeleteRequest;
+use App\Http\Requests\TaskManagement\WorkspaceUpdateRequest;
 
 class WorkSpaceController extends Controller
 {
@@ -23,7 +24,6 @@ class WorkSpaceController extends Controller
         private BranchService $branchService,
         private UserService $userService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -98,10 +98,8 @@ class WorkSpaceController extends Controller
         return response()->json(__('Project updated successfully.'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(WorkSpaceDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('workspaces_delete') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         try {
             DB::beginTransaction();
 

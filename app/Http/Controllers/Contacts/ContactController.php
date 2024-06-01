@@ -14,11 +14,6 @@ use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
 
 class ContactController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function create($type, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
     {
         if ($type == ContactType::Customer->value) {

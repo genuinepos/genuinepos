@@ -13,7 +13,6 @@ class InvoiceLayoutController extends Controller
 {
     public function __construct(private InvoiceLayoutService $invoiceLayoutService, private BranchService $branchService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

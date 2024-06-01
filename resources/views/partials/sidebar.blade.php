@@ -109,7 +109,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['hrm'] == 1)
-                    @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
+                    @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_and_deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
                         <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
@@ -1697,7 +1697,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['hrm'] == 1 && $generalSettings['modules__hrms'] == 1)
-                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
+                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_and_deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
                     <div class="sub-menu_t" id="hrm">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -1709,7 +1709,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index'))
+                                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_and_deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Human Resource Management System') }}</p>
                                         <div class="sub-menu-row">
@@ -1754,7 +1754,7 @@
                                         </div>
 
                                         <div class="sub-menu-row">
-                                            @if (auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index'))
+                                            @if (auth()->user()->can('allowances_and_deductions_index'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('hrm.allowances.deductions.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">

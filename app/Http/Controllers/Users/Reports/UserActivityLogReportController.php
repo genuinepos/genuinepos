@@ -15,10 +15,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserActivityLogReportController extends Controller
 {
-    public function __construct(
-        private BranchService $branchService,
-        private UserService $userService
-    ) {
+    public function __construct(private BranchService $branchService, private UserService $userService)
+    {
     }
 
     public function index(Request $request)

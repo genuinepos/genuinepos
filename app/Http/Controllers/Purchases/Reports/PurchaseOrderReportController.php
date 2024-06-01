@@ -27,10 +27,7 @@ class PurchaseOrderReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchase_order_report')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_order_report'), 403);
 
         if ($request->ajax()) {
 

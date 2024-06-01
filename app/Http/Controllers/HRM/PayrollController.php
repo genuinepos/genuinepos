@@ -2,61 +2,37 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Enums\UserType;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Hrm\PayrollService;
-use App\Services\Setups\BranchService;
-use App\Services\Hrm\DepartmentService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\DayBookService;
-use App\Services\Hrm\PayrollAllowanceService;
-use App\Services\Hrm\PayrollDeductionService;
+use App\Http\Requests\HRM\PayrollStoreRequest;
+use App\Http\Requests\HRM\PayrollDeleteRequest;
+use App\Http\Requests\HRM\PayrollUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 
 class PayrollController extends Controller
 {
-    public function __construct(
-        private PayrollService $payrollService,
-        private PayrollAllowanceService $payrollAllowanceService,
-        private PayrollDeductionService $payrollDeductionService,
-        private UserService $userService,
-        private DepartmentService $departmentService,
-        private BranchService $branchService,
-        private AccountService $accountService,
-        private DayBookService $dayBookService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
-    }
-
-    public function index(Request $request)
+    public function index(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
+
+        $indexMethodContainer = $payrollControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $this->payrollService->payrollsTable(request: $request);
+            return $indexMethodContainer;;
         }
 
-        $departments = $this->departmentService->departments()->get(['id', 'name']);
-        
-        $users = $this->userService->users()
-            ->where('branch_id', auth()->user()->branch_id)
-            ->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
-            ->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
-
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        extract($indexMethodContainer);
 
         return view('hrm.payrolls.index', compact('users', 'departments', 'branches'));
     }
 
     public function show($id, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        $showMethodContainer = $payrollControllerMethodContainersInterface->showMethodContainer(id: $id, payrollService: $this->payrollService);
+        $showMethodContainer = $payrollControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
 
@@ -65,7 +41,7 @@ class PayrollController extends Controller
 
     public function print($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        $printMethodContainer = $payrollControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request, payrollService: $this->payrollService);
+        $printMethodContainer = $payrollControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request);
 
         extract($printMethodContainer);
 
@@ -74,14 +50,9 @@ class PayrollController extends Controller
 
     public function create(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
-        $createMethodContainer = $payrollControllerMethodContainersInterface->createMethodContainer(
-            request: $request,
-            payrollService: $this->payrollService,
-            accountService: $this->accountService,
-            userService: $this->userService,
-        );
+        $createMethodContainer = $payrollControllerMethodContainersInterface->createMethodContainer(request: $request);
 
         extract($createMethodContainer);
 
@@ -93,23 +64,12 @@ class PayrollController extends Controller
         return view('hrm.payrolls.create', compact('user', 'expenseAccounts', 'month', 'year', 'totalHours', 'totalPresent', 'allowances', 'deductions'));
     }
 
-    public function store(Request $request, CodeGenerationServiceInterface $codeGenerator, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    public function store(PayrollStoreRequest $request, CodeGenerationServiceInterface $codeGenerator, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->payrollService->storeAndUpdateValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
-            $payrollControllerMethodContainersInterface->storeMethodContainer(
-                request: $request,
-                payrollService: $this->payrollService,
-                payrollAllowanceService: $this->payrollAllowanceService,
-                payrollDeductionService: $this->payrollDeductionService,
-                dayBookService: $this->dayBookService,
-                codeGenerator: $codeGenerator,
-            );
+            $payrollControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
 
             DB::commit();
         } catch (Exception $e) {
@@ -123,36 +83,21 @@ class PayrollController extends Controller
 
     public function edit($id, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
 
-        $editMethodContainer = $payrollControllerMethodContainersInterface->editMethodContainer(
-            id: $id,
-            payrollService: $this->payrollService,
-            accountService: $this->accountService,
-        );
+        $editMethodContainer = $payrollControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);
 
         return view('hrm.payrolls.edit', compact('payroll', 'expenseAccounts', 'totalHours', 'totalPresent'));
     }
 
-    public function update($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    public function update($id, PayrollUpdateRequest $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->payrollService->storeAndUpdateValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
-            $payrollControllerMethodContainersInterface->updateMethodContainer(
-                id: $id,
-                request: $request,
-                payrollService: $this->payrollService,
-                payrollAllowanceService: $this->payrollAllowanceService,
-                payrollDeductionService: $this->payrollDeductionService,
-                dayBookService: $this->dayBookService,
-            );
+            $payrollControllerMethodContainersInterface->updateMethodContainer(id: $id,request: $request);
 
             DB::commit();
         } catch (Exception $e) {
@@ -164,11 +109,9 @@ class PayrollController extends Controller
         return response()->json(__('Payroll updated successfully.'));
     }
 
-    public function delete($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    public function delete($id, PayrollDeleteRequest $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $deleteMethodContainer = $payrollControllerMethodContainersInterface->deleteMethodContainer(id: $id, payrollService: $this->payrollService);
+        $deleteMethodContainer = $payrollControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
         if ($deleteMethodContainer['pass'] == false) {
 

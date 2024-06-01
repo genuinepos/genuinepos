@@ -359,10 +359,17 @@ class ProductService
                 DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
                 DB::raw('SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost'),
             )->groupBy(
+                'branches.name',
+                'branches.area_name',
+                'branches.branch_code',
+                'parentBranch.name',
+                'warehouses.warehouse_name',
+                'warehouses.is_global',
+
                 'product_ledgers.branch_id',
                 'product_ledgers.warehouse_id',
                 'product_ledgers.product_id',
-                'product_ledgers.variant_id'
+                'product_ledgers.variant_id',
             );
 
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ

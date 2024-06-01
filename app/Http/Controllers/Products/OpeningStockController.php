@@ -24,7 +24,6 @@ class OpeningStockController extends Controller
         private ProductLedgerService $productLedgerService,
         private WarehouseService $warehouseService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function createOrEdit($productId)

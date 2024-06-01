@@ -1,5 +1,11 @@
 @extends('layout.master')
 @push('stylesheets')
+    <style>
+        .dropify-wrapper {
+            height: 100px !important;
+        }
+    </style>
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Shop List - ')
 @section('content')
@@ -72,9 +78,9 @@
     </div>
 
     <div class="modal fade" id="branchAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
-    <div class="modal fade" id="branchSettingEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         var branchTable = $('.data_tbl').DataTable({
@@ -214,37 +220,6 @@
                                 $('#branch_area_name').focus();
                             }
 
-                        }, 500);
-                    },
-                    error: function(err) {
-
-                        if (err.status == 0) {
-
-                            toastr.error('{{ __('Net Connetion Error.') }}');
-                        } else {
-
-                            toastr.error('{{ __('Server Error. Please contact to the support team.') }}');
-                        }
-                    }
-                });
-            });
-
-            $(document).on('click', '#branchSettings', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#branchSettingEditModal').html(data);
-                        $('#branchSettingEditModal').modal('show');
-
-                        setTimeout(function() {
-
-                            $('#branch_setting_invoice_prefix').focus().select();
                         }, 500);
                     },
                     error: function(err) {

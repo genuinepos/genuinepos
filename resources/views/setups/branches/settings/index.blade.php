@@ -1,22 +1,57 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element { border: 1px solid #7e0d3d; }
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
 
-        label { font-size: 12px !important; }
+        label {
+            font-size: 12px !important;
+        }
 
-        ul.menus_unorder_list { list-style: none; float: left; width: 100%; }
+        ul.menus_unorder_list {
+            list-style: none;
+            float: left;
+            width: 100%;
+        }
 
-        ul.menus_unorder_list .menu_list { display: block; text-align: center; margin-bottom: 5px; }
+        ul.menus_unorder_list .menu_list {
+            display: block;
+            text-align: center;
+            margin-bottom: 5px;
+        }
 
-        ul.menus_unorder_list .menu_list:last-child { margin-bottom: 0; }
+        ul.menus_unorder_list .menu_list:last-child {
+            margin-bottom: 0;
+        }
 
-        ul.menus_unorder_list .menu_list .menu_btn { color: black; padding: 5px 1px; display: block; font-size: 11px; box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1); border-bottom: 1px solid transparent; border-radius: 5px; background: white; transition: .2s; }
+        ul.menus_unorder_list .menu_list .menu_btn {
+            color: black;
+            padding: 5px 1px;
+            display: block;
+            font-size: 11px;
+            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid transparent;
+            border-radius: 5px;
+            background: white;
+            transition: .2s;
+        }
 
-        ul.menus_unorder_list .menu_list .menu_btn.menu_active { border-color: var(--dark-color-1); color: #504d4d !important; font-weight: 600; }
+        ul.menus_unorder_list .menu_list .menu_btn.menu_active {
+            border-color: var(--dark-color-1);
+            color: #504d4d !important;
+            font-weight: 600;
+        }
 
-        .hide-all { display: none; }
+        .hide-all {
+            display: none;
+        }
+
+        .dropify-wrapper {
+            height: 100px !important;
+        }
     </style>
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Shop Settings - ')
 @section('content')
@@ -213,6 +248,8 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
+
     @include('setups.branches.settings.partials.js_partials.branch_settings_js')
     @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
     @include('setups.branches.settings.partials.js_partials.product_settings_js')
@@ -228,7 +265,17 @@
     @include('setups.branches.settings.partials.js_partials.module_settings_js')
     @include('setups.branches.settings.partials.js_partials.send_email_settings_js')
     @include('setups.branches.settings.partials.js_partials.send_sms_settings_js')
+
     <script>
+        $('#logo').dropify({
+            messages: {
+                'default': "{{ __('Drag and drop a file here or click') }}",
+                'replace': "{{ __('Drag and drop or click to replace') }}",
+                'remove': "{{ __('Remove') }}",
+                'error': "{{ __('Ooops, something wrong happended.') }}"
+            }
+        });
+
         $(document).ready(function() {
             $(document).on('click', '.menu_btn', function(e) {
                 e.preventDefault();

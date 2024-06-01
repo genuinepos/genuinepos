@@ -18,7 +18,6 @@ class BankController extends Controller
         private BankService $bankService,
         private UserActivityLogService $userActivityLogService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

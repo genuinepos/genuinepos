@@ -44,15 +44,15 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label class="fw-bold">{{ __('Shop ID') }} <span class="text-danger">*</span></label>
-                                <input readonly required type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branchCode }}" placeholder="{{ __('Shop ID') }}" autocomplete="off" />
-                                <span class="error error_branch_code"></span>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Phone') }} <span class="text-danger">*</span></label>
                                 <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" placeholder="{{ __('Phone No') }}" autocomplete="off" />
                                 <span class="error error_branch_phone"></span>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label class="fw-bold">{{ __('Shop ID') }} <span class="text-danger">*</span></label>
+                                <input readonly required type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branchCode }}" placeholder="{{ __('Shop ID') }}" autocomplete="off" />
+                                <span class="error error_branch_code"></span>
                             </div>
                         </div>
 
@@ -117,9 +117,10 @@
                                 <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_date_format" placeholder="{{ __('Website Url') }}" />
                             </div>
 
-                            <div class="col-lg-3 col-md-6">
+                            <div class="col-lg-6 col-md-6 branch_log_field">
                                 <label class="fw-bold">{{ __('Logo') }} <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H:40px * W:100px') }}</small></label>
                                 <input type="file" name="logo" class="form-control " id="logo" />
+                                <span class="error error_branch_logo"></span>
                             </div>
                         </div>
                     </div>
@@ -165,7 +166,7 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
                                 <select name="stock_accounting_method" class="form-control" id="branch_stock_accounting_method" data-next="branch_account_start_date">
-                                    @foreach (App\Enums\StockAccountingMethod::cases() as $item)
+                                    @foreach (\App\Enums\StockAccountingMethod::cases() as $item)
                                         <option value="{{ $item->value }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
@@ -296,6 +297,15 @@
 </div>
 
 <script>
+    $('#logo').dropify({
+        messages: {
+            'default': "{{ __('Drag and drop a file here or click') }}",
+            'replace': "{{ __('Drag and drop or click to replace') }}",
+            'remove': "{{ __('Remove') }}",
+            'error': "{{ __('Ooops, something wrong happended.') }}"
+        }
+    });
+
     $('#branch_timezone').select2();
     $('#branch_currency_id').select2();
     $('#branch_financial_year_start_month').select2();
@@ -370,7 +380,7 @@
                     return;
                 }
 
-                toastr.error('Please check all form fields.', 'Something Went Wrong');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
                     $('.error_' + key + '').html(error[0]);
@@ -467,6 +477,7 @@
             $('.parent_branches_field').show();
             $('#branch_parent_branch_id').prop('required', true);
             $('.branch_name_field').hide();
+            $('.branch_log_field').hide();
             $('#branch_name').prop('required', false);
 
             $('#stock_accounting_method_field').hide();
@@ -478,6 +489,7 @@
             $('.parent_branches_field').hide();
             $('#branch_parent_branch_id').prop('required', false);
             $('.branch_name_field').show();
+            $('.branch_log_field').show();
             $('#branch_name').prop('required', true);
 
             $('#stock_accounting_method_field').show();

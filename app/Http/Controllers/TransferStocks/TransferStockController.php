@@ -14,11 +14,6 @@ use App\Interfaces\TransferStocks\TransferStockControllerMethodContainersInterfa
 
 class TransferStockController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('transfer_stock_index') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value, 403);

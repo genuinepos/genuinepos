@@ -21,20 +21,9 @@ class QuotationService
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
-            ->where('sales.quotation_status', 1);
+            ->where('sales.quotation_status', BooleanType::True->value);
 
         $this->filteredQuery($request, $query);
-
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-
-            $query->where('sales.branch_id', auth()->user()->branch_id);
-        }
 
         $quotations = $query->select(
             'sales.id',
@@ -155,7 +144,7 @@ class QuotationService
     {
         foreach ($updateQuotation->saleProducts as $saleProduct) {
 
-            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->is_delete_in_update = BooleanType::True->value;
             $saleProduct->save();
         }
 
@@ -189,27 +178,37 @@ class QuotationService
         return $updateQuotation;
     }
 
-    public function updateQuotationStatus(object $request, int $id, object $codeGenerator, string $salesOrderPrefix = null): object
+    public function updateQuotationStatus(object $request, int $id, object $codeGenerator, string $salesOrderPrefix = null): array|object
     {
         $quotation = $this->singleQuotation(id: $id);
 
-        if ($request->status == SaleStatus::Order->value) {
+        $restrictions = $this->restrictions(request: $request, quotation: $quotation);
 
-            $orderId = $codeGenerator->generateMonthWise(table: 'sales', column: 'order_id', prefix: $salesOrderPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        if (isset($restrictions['pass']) && $restrictions['pass'] == false) {
 
-            $quotation->status = SaleStatus::Order->value;
-            $quotation->order_id = $quotation->order_id == null ? $orderId : $quotation->order_id;
-            $quotation->order_status = BooleanType::True->value;
-            $quotation->total_ordered_qty = $quotation->total_quotation_qty;
-            $quotation->order_date_ts = !isset($quotation->order_date) ? date('Y-m-d H:i:s') : $quotation->order_date;
-            $quotation->save();
-        } else {
+            return ['pass' => false, 'msg' => $restrictions['msg']];
+        }
 
-            $quotation->status = SaleStatus::Quotation->value;
-            $quotation->order_id = null;
-            $quotation->order_status = BooleanType::False->value;
-            $quotation->order_date_ts = null;
-            $quotation->save();
+        if ($quotation->status != $request->status) {
+
+            if ($request->status == SaleStatus::Order->value) {
+
+                $orderId = $codeGenerator->generateMonthWise(table: 'sales', column: 'order_id', prefix: $salesOrderPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+                $quotation->status = SaleStatus::Order->value;
+                $quotation->order_id = $quotation->order_id == null ? $orderId : $quotation->order_id;
+                $quotation->order_status = BooleanType::True->value;
+                $quotation->total_ordered_qty = $quotation->total_quotation_qty;
+                $quotation->order_date_ts = !isset($quotation->order_date) ? date('Y-m-d H:i:s') : $quotation->order_date;
+                $quotation->save();
+            } else {
+
+                $quotation->status = SaleStatus::Quotation->value;
+                $quotation->order_id = null;
+                $quotation->order_status = BooleanType::False->value;
+                $quotation->order_date_ts = null;
+                $quotation->save();
+            }
         }
 
         return $quotation;
@@ -217,7 +216,6 @@ class QuotationService
 
     public function restrictions(object $request, object $quotation): array
     {
-
         $currentStatus = SaleStatus::tryFrom($quotation->status)->value;
         if ($currentStatus == SaleStatus::Order->value && $request->status == SaleStatus::Quotation->value) {
 
@@ -269,6 +267,17 @@ class QuotationService
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sales.order_date_ts', $date_range); // Final
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            if (auth()->user()->can('view_own_sale')) {
+
+                $query->where('sales.created_by_id', auth()->user()->id);
+            }
+
+            $query->where('sales.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

@@ -211,6 +211,7 @@
                     tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="0">';
                     tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="0">';
                     tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + (data.product_cost_with_tax) + '">';
+                    tr += '<input type="hidden" name="sale_product_ids[]">';
                     tr += ' <input type="hidden" id="current_quantity" value="0">';
                     tr += '<input type="hidden" id="current_stock" value="' + __stock + '">';
                     tr += '<input type="hidden" class="unique_id" id="' + data.id + 'noid' + '" value="' + data.id + 'noid' + '">';
@@ -237,7 +238,7 @@
                     tr += '<input type="hidden" name="subtotals[]" id="subtotal" value="' + parseFloat(unitPriceIncTax).toFixed(2) + '">';
                     tr += '</td>';
 
-                    tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
+                    tr += '<td class="text-start"><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
                     tr += '</tr>';
 
                     $('#product_list').prepend(tr);

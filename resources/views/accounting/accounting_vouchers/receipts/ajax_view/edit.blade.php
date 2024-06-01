@@ -195,8 +195,8 @@
                                 </div>
                             @else
                                 <div class="col-md-12">
-                                    <label class="fw-bold">{{ __("Credit A/c") }}</label>
-                                    <select name="credit_account_id" onchange="changeAccount(this); return false;" class="form-control select2" id="receipt_credit_account_id" data-next="receipt_received_amount">
+                                    <label class="fw-bold">{{ __("Credit A/c") }} <span class="text-danger">*</span></label>
+                                    <select required name="credit_account_id" onchange="changeAccount(this); return false;" class="form-control select2" id="receipt_credit_account_id" data-next="receipt_received_amount">
                                         <option value="">{{ __('Select Credit A/c') }}</option>
                                         @foreach ($receivableAccounts as $receivableAccount)
                                             @php

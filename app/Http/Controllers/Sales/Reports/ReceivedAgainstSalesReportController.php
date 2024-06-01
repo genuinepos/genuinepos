@@ -20,15 +20,11 @@ class ReceivedAgainstSalesReportController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('received_against_sales_report')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('received_against_sales_report'), 403);
 
         if ($request->ajax()) {
 

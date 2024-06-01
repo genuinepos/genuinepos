@@ -156,21 +156,4 @@ class HolidayService
 
         return $query->where('id', $id)->first();
     }
-
-    public function storeAndUpdateValidation(object $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date'
-        ]);
-
-        if (isset($request->allowed_branch_count)) {
-
-            $request->validate([
-                'allowed_branch_ids' => 'required|array',
-                'allowed_branch_ids.*' => 'required',
-            ], ['allowed_branch_ids.required' => __('Allowed shop/business is required')]);
-        }
-    }
 }

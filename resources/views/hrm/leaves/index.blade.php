@@ -71,32 +71,8 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        $('.leave_types').hide();
-        $(document).on('click', '#tab_btn', function() {
 
-            $('#addLeave').hide();
-            $('#addLeaveType').hide();
-            var showing = $(this).data('show');
-
-            if (showing == 'leaves') {
-
-                $('#addLeave').show();
-            } else {
-
-                $('#addLeaveType').show();
-            }
-        });
-
-        $(document).on('click', '#tab_btn', function(e) {
-            e.preventDefault();
-            $('.tab_btn').removeClass('tab_active');
-            $('.tab_contant').hide();
-            var show_content = $(this).data('show');
-            $('.' + show_content).show();
-            $(this).addClass('tab_active');
-        });
-    </script>
+    @include('hrm.leaves.js_partials.common_js_partial')
     @include('hrm.leaves.js_partials.leaves_js_partial')
     @include('hrm.leaves.js_partials.leave_types_js_partial')
 @endpush

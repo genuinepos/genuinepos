@@ -1,4 +1,13 @@
 <script>
+    $('#business_logo').dropify({
+        messages: {
+            'default': "{{ __('Drag and drop a file here or click') }}",
+            'replace': "{{ __('Drag and drop or click to replace') }}",
+            'remove': "{{ __('Remove') }}",
+            'error': "{{ __('Ooops, something wrong happended.') }}"
+        }
+    });
+
     $('#business_settings_form').on('submit', function(e) {
         e.preventDefault();
 
@@ -44,7 +53,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
                 $.each(err.responseJSON.errors, function(key, error) {
 
                     $('.error_' + key + '').html(error[0]);

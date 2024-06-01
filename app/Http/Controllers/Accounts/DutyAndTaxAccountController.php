@@ -13,7 +13,6 @@ class DutyAndTaxAccountController extends Controller
         private DutiesAndTaxesAccountService $dutiesAndTaxesAccountService,
         private AccountGroupService $accountGroupService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

@@ -28,7 +28,7 @@ class DesignationService
 
                     $html .= '<a href="' . route('hrm.designations.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 }
-                
+
                 $html .= '</div>';
 
                 return $html;
@@ -72,19 +72,5 @@ class DesignationService
         }
 
         return $query->where('id', $id)->first();
-    }
-
-    function storeValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_designations,name',
-        ]);
-    }
-
-    function updateValidation(object $request, int $id): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_designations,name,' . $id,
-        ]);
     }
 }

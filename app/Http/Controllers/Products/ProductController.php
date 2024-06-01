@@ -12,11 +12,6 @@ use App\Interfaces\Products\ProductControllerMethodContainersInterface;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $isForCreatePage = 0)
     {
         abort_if(!auth()->user()->can('product_all'), 403);

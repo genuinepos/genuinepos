@@ -16,7 +16,6 @@ class ManageCustomerController extends Controller
         private BranchService $branchService,
         private ManageCustomerService $manageCustomerService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

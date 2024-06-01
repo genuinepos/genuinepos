@@ -70,14 +70,6 @@ class LeaveTypeService
         }
     }
 
-    public function storeAndUpdateValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => 'required',
-            'max_leave_count' => 'required',
-        ]);
-    }
-
     public function singleLeaveType(int $id, array $with = null)
     {
         $query = LeaveType::query();

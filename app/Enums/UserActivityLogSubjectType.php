@@ -19,11 +19,13 @@ enum UserActivityLogSubjectType: int
     case Sales = 7;
     case Draft = 29;
     case Quotation = 30;
+    case ChangeQuotationStatus = 43;
     case HoldInvoice = 32;
     case SuspendInvoice = 33;
     case SalesOrder = 8;
     case SaleReturn = 9;
     case ExchangeInvoice = 34;
+    case UpdateShipmentDetails = 44;
     case TransferStock = 10;
     case StockAdjustment = 13;
     case Expense = 15;
@@ -43,4 +45,5 @@ enum UserActivityLogSubjectType: int
     case BuyShop = 40;
     case RenewStore = 41;
     case BuyBusiness = 42;
+
 }

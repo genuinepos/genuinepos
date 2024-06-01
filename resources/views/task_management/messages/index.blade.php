@@ -115,17 +115,17 @@
                                     </div>
                                 </form>
                             </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <form id="deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
 @endsection
 @push('scripts')
     <script>

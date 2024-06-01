@@ -13,11 +13,6 @@ use App\Interfaces\Accounts\AccountControllerMethodContainersInterface;
 
 class AccountController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, AccountControllerMethodContainersInterface $accountControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('accounts_index'), 403);

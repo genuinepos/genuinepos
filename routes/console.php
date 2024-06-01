@@ -127,27 +127,27 @@ Artisan::command('sync:gs', function () {
     }
 });
 
-Artisan::command('sync:table', function () {
+// Artisan::command('sync:table', function () {
 
-    $products = Product::all();
-    foreach ($products as $product) {
-        $product->thumbnail_photo = null;
-        $product->save();
-    }
+//     $products = Product::all();
+//     foreach ($products as $product) {
+//         $product->thumbnail_photo = null;
+//         $product->save();
+//     }
 
-    $branches = Branch::all();
-    foreach ($branches as $branch) {
+//     $branches = Branch::all();
+//     foreach ($branches as $branch) {
 
-        $branch->logo = null;
-        $branch->save();
-    }
+//         $branch->logo = null;
+//         $branch->save();
+//     }
 
-    $users = User::all();
-    foreach ($users as $user) {
+//     $users = User::all();
+//     foreach ($users as $user) {
 
-        $user->photo = null;
-        $user->save();
-    }
-});
+//         $user->photo = null;
+//         $user->save();
+//     }
+// });
 
 // Just merged this line of text.

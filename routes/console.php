@@ -19,10 +19,17 @@ Artisan::command('dev:m', function () {
         ->where('migration', '2023_01_02_113358_create_purchase_sale_product_chains_table')
         ->delete();
 
-    DB::table('migrations')->insert([
-        'migration' => '2024_03_23_163909_create_stock_chains_table',
-        'batch' => 6
-    ]);
+    $exists = DB::table('migrations')
+        ->where('migration', '2024_03_23_163909_create_stock_chains_table')
+        ->delete();
+
+    if (!$exists) {
+
+        DB::table('migrations')->insert([
+            'migration' => '2024_03_23_163909_create_stock_chains_table',
+            'batch' => 6
+        ]);
+    }
 });
 
 Artisan::command('sync:gs', function () {

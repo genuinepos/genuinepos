@@ -16,7 +16,7 @@ class PayrollController extends Controller
 {
     public function index(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
+        abort_if(!auth()->user()->can('payrolls_index'), 403);
 
         $indexMethodContainer = $payrollControllerMethodContainersInterface->indexMethodContainer(request: $request);
 

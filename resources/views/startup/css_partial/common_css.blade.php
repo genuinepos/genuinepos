@@ -96,7 +96,7 @@
     }
 
     .tab-section .tab-contents .billing-details .form-row {
-        margin-bottom: -10px;
+        margin-bottom: 12px;
     }
 
     .form-control {

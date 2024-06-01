@@ -117,18 +117,20 @@
                                     <p class="text-danger m-0 p-0">{{ $error }}</p>
                                 @endforeach
 
-                                <div class="form-check border-primary">
-                                    <input required checked class="form-check-input" type="radio" name="select_type" id="personalAccountType" value="business">
-                                    <label class="form-check-label" for="personalAccountType">
-                                        <span class="part-icon">
-                                            <i class="fa-solid fa-business-time"></i>
-                                        </span>
-                                        <span class="part-txt">
-                                            <span class="title">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</span>
-                                            <span class="dscr">{{ __('To Supervise All Shops') }}</span>
-                                        </span>
-                                    </label>
-                                </div>
+                                @if ($generalSettings['subscription__has_business'] == 1)
+                                    <div class="form-check border-primary">
+                                        <input required checked class="form-check-input" type="radio" name="select_type" id="personalAccountType" value="business">
+                                        <label class="form-check-label" for="personalAccountType">
+                                            <span class="part-icon">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </span>
+                                            <span class="part-txt">
+                                                <span class="title">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</span>
+                                                <span class="dscr">{{ __('To Supervise All Shops') }}</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                @endif
 
                                 <div class="form-check border-primary">
                                     <input required class="form-check-input" type="radio" name="select_type" id="corporateAccountType" value="shop">

@@ -233,7 +233,7 @@ class BranchService
     {
         $deleteLogo = $this->singleBranch(id: $id);
 
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+        $dir = public_path('uploads/branch_logo/');
         if (isset($deleteLogo->logo) && file_exists($dir . $deleteLogo->logo)) {
 
             unlink($dir . $deleteLogo->logo);

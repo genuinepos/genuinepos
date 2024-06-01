@@ -12,7 +12,6 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
 use App\Http\Requests\ChangeLocation\ChangeLocationConfirmRequest;
-use App\Http\Requests\ChangeBusinessOrBranchLocation\RedirectLocationRequest;
 
 class ChangeLocationController extends Controller
 {

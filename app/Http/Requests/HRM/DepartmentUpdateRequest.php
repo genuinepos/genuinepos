@@ -12,7 +12,7 @@ class DepartmentUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('departments_edit') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('departments_edit');
     }
 
     /**

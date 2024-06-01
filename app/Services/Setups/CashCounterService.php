@@ -90,24 +90,6 @@ class CashCounterService
             ->make(true);
     }
 
-
-    public function restriction(array|object $generalSettings): array
-    {
-        $generalSettings = config('generalSettings');
-        $cashCounterLimit = (int)$generalSettings['subscription']->features['cash_counter_count'];
-
-        $cashCounters = DB::table('cash_counters')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->count();
-
-        if ($cashCounterLimit == $cashCounters) {
-
-            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit} for every shop.")];
-        }
-
-        return ['pass' => true];
-    }
-
     public function addCashCounter(?int $branchId, string $cashCounterName, string $shortName): object
     {
         return CashCounter::create([

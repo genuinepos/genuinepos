@@ -45,15 +45,6 @@ class CashCounterController extends Controller
         try {
             DB::beginTransaction();
 
-            $generalSettings = config('generalSettings');
-
-            $restriction = $this->cashCounterService->restriction($generalSettings);
-
-            if ($restriction['pass'] == false) {
-
-                return response()->json(['errorMsg' => $restriction['msg']]);
-            }
-
             $addCashCounter = $this->cashCounterService->addCashCounter(branchId: auth()->user()->branch_id, cashCounterName: $request->counter_name, shortName: $request->short_name);
 
             DB::commit();

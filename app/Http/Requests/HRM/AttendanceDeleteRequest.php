@@ -12,7 +12,7 @@ class AttendanceDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('attendances_delete') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('attendances_delete');
     }
 
     /**

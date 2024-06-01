@@ -12,7 +12,7 @@ class DesignationStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('designations_create') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('designations_create');
     }
 
     /**

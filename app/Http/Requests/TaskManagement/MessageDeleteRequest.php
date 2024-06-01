@@ -12,7 +12,7 @@ class MessageDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('messages_delete') && config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value;
+        return auth()->user()->can('messages_delete');
     }
 
     /**

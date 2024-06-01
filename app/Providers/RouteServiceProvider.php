@@ -43,85 +43,89 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/admin.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/hrms.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/task_management.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/manufacturing.php'));
 
-            Route::middleware(['web', 'auth'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/contacts.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/accounts.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/sales.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/products.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/setups.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/purchases.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/setups.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/general_searches.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/stock_adjustments.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/transfer_stocks.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/dashboard.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/short_menus.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/communication.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/advertisement.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/today_summary.php'));
 
-            Route::middleware(['web', 'auth', 'startupMiddleware'])
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/users.php'));
+
+            Route::middleware(['web', 'auth', 'startup'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/change_location.php'));
 
             Route::middleware(['web', 'auth'])
                 ->namespace($this->namespace)

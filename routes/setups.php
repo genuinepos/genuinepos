@@ -133,11 +133,4 @@ Route::prefix('setups')->group(function () {
 
         Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
     });
-
-    Route::controller(ChangeBusinessOrBranchLocationController::class)->prefix('choose-business-branch')->group(function () {
-
-        Route::get('/', 'index')->name('change.business.branch.location.index');
-        Route::post('redirect/location', 'redirectLocation')->name('change.business.branch.location.redirect.location');
-    });
-
 });

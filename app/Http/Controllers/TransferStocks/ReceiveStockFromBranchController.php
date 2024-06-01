@@ -11,10 +11,6 @@ use App\Interfaces\TransferStocks\ReceiveStockFromBranchControllerMethodContaine
 
 class ReceiveStockFromBranchController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index(Request $request, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);

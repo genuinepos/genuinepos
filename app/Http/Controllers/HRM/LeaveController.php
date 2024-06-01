@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\CodeGenerationServiceInterface;
-use App\Services\Hrm\LeaveService;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
+use App\Services\Hrm\LeaveService;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\HRM\LeaveStoreRequest;
+use App\Http\Requests\HRM\LeaveDeleteRequest;
+use App\Http\Requests\HRM\LeaveUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class LeaveController extends Controller
 {
-    public function __construct(
-        private LeaveService $leaveService,
-    ) {
+    public function __construct(private LeaveService $leaveService)
+    {
     }
 
     public function index(Request $request)
@@ -37,13 +40,9 @@ class LeaveController extends Controller
         return view('hrm.leaves.ajax_view.leaves.create', compact('leaveTypes', 'users'));
     }
 
-    public function store(Request $request, CodeGenerationServiceInterface $codeGenerator)
+    public function store(LeaveStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        abort_if(!auth()->user()->can('leaves_create'), 403);
-
-        $this->leaveService->storeAndUpdateValidation(request: $request);
         $this->leaveService->addLeave(request: $request, codeGenerator: $codeGenerator);
-
         return response()->json(__('Leave created successfully'));
     }
 
@@ -58,20 +57,14 @@ class LeaveController extends Controller
         return view('hrm.leaves.ajax_view.leaves.edit', compact('leave', 'leaveTypes', 'users'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, LeaveUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('leaves_edit'), 403);
-
-        $this->leaveService->storeAndUpdateValidation(request: $request);
         $this->leaveService->updateLeave(request: $request, id: $id);
-
         return response()->json(__('Leave Updated successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(LeaveDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('leaves_delete'), 403);
-
         $this->leaveService->deleteLeave(id: $id);
         return response()->json(__('Leave Deleted successfully'));
     }

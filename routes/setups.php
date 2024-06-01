@@ -2,24 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
-use App\Http\Controllers\Setups\AddShopController;
-use App\Http\Controllers\Setups\StartupController;
-use App\Http\Controllers\Setups\ShopRenewController;
 use App\Http\Controllers\Setups\WarehouseController;
-use App\Http\Controllers\Setups\AddBusinessController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
-use App\Http\Controllers\Setups\UpgradePlanController;
-use App\Http\Controllers\Setups\DueRepaymentController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\Setups\BarcodeSettingController;
 use App\Http\Controllers\Setups\GeneralSettingController;
-use App\Http\Controllers\Setups\CheckCouponCodeController;
 use App\Http\Controllers\Setups\PaymentMethodSettingsController;
-use App\Http\Controllers\Setups\SoftwareServiceBillingController;
-use App\Http\Controllers\Setups\ChangeBusinessOrBranchLocationController;
 
 Route::prefix('setups')->group(function () {
 
@@ -54,6 +45,7 @@ Route::prefix('setups')->group(function () {
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
         Route::get('parent/with/child/branches/{id}', 'parentWithChildBranches')->name('branches.parent.with.child.branches');
         Route::get('branch/code/{parentBranchId?}', 'branchCode')->name('branches.code');
+        Route::delete('delete/branch/logo/{id}', 'deleteLogo')->name('branches.logo.delete');
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
@@ -147,4 +139,5 @@ Route::prefix('setups')->group(function () {
         Route::get('/', 'index')->name('change.business.branch.location.index');
         Route::post('redirect/location', 'redirectLocation')->name('change.business.branch.location.redirect.location');
     });
+
 });

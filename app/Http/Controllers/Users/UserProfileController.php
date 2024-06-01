@@ -8,13 +8,12 @@ use Illuminate\Http\Request;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\Users\UserProfileService;
+use App\Http\Requests\Users\UserProfileUpdateRequest;
 
 class UserProfileController extends Controller
 {
-    public function __construct(
-        private UserProfileService $userProfileService,
-        private UserService $userService,
-    ) {
+    public function __construct(private UserProfileService $userProfileService, private UserService $userService)
+    {
     }
 
     public function index()
@@ -22,14 +21,8 @@ class UserProfileController extends Controller
         return view('users.profile');
     }
 
-    public function update(Request $request)
+    public function update(UserProfileUpdateRequest $request)
     {
-        $this->validate($request, [
-            'first_name' => 'required',
-            'email' => 'required|unique:users,email,' . auth()->user()->id,
-            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
-        ]);
-
         $updateUserProfile = $this->userProfileService->updateUserProfile(request: $request);
 
         session(['lang' => $updateUserProfile->language]);

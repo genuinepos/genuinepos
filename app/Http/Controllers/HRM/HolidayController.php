@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\HolidayService;
 use App\Services\Setups\BranchService;
 use App\Services\Hrm\HolidayBranchService;
+use App\Http\Requests\HRM\HolidayStoreRequest;
+use App\Http\Requests\HRM\HolidayDeleteRequest;
+use App\Http\Requests\HRM\HolidayUpdateRequest;
 
 class HolidayController extends Controller
 {
@@ -40,12 +44,8 @@ class HolidayController extends Controller
         return view('hrm.holidays.ajax_view.create', compact('branches'));
     }
 
-    public function store(Request $request)
+    public function store(HolidayStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('holidays_create'), 403);
-
-        $this->holidayService->storeAndUpdateValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
@@ -71,12 +71,8 @@ class HolidayController extends Controller
         return view('hrm.holidays.ajax_view.edit', compact('holiday', 'branches'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, HolidayUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('holidays_edit'), 403);
-
-        $this->holidayService->storeAndUpdateValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
@@ -92,12 +88,9 @@ class HolidayController extends Controller
         return response()->json(__('Holiday updated successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(HolidayDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('holidays_delete'), 403);
-
         $this->holidayService->deleteHoliday(id: $id);
-
         return response()->json(__('Holiday deletes successfully'));
     }
 }

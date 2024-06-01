@@ -139,7 +139,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                                <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th id="total_ordered_qty" class="text-white text-end"></th>
                                                 <th id="total_delivered_qty" class="text-white text-end"></th>
                                                 <th id="total_left_qty" class="text-white text-end"></th>

@@ -244,15 +244,6 @@
     <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
 
     <script>
-        $('#business_logo').dropify({
-            messages: {
-                'default': "{{ __('Drag and drop a file here or click') }}",
-                'replace': "{{ __('Drag and drop or click to replace') }}",
-                'remove': "{{ __('Remove') }}",
-                'error': "{{ __('Ooops, something wrong happended.') }}"
-            }
-        });
-
         $(document).ready(function() {
             //$('.setting_form').hide();
             $(document).on('click', '.menu_btn', function(e) {

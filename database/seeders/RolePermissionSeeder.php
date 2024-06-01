@@ -432,15 +432,15 @@ class RolePermissionSeeder extends Seeder
             ['id' => '298', 'name' => 'attendances_edit'],
             ['id' => '299', 'name' => 'attendances_delete'],
 
-            ['id' => '300', 'name' => 'allowances_index'],
-            ['id' => '301', 'name' => 'allowances_create'],
-            ['id' => '302', 'name' => 'allowances_edit'],
-            ['id' => '303', 'name' => 'allowances_delete'],
+            // ['id' => '300', 'name' => 'allowances_index'],
+            // ['id' => '301', 'name' => 'allowances_create'],
+            // ['id' => '302', 'name' => 'allowances_edit'],
+            // ['id' => '303', 'name' => 'allowances_delete'],
 
-            ['id' => '304', 'name' => 'deductions_index'],
-            ['id' => '305', 'name' => 'deductions_create'],
-            ['id' => '306', 'name' => 'deductions_edit'],
-            ['id' => '307', 'name' => 'deductions_delete'],
+            // ['id' => '304', 'name' => 'deductions_index'],
+            // ['id' => '305', 'name' => 'deductions_create'],
+            // ['id' => '306', 'name' => 'deductions_edit'],
+            // ['id' => '307', 'name' => 'deductions_delete'],
 
             ['id' => '308', 'name' => 'holidays_index'],
             ['id' => '309', 'name' => 'holidays_create'],
@@ -550,6 +550,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '405', 'name' => 'expense_report'],
             ['id' => '406', 'name' => 'day_book'],
             ['id' => '407', 'name' => 'purchase_order_to_invoice'],
+
+            ['id' => '408', 'name' => 'allowances_and_deductions_index'],
+            ['id' => '409', 'name' => 'allowances_and_deductions_create'],
+            ['id' => '410', 'name' => 'allowances_and_deductions_edit'],
+            ['id' => '411', 'name' => 'allowances_and_deductions_delete'],
         ];
 
         return $permissions;

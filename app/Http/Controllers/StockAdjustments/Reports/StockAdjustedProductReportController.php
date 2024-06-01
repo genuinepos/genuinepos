@@ -18,10 +18,7 @@ class StockAdjustedProductReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('stock_adjustment_report')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('stock_adjustment_report'), 403);
 
         if ($request->ajax()) {
 

@@ -17,7 +17,7 @@
                     <th scope="col">{{ __('Unit') }}</th>
                     <th scope="col">{{ __('Price Inc. Tax') }}</th>
                     <th scope="col">{{ __('Subtotal') }}</th>
-                    <th scope="col"><i class="fas fa-trash-alt"></i></th>
+                    <th scope="col" class="text-start"><i class="fas fa-trash-alt"></i></th>
                 </tr>
             </thead>
 
@@ -110,9 +110,7 @@
                             <input type="hidden" value="{{ $saleProduct->subtotal }}" readonly name="subtotals[]" id="subtotal">
                         </td>
 
-                        <td class="text-start">
-                            <a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>
-                        </td>
+                        <td class="text-start"><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>
                     </tr>
                 @endforeach
             </tbody>

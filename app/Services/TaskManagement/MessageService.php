@@ -39,4 +39,20 @@ class MessageService
 
         return $query->where('id', $id)->first();
     }
+
+    public function allMessages(): object
+    {
+        return DB::table('messages')
+            ->leftJoin('users', 'messages.user_id', 'users.id')
+            ->where('messages.branch_id', auth()->user()->branch_id)
+            ->select(
+                'messages.id',
+                'messages.user_id',
+                'messages.description',
+                'messages.created_at',
+                'users.prefix as u_prefix',
+                'users.name as u_name',
+                'users.last_name as u_last_name',
+            )->orderBy('id', 'asc')->get();
+    }
 }

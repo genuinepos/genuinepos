@@ -3,7 +3,7 @@
 <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <style>
-    .error{
+    .error {
         font-size: 11px;
         color: red;
     }
@@ -200,177 +200,179 @@
 </head>
 
 <body class="inner">
-@include('startup.partials.header')
+    @include('startup.partials.header')
 
-<div class="tab-section py-120">
-    <div class="container">
-        <div class="row mt-2">
-            <div class="col-12">
-                <div class="tab-nav">
-                    <button class="single-nav businessSetupTab active" id="single-nav" data-tab="businessSetupTab">
-                        <span class="txt">{{ __('Business Setup') }}</span>
-                    </button>
-                </div>
+    <div class="tab-section py-120">
+        <div class="container">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="tab-nav">
+                        <button class="single-nav businessSetupTab active" id="single-nav" data-tab="businessSetupTab">
+                            <span class="txt">{{ __('Business Setup') }}</span>
+                        </button>
+                    </div>
 
-                <div class="tab-contents">
-                    <form id="startup_from" action="{{ route('startup.finish') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="single-tab active" id="businessSetupTab">
-                            @include('startup.partials.business_setup_partial', ['onlyBusinessSetup' => true])
-                        </div>
-                    </form>
+                    <div class="tab-contents">
+                        <form id="startup_from" action="{{ route('startup.finish') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="single-tab active" id="businessSetupTab">
+                                @include('startup.partials.business_setup_partial', ['onlyBusinessSetup' => true])
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-</div>
 
-<!-- Logout form for global -->
-<form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
-<!-- Logout form for global end -->
+    <!-- Logout form for global -->
+    <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
+    <!-- Logout form for global end -->
 
-<!-- js files -->
-<script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
-<script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-<script>
-    $('#business_logo').dropify({
-        messages: {
-            'default': "{{ __('Drag and drop a file here or click') }}",
-            'replace': "{{ __('Drag and drop or click to replace') }}",
-            'remove': "{{ __('Remove') }}",
-            'error': "{{ __('Ooops, something wrong happended.') }}",
-        }
-    });
-
-    $(document).ready(function() {
-        $('.select2').select2();
-    });
-
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('business_account_start_date'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'YYYY-MM-DD',
-    });
-
-
-    $(document).on('change', '#business_currency_id', function(e) {
-        var currencySymbol = $(this).find('option:selected').data('currency_symbol');
-        $('#business_currency_symbol').val(currencySymbol);
-    });
-
-    $(window).scroll(function() {
-        if ($('.select2').is(':visible')) {
-            $('.select2-dropdown').css({
-                "display": "none"
-            });
-        }
-    });
-
-    $(document).on('click', '.select2', function(e) {
-        e.preventDefault();
-        $('.select2-dropdown').css({
-            "display": ""
-        });
-    });
-
-    $(document).on('select2:open', () => {
-
-        if ($('.select2-search--dropdown .select2-search__field').length > 0) {
-
-            document.querySelector('.select2-search--dropdown .select2-search__field').focus();
-        }
-    });
-
-    $(document).on('click', '#logout_option', function(e) {
-        e.preventDefault();
-        $.confirm({
-            'title': 'Logout Confirmation',
-            'content': 'Are you sure, you want to logout?',
-            'buttons': {
-                'Yes': {
-                    'btnClass': 'yes btn-modal-primary',
-                    'action': function() {
-                        $('#logout_form').submit();
-                    }
-                },
-                'No': {
-                    'btnClass': 'no btn-danger',
-                    'action': function() {
-                        console.log('Canceled.');
-                    }
-                }
+    <!-- js files -->
+    <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script>
+        $('#business_logo').dropify({
+            messages: {
+                'default': "{{ __('Drag and drop a file here or click') }}",
+                'replace': "{{ __('Drag and drop or click to replace') }}",
+                'remove': "{{ __('Remove') }}",
+                'error': "{{ __('Ooops, something wrong happended.') }}",
             }
         });
-    });
 
-    $(document).on('submit', '#startup_from', function(e) {
-        e.preventDefault();
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
 
-        $('.loading_button').removeClass('d-none');
-        $('.submit_blue_btn').removeClass('d-none');
-        $('.submit_button').addClass('d-none');
-        var url = $(this).attr('action');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('business_account_start_date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'YYYY-MM-DD',
+        });
 
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(res) {
 
-                $('.error').html('');
-                $('.loading_button').addClass('d-none');
-                $('.submit_blue_btn').addClass('d-none');
-                $('.submit_button').removeClass('d-none');
+        $(document).on('change', '#business_currency_id', function(e) {
+            var currencySymbol = $(this).find('option:selected').data('currency_symbol');
+            $('#business_currency_symbol').val(currencySymbol);
+        });
 
-                window.location = res;
-            }, error: function(err) {
-
-                $('.loading_button').addClass('d-none');
-                $('.submit_blue_btn').addClass('d-none');
-                $('.submit_button').removeClass('d-none');
-                $('.error').html('');
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
-                }
-
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
-
-                $.each(err.responseJSON.errors, function(key, error) {
-
-                    $('.error_' + key + '').html(error[0]);
+        $(window).scroll(function() {
+            if ($('.select2').is(':visible')) {
+                $('.select2-dropdown').css({
+                    "display": "none"
                 });
             }
         });
-    });
-</script>
+
+        $(document).on('click', '.select2', function(e) {
+            e.preventDefault();
+            $('.select2-dropdown').css({
+                "display": ""
+            });
+        });
+
+        $(document).on('select2:open', () => {
+
+            if ($('.select2-search--dropdown .select2-search__field').length > 0) {
+
+                document.querySelector('.select2-search--dropdown .select2-search__field').focus();
+            }
+        });
+
+        $(document).on('click', '#logout_option', function(e) {
+            e.preventDefault();
+            $.confirm({
+                'title': 'Logout Confirmation',
+                'content': 'Are you sure, you want to logout?',
+                'buttons': {
+                    'Yes': {
+                        'btnClass': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#logout_form').submit();
+                        }
+                    },
+                    'No': {
+                        'btnClass': 'no btn-danger',
+                        'action': function() {
+                            console.log('Canceled.');
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on('submit', '#startup_from', function(e) {
+            e.preventDefault();
+
+            $('.loading_button').removeClass('d-none');
+            $('.submit_blue_btn').removeClass('d-none');
+            $('.submit_button').addClass('d-none');
+            var url = $(this).attr('action');
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(res) {
+
+                    $('.error').html('');
+                    $('.loading_button').addClass('d-none');
+                    $('.submit_blue_btn').addClass('d-none');
+                    $('.submit_button').removeClass('d-none');
+
+                    window.location = res;
+                },
+                error: function(err) {
+
+                    $('.loading_button').addClass('d-none');
+                    $('.submit_blue_btn').addClass('d-none');
+                    $('.submit_button').removeClass('d-none');
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

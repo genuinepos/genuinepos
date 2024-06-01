@@ -3,17 +3,19 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Enums\UserType;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\DepartmentService;
+use App\Http\Requests\HRM\DepartmentStoreRequest;
+use App\Http\Requests\HRM\DepartmentDeleteRequest;
+use App\Http\Requests\HRM\DepartmentUpdateRequest;
 
 class DepartmentController extends Controller
 {
-    public function __construct(
-        private DepartmentService $departmentService,
-        private UserService $userService,
-    ) {
+    public function __construct(private DepartmentService $departmentService, private UserService $userService)
+    {
     }
 
     public function index(Request $request)
@@ -31,15 +33,11 @@ class DepartmentController extends Controller
     public function create()
     {
         abort_if(!auth()->user()->can('departments_create'), 403);
-
         return view('hrm.departments.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(DepartmentStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('departments_create'), 403);
-
-        $this->departmentService->storeValidation(request: $request);
         return $this->departmentService->addDepartment(request: $request);
     }
 
@@ -48,26 +46,18 @@ class DepartmentController extends Controller
         abort_if(!auth()->user()->can('departments_edit'), 403);
 
         $department = $this->departmentService->singleDepartment(id: $id);
-
         return view('hrm.departments.ajax_view.edit', compact('department'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, DepartmentUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('departments_edit'), 403);
-
-        $this->departmentService->updateValidation(request: $request, id: $id);
         $this->departmentService->updateDepartment(request: $request, id: $id);
-
         return response()->json(__('Department updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($id, DepartmentDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('departments_delete'), 403);
-
         $this->departmentService->deleteDepartment(id: $id);
-
         return response()->json(__('Department deleted successfully'));
     }
 

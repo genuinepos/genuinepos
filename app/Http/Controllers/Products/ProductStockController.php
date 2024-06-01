@@ -8,9 +8,8 @@ use App\Services\Products\ProductStockService;
 
 class ProductStockController extends Controller
 {
-    public function __construct(
-        private ProductStockService $productStockService,
-    ) {
+    public function __construct(private ProductStockService $productStockService)
+    {
     }
 
     public function productStock($id, Request $request)

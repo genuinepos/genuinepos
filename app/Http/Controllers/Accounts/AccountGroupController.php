@@ -9,14 +9,13 @@ use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountGroupService;
 use App\Http\Requests\Accounts\AccountGroupStoreRequest;
+use App\Http\Requests\Accounts\AccountGroupDeleteRequest;
 use App\Http\Requests\Accounts\AccountGroupUpdateRequest;
 
 class AccountGroupController extends Controller
 {
-    public function __construct(
-        private AccountGroupService $accountGroupService,
-        private BranchService $branchService,
-    ) {
+    public function __construct(private AccountGroupService $accountGroupService)
+    {
     }
 
     public function index()
@@ -87,10 +86,8 @@ class AccountGroupController extends Controller
         return response()->json(__('Account Group Updated Successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(AccountGroupDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('account_groups_delete'), 403);
-
         try {
             DB::beginTransaction();
 

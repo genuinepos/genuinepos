@@ -15,10 +15,8 @@ use App\Interfaces\CodeGenerationServiceInterface;
 
 class BrandController extends Controller
 {
-    public function __construct(
-        private BrandService $brandService,
-        private UserActivityLogService $userActivityLogService,
-    ) {
+    public function __construct(private BrandService $brandService, private UserActivityLogService $userActivityLogService)
+    {
     }
 
     public function index(Request $request)

@@ -145,6 +145,14 @@ class UserActivityLogService
                 'fields' => ['date', 'voucher_no', 'total_item', 'total_qty', 'net_total_amount'],
                 'texts' => ['Date: ', 'Voucher No: ', 'Total Item: ', 'Total Qty: ', 'Net Total Amount: '],
             ],
+            43 => [ // Change Quotation
+                'fields' => ['date', 'quotation_id', 'order_id', 'total_invoice_amount'],
+                'texts' => ['Date : ', 'Quotation ID : ', 'Order ID : ', 'Total Amount : '],
+            ],
+            44 => [ // Update Shipment Details
+                'fields' => ['date', 'invoice_id', 'quotation_id', 'order_id', 'shipment_status', 'shipment_address', 'delivered_to', 'shipment_details'],
+                'texts' => ['Date : ', 'invoice ID : ', 'Quotation ID : ', 'Order ID : ', 'Ship. Status : ', 'Address : ', 'Deliver To : ', 'Ship. Details : '],
+            ],
         ];
     }
 

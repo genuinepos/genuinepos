@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
@@ -11,7 +12,9 @@ use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\TodoService;
 use App\Services\TaskManagement\TodoUserService;
 use App\Http\Requests\TaskManagement\TodoStoreRequest;
+use App\Http\Requests\TaskManagement\TodoDeleteRequest;
 use App\Http\Requests\TaskManagement\TodoUpdateRequest;
+use App\Http\Requests\TaskManagement\TodoChangeStatusRequest;
 
 class TodoController extends Controller
 {
@@ -36,6 +39,12 @@ class TodoController extends Controller
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('task_management.todo.index', compact('branches'));
+    }
+
+    public function show($id)
+    {
+        $todo = $this->todoService->singleTodo(id: $id, with: ['createdBy', 'users', 'users.user']);
+        return view('task_management.todo.ajax_view.show', compact('todo'));
     }
 
     public function create()
@@ -99,10 +108,8 @@ class TodoController extends Controller
         return view('task_management.todo.ajax_view.change_status', compact('todo'));
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus(TodoChangeStatusRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('todo_change_status'), 403);
-
         $changeStatus = $this->todoService->changeTodoStatus(request: $request, id: $id);
         if ($changeStatus['pass'] == false) {
 
@@ -112,15 +119,8 @@ class TodoController extends Controller
         return response()->json(__('Todo status changed successfully.'));
     }
 
-    public function show($id)
+    public function delete(TodoDeleteRequest $request, $id)
     {
-        $todo = $this->todoService->singleTodo(id: $id, with: ['createdBy', 'users', 'users.user']);
-        return view('task_management.todo.ajax_view.show', compact('todo'));
-    }
-
-    public function delete(Request $request, $id)
-    {
-        abort_if(!auth()->user()->can('todo_delete'), 403);
         $this->todoService->deleteTodo(id: $id);
         return response()->json(__('Todo deleted successfully.'));
     }

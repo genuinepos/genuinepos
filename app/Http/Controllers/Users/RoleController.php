@@ -12,10 +12,8 @@ use App\Http\Requests\Users\RoleUpdateRequest;
 
 class RoleController extends Controller
 {
-
-    public function __construct(
-        private RoleService $roleService,
-    ) {
+    public function __construct(private RoleService $roleService)
+    {
     }
 
     public function index(Request $request)

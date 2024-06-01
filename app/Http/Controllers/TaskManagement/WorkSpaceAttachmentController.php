@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\TaskManagement\WorkspaceAttachmentService;
+use App\Http\Requests\TaskManagement\WorkSpaceAttachmentDeleteRequest;
 
 class WorkSpaceAttachmentController extends Controller
 {
-    public function __construct(
-        private WorkspaceAttachmentService $workspaceAttachmentService,
-    ) {
+    public function __construct(private WorkspaceAttachmentService $workspaceAttachmentService)
+    {
     }
 
     public function index($workspaceId)
@@ -28,10 +29,7 @@ class WorkSpaceAttachmentController extends Controller
 
     public function delete($id)
     {
-        abort_if(!auth()->user()->can('workspaces_index'), 403);
-
         $this->workspaceAttachmentService->deleteWorkspaceAttachment(id: $id);
-
         return response()->json(__('Document deleted successfully.'));
     }
 }

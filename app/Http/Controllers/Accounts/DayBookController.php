@@ -7,9 +7,8 @@ use App\Services\Accounts\DayBookVoucherService;
 
 class DayBookController extends Controller
 {
-    public function __construct(
-        private DayBookVoucherService $dayBookVoucherService,
-    ) {
+    public function __construct(private DayBookVoucherService $dayBookVoucherService)
+    {
     }
 
     public function vouchersForReceiptOrPayment($accountId = null, $type = null)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\TaskManagement;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TodoStoreRequest extends FormRequest

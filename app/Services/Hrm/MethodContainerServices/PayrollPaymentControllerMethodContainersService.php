@@ -4,18 +4,39 @@ namespace App\Services\Hrm\MethodContainerServices;
 
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
+use App\Services\Hrm\PayrollService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
+use App\Services\Hrm\PayrollPaymentService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
 
 class PayrollPaymentControllerMethodContainersService implements PayrollPaymentControllerMethodContainersInterface
 {
-    public function showMethodContainer(
-        int $id,
-        object $accountingVoucherService
-    ): ?array {
+    public function __construct(
+        private PayrollPaymentService $payrollPaymentService,
+        private AccountService $accountService,
+        private PayrollService $payrollService,
+        private AccountFilterService $accountFilterService,
+        private PaymentMethodService $paymentMethodService,
+        private DayBookService $dayBookService,
+        private AccountLedgerService $accountLedgerService,
+        private AccountingVoucherService $accountingVoucherService,
+        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
+    ) {
+    }
 
+    public function showMethodContainer(int $id): ?array
+    {
         $data = [];
-        $data['payment'] = $accountingVoucherService->singleAccountingVoucher(
+        $data['payment'] = $this->accountingVoucherService->singleAccountingVoucher(
             id: $id,
             with: [
                 'branch',
@@ -31,14 +52,10 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
         return $data;
     }
 
-    public function printMethodContainer(
-        int $id,
-        object $request,
-        object $accountingVoucherService
-    ): ?array {
-
+    public function printMethodContainer(int $id, object $request): ?array
+    {
         $data = [];
-        $data['payment'] = $accountingVoucherService->singleAccountingVoucher(
+        $data['payment'] = $this->accountingVoucherService->singleAccountingVoucher(
             id: $id,
             with: [
                 'branch',
@@ -55,18 +72,12 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
         return $data;
     }
 
-    public function createMethodContainer(
-        int $payrollId,
-        object $payrollService,
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-    ): ?array {
-
+    public function createMethodContainer(int $payrollId): ?array
+    {
         $data = [];
-        $data['payroll'] = $payrollService->singlePayroll(with: ['user', 'user.designation', 'expenseAccount'])->where('id', $payrollId)->first();
+        $data['payroll'] = $this->payrollService->singlePayroll(with: ['user', 'user.designation', 'expenseAccount'])->where('id', $payrollId)->first();
 
-        $accounts = $accountService->accounts(with: [
+        $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,name,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
@@ -77,33 +88,23 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
             ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
             ->get();
 
-        $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
+        $data['accounts'] = $this->accountFilterService->filterCashBankAccounts($accounts);
 
-        $data['expenseAccounts'] = $accountService->accounts()
+        $data['expenseAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_group_number', [10, 11])
             ->select('accounts.id', 'accounts.name')
             ->get();
 
-        $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+        $data['methods'] = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         return $data;
     }
 
-    public function storeMethodContainer(
-        object $request,
-        object $payrollPaymentService,
-        object $payrollService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $accountingVoucherDescriptionReferenceService,
-        object $dayBookService,
-        object $accountLedgerService,
-        object $codeGenerator,
-    ): ?array {
-
-        $restrictions = $payrollPaymentService->restrictions(request: $request);
+    public function storeMethodContainer(object $request, object $codeGenerator): ?array
+    {
+        $restrictions = $this->payrollPaymentService->restrictions(request: $request);
 
         if ($restrictions['pass'] == false) {
 
@@ -114,27 +115,27 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
         $paymentVoucherPrefix = $generalSettings['prefix__payroll_payment_voucher_prefix'] ? $generalSettings['prefix__payroll_payment_voucher_prefix'] : 'PRLP';
 
         // Add Accounting Voucher
-        $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::PayrollPayment->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, payrollRefId: $request->payroll_id);
+        $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::PayrollPayment->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, payrollRefId: $request->payroll_id);
 
         // Add Payment Description Debit Entry
-        $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->debit_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
+        $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->debit_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
 
         // Add Day Book entry for Payment
-        $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PayrollPayment->value, date: $request->date, accountId: $request->debit_account_id, transId: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
+        $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PayrollPayment->value, date: $request->date, accountId: $request->debit_account_id, transId: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
 
         // Add Accounting VoucherDescription References
-        $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->debit_account_id, amount: $request->paying_amount, refIdColName: 'payroll_id', refIds: [$request->payroll_id]);
+        $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->debit_account_id, amount: $request->paying_amount, refIdColName: 'payroll_id', refIds: [$request->payroll_id]);
 
         // Add Debit Ledger Entry
-        $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->credit_account_id);
+        $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->credit_account_id);
 
         // Add Credit Account Accounting voucher Description
-        $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
+        $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
 
         // Add Credit Ledger Entry
-        $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit');
+        $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit');
 
-        $payment = $accountingVoucherService->singleAccountingVoucher(
+        $payment = $this->accountingVoucherService->singleAccountingVoucher(
             id: $addAccountingVoucher->id,
             with: [
                 'branch',
@@ -147,23 +148,17 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
             ],
         );
 
-        $payrollService->adjustPayrollAmounts(payroll: $payment?->payrollRef);
+        $this->payrollService->adjustPayrollAmounts(payroll: $payment?->payrollRef);
 
         $printPageSize = $request->print_page_size;
 
         return ['payment' => $payment, 'printPageSize' => $printPageSize];
     }
 
-    public function editMethodContainer(
-        int $id,
-        object $accountingVoucherService,
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-    ): ?array {
-
+    public function editMethodContainer(int $id): ?array
+    {
         $data = [];
-        $data['payment'] = $accountingVoucherService->singleAccountingVoucher(
+        $data['payment'] = $this->accountingVoucherService->singleAccountingVoucher(
             id: $id,
             with: [
                 'payrollRef',
@@ -176,7 +171,7 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
             ],
         );
 
-        $accounts = $accountService->accounts(with: [
+        $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,name,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
@@ -187,33 +182,23 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
             ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
             ->get();
 
-        $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
+        $data['accounts'] = $this->accountFilterService->filterCashBankAccounts($accounts);
 
-        $data['expenseAccounts'] = $accountService->accounts()
+        $data['expenseAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_group_number', [10, 11])
             ->select('accounts.id', 'accounts.name')
             ->get();
 
-        $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+        $data['methods'] = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         return $data;
     }
 
-    public function updateMethodContainer(
-        int $id,
-        object $request,
-        object $payrollPaymentService,
-        object $payrollService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $accountingVoucherDescriptionReferenceService,
-        object $dayBookService,
-        object $accountLedgerService,
-    ): ?array {
-
-        $restrictions = $payrollPaymentService->restrictions(request: $request);
+    public function updateMethodContainer(int $id, object $request): ?array
+    {
+        $restrictions = $this->payrollPaymentService->restrictions(request: $request);
 
         if ($restrictions['pass'] == false) {
 
@@ -221,13 +206,13 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
         }
 
         // Add Accounting Voucher
-        $updateAccountingVoucher = $accountingVoucherService->updateAccountingVoucher(id: $id, date: $request->date, remarks: $request->remarks, reference: $request->reference, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount);
+        $updateAccountingVoucher = $this->accountingVoucherService->updateAccountingVoucher(id: $id, date: $request->date, remarks: $request->remarks, reference: $request->reference, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount);
 
         // Add Payment Description Debit Entry
-        $updateAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->updateAccountingVoucherDescription(accountingVoucherId: $updateAccountingVoucher->id, accountingVoucherDescriptionId: $updateAccountingVoucher->voucherDebitDescription->id, accountId: $request->debit_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
+        $updateAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->updateAccountingVoucherDescription(accountingVoucherId: $updateAccountingVoucher->id, accountingVoucherDescriptionId: $updateAccountingVoucher->voucherDebitDescription->id, accountId: $request->debit_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
 
         // Add Day Book entry for Payment
-        $dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::PayrollPayment->value, date: $request->date, accountId: $request->debit_account_id, transId: $updateAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
+        $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::PayrollPayment->value, date: $request->date, accountId: $request->debit_account_id, transId: $updateAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
 
         if ($updateAccountingVoucher?->voucherDebitDescription && count($updateAccountingVoucher?->voucherDebitDescription?->references) > 0) {
 
@@ -237,34 +222,34 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
 
                 if ($reference->payroll) {
 
-                    $payrollService->adjustPayrollAmounts(payroll: $reference->payroll);
+                    $this->payrollService->adjustPayrollAmounts(payroll: $reference->payroll);
                 }
             }
         }
 
         // Add Accounting VoucherDescription References
-        $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $updateAccountingVoucherDebitDescription->id, accountId: $request->debit_account_id, amount: $request->paying_amount, refIdColName: 'payroll_id', refIds: [$updateAccountingVoucher->payroll_ref_id]);
+        $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $updateAccountingVoucherDebitDescription->id, accountId: $request->debit_account_id, amount: $request->paying_amount, refIdColName: 'payroll_id', refIds: [$updateAccountingVoucher->payroll_ref_id]);
 
         // Add Debit Ledger Entry
-        $accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $updateAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', current_account_id: $updateAccountingVoucherDebitDescription->current_account_id, cash_bank_account_id: $request->credit_account_id);
+        $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $updateAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', current_account_id: $updateAccountingVoucherDebitDescription->current_account_id, cash_bank_account_id: $request->credit_account_id);
 
         // Add Credit Account Accounting voucher Description
-        $updateAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->updateAccountingVoucherDescription(accountingVoucherId: $updateAccountingVoucher->id, accountingVoucherDescriptionId: $updateAccountingVoucher->voucherCreditDescription->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
+        $updateAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->updateAccountingVoucherDescription(accountingVoucherId: $updateAccountingVoucher->id, accountingVoucherDescriptionId: $updateAccountingVoucher->voucherCreditDescription->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
 
         // Add Credit Ledger Entry
-        $accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
+        $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PayrollPayment->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
 
-        $payrollService->adjustPayrollAmounts(payroll: $updateAccountingVoucher?->payrollRef);
+        $this->payrollService->adjustPayrollAmounts(payroll: $updateAccountingVoucher?->payrollRef);
 
         return null;
     }
 
-    public function deleteMethodContainer(int $id, object $payrollPaymentService,  object $payrollService,): void
+    public function deleteMethodContainer(int $id): void
     {
-        $deletePayrollPayment = $payrollPaymentService->deletePayrollPayment(id: $id);
+        $deletePayrollPayment = $this->payrollPaymentService->deletePayrollPayment(id: $id);
         if ($deletePayrollPayment?->payrollRef) {
 
-            $payrollService->adjustPayrollAmounts(payroll: $deletePayrollPayment?->payrollRef);
+            $this->payrollService->adjustPayrollAmounts(payroll: $deletePayrollPayment?->payrollRef);
         }
     }
 }

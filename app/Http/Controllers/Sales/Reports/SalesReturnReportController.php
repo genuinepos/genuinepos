@@ -24,10 +24,7 @@ class SalesReturnReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sales_return_report')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('sales_return_report'), 403);
 
         if ($request->ajax()) {
 

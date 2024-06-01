@@ -2,72 +2,36 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\DayBookService;
-use App\Services\Accounts\DayBookVoucherService;
-use App\Services\Accounts\PaymentService;
-use App\Services\CodeGenerationService;
-use App\Services\Purchases\PurchaseReturnService;
-use App\Services\Purchases\PurchaseService;
-use App\Services\Sales\SaleService;
-use App\Services\Sales\SalesReturnService;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Accounts\PaymentStoreRequest;
+use App\Http\Requests\Accounts\PaymentDeleteRequest;
+use App\Http\Requests\Accounts\PaymentUpdateRequest;
+use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 
 class PaymentController extends Controller
 {
-    public function __construct(
-        private PaymentService $paymentService,
-        private SaleService $saleService,
-        private SalesReturnService $salesReturnService,
-        private PurchaseService $purchaseService,
-        private PurchaseReturnService $purchaseReturnService,
-        private BranchService $branchService,
-        private AccountService $accountService,
-        private AccountFilterService $accountFilterService,
-        private AccountLedgerService $accountLedgerService,
-        private PaymentMethodService $paymentMethodService,
-        private DayBookService $dayBookService,
-        private DayBookVoucherService $dayBookVoucherService,
-        private AccountingVoucherService $accountingVoucherService,
-        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-    ) {
-    }
-
-    public function index(Request $request, $debitAccountId = null)
+    public function index(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $debitAccountId = null)
     {
         abort_if(!auth()->user()->can('payments_index'), 403);
 
+        $indexMethodContainer = $paymentControllerMethodContainersInterface->indexMethodContainer(request: $request, debitAccountId: $debitAccountId);
+
         if ($request->ajax()) {
 
-            return $this->paymentService->paymentsTable(request: $request, debitAccountId: $debitAccountId);
+            return $indexMethodContainer;;
         }
 
-        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
-
-        $debitAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        extract($indexMethodContainer);
 
         return view('accounting.accounting_vouchers.payments.index', compact('branches', 'debitAccounts'));
     }
 
     public function show(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
-        $showMethodContainer = $paymentControllerMethodContainersInterface->showMethodContainer(
-            id: $id,
-            accountingVoucherService: $this->accountingVoucherService,
-        );
+        $showMethodContainer = $paymentControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
 
@@ -76,11 +40,7 @@ class PaymentController extends Controller
 
     public function print($id, Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface)
     {
-        $printMethodContainer = $paymentControllerMethodContainersInterface->printMethodContainer(
-            id: $id,
-            request: $request,
-            accountingVoucherService: $this->accountingVoucherService,
-        );
+        $printMethodContainer = $paymentControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request);
 
         extract($printMethodContainer);
 
@@ -91,38 +51,19 @@ class PaymentController extends Controller
     {
         abort_if(!auth()->user()->can('payments_create'), 403);
 
-        $createMethodContainer = $paymentControllerMethodContainersInterface->createMethodContainer(
-            debitAccountId: $debitAccountId,
-            accountService: $this->accountService,
-            accountFilterService: $this->accountFilterService,
-            dayBookVoucherService: $this->dayBookVoucherService,
-            paymentMethodService: $this->paymentMethodService,
-        );
+        $createMethodContainer = $paymentControllerMethodContainersInterface->createMethodContainer(debitAccountId: $debitAccountId);
 
         extract($createMethodContainer);
 
         return view('accounting.accounting_vouchers.payments.ajax_view.create', compact('vouchers', 'account', 'accounts', 'methods', 'payableAccounts'));
     }
 
-    public function store(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    public function store(PaymentStoreRequest $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, CodeGenerationServiceInterface $codeGenerator)
     {
-        abort_if(!auth()->user()->can('payments_create'), 403);
-
-        $this->paymentService->paymentValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
-            $storeMethodContainer = $paymentControllerMethodContainersInterface->storeMethodContainer(
-                request: $request,
-                paymentService: $this->paymentService,
-                accountLedgerService: $this->accountLedgerService,
-                accountingVoucherService: $this->accountingVoucherService,
-                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
-                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
-                dayBookService: $this->dayBookService,
-                codeGenerator: $codeGenerator,
-            );
+            $storeMethodContainer = $paymentControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
 
             if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
@@ -139,7 +80,6 @@ class PaymentController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            $printPageSize = $request->print_page_size;
             return view('accounting.accounting_vouchers.print_templates.print_payment', compact('payment', 'printPageSize'));
         } else {
 
@@ -151,42 +91,19 @@ class PaymentController extends Controller
     {
         abort_if(!auth()->user()->can('payments_edit'), 403);
 
-        $editMethodContainer = $paymentControllerMethodContainersInterface->editMethodContainer(
-            id: $id,
-            debitAccountId: $debitAccountId,
-            accountingVoucherService: $this->accountingVoucherService,
-            accountService: $this->accountService,
-            accountFilterService: $this->accountFilterService,
-            dayBookVoucherService: $this->dayBookVoucherService,
-            paymentMethodService: $this->paymentMethodService,
-        );
+        $editMethodContainer = $paymentControllerMethodContainersInterface->editMethodContainer(id: $id, debitAccountId: $debitAccountId);
 
         extract($editMethodContainer);
 
         return view('accounting.accounting_vouchers.payments.ajax_view.edit', compact('payment', 'vouchers', 'account', 'accounts', 'methods', 'payableAccounts'));
     }
 
-    public function update(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
+    public function update(PaymentUpdateRequest $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
-        abort_if(!auth()->user()->can('payments_edit'), 403);
-
-        $this->paymentService->paymentValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
-            $updateMethodContainer = $paymentControllerMethodContainersInterface->updateMethodContainer(
-                id: $id,
-                request: $request,
-                paymentService: $this->paymentService,
-                accountLedgerService: $this->accountLedgerService,
-                accountingVoucherService: $this->accountingVoucherService,
-                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
-                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
-                dayBookService: $this->dayBookService,
-                purchaseService: $this->purchaseService,
-                salesReturnService: $this->salesReturnService,
-            );
+            $updateMethodContainer = $paymentControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request);
 
             if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
@@ -202,21 +119,12 @@ class PaymentController extends Controller
         return response()->json(__('Payment updated successfully.'));
     }
 
-    public function delete(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
+    public function delete(PaymentDeleteRequest $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
-        abort_if(!auth()->user()->can('payments_delete'), 403);
-
         try {
             DB::beginTransaction();
 
-            $deleteMethodContainer = $paymentControllerMethodContainersInterface->deleteMethodContainer(
-                id: $id,
-                paymentService: $this->paymentService,
-                saleService: $this->saleService,
-                salesReturnService: $this->salesReturnService,
-                purchaseService: $this->purchaseService,
-                purchaseReturnService: $this->purchaseReturnService,
-            );
+            $paymentControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
             DB::commit();
         } catch (Exception $e) {

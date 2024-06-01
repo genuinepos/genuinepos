@@ -13,10 +13,6 @@ use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 
 class ProcessController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('process_view'), 403);

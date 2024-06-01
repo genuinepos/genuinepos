@@ -152,6 +152,11 @@ class BranchControllerMethodContainersService implements BranchControllerMethodC
         return null;
     }
 
+    public function deleteLogoMethodContainer(int $id): void
+    {
+        $this->branchService->deleteLogo(id: $id);
+    }
+
     public function parentWithChildBranchesMethodContainer($id): ?object
     {
         return $this->branchService->branches(with: ['childBranches'])->where('id', $id)->first();

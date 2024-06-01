@@ -20,7 +20,6 @@ class BranchService
     public function branchListTable()
     {
         $generalSettings = config('generalSettings');
-        $logoUrl = asset('uploads/branch_logo');
         $branches = '';
         $query = DB::table('branches')->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
@@ -66,7 +65,7 @@ class BranchService
                 }
             })
 
-            ->editColumn('logo', function ($row) use ($logoUrl) {
+            ->editColumn('logo', function ($row) {
 
                 $photo = asset('images/general_default.png');
 
@@ -218,7 +217,7 @@ class BranchService
 
         $dir = public_path('uploads/branch_logo/');
 
-        if (file_exists($dir . $deleteBranch->logo)) {
+        if (isset($deleteBranch->logo) && file_exists($dir . $deleteBranch->logo)) {
 
             unlink($dir . $deleteBranch->logo);
         }
@@ -228,6 +227,22 @@ class BranchService
         $this->forgetCache();
 
         return ['pass' => true];
+    }
+
+    public function deleteLogo(int $id): void
+    {
+        $deleteLogo = $this->singleBranch(id: $id);
+
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+        if (isset($deleteLogo->logo) && file_exists($dir . $deleteLogo->logo)) {
+
+            unlink($dir . $deleteLogo->logo);
+        }
+
+        $deleteLogo->logo = null;
+        $deleteLogo->save();
+
+        $this->forgetCache();
     }
 
     public function addBranchDefaultAccounts(int $branchId, ?int $parentBranchId = null): void
@@ -311,14 +326,14 @@ class BranchService
         $addUser->phone = $request->user_phone;
         $addUser->branch_id = $branchId;
 
-        $addUser->allow_login = 1;
+        $addUser->allow_login = BooleanType::True->value;
         $addUser->email = $request->user_email;
         $addUser->username = $request->user_username;
         $addUser->password = Hash::make($request->password);
 
         // Assign role
         $addUser->role_type = 3;
-        $addUser->is_belonging_an_area = 1;
+        $addUser->is_belonging_an_area = BooleanType::True->value;
 
         $roleId = $request->role_id ?? 3;
         $role = Role::find($roleId);

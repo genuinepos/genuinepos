@@ -14,10 +14,6 @@ use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 
 class ProductionController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index(Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('production_view'), 403);

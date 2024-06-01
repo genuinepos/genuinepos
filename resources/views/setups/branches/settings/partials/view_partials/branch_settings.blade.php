@@ -17,15 +17,15 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6">
-                    <label class="fw-bold">{{ __('Shop ID') }}</label>
-                    <input readonly type="text" name="branch_code" class="form-control" id="branch_code" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
-                    <span class="error error_branch_code"></span>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
                     <label class="fw-bold">{{ __('Area Name') }} <span class="text-danger">*</span></label>
                     <input required type="text" name="area_name" class="form-control" id="area_name" value="{{ $branch->area_name }}" placeholder="{{ __('Area Name') }}" />
                     <span class="error error_code"></span>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label class="fw-bold">{{ __('Shop ID') }}</label>
+                    <input readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
+                    <span class="error error_branch_code"></span>
                 </div>
             </div>
 
@@ -97,11 +97,14 @@
                     <label class="fw-bold">{{ __('Website') }}</label>
                     <input type="text" name="website" class="form-control" id="website" value="{{ $branch->website }}" placeholder="{{ __('Website Url') }}" />
                 </div>
+            </div>
 
+            <div class="row mt-1">
                 @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-8 col-md-6">
                         <label class="fw-bold">{{ __('Logo') }} <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H: 40px * W: 100px') }}</small></label>
-                        <input type="file" name="logo" class="form-control " id="logo" />
+                        <input type="file" name="logo" class="form-control" id="logo" @if ($branch->logo) data-default-file="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $branch?->logo) }}" @endif/>
+                        <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Shop Logo') }}</a>
                     </div>
                 @endif
             </div>
@@ -168,7 +171,7 @@
                                 $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                             @endphp
 
-                            @foreach (App\Enums\StockAccountingMethod::cases() as $item)
+                            @foreach (\App\Enums\StockAccountingMethod::cases() as $item)
                                 <option @selected($stockAccountingMethod == $item->value) value="{{ $item->value }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
@@ -212,4 +215,9 @@
             </div>
         </div>
     </div>
+</form>
+
+<form id="delete_branch_logo_form" action="{{ route('branches.logo.delete', $branch->id) }}">
+    @csrf
+    @method('DELETE')
 </form>

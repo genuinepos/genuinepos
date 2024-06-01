@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Enums\BooleanType;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\CashRegisterService;
-use App\Services\Setups\BranchService;
 use App\Services\Setups\CashCounterService;
-use Illuminate\Http\Request;
+use App\Http\Requests\Sales\CashRegisterCloseRequest;
+use App\Http\Requests\Sales\CashRegisterStoreRequest;
 
 class CashRegisterController extends Controller
 {
@@ -22,10 +24,7 @@ class CashRegisterController extends Controller
 
     public function create($saleId = null)
     {
-        if (!auth()->user()->can('pos_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('pos_add'), 403);
 
         $cashCounters = $this->cashCounterService->cashCounters()
             ->where('branch_id', auth()->user()->branch_id)
@@ -61,22 +60,8 @@ class CashRegisterController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CashRegisterStoreRequest $request)
     {
-        if (!auth()->user()->can('pos_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'cash_counter_id' => 'required',
-            'sale_account_id' => 'required',
-            'cash_account_id' => 'required',
-        ], [
-            'sale_account_id.required' => __('Sale A/c is required'),
-            'cash_account_id.required' => __('Cash A/c is required'),
-        ]);
-
         $this->cashRegisterService->addCashRegister(request: $request);
 
         if ($request->sale_id) {
@@ -90,10 +75,7 @@ class CashRegisterController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('register_view')) {
-
-            return 'Access Forbidden';
-        }
+        abort_if(!auth()->user()->can('register_view'), 403);
 
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: [
             'user',
@@ -109,10 +91,7 @@ class CashRegisterController extends Controller
 
     public function close($id)
     {
-        if (!auth()->user()->can('register_close')) {
-
-            return 'Access Forbidden';
-        }
+        abort_if(!auth()->user()->can('register_close'), 403);
 
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: [
             'user',
@@ -126,12 +105,8 @@ class CashRegisterController extends Controller
         return view('sales.cash_register.ajax_view.close_cash_register', compact('openedCashRegister', 'cashRegisterData'));
     }
 
-    public function closed($id, Request $request)
+    public function closed($id, CashRegisterCloseRequest $request)
     {
-        $this->validate($request, [
-            'closing_cash' => 'required',
-        ]);
-
         $this->cashRegisterService->closeCashRegister(id: $id, request: $request);
 
         return redirect()->back();

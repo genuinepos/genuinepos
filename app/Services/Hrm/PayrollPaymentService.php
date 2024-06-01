@@ -44,27 +44,4 @@ class PayrollPaymentService
 
         return $query->where('id', $id)->first();
     }
-
-    public function storeValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required|date',
-            'paying_amount' => 'required',
-            'payment_method_id' => 'required',
-            'credit_account_id' => 'required',
-            'debit_account_id' => 'required',
-            'payroll_id' => 'required',
-        ]);
-    }
-
-    public function updateValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required|date',
-            'paying_amount' => 'required',
-            'payment_method_id' => 'required',
-            'credit_account_id' => 'required',
-            'debit_account_id' => 'required',
-        ]);
-    }
 }

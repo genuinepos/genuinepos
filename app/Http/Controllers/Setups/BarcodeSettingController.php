@@ -8,16 +8,13 @@ use Illuminate\Http\Request;
 
 class BarcodeSettingController extends Controller
 {
-    public function __construct(
-        private BarcodeSettingService $barcodeSettingService,
-    ) {
+    public function __construct(private BarcodeSettingService $barcodeSettingService)
+    {
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('barcode_settings')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('barcode_settings'), 403);
 
         if ($request->ajax()) {
             return $this->barcodeSettingService->barcodeSettingsTable();

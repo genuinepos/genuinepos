@@ -12,10 +12,6 @@ use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 
 class StockIssueController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index(Request $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
         $indexMethodContainer = $stockIssueControllerMethodContainersInterface->indexMethodContainer(request: $request);

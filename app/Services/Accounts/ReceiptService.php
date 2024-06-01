@@ -216,15 +216,4 @@ class ReceiptService
 
         return ['pass' => true];
     }
-
-    public function receiptValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required|date',
-            'received_amount' => 'required',
-            'payment_method_id' => 'required',
-            'debit_account_id' => 'required',
-            'credit_account_id' => 'required',
-        ]);
-    }
 }

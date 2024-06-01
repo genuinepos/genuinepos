@@ -10,10 +10,6 @@ use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
 
 class PosSaleController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index(Request $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('pos_all'), 403);

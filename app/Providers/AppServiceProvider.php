@@ -10,11 +10,14 @@ use App\Services\GeneralSettingService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\GeneralSettingServiceInterface;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Interfaces\Users\UserControllerMethodContainersInterface;
 use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
 use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
+use App\Interfaces\Sales\DiscountControllerMethodContainersInterface;
+use App\Interfaces\Startup\StartupControllerMethodContainerInterface;
 use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 use App\Interfaces\Accounts\AccountControllerMethodContainersInterface;
@@ -28,12 +31,14 @@ use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
+use App\Interfaces\Sales\PosSaleExchangeControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 use App\Interfaces\Products\QuickProductAddControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderToInvoiceControllerMethodContainersInterface;
 use App\Interfaces\TransferStocks\TransferStockControllerMethodContainersInterface;
+use App\Services\Users\MethodContainerServices\UserControllerMethodContainersService;
 use App\Services\Hrm\MethodContainerServices\PayrollControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\DraftControllerMethodContainersService;
 use App\Interfaces\Purchases\PurchaseOrderToInvoiceControllerMethodContainersInterface;
@@ -41,6 +46,8 @@ use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInt
 use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\PosSaleControllerMethodContainersService;
 use App\Services\Setups\MethodContainerServices\BranchControllerMethodContainersService;
+use App\Services\Sales\MethodContainerServices\DiscountControllerMethodContainersService;
+use App\Services\Startup\MethodContainerServices\StartupControllerMethodContainerService;
 use App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\AccountControllerMethodContainersService;
@@ -56,6 +63,7 @@ use App\Services\Purchases\MethodContainerServices\PurchaseControllerMethodConta
 use App\Services\Products\MethodContainerServices\StockIssueControllerMethodContainersService;
 use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodContainersInterface;
 use App\Services\Manufacturing\MethodContainerServices\ProcessControllerMethodContainersService;
+use App\Services\Sales\MethodContainerServices\PosSaleExchangeControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseOrderControllerMethodContainersService;
 use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
 use App\Services\Products\MethodContainerServices\QuickProductAddControllerMethodContainersService;
@@ -89,6 +97,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(QuotationControllerMethodContainersInterface::class, QuotationControllerMethodContainersService::class);
         $this->app->bind(DraftControllerMethodContainersInterface::class, DraftControllerMethodContainersService::class);
         $this->app->bind(SalesOrderToInvoiceControllerMethodContainersInterface::class, SalesOrderToInvoiceControllerMethodContainersService::class);
+        $this->app->bind(PosSaleExchangeControllerMethodContainersInterface::class, PosSaleExchangeControllerMethodContainersService::class);
+        $this->app->bind(DiscountControllerMethodContainersInterface::class, DiscountControllerMethodContainersService::class);
         $this->app->bind(StockAdjustmentControllerMethodContainersInterface::class, StockAdjustmentControllerMethodContainersService::class);
         $this->app->bind(ProcessControllerMethodContainersInterface::class, ProcessControllerMethodContainersService::class);
         $this->app->bind(ProductionControllerMethodContainersInterface::class, ProductionControllerMethodContainersService::class);
@@ -107,10 +117,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TransferStockControllerMethodContainersInterface::class, TransferStockControllerMethodContainersService::class);
         $this->app->bind(ReceiveStockFromBranchControllerMethodContainersInterface::class, ReceiveStockFromBranchControllerMethodContainersService::class);
         $this->app->bind(ReceiveStockFromWarehouseControllerMethodContainersInterface::class, ReceiveStockFromWarehouseControllerMethodContainersService::class);
+        $this->app->bind(UserControllerMethodContainersInterface::class, UserControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);
         $this->app->bind(BranchControllerMethodContainersInterface::class, BranchControllerMethodContainersService::class);
+        $this->app->bind(StartupControllerMethodContainerInterface::class, StartupControllerMethodContainerService::class);
         $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 

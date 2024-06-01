@@ -15,10 +15,8 @@ use App\Interfaces\CodeGenerationServiceInterface;
 
 class CategoryController extends Controller
 {
-    public function __construct(
-        private CategoryService $categoryService,
-        private UserActivityLogService $userActivityLogService,
-    ) {
+    public function __construct(private CategoryService $categoryService, private UserActivityLogService $userActivityLogService)
+    {
     }
 
     public function index(Request $request)

@@ -2,6 +2,7 @@
 
 namespace App\Services\Startup\MethodContainerServices;
 
+use App\Enums\BooleanType;
 use App\Services\Users\RoleService;
 use App\Services\Setups\BranchService;
 use Illuminate\Support\Facades\Session;

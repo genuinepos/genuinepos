@@ -370,6 +370,7 @@ class ProductService
                 'product_ledgers.warehouse_id',
                 'product_ledgers.product_id',
                 'product_ledgers.variant_id',
+                'product_variants.variant_name',
             );
 
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ

@@ -19,11 +19,11 @@
             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $saleProduct->unit_discount_amount }}">
             <input type="hidden" name="sale_product_ids[]" value="{{ $saleProduct->id }}">
             <input type="hidden" name="sale_return_product_ids[]">
-            <input type="hidden" class="unique_id" id="{{ $saleProduct->product_id . $variantId }}" value="{{ $saleProduct->product_id . $variantId }}">
+            <input type="hidden" class="unique_id" id="{{ $saleProduct->product_id . $saleProduct->branch_id . $saleProduct->warehouse_id . $variantId }}" value="{{ $saleProduct->product_id . $saleProduct->branch_id . $saleProduct->warehouse_id . $variantId }}">
         </td>
 
         <td class="text-start">
-            <span id="span_unit_price_inc_tax" class="fw-bold">{{  $saleProduct->unit_price_inc_tax }}</span>
+            <span id="span_unit_price_inc_tax" class="fw-bold">{{ $saleProduct->unit_price_inc_tax }}</span>
             <input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="{{ $saleProduct->unit_price_exc_tax }}">
             <input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="{{ $saleProduct->unit_price_inc_tax }}">
             <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $saleProduct->unit_cost_inc_tax }}">

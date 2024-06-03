@@ -164,6 +164,7 @@ class UserActivityLogService
 
         $descriptionModel = $this->descriptionModel();
         $addLog = new UserActivityLog();
+        $addLog->ip = request()->ip();
         $addLog->branch_id = isset($branchId) ? $branchId : auth()->user()->branch_id;
         $addLog->user_id = isset($userId) ? $userId : auth()->user()->id;
         $addLog->action = $action;

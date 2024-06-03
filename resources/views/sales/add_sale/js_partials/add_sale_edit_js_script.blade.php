@@ -980,8 +980,12 @@
         var previous_received = $('#previous_received').val() ? $('#previous_received').val() : 0;
         var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var current_invoice_amount = $('#current_invoice_amount').val() ? $('#current_invoice_amount').val() : 0;
-        var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(current_invoice_amount) - parseFloat(previous_received);
+        // var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(current_invoice_amount) - parseFloat(previous_received);
+        var invoice_amount = parseFloat(calcInvoiceAmount) - parseFloat(current_invoice_amount);
         var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+
+        var currentInvoiceDue = parseFloat(calcInvoiceAmount) - parseFloat(previous_received) - parseFloat(received_amount);
+        $('#due_on_invoice').val(parseFloat(currentInvoiceDue).toFixed(2));
 
         var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');
         var currentBalance = 0;
@@ -1151,7 +1155,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

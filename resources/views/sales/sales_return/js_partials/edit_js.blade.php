@@ -23,7 +23,9 @@
         ul = document.getElementById('invoice_list')
         selectObjClassName = 'selected_invoice';
         $('#sale_invoice_id').val('');
-        $('#customer_account_id').trigger('change');
+        $("#customer_account_id").select2("destroy");
+        $("#customer_account_id").select2();
+        $('#closing_balance').val(0.00);
         $('#current_balance').val(0.00);
         $('#sale_id').val('');
         $('#search_product').prop('disabled', false);
@@ -37,8 +39,6 @@
 
         ul = document.getElementById('list');
         selectObjClassName = 'selectProduct';
-
-        $('#sale_id').val('');
     }
 
     $('#search_product').focus(function(e) {
@@ -545,6 +545,8 @@
 
             var tr = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).closest('tr');
 
+            var __uniqueId = e_unique_id ? e_unique_id : e_product_id + e_variant_id;
+
             tr.find('#item_name').val(e_item_name);
             tr.find('#product_id').val(e_product_id);
             tr.find('#variant_id').val(e_variant_id);
@@ -565,8 +567,8 @@
             tr.find('#span_unit_price_inc_tax').html(parseFloat(e_unit_price_inc_tax).toFixed(2));
             tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
-            tr.find('.unique_id').val(e_product_id + e_variant_id);
-            tr.find('.unique_id').attr('id', e_product_id + e_variant_id);
+            tr.find('.unique_id').val(__uniqueId);
+            tr.find('.unique_id').attr('id', __uniqueId);
 
             clearEditItemFileds();
             calculateTotalAmount();
@@ -800,10 +802,16 @@
         $('#sale_ledger_amount').val(salesLedgerAmount);
 
         var previousPaid = $('#previous_paid').val() ? $('#previous_paid').val() : 0;
-        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousPaid);
+        var currTotalReturnAmount = $('#curr_total_return_amount').val() ? $('#curr_total_return_amount').val() : 0;
+        // var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousPaid);
+        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(currTotalReturnAmount);
         var paidAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');
+
+        var dueOnVoucher = parseFloat(calcTotalAmount) - parseFloat(previousPaid) - parseFloat(paidAmount);
+        $('#due_on_voucher').val(parseFloat(dueOnVoucher).toFixed(2));
+
         var currentBalance = 0;
         if (accountDefaultBalanceType == 'dr') {
 
@@ -848,9 +856,6 @@
     var isAllowSubmit = true;
     $(document).on('click', '.submit_button', function() {
 
-        var value = $(this).val();
-        $('#action').val(value);
-
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
@@ -863,11 +868,7 @@
 
         if (e.ctrlKey && e.which == 13) {
 
-            $('#save_and_print').click();
-            return false;
-        } else if (e.shiftKey && e.which == 13) {
-
-            $('#save').click();
+            $('#save_changes').click();
             return false;
         } else if (e.which == 27) {
 
@@ -881,8 +882,8 @@
         }
     }
 
-    //Add Sales return request by ajax
-    $('#add_sales_return_form').on('submit', function(e) {
+    //update Sales return request by ajax
+    $('#edit_sales_return_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
@@ -913,25 +914,9 @@
                     return;
                 }
 
-                if (!$.isEmptyObject(data.successMsg)) {
+                toastr.success(data);
 
-                    toastr.success(data.successMsg);
-                    afterCreateSalesReturn();
-                } else {
-
-                    toastr.success("{{ __('Successfully Sale return is created.') }}");
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 1000,
-                        header: null,
-                    });
-
-                    afterCreateSalesReturn();
-                }
+                window.location = "{{ url()->previous() }}";
             },
             error: function(err) {
 
@@ -950,7 +935,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -983,26 +968,6 @@
         $('#e_unit_price_inc_tax').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(parseFloat(0).toFixed(2));
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
-    }
-
-    function afterCreateSalesReturn() {
-
-        $('.loading_button').hide();
-        $('#sale_id').val('');
-        $('#add_sales_return_form')[0].reset();
-        $('#return_item_list').empty();
-
-        $('#current_balance').val(0);
-
-        $('#search_product').prop('disabled', false);
-
-        $("#customer_account_id").select2("destroy");
-        $("#customer_account_id").select2();
-
-        $("#sale_account_id").select2("destroy");
-        $("#sale_account_id").select2();
-
-        document.getElementById('customer_account_id').focus();
     }
 
     // Automatic remove searching product is found signal
@@ -1172,11 +1137,6 @@
 
         $('#customer_account_id').focus().select();
     }, 1000);
-
-    $('#select_print_page_size').on('change', function() {
-        var value = $(this).val();
-        $('#print_page_size').val(value);
-    });
 
     calculateTotalAmount();
 </script>

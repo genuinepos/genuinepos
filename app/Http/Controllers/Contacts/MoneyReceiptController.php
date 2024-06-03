@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\MoneyReceiptService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Contacts\MoneyReceiptStoreRequest;
+use App\Http\Requests\Contacts\MoneyReceiptDeleteRequest;
 use App\Http\Requests\Contacts\MoneyReceiptUpdateRequest;
 
 class MoneyReceiptController extends Controller
@@ -80,10 +80,8 @@ class MoneyReceiptController extends Controller
         return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 
-    public function delete($receiptId)
+    public function delete($receiptId, MoneyReceiptDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('money_receipt_delete'), 403);
-
         try {
             DB::beginTransaction();
 

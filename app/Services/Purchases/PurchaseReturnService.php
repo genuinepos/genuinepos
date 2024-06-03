@@ -273,7 +273,7 @@ class PurchaseReturnService
 
         if (count($deletePurchaseReturn->references) > 0) {
 
-            return ['pass' => false, 'msg' => __('Purchase Return can not be deleted. There is one or more receipt which is against this purchase return.')];
+            return ['pass' => false, 'msg' => __('Purchase Return can not be deleted. There is one or more receipts which is against this purchase return.')];
         }
 
         $deletePurchaseReturn->delete();

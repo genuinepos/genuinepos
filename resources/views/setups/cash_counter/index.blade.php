@@ -313,19 +313,21 @@
                         }
 
                         toastr.error(data);
-                        cashCounterTable.ajax.reload();
-                        $('#deleted_form')[0].reset();
+                        cashCounterTable.ajax.reload(null, false);
                     },
                     error: function(err) {
 
-                        $('.data_preloader').hide();
                         if (err.status == 0) {
 
                             toastr.error("{{ __('Net Connetion Error.') }}");
-                        } else {
+                            return;
+                        } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
                         }
+
+                        toastr.error(err.responseJSON.message);
                     }
                 });
             });

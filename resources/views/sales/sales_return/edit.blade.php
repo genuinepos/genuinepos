@@ -124,7 +124,7 @@
         </div>
 
         <div class="p-1">
-            <form id="edit_sales_return_form" action="{{ route('sales.returns.store') }}" method="POST">
+            <form id="edit_sales_return_form" action="{{ route('sales.returns.update', $return->id) }}" method="POST">
                 @csrf
                 <section>
                     <div class="form_element rounded mt-0 mb-1">
@@ -170,7 +170,7 @@
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="sale_account_id">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
@@ -254,7 +254,7 @@
                                                         </span>
                                                     </div>
 
-                                                    <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
+                                                    <input @disabled($return?->sale_id) type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                                 </div>
 
                                                 <div class="select_area">
@@ -376,7 +376,7 @@
                                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $returnProduct->product_id }}">
                                                                             <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
                                                                             <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $returnProduct->tax_ac_id ? $returnProduct->tax_ac_id : '' }}">
-                                                                            <input type="hidden" name="tax_types[]" id="tax_type" value="{{ $returnProduct->unit_tax_type }}">
+                                                                            <input type="hidden" name="tax_types[]" id="tax_type" value="{{ $returnProduct->tax_type }}">
                                                                             <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $returnProduct->unit_tax_percent }}">
                                                                             <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $returnProduct->unit_tax_amount }}">
                                                                             <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $returnProduct->unit_discount_type }}">
@@ -384,7 +384,7 @@
                                                                             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $returnProduct->unit_discount_amount }}">
                                                                             <input type="hidden" name="sale_product_ids[]" value="{{ $returnProduct->sale_product_id }}">
                                                                             <input type="hidden" name="sale_return_product_ids[]" value="{{ $returnProduct->id }}">
-                                                                            <input type="hidden" class="unique_id" id="{{ $returnProduct->product_id . $variantId }}" value="{{ $returnProduct->product_id . $variantId }}">
+                                                                            <input type="hidden" class="unique_id" id="{{ $returnProduct->product_id . $returnProduct->sale_product_id . $variantId }}" value="{{ $returnProduct->product_id . $returnProduct->sale_product_id . $variantId }}">
                                                                         </td>
 
                                                                         <td class="text-start">
@@ -523,6 +523,7 @@
                                                 <label class="col-4"><b>{{ __('Total Return Amount') }}</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control fw-bold" value="{{ $return?->total_return_amount }}" placeholder="{{ __('Total Return Amount') }}" tabindex="-1">
+                                                    <input type="hidden" name="curr_total_return_amount" id="curr_total_return_amount" value="{{ $return?->total_return_amount }}">
                                                     <input type="hidden" name="sale_ledger_amount" id="sale_ledger_amount">
                                                 </div>
                                             </div>
@@ -590,9 +591,13 @@
 
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Previous Paid') }}</b></label>
+                                                <label class="col-4"><b>{{ __('Previous Paid & Due (On Voucher)') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control text-success fw-bold" id="previous_paid" value="{{ $return->paid }}" placeholder="{{ __('0.00') }}">
+                                                    <div class="input-group">
+                                                        <input readonly type="text" class="form-control text-success fw-bold" id="previous_paid" value="{{ $return->paid }}" placeholder="{{ __('0.00') }}">
+
+                                                        <input readonly type="text" class="form-control text-danger fw-bold" id="due_on_voucher" placeholder="{{ __('0.00') }}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

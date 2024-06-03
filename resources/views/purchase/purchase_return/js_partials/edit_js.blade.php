@@ -35,8 +35,6 @@
 
         ul = document.getElementById('list');
         selectObjClassName = 'selectProduct';
-
-        $('#purchase_id').val('');
     }
 
     $('#search_product').focus(function(e) {
@@ -795,10 +793,16 @@
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
 
         var previousReceived = $('#previous_received').val() ? $('#previous_received').val() : 0;
-        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousReceived);
+        var currTotalReturnAmount = $('#curr_total_return_amount').val() ? $('#curr_total_return_amount').val() : 0;
+        // var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousReceived);
+        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(currTotalReturnAmount);
         var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
+
+        var dueOnVoucher = parseFloat(calcTotalAmount) - parseFloat(previousReceived) - parseFloat(receivedAmount);
+        $('#due_on_voucher').val(dueOnVoucher)
+
         var currentBalance = 0;
         if (accountDefaultBalanceType == 'dr') {
 
@@ -916,7 +920,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

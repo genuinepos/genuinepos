@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Contacts\ContactStoreRequest;
+use App\Http\Requests\Contacts\ContactDeleteRequest;
 use App\Http\Requests\Contacts\ContactUpdateRequest;
 use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
 
@@ -85,16 +85,8 @@ class ContactController extends Controller
         return response()->json($contactControllerMethodContainersInterface->changeStatusMethodContainer(id: $id));
     }
 
-    public function delete($id, $type, Request $request, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
+    public function delete($id, $type, ContactDeleteRequest $request, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
     {
-        if ($type == ContactType::Customer->value) {
-
-            abort_if(!auth()->user()->can('customer_delete'), 403);
-        } elseif ($type == ContactType::Supplier->value) {
-
-            abort_if(!auth()->user()->can('supplier_delete'), 403);
-        }
-
         try {
             DB::beginTransaction();
 

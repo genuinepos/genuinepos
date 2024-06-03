@@ -23,7 +23,9 @@
         ul = document.getElementById('invoice_list')
         selectObjClassName = 'selected_invoice';
         $('#sale_invoice_id').val('');
-        $('#customer_account_id').trigger('change');
+        $("#customer_account_id").select2("destroy");
+        $("#customer_account_id").select2();
+        $('#closing_balance').val(0.00);
         $('#current_balance').val(0.00);
         $('#sale_id').val('');
         $('#search_product').prop('disabled', false);
@@ -37,8 +39,6 @@
 
         ul = document.getElementById('list');
         selectObjClassName = 'selectProduct';
-
-        $('#sale_id').val('');
     }
 
     $('#search_product').focus(function(e) {
@@ -544,6 +544,8 @@
 
             var tr = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).closest('tr');
 
+            var __uniqueId = e_unique_id ? e_unique_id : e_product_id + e_variant_id;
+
             tr.find('#item_name').val(e_item_name);
             tr.find('#product_id').val(e_product_id);
             tr.find('#variant_id').val(e_variant_id);
@@ -564,8 +566,8 @@
             tr.find('#span_unit_price_inc_tax').html(parseFloat(e_unit_price_inc_tax).toFixed(2));
             tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
-            tr.find('.unique_id').val(e_product_id + e_variant_id);
-            tr.find('.unique_id').attr('id', e_product_id + e_variant_id);
+            tr.find('.unique_id').val(__uniqueId);
+            tr.find('.unique_id').attr('id', __uniqueId);
 
             clearEditItemFileds();
             calculateTotalAmount();
@@ -594,8 +596,6 @@
         var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();
         var return_quantity = tr.find('#return_quantity').val();
         var subtotal = tr.find('#subtotal').val();
-
-        console.log(unit_price_exc_tax);
 
         $('#e_unit_id').empty();
 
@@ -947,7 +947,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

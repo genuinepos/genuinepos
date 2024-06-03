@@ -182,7 +182,7 @@
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="sale_account_id">
                                                     <option value="">{{ __('Select Warehouse') }}</option>

@@ -263,9 +263,24 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    accounts_table.ajax.reload();
+
+                    accounts_table.ajax.reload(null, false);
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });

@@ -67,7 +67,7 @@
                                 <h6>{{ __('Messaging') }}</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
                             </a>
                         </div>
                     </div>
@@ -205,8 +205,29 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+                    
                     message_list();
                     toastr.error(data);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });

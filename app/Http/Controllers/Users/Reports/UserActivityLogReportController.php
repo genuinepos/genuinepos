@@ -31,6 +31,7 @@ class UserActivityLogReportController extends Controller
 
             $query->select(
                 'user_activity_logs.id',
+                'user_activity_logs.ip',
                 'user_activity_logs.branch_id',
                 'user_activity_logs.date',
                 'user_activity_logs.report_date',

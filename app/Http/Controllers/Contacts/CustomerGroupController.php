@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Contacts\CustomerGroupService;
 use App\Http\Requests\Contacts\CustomerGroupStoreRequest;
+use App\Http\Requests\Contacts\CustomerGroupDeleteRequest;
 use App\Http\Requests\Contacts\CustomerGroupUpdateRequest;
 
 class CustomerGroupController extends Controller
@@ -21,7 +23,7 @@ class CustomerGroupController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
 
         if ($request->ajax()) {
 
@@ -35,7 +37,7 @@ class CustomerGroupController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
 
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -51,7 +53,7 @@ class CustomerGroupController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
 
         $customerGroup = $this->customerGroupService->singleCustomerGroup(id: $id);
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
@@ -66,10 +68,8 @@ class CustomerGroupController extends Controller
         return response()->json(__('Customer group updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($id, CustomerGroupDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
-
         $this->customerGroupService->deleteCustomerGroup(id: $id);
 
         return response()->json(__('Customer group deleted successfully'));

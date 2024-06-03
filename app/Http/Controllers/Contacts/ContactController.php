@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Contacts\ContactStoreRequest;
+use App\Http\Requests\Contacts\ContactDeleteRequest;
 use App\Http\Requests\Contacts\ContactUpdateRequest;
 use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
 
@@ -85,16 +86,8 @@ class ContactController extends Controller
         return response()->json($contactControllerMethodContainersInterface->changeStatusMethodContainer(id: $id));
     }
 
-    public function delete($id, $type, Request $request, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
+    public function delete($id, $type, ContactDeleteRequest $request, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
     {
-        if ($type == ContactType::Customer->value) {
-
-            abort_if(!auth()->user()->can('customer_delete') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
-        } elseif ($type == ContactType::Supplier->value) {
-
-            abort_if(!auth()->user()->can('supplier_delete') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
-        }
-
         try {
             DB::beginTransaction();
 

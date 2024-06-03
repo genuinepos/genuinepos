@@ -42,7 +42,7 @@ class PurchaseService
 
         if ($request->supplier_account_id) {
 
-            $query->where('purchases.supplier_id', $request->supplier_account_id);
+            $query->where('purchases.supplier_account_id', $request->supplier_account_id);
         }
 
         if ($request->from_date) {

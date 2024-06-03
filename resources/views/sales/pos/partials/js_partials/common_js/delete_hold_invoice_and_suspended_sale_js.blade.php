@@ -66,9 +66,11 @@
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
+
+                toastr.error(err.responseJSON.message);
             }
         });
     });

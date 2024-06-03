@@ -2,9 +2,20 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .log_table td {
+        /* .log_table td {
             font-size: 9px !important;
             font-weight: 500 !important;
+        } */
+
+        .log_table tr td {
+            line-height: 1.5;
+            padding: 2px !important;
+            font-size: 9px !important;
+            font-weight: 500 !important;
+        }
+
+        .log_table tr th {
+            font-size: 9px;
         }
     </style>
 @endpush
@@ -124,6 +135,7 @@
                             <thead>
                                 <tr>
                                     <th>{{ __('Date') }}</th>
+                                    <th>{{ __('IP') }}</th>
                                     <th>{{ __('Shop/Business') }}</th>
                                     <th>{{ __('Action By') }}</th>
                                     <th>{{ __('Action Name') }}</th>
@@ -146,5 +158,5 @@
 
 @endsection
 @push('scripts')
-   @include('users.reports.user_activity_log.js_partial.index_js')
+    @include('users.reports.user_activity_log.js_partial.index_js')
 @endpush

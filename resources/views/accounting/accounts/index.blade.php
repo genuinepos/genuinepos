@@ -412,7 +412,7 @@
                             return;
                         }
 
-                        accounts_table.ajax.reload();
+                        accounts_table.ajax.reload(null, false);
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
                     },

@@ -11,7 +11,7 @@ class CustomerGroupDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('customer_group') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('customer_group');
     }
 
     /**

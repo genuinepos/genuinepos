@@ -150,7 +150,7 @@
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
-            console.log(url);
+
             $.ajax({
                 url: url,
                 type: 'post',

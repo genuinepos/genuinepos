@@ -98,7 +98,7 @@
                 },
             ],
             "language": {
-                "zeroRecords": '<img style="padding:100px 100px!important;" src="'+"{{  asset('images/data_not_found_default_photo.png') }}"+'">',
+                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
             },
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
@@ -251,19 +251,28 @@
                     data: request,
                     success: function(data) {
 
+                        if (!$.isEmptyObject(data.errorMsg)) {
+
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
                         toastr.error(data);
-                        $('#deleted_form')[0].reset();
-                        warrantiesTable.ajax.reload();
+                        warrantiesTable.ajax.reload(null, false);
                     },
                     error: function(err) {
 
                         if (err.status == 0) {
 
                             toastr.error("{{ __('Net Connetion Error.') }}");
-                        } else {
+                            return;
+                        } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
                         }
+
+                        toastr.error(err.responseJSON.message);
                     }
                 });
             });

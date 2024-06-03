@@ -36,9 +36,14 @@
                 d.to_date = $('#to_date').val();
             }
         },
-        columns: [{
+        columns: [
+            {
                 data: 'date',
                 name: 'date'
+            },
+            {
+                data: 'ip',
+                name: 'ip'
             },
             {
                 data: 'branch',

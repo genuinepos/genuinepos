@@ -230,7 +230,7 @@
                                                             </span>
                                                         </div>
 
-                                                        <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
+                                                        <input @disabled($return?->purchase_id) type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                                     </div>
 
                                                     <div class="select_area">
@@ -527,6 +527,7 @@
                                                 <label class="col-4"><b>{{ __('Total Return Amount') }}</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control fw-bold" value="{{ $return->total_return_amount }}" placeholder="{{ __('Total Return Amount') }}" tabindex="-1">
+                                                    <input type="hidden" id="curr_total_return_amount" value="{{ $return->total_return_amount  }}">
                                                     <input type="hidden" name="purchase_ledger_amount" id="purchase_ledger_amount">
                                                 </div>
                                             </div>
@@ -594,9 +595,12 @@
 
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Previous Received') }}</b></label>
+                                                <label class="col-4"><b>{{ __('Pre. Received & Due (On Voucher)') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" class="form-control text-success fw-bold" id="previous_received" value="{{ $return->received_amount }}" placeholder="{{ __('0.00') }}">
+                                                    <div class="input-group">
+                                                        <input readonly type="text" class="form-control text-success fw-bold" id="previous_received" value="{{ $return->received_amount }}" placeholder="{{ __('0.00') }}">
+                                                        <input readonly type="text" class="form-control text-danger fw-bold" id="due_on_voucher" placeholder="{{ __('0.00') }}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

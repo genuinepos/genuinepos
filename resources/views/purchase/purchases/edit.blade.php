@@ -633,9 +633,12 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Previous paid') }}</b></label>
+                                                        <label class="col-4"><b>{{ __('Previous paid & Due (On Invoice)') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="text" name="current_balance" class="form-control text-success fw-bold" id="previous_paid" value="{{ $purchase->paid }}" tabindex="-1">
+                                                            <div class="input-group">
+                                                                <input readonly type="number" step="any" class="form-control text-success fw-bold" id="previous_paid" value="{{ $purchase->paid }}" tabindex="-1">
+                                                                <input readonly type="number" step="any" class="form-control text-danger fw-bold" id="due_on_invoice" tabindex="-1">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

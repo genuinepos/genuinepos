@@ -27,6 +27,7 @@ use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
 use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
 use App\Interfaces\Products\ProductControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
+use App\Interfaces\Sales\SalesReturnControllerMethodContainersInterface;
 use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
@@ -58,6 +59,7 @@ use App\Services\Contacts\MethodContainerServices\ContactControllerMethodContain
 use App\Services\Products\MethodContainerServices\ProductControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
 use App\Interfaces\TransferStocks\ReceiveStockFromBranchControllerMethodContainersInterface;
+use App\Services\Sales\MethodContainerServices\SalesReturnControllerMethodContainersService;
 use App\Services\Hrm\MethodContainerServices\PayrollPaymentControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseControllerMethodContainersService;
 use App\Services\Products\MethodContainerServices\StockIssueControllerMethodContainersService;
@@ -98,6 +100,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DraftControllerMethodContainersInterface::class, DraftControllerMethodContainersService::class);
         $this->app->bind(SalesOrderToInvoiceControllerMethodContainersInterface::class, SalesOrderToInvoiceControllerMethodContainersService::class);
         $this->app->bind(PosSaleExchangeControllerMethodContainersInterface::class, PosSaleExchangeControllerMethodContainersService::class);
+        $this->app->bind(SalesReturnControllerMethodContainersInterface::class, SalesReturnControllerMethodContainersService::class);
         $this->app->bind(DiscountControllerMethodContainersInterface::class, DiscountControllerMethodContainersService::class);
         $this->app->bind(StockAdjustmentControllerMethodContainersInterface::class, StockAdjustmentControllerMethodContainersService::class);
         $this->app->bind(ProcessControllerMethodContainersInterface::class, ProcessControllerMethodContainersService::class);

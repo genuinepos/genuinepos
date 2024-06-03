@@ -193,6 +193,38 @@ class SalesReturnService
         return $addSalesReturn;
     }
 
+    public function updateSalesReturn(object $request, object $return): object
+    {
+        foreach ($return->saleReturnProducts as $saleReturnProduct) {
+
+            $saleReturnProduct->is_delete_in_update = BooleanType::True->value;
+            $saleReturnProduct->save();
+        }
+
+        $return->warehouse_id = $request->warehouse_id;
+        $return->customer_account_id = $request->customer_account_id;
+        $return->sale_account_id = $request->sale_account_id;
+        $return->total_item = $request->total_item;
+        $return->total_qty = $request->total_qty;
+        $return->net_total_amount = $request->net_total_amount;
+        $return->return_discount = $request->return_discount ? $request->return_discount : 0;
+        $return->return_discount_type = $request->return_discount_type;
+        $return->return_discount_amount = $request->return_discount_amount ? $request->return_discount_amount : 0;
+        $return->return_tax_ac_id = $request->return_tax_ac_id;
+        $return->return_tax_percent = $request->return_tax_percent ? $request->return_tax_percent : 0;
+        $return->return_tax_amount = $request->return_tax_amount ? $request->return_tax_amount : 0;
+        $return->total_return_amount = $request->total_return_amount;
+        $return->date = $request->date;
+        $time = date(' H:i:s', strtotime($return->date_ts));
+        $return->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $return->note = $request->note;
+        $return->save();
+
+        $this->adjustSalesReturnVoucherAmounts($return);
+
+        return $return;
+    }
+
     public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, int $saleReturnId = null): array
     {
         if (!isset($request->product_ids)) {
@@ -222,6 +254,23 @@ class SalesReturnService
         }
 
         return ['pass' => true];
+    }
+
+    function deleteSalesReturn(int $id)
+    {
+        $deleteSaleReturn = $this->singleSalesReturn(id: $id, with: ['sale', 'saleReturnProducts', 'saleReturnProducts.product', 'saleReturnProducts.variant', 'references']);
+
+        if (isset($deleteSaleReturn)) {
+
+            if (count($deleteSaleReturn->references) > 0) {
+
+                return ['pass' => false, 'msg' => __('Sale Return can not be deleted. There is one or more payments which is against this sales return.')];
+            }
+        }
+
+        $deleteSaleReturn->delete();
+
+        return $deleteSaleReturn;
     }
 
     public function adjustSalesReturnVoucherAmounts($salesReturn)

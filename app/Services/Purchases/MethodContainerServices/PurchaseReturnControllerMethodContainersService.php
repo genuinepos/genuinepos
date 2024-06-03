@@ -177,7 +177,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
         $restrictions = $this->purchaseReturnService->restrictions($request);
         if ($restrictions['pass'] == false) {
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
+            return ['pass' => false, 'msg' => $restrictions['msg']];
         }
 
         $generalSettings = config('generalSettings');
@@ -376,7 +376,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
         if ($request->return_tax_ac_id) {
 
             // Update Tax A/c ledger Entry For Purchase
-            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $updateReturn->return_tax_ac_id, date: $updateReturn->date, trans_id: $updateReturn->id, amount: $updateReturn->return_tax_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id);
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $updateReturn->return_tax_ac_id, date: $updateReturn->date, trans_id: $updateReturn->id, amount: $updateReturn->return_tax_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id, current_account_id: $storedCurrReturnTaxAccountId);
         } else {
 
             $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::PurchaseReturn->value, transId: $updateReturn->id, accountId: $storedCurrReturnTaxAccountId);
@@ -393,7 +393,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             if ($updatePurchaseReturnProduct->tax_ac_id) {
 
                 // Update Tax A/c ledger Entry
-                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturnProductTax->value, date: $request->date, account_id: $updatePurchaseReturnProduct->tax_ac_id, trans_id: $updatePurchaseReturnProduct->id, amount: ($updatePurchaseReturnProduct->unit_tax_amount * $updatePurchaseReturnProduct->return_qty), amount_type: 'credit', branch_id: $updateReturn->branch_id);
+                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturnProductTax->value, date: $request->date, account_id: $updatePurchaseReturnProduct->tax_ac_id, trans_id: $updatePurchaseReturnProduct->id, amount: ($updatePurchaseReturnProduct->unit_tax_amount * $updatePurchaseReturnProduct->return_qty), amount_type: 'credit', branch_id: $updateReturn->branch_id, current_account_id: $updatePurchaseReturnProduct->current_tax_ac_id);
             } else {
 
                 $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::PurchaseReturnProductTax->value, transId: $updatePurchaseReturnProduct->id, accountId: $updatePurchaseReturnProduct->current_tax_ac_id);

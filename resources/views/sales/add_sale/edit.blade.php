@@ -679,6 +679,13 @@
                                             </div>
 
                                             <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __('Due (On Invoice)') }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="due_on_invoice" id="due_on_invoice" tabindex="-1">
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __('Curr. Balance') }}</b></label>
                                                 <div class="col-md-7">
                                                     <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="{{ $amounts['closing_balance_in_flat_amount'] }}" tabindex="-1">

@@ -154,25 +154,29 @@
                 if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg);
-                } else {
-
-                    lastChartListClass = '';
-                    getAjaxList();
-                    $("#parent_group_id").load(location.href + " #parent_group_id>*", "");
-                    toastr.error(data);
-                    $('#deleted_form')[0].reset();
+                    return;
                 }
+
+                lastChartListClass = '';
+                getAjaxList();
+                $("#parent_group_id").load(location.href + " #parent_group_id>*", "");
+                toastr.error(data);
+                $('#deleted_form')[0].reset();
+
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");
-                } else {
+                    return;
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
                 }
+
+                toastr.error(err.responseJSON.message);
             }
         });
     });

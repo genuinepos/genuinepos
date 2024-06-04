@@ -79,10 +79,15 @@ class AssetAmountsService
 
         $query = DB::table('account_groups')
             ->where('account_groups.sub_group_number', 1)
-            ->where('account_groups.sub_sub_group_number', '!=', 6)
+            // ->where('account_groups.sub_sub_group_number', '!=', 6)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->whereNotIn('account_groups.id', function ($query) {
+                $query->select('id')
+                    ->from('account_groups')
+                    ->whereIn('sub_sub_group_number', [6]);
+            });
 
         if (isset($filteredBranchId) || isset($filteredChildBranchId)) {
 

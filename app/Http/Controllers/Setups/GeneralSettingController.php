@@ -352,6 +352,66 @@ class GeneralSettingController extends Controller
         return response()->json(__('Reward point settings updated successfully'));
     }
 
+    public function serviceSettings(Request $request)
+    {
+        $settings = [
+            'service_settings__default_status_id' => $request->default_status_id,
+            'service_settings__default_checklist' => $request->default_checklist,
+            'service_settings__product_configuration' => $request->product_configuration,
+            'service_settings__default_problems_report' => $request->default_problems_report,
+            'service_settings__product_condition' => $request->product_condition,
+            'service_settings__terms_and_condition' => $request->terms_and_condition,
+            'service_settings__customer_field_1' => $request->customer_field_1,
+            'service_settings__customer_field_2' => $request->customer_field_2,
+            'service_settings__customer_field_3' => $request->customer_field_3,
+            'service_settings__customer_field_4' => $request->customer_field_4,
+            'service_settings__customer_field_5' => $request->customer_field_5,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Servicing settings updated successfully'));
+    }
+
+    public function servicePdfAndLabelSettings(Request $request)
+    {
+        $settings = [
+            'service_settings_pdf_label__show_customer_info' => $request->show_customer_info,
+            'service_settings_pdf_label__customer_label_name' => $request->customer_label_name,
+            'service_settings_pdf_label__show_contact_id' => $request->show_contact_id,
+            'service_settings_pdf_label__customer_id_label_name' => $request->customer_id_label_name,
+            'service_settings_pdf_label__show_customer_tax_no' => $request->show_customer_tax_no,
+            'service_settings_pdf_label__customer_tax_no_label_name' => $request->customer_tax_no_label_name,
+            'service_settings_pdf_label__show_custom_field_1' => $request->show_custom_field_1,
+            'service_settings_pdf_label__show_custom_field_2' => $request->show_custom_field_2,
+            'service_settings_pdf_label__show_custom_field_3' => $request->show_custom_field_3,
+            'service_settings_pdf_label__show_custom_field_4' => $request->show_custom_field_4,
+            'service_settings_pdf_label__show_custom_field_5' => $request->show_custom_field_5,
+            'service_settings_pdf_label__label_width' => $request->label_width,
+            'service_settings_pdf_label__label_height' => $request->label_height,
+            'service_settings_pdf_label__customer_name_in_label' => $request->customer_name_in_label,
+            'service_settings_pdf_label__customer_address_in_label' => $request->customer_address_in_label,
+            'service_settings_pdf_label__customer_phone_in_label' => $request->customer_phone_in_label,
+            'service_settings_pdf_label__customer_alt_phone_in_label' => $request->customer_alt_phone_in_label,
+            'service_settings_pdf_label__customer_email_in_label' => $request->customer_email_in_label,
+            'service_settings_pdf_label__sales_person_in_label' => $request->sales_person_in_label,
+            'service_settings_pdf_label__barcode_in_label' => $request->barcode_in_label,
+            'service_settings_pdf_label__status_in_label' => $request->status_in_label,
+            'service_settings_pdf_label__due_date_in_label' => $request->due_date_in_label,
+            'service_settings_pdf_label__technician_in_label' => $request->technician_in_label,
+            'service_settings_pdf_label__problems_in_label_in_label' => $request->problems_in_label_in_label,
+            'service_settings_pdf_label__job_card_no_in_label' => $request->job_card_no_in_label,
+            'service_settings_pdf_label__serial_in_label' => $request->serial_in_label,
+            'service_settings_pdf_label__model_in_label' => $request->model_in_label,
+            'service_settings_pdf_label__location_in_label' => $request->location_in_label,
+            'service_settings_pdf_label__password_in_label' => $request->password_in_label,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Job card print/pdf & label setup updated successfully'));
+    }
+
     public function deleteBusinessLogo(Request $request)
     {
         $this->generalSettingService->deleteBusinessLogo();

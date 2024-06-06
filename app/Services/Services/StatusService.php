@@ -16,7 +16,7 @@ class StatusService
             ->leftJoin('users', 'service_status.created_by_id', 'users.id')
             ->where('service_status.branch_id', $ownBranchIdOrParentBranchId)
             ->select('service_status.*', 'users.prefix as user_prefix', 'users.name as user_name', 'users.last_name as user_last_name')
-            ->orderBy('sort_order');
+            ->orderByRaw('ISNULL(sort_order), sort_order ASC');
 
         return DataTables::of($status)
             // ->addIndexColumn()
@@ -98,5 +98,17 @@ class StatusService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function allStatus(array $with = null): ?object
+    {
+        $query = Status::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 }

@@ -42,12 +42,12 @@
                                 <i class="fa fa-bolt"></i> {{ __('Device Models') }}
                             </a>
 
-                            <a id="tab_btn" data-show="repair_settings" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fa-solid fa-screwdriver-wrench"></i> {{ __('Repair Settings') }}
+                            <a id="tab_btn" data-show="service_settings" class="btn btn-sm btn-primary tab_btn" href="#">
+                                <i class="fa-solid fa-screwdriver-wrench"></i> {{ __('Servicing Settings') }}
                             </a>
 
                             <a id="tab_btn" data-show="job_card_pdf_and_label" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fa-regular fa-file-pdf"></i> {{ __('Job Card Pdf & Label') }}
+                                <i class="fa-regular fa-file-pdf"></i> {{ __('Job Card Print/Pdf & Label') }}
                             </a>
                         </div>
                     </div>
@@ -55,6 +55,8 @@
                     @include('services.settings.partials.body_partials.status')
                     @include('services.settings.partials.body_partials.devices')
                     @include('services.settings.partials.body_partials.device_models')
+                    @include('services.settings.partials.body_partials.service_settings')
+                    @include('services.settings.partials.body_partials.pdf_and_label_settings')
                 </div>
             </div>
         </div>
@@ -71,4 +73,6 @@
     @include('services.settings.partials.js_partials.status_js')
     @include('services.settings.partials.js_partials.device_js')
     @include('services.settings.partials.js_partials.device_model_js')
+    @include('services.settings.partials.js_partials.service_settings_js')
+    @include('services.settings.partials.js_partials.pdf_and_label_settings_js')
 @endpush

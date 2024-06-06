@@ -93,6 +93,13 @@
 
                         statusTable.ajax.reload();
                     }
+
+                    var service_settings_default_status_id = $('#service_settings_default_status_id').val();
+
+                    if (service_settings_default_status_id != undefined) {
+
+                        $('#service_settings_default_status_id').append('<option data-icon="fa-solid fa-circle" data-color="' + data.color_code + '" value="' + data.id + '">' + data.name + '</option>');
+                    }
                 }
             },
             error: function(err) {

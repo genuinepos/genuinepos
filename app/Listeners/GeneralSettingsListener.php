@@ -74,6 +74,7 @@ class GeneralSettingsListener
                     'reward_point_settings__',
                     'send_email__',
                     'send_sms__',
+                    'service_settings__',
                 ];
 
                 $cacheKey = "{$tenantId}_parentBranchGeneralSettings_{$branch->parent_branch_id}";

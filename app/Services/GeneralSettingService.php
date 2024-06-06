@@ -26,7 +26,18 @@ class GeneralSettingService implements GeneralSettingServiceInterface
                         continue;
                     }
 
-                    GeneralSetting::where('key', $key)->where('branch_id', null)->update(['value' => $value]);
+                    $exists = GeneralSetting::where('key', $key)->where('branch_id', null)->first();
+                    if (isset($exists)) {
+
+                        $exists->update(['value' => $value]);
+                    } else {
+
+                        GeneralSetting::insert([
+                            'key' => $key,
+                            'value' => $value,
+                            'branch_id' => null,
+                        ]);
+                    }
                 }
             }
 

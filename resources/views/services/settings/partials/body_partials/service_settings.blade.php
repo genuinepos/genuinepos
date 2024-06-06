@@ -58,7 +58,7 @@
 
                             <div class="col-md-4">
                                 <label><b>{{ __('Condition Of The Product') }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Add comma (,) separated common product conditions, to be used in job sheet Ex: Item 1, Item 2, Item 3') }}" class="fas fa-info-circle tp"></i></b></label>
-                                <input type="text" name="product_condition" class="form-control" id="service_settings_product_condition" value="{{ isset($generalSettings['service_settings__product_condition']) ? $generalSettings['service_settings__product_condition'] : null }}" placeholder="{{ __('Product Configuration') }}">
+                                <input type="text" name="product_condition" class="form-control" id="service_settings_product_condition" value="{{ isset($generalSettings['service_settings__product_condition']) ? $generalSettings['service_settings__product_condition'] : null }}" placeholder="{{ __('Condition Of The Product') }}">
                             </div>
                         </div>
 

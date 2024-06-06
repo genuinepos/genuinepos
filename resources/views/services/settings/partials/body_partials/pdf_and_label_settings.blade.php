@@ -10,7 +10,7 @@
 <div class="tab_contant job_card_pdf_and_label d-hide">
     <div class="section-header">
         <div class="col-md-6">
-            <h6>{{ __('Job Card Print/PDF & Label') }}</h6>
+            <h6>{{ __('Job Card Print/Pdf & Label') }}</h6>
         </div>
     </div>
 

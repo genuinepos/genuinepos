@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Services\DeviceController;
 use App\Http\Controllers\Services\StatusController;
+use App\Http\Controllers\Services\JobCardController;
 use App\Http\Controllers\Services\SettingController;
 use App\Http\Controllers\Services\DeviceModelController;
 
@@ -40,6 +41,18 @@ Route::prefix('services')->group(function () {
             Route::get('edit/{id}', 'edit')->name('services.settings.device.models.edit');
             Route::post('update/{id}', 'update')->name('services.settings.device.models.update');
             Route::delete('delete/{id}', 'delete')->name('services.settings.device.models.delete');
+            Route::get('device/models/by/brand', 'deviceModelsByBrand')->name('services.settings.device.models.by.brand');
+            Route::get('device/models/by/device', 'deviceModelsByDevice')->name('services.settings.device.models.by.device');
         });
+    });
+
+    Route::controller(JobCardController::class)->prefix('job-cards')->group(function () {
+
+        Route::get('/', 'index')->name('services.job.cards.index');
+        Route::get('create', 'create')->name('services.job.cards.create');
+        Route::post('store', 'store')->name('services.job.cards.store');
+        Route::get('edit/{id}', 'edit')->name('services.job.cards.edit');
+        Route::post('update/{id}', 'update')->name('services.job.cards.update');
+        Route::delete('delete/{id}', 'delete')->name('services.job.cards.delete');
     });
 });

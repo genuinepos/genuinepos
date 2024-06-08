@@ -2114,7 +2114,7 @@
                             <p class="sub-menu-group-title">{{ __('Service') }}</p>
                             <div class="sub-menu-row">
                                 <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
+                                    <a href="{{ route('services.job.cards.create') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="fas fa-plus-circle"></i></span>

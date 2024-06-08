@@ -61,4 +61,14 @@ class DeviceModelController extends Controller
 
         return response()->json(__('Device model deleted successfully'));
     }
+
+    public function deviceModelsByBrand(Request $request)
+    {
+        return $this->deviceModelService->deviceModelsByBrand(request: $request);
+    }
+
+    public function deviceModelsByDevice(Request $request)
+    {
+        return $this->deviceModelService->deviceModelsByDevice(request: $request);
+    }
 }

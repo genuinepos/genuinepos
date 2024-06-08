@@ -86,6 +86,18 @@ class DeviceModelService
         }
     }
 
+    public function deviceModels(array $with = null): ?object
+    {
+        $query = DeviceModel::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function singleDeviceModel(int $id, array $with = null): ?object
     {
         $query = DeviceModel::query();
@@ -96,5 +108,44 @@ class DeviceModelService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function deviceModelsByBrand(object $request, array $with = null): ?object
+    {
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $query = DeviceModel::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        if ($request->brand_id) {
+
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        return $query->where('branch_id', $ownBranchIdOrParentBranchId)->get();
+    }
+
+    public function deviceModelsByDevice(object $request, array $with = null): ?object
+    {
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        $query = DeviceModel::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        if ($request->device_id) {
+
+            dd($request->device_id);
+
+            $query->where('device_id', $request->device_id);
+        }
+
+        return $query->where('branch_id', $ownBranchIdOrParentBranchId)->get();
     }
 }

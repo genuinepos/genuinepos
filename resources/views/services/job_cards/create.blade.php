@@ -15,9 +15,46 @@
             padding-right: 10px;
         }
 
-        .checkbox_input_wrap {
-            text-align: right;
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid #706a6d;
+            margin-top: 1px;
+            border-radius: 0px;
         }
+
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 0px 2px;
+        }
+
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid lightgray;
+        }
+
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
+
+        .selectProduct {
+            background-color: #746e70 !important;
+            color: #fff !important;
+        }
+
 
         .dropify-wrapper {
             height: 100px !important;
@@ -51,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <form id="add_job_card_form" action="#" enctype="multipart/form-data" method="POST">
+        <form id="add_job_card_form" action="{{ route('services.job.cards.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
             <input type="hidden" name="action" id="action" value="">
             <section class="p-lg-1 p-1">
@@ -66,14 +103,14 @@
                                                 <label class="col-4"><b>{{ __('Customer') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
+                                                        <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="date">
                                                             @foreach ($customerAccounts as $customerAccount)
                                                                 <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                             @endforeach
                                                         </select>
 
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                                         </div>
                                                     </div>
                                                     <span class="error error_customer_account_id"></span>
@@ -85,7 +122,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Job Card No.') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" name="job_card_no" class="form-control fw-bold" id="name" data-next="code" placeholder="{{ __('Job Card No.') }}">
+                                                    <input readonly type="text" name="job_card_no" class="form-control fw-bold" id="name" placeholder="{{ __('Job Card No.') }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -94,7 +131,8 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control" id="date" data-next="code" placeholder="{{ __('Date') }}" autocomplete="off">
+                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" placeholder="{{ __('Date') }}" autocomplete="off">
+                                                    <span class="error error_date"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,19 +143,21 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Service Type') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <select name="service_type" class="form-control" id="service_type" data-next="status">
-                                                        <option value="">Carry In</option>
+                                                    <select required name="service_type" class="form-control" id="service_type" data-next="status_id">
+                                                        @foreach (\App\Enums\ServiceType::cases() as $item)
+                                                            <option value="{{ $item->value }}">{{ str($item->name)->headline() }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                                <span class="error error_customer_account_id"></span>
+                                                <span class="error error_status_id"></span>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 pick_up_on_address_field d-hide">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Pick Up/On site address') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="address" class="form-control" id="address" data-next="code" placeholder="{{ __('Pick up/On site address') }}">
+                                                    <input type="text" name="address" class="form-control" id="address" placeholder="{{ __('Pick up/On site address') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -126,7 +166,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="code" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -142,7 +182,7 @@
                                                 <label class="col-4"><b>{{ __('Brand.') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="brand_id" class="form-control select2" id="brand_id" data-next="status">
+                                                        <select name="brand_id" class="form-control select2" id="brand_id">
                                                             <option value="">{{ __('Select Brand') }}</option>
                                                             @foreach ($brands as $brand)
                                                                 <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -162,7 +202,7 @@
                                                 <label class="col-4"><b>{{ __('Device') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="device_id" class="form-control select2" id="device_id" data-next="status">
+                                                        <select name="device_id" class="form-control select2" id="device_id">
                                                             <option value="">{{ __('Select Device') }}</option>
                                                             @foreach ($devices as $device)
                                                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
@@ -181,7 +221,7 @@
                                                 <label class="col-4"><b>{{ __('Device Model') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="device_model_id" class="form-control select2" id="device_model_id" data-next="status">
+                                                        <select name="device_model_id" class="form-control select2" id="device_model_id">
                                                             <option value="">{{ __('Select Device Model') }}</option>
                                                             @foreach ($deviceModels as $deviceModel)
                                                                 <option data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
@@ -199,25 +239,11 @@
 
                                     <div class="row gx-2 gy-1 mt-1">
                                         <div class="col-md-12">
-                                            <p><span class="fw-bold">{{ __('Pre Repair Checklist: ') }}</span> <small>N/A = Not Applicable</small></p>
+                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>N/A = Not Applicable</small></p>
                                         </div>
 
                                         <hr>
                                         <div class="row gx-2 gy-1" id="check_list_area">
-                                            <div class="col-md-2">
-                                                <p class="fw-bold text-primary">{{ __('Display') }}</p>
-                                                <div class="switch-toggle switch-candy">
-                                                    <input id="0_yes" name="checklist[display]" type="radio" value="yes">
-                                                    <label for="0_yes">✔</label>
-
-                                                    <input id="0_no" name="checklist[display]" type="radio" value="no">
-                                                    <label for="0_no">❌</label>
-
-                                                    <input id="0_na" name="checklist[display]" type="radio" checked value="no">
-                                                    <label for="0_na">N/A</label>
-                                                    <a></a>
-                                                </div>
-                                            </div>
                                         </div>
                                         <hr>
                                     </div>
@@ -227,7 +253,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Serial Number') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="serial_number" class="form-control" id="serial_number" data-next="code" placeholder="{{ __('Serial Number') }}">
+                                                    <input type="text" name="serial_number" class="form-control" id="serial_number" placeholder="{{ __('Serial Number') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -236,7 +262,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Password') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="password" class="form-control" id="password" data-next="code" placeholder="{{ __('Password') }}">
+                                                    <input type="text" name="password" class="form-control" id="password" placeholder="{{ __('Password') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -276,8 +302,22 @@
                             <div class="form_element rounded mt-0 mb-1">
                                 <div class="element-body py-0">
                                     <div class="row g-2 align-items-end">
-                                        <div class="col-md-12">
-                                            <p class="pt-2"><span class="fw-bold">{{ __('Add Related Service And Parts') }}</span></p>
+                                        <div class="col-md-8">
+                                            <p class="pt-1"><span class="fw-bold">{{ __('Add Related Service And Parts') }}</span></p>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="input-group mt-1">
+                                                <label class="col-4"><b>{{ __('Price Group') }}</b></label>
+                                                <div class="col-8">
+                                                    <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
+                                                        <option value="">{{ __('Default Selling Price Group') }}</option>
+                                                        @foreach ($priceGroups as $priceGroup)
+                                                            <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-4">
@@ -304,6 +344,7 @@
                                             <input type="hidden" id="e_item_name">
                                             <input type="hidden" id="e_product_id">
                                             <input type="hidden" id="e_variant_id">
+                                            <input type="hidden" id="e_is_manage_stock">
                                             <input type="hidden" id="e_tax_amount">
                                             <input type="hidden" id="e_is_show_emi_on_pos">
                                             <input type="hidden" id="e_price_inc_tax">
@@ -343,11 +384,11 @@
                                             <div class="input-group">
                                                 <select id="e_tax_ac_id" class="form-control w-50">
                                                     <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
-                                                    {{-- @foreach ($taxAccounts as $taxAccount)
+                                                    @foreach ($taxAccounts as $taxAccount)
                                                         <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
                                                             {{ $taxAccount->name }}
                                                         </option>
-                                                    @endforeach --}}
+                                                    @endforeach
                                                 </select>
 
                                                 <select id="e_tax_type" class="form-control w-50" tabindex="-1">
@@ -385,7 +426,7 @@
                                                                 <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="sale_product_list"></tbody>
+                                                        <tbody id="service_product_list"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -400,23 +441,29 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Technician Comment') }}</b></label>
-                                                <input type="text" name="techicial_comment" class="form-control" id="techicial_comment" data-next="code" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
+                                                <input type="text" name="technical_comment" class="form-control" id="technical_comment" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Status') }}</b></label>
+                                            <div class="input-group flex-nowrap">
+                                                <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <select name="status_id" class="form-control select2" id="status_id" data-next="status">
-                                                        <option value="">{{ __('Select Status') }}</option>
-                                                        @foreach ($status as $status)
-                                                            @php
-                                                                $defaultStatus = isset($generalSettings['service_settings__default_status_id']) ? $generalSettings['service_settings__default_status_id'] : null;
-                                                            @endphp
-                                                            <option @selected($defaultStatus == $status->id) value="{{ $status->id }}" data-icon="fa-solid fa-circle" data-color="{{ $status->color_code }}">{{ $status->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <div class="input-group flex-nowrap">
+                                                        <select name="status_id" class="form-control select2" id="status_id" data-next="save_and_print">
+                                                            <option value="">{{ __('Select Status') }}</option>
+                                                            @foreach ($status as $status)
+                                                                @php
+                                                                    $defaultStatus = isset($generalSettings['service_settings__default_status_id']) ? $generalSettings['service_settings__default_status_id'] : null;
+                                                                @endphp
+                                                                <option @selected($defaultStatus == $status->id) value="{{ $status->id }}" data-icon="fa-solid fa-circle" data-color="{{ $status->color_code }}">{{ $status->name }}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text add_button" id="addStatus"><i class="fas fa-plus-square input_i"></i></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -425,7 +472,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Total Cost') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_cost" class="form-control fw-bold" id="total_cost" data-next="code" placeholder="{{ __('0.00') }}" tabindex="-1">
+                                                    <input readonly type="number" step="any" name="total_cost" class="form-control fw-bold" id="total_cost" placeholder="{{ __('0.00') }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -436,7 +483,8 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Document') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="file" name="document" class="form-control" id="document" data-next="code" autocomplete="off">
+                                                    <input type="file" name="document" class="form-control" id="document" autocomplete="off">
+                                                    <span class="error error_document"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -445,7 +493,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Due Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="due_date" class="form-control" id="due_date" data-next="code" placeholder="{{ __('Due Date') }}" autocomplete="off">
+                                                    <input required type="text" name="due_date" class="form-control" id="due_date" placeholder="{{ __('Due Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -454,7 +502,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Send Notification') }}</b></label>
                                                 <div class="col-8">
-                                                    <select name="send_notification" class="form-control" id="send_notification" data-next="status">
+                                                    <select name="send_notification" class="form-control" id="send_notification">
                                                         <option value="">{{ __('None') }}</option>
                                                         <option value="email">{{ __('Email') }}</option>
                                                         <option value="sms">{{ __('Sms') }}</option>
@@ -512,10 +560,10 @@
 
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button job_card_loading_btn d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
 
-                                <button type="submit" name="action" value="save_and_print" class="btn btn-success job_card_submit_button p-1" id="save_and_print">{{ __('Save And Print') }}</button>
-                                <button type="submit" name="action" value="save" class="btn btn-success job_card_ubmit_button p-1" id="save">{{ __('Save') }}</button>
+                                <button type="submit" name="action" value="save_and_print" class="btn btn-success submit_button p-1" id="save_and_print">{{ __('Save And Print') }}</button>
+                                <button type="submit" name="action" value="save" class="btn btn-success submit_button p-1" id="save">{{ __('Save') }}</button>
                             </div>
                         </div>
                     </div>
@@ -524,13 +572,29 @@
         </form>
     </div>
 
+    <div class="modal fade" id="deviceAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+
+    <div class="modal fade" id="deviceModelAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+
+    <div class="modal fade" id="statusAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+
+    @if (auth()->user()->can('customer_add'))
+        <div class="modal fade" id="addOrEditContactModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    @endif
+
+    @if (auth()->user()->can('product_add'))
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @endif
+
     <!-- Add Brand Modal -->
     <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     <!-- Add Brand Modal End -->
 
-    <div class="modal fade" id="deviceAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 
-    <div class="modal fade" id="deviceModelAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     @include('services.job_cards.js_partials.create_js')

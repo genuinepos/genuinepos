@@ -90,6 +90,11 @@
             <label class="fw-bold">{{ __('Stock Issue Voucher Prefix') }}</label>
             <input type="text" name="stock_issue_voucher_prefix" class="form-control" id="stock_issue_voucher_prefix" value="{{ isset($generalSettings['prefix__stock_issue_voucher_prefix']) ? $generalSettings['prefix__stock_issue_voucher_prefix'] : '' }}" placeholder="{{ __('Stock Issue Voucher Prefix') }}" />
         </div>
+
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Job Card No Prefix') }}</label>
+            <input type="text" name="job_card_no_prefix" class="form-control" id="job_card_no_prefix" value="{{ isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : '' }}" placeholder="{{ __('Job Card No Prefix') }}" />
+        </div>
     </div>
 
 

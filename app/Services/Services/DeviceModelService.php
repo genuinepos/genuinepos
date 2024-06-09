@@ -141,8 +141,6 @@ class DeviceModelService
 
         if ($request->device_id) {
 
-            dd($request->device_id);
-
             $query->where('device_id', $request->device_id);
         }
 

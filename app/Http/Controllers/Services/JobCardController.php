@@ -8,16 +8,26 @@ use App\Services\Products\BrandService;
 use App\Services\Services\DeviceService;
 use App\Services\Services\StatusService;
 use App\Services\Accounts\AccountService;
+use App\Services\Services\JobCardService;
+use App\Services\Products\PriceGroupService;
 use App\Services\Services\DeviceModelService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Services\JobCardProductService;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Services\Products\ManagePriceGroupService;
+use App\Http\Requests\Services\JobCardStoreRequest;
 
 class JobCardController extends Controller
 {
     public function __construct(
+        private JobCardService $jobCardService,
+        private JobCardProductService $jobCardProductService,
         private BrandService $brandService,
         private DeviceService $deviceService,
         private DeviceModelService $deviceModelService,
         private StatusService $statusService,
+        private PriceGroupService $priceGroupService,
+        private ManagePriceGroupService $managePriceGroupService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
     ) {
@@ -37,6 +47,15 @@ class JobCardController extends Controller
 
         $status = $this->statusService->allStatus()->where('service_status.branch_id', $ownBranchIdOrParentBranchId)->orderByRaw('ISNULL(sort_order), sort_order ASC')->get(['id', 'name', 'color_code']);
 
+        $priceGroupProducts = $this->managePriceGroupService->priceGroupProducts();
+
+        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+
         $generalSettings = config('generalSettings');
         $productConfigurationItems = isset($generalSettings['service_settings__product_configuration']) ? explode(',', $generalSettings['service_settings__product_configuration']) : null;
 
@@ -46,6 +65,39 @@ class JobCardController extends Controller
 
         $defaultChecklist = isset($generalSettings['service_settings__default_checklist']) ? $generalSettings['service_settings__default_checklist'] : null;
 
-        return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist'));
+        return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist'));
+    }
+
+    function store(JobCardStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
+    {
+        $generalSettings = config('generalSettings');
+        $jobCardNoPrefix = isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : 'JOB';
+
+        $addJobCard = $this->jobCardService->addJobCard(request: $request, codeGenerator: $codeGenerator, jobCardNoPrefix: $jobCardNoPrefix);
+
+        $this->jobCardProductService->addJobCardProducts(request: $request, jobCardId: $addJobCard->id);
+
+        $jobCard = $this->jobCardService->singleJobCard(id: $addJobCard->id, with: [
+            'branch',
+            'branch.parentBranch',
+            'brand',
+            'device',
+            'deviceModel',
+            'status',
+            'customer',
+            'jobCardProducts',
+            'jobCardProducts.product',
+            'jobCardProducts.variant',
+            'jobCardProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'jobCardProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        if ($request->action == 'save_and_print') {
+
+            return view('services.print_templates.print_job', compact('jobCard'));
+        } else {
+
+            return response()->json(['successMsg' => __('Job card created successfully')]);
+        }
     }
 }

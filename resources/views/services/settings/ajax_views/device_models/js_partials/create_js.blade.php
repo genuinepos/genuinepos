@@ -73,6 +73,11 @@
                         $('#device_model_id').append('<option data-checklist="' + data.service_checklist + '" value="' + data.id + '">' + data.name + '</option>');
                         $('#device_model_id').val(data.id);
 
+                        if (typeof getCheckList != 'undefined') {
+
+                            getCheckList();
+                        }
+
                         var nextId = $('#device_model_id').data('next');
                         $('#' + nextId).focus().select();
                     } else {

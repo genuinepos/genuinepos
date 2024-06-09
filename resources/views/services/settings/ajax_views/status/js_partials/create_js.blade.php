@@ -84,7 +84,7 @@
 
                     if (status_id != undefined) {
 
-                        $('#status_id').append('<option value="' + data.id + '">' + data.name + '</option>');
+                        $('#status_id').append('<option data-icon="fa-solid fa-circle" data-color="' + data.color_code + '" value="' + data.id + '">' + data.name + '</option>');
                         $('#status_id').val(data.id);
 
                         var nextId = $('#status_id').data('next');

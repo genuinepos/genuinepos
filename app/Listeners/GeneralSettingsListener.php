@@ -75,6 +75,7 @@ class GeneralSettingsListener
                     'send_email__',
                     'send_sms__',
                     'service_settings__',
+                    'service_settings_pdf_label__',
                 ];
 
                 $cacheKey = "{$tenantId}_parentBranchGeneralSettings_{$branch->parent_branch_id}";

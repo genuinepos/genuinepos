@@ -187,6 +187,7 @@ class BranchSettingController extends Controller
             'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix,
             'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix,
             'prefix__stock_issue_voucher_prefix' => $request->stock_issue_voucher_prefix,
+            'prefix__job_card_no_prefix' => $request->job_card_no_prefix,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];

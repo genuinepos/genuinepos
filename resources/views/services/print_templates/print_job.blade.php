@@ -118,319 +118,335 @@
             <table class="table print-table table-sm table-bordered">
                 <tbody>
                     <tr>
-                        <th rowspan="3">
-                            Date:
-                            <span style="font-weight: 100">
-                                06/09/2024 03:29
-                            </span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Service type:</b>
-                            Pick up
-                        </td>
-                        <th rowspan="2">
-                            <b>
-                                Due Date:
-                            </b>
-                            <span style="font-weight: 100">
-                                06/16/2024 03:28
-                            </span>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Job sheet number:</b>
-                            JOB2024/0001
+                        <td rowspan="3">
+                            <p><span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($jobCard->date_ts)) }}</p>
+                            <p><span class="fw-bold">{{ __('Delivery Date') }} : </span> {{ $jobCard->delivery_date_ts ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <strong>CUS:</strong><br>
+                        <td>
+                            <span class="fw-bold">{{ __('Service type') }} : </span> {{ str(\App\Enums\ServiceType::tryFrom($jobCard->service_type)->name)->headline() }}
+                        </td>
+                        <td rowspan="2">
+                            <span class="fw-bold">{{ __('Due Date') }}</span> : {{ $jobCard->due_date_ts ? date($dateFormat, strtotime($jobCard->due_date_ts)) : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="fw-bold">{{ __('Job No') }} :</span> {{ $jobCard->job_no }}</td>
+                    </tr>
+                    <tr>
+                        @if (isset($generalSettings['service_settings_pdf_label__show_customer_info']) && $generalSettings['service_settings_pdf_label__show_customer_info'] == '1')
+                            <td colspan="2">
+                                <p>
+                                    <span class="fw-bold">{{ isset($generalSettings['service_settings_pdf_label__customer_label_name']) ? $generalSettings['service_settings_pdf_label__customer_label_name'] : __('Customer') }} :</span>
+                                    {{ $jobCard?->customer?->name }}
+                                </p>
+
+                                @if (isset($generalSettings['service_settings_pdf_label__show_contact_id']) && $generalSettings['service_settings_pdf_label__show_contact_id'] == '1')
+                                    <p>
+                                        <span class="fw-bold">{{ isset($generalSettings['service_settings_pdf_label__customer_id_label_name']) ? $generalSettings['service_settings_pdf_label__customer_id_label_name'] : __('Customer ID') }} :</span>
+                                        {{ $jobCard?->customer?->contact?->contact_id }}
+                                    </p>
+                                @endif
+
+                                @if (isset($generalSettings['service_settings_pdf_label__show_customer_tax_no']) && $generalSettings['service_settings_pdf_label__show_customer_tax_no'] == '1')
+                                    <p>
+                                        <span class="fw-bold">{{ isset($generalSettings['service_settings_pdf_label__customer_tax_no_label_name']) ? $generalSettings['service_settings_pdf_label__customer_tax_no_label_name'] : __('Tax No.') }} :</span>
+                                        {{ $jobCard?->customer?->contact?->tax_number }}
+                                    </p>
+                                @endif
+
+                                <p>
+                                    <span class="fw-bold">{{ __('Address') }} :</span>
+                                    {{ $jobCard?->customer?->address }}
+                                </p>
+
+                                <p>
+                                    <span class="fw-bold">{{ __('Phone') }} :</span>
+                                    {{ $jobCard?->customer?->phone }}
+                                </p>
+                            </td>
+                        @endif
+
+                        <td>
                             <p>
-                                Walk-In Customer, <br>Linking Street, <br>Phoenix, Arizona, USA
+                                <span class="fw-bold">{{ __('Brand.') }} :</span>
+                                {{ $jobCard?->brand?->name }}
+                            </p>
 
-                                <br> CUS ID:
-                                CO0005
+                            <p>
+                                <span class="fw-bold">{{ __('Device') }} :</span>
+                                {{ $jobCard?->device?->name }}
+                            </p>
 
-                                <br>Mobile:
-                                (378) 400-1234
-                                {{-- <br> Custom Field 1:
+                            <p>
+                                <span class="fw-bold">{{ __('Device Model') }} :</span>
+                                {{ $jobCard?->deviceModel?->name }}
+                            </p>
 
-                                <br> Custom Field 2:
+                            <p>
+                                <span class="fw-bold">{{ __('Serial Number') }} :</span>
+                                {{ $jobCard?->serial_number }}
+                            </p>
 
-                                <br> Custom Field 3:
-
-                                <br> Custom Field 4: --}}
-
+                            <p>
+                                <span class="fw-bold">{{ __('Password') }} :</span>
+                                {{ $jobCard?->password }}
                             </p>
                         </td>
-                        <td>
-                            <b>Brand:</b>
-
-                            <br>
-                            <b>Device:</b>
-
-                            <br>
-                            <b>Device Model:</b>
-                            A55
-                            <br>
-                            <b>Serial Number:</b>
-                            012858882220
-                            <br>
-                            <b>Password:</b>
-                            123456
-                            <br>
-                            <b>
-                                Security Pattern code:
-                            </b>
-
-                        </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <b>
-                                Invoice No.:
-                            </b>
-                        </td>
-                        <td>
-                        </td>
+                        <th colspan="2">{{ __('Invoice ID') }} : </th>
+                        <td>{{ $jobCard?->sale?->invoice_id }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <b>
-                                Estimated Cost:
-                            </b>
-                        </td>
-                        <td>
-                            <span class="display_currency" data-currency_symbol="true">$ 0.00</span>
-                        </td>
+                        <th colspan="2">{{ __('Status') }} :</th>
+                        <td> {{ $jobCard?->status?->name }}</td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Status:
-                            </b>
-                        </td>
-                        <td>
-                            Completed
-                        </td>
-                    </tr>
-          
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Technician:
-                            </b>
-                        </td>
-                        <td>
 
-                        </td>
+                    <tr>
+                        <th colspan="2">{{ __('Comment By Technician') }}:</th>
+                        <td>{{ $jobCard->technical_comment }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <b>
-                                Comment by technician:
-                            </b>
-                        </td>
+                        <th colspan="2">{{ __('Pre Service Checklist') }} :</th>
                         <td>
-                            Need Repairing
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Pre Repair Checklist:
-                            </b>
-                        </td>
-                        <td>
+                            @if (isset($jobCard->service_checklist) && is_array($jobCard->service_checklist))
+                                @foreach ($jobCard->service_checklist as $key => $value)
+                                    <span>
+                                        @if ($value == 'yes')
+                                            ✔
+                                        @elseif ($value == 'no')
+                                            ❌
+                                        @else
+                                            🚫
+                                        @endif
+                                        {{ $key }}
+                                    </span>
+                                @endforeach
+                            @elseif (isset($jobCard->service_checklist) && is_string($jobCard->service_checklist))
+                                @php
+                                    $checklist = json_decode($jobCard->service_checklist, true);
+                                @endphp
 
-                                <span>
-                                    <i class="fas fa-check-square text-success fa-lg"></i>
-                                    Display
-                                </span>
-                                <span>
-                                    <i class="fas fa-window-close text-danger fa-lg"></i>
-                                    Camera
-                                </span>
-                                <span>
-                                    <i class="fas fa-check-square text-success fa-lg"></i>
-                                    Motherboard
-                                </span>
-
+                                @if ($checklist === null)
+                                    <p>Error decoding JSON: {{ json_last_error_msg() }}</p>
+                                @else
+                                    @foreach ($checklist as $key => $value)
+                                        <span>
+                                            @if ($value == 'yes')
+                                                ✔
+                                            @elseif ($value == 'no')
+                                                ❌
+                                            @else
+                                                🚫
+                                            @endif
+                                            {{ $key }}
+                                        </span>
+                                    @endforeach
+                                @endif
+                            @endif
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <b>
-                                Pick up/On site address:
-                            </b> <br>
-                            FF
+                            <p><span class="fw-bold">{{ __('Pick Up/On Site Address') }} : </span> </p>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <b>
-                                Product Configuration:
-                            </b> <br>
-                            4gb/64gb
+                            <p><span class="fw-bold">{{ __('Product Configuration') }} : </span> {{ $jobCard->product_configuration }}</p>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <b>
-                                Condition Of The Product:
-                            </b> <br>
-                            good
+                            <p><span class="fw-bold">{{ __('Condition Of The Product') }} : </span> {{ $jobCard->product_condition }}</p>
                         </td>
                     </tr>
+
+
                     <tr>
-                        <td colspan="2">
-                            <b>
-                                Label for job sheet custom field 1:
-                            </b>
-                        </td>
-                        <td>
-                            field 1
+                        <th colspan="3">{{ __('Service Changes') }}:</th>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">
+                            @php
+                                $serviceProducts = $jobCard->jobCardProducts
+                                    ->filter(function ($jobCardProduct) {
+                                        return $jobCardProduct?->product?->is_manage_stock == 0;
+                                    })
+                                    ->values();
+                            @endphp
+                            @if (count($serviceProducts) > 0)
+                                <table class="table print-table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Qty') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_print_product_list">
+
+                                        @foreach ($serviceProducts as $index => $jobCardProduct)
+                                            <tr>
+                                                @php
+                                                    $variant = $jobCardProduct->variant ? ' - ' . $jobCardProduct->variant->variant_name : '';
+                                                @endphp
+
+                                                <td class="text-start" style="font-size:11px!important;">{{ $index + 1 }}
+                                                </td>
+
+                                                <td class="text-start" style="font-size:11px!important;">{{ Str::limit($jobCardProduct->product->name, 25) . ' ' . $variant }}
+                                                </td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->quantity) }}</td>
+                                                <td class="text-start" style="font-size:11px!important;">
+                                                    {{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_exc_tax) }}
+                                                </td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_discount) }} </td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ '(' . $jobCardProduct->unit_tax_percent . '%)=' . $jobCardProduct->unit_tax_amount }}</td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_inc_tax) }}</td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->subtotal) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <table class="table print-table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">{{ __('No Available') }}</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            @endif
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="3">Parts used:</th>
+                        <th colspan="3">{{ __('Parts Description') }}:</th>
                     </tr>
 
                     <tr>
-                        {{-- <th colspan="2">Parts used:</th> --}}
                         <td colspan="3">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S8 - Internal Memory - 64 GB (AS0014-1): &nbsp;</td>
-                                        <td>1.00 Pc(s)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            @php
+                                $parts = $jobCard->jobCardProducts
+                                    ->filter(function ($jobCardProduct) {
+                                        return $jobCardProduct?->product?->is_manage_stock == 1;
+                                    })
+                                    ->values();
+                            @endphp
+                            @if (count($parts) > 0)
+                                <table class="table print-table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Qty') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_print_product_list">
+
+                                        @foreach ($parts as $index => $jobCardProduct)
+                                            <tr>
+                                                @php
+                                                    $variant = $jobCardProduct->variant ? ' - ' . $jobCardProduct->variant->variant_name : '';
+                                                @endphp
+
+                                                <td class="text-start" style="font-size:11px!important;">{{ $index + 1 }}
+                                                </td>
+
+                                                <td class="text-start" style="font-size:11px!important;">{{ Str::limit($jobCardProduct->product->name, 25) . ' ' . $variant }}
+                                                </td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->quantity) }}</td>
+                                                <td class="text-start" style="font-size:11px!important;">
+                                                    {{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_exc_tax) }}
+                                                </td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_discount) }} </td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ '(' . $jobCardProduct->unit_tax_percent . '%)=' . $jobCardProduct->unit_tax_amount }}</td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_inc_tax) }}</td>
+                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->subtotal) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <table class="table print-table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">{{ __('No Available') }}</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2">
+                            {{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }} :
+                        </th>
+                        <td>{{ $jobCard->custom_field_1 }}</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2">
+                            {{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }} :
+                        </th>
+                        <td>{{ $jobCard->custom_field_2 }}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            {{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }} :
+                        </th>
+                        <td>{{ $jobCard->custom_field_3 }}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            {{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }} :
+                        </th>
+                        <td>
+                            {{ $jobCard->custom_field_4 }}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <b>
-                                Label for job sheet custom field 2:
-                            </b>
-                        </td>
+                        <th colspan="2">
+                            {{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }} :
+                        </th>
                         <td>
-                            field 2
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Label for job sheet custom field 3:
-                            </b>
-                        </td>
-                        <td>
-                            field
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Label for job sheet custom field 4:
-                            </b>
-                        </td>
-                        <td>
-                            field 4
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <b>
-                                Label for job sheet custom field 5:
-                            </b>
-                        </td>
-                        <td>
-                            field 5
+                            {{ $jobCard->custom_field_5 }}
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <b>
-                                Problem Reported By The Customer:
-                            </b> <br>
-                            ok
+                            <p><span class="fw-bold">{{ __('Problem Reported By The Customer') }} : </span> {{ $jobCard->problems_report }}</p>
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="3">
-                            <strong>
-                                Terms &amp; Conditions:
-                            </strong>
+                            <p> <span class="fw-bold">{{ __('Terms & Conditions') }} : </span> {!! isset($generalSettings['service_settings__terms_and_condition']) ? $generalSettings['service_settings__terms_and_condition'] : __('Customer ID') !!}</p>
+                            </span>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <b>
-                                Customer signature:
-                            </b>
-                        </td>
-                        <td>
-                            <b>
-                                Authorized signature:
-                            </b>
-                        </td>
+                        <th colspan="2" style="height: 50px; vertical-align: bottom; width: 50%;">
+                            {{ __("Customer signature") }}:
+                        </th>
+                        <th style="height: 50px; vertical-align: bottom; width: 50%;">
+                            {{ __("Authorized signature") }}:
+                        </th>
                     </tr>
                 </tbody>
             </table>

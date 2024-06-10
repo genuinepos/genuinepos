@@ -9,7 +9,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class JobCardService
 {
-    function addJobCard(object $request, object $codeGenerator, ?string $jobCardNoPrefix = null): object
+    // public function jobCardsTable(object $request): object
+    // {
+    //     $jobCards = DB::table('service_job_cards')->;
+    // }
+
+    public function addJobCard(object $request, object $codeGenerator, ?string $jobCardNoPrefix = null): object
     {
         $jobNo = $codeGenerator->generateMonthWise(table: 'service_job_cards', column: 'job_no', prefix: $jobCardNoPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 

@@ -71,30 +71,30 @@
 
                         <div class="row mt-1">
                             <div class="col-md-4">
-                                <label><b>{{ __('Label for job sheet custom field 1') }}</b></label>
-                                <input type="text" name="customer_field_1" class="form-control" id="service_settings_customer_field_1" value="{{ isset($generalSettings['service_settings__customer_field_1']) ? $generalSettings['service_settings__customer_field_1'] : null }}" placeholder="{{ __('Label for job sheet custom field 1') }}">
+                                <label><b>{{ __('Label For Job Card Custom field 1') }}</b></label>
+                                <input type="text" name="custom_field_1_label" class="form-control" id="service_settings_custom_field_1_label" value="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : null }}" placeholder="{{ __('Label For Job Card Custom field 1') }}">
                             </div>
 
                             <div class="col-md-4">
-                                <label><b>{{ __('Label for job sheet custom field 2') }}</b></label>
-                                <input type="text" name="customer_field_2" class="form-control" id="service_settings_customer_field_2" value="{{ isset($generalSettings['service_settings__customer_field_2']) ? $generalSettings['service_settings__customer_field_2'] : null }}" placeholder="{{ __('Label for job sheet custom field 2') }}">
+                                <label><b>{{ __('Label For Job Card Custom field 2') }}</b></label>
+                                <input type="text" name="custom_field_2_label" class="form-control" id="service_settings_custom_field_2_label" value="{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : null }}" placeholder="{{ __('Label For Job Card Custom field 2') }}">
                             </div>
 
                             <div class="col-md-4">
-                                <label><b>{{ __('Label for job sheet custom field 3') }}</b></label>
-                                <input type="text" name="customer_field_3" class="form-control" id="service_settings_customer_field_3" value="{{ isset($generalSettings['service_settings__customer_field_3']) ? $generalSettings['service_settings__customer_field_3'] : null }}" placeholder="{{ __('Label for job sheet custom field 3') }}">
+                                <label><b>{{ __('Label For Job Card Custom field 3') }}</b></label>
+                                <input type="text" name="custom_field_3_label" class="form-control" id="service_settings_custom_field_3_label" value="{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : null }}" placeholder="{{ __('Label For Job Card Custom field 3') }}">
                             </div>
                         </div>
 
                         <div class="row mt-1">
                             <div class="col-md-4">
-                                <label><b>{{ __('Label for job sheet custom field 4') }}</b></label>
-                                <input type="text" name="customer_field_4" class="form-control" id="service_settings_customer_field_4" value="{{ isset($generalSettings['service_settings__customer_field_4']) ? $generalSettings['service_settings__customer_field_4'] : null }}" placeholder="{{ __('Label for job sheet custom field 4') }}">
+                                <label><b>{{ __('Label For Job Card Custom field 4') }}</b></label>
+                                <input type="text" name="custom_field_4_label" class="form-control" id="service_settings_custom_field_4_label" value="{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : null }}" placeholder="{{ __('Label For Job Card Custom field 4') }}">
                             </div>
 
                             <div class="col-md-4">
-                                <label><b>{{ __('Label for job sheet custom field 5') }}</b></label>
-                                <input type="text" name="customer_field_5" class="form-control" id="service_settings_customer_field_5" value="{{ isset($generalSettings['service_settings__customer_field_5']) ? $generalSettings['service_settings__customer_field_5'] : null }}" placeholder="{{ __('Label for job sheet custom field 5') }}">
+                                <label><b>{{ __('Label For Job Card Custom field 5') }}</b></label>
+                                <input type="text" name="custom_field_5_label" class="form-control" id="service_settings_custom_field_5_label" value="{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : null }}" placeholder="{{ __('Label For Job Card Custom field 5') }}">
                             </div>
                         </div>
 

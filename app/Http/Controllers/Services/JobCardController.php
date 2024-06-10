@@ -33,7 +33,15 @@ class JobCardController extends Controller
     ) {
     }
 
-    public function create()
+    public function index(Request $request) {
+
+        if ($request->ajax()) {
+
+            $this->jobCardService->jobCardsTable(request: $request);
+        }
+    }
+
+    public function create(CodeGenerationServiceInterface $codeGenerator)
     {
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -65,7 +73,11 @@ class JobCardController extends Controller
 
         $defaultChecklist = isset($generalSettings['service_settings__default_checklist']) ? $generalSettings['service_settings__default_checklist'] : null;
 
-        return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist'));
+        $jobCardNoPrefix = isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : 'JOB';
+
+        $jobCardNo = $codeGenerator->generateMonthWise(table: 'service_job_cards', column: 'job_no', prefix: $jobCardNoPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist', 'jobCardNo'));
     }
 
     function store(JobCardStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
@@ -75,7 +87,10 @@ class JobCardController extends Controller
 
         $addJobCard = $this->jobCardService->addJobCard(request: $request, codeGenerator: $codeGenerator, jobCardNoPrefix: $jobCardNoPrefix);
 
-        $this->jobCardProductService->addJobCardProducts(request: $request, jobCardId: $addJobCard->id);
+        if (isset($request->product_ids)) {
+
+            $this->jobCardProductService->addJobCardProducts(request: $request, jobCardId: $addJobCard->id);
+        }
 
         $jobCard = $this->jobCardService->singleJobCard(id: $addJobCard->id, with: [
             'branch',
@@ -99,5 +114,13 @@ class JobCardController extends Controller
 
             return response()->json(['successMsg' => __('Job card created successfully')]);
         }
+    }
+
+    public function jobCardNo(CodeGenerationServiceInterface $codeGenerator)
+    {
+        $generalSettings = config('generalSettings');
+        $jobCardNoPrefix = isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : 'JOB';
+
+        return $codeGenerator->generateMonthWise(table: 'service_job_cards', column: 'job_no', prefix: $jobCardNoPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
     }
 }

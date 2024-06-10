@@ -54,5 +54,6 @@ Route::prefix('services')->group(function () {
         Route::get('edit/{id}', 'edit')->name('services.job.cards.edit');
         Route::post('update/{id}', 'update')->name('services.job.cards.update');
         Route::delete('delete/{id}', 'delete')->name('services.job.cards.delete');
+        Route::get('no', 'jobCardNo')->name('services.job.cards.no');
     });
 });

@@ -67,6 +67,10 @@
         .tagify__input {
             min-width: 100%;
         }
+
+        span.tagify__tag-text {
+            font-size: 11px;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/css-toggle-switch@latest/dist/toggle-switch.css" />
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
@@ -122,7 +126,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Job Card No.') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" name="job_card_no" class="form-control fw-bold" id="name" placeholder="{{ __('Job Card No.') }}" tabindex="-1">
+                                                    <input readonly type="text" name="job_card_no" class="form-control fw-bold" id="job_card_no" value="{{ $jobCardNo }}" placeholder="{{ __('Job Card No.') }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -426,7 +430,7 @@
                                                                 <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="service_product_list"></tbody>
+                                                        <tbody id="jobcard_product_list"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -493,7 +497,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Due Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="due_date" class="form-control" id="due_date" placeholder="{{ __('Due Date') }}" autocomplete="off">
+                                                    <input type="text" name="due_date" class="form-control" id="due_date" placeholder="{{ __('Due Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -519,22 +523,22 @@
                                     <div class="row gx-2 gy-1">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_1" class="form-control" id="custom_field_1" data-next="code" placeholder="{{ __('Custom Field 1') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}</b></label>
+                                                <input type="text" name="custom_field_1" class="form-control" id="custom_field_1" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Custom Field 2') }}</b></label>
-                                                <input type="text" name="custom_field_2" class="form-control" id="custom_field_2" data-next="code" placeholder="{{ __('Custom Field 2') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 1') }}</b></label>
+                                                <input type="text" name="custom_field_2" class="form-control" id="custom_field_2" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Custom Field 3') }}</b></label>
-                                                <input type="text" name="custom_field_3" class="form-control" id="custom_field_3" data-next="code" placeholder="{{ __('Custom Field 3') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 1') }}</b></label>
+                                                <input type="text" name="custom_field_3" class="form-control" id="custom_field_3" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }}" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -542,15 +546,15 @@
                                     <div class="row gx-2 gy-1 mt-1">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Custom Field 4') }}</b></label>
-                                                <input type="text" name="custom_field_4" class="form-control" id="custom_field_4" data-next="code" placeholder="{{ __('Custom Field 4') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}</b></label>
+                                                <input type="text" name="custom_field_4" class="form-control" id="custom_field_4" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Custom Field 5') }}</b></label>
-                                                <input type="text" name="custom_field_5" class="form-control" id="custom_field_5" data-next="code" placeholder="{{ __('Custom Field 5') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}</b></label>
+                                                <input type="text" name="custom_field_5" class="form-control" id="custom_field_5" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -593,8 +597,6 @@
     <!-- Add Brand Modal -->
     <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     <!-- Add Brand Modal End -->
-
-
 @endsection
 @push('scripts')
     @include('services.job_cards.js_partials.create_js')

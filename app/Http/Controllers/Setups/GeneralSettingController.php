@@ -362,11 +362,11 @@ class GeneralSettingController extends Controller
             'service_settings__default_problems_report' => $request->default_problems_report,
             'service_settings__product_condition' => $request->product_condition,
             'service_settings__terms_and_condition' => $request->terms_and_condition,
-            'service_settings__customer_field_1' => $request->customer_field_1,
-            'service_settings__customer_field_2' => $request->customer_field_2,
-            'service_settings__customer_field_3' => $request->customer_field_3,
-            'service_settings__customer_field_4' => $request->customer_field_4,
-            'service_settings__customer_field_5' => $request->customer_field_5,
+            'service_settings__custom_field_1_label' => $request->custom_field_1_label,
+            'service_settings__custom_field_2_label' => $request->custom_field_2_label,
+            'service_settings__custom_field_3_label' => $request->custom_field_3_label,
+            'service_settings__custom_field_4_label' => $request->custom_field_4_label,
+            'service_settings__custom_field_5_label' => $request->custom_field_5_label,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

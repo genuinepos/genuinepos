@@ -715,7 +715,7 @@
             tr += '</td>';
             tr += '</tr>';
 
-            $('#service_product_list').append(tr);
+            $('#job_card_product_list').append(tr);
             clearEditItemFileds();
             calculateTotalAmount();
         } else {
@@ -1236,7 +1236,9 @@
                 if (!$.isEmptyObject(data.successMsg)) {
 
                     toastr.success(data.successMsg);
-                    // afterCreateJobCard();
+                    afterCreateJobCard();
+
+                    getJobCardId();
                     return;
                 } else {
 
@@ -1251,7 +1253,9 @@
                         header: null,
                     });
 
-                    // afterCreateJobCard();
+                    afterCreateJobCard();
+
+                    getJobCardId();
                     return;
                 }
             },
@@ -1292,7 +1296,12 @@
         $('.loading_button').hide();
         $('.hidden').val(parseFloat(0).toFixed(2));
         $('#add_job_card_form')[0].reset();
-        $('#service_product_list').empty();
+
+        $('#check_list_area').empty();
+
+        $('#job_card_product_list').empty();
+
+        $(".dropify-clear").click();
 
         $("#customer_account_id").select2("destroy");
         $("#customer_account_id").select2();
@@ -1303,6 +1312,8 @@
 
         $("#device_id").select2("destroy");
         $("#device_id").select2();
+
+        getJobCardId();
     }
 
     $('select').on('select2:close', function(e) {
@@ -1337,6 +1348,31 @@
             $('#' + nextId).focus().select();
         }
     });
+
+    function getJobCardId() {
+
+        $.ajax({
+            url: "{{ route('services.job.cards.no') }}",
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                $('#job_card_no').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
 </script>
 
 <script>
@@ -1516,11 +1552,6 @@
                     isQuickProductAjaxIn = true;
                     isAllowQuickProductSubmit = true;
                     toastr.success("{{ __('Product is added successfully.') }}");
-
-                    if (data.is_manage_stock == 1) {
-
-                        $('#stock_quantity').val(parseFloat(data.quantity).toFixed(2));
-                    }
 
                     var name = data.name.length > 35 ? data.name.substring(0, 35) + '...' : data.name;
 

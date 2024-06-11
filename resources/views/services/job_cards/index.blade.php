@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Add Sales List - ')
+@section('title', 'Job Cards - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -11,7 +11,7 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <h5>{{ __('Manage Add Sales') }}</h5>
+                                <h5>{{ __('Job Cards') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
@@ -26,7 +26,7 @@
                                             <div class="form-group row">
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
@@ -46,11 +46,11 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('Payment Status') }}</strong></label>
+                                                    <label><strong>{{ __('Service Type') }}</strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control">
                                                         <option value="">{{ __('All') }}</option>
-                                                        @foreach (\App\Enums\PaymentStatus::cases() as $paymentStatus)
-                                                            <option value="{{ $paymentStatus->value }}">{{ $paymentStatus->name }}</option>
+                                                        @foreach (\App\Enums\ServiceType::cases() as $item)
+                                                            <option value="{{ $item->value }}">{{ str($item->name)->headline() }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -61,6 +61,46 @@
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach ($customerAccounts as $customerAccount)
                                                             <option data-customer_account_name="{{ $customerAccount->name . '/' . $customerAccount->phone }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>{{ __('Brand.') }}</strong></label>
+                                                    <select name="brand_id" class="form-control select2" id="brand_id" autofocus>
+                                                        <option value="">{{ __('All') }}</option>
+                                                        @foreach ($brands as $brand)
+                                                            <option data-brand_name="{{ $brand->name }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>{{ __('Device') }}</strong></label>
+                                                    <select name="device_id" class="form-control select2" id="device_id" autofocus>
+                                                        <option value="">{{ __('All') }}</option>
+                                                        @foreach ($devices as $device)
+                                                            <option data-device_name="{{ $device->name }}" value="{{ $device->id }}">{{ $device->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>{{ __('Device Model') }}</strong></label>
+                                                    <select name="device_model_id" class="form-control select2" id="device_model_id" autofocus>
+                                                        <option value="">{{ __('All') }}</option>
+                                                        @foreach ($deviceModels as $deviceModel)
+                                                            <option data-device_name="{{ $deviceModel->name }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong>{{ __('Status') }}</strong></label>
+                                                    <select name="status_id" class="form-control select2" id="status_id">
+                                                        <option value="">{{ __('All') }}</option>
+                                                        @foreach ($status as $status)
+                                                            <option value="{{ $status->id }}" data-icon="fa-solid fa-circle" data-color="{{ $status->color_code }}">{{ $status->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -101,12 +141,12 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List of Add Sales') }}</h6>
+                                    <h6>{{ __('List of Job Cards') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('create_add_sale'))
                                     <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('services.job.cards.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Job Card') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -116,7 +156,7 @@
                                     <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                    <table id="sales-table" class="display data_tbl data__table">
+                                    <table id="job-cards-table" class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('Action') }}</th>
@@ -164,5 +204,5 @@
 @endsection
 
 @push('scripts')
-    @include('sales.add_sale.js_partials.index_js')
+@include('services.job_cards.js_partials.index_js')
 @endpush

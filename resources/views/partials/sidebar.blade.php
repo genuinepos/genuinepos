@@ -2125,7 +2125,7 @@
                                 </div>
 
                                 <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
+                                    <a href="{{ route('services.job.cards.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="fas fa-list"></i></span>

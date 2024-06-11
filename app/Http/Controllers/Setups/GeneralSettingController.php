@@ -400,11 +400,10 @@ class GeneralSettingController extends Controller
             'service_settings_pdf_label__status_in_label' => $request->status_in_label,
             'service_settings_pdf_label__due_date_in_label' => $request->due_date_in_label,
             'service_settings_pdf_label__technician_in_label' => $request->technician_in_label,
-            'service_settings_pdf_label__problems_in_label_in_label' => $request->problems_in_label_in_label,
+            'service_settings_pdf_label__problems_in_label' => $request->problems_in_label,
             'service_settings_pdf_label__job_card_no_in_label' => $request->job_card_no_in_label,
             'service_settings_pdf_label__serial_in_label' => $request->serial_in_label,
             'service_settings_pdf_label__model_in_label' => $request->model_in_label,
-            'service_settings_pdf_label__location_in_label' => $request->location_in_label,
             'service_settings_pdf_label__password_in_label' => $request->password_in_label,
         ];
 

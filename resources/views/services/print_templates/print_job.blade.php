@@ -122,8 +122,10 @@
                             <p><span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($jobCard->date_ts)) }}</p>
                             <p><span class="fw-bold">{{ __('Delivery Date') }} : </span> {{ $jobCard->delivery_date_ts ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</p>
                         </td>
+                        <td colspan="2" class="fw-bold text-center">{{ __("Job Card") }}</td>
                     </tr>
                     <tr>
+
                         <td>
                             <span class="fw-bold">{{ __('Service type') }} : </span> {{ str(\App\Enums\ServiceType::tryFrom($jobCard->service_type)->name)->headline() }}
                         </td>
@@ -196,20 +198,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="2">{{ __('Invoice ID') }} : </th>
+                        <td colspan="2" class="fw-bold">{{ __('Invoice ID') }} : </td>
                         <td>{{ $jobCard?->sale?->invoice_id }}</td>
                     </tr>
                     <tr>
-                        <th colspan="2">{{ __('Status') }} :</th>
+                        <td colspan="2" class="fw-bold">{{ __('Status') }} :</td>
                         <td> {{ $jobCard?->status?->name }}</td>
                     </tr>
 
                     <tr>
-                        <th colspan="2">{{ __('Comment By Technician') }}:</th>
+                        <td colspan="2" class="fw-bold">{{ __('Comment By Technician') }}:</td>
                         <td>{{ $jobCard->technical_comment }}</td>
                     </tr>
                     <tr>
-                        <th colspan="2">{{ __('Pre Service Checklist') }} :</th>
+                        <td colspan="2" class="fw-bold">{{ __('Pre Service Checklist') }} :</td>
                         <td>
                             @if (isset($jobCard->service_checklist) && is_array($jobCard->service_checklist))
                                 @foreach ($jobCard->service_checklist as $key => $value)
@@ -250,7 +252,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <p><span class="fw-bold">{{ __('Pick Up/On Site Address') }} : </span> </p>
+                            <p><span class="fw-bold">{{ __('Pick Up/On Site Address') }} : </span> {{ $jobCard->address }}</p>
                         </td>
                     </tr>
                     <tr>
@@ -266,7 +268,7 @@
 
 
                     <tr>
-                        <th colspan="3">{{ __('Service Changes') }}:</th>
+                        <td colspan="3" class="fw-bold">{{ __('Service Changes') }}:</td>
                     </tr>
 
                     <tr>
@@ -330,7 +332,7 @@
                     </tr>
 
                     <tr>
-                        <th colspan="3">{{ __('Parts Description') }}:</th>
+                        <td colspan="3" class="fw-bold">{{ __('Parts Description') }}:</td>
                     </tr>
 
                     <tr>
@@ -394,36 +396,36 @@
                     </tr>
 
                     <tr>
-                        <th colspan="2">
+                        <td colspan="2" class="fw-bold">
                             {{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }} :
-                        </th>
+                        </td>
                         <td>{{ $jobCard->custom_field_1 }}</td>
                     </tr>
 
                     <tr>
-                        <th colspan="2">
+                        <td colspan="2" class="fw-bold">
                             {{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }} :
-                        </th>
+                        </td>
                         <td>{{ $jobCard->custom_field_2 }}</td>
                     </tr>
                     <tr>
-                        <th colspan="2">
+                        <td colspan="2" class="fw-bold">
                             {{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }} :
-                        </th>
+                        </td>
                         <td>{{ $jobCard->custom_field_3 }}</td>
                     </tr>
                     <tr>
-                        <th colspan="2">
+                        <td colspan="2" class="fw-bold">
                             {{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }} :
-                        </th>
+                        </td>
                         <td>
                             {{ $jobCard->custom_field_4 }}
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="2">
+                        <td colspan="2" class="fw-bold">
                             {{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }} :
-                        </th>
+                        </td>
                         <td>
                             {{ $jobCard->custom_field_5 }}
                         </td>
@@ -441,40 +443,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="2" style="height: 50px; vertical-align: bottom; width: 50%;">
-                            {{ __("Customer signature") }}:
-                        </th>
-                        <th style="height: 50px; vertical-align: bottom; width: 50%;">
-                            {{ __("Authorized signature") }}:
-                        </th>
+                        <td colspan="2" class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;">
+                            {{ __("Customer signature") }}
+                        </td>
+                        <td class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;">
+                            {{ __("Authorized signature") }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        {{-- <br><br>
-
-        <div class="row">
-            <div class="col-4">
-                <div class="details_area text-start">
-                    <p class="text-uppercase borderTop fw-bold">{{ __("Customer's Signature") }}</p>
-                </div>
-            </div>
-
-            <div class="col-4">
-                <div class="details_area text-center">
-                    <p class="text-uppercase borderTop fw-bold">{{ __('Prepared By') }}</p>
-                </div>
-            </div>
-
-            <div class="col-4">
-                <div class="details_area text-end">
-                    <p class="text-uppercase borderTop fw-bold">{{ __('Authorized By') }}</p>
-                </div>
-            </div>
-        </div>
-
-        <br> --}}
 
         <div id="footer">
             <div class="row mt-1">

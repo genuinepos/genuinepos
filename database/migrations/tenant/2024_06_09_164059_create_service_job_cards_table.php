@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('job_no', 255);
             $table->unsignedBigInteger('customer_account_id');
             $table->tinyInteger('service_type');
+            $table->text('address')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('device_id')->nullable();
             $table->unsignedBigInteger('device_model_id')->nullable();

@@ -49,6 +49,10 @@ Route::prefix('services')->group(function () {
     Route::controller(JobCardController::class)->prefix('job-cards')->group(function () {
 
         Route::get('/', 'index')->name('services.job.cards.index');
+        Route::get('show/{id}', 'show')->name('services.job.cards.show');
+        Route::get('generate/pdf/{id}', 'generatePdf')->name('services.job.cards.generate.pdf');
+        Route::get('print/{id}', 'print')->name('services.job.cards.print');
+        Route::get('generate/label/{id}', 'generateLabel')->name('services.job.cards.generate.label');
         Route::get('create', 'create')->name('services.job.cards.create');
         Route::post('store', 'store')->name('services.job.cards.store');
         Route::get('edit/{id}', 'edit')->name('services.job.cards.edit');

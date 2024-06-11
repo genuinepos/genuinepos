@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Services;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Products\BrandService;
 use App\Services\Services\DeviceService;
 use App\Services\Services\StatusService;
@@ -30,15 +33,113 @@ class JobCardController extends Controller
         private ManagePriceGroupService $managePriceGroupService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
+        private BranchService $branchService,
     ) {
     }
 
-    public function index(Request $request) {
-
+    public function index(Request $request)
+    {
         if ($request->ajax()) {
 
-            $this->jobCardService->jobCardsTable(request: $request);
+            return $this->jobCardService->jobCardsTable(request: $request);
         }
+
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+
+        $devices = $this->deviceService->devices()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name']);
+
+        $deviceModels = $this->deviceModelService->deviceModels()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name', 'service_checklist']);
+
+        $status = $this->statusService->allStatus()->where('service_status.branch_id', $ownBranchIdOrParentBranchId)->orderByRaw('ISNULL(sort_order), sort_order ASC')->get(['id', 'name', 'color_code']);
+
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        return view('services.job_cards.index', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'branches'));
+    }
+
+    public function show($id)
+    {
+        $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
+            'branch',
+            'sale',
+            'branch.parentBranch',
+            'brand',
+            'device',
+            'deviceModel',
+            'status',
+            'customer',
+            'jobCardProducts',
+            'jobCardProducts.product',
+            'jobCardProducts.variant',
+            'jobCardProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'jobCardProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        return view('services.job_cards.ajax_view.show', compact('jobCard'));
+    }
+
+    public function print($id)
+    {
+        $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
+            'branch',
+            'sale',
+            'branch.parentBranch',
+            'brand',
+            'device',
+            'deviceModel',
+            'status',
+            'customer',
+            'jobCardProducts',
+            'jobCardProducts.product',
+            'jobCardProducts.variant',
+            'jobCardProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'jobCardProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        return view('services.print_templates.print_job', compact('jobCard'));
+    }
+
+    public function generatePdf($id)
+    {
+        $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
+            'branch',
+            'sale',
+            'branch.parentBranch',
+            'brand',
+            'device',
+            'deviceModel',
+            'status',
+            'customer',
+            'jobCardProducts',
+            'jobCardProducts.product',
+            'jobCardProducts.variant',
+            'jobCardProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'jobCardProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $pdf = Pdf::loadView('services.pdf.job_card_pdf', compact('jobCard'))->setBasePath(public_path())->setOptions(['defaultFont' => 'sans-serif']);;
+        return $pdf->stream('services.pdf.job_card_pdf');
+    }
+
+    public function generateLabel($id)
+    {
+        $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
+            'branch',
+            'branch.parentBranch',
+            'brand',
+            'device',
+            'deviceModel',
+            'status',
+            'customer',
+            'createdBy:id,prefix,name,last_name',
+        ]);
+
+        return view('services.print_templates.print_label', compact('jobCard'));
     }
 
     public function create(CodeGenerationServiceInterface $codeGenerator)
@@ -78,6 +179,49 @@ class JobCardController extends Controller
         $jobCardNo = $codeGenerator->generateMonthWise(table: 'service_job_cards', column: 'job_no', prefix: $jobCardNoPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist', 'jobCardNo'));
+    }
+
+    public function edit($id)
+    {
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
+            'jobCardProducts',
+            'jobCardProducts.product',
+            'jobCardProducts.variant',
+            'jobCardProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'jobCardProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+
+        $devices = $this->deviceService->devices()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name']);
+
+        $deviceModels = $this->deviceModelService->deviceModels()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name', 'service_checklist']);
+
+        $status = $this->statusService->allStatus()->where('service_status.branch_id', $ownBranchIdOrParentBranchId)->orderByRaw('ISNULL(sort_order), sort_order ASC')->get(['id', 'name', 'color_code']);
+
+        $priceGroupProducts = $this->managePriceGroupService->priceGroupProducts();
+
+        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+
+        $generalSettings = config('generalSettings');
+        $productConfigurationItems = isset($generalSettings['service_settings__product_configuration']) ? explode(',', $generalSettings['service_settings__product_configuration']) : null;
+
+        $defaultProblemsReportItems = isset($generalSettings['service_settings__default_problems_report']) ? explode(',', $generalSettings['service_settings__default_problems_report']) : null;
+
+        $defaultProductConditionItems = isset($generalSettings['service_settings__product_condition']) ? explode(',', $generalSettings['service_settings__product_condition']) : null;
+
+        $defaultChecklist = isset($generalSettings['service_settings__default_checklist']) ? $generalSettings['service_settings__default_checklist'] : null;
+
+        return view('services.job_cards.edit', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist'));
     }
 
     function store(JobCardStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)

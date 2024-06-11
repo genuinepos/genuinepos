@@ -2,14 +2,15 @@
 
 namespace App\Models\Services;
 
+use App\Models\User;
+use App\Models\Sales\Sale;
+use App\Models\Setups\Branch;
 use App\Models\Products\Brand;
 use App\Models\Services\Device;
 use App\Models\Services\Status;
 use App\Models\Accounts\Account;
 use App\Models\Services\DeviceModel;
 use App\Models\Services\JobCardProduct;
-use App\Models\Setups\Branch;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -56,6 +57,11 @@ class JobCard extends Model
     public function jobCardProducts()
     {
         return $this->hasMany(JobCardProduct::class, 'job_card_id');
+    }
+
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class, 'sale_id');
     }
 
     public function createdBy()

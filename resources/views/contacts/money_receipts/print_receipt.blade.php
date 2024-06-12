@@ -231,11 +231,11 @@
                     <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
-                <div class="col-4 text-center">
+                {{-- <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
                         <small class="d-block" style="font-size: 9px!important;">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
                     @endif
-                </div>
+                </div> --}}
 
                 <div class="col-4 text-end">
                     <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>

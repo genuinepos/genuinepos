@@ -13,6 +13,7 @@ return [
     'hrm' => true,
     'employee_count' => '',
     'manufacturing' => true,
+    'services' => true,
     'task_management' => true,
     'communication' => true,
     'setup' => true,

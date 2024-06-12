@@ -2362,6 +2362,149 @@
                             </div>
                         @endif
 
+                        @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == 1)
+                            <div class="accordion-item mb-1">
+                                <div class="form_element rounded mt-0 mb-0">
+                                    <div class="accordion-header d-flex">
+                                        <p class="checkbox_input_wrap ">
+                                            <input type="checkbox" class="ms-2" id="select_all" data-target="services" autocomplete="off">
+                                        </p>
+                                        <a data-bs-toggle="collapse" class="collapsed" href="#service_permission" aria-expanded="false">
+                                            {{ __('Service Permissions') }}
+                                        </a>
+                                    </div>
+                                    <div id="service_permission" class="collapse" data-bs-parent="#service_permission" style="">
+                                        <div class="element-body border-top">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="service_settings" id="select_all" data-target="service_settings" autocomplete="off">
+                                                            <strong>{{ __('Settings') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="status_index" id="status_index" class="service_settings services">
+                                                        <label for="status_index">{{ __('Status View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="status_create" id="status_create" class="service_settings services">
+                                                        <label for="status_create">{{ __('Status Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="status_edit" id="status_edit" class="service_settings services">
+                                                        <label for="status_edit">{{ __('Status Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="status_delete" id="status_delete" class="service_settings services">
+                                                        <label for="status_delete"> {{ __('Status Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="devices_index" id="devices_index" class="service_settings services">
+                                                        <label for="devices_index">{{ __('Device View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="devices_create" id="devices_create" class="service_settings services">
+                                                        <label for="devices_create"> {{ __('Device Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="devices_edit" id="devices_edit" class="service_settings services">
+                                                        <label for="devices_edit"> {{ __('Device Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="devices_delete" id="devices_delete" class="service_settings services">
+                                                        <label for="devices_delete">{{ __('Device Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="device_models_index" id="device_models_index" class="service_settings services">
+                                                        <label for="device_models_index">{{ __('Device Model View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="device_models_create" id="device_models_create" class="service_settings services">
+                                                        <label for="device_models_create"> {{ __('Device Model Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="device_models_edit" id="device_models_edit" class="service_settings services">
+                                                        <label for="device_models_edit"> {{ __('Device Model Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="device_models_delete" id="device_models_delete" class="service_settings services">
+                                                        <label for="device_models_delete">{{ __('Device Model Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="servicing_settings" id="servicing_settings" class="service_settings services">
+                                                        <label for="servicing_settings">{{ __('Servicing Settings') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_card_pdf_print_label_settings" id="job_card_pdf_print_label_settings" class="service_settings services">
+                                                        <label for="job_card_pdf_print_label_settings">{{ __('Job Card Print/Pdf & Label Settings') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="job_cards" id="select_all" data-target="job_cards" autocomplete="off">
+                                                            <strong>{{ __('Job Cards') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_index" id="job_cards_index" class="job_cards services">
+                                                        <label for="job_cards_index">{{ __('Job Card View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_create" id="job_cards_create" class="job_cards services">
+                                                        <label for="job_cards_create">{{ __('Job Card Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_edit" id="status_edit" class="job_cards services">
+                                                        <label for="job_cards_edit">{{ __('Job Card Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_delete" id="job_cards_delete" class="job_cards services">
+                                                        <label for="job_cards_delete"> {{ __('Job Card Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_generate_pdf" id="job_cards_generate_pdf" class="job_cards services">
+                                                        <label for="job_cards_generate_pdf">{{ __('Job Card Generate Pdf') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_generate_label" id="job_cards_generate_label" class="job_cards services">
+                                                        <label for="job_cards_generate_label">{{ __('Job Card Generate Label') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="job_cards_change_status" id="job_cards_change_status" class="job_cards services">
+                                                        <label for="job_cards_change_status"> {{ __('Job Card Change Status') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">
                                 <div class="accordion-header d-flex">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Services;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeviceModelDeleteRequest extends FormRequest
@@ -11,7 +12,7 @@ class DeviceModelDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('device_models_delete') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

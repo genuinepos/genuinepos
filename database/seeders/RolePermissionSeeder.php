@@ -605,6 +605,32 @@ class RolePermissionSeeder extends Seeder
             ['id' => '409', 'name' => 'allowances_and_deductions_create'],
             ['id' => '410', 'name' => 'allowances_and_deductions_edit'],
             ['id' => '411', 'name' => 'allowances_and_deductions_delete'],
+
+            ['id' => '412', 'name' => 'status_index'],
+            ['id' => '413', 'name' => 'status_create'],
+            ['id' => '414', 'name' => 'status_edit'],
+            ['id' => '415', 'name' => 'status_delete'],
+
+            ['id' => '416', 'name' => 'devices_index'],
+            ['id' => '417', 'name' => 'devices_create'],
+            ['id' => '418', 'name' => 'devices_edit'],
+            ['id' => '419', 'name' => 'devices_delete'],
+
+            ['id' => '420', 'name' => 'device_models_index'],
+            ['id' => '421', 'name' => 'device_models_create'],
+            ['id' => '422', 'name' => 'device_models_edit'],
+            ['id' => '423', 'name' => 'device_models_delete'],
+
+            ['id' => '424', 'name' => 'servicing_settings'],
+            ['id' => '425', 'name' => 'job_card_pdf_print_label_settings'],
+
+            ['id' => '426', 'name' => 'job_cards_index'],
+            ['id' => '427', 'name' => 'job_cards_create'],
+            ['id' => '428', 'name' => 'job_cards_edit'],
+            ['id' => '429', 'name' => 'job_cards_delete'],
+            ['id' => '430', 'name' => 'job_cards_generate_pdf'],
+            ['id' => '431', 'name' => 'job_cards_generate_label'],
+            ['id' => '432', 'name' => 'job_cards_change_status'],
         ];
 
         return $permissions;

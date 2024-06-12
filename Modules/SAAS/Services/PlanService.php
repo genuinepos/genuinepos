@@ -163,6 +163,7 @@ class PlanService implements PlanServiceInterface
             'hrm' => isset($request->features['hrm']) ? 1 : 0,
             'employee_count' => isset($request->features['employee_count']) ? $request->features['employee_count'] : 0,
             'manufacturing' => isset($request->features['manufacturing']) ? $request->features['manufacturing'] : 0,
+            'services' => isset($request->features['services']) ? $request->features['services'] : 0,
             'task_management' => isset($request->features['task_management']) ? 1 : 0,
             'communication' => isset($request->features['communication']) ? 1 : 0,
             'setup' => isset($request->features['setup']) ? 1 : 0,

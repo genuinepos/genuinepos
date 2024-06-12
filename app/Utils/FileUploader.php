@@ -33,6 +33,7 @@ class FileUploader
             } catch (Exception $e) {
             }
         }
+
         $fileFullNameWithExtension = trim($file->getClientOriginalName());
         $arr = preg_split('/\./', $fileFullNameWithExtension);
         $extension = array_pop($arr);

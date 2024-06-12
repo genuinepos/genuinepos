@@ -23,4 +23,7 @@
         $('.' + show_content).show();
         $(this).addClass('tab_active');
     });
+
+    $('#tab_btn').addClass('tab_active');
+    $('#tab_contant').removeClass('d-hide');
 </script>

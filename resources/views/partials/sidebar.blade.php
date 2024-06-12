@@ -130,12 +130,16 @@
                     @endif
                 @endif
 
-                <li data-menu="service" class="{{ request()->is('services*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
-                        <p class="title">{{ __("Service") }}</p>
-                    </a>
-                </li>
+                @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == '1' && $generalSettings['modules__service'] == '1')
+                    @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('job_cards_index') || auth()->user()->can('job_cards_create') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                        <li data-menu="service" class="{{ request()->is('services*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
+                                <p class="title">{{ __('Services') }}</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
 
                 @if ($generalSettings['subscription']->features['task_management'] == 1 && $generalSettings['modules__manage_task'] == 1)
                     @if (auth()->user()->can('todo_index') || auth()->user()->can('workspaces_index') || auth()->user()->can('messages_index'))
@@ -2021,7 +2025,7 @@
                 @endif
             @endif
 
-            @if ($generalSettings['subscription']->features['manufacturing'] == 1 && $generalSettings['modules__manufacturing'] == 1)
+            @if ($generalSettings['subscription']->features['manufacturing'] == '1' && $generalSettings['modules__manufacturing'] == '1')
                 @if (auth()->user()->can('process_view') || auth()->user()->can('production_view') || auth()->user()->can('manufacturing_report'))
                     <div class="sub-menu_t" id="manufacture">
                         <div class="sub-menu-width">
@@ -2099,141 +2103,122 @@
                 @endif
             @endif
 
-            <div class="sub-menu_t" id="service">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-md-4">
-                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container-fluid">
-                        <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">{{ __('Service') }}</p>
-                            <div class="sub-menu-row">
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-plus-circle"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Add Job Card') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Job Card List') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-plus-circle"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Add Invoice') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Invoice List') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-plus-circle"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Add Quotation') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Quotation List') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-list"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Brands') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="{{ route('services.index') }}" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-cogs"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Settings') }}</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-{{--
-                        @if (auth()->user()->can('manufacturing_report'))
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Manufacturing Reports') }}</p>
-                                <div class="sub-menu-row">
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('reports.production.report.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-list"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Production Report') }}</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('reports.ingredients.report.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-list"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Ingredients Report') }}</p>
-                                        </a>
+            @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == '1' && $generalSettings['modules__service'] == '1')
+                @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('job_cards_index') || auth()->user()->can('job_cards_create') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                    <div class="sub-menu_t" id="service">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                     </div>
                                 </div>
                             </div>
-                        @endif --}}
+
+                            <div class="container-fluid">
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Service') }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('job_cards_create'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('services.job.cards.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Add Job Card') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+
+                                        @if (auth()->user()->can('job_cards_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('services.job.cards.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Job Card List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-plus-circle"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Add Invoice') }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Invoice List') }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-plus-circle"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Add Quotation') }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Quotation List') }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Brands') }}</p>
+                                            </a>
+                                        </div>
+
+                                        @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('services.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-cogs"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Settings') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                @endif
+            @endif
 
             @if ($generalSettings['subscription']->features['task_management'] == 1)
                 <div class="sub-menu_t" id="task-management">

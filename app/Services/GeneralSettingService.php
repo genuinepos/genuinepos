@@ -114,6 +114,8 @@ class GeneralSettingService implements GeneralSettingServiceInterface
         $businessLogo->value = null;
         $businessLogo->save();
 
+        $this->cacheService->forgetGeneralSettingsCache();
+
         return true;
     }
 

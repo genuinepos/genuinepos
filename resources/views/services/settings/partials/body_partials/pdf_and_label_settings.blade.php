@@ -7,10 +7,10 @@
         margin-right: 8px;
     }
 </style>
-<div class="tab_contant job_card_pdf_and_label d-hide">
+<div class="tab_contant job_card_pdf_and_label d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
-            <h6>{{ __('Job Card Print/PDF & Label') }}</h6>
+            <h6>{{ __('Job Card Print/Pdf & Label') }}</h6>
         </div>
     </div>
 
@@ -282,7 +282,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label><b>{{ __('Technician') }}</b></label>
-                                    <select name="sales_person_in_label" class="form-control" id="service_settings_pdf_label_technician_in_label">
+                                    <select name="technician_in_label" class="form-control" id="service_settings_pdf_label_technician_in_label">
                                         @php
                                             $technicianInLabel = isset($generalSettings['service_settings_pdf_label__technician_in_label']) ? $generalSettings['service_settings_pdf_label__technician_in_label'] : null;
                                         @endphp
@@ -293,9 +293,9 @@
 
                                 <div class="col-md-12 mt-1">
                                     <label><b>{{ __('Problems') }}</b></label>
-                                    <select name="problems_in_label" class="form-control" id="service_settings_pdf_label_problems_in_label_in_label">
+                                    <select name="problems_in_label" class="form-control" id="service_settings_pdf_label_problems_in_label">
                                         @php
-                                            $problemsInLabel = isset($generalSettings['service_settings_pdf_label__problems_in_label_in_label']) ? $generalSettings['service_settings_pdf_label__problems_in_label_in_label'] : null;
+                                            $problemsInLabel = isset($generalSettings['service_settings_pdf_label__problems_in_label']) ? $generalSettings['service_settings_pdf_label__problems_in_label'] : null;
                                         @endphp
                                         <option value="1">{{ __('Yes') }}</option>
                                         <option @selected($problemsInLabel == '0') value="0">{{ __('No') }}</option>
@@ -340,17 +340,6 @@
                                         @endphp
                                         <option value="1">{{ __('Yes') }}</option>
                                         <option @selected($modelInLabel == '0') value="0">{{ __('No') }}</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-12 mt-1">
-                                    <label><b>{{ __('Location') }}</b></label>
-                                    <select name="location_in_label" class="form-control" id="service_settings_pdf_label_location_in_label">
-                                        @php
-                                            $locationInLabel = isset($generalSettings['service_settings_pdf_label__location_in_label']) ? $generalSettings['service_settings_pdf_label__location_in_label'] : null;
-                                        @endphp
-                                        <option value="1">{{ __('Yes') }}</option>
-                                        <option @selected($locationInLabel == '0') value="0">{{ __('No') }}</option>
                                     </select>
                                 </div>
 

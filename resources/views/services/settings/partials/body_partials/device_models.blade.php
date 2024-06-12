@@ -1,4 +1,4 @@
-<div class="tab_contant device_models d-hide">
+<div class="tab_contant device_models d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
             <h6>{{ __('List of Device Models') }}</h6>

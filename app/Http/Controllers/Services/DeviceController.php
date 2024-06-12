@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Services;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Services\DeviceService;
@@ -17,6 +18,8 @@ class DeviceController extends Controller
 
     public function devicesTable(Request $request)
     {
+        abort_if(!auth()->user()->can('devices_index') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
+
         if ($request->ajax()) {
 
             return $this->deviceService->devicesTable();
@@ -25,6 +28,8 @@ class DeviceController extends Controller
 
     public function create()
     {
+        abort_if(!auth()->user()->can('devices_create') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
+
         return view('services.settings.ajax_views.devices.create');
     }
 
@@ -35,6 +40,8 @@ class DeviceController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('devices_edit') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
+
         $device = $this->deviceService->singleDevice(id: $id);
         return view('services.settings.ajax_views.devices.edit', compact('device'));
     }

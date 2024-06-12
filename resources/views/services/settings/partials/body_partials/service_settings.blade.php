@@ -7,7 +7,7 @@
     margin-right: 8px;
 }
 </style>
-<div class="tab_contant service_settings d-hide">
+<div class="tab_contant service_settings d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
             <h6>{{ __('Service Settings') }}</h6>

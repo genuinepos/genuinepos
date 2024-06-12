@@ -1,4 +1,8 @@
 @extends('layout.master')
+@php
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+@endphp
 @push('stylesheets')
     <style>
         b {
@@ -108,7 +112,7 @@
                                                     <div class="input-group flex-nowrap">
                                                         <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="date">
                                                             @foreach ($customerAccounts as $customerAccount)
-                                                                <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                                <option @selected($customerAccount->id == $jobCard->customer_account_id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -125,7 +129,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Job Card No.') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" name="job_card_no" class="form-control fw-bold" id="job_card_no" value="{{ $jobCardNo }}" placeholder="{{ __('Job Card No.') }}" tabindex="-1">
+                                                    <input readonly type="text" name="job_card_no" class="form-control fw-bold" id="job_card_no" value="{{ $jobCard->job_no }}" placeholder="{{ __('Job Card No.') }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -134,7 +138,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" placeholder="{{ __('Date') }}" autocomplete="off">
+                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" value="{{ date($dateFormat, strtotime($jobCard->date_ts)) }}" placeholder="{{ __('Date') }}" autocomplete="off">
                                                     <span class="error error_date"></span>
                                                 </div>
                                             </div>
@@ -148,7 +152,7 @@
                                                 <div class="col-8">
                                                     <select required name="service_type" class="form-control" id="service_type" data-next="status_id">
                                                         @foreach (\App\Enums\ServiceType::cases() as $item)
-                                                            <option value="{{ $item->value }}">{{ str($item->name)->headline() }}</option>
+                                                            <option @selected($item->value == $jobCard->service_type) value="{{ $item->value }}">{{ str($item->name)->headline() }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -156,11 +160,11 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 pick_up_on_address_field d-hide">
+                                        <div class="col-md-4 pick_up_on_address_field {{ $jobCard->service_type == 1 ? 'd-hide' : '' }} ">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Pick Up/On site address') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="address" class="form-control" id="address" placeholder="{{ __('Pick up/On site address') }}">
+                                                    <input type="text" name="address" class="form-control" id="address" value="{{ $jobCard->address }}" placeholder="{{ __('Pick up/On site address') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +173,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" value="{{ isset($jobCard->date_ts) ? date($dateFormat, strtotime($jobCard->date_ts)) : '' }}" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -188,7 +192,7 @@
                                                         <select name="brand_id" class="form-control select2" id="brand_id">
                                                             <option value="">{{ __('Select Brand') }}</option>
                                                             @foreach ($brands as $brand)
-                                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                <option @selected($brand->id == $jobCard->brand_id) value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -208,7 +212,7 @@
                                                         <select name="device_id" class="form-control select2" id="device_id">
                                                             <option value="">{{ __('Select Device') }}</option>
                                                             @foreach ($devices as $device)
-                                                                <option value="{{ $device->id }}">{{ $device->name }}</option>
+                                                                <option @selected($device->id == $jobCard->device_id) value="{{ $device->id }}">{{ $device->name }}</option>
                                                             @endforeach
                                                         </select>
                                                         <div class="input-group-prepend">
@@ -227,7 +231,7 @@
                                                         <select name="device_model_id" class="form-control select2" id="device_model_id">
                                                             <option value="">{{ __('Select Device Model') }}</option>
                                                             @foreach ($deviceModels as $deviceModel)
-                                                                <option data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
+                                                                <option @selected($deviceModel->id == $jobCard->device_model_id) data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -246,7 +250,31 @@
                                         </div>
 
                                         <hr>
-                                        <div class="row gx-2 gy-1" id="check_list_area">
+                                        <div class="row gx-3" id="check_list_area">
+                                            @if (isset($jobCard->service_checklist) && is_array($jobCard->service_checklist))
+                                                @php
+                                                    $index = 0;
+                                                @endphp
+                                                @foreach ($jobCard->service_checklist as $key => $value)
+                                                    <div class="col-md-2">
+                                                        <p class="fw-bold text-primary">{{ $key }}</p>
+                                                        <div class="switch-toggle switch-candy">
+                                                            <input type="radio" @checked($value == 'yes') id="{{ $index }}_yes" name="checklist[{{ $key }}]" value="yes">
+                                                            <label for="{{ $index }}_yes" class="text-success">✔</label>
+
+                                                            <input type="radio" @checked($value == 'no') id="{{ $index }}_no" name="checklist[{{ $key }}]"  value="no">
+                                                            <label for="{{ $index }}_no" class="text-danger">❌</label>
+
+                                                            <input type="radio" @checked($value == 'na') id="{{ $index }}_na" name="checklist[{{ $key }}]" value="na">
+                                                            <label for="{{ $index }}_na">N/A</label>
+                                                            <a></a>
+                                                        </div>
+                                                    </div>
+                                                    @php
+                                                        $index++;
+                                                    @endphp
+                                                @endforeach
+                                            @endif
                                         </div>
                                         <hr>
                                     </div>
@@ -256,7 +284,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Serial Number') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="serial_number" class="form-control" id="serial_number" placeholder="{{ __('Serial Number') }}">
+                                                    <input type="text" name="serial_no" class="form-control" id="serial_no" value="{{ $jobCard->serial_no }}" placeholder="{{ __('Serial Number') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -265,7 +293,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Password') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="password" class="form-control" id="password" placeholder="{{ __('Password') }}">
+                                                    <input type="text" name="password" class="form-control" id="password" value="{{ $jobCard->password }}" placeholder="{{ __('Password') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -276,7 +304,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Product Configuration') }}</b></label>
                                                 <div class="col-8">
-                                                    <input name="product_configuration" class="tags-look" id="product_configuration" placeholder="{{ __('Product Configuration') }}">
+                                                    <input name="product_configuration" class="tags-look" id="product_configuration" value="{{ $jobCard->product_configuration }}" placeholder="{{ __('Product Configuration') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +313,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Problem Reports') }}</b></label>
                                                 <div class="col-8">
-                                                    <input name="problems_report" class="tags-look" id="problems_report" placeholder="{{ __('Problem Reported By The Customer') }}">
+                                                    <input name="problems_report" class="tags-look" id="problems_report" value="{{ $jobCard->problems_report }}" placeholder="{{ __('Problem Reported By The Customer') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -294,7 +322,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Product Condition') }}</b></label>
                                                 <div class="col-8">
-                                                    <input name="product_condition" class="tags-look" id="product_condition" placeholder="{{ __('Condition Of The Product') }}">
+                                                    <input name="product_condition" class="tags-look" id="product_condition" value="{{ $jobCard->product_condition }}" placeholder="{{ __('Condition Of The Product') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -365,13 +393,13 @@
 
                                         <div class="col-xl-2 col-md-6">
                                             <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                            <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                            <input type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                                         </div>
 
                                         <div class="col-xl-2 col-md-6">
                                             <label class="fw-bold">{{ __('Discount') }}</label>
                                             <div class="input-group">
-                                                <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
 
                                                 <select id="e_discount_type" class="form-control">
                                                     <option value="1">{{ __('Fixed') }}(0.00)</option>
@@ -429,7 +457,81 @@
                                                                 <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="jobcard_product_list"></tbody>
+                                                        <tbody id="jobcard_product_list">
+                                                            @php
+                                                                $itemUnitsArray = [];
+                                                            @endphp
+
+                                                            @foreach ($jobCard->jobCardProducts as $jobCardProduct)
+                                                                @php
+                                                                    if (isset($jobCardProduct->product_id)) {
+                                                                        $itemUnitsArray[$jobCardProduct->product_id][] = [
+                                                                            'unit_id' => $jobCardProduct->product->unit->id,
+                                                                            'unit_name' => $jobCardProduct->product->unit->name,
+                                                                            'unit_code_name' => $jobCardProduct->product->unit->code_name,
+                                                                            'base_unit_multiplier' => 1,
+                                                                            'multiplier_details' => '',
+                                                                            'is_base_unit' => 1,
+                                                                        ];
+                                                                    }
+
+                                                                    $baseUnitMultiplier = $jobCardProduct?->unit?->base_unit_multiplier ? $jobCardProduct?->unit?->base_unit_multiplier : 1;
+                                                                @endphp
+
+                                                                <tr id="select_item">
+                                                                    <td class="text-start">
+                                                                        @php
+                                                                            $variant = $jobCardProduct->variant_id ? ' -' . $jobCardProduct->variant->variant_name : '';
+
+                                                                            $variantId = $jobCardProduct->variant_id ? $jobCardProduct->variant_id : 'noid';
+
+                                                                            $baseUnitMultiplier = $jobCardProduct?->unit?->base_unit_multiplier ? $jobCardProduct?->unit?->base_unit_multiplier : 1;
+                                                                        @endphp
+
+                                                                        <span class="product_name">{{ $jobCardProduct->product->name . $variant }} {!! $jobCardProduct?->product?->is_manage_stock == 0 ? ' <span class="badge badge-sm bg-primary"><i class="fas fa-wrench mr-1 text-white"></i></span>' : '' !!}</span>
+                                                                        <input type="hidden" id="item_name" value="{{ $jobCardProduct->product->name . $variant }}">
+                                                                        <input type="hidden" name="product_ids[]" id="product_id" value="{{ $jobCardProduct->product_id }}">
+                                                                        <input type="hidden" value="{{ $variantId }}" id="variant_id" name="variant_ids[]">
+                                                                        <input type="hidden" name="tax_types[]" id="tax_type" value="{{ $jobCardProduct->tax_type }}">
+                                                                        <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $jobCardProduct->tax_ac_id }}">
+                                                                        <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $jobCardProduct->unit_tax_percent }}">
+                                                                        <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $jobCardProduct->unit_tax_amount }}">
+                                                                        <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $jobCardProduct->unit_discount_type }}">
+                                                                        <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $jobCardProduct->unit_discount }}">
+                                                                        <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $jobCardProduct->unit_discount_amount }}">
+                                                                        <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $jobCardProduct->unit_cost_inc_tax }}">
+                                                                        <input type="hidden" name="job_card_product_ids[]" value="{{ $jobCardProduct->id }}">
+
+                                                                        <input type="hidden" class="unique_id" id="{{ $jobCardProduct->product_id . $variantId }}" value="{{ $jobCardProduct->product_id . $variantId }}">
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <span id="span_quantity" class="fw-bold">{{ $jobCardProduct->quantity }}</span>
+                                                                        <input type="hidden" name="quantities[]" id="quantity" value="{{ $jobCardProduct->quantity }}">
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <span id="span_unit">{{ $jobCardProduct?->unit?->name }}</span>
+                                                                        <input type="hidden" name="unit_ids[]" id="unit_id" value="{{ $jobCardProduct?->unit?->id }}">
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="{{ $jobCardProduct->unit_price_exc_tax }}">
+                                                                        <input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="{{ $jobCardProduct->unit_price_inc_tax }}">
+                                                                        <span id="span_unit_price_inc_tax" class="fw-bold">{{ $jobCardProduct->unit_price_inc_tax }}</span>
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <strong><span id="span_subtotal">{{ $jobCardProduct->subtotal }}</span></strong>
+                                                                        <input type="hidden" value="{{ $jobCardProduct->subtotal }}" readonly name="subtotals[]" id="subtotal">
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -444,7 +546,7 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Technician Comment') }}</b></label>
-                                                <input type="text" name="technical_comment" class="form-control" id="technical_comment" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
+                                                <input type="text" name="technician_comment" class="form-control" id="technician_comment" value="{{ $jobCard->technician_comment }}" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
                                             </div>
                                         </div>
 
@@ -456,10 +558,7 @@
                                                         <select name="status_id" class="form-control select2" id="status_id" data-next="save_and_print">
                                                             <option value="">{{ __('Select Status') }}</option>
                                                             @foreach ($status as $status)
-                                                                @php
-                                                                    $defaultStatus = isset($generalSettings['service_settings__default_status_id']) ? $generalSettings['service_settings__default_status_id'] : null;
-                                                                @endphp
-                                                                <option @selected($defaultStatus == $status->id) value="{{ $status->id }}" data-icon="fa-solid fa-circle" data-color="{{ $status->color_code }}">{{ $status->name }}</option>
+                                                                <option @selected($jobCard->status_id == $status->id) value="{{ $status->id }}" data-icon="fa-solid fa-circle" data-color="{{ $status->color_code }}">{{ $status->name }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -475,7 +574,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Total Cost') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_cost" class="form-control fw-bold" id="total_cost" placeholder="{{ __('0.00') }}" tabindex="-1">
+                                                    <input readonly type="number" step="any" name="total_cost" class="form-control fw-bold" id="total_cost" value="{{ $jobCard->total_cost }}" placeholder="{{ __('0.00') }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -486,7 +585,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Document') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="file" name="document" class="form-control" id="document" autocomplete="off">
+                                                    <input type="file" name="document" class="form-control" id="document" @if ($jobCard->document) data-default-file="{{ asset('uploads/' . tenant('id') . '/' . 'services/documents/' . $jobCard->document) }}" @endif>
                                                     <span class="error error_document"></span>
                                                 </div>
                                             </div>
@@ -496,7 +595,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Due Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="due_date" class="form-control" id="due_date" placeholder="{{ __('Due Date') }}" autocomplete="off">
+                                                    <input type="text" name="due_date" class="form-control" id="due_date" value="{{ isset($jobCard->due_date) ? date($dateFormat, strtotime($jobCard->due_date)) : '' }}" placeholder="{{ __('Due Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -523,21 +622,21 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_1" class="form-control" id="custom_field_1" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_1" class="form-control" id="custom_field_1" value="{{ $jobCard->custom_field_1 }}" placeholder="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_2" class="form-control" id="custom_field_2" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }}</b></label>
+                                                <input type="text" name="custom_field_2" class="form-control" id="custom_field_2" value="{{ $jobCard->custom_field_2 }}" placeholder="{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_3" class="form-control" id="custom_field_3" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }}" autocomplete="off">
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }}</b></label>
+                                                <input type="text" name="custom_field_3" class="form-control" id="custom_field_3" value="{{ $jobCard->custom_field_3 }}" placeholder="{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }}" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -546,14 +645,14 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}</b></label>
-                                                <input type="text" name="custom_field_4" class="form-control" id="custom_field_4" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_4" class="form-control" id="custom_field_4" value="{{ $jobCard->custom_field_4 }}" placeholder="{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}</b></label>
-                                                <input type="text" name="custom_field_5" class="form-control" id="custom_field_5" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_5" class="form-control" id="custom_field_5" value="{{ $jobCard->custom_field_5 }}" placeholder="{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>

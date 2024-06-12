@@ -69,15 +69,29 @@ class JobCardService
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a href="' . route('services.job.cards.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
-                $html .= '<a class="dropdown-item" href="' . route('services.job.cards.generate.pdf', [$row->id]) . '" target="_blank">' . __('Generate Pdf') . '</a>';
+                if (auth()->user()->can('job_cards_generate_pdf')) {
 
-                $html .= '<a class="dropdown-item" href="' . route('services.job.cards.generate.label', [$row->id]) . '" id="generateLabel">' . __('Generate Label') . '</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('services.job.cards.generate.pdf', [$row->id]) . '" target="_blank">' . __('Generate Pdf') . '</a>';
+                }
+
+                if (auth()->user()->can('job_cards_generate_label')) {
+
+                    $html .= '<a class="dropdown-item" href="' . route('services.job.cards.generate.label', [$row->id]) . '" id="generateLabel">' . __('Generate Label') . '</a>';
+                }
+
+                if (auth()->user()->branch_id == $row->branch_id) {
+
+                    if (auth()->user()->can('job_cards_change_status')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('services.job.cards.change.status.modal', $row->id) . '" id="changeStatus">' . __('Change Status') . '</a>';
+                    }
+                }
 
                 $html .= '<a class="dropdown-item" href="#">' . __('Add Invoice') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('edit_add_sale')) {
+                    if (auth()->user()->can('job_cards_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('services.job.cards.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
@@ -85,7 +99,7 @@ class JobCardService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('delete_add_sale')) {
+                    if (auth()->user()->can('job_cards_delete')) {
 
                         $html .= '<a href="' . route('services.job.cards.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
@@ -215,7 +229,7 @@ class JobCardService
             $addJobCard->product_condition = $__productCondition;
         }
 
-        $addJobCard->technical_comment = $request->technical_comment;
+        $addJobCard->technician_comment = $request->technician_comment;
         $addJobCard->status_id = $request->status_id;
         $addJobCard->send_notification = $request->send_notification;
         $addJobCard->custom_field_1 = $request->custom_field_1;
@@ -243,6 +257,105 @@ class JobCardService
         return $addJobCard;
     }
 
+    public function updateJobCard(int $id, object $request): object
+    {
+        $updateJobCard = $this->singleJobCard(id: $id);
+        $updateJobCard->customer_account_id = $request->customer_account_id;
+        $updateJobCard->service_type = $request->service_type;
+        $updateJobCard->address = $request->address;
+        $updateJobCard->brand_id = $request->brand_id;
+        $updateJobCard->device_id = $request->device_id;
+        $updateJobCard->device_model_id = $request->device_model_id;
+        $updateJobCard->service_checklist = isset($request->checklist) ? $request->checklist : null;
+        $updateJobCard->serial_no = $request->serial_no;
+        $updateJobCard->password = $request->password;
+
+        if (isset($request->product_configuration)) {
+
+            $productConfiguration = array_map(fn ($item) => $item['value'], json_decode($request->product_configuration, true));
+            $__productConfiguration = implode(', ', $productConfiguration);
+
+            $updateJobCard->product_configuration = $__productConfiguration;
+        }
+
+        if (isset($request->problems_report)) {
+
+            $problemsReport = array_map(fn ($item) => $item['value'], json_decode($request->problems_report, true));
+            $__problemsReport = implode(', ', $problemsReport);
+
+            $updateJobCard->problems_report = $__problemsReport;
+        }
+
+        if (isset($request->product_condition)) {
+
+            $productCondition = array_map(fn ($item) => $item['value'], json_decode($request->product_condition, true));
+            $__productCondition = implode(', ', $productCondition);
+
+            $updateJobCard->product_condition = $__productCondition;
+        }
+
+        $updateJobCard->technician_comment = $request->technician_comment;
+        $updateJobCard->status_id = $request->status_id;
+        $updateJobCard->send_notification = $request->send_notification;
+        $updateJobCard->custom_field_1 = $request->custom_field_1;
+        $updateJobCard->custom_field_2 = $request->custom_field_2;
+        $updateJobCard->custom_field_3 = $request->custom_field_3;
+        $updateJobCard->custom_field_4 = $request->custom_field_4;
+        $updateJobCard->custom_field_5 = $request->custom_field_5;
+        $updateJobCard->total_item = $request->total_item ? $request->total_item : 0;
+        $updateJobCard->total_qty = $request->total_qty ? $request->total_qty : 0;
+        $updateJobCard->total_cost = $request->total_cost ? $request->total_cost : 0;
+        $time = date(' H:i:s', strtotime($updateJobCard->date_ts));
+        $updateJobCard->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $time = isset($request->delivery_date) ? date(' H:i:s', strtotime($updateJobCard->delivery_date)) : date(' H:i:s');
+        $updateJobCard->delivery_date_ts = isset($request->delivery_date) ? date('Y-m-d H:i:s', strtotime($request->delivery_date . $time)) : null;
+        $time = isset($request->due_date_ts) ? date(' H:i:s', strtotime($updateJobCard->due_date_ts)) : date(' H:i:s');
+        $updateJobCard->due_date_ts = isset($request->due_date) ? date('Y-m-d H:i:s', strtotime($request->due_date . $time)) : null;
+
+        if ($request->hasFile('document')) {
+
+            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
+            if (isset($updateJobCard->document) && file_exists($dir . $updateJobCard->document)) {
+
+                unlink($dir . $updateJobCard->document);
+            }
+
+            $updateJobCard->document = FileUploader::upload($request->file('document'), $dir);
+        }
+
+        $updateJobCard->save();
+
+        return $updateJobCard;
+    }
+
+    public function updateJobCardStatus(int $id, object $request): void
+    {
+        $updateJobCard = $this->singleJobCard(id: $id);
+
+        if (isset($updateJobCard)) {
+
+            $updateJobCard->status_id = $request->status_id;
+            $updateJobCard->save();
+        }
+    }
+
+    public function deleteJobCard(int $id): array
+    {
+        $deleteJobCard = $this->singleJobCard(id: $id, with: ['sale']);
+
+        if (isset($deleteJobCard)) {
+
+            if (isset($deleteJobCard->sale)) {
+
+                return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is added against this job card.')];
+            }
+
+            $deleteJobCard->delete();
+        }
+
+        return ['pass' => true];
+    }
+
     public function singleJobCard(int $id, array $with = null): ?object
     {
         $query = JobCard::query();
@@ -266,6 +379,21 @@ class JobCardService
 
                 $query->where('service_job_cards.branch_id', $request->branch_id);
             }
+        }
+
+        if ($request->brand_id) {
+
+            $query->where('service_job_cards.brand_id', $request->brand_id);
+        }
+
+        if ($request->device_id) {
+
+            $query->where('service_job_cards.device_id', $request->device_id);
+        }
+
+        if ($request->device_model_id) {
+
+            $query->where('service_job_cards.device_model_id', $request->device_model_id);
         }
 
         if ($request->service_type) {
@@ -292,7 +420,6 @@ class JobCardService
 
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('service_job_cards.date_ts', $date_range); // Final
         }

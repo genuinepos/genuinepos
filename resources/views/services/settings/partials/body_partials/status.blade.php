@@ -1,11 +1,11 @@
-<div class="tab_contant status">
+<div class="tab_contant status d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
             <h6>{{ __('List of Status') }}</h6>
         </div>
 
         <div class="col-6 d-flex justify-content-end">
-            @if (auth()->user()->can('product_unit_add'))
+            @if (auth()->user()->can('status_create'))
                 <a href="{{ route('services.settings.status.create') }}" class="btn btn-sm btn-primary" id="addStatus"><i class="fas fa-plus-square"></i> {{ __('Add Status') }}</a>
             @endif
         </div>

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->text('product_configuration')->nullable();
             $table->text('problems_report')->nullable();
             $table->text('product_condition')->nullable();
-            $table->string('technical_comment', 255)->nullable();
+            $table->string('technician_comment', 255)->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
             $table->string('document', 255)->nullable();
             $table->string('send_notification', 20)->nullable();

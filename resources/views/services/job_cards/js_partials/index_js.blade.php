@@ -68,6 +68,7 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.customer_account_id = $('#customer_account_id').val();
+                d.service_type = $('#service_type').val();
                 d.status_id = $('#status_id').val();
                 d.brand_id = $('#brand_id').val();
                 d.device_id = $('#device_id').val();
@@ -86,7 +87,7 @@
             },
             {
                 data: 'customer',
-                name: 'customer.service_type'
+                name: 'customers.name'
             },
             {
                 data: 'date',
@@ -204,66 +205,104 @@
         });
     });
 
-    $(document).on('click', '#delete', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);
-        $.confirm({
-            'title': 'Confirmation',
-            'content': 'Are you sure?',
-            'buttons': {
-                'Yes': {
-                    'class': 'yes btn-modal-primary',
-                    'action': function() {
-                        $('#deleted_form').submit();
-                    }
+    @if (auth()->user()->can('job_cards_change_status'))
+        $(document).on('click', '#changeStatus', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#changeStatusModal').empty();
+                    $('#changeStatusModal').html(data);
+                    $('#changeStatusModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#job_card_status_id').focus();
+                    }, 1000);
                 },
-                'No': {
-                    'class': 'no btn-danger',
-                    'action': function() {
-                        console.log('Deleted canceled.');
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net connetion error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
                     }
                 }
-            }
+            });
         });
-    });
+    @endif
 
-    //data delete by ajax
-    $(document).on('submit', '#deleted_form', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-
-                if (!$.isEmptyObject(data.errorMsg)) {
-
-                    toastr.error(data.errorMsg);
-                    return;
+    @if (auth()->user()->can('job_cards_delete'))
+        $(document).on('click', '#delete', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            $.confirm({
+                'title': 'Confirmation',
+                'content': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
-
-                toastr.error(data);
-                jobCardsTable.ajax.reload(null, false);
-            },
-            error: function(err) {
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    return;
-                }
-
-                toastr.error(err.responseJSON.message);
-            }
+            });
         });
-    });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_form', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    toastr.error(data);
+                    jobCardsTable.ajax.reload(null, false);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
+                }
+            });
+        });
+    @endif
 
     $(document).on('click', '#generateLabel', function(e) {
 

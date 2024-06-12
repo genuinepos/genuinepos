@@ -30,49 +30,94 @@
 
                     <div class="tab_list_area">
                         <div class="btn-group">
-                            <a id="tab_btn" data-show="status" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                <i class="fa-solid fa-check"></i> {{ __('Status') }}
-                            </a>
+                            @if (auth()->user()->can('status_index'))
+                                <a id="tab_btn" data-show="status" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
+                                    <i class="fa-solid fa-check"></i> {{ __('Status') }}
+                                </a>
+                            @endif
 
-                            <a id="tab_btn" data-show="devices" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fa-solid fa-laptop-code"></i> {{ __('Devices') }}
-                            </a>
+                            @if (auth()->user()->can('devices_index'))
+                                <a id="tab_btn" data-show="devices" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fa-solid fa-laptop-code"></i> {{ __('Devices') }}
+                                </a>
+                            @endif
 
-                            <a id="tab_btn" data-show="device_models" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fa fa-bolt"></i> {{ __('Device Models') }}
-                            </a>
+                            @if (auth()->user()->can('device_models_index'))
+                                <a id="tab_btn" data-show="device_models" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fa fa-bolt"></i> {{ __('Device Models') }}
+                                </a>
+                            @endif
 
-                            <a id="tab_btn" data-show="service_settings" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fa-solid fa-screwdriver-wrench"></i> {{ __('Servicing Settings') }}
-                            </a>
+                            @if (auth()->user()->can('servicing_settings'))
+                                <a id="tab_btn" data-show="service_settings" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i> {{ __('Servicing Settings') }}
+                                </a>
+                            @endif
 
-                            <a id="tab_btn" data-show="job_card_pdf_and_label" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fa-regular fa-file-pdf"></i> {{ __('Job Card Print/Pdf & Label') }}
-                            </a>
+                            @if (auth()->user()->can('job_card_pdf_print_label_settings'))
+                                <a id="tab_btn" data-show="job_card_pdf_and_label" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fa-regular fa-file-pdf"></i> {{ __('Job Card Print/Pdf & Label') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
 
-                    @include('services.settings.partials.body_partials.status')
-                    @include('services.settings.partials.body_partials.devices')
-                    @include('services.settings.partials.body_partials.device_models')
-                    @include('services.settings.partials.body_partials.service_settings')
-                    @include('services.settings.partials.body_partials.pdf_and_label_settings')
+                    @if (auth()->user()->can('status_index'))
+                        @include('services.settings.partials.body_partials.status')
+                    @endif
+
+                    @if (auth()->user()->can('devices_index'))
+                        @include('services.settings.partials.body_partials.devices')
+                    @endif
+
+                    @if (auth()->user()->can('device_models_index'))
+                        @include('services.settings.partials.body_partials.device_models')
+                    @endif
+
+                    @if (auth()->user()->can('servicing_settings'))
+                        @include('services.settings.partials.body_partials.service_settings')
+                    @endif
+
+                    @if (auth()->user()->can('job_card_pdf_print_label_settings'))
+                        @include('services.settings.partials.body_partials.pdf_and_label_settings')
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="statusAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @if (auth()->user()->can('status_create') || auth()->user()->can('status_edit'))
+        <div class="modal fade" id="statusAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @endif
 
-    <div class="modal fade" id="deviceAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @if (auth()->user()->can('devices_create') || auth()->user()->can('devices_create'))
+        <div class="modal fade" id="deviceAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @endif
 
-    <div class="modal fade" id="deviceModelAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @if (auth()->user()->can('device_models_create') || auth()->user()->can('device_models_create'))
+        <div class="modal fade" id="deviceModelAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @endif
 @endsection
 @push('scripts')
     @include('services.settings.partials.js_partials.index_js')
-    @include('services.settings.partials.js_partials.status_js')
-    @include('services.settings.partials.js_partials.device_js')
-    @include('services.settings.partials.js_partials.device_model_js')
-    @include('services.settings.partials.js_partials.service_settings_js')
-    @include('services.settings.partials.js_partials.pdf_and_label_settings_js')
+
+    @if (auth()->user()->can('status_index'))
+        @include('services.settings.partials.js_partials.status_js')
+    @endif
+
+    @if (auth()->user()->can('devices_index'))
+        @include('services.settings.partials.js_partials.device_js')
+    @endif
+
+    @if (auth()->user()->can('device_models_index'))
+        @include('services.settings.partials.js_partials.device_model_js')
+    @endif
+
+    @if (auth()->user()->can('servicing_settings'))
+        @include('services.settings.partials.js_partials.service_settings_js')
+    @endif
+
+    @if (auth()->user()->can('job_card_pdf_print_label_settings'))
+        @include('services.settings.partials.js_partials.pdf_and_label_settings_js')
+    @endif
 @endpush

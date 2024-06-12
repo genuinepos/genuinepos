@@ -5,14 +5,14 @@ namespace App\Http\Requests\Services;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class JobCardStoreRequest extends FormRequest
+class JobCardUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('job_cards_create') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
+        return auth()->user()->can('job_cards_edit') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

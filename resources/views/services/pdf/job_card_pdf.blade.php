@@ -12,7 +12,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
-    <title>Bill - {{ config('app.name') }}</title>
+    <title>{{ __('Job Card') . '__' . $jobCard->job_no }} - {{ config('app.name') }}</title>
     @php
         $dateFormat = $generalSettings['business_or_shop__date_format'];
         $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
@@ -399,7 +399,7 @@
 
             <div class="row">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;">{{ __("Job Card") }}</h5>
+                    <h5 style="text-transform: uppercase;">{{ __('Job Card') }}</h5>
                 </div>
             </div>
 
@@ -495,7 +495,7 @@
 
                         <tr>
                             <td colspan="2" class="fw-bold">{{ __('Comment By Technician') }}:</td>
-                            <td>{{ $jobCard->technical_comment }}</td>
+                            <td>{{ $jobCard->technician_comment }}</td>
                         </tr>
                         <tr>
                             <td colspan="2" class="fw-bold">{{ __('Pre Service Checklist') }} :</td>

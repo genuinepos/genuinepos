@@ -608,22 +608,22 @@
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_products_index'))  name="stock_issues_products_index" id="stock_issues_products_index" class="stock_issues products">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_products_index')) name="stock_issues_products_index" id="stock_issues_products_index" class="stock_issues products">
                                                         <label for="stock_issues_products_index">{{ __('Stock Issued Products List') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_add'))  name="stock_issues_add" id="stock_issues_add" class="stock_issues products">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_add')) name="stock_issues_add" id="stock_issues_add" class="stock_issues products">
                                                         <label for="stock_issues_add"> {{ __('Stock Issue Add') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_edit'))  name="stock_issues_edit" id="stock_issues_edit" class="stock_issues products">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_edit')) name="stock_issues_edit" id="stock_issues_edit" class="stock_issues products">
                                                         <label for="stock_issues_edit">{{ __('Stock Issue Edit') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_delete'))  name="stock_issues_delete" id="stock_issues_delete" class="stock_issues products">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('stock_issues_delete')) name="stock_issues_delete" id="stock_issues_delete" class="stock_issues products">
                                                         <label for="stock_issues_delete"> {{ __('Stock Issue Delete') }}</label>
                                                     </p>
                                                 </div>
@@ -2343,6 +2343,149 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('manufacturing_report') ? 'CHECKED' : '' }} name="manufacturing_report" id="manufacturing_report" class="manufacturings manufacturing_all">
                                                         <label for="manufacturing_report">{{ __('Manufacturing Report') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == 1)
+                            <div class="accordion-item mb-1">
+                                <div class="form_element rounded mt-0 mb-0">
+                                    <div class="accordion-header d-flex">
+                                        <p class="checkbox_input_wrap ">
+                                            <input type="checkbox" class="ms-2" id="select_all" data-target="services" autocomplete="off">
+                                        </p>
+                                        <a data-bs-toggle="collapse" class="collapsed" href="#service_permission" aria-expanded="false">
+                                            {{ __('Service Permissions') }}
+                                        </a>
+                                    </div>
+                                    <div id="service_permission" class="collapse" data-bs-parent="#service_permission" style="">
+                                        <div class="element-body border-top">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="service_settings" id="select_all" data-target="service_settings" autocomplete="off">
+                                                            <strong>{{ __('Settings') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('status_index')) name="status_index" id="status_index" class="service_settings services">
+                                                        <label for="status_index">{{ __('Status View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('status_create')) name="status_create" id="status_create" class="service_settings services">
+                                                        <label for="status_create">{{ __('Status Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('status_edit')) name="status_edit" id="status_edit" class="service_settings services">
+                                                        <label for="status_edit">{{ __('Status Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('status_delete')) name="status_delete" id="status_delete" class="service_settings services">
+                                                        <label for="status_delete"> {{ __('Status Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('devices_index')) name="devices_index" id="devices_index" class="service_settings services">
+                                                        <label for="devices_index">{{ __('Device View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('devices_create')) name="devices_create" id="devices_create" class="service_settings services">
+                                                        <label for="devices_create"> {{ __('Device Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('devices_edit')) name="devices_edit" id="devices_edit" class="service_settings services">
+                                                        <label for="devices_edit"> {{ __('Device Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('devices_delete')) name="devices_delete" id="devices_delete" class="service_settings services">
+                                                        <label for="devices_delete">{{ __('Device Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('device_models_index')) name="device_models_index" id="device_models_index" class="service_settings services">
+                                                        <label for="device_models_index">{{ __('Device Model View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('device_models_create')) name="device_models_create" id="device_models_create" class="service_settings services">
+                                                        <label for="device_models_create"> {{ __('Device Model Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('device_models_edit')) name="device_models_edit" id="device_models_edit" class="service_settings services">
+                                                        <label for="device_models_edit"> {{ __('Device Model Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('device_models_delete')) name="device_models_delete" id="device_models_delete" class="service_settings services">
+                                                        <label for="device_models_delete">{{ __('Device Model Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('servicing_settings')) name="servicing_settings" id="servicing_settings" class="service_settings services">
+                                                        <label for="servicing_settings">{{ __('Servicing Settings') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_card_pdf_print_label_settings')) name="job_card_pdf_print_label_settings" id="job_card_pdf_print_label_settings" class="service_settings services">
+                                                        <label for="job_card_pdf_print_label_settings">{{ __('Job Card Print/Pdf & Label Settings') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="job_cards" id="select_all" data-target="job_cards" autocomplete="off">
+                                                            <strong>{{ __('Job Cards') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_index')) name="job_cards_index" id="job_cards_index" class="job_cards services">
+                                                        <label for="job_cards_index">{{ __('Job Card View') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_create')) name="job_cards_create" id="job_cards_create" class="job_cards services">
+                                                        <label for="job_cards_create">{{ __('Job Card Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_edit')) name="job_cards_edit" id="status_edit" class="job_cards services">
+                                                        <label for="job_cards_edit">{{ __('Job Card Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_delete')) name="job_cards_delete" id="job_cards_delete" class="job_cards services">
+                                                        <label for="job_cards_delete"> {{ __('Job Card Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_generate_pdf')) name="job_cards_generate_pdf" id="job_cards_generate_pdf" class="job_cards services">
+                                                        <label for="job_cards_generate_pdf">{{ __('Job Card Generate Pdf') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_generate_label')) name="job_cards_generate_label" id="job_cards_generate_label" class="job_cards services">
+                                                        <label for="job_cards_generate_label">{{ __('Job Card Generate Label') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_change_status')) name="job_cards_change_status" id="job_cards_change_status" class="job_cards services">
+                                                        <label for="job_cards_change_status"> {{ __('Job Card Change Status') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

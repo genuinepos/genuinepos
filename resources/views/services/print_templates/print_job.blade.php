@@ -208,7 +208,7 @@
 
                     <tr>
                         <td colspan="2" class="fw-bold">{{ __('Comment By Technician') }}:</td>
-                        <td>{{ $jobCard->technical_comment }}</td>
+                        <td>{{ $jobCard->technician_comment }}</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="fw-bold">{{ __('Pre Service Checklist') }} :</td>

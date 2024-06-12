@@ -47,7 +47,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('Service Type') }}</strong></label>
-                                                    <select name="payment_status" id="payment_status" class="form-control">
+                                                    <select name="service_type" id="service_type" class="form-control">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach (\App\Enums\ServiceType::cases() as $item)
                                                             <option value="{{ $item->value }}">{{ str($item->name)->headline() }}</option>
@@ -144,7 +144,7 @@
                                     <h6>{{ __('List of Job Cards') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale'))
+                                @if (auth()->user()->can('job_cards_create'))
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('services.job.cards.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Job Card') }}</a>
                                     </div>
@@ -188,10 +188,12 @@
                                 </div>
                             </div>
 
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
+                            @if (auth()->user()->can('job_cards_delete'))
+                                <form id="deleted_form" action="" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -199,10 +201,14 @@
         </div>
     </div>
 
+    @if (auth()->user()->can('job_cards_change_status'))
+        <div class="modal fade" id="changeStatusModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    @endif
+
     <div id="details"></div>
     <div id="extra_details"></div>
 @endsection
 
 @push('scripts')
-@include('services.job_cards.js_partials.index_js')
+    @include('services.job_cards.js_partials.index_js')
 @endpush

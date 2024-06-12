@@ -234,7 +234,7 @@
 </script>
 
 <script>
-    var itemUnitsArray = [];
+    var itemUnitsArray = @json($itemUnitsArray);
 
     // Get all price group
     var priceGroups = @json($priceGroupProducts);
@@ -686,6 +686,7 @@
             tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="' + e_discount + '">';
             tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
             tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
+            tr += '<input type="hidden" name="job_card_product_ids[]">';
             tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + '" value="' + e_product_id + e_variant_id + '">';
             tr += '</td>';
 
@@ -1199,20 +1200,14 @@
         }
     });
 
-    //Add Job Card request by ajax
-    $('#add_job_card_form').on('submit', function(e) {
+    //Edit Job Card request by ajax
+    $('#edit_job_card_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var status = $('#status').val();
 
-        isAjaxIn = false;
-        isAllowSubmit = false;
         $.ajax({
-            beforeSend: function() {
-                isAjaxIn = true;
-            },
             url: url,
             type: 'post',
             data: new FormData(this),
@@ -1221,11 +1216,8 @@
             processData: false,
             success: function(data) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.error').html('');
                 $('.loading_button').hide();
-
 
                 if (!$.isEmptyObject(data.errorMsg)) {
 
@@ -1233,36 +1225,11 @@
                     return;
                 }
 
-                if (!$.isEmptyObject(data.successMsg)) {
-
-                    toastr.success(data.successMsg);
-                    afterCreateJobCard();
-
-                    getJobCardId();
-                    return;
-                } else {
-
-                    toastr.success("{{ __('Job Card is created Successfully.') }}");
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 1000,
-                        header: null,
-                    });
-
-                    afterCreateJobCard();
-
-                    getJobCardId();
-                    return;
-                }
+                toastr.success(data);
+                window.location = "{{ url()->previous() }}";
             },
             error: function(err) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.loading_button').hide();
                 $('.error').html('');
 
@@ -1284,37 +1251,7 @@
                 });
             }
         });
-
-        if (isAjaxIn == false) {
-
-            isAllowSubmit = true;
-        }
     });
-
-    function afterCreateJobCard() {
-
-        $('.loading_button').hide();
-        $('.hidden').val(parseFloat(0).toFixed(2));
-        $('#add_job_card_form')[0].reset();
-
-        $('#check_list_area').empty();
-
-        $('#jobcard_product_list').empty();
-
-        $(".dropify-clear").click();
-
-        $("#customer_account_id").select2("destroy");
-        $("#customer_account_id").select2();
-        $("#customer_account_id").focus();
-
-        $("#brand_id").select2("destroy");
-        $("#brand_id").select2();
-
-        $("#device_id").select2("destroy");
-        $("#device_id").select2();
-
-        getJobCardId();
-    }
 
     $('select').on('select2:close', function(e) {
 

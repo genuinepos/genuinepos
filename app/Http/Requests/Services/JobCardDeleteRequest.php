@@ -5,14 +5,14 @@ namespace App\Http\Requests\Services;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeviceModelDeleteRequest extends FormRequest
+class JobCardDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('device_models_delete') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
+        return auth()->user()->can('job_cards_delete') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

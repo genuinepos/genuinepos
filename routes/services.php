@@ -57,6 +57,8 @@ Route::prefix('services')->group(function () {
         Route::post('store', 'store')->name('services.job.cards.store');
         Route::get('edit/{id}', 'edit')->name('services.job.cards.edit');
         Route::post('update/{id}', 'update')->name('services.job.cards.update');
+        Route::get('change/status/modal/{id}', 'changeStatusModal')->name('services.job.cards.change.status.modal');
+        Route::post('change/status/{id}', 'changeStatus')->name('services.job.cards.change.status');
         Route::delete('delete/{id}', 'delete')->name('services.job.cards.delete');
         Route::get('no', 'jobCardNo')->name('services.job.cards.no');
     });

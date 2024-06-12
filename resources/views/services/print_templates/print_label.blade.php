@@ -240,7 +240,7 @@
                     @if (isset($generalSettings['service_settings_pdf_label__technician_in_label']) && $generalSettings['service_settings_pdf_label__technician_in_label'] == '1')
                         <tr>
                             <td colspan="2" class="fw-bold">{{ __('Comment By Technician') }}:</td>
-                            <td>{{ $jobCard->technical_comment }}</td>
+                            <td>{{ $jobCard->technician_comment }}</td>
                         </tr>
                     @endif
 

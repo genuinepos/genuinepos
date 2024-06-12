@@ -247,7 +247,7 @@
                                         </div>
 
                                         <hr>
-                                        <div class="row gx-2 gy-1" id="check_list_area">
+                                        <div class="row gx-3" id="check_list_area">
                                         </div>
                                         <hr>
                                     </div>
@@ -257,7 +257,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Serial Number') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="serial_number" class="form-control" id="serial_number" placeholder="{{ __('Serial Number') }}">
+                                                    <input type="text" name="serial_no" class="form-control" id="serial_no" placeholder="{{ __('Serial Number') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -445,7 +445,7 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Technician Comment') }}</b></label>
-                                                <input type="text" name="technical_comment" class="form-control" id="technical_comment" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
+                                                <input type="text" name="technician_comment" class="form-control" id="technician_comment" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
                                             </div>
                                         </div>
 

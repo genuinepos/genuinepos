@@ -19,10 +19,10 @@ class SAASDatabaseSeeder extends Seeder
             $this->call(UserTableSeeder::class);
             $this->call(RolePermissionTableSeeder::class);
         }
+
         if (Plan::count() == 0) {
-            $this->call(FeatureTableSeeder::class);
             $this->call(PlanTableSeeder::class);
-            $this->call(PlanFeatureTableSeeder::class);
+            $this->call(CurrencyDatabaseSeedSeeder::class);
         }
     }
 }

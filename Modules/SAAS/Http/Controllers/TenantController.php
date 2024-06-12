@@ -44,9 +44,8 @@ class TenantController extends Controller
     {
         abort_unless(auth()->user()->can('tenants_create'), 403);
         $plans = $this->planServiceInterface->plans()->where('status', BooleanType::True->value)->get();
-        $currencies = Currency::select('id', 'country', 'currency', 'code')->get();
 
-        return view('saas::tenants.create', compact('plans', 'currencies'));
+        return view('saas::tenants.create', compact('plans'));
     }
 
     public function store(TenantStoreRequest $request)

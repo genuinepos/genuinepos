@@ -20,7 +20,7 @@ class PlanController extends Controller
     {
         abort_unless(auth()->user()->can('plans_index'), 403);
 
-        $plans = $this->planServiceInterface->plans(with: ['currency'])->paginate();
+        $plans = $this->planServiceInterface->plans()->paginate();
 
         return view('saas::plans.index', compact('plans'));
     }
@@ -31,12 +31,7 @@ class PlanController extends Controller
 
         $features = config('planfeatures');
 
-        $currencies = $this->currencyServiceInterface->currencies()
-            ->whereIn('country', ['Bangladesh', 'United States of America'])
-            ->select('id', 'code')
-            ->get();
-
-        return view('saas::plans.create', compact('currencies', 'features'));
+        return view('saas::plans.create', compact('features'));
     }
 
     public function store(PlanStoreRequest $request)
@@ -60,22 +55,18 @@ class PlanController extends Controller
 
     public function singlePlanById($id)
     {
-        return $this->planServiceInterface->singlePlanById(id: $id, with: ['currency']);
+        return $this->planServiceInterface->singlePlanById(id: $id);
     }
 
     public function edit($id)
     {
         abort_unless(auth()->user()->can('plans_update'), 403);
 
-        $currencies = $this->currencyServiceInterface->currencies()
-            ->whereIn('country', ['Bangladesh', 'United States of America'])
-            ->select('id', 'code')->get();
-
         $features = config('planfeatures');
 
         $plan = $this->planServiceInterface->singlePlanById(id: $id);
 
-        return view('saas::plans.edit', compact('currencies', 'plan', 'features'));
+        return view('saas::plans.edit', compact('plan', 'features'));
     }
 
     public function update(PlanUpdateRequest $request, $id)

@@ -2189,18 +2189,7 @@
                                             </a>
                                         </div>
 
-                                        <div class="sub-menu-col">
-                                            <a href="#" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Brands') }}</p>
-                                            </a>
-                                        </div>
-
-                                        @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                                        @if (auth()->user()->can('status_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('services.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">

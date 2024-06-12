@@ -34,7 +34,9 @@
     </div>
 </div>
 
-<form id="delete_status_form" action="" method="post">
-    @method('DELETE')
-    @csrf
-</form>
+@if (auth()->user()->can('status_delete'))
+    <form id="delete_status_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+@endif

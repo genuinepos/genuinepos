@@ -48,7 +48,6 @@
                                     <th class="text-start">{{ __('Price Per Year') }}</th>
                                     <th class="text-start">{{ __('Lifetime Price') }}</th>
                                     <th class="text-start">{{ __('Applicable Lifetime Years') }}</th>
-                                    <th class="text-start">{{ __('Currency Code') }}</th>
                                     <th class="text-start">{{ __('Plan Status') }}</th>
                                     <th class="text-start">{{ __('Action') }}</th>
                                 </tr>
@@ -113,7 +112,6 @@
                                                 {{ $plan->applicable_lifetime_years }}
                                             @endif
                                         </td>
-                                        <td class="text-start">{{ $plan?->currency?->code }}</td>
                                         <td class="text-start">{!! $plan->statusLabel !!}</td>
                                         <td class="text-start">
                                             <a href="{{ route('saas.plans.edit', $plan->id) }}" class="btn btn-sm btn-primary text-white">

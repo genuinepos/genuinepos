@@ -1,7 +1,7 @@
 <div class="tab_contant brands d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
-            <h6>{{ __('List of Brands') }}</h6>
+            <h6>{{ __('List of Brand') }}</h6>
         </div>
 
         <div class="col-6 d-flex justify-content-end">

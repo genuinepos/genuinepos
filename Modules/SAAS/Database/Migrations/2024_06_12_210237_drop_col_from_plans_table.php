@@ -12,9 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('plans', function (Blueprint $table) {
-            $table->dropForeign(['currency_id']);
-            $table->dropColumn('currency_id');
-            $table->dropColumn('currency_code');
+
+            if (Schema::hasColumn('plans', 'currency_id')) {
+
+                Schema::disableForeignKeyConstraints();
+                $table->dropForeign(['currency_id']);
+                $table->dropColumn('currency_id');
+                Schema::enableForeignKeyConstraints();
+            }
         });
     }
 
@@ -24,7 +29,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('plans', function (Blueprint $table) {
-            $table->dropColumn('currency_code');
             $table->unsignedBigInteger('currency_id')->after('applicable_lifetime_years')->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
         });

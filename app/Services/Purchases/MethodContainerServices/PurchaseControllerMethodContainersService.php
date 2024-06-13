@@ -3,7 +3,9 @@
 namespace App\Services\Purchases\MethodContainerServices;
 
 use App\Enums\BooleanType;
+use App\Enums\PurchaseStatus;
 use App\Enums\DayBookVoucherType;
+use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
@@ -23,7 +25,6 @@ use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Accounts\AccountingVoucherService;
-use Modules\Communication\Interface\EmailServiceInterface;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
@@ -33,7 +34,6 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
     public function __construct(
         private PurchaseService $purchaseService,
         private PurchaseProductService $purchaseProductService,
-        private EmailServiceInterface $emailService,
         private UserActivityLogService $userActivityLogService,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,
@@ -78,6 +78,8 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
     public function showMethodContainer($id): ?array
     {
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
+            'purchaseOrder:id,invoice_id',
+
             'warehouse:id,warehouse_name,warehouse_code',
 
             'supplier:id,name,phone,address,account_group_id',
@@ -127,10 +129,14 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
         return ['purchase' => $purchase, 'printPageSize' => $printPageSize];
     }
 
-    public function createMethodContainer(): array
+    public function createMethodContainer(object $codeGenerator): array
     {
         $data = [];
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__purchase_invoice_prefix'] ? $generalSettings['prefix__purchase_invoice_prefix'] : 'PI';
+        $data['invoiceId'] = $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
@@ -154,7 +160,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             ->get(['accounts.id', 'accounts.name']);
 
         $data['warehouses'] = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $data['taxAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -226,6 +232,9 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
             // Add Debit Account Accounting voucher Description
             $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
+
+            // Add Day Book entry for Payment
+            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $request->date, accountId: $request->supplier_account_id, transId: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
 
             // Add Accounting VoucherDescription References
             $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$addPurchase->id]);
@@ -420,6 +429,9 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             // Add Debit Account Accounting voucher Description
             $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
 
+            // Add Day Book entry for Payment
+            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $request->date, accountId: $request->supplier_account_id, transId: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
+
             // Add Accounting VoucherDescription References
             $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$updatePurchase->id], branchId: $updatePurchase->branch_id);
 
@@ -532,5 +544,42 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Purchase->value, dataObj: $deletePurchase);
 
         return null;
+    }
+
+    public function searchPurchasesByInvoiceIdMethodContainer(int $keyWord): array|object
+    {
+        $purchases = DB::table('purchases')
+            ->leftJoin('accounts', 'purchases.supplier_account_id', 'accounts.id')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            ->where('purchases.invoice_id', 'like', "%{$keyWord}%")
+            ->where('purchases.branch_id', auth()->user()->branch_id)
+            ->where('purchases.purchase_status', PurchaseStatus::Purchase->value)
+            ->select(
+                'purchases.id as purchase_id',
+                'purchases.warehouse_id',
+                'purchases.invoice_id as p_invoice_id',
+                'purchases.supplier_account_id',
+                'warehouses.warehouse_name',
+                'accounts.name as supplier_name',
+                'accounts.phone as supplier_phone',
+                'account_groups.default_balance_type',
+            )->limit(35)->get();
+
+        if (count($purchases) > 0) {
+
+            return view('search_results_view.purchase_invoice_search_result_list', compact('purchases'));
+        } else {
+
+            return response()->json(['noResult' => 'no result']);
+        }
+    }
+
+    public function purchaseInvoiceIdMethodContainer(object $codeGenerator): string
+    {
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__purchase_invoice_prefix'] ? $generalSettings['prefix__purchase_invoice_prefix'] : 'PI';
+
+        return $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
     }
 }

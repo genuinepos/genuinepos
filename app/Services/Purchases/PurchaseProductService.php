@@ -202,59 +202,13 @@ class PurchaseProductService
         }
 
         $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
+        $addPurchaseProduct->purchase_order_product_id = isset($request->purchase_order_product_ids[$index]) ? $request->purchase_order_product_ids[$index] : null;
         $addPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
         $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
         $addPurchaseProduct->save();
 
         return $addPurchaseProduct;
-    }
-
-    public function addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
-        string $transColName,
-        int $transId,
-        ?int $branchId,
-        int $productId,
-        ?int $variantId,
-        float $quantity,
-        float $unitCostIncTax,
-        float $sellingPrice,
-        float $subTotal,
-        string $createdAt,
-        float $xMargin = 0
-    ) {
-
-        $purchaseProduct = PurchaseProduct::where($transColName, $transId)
-            ->where('product_id', $productId)
-            ->where('variant_id', $variantId)
-            ->first();
-
-        if ($purchaseProduct) {
-
-            $purchaseProduct->net_unit_cost = $unitCostIncTax;
-            $purchaseProduct->quantity = $quantity;
-            $purchaseProduct->line_total = $subTotal;
-            $purchaseProduct->profit_margin = $xMargin;
-            $purchaseProduct->selling_price = $sellingPrice;
-            $purchaseProduct->created_at = $purchaseProduct->created_at == null ? $createdAt : $purchaseProduct->created_at;
-            $purchaseProduct->save();
-            (new \App\Services\Products\StockChainService())->adjustPurchaseProductOutLeftQty($purchaseProduct);
-        } else {
-
-            $addRowInPurchaseProductTable = new PurchaseProduct();
-            $addRowInPurchaseProductTable->branch_id = $branchId;
-            $addRowInPurchaseProductTable->{$transColName} = $transId;
-            $addRowInPurchaseProductTable->product_id = $productId;
-            $addRowInPurchaseProductTable->variant_id = $variantId;
-            $addRowInPurchaseProductTable->net_unit_cost = $unitCostIncTax;
-            $addRowInPurchaseProductTable->quantity = $quantity;
-            $addRowInPurchaseProductTable->left_qty = $quantity;
-            $addRowInPurchaseProductTable->line_total = $subTotal;
-            $addRowInPurchaseProductTable->profit_margin = $xMargin;
-            $addRowInPurchaseProductTable->selling_price = $sellingPrice;
-            $addRowInPurchaseProductTable->created_at = $createdAt;
-            $addRowInPurchaseProductTable->save();
-        }
     }
 
     public function updatePurchaseProduct($request, $purchaseId, $isEditProductPrice, $index)
@@ -308,7 +262,7 @@ class PurchaseProductService
         $updateOrAddPurchaseProduct->batch_number = $request->batch_numbers[$index];
         $updateOrAddPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
 
-        $updateOrAddPurchaseProduct->delete_in_update = 0;
+        $updateOrAddPurchaseProduct->delete_in_update = BooleanType::False->value;
         $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateOrAddPurchaseProduct->save();
 
@@ -317,6 +271,53 @@ class PurchaseProductService
         $updateOrAddPurchaseProduct->current_tax_ac_id = $currentUnitTaxAcId;
 
         return $updateOrAddPurchaseProduct;
+    }
+
+    public function addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+        string $transColName,
+        int $transId,
+        ?int $branchId,
+        int $productId,
+        ?int $variantId,
+        float $quantity,
+        float $unitCostIncTax,
+        float $sellingPrice,
+        float $subTotal,
+        string $createdAt,
+        float $xMargin = 0
+    ) {
+
+        $purchaseProduct = PurchaseProduct::where($transColName, $transId)
+            ->where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->first();
+
+        if ($purchaseProduct) {
+
+            $purchaseProduct->net_unit_cost = $unitCostIncTax;
+            $purchaseProduct->quantity = $quantity;
+            $purchaseProduct->line_total = $subTotal;
+            $purchaseProduct->profit_margin = $xMargin;
+            $purchaseProduct->selling_price = $sellingPrice;
+            $purchaseProduct->created_at = $purchaseProduct->created_at == null ? $createdAt : $purchaseProduct->created_at;
+            $purchaseProduct->save();
+            (new \App\Services\Products\StockChainService())->adjustPurchaseProductOutLeftQty($purchaseProduct);
+        } else {
+
+            $addRowInPurchaseProductTable = new PurchaseProduct();
+            $addRowInPurchaseProductTable->branch_id = $branchId;
+            $addRowInPurchaseProductTable->{$transColName} = $transId;
+            $addRowInPurchaseProductTable->product_id = $productId;
+            $addRowInPurchaseProductTable->variant_id = $variantId;
+            $addRowInPurchaseProductTable->net_unit_cost = $unitCostIncTax;
+            $addRowInPurchaseProductTable->quantity = $quantity;
+            $addRowInPurchaseProductTable->left_qty = $quantity;
+            $addRowInPurchaseProductTable->line_total = $subTotal;
+            $addRowInPurchaseProductTable->profit_margin = $xMargin;
+            $addRowInPurchaseProductTable->selling_price = $sellingPrice;
+            $addRowInPurchaseProductTable->created_at = $createdAt;
+            $addRowInPurchaseProductTable->save();
+        }
     }
 
     public function singlePurchaseProduct(array $with = null): ?object

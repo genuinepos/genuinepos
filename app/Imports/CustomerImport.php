@@ -16,7 +16,6 @@ class CustomerImport implements ToCollection
         private $contactService,
         private $accountService,
         private $accountLedgerService,
-        private $contactOpeningBalanceService,
     ) {
     }
 

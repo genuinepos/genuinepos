@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 
 class AccountBalanceController extends Controller
 {
-    public function __construct(
-        private AccountBalanceService $accountBalanceService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private AccountBalanceService $accountBalanceService) {
     }
 
     public function accountBalance(Request $request, $accountId)

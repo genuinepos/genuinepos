@@ -5,18 +5,14 @@ namespace App\Http\Controllers\Purchases;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\CodeGenerationService;
 use App\Http\Requests\Purchases\PurchaseStoreRequest;
+use App\Http\Requests\Purchases\PurchaseDeleteRequest;
 use App\Http\Requests\Purchases\PurchaseUpdateRequest;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 
 class PurchaseController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface, $supplierAccountId = null)
     {
         abort_if(!auth()->user()->can('purchase_all'), 403);
@@ -35,8 +31,6 @@ class PurchaseController extends Controller
 
     public function show($id, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_all'), 403);
-
         $showMethodContainer = $purchaseControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
@@ -53,18 +47,18 @@ class PurchaseController extends Controller
         return view('purchase.print_templates.print_purchase', compact('purchase', 'printPageSize'));
     }
 
-    public function create(PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    public function create(CodeGenerationServiceInterface $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('purchase_add'), 403);
 
-        $createMethodContainer = $purchaseControllerMethodContainersInterface->createMethodContainer();
+        $createMethodContainer = $purchaseControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
         extract($createMethodContainer);
 
-        return view('purchase.purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
+        return view('purchase.purchases.create', compact('invoiceId', 'warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
     }
 
-    public function store(PurchaseStoreRequest $request, CodeGenerationService $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    public function store(PurchaseStoreRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
         try {
             DB::beginTransaction();
@@ -104,12 +98,12 @@ class PurchaseController extends Controller
         return view('purchase.purchases.edit', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts', 'purchase', 'ownBranchIdOrParentBranchId'));
     }
 
-    public function update($id, PurchaseUpdateRequest $request, CodeGenerationService $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    public function update($id, PurchaseUpdateRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
         try {
             DB::beginTransaction();
 
-            $editMethodContainer = $purchaseControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request, codeGenerator: $codeGenerator);
+            $updateMethodContainer = $purchaseControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request, codeGenerator: $codeGenerator);
 
             if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
@@ -125,10 +119,8 @@ class PurchaseController extends Controller
         return response()->json(__('Purchase updated Successfully.'));
     }
 
-    public function delete($id, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    public function delete($id, PurchaseDeleteRequest $request, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_delete'), 403);
-
         try {
             DB::beginTransaction();
 
@@ -148,27 +140,20 @@ class PurchaseController extends Controller
         return response()->json(__('Purchase is deleted successfully'));
     }
 
-    public function searchPurchasesByInvoiceId($keyWord)
+    public function searchPurchasesByInvoiceId($keyWord, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
-        $purchases = DB::table('purchases')
-            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
-            ->where('purchases.invoice_id', 'like', "%{$keyWord}%")
-            ->where('purchases.branch_id', auth()->user()->branch_id)
-            ->where('purchases.purchase_status', 1)
-            ->select(
-                'purchases.id as purchase_id',
-                'purchases.warehouse_id',
-                'purchases.invoice_id as p_invoice_id',
-                'purchases.supplier_account_id',
-                'warehouses.warehouse_name',
-            )->limit(35)->get();
+        $searchPurchasesByInvoiceIdMethodContainer = $purchaseControllerMethodContainersInterface->searchPurchasesByInvoiceIdMethodContainer(keyWord: $keyWord);
+        if (isset($searchPurchasesByInvoiceIdMethodContainer['noResult'])) {
 
-        if (count($purchases) > 0) {
-
-            return view('search_results_view.purchase_invoice_search_result_list', compact('purchases'));
+            return ['noResult' => 'no result'];
         } else {
 
-            return response()->json(['noResult' => 'no result']);
+            return $searchPurchasesByInvoiceIdMethodContainer;
         }
+    }
+
+    public function purchaseInvoiceId(CodeGenerationServiceInterface $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    {
+        return $purchaseControllerMethodContainersInterface->purchaseInvoiceIdMethodContainer(codeGenerator: $codeGenerator);
     }
 }

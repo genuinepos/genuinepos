@@ -134,17 +134,6 @@ class LeaveService
         }
     }
 
-    public function storeAndUpdateValidation(object $request): ?array
-    {
-
-        return $request->validate([
-            'user_id' => 'required',
-            'leave_type_id' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
-    }
-
     public function singleLeave(int $id, array $with = null)
     {
         $query = Leave::query();

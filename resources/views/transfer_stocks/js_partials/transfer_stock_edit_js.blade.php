@@ -410,7 +410,7 @@
         $('#e_unique_id').val(unique_id);
         $('#e_unit_cost_inc_tax').val(unit_cost_inc_tax);
         $('#e_subtotal').val(subtotal);
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {
@@ -566,7 +566,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

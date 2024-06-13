@@ -408,7 +408,7 @@
 
                                                                                 $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $sale->branch_id);
 
-                                                                                $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
+                                                                                $baseUnitMultiplier = $saleProduct?->unit?->base_unit_multiplier ? $saleProduct?->unit?->base_unit_multiplier : 1;
                                                                             @endphp
 
                                                                             <span class="product_name">{{ $saleProduct->product->name . $variant }}</span>
@@ -675,6 +675,13 @@
                                                 <label class="col-md-5 text-end"><b>{{ __('Previous Received') }}</b></label>
                                                 <div class="col-md-7">
                                                     <input readonly type="number" step="any" class="form-control fw-bold text-success" name="previous_received" id="previous_received" value="{{ $sale->paid }}" tabindex="-1">
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __('Due (On Invoice)') }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="due_on_invoice" id="due_on_invoice" tabindex="-1">
                                                 </div>
                                             </div>
 

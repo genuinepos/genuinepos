@@ -15,11 +15,8 @@ use App\Http\Requests\Products\WarrantyUpdateRequest;
 
 class WarrantyController extends Controller
 {
-    public function __construct(
-        private WarrantyService $warrantyService,
-        private UserActivityLogService $userActivityLogService
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private WarrantyService $warrantyService, private UserActivityLogService $userActivityLogService)
+    {
     }
 
     public function index(Request $request)

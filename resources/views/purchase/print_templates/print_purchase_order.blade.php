@@ -66,22 +66,22 @@
                         @if ($order?->branch?->parent_branch_id)
 
                             @if ($order->branch?->parentBranch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($order->branch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -173,13 +173,13 @@
                         <tr>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ordered Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -193,7 +193,9 @@
                                     {{ Str::limit($orderProduct->product->name, 25) . ' ' . $variant }}
                                     <small>{!! $orderProduct->description ? '<br/>' . $orderProduct->description : '' !!}</small>
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>
                                 <td class="text-start" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_exc_tax) }}
                                 </td>
@@ -201,8 +203,7 @@
                                 <td class="text-start" style="font-size:11px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
                                 <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }}</td>
                                 <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->pending_quantity }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->received_quantity }}</td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -380,22 +381,22 @@
                         @if ($order?->branch?->parent_branch_id)
 
                             @if ($order?->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($order?->branch?->logo)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $order?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>

@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
+use Exception;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Modules\SAAS\Entities\Plan;
@@ -33,13 +34,18 @@ class TenantController extends Controller
         return view('saas::tenants.index');
     }
 
+    public function show($id)
+    {
+        $tenant = $this->tenantService->singleTenant(id: $id, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
+        return view('saas::tenants.show', compact('tenant'));
+    }
+
     public function create()
     {
         abort_unless(auth()->user()->can('tenants_create'), 403);
         $plans = $this->planServiceInterface->plans()->where('status', BooleanType::True->value)->get();
-        $currencies = Currency::select('id', 'country', 'currency', 'code')->get();
 
-        return view('saas::tenants.create', compact('plans', 'currencies'));
+        return view('saas::tenants.create', compact('plans'));
     }
 
     public function store(TenantStoreRequest $request)

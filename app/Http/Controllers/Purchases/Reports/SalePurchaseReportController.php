@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class SalePurchaseReportController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
-    // Index view of sale & purchase report
     public function index()
     {
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
@@ -22,7 +16,6 @@ class SalePurchaseReportController extends Controller
         return view('reports.sale_purchase_report.index', compact('branches'));
     }
 
-    // Get sale purchase amounts **requested by ajax**
     public function salePurchaseAmounts()
     {
         $sales = '';
@@ -39,7 +32,6 @@ class SalePurchaseReportController extends Controller
         return view('reports.sale_purchase_report.ajax_view.sale_and_purchase_amount', compact('sales', 'purchases'));
     }
 
-    // Get sale purchase amounts **requested by ajax**
     public function filterSalePurchaseAmounts(Request $request)
     {
         $opening_stocks = '';

@@ -60,13 +60,13 @@
                         @if ($moneyReceipt->branch->logo)
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase->branch->logo) }}">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $purchase->branch->name }}</span>
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
                             <img src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -146,7 +146,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business_or_shop__currency'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
+                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business_or_shop__currency_symbol'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -159,7 +159,7 @@
                     <div class="col-md-12">
                         <p style="font-size:11px!important"><b>{{ __('Inword') }}</b> :
                             @if ($moneyReceipt->amount > 0)
-                                <span style="text-transform: uppercase;" id="inWord"></span>.
+                                <span style="text-transform: uppercase;" id="inWord"></span> {{ __('Only') }}.
                             @endif
                         </p>
                     </div>
@@ -231,11 +231,11 @@
                     <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
-                <div class="col-4 text-center">
+                {{-- <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
                         <small class="d-block" style="font-size: 9px!important;">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
                     @endif
-                </div>
+                </div> --}}
 
                 <div class="col-4 text-end">
                     <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>

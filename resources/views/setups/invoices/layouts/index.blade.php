@@ -7,9 +7,9 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>{{ __("Invoice Layouts") }}</h5>
+                    <h5>{{ __('Invoice Layouts') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
                                             <div class="col-md-4">
                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                    <option value="">{{ __("All") }}</option>
+                                                    <option value="">{{ __('All') }}</option>
                                                     <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
@@ -44,7 +44,7 @@
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -63,8 +63,7 @@
 
                     <div class="col-5 d-flex justify-content-end">
                         @if (auth()->user()->can('invoice_layouts_add'))
-
-                            <a href="{{ route('invoices.layouts.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                            <a href="{{ route('invoices.layouts.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                         @endif
                     </div>
                 </div>
@@ -74,11 +73,11 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>{{ __("Serial") }}</th>
-                                    <th>{{ __("Layout Name") }}</th>
-                                    <th>{{ __("Shop/Business") }}</th>
+                                    <th>{{ __('Serial') }}</th>
+                                    <th>{{ __('Layout Name') }}</th>
+                                    <th>{{ __('Shop/Business') }}</th>
                                     <th>{{ __('Is Header Less') }}</th>
-                                    <th>{{ __("Action") }}</th>
+                                    <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -101,17 +100,36 @@
             serverSide: true,
             // aaSorting: [[3, 'asc']],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"] ],
+            "lengthMenu": [
+                [50, 100, 500, 1000, -1],
+                [50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('invoices.layouts.index') }}",
-                "data": function(d) { d.branch_id = $('#branch_id').val(); }
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                }
             },
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'name', name: 'name' },
-                { data: 'branch', name: 'branches.name' },
-                { data: 'is_header_less', name: 'is_header_less' },
-                { data: 'action', name: 'action' },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'is_header_less',
+                    name: 'is_header_less'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
             ]
         });
 
@@ -122,7 +140,9 @@
 
         // Setup ajax for csrf token.
         $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
 
         $(document).on('click', '#delete', function(e) {
@@ -138,7 +158,8 @@
                         'action': function() {
                             $('#deleted_form').submit();
                         }
-                    }, 'No': {
+                    },
+                    'No': {
                         'class': 'no btn-danger',
                         'action': function() {
                             // alert('Deleted canceled.')
@@ -165,18 +186,23 @@
                         toastr.error(data.errorMsg);
                         return;
                     }
+
                     toastr.error(data);
-                    table.ajax.reload();
-                    $('#deleted_form')[0].reset();
-                }, error: function(err) {
+                    table.ajax.reload(null, false);
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else {
+                        return;
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
                     }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });

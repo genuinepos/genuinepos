@@ -12,6 +12,7 @@ export default defineConfig({
                 'Modules/SAAS/Resources/assets/js/guest.js',
                 'Modules/SAAS/Resources/assets/sass/guest.scss',
                 'Modules/SAAS/Resources/assets/sass/admin.scss',
+                'Modules/SAAS/Resources/assets/css/style.css',
             ],
             refresh: true,
         }),

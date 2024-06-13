@@ -2,77 +2,50 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\BrandService;
-use App\Services\Products\CategoryService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\ProductService;
-use App\Services\Sales\DiscountProductService;
-use App\Services\Sales\DiscountService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Sales\DiscountStoreRequest;
+use App\Http\Requests\Sales\DiscountUpdateRequest;
+use App\Interfaces\Sales\DiscountControllerMethodContainersInterface;
 
 class DiscountController extends Controller
 {
-    public function __construct(
-        private DiscountService $discountService,
-        private DiscountProductService $discountProductService,
-        private ProductService $productService,
-        private BrandService $brandService,
-        private CategoryService $categoryService,
-        private PriceGroupService $priceGroupService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
-    }
-
-    public function index(Request $request)
+    public function index(Request $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
+        abort_if(!auth()->user()->can('discounts'), 403);
+
+        $indexMethodContainer = $discountControllerMethodContainersInterface->indexMethodContainer(request: $request);
+
         if ($request->ajax()) {
 
-            return $this->discountService->discountListTable($request);
+            return $indexMethodContainer;;
         }
 
         return view('sales.discounts.index');
     }
 
-    public function create()
+    public function create(DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        abort_if(!auth()->user()->can('discounts'), 403);
 
-        $brands = $this->brandService->brands()->select('id', 'name')->get();
-        $categories = $this->categoryService->categories()->where('parent_category_id', null)->select('id', 'name')->get();
-        $products = $this->productService->branchProducts(branchId: $ownBranchIdOrParentBranchId);
-        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+        $createMethodContainer = $discountControllerMethodContainersInterface->createMethodContainer();
+
+        extract($createMethodContainer);
 
         return view('sales.discounts.ajax_view.create', compact('brands', 'categories', 'products', 'priceGroups'));
     }
 
-    public function store(Request $request)
+    public function store(DiscountStoreRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'priority' => 'required',
-            'start_at' => 'required',
-            'end_at' => 'required',
-            'discount_type' => 'required',
-            'discount_amount' => 'required',
-        ]);
-
         try {
-
             DB::beginTransaction();
 
-            $restrictions = $this->discountService->restrictions($request);
-            if ($restrictions['pass'] == false) {
+            $storeMethodContainer = $discountControllerMethodContainersInterface->storeMethodContainer(request: $request);
 
-                return response()->json(['errorMsg' => $restrictions['msg']]);
-            }
+            if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
-            $addDiscount = $this->discountService->addDiscount(request: $request);
-
-            if (isset($request->product_ids) && count($request->product_ids) > 0) {
-
-                $this->discountProductService->addDiscountProducts(request: $request, discountId: $addDiscount->id);
+                return response()->json(['errorMsg' => $storeMethodContainer['msg']]);
             }
 
             DB::commit();
@@ -84,34 +57,26 @@ class DiscountController extends Controller
         return response()->json(__('Discount created successfully'));
     }
 
-    public function edit($id)
+    public function edit($id, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        $discount = $this->discountService->singleDiscount(id: $id, with: ['discountProducts']);
+        $editMethodContainer = $discountControllerMethodContainersInterface->editMethodContainer(id: $id);
 
-        $ownBranchIdOrParentBranchId = $discount?->branch?->parent_branch_id ? $discount?->branch?->parent_branch_id : $discount->branch_id;
-
-        $brands = $this->brandService->brands()->select('id', 'name')->get();
-        $categories = $this->categoryService->categories()->where('parent_category_id', null)->select('id', 'name')->get();
-        $products = $this->productService->branchProducts(branchId: $ownBranchIdOrParentBranchId);
-        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+        extract($editMethodContainer);
 
         return view('sales.discounts.ajax_view.edit', compact('discount', 'brands', 'categories', 'products', 'priceGroups'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, DiscountUpdateRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
         try {
-
             DB::beginTransaction();
 
-            $restrictions = $this->discountService->restrictions($request);
-            if ($restrictions['pass'] == false) {
+            $updateMethodContainer = $discountControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request);
 
-                return response()->json(['errorMsg' => $restrictions['msg']]);
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
             }
-
-            $updateDiscount = $this->discountService->updateDiscount(request: $request, id: $id);
-            $this->discountProductService->updateDiscountProducts(request: $request, discount: $updateDiscount);
 
             DB::commit();
         } catch (Exception $e) {
@@ -122,17 +87,15 @@ class DiscountController extends Controller
         return response()->json(__('Discount updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($id, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        $this->discountService->deleteDiscount(discountId: $id);
-
+        $discountControllerMethodContainersInterface->deleteMethodContainer(id: $id);
         return response()->json(__('Discount deleted successfully'));
     }
 
-    public function changeStatus($id)
+    public function changeStatus($id, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        $addDiscount = $this->discountService->changeDiscountStatus(id: $id);
-
+        $discountControllerMethodContainersInterface->changeStatusMethodContainer(id: $id);
         return response()->json(__('Discount status has been changed successfully'));
     }
 }

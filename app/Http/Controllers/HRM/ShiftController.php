@@ -11,7 +11,6 @@ class ShiftController extends Controller
 {
     public function __construct(private ShiftService $shiftService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

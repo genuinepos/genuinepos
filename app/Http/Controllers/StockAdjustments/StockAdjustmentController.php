@@ -11,11 +11,6 @@ use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInt
 
 class StockAdjustmentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('stock_adjustment_all'), 403);

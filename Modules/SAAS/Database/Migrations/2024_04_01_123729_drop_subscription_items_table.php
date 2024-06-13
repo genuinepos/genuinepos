@@ -21,7 +21,6 @@ return new class extends Migration
     {
         Schema::create('subscription_items', function (Blueprint $table) {
             $table->id();
-            
             $table->timestamps();
         });
     }

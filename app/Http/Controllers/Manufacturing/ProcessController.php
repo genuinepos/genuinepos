@@ -2,119 +2,82 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountService;
-use App\Services\Manufacturing\ProcessIngredientService;
-use App\Services\Manufacturing\ProcessService;
-use App\Services\Products\ProductService;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Manufacturing\ProcessStoreRequest;
+use App\Http\Requests\Manufacturing\ProcessDeleteRequest;
+use App\Http\Requests\Manufacturing\ProcessUpdateRequest;
+use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 
 class ProcessController extends Controller
 {
-    public function __construct(
-        private ProcessService $processService,
-        private ProcessIngredientService $processIngredientService,
-        private AccountService $accountService,
-        private ProductService $productService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
-    }
-
-    public function index(Request $request)
+    public function index(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
+        abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
 
-            abort(403, 'Access Forbidden.');
-        }
+        $indexMethodContainer = $processControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $this->processService->processTable($request);
+            return $indexMethodContainer;;
         }
 
         return view('manufacturing.process.index');
     }
 
-    public function show($id)
+    public function show($id, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
+        abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
 
-            return response()->json('Access Denied');
-        }
+        $showMethodContainer = $processControllerMethodContainersInterface->showMethodContainer(id: $id);
 
-        $process = $this->processService->process(with: [
-            'branch',
-            'branch.parentBranch',
-            'product',
-            'variant',
-            'unit',
-            'ingredients',
-            'ingredients.product',
-            'ingredients.unit',
-            'ingredients.variant',
-        ])->where('id', $id)->first();
+        extract($showMethodContainer);
 
         return view('manufacturing.process.ajax_view.show', compact('process'));
     }
 
-    public function selectProductModal()
+    public function print($id, Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        $products = $this->productService->branchProducts(branchId: auth()->user()->branch_id, withVariant: true);
+        $printMethodContainer = $processControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request);
+
+        extract($printMethodContainer);
+
+        return view('manufacturing.print_templates.print_process', compact('process', 'printPageSize'));
+    }
+
+    public function selectProductModal(ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
+    {
+        $selectProductModalMethodContainer = $processControllerMethodContainersInterface->selectProductModalMethodContainer();
+
+        extract($selectProductModalMethodContainer);
 
         return view('manufacturing.process.ajax_view.process_select_product_modal', compact('products'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
+        abort_if(!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
 
-            abort(403, 'Access Forbidden.');
+        $createMethodContainer = $processControllerMethodContainersInterface->createMethodContainer(request: $request);
+
+        if(gettype($createMethodContainer) == 'object'){
+
+           return $createMethodContainer;
         }
 
-        $productAndVariantId = explode('-', $request->product_id);
-        $product_id = $productAndVariantId[0];
-        $variant_id = $productAndVariantId[1] != 'noid' ? $productAndVariantId[1] : null;
-
-        $checkSameItemProcess = $this->processService->process()->where('product_id', $product_id)->where('variant_id', $variant_id)->first();
-
-        if ($checkSameItemProcess) {
-
-            return redirect()->route('manufacturing.process.edit', $checkSameItemProcess->id);
-        }
-
-        $product = $this->processService->getProcessableProductForCreate(request: $request);
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.sub_sub_group_number', 8)
-            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+        extract($createMethodContainer);
 
         return view('manufacturing.process.create', compact('product', 'taxAccounts'));
     }
 
-    public function store(Request $request)
+    public function store(ProcessStoreRequest $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
-
-            return response()->json('Access Denied.');
-        }
-
-        $this->validate($request, [
-            'total_output_qty' => 'required',
-            'unit_id' => 'required',
-            'net_cost' => 'required',
-        ]);
-
         try {
-
             DB::beginTransaction();
-            $addProcess = $this->processService->addProcess(request: $request);
 
-            if (isset($request->product_ids)) {
-
-                $this->processIngredientService->addProcessIngredients(request: $request, processId: $addProcess->id);
-            }
+            $processControllerMethodContainersInterface->storeMethodContainer(request: $request);
 
             DB::commit();
         } catch (Exception $e) {
@@ -125,50 +88,23 @@ class ProcessController extends Controller
         return response()->json(__('Manufacturing Process created successfully'));
     }
 
-    public function edit($id)
+    public function edit($id, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
+        abort_if(!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
 
-            abort(403, 'Access Forbidden.');
-        }
+        $editMethodContainer = $processControllerMethodContainersInterface->editMethodContainer(id: $id);
 
-        $process = $this->processService->process(with: [
-            'product',
-            'variant',
-            'unit',
-            'ingredients',
-            'ingredients.product',
-            'ingredients.variant',
-            'ingredients.unit',
-            'ingredients.unit.baseUnit:id,name,code_name,base_unit_id',
-        ])->where('id', $id)->first();
-
-        $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.sub_sub_group_number', 8)
-            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+        extract($editMethodContainer);
 
         return view('manufacturing.process.edit', compact('process', 'taxAccounts'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, ProcessUpdateRequest $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, [
-            'total_output_qty' => 'required',
-            'unit_id' => 'required',
-            'net_cost' => 'required',
-        ]);
-
         try {
             DB::beginTransaction();
 
-            $updateProcess = $this->processService->updateProcess(request: $request, id: $id);
-            $this->processIngredientService->updateProcessIngredients(request: $request, process: $updateProcess);
+            $processControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request);
 
             DB::commit();
         } catch (Exception $e) {
@@ -179,14 +115,9 @@ class ProcessController extends Controller
         return response()->json(__('Manufacturing Process updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($id, ProcessDeleteRequest $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('process_delete') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->processService->deleteProcess(id: $id);
+        $processControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
         return response()->json(__('Manufacturing Process deleted successfully'));
     }

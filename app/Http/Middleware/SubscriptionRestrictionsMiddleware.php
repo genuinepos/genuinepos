@@ -22,61 +22,6 @@ class SubscriptionRestrictionsMiddleware
         $generalSettings = config('generalSettings');
         $subscription = $generalSettings['subscription'];
 
-        if (
-            $subscription->has_business == BooleanType::True->value &&
-            auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::False->value)
-        ) {
-
-            Session::put('startupType', 'business_and_branch');
-            return redirect()->route('setup.startup.form');
-        } else if (
-            $subscription->has_business == BooleanType::False->value &&
-            auth()->user()->can('has_access_to_all_area') &&
-            $subscription->is_completed_branch_startup == BooleanType::False->value
-        ) {
-
-            Session::put('startupType', 'branch');
-            return redirect()->route('setup.startup.form');
-        } else if (
-            $subscription->has_business == BooleanType::True->value &&
-            auth()->user()->can('has_access_to_all_area') &&
-            (
-                $subscription->is_completed_business_startup == BooleanType::False->value &&
-                $subscription->is_completed_branch_startup == BooleanType::True->value
-            )
-        ) {
-
-            Session::put('startupType', 'business');
-            return redirect()->route('setup.startup.form');
-        } else if (
-            $subscription->has_business == BooleanType::True->value &&
-            auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::True->value)
-        ) {
-
-            Session::put('startupType', 'business');
-            return redirect()->route('setup.startup.form');
-        } else if (
-            $subscription->has_business == BooleanType::True->value &&
-            auth()->user()->can('has_access_to_all_area') &&
-            (
-                $subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::True->value
-            )
-        ) {
-
-            Session::put('startupType', 'business');
-            return redirect()->route('setup.startup.form');
-        } else if (
-            $subscription->has_business == BooleanType::False->value &&
-            auth()->user()->can('has_access_to_all_area') &&
-            $subscription->is_completed_branch_startup == BooleanType::False->value
-        ) {
-
-            Session::put('startupType', 'branch');
-            return redirect()->route('setup.startup.form');
-        }
-
         if ($subscription->is_trial_plan == BooleanType::True->value) {
 
             $trialExpireDate = $this->getTrialExpireDate($subscription->trial_start_date, $subscription->trial_days);
@@ -108,8 +53,10 @@ class SubscriptionRestrictionsMiddleware
             }
         } elseif (
             !auth()->user()?->branch_id &&
+            $generalSettings['subscription']->has_business == BooleanType::True->value &&
             date('Y-m-d') > $generalSettings['subscription']->business_expire_date
         ) {
+
             if (auth()->user()->can('billing_renew_branch')) {
 
                 return redirect()->route('software.service.billing.shop.renew.cart')->with(['businessExpired' => __('Business is expired please renew your business')]);

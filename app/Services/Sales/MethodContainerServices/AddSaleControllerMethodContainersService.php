@@ -6,6 +6,7 @@ use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Enums\SaleScreenType;
 use App\Enums\DayBookVoucherType;
+use Illuminate\Support\Facades\DB;
 use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
 use App\Services\Setups\BranchService;
@@ -15,6 +16,7 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\Sales\SalesOrderService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Products\PriceGroupService;
@@ -35,6 +37,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 {
     public function __construct(
         private SaleService $saleService,
+        private SalesOrderService $salesOrderService,
         private SaleProductService $saleProductService,
         private StockChainService $stockChainService,
         private PriceGroupService $priceGroupService,
@@ -81,6 +84,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'branch.parentBranch',
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
+            'salesOrder:id,order_id',
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',
@@ -134,7 +138,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ->get(['accounts.id', 'accounts.name']);
 
         $data['warehouses'] = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $data['taxAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -225,6 +229,9 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
             // Add Accounting VoucherDescription References
             $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->customer_account_id, amount: $request->received_amount, refIdColName: 'sale_id', refIds: [$addSale->id]);
+
+            // Add Day Book entry for Receipt
+            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $request->date, accountId: $request->customer_account_id, transId: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amountType: 'credit');
 
             //Add Credit Ledger Entry
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
@@ -434,6 +441,9 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             // Add Accounting VoucherDescription References
             $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->customer_account_id, amount: $request->received_amount, refIdColName: 'sale_id', refIds: [$updateSale->id]);
 
+            //Add Daybook For Receipt
+            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $request->date, accountId: $request->customer_account_id, transId: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amountType: 'credit');
+
             //Add Credit Ledger Entry
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
         }
@@ -467,11 +477,17 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         }
 
         $sale = $this->saleService->singleSale(id: $updateSale->id, with: [
+            'salesOrder',
             'saleProducts',
             'saleProducts.product',
             'saleProducts.stockChains',
             'saleProducts.stockChains.purchaseProduct',
         ]);
+
+        if (isset($sale->salesOrder)) {
+
+            $this->salesOrderService->calculateDeliveryLeftQty($sale->salesOrder);
+        }
 
         $adjustedSale = $this->saleService->adjustSaleInvoiceAmounts(sale: $sale);
 
@@ -537,6 +553,11 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
                     }
                 }
             }
+
+            if (isset($deleteSale->salesOrder)) {
+
+                $this->salesOrderService->calculateDeliveryLeftQty($deleteSale->salesOrder);
+            }
         }
 
         $subjectType = '';
@@ -563,5 +584,22 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: $subjectType, dataObj: $deleteSale);
 
         return $deleteSale;
+    }
+
+    public function searchByInvoiceIdMethodContainer(string $keyWord): array|object
+    {
+        $sales = DB::table('sales')
+            ->where('sales.invoice_id', 'like', "%{$keyWord}%")
+            ->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.status', SaleStatus::Final->value)
+            ->select('sales.id as sale_id', 'sales.invoice_id', 'sales.customer_account_id')->limit(35)->get();
+
+        if (count($sales) > 0) {
+
+            return view('search_results_view.sale_invoice_search_result_list', compact('sales'));
+        } else {
+
+            return ['noResult' => 'no result'];
+        }
     }
 }

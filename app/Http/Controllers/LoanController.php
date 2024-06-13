@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
-use App\Utils\AccountUtil;
 use App\Utils\Converter;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\LoanUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,24 +12,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class LoanController extends Controller
 {
-    protected $accountUtil;
-
     protected $loanUtil;
 
     protected $converter;
 
-    protected $invoiceVoucherRefIdUtil;
-
     public function __construct(
-        AccountUtil $accountUtil,
         LoanUtil $loanUtil,
         Converter $converter,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
-        $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
         $this->converter = $converter;
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
     }
 
     public function index(Request $request)
@@ -158,7 +148,7 @@ class LoanController extends Controller
         ]);
 
         // generate reference no
-        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('loans'), 4, '0', STR_PAD_LEFT);
+        $refId = 1;
 
         $prefix = $request->type == 1 ? 'LA' : 'LL';
         $addLoan = new Loan();
@@ -180,46 +170,14 @@ class LoanController extends Controller
 
             $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
             // Add Loan A/C ledger
-            $this->accountUtil->addAccountLedger(
-                voucher_type_id: 14,
-                date: $request->date,
-                account_id: $request->loan_account_id,
-                trans_id: $addLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'debit'
-            );
 
             // Add Bank/Cash-in-hand A/C ledger
-            $this->accountUtil->addAccountLedger(
-                voucher_type_id: 25,
-                date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $addLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'debit'
-            );
         } else {
 
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
             // Add Loan A/C ledger
-            $this->accountUtil->addAccountLedger(
-                voucher_type_id: 13,
-                date: $request->date,
-                account_id: $request->loan_account_id,
-                trans_id: $addLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'credit'
-            );
 
             // Add Bank/Cash-in-hand A/C ledger
-            $this->accountUtil->addAccountLedger(
-                voucher_type_id: 24,
-                date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $addLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'debit'
-            );
         }
 
         return response()->json('Loan created Successfully');
@@ -293,45 +251,13 @@ class LoanController extends Controller
             $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
 
             // Update loan A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 14,
-                date: $request->date,
-                account_id: $request->loan_account_id,
-                trans_id: $updateLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'debit'
-            );
 
             // Update Bank/Cash-In-Hand A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 25,
-                date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $updateLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'debit'
-            );
         } else {
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
             // Update loan A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 13,
-                date: $request->date,
-                account_id: $request->loan_account_id,
-                trans_id: $updateLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'credit'
-            );
 
             // Update Bank/Cash-In-Hand A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 24,
-                date: $request->date,
-                account_id: $request->account_id,
-                trans_id: $updateLoan->id,
-                amount: $request->loan_amount,
-                balance_type: 'debit'
-            );
         }
 
         return response()->json('Loan updated Successfully');
@@ -356,12 +282,8 @@ class LoanController extends Controller
         $loan->delete();
         if ($storedType == 1) {
             $this->loanUtil->adjustCompanyLoanAdvanceAmount($storedCompanyId);
-            $this->accountUtil->adjustAccountBalance('debit', $storeLoanAccountId);
-            $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         } else {
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($storedCompanyId);
-            $this->accountUtil->adjustAccountBalance('credit', $storeLoanAccountId);
-            $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         }
 
         DB::statement('ALTER TABLE loans AUTO_INCREMENT = 1');

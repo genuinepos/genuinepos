@@ -33,6 +33,9 @@
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($dateFormat, strtotime($purchase->date)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
+                            @if ($purchase?->purchaseOrder)
+                                <li style="font-size:11px!important;"><strong>{{ __('P/o ID') }} : </strong> {{ $purchase?->purchaseOrder?->invoice_id }}</li>
+                            @endif
                             <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
                                 @php
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -119,6 +122,12 @@
                                 </thead>
                                 <tbody class="purchase_product_list">
                                     @foreach ($purchase->purchaseProducts as $purchaseProduct)
+
+                                        @if ($purchase?->purchaseOrder && $purchaseProduct->quantity <= 0)
+
+                                            @continue
+                                        @endif
+
                                         <tr>
                                             @php
                                                 $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->variant_name : '';

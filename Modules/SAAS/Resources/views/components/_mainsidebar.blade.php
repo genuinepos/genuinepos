@@ -25,7 +25,7 @@
                                     </li>
                                 @endcan
                                 <li class="sidebar-dropdown-item">
-                                    <a href="#" class="sidebar-link">{{ __('Payment Histories') }}</a>
+                                    <a href="{{ route('saas.tenants.user.subscription.transaction.index') }}" class="sidebar-link">{{ __('Transactions') }}</a>
                                 </li>
                             </ul>
                         </li>

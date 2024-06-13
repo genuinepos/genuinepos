@@ -83,15 +83,6 @@
                                     <span class="text-danger error error_business_lifetime_price"></span>
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="form-label">{{ __('Select Currency') }}</label>
-                                    <select required name="currency_id" id="currency_id" class="form-select">
-                                        @foreach ($currencies as $currency)
-                                            <option value="{{ $currency->id }}">{{ $currency->code }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
                                 <div class="mb-1">
                                     <label class="form-label">{{ __('Description') }}</label>
                                     <textarea class="form-control editor" name="description" placeholder="{{ __('Enter Description') }}" rows="4"></textarea>
@@ -287,7 +278,7 @@
                             return;
                         }
 
-                        toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                        toastr.error(err.responseJSON.message);
 
                         $.each(err.responseJSON.errors, function(key, error) {
 

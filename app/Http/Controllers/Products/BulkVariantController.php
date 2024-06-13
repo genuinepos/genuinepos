@@ -20,7 +20,6 @@ class BulkVariantController extends Controller
         private BulkVariantChildService $bulkVariantChildService,
         private UserActivityLogService $userActivityLogService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

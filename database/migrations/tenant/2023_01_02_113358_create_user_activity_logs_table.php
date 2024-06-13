@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_activity_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('ip', 100)->nullable();
             $table->unsignedBigInteger('branch_id')->nullable()->index('user_activity_logs_branch_id_foreign');
             $table->unsignedBigInteger('user_id')->nullable()->index('user_activity_logs_user_id_foreign');
             $table->string('date', 30)->nullable();

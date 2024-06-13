@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Accounts') }}</a>
+                        <a href="{{ route('accounts.create', \App\Enums\AccountCreateAndEditType::Others->value) }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Accounts') }}</a>
                     </div>
                 </div>
 
@@ -405,39 +405,30 @@
                     type: 'post',
                     data: request,
                     success: function(data) {
-                        accounts_table.ajax.reload();
+
+                        if (!$.isEmptyObject(data.errorMsg)) {
+
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
+                        accounts_table.ajax.reload(null, false);
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
+                    },
+                    error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                        } else {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        }
                     }
                 });
             });
         });
-
-        // $(document).on('change', '#account_type', function() {
-        //     var account_type = $(this).val();
-        //     if (account_type == 2) {
-        //         $('.bank_account_field').show();
-        //     }else {
-        //         $('.bank_account_field').hide();
-        //     }
-        // });
-
-        // $('#add').on('click', function() {
-        //     setTimeout(function () {
-        //         $('#name').focus();
-        //     }, 500);
-        // });
-
-        // document.onkeyup = function () {
-        //     var e = e || window.event; // for IE to cover IEs window event-object
-        //     //console.log(e);
-        //     if(e.ctrlKey && e.which == 13) {
-        //         $('#addModal').modal('show');
-        //         setTimeout(function () {
-        //             $('#name').focus();
-        //         }, 500);
-        //         //return false;
-        //     }
-        // }
     </script>
 @endpush

@@ -81,7 +81,7 @@
                                     </select>
 
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ !auth()->user()->can('product_unit_add')? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_unit_add')? 'addUnit()': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('product_unit_add')? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_unit_add')? 'addUnit();': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                     </div>
                                 </div>
                                 <span class="error error_unit_id"></span>
@@ -98,7 +98,7 @@
                                             @endforeach
                                         </select>
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text {{ !auth()->user()->can('product_category_add')? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_brand_add')? 'addCategory()': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                            <span class="input-group-text {{ !auth()->user()->can('product_category_add') ? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_brand_add') ? 'addCategory();': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                         </div>
                                     </div>
                                     <span class="error error_category_id"></span>
@@ -126,7 +126,7 @@
                                         </select>
 
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" onclick="{{ auth()->user()->can('product_brand_add')? 'addBrand();': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" onclick="{{ auth()->user()->can('product_brand_add') ? 'addBrand();': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                         </div>
                                     </div>
                                 </div>

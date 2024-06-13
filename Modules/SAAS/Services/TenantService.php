@@ -117,8 +117,6 @@ class TenantService implements TenantServiceInterface
 
                         dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(data: $request->all(), planName: $plan->name, appUrl: $appUrl));
                     }
-
-                    return $tenant;
                 }
             }
         } catch (\Exception $e) {
@@ -127,6 +125,8 @@ class TenantService implements TenantServiceInterface
             Log::info($e->getMessage());
             return null;
         }
+
+        return $tenant;
     }
 
     public function tenantsTable(): object
@@ -166,7 +166,7 @@ class TenantService implements TenantServiceInterface
 
                 if (auth()->user()->can('tenants_show')) {
 
-                    $html .= '<a href="#" class="dropdown-item">' . __('View') . '</a>';
+                    $html .= '<a href="' . route('saas.tenants.show', $row->id) . '" class="dropdown-item">' . __('View') . '</a>';
                 }
 
                 $html .= '<a href="' . $domain . '" target="_blank" class="dropdown-item">' . __('Open Application') . '</a>';

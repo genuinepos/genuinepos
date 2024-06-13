@@ -94,7 +94,7 @@
                                     <h6>{{ __('List of Quotations') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)
+                                @if (auth()->user()->can('create_add_sale'))
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
@@ -429,8 +429,22 @@
                         return;
                     }
 
-                    quotationsTable.ajax.reload();
+                    quotationsTable.ajax.reload(null, false);
                     toastr.error(data);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });

@@ -17,7 +17,7 @@
                     <th scope="col">{{ __("Unit") }}</th>
                     <th scope="col">{{ __("Price Inc. Tax") }}</th>
                     <th scope="col">{{ __("Subtotal") }}</th>
-                    <th scope="col"><i class="fas fa-trash-alt"></i></th>
+                    <th scope="col" class="text-start"><i class="fas fa-trash-alt"></i></th>
                 </tr>
             </thead>
 

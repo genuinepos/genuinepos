@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('backend/asset/css/comon.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos.css') }}">
     <link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
@@ -215,21 +216,11 @@
     <!-- Hold invoice list modal End-->
 
     @if (auth()->user()->can('product_add'))
-        <!--Add Product Modal-->
-        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="add_product_body">
-                        <!--begin::Form-->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Add Product Modal End-->
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 
     <!--Add Customer Modal-->
@@ -430,18 +421,6 @@
     <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
-        // Get all pos shortcut menus by ajax
-        function allPosShortcutMenus() {
-            $.ajax({
-                url: "{{ route('pos.short.menus.edit.page.show') }}",
-                type: 'get',
-                success: function(data) {
-                    $('#pos-shortcut-menus').html(data);
-                }
-            });
-        }
-        allPosShortcutMenus();
-
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
             $.confirm({

@@ -26,11 +26,22 @@ class GeneralSettingService implements GeneralSettingServiceInterface
                         continue;
                     }
 
-                    GeneralSetting::where('key', $key)->where('branch_id', null)->update(['value' => $value]);
+                    $exists = GeneralSetting::where('key', $key)->where('branch_id', null)->first();
+                    if (isset($exists)) {
+
+                        $exists->update(['value' => $value]);
+                    } else {
+
+                        GeneralSetting::insert([
+                            'key' => $key,
+                            'value' => $value,
+                            'branch_id' => null,
+                        ]);
+                    }
                 }
             }
 
-            $this->cacheService->syncGeneralSettings();
+            $this->cacheService->forgetGeneralSettingsCache();
 
             return true;
         }
@@ -102,6 +113,8 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
         $businessLogo->value = null;
         $businessLogo->save();
+
+        $this->cacheService->forgetGeneralSettingsCache();
 
         return true;
     }

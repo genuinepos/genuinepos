@@ -273,7 +273,7 @@ class PurchaseReturnService
 
         if (count($deletePurchaseReturn->references) > 0) {
 
-            return ['pass' => false, 'msg' => __('Purchase Return can not be deleted. There is one or more receipt which is against this purchase return.')];
+            return ['pass' => false, 'msg' => __('Purchase Return can not be deleted. There is one or more receipts which is against this purchase return.')];
         }
 
         $deletePurchaseReturn->delete();
@@ -305,21 +305,5 @@ class PurchaseReturnService
         $purchaseReturn->received_amount = $totalReceived->sum('total_received');
         $purchaseReturn->due = $due;
         $purchaseReturn->save();
-    }
-
-    public function purchaseReturnValidation(object $request): ?array
-    {
-        return $request->validate([
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
     }
 }

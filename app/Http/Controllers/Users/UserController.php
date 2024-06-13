@@ -2,153 +2,141 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Enums\UserType;
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Services\Users\RoleService;
-use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Enums\UserActivityLogActionType;
-use App\Enums\UserActivityLogSubjectType;
 use App\Http\Requests\Users\UserStoreRequest;
+use App\Http\Requests\Users\UserDeleteRequest;
 use App\Http\Requests\Users\UserUpdateRequest;
 use App\Services\Users\UserActivityLogService;
+use App\Interfaces\Users\UserControllerMethodContainersInterface;
 
 class UserController extends Controller
 {
-    public function __construct(
-        private BranchService $branchService,
-        private UserService $userService,
-        private RoleService $roleService,
-        private UserActivityLogService $userActivityLogService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
-    }
-
-    public function index(Request $request)
+    public function index(Request $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('user_view'), 403);
 
+        $indexMethodContainer = $userControllerMethodContainersInterface->indexMethodContainer(request: $request);
+
         if ($request->ajax()) {
 
-            return $this->userService->usersTable($request);
+            return $indexMethodContainer;;
         }
 
-        $branches = $this->branchService->branches(['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        extract($indexMethodContainer);
 
         return view('users.index', compact('branches'));
     }
 
-    public function show($id)
+    public function show($id, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        $user = $this->userService->singleUser(id: $id);
+        $showMethodContainer = $userControllerMethodContainersInterface->showMethodContainer(id: $id);
+        extract($showMethodContainer);
+
         return view('users.show', compact('user'));
     }
 
-    public function create()
+    public function create(UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('user_add'), 403);
 
-        $roles = $this->roleService->roles()->get();
-        $departments = DB::table('hrm_departments')->orderBy('id', 'desc')->get();
-        $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
-        $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
-
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        $createMethodContainer = $userControllerMethodContainersInterface->createMethodContainer();
+        extract($createMethodContainer);
 
         return view('users.create', compact('departments', 'designations', 'shifts', 'branches', 'roles'));
     }
 
-    public function store(UserStoreRequest $request)
+    public function store(UserStoreRequest $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        $restrictions = $this->userService->storeRestrictions(request: $request);
+        try {
+            DB::beginTransaction();
 
-        if ($restrictions['pass'] == false) {
+            $storeMethodContainer = $userControllerMethodContainersInterface->storeMethodContainer(request: $request);
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
+            if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $storeMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
-        $role = $this->roleService->singleRole(id: $roleId);
-        $this->userService->addUser(request: $request, role: $role);
 
         return response()->json(__('User created successfully'));
     }
 
-    public function edit($id)
+    public function edit($id, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('user_edit'), 403);
 
-        $user = $this->userService->singleUser(id: $id);
+        $editMethodContainer = $userControllerMethodContainersInterface->editMethodContainer(id: $id);
 
-        $roles = $this->roleService->roles()->get();
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
-
-        $departments = DB::table('hrm_departments')->orderBy('id', 'desc')->get();
-        $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
-        $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
+        extract($editMethodContainer);
 
         return view('users.edit', compact('user', 'roles', 'branches', 'departments', 'designations', 'shifts'));
     }
 
-    public function update(UserUpdateRequest $request, $id)
+    public function update($id, UserUpdateRequest $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        $restrictions = $this->userService->updateRestrictions(request: $request, id: $id);
+        try {
+            DB::beginTransaction();
 
-        if ($restrictions['pass'] == false) {
+            $updateMethodContainer = $userControllerMethodContainersInterface->updateMethodContainer(id: $id, request: $request);
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $roleId = $request->allow_login == BooleanType::True->value ? $request->role_id : null;
-        $role = $this->roleService->singleRole(id: $roleId);
-
-        $this->userService->updateUser(request: $request, id: $id, role: $role);
 
         session()->flash('successMsg', __('Successfully user updated'));
 
         return response()->json(__('User updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($id, UserDeleteRequest $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('user_delete'), 403);
+        try {
+            DB::beginTransaction();
 
-        $deleteUser = $this->userService->deleteUser(id: $id);
+            $deleteMethodContainer = $userControllerMethodContainersInterface->deleteMethodContainer(id: $id);
 
-        if ($deleteUser['pass'] == false) {
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
 
-            return response()->json(['errorMsg' => $deleteUser['msg']]);
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
         return response()->json(__('User deleted successfully'));
     }
 
-    public function changeBranch(Request $request)
+    public function changeBranch(Request $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        $this->userService->changeBranch(request: $request);
-
-        $this->userActivityLogService->addLog(action: UserActivityLogActionType::LocationSwitch->value, subjectType: UserActivityLogSubjectType::LocationSwitch->value, dataObj: auth()->user());
-        if (auth()->user()?->location_switch_log_description) {
-
-            unset(auth()->user()->location_switch_log_description);
-        }
+        $deleteMethodContainer = $userControllerMethodContainersInterface->changeBranchMethodContainer(request: $request);
 
         return response()->json(__('Succeed'));
     }
 
-    public function branchUsers($isOnlyAuthenticatedUser, $allowAll, $branchId = null)
+    public function branchUsers(UserControllerMethodContainersInterface $userControllerMethodContainersInterface, $isOnlyAuthenticatedUser, $allowAll, $branchId = null)
     {
-        return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
+        return $userControllerMethodContainersInterface->branchUsersMethodContainer(isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser, allowAll: $allowAll, branchId: $branchId);
     }
 
-    function currentUserAndEmployeeCount($branchId = null)
+    function currentUserAndEmployeeCount(UserControllerMethodContainersInterface $userControllerMethodContainersInterface, $branchId = null)
     {
-        return $this->userService->currentUserAndEmployeeCount($branchId);
+        return $userControllerMethodContainersInterface->currentUserAndEmployeeCountMethodContainer(branchId: $branchId);
     }
 }

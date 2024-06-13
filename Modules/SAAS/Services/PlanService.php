@@ -36,7 +36,6 @@ class PlanService implements PlanServiceInterface
             'business_price_per_month' => $request->business_price_per_month,
             'business_price_per_year' => $request->business_price_per_year,
             'business_lifetime_price' => $request->has_lifetime_period == BooleanType::True->value ? $request->business_lifetime_price : BooleanType::False->value,
-            'currency_id' => $request->currency_id,
             'description' => $request->description,
             'features' => $preparedPlanFeatures,
             'status' => $request->status,
@@ -75,7 +74,6 @@ class PlanService implements PlanServiceInterface
             $updatePlan->business_price_per_month = $request->business_price_per_month;
             $updatePlan->business_price_per_year = $request->business_price_per_year;
             $updatePlan->business_lifetime_price = $request->has_lifetime_period == BooleanType::True->value ? $request->business_lifetime_price : BooleanType::False->value;
-            $updatePlan->currency_id = $request->currency_id;
         } elseif ($updatePlan->is_trial_plan == BooleanType::True->value) {
 
             $updatePlan->trial_days = $request->trial_days;
@@ -163,6 +161,7 @@ class PlanService implements PlanServiceInterface
             'hrm' => isset($request->features['hrm']) ? 1 : 0,
             'employee_count' => isset($request->features['employee_count']) ? $request->features['employee_count'] : 0,
             'manufacturing' => isset($request->features['manufacturing']) ? $request->features['manufacturing'] : 0,
+            'services' => isset($request->features['services']) ? $request->features['services'] : 0,
             'task_management' => isset($request->features['task_management']) ? 1 : 0,
             'communication' => isset($request->features['communication']) ? 1 : 0,
             'setup' => isset($request->features['setup']) ? 1 : 0,

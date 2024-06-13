@@ -13,14 +13,11 @@ class DutyAndTaxAccountController extends Controller
         private DutiesAndTaxesAccountService $dutiesAndTaxesAccountService,
         private AccountGroupService $accountGroupService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('duties_and_taxes_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('duties_and_taxes_index'), 403);
 
         if ($request->ajax()) {
 

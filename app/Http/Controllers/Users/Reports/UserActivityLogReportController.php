@@ -15,10 +15,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserActivityLogReportController extends Controller
 {
-    public function __construct(
-        private BranchService $branchService,
-        private UserService $userService
-    ) {
+    public function __construct(private BranchService $branchService, private UserService $userService)
+    {
     }
 
     public function index(Request $request)
@@ -33,6 +31,7 @@ class UserActivityLogReportController extends Controller
 
             $query->select(
                 'user_activity_logs.id',
+                'user_activity_logs.ip',
                 'user_activity_logs.branch_id',
                 'user_activity_logs.date',
                 'user_activity_logs.report_date',

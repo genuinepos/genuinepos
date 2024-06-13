@@ -134,7 +134,8 @@ class StockIssueControllerMethodContainersService implements StockIssueControlle
 
         $addStockIssue = $this->stockIssueService->addStockIssue(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
-        $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::StockIssue->value, date: $addStockIssue->date, accountId: null, productId: $request->product_ids[0], transId: $addStockIssue->id, amount: $addStockIssue->net_total_amount, amountType: 'credit');
+        $variantId = isset($request->variant_ids[0]) && $request->variant_ids[0] != 'noid' ? $request->variant_ids[0] : null;
+        $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::StockIssue->value, date: $addStockIssue->date, accountId: null, productId: isset($request->product_ids[0]) ? $request->product_ids[0] : null, variantId: $variantId, transId: $addStockIssue->id, amount: $addStockIssue->net_total_amount, amountType: 'credit');
 
         foreach ($request->product_ids as $index => $productId) {
 
@@ -225,7 +226,8 @@ class StockIssueControllerMethodContainersService implements StockIssueControlle
 
         $updateStockIssue = $this->stockIssueService->updateStockIssue(request: $request, id: $id);
 
-        $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::StockIssue->value, date: $updateStockIssue->date, accountId: null, productId: $request->product_ids[0], transId: $updateStockIssue->id, amount: $updateStockIssue->net_total_amount, amountType: 'credit');
+        $variantId = isset($request->variant_ids[0]) && $request->variant_ids[0] != 'noid' ? $request->variant_ids[0] : null;
+        $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::StockIssue->value, date: $updateStockIssue->date, accountId: null, productId: isset($request->product_ids[0]) ? $request->product_ids[0] : null, variantId: $variantId, transId: $updateStockIssue->id, amount: $updateStockIssue->net_total_amount, amountType: 'credit');
 
         foreach ($request->product_ids as $index => $productId) {
 

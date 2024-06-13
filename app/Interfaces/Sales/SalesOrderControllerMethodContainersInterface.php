@@ -7,35 +7,13 @@ interface SalesOrderControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService
      */
-    public function showMethodContainer(
-        int $id,
-        object $salesOrderService,
-        object $saleProductService
-    ): ?array;
+    public function indexMethodContainer(object $request, ?int $customerAccountId): array|object;
 
-    public function editMethodContainer(
-        int $id,
-        object $salesOrderService,
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-        object $priceGroupService,
-        object $managePriceGroupService,
-    ): array;
+    public function showMethodContainer(int $id): ?array;
 
-    public function updateMethodContainer(
-        int $id,
-        object $request,
-        object $saleService,
-        object $salesOrderService,
-        object $salesOrderProductService,
-        object $dayBookService,
-        object $accountService,
-        object $accountLedgerService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $accountingVoucherDescriptionReferenceService,
-        object $userActivityLogUtil,
-        object $codeGenerator
-    ): ?array;
+    public function editMethodContainer(int $id): array;
+
+    public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array;
+
+    public function searchByOrderIdMethodContainer(string $keyWord): array|object;
 }

@@ -107,7 +107,7 @@ class CashCounterService
         return ['pass' => true];
     }
 
-    public function addCashCounter(int $branchId, string $cashCounterName, string $shortName): object
+    public function addCashCounter(?int $branchId, string $cashCounterName, string $shortName): object
     {
         return CashCounter::create([
             'branch_id' => $branchId,
@@ -124,14 +124,21 @@ class CashCounterService
         $updateCashCounter->save();
     }
 
-    public function deleteCashCounter(): void
+    public function deleteCashCounter($id): array
     {
-        $delete = CashCounter::find($id);
+        $delete = $this->singleCashCounter(id: $id, with: ['cashRegisters']);
 
         if (!is_null($delete)) {
 
+            if (count($delete->cashRegisters)) {
+
+                return ['pass' => false, 'msg' => __('Cash counter can not be deleted. This cash counter has one or more cash registers.')];
+            }
+
             $delete->delete();
         }
+
+        return ['pass' => true];
     }
 
     public function singleCashCounter(int $id, array $with = null)

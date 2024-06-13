@@ -150,7 +150,7 @@ class ProductService
 
                     if (auth()->user()->can('product_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
 
                     if (auth()->user()->can('product_delete')) {
@@ -166,7 +166,7 @@ class ProductService
                     //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                     // }
 
-                    $html .= '<a href="#" class="dropdown-item">' . __('Product Ledger') . '</a>';
+                    $html .= '<a href="' . route('products.ledger.index', [$row->id]) . '" class="dropdown-item">' . __('Product Ledger') . '</a>';
 
                     if ($countPriceGroup > 0) {
 
@@ -359,10 +359,18 @@ class ProductService
                 DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
                 DB::raw('SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost'),
             )->groupBy(
+                'branches.name',
+                'branches.area_name',
+                'branches.branch_code',
+                'parentBranch.name',
+                'warehouses.warehouse_name',
+                'warehouses.is_global',
+
                 'product_ledgers.branch_id',
                 'product_ledgers.warehouse_id',
                 'product_ledgers.product_id',
-                'product_ledgers.variant_id'
+                'product_ledgers.variant_id',
+                'product_variants.variant_name',
             );
 
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
@@ -740,7 +748,7 @@ class ProductService
         }
     }
 
-    public function getLastProductSerialCode()
+    public function getLastProductSerialCode(): string
     {
         $id = 1;
         $lastEntry = DB::table('products')->orderBy('id', 'desc')->first(['id']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
@@ -11,7 +12,9 @@ use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\TodoService;
 use App\Services\TaskManagement\TodoUserService;
 use App\Http\Requests\TaskManagement\TodoStoreRequest;
+use App\Http\Requests\TaskManagement\TodoDeleteRequest;
 use App\Http\Requests\TaskManagement\TodoUpdateRequest;
+use App\Http\Requests\TaskManagement\TodoChangeStatusRequest;
 
 class TodoController extends Controller
 {
@@ -21,12 +24,11 @@ class TodoController extends Controller
         private UserService $userService,
         private BranchService $branchService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('todo_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_index') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::False->value, 403);
 
         if ($request->ajax()) {
 
@@ -37,6 +39,12 @@ class TodoController extends Controller
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('task_management.todo.index', compact('branches'));
+    }
+
+    public function show($id)
+    {
+        $todo = $this->todoService->singleTodo(id: $id, with: ['createdBy', 'users', 'users.user']);
+        return view('task_management.todo.ajax_view.show', compact('todo'));
     }
 
     public function create()
@@ -66,7 +74,7 @@ class TodoController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('todo_edit') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_edit') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::False->value, 403);
 
         $todo = $this->todoService->singleTodo(id: $id, with: ['users']);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
@@ -93,17 +101,15 @@ class TodoController extends Controller
 
     public function changeStatusModal($id)
     {
-        abort_if(!auth()->user()->can('todo_change_status') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('todo_change_status') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::False->value, 403);
 
         $todo = $this->todoService->singleTodo(id: $id);
 
         return view('task_management.todo.ajax_view.change_status', compact('todo'));
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus(TodoChangeStatusRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('todo_change_status') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $changeStatus = $this->todoService->changeTodoStatus(request: $request, id: $id);
         if ($changeStatus['pass'] == false) {
 
@@ -113,15 +119,8 @@ class TodoController extends Controller
         return response()->json(__('Todo status changed successfully.'));
     }
 
-    public function show($id)
+    public function delete(TodoDeleteRequest $request, $id)
     {
-        $todo = $this->todoService->singleTodo(id: $id, with: ['createdBy', 'users', 'users.user']);
-        return view('task_management.todo.ajax_view.show', compact('todo'));
-    }
-
-    public function delete(Request $request, $id)
-    {
-        abort_if(!auth()->user()->can('todo_delete') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
         $this->todoService->deleteTodo(id: $id);
         return response()->json(__('Todo deleted successfully.'));
     }

@@ -3,8 +3,10 @@
 namespace App\Models\Accounts;
 
 use App\Models\BaseModel;
-use App\Models\Contacts\Contact;
 use App\Models\Setups\Branch;
+use App\Models\Contacts\Contact;
+use App\Models\Accounts\AccountLedger;
+use App\Models\Accounts\AccountOpeningBalance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends BaseModel
@@ -28,11 +30,6 @@ class Account extends BaseModel
     public function group()
     {
         return $this->belongsTo(AccountGroup::class, 'account_group_id');
-    }
-
-    public function accountBranches()
-    {
-        return $this->hasMany(AccountBranch::class);
     }
 
     public function bankAccessBranches()
@@ -63,6 +60,11 @@ class Account extends BaseModel
     public function contact()
     {
         return $this->belongsTo(Contact::class, 'contact_id');
+    }
+
+    public function accountOpeningBalance()
+    {
+        return $this->hasOne(AccountOpeningBalance::class, 'account_id')->where('branch_id', auth()->user()->branch_id);
     }
 
     public function openingBalance()

@@ -34,7 +34,10 @@ class SalesOrderService
             'sales.quotation_id',
             'sales.date',
             'sales.total_item',
-            'sales.total_qty',
+            'sales.total_ordered_qty',
+            'sales.total_delivered_qty',
+            'sales.total_left_qty',
+            'sales.order_delivery_status',
             'sales.total_invoice_amount',
             'sales.paid as received_amount',
             'sales.due',
@@ -55,6 +58,14 @@ class SalesOrderService
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a href="' . route('sale.orders.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
+
+                if (auth()->user()->branch_id == $row->branch_id) {
+
+                    if (auth()->user()->can('sales_order_to_invoice')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.order.to.invoice.create', [$row->id]) . '">' . __('Sales Order To Invoice') . '</a>';
+                    }
+                }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -112,7 +123,11 @@ class SalesOrderService
 
             ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('total_ordered_qty', fn ($row) => '<span class="total_ordered_qty" data-value="' . $row->total_ordered_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_ordered_qty) . '</span>')
+
+            ->editColumn('total_delivered_qty', fn ($row) => '<span class="total_delivered_qty" data-value="' . $row->total_delivered_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_delivered_qty) . '</span>')
+
+            ->editColumn('total_left_qty', fn ($row) => '<span class="total_left_qty" data-value="' . $row->total_left_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_left_qty) . '</span>')
 
             ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
 
@@ -136,12 +151,28 @@ class SalesOrderService
                 }
             })
 
+            ->editColumn('delivery_status', function ($row) {
+
+                $receivable = $row->total_invoice_amount;
+
+                if ($row->order_delivery_status == OrderDeliveryStatus::Pending->value) {
+
+                    return '<span class="text-danger"><b>' . __('Pending') . '</span>';
+                } elseif ($row->order_delivery_status == OrderDeliveryStatus::Partial->value){
+
+                    return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
+                } elseif ($row->order_delivery_status == OrderDeliveryStatus::Completed->value) {
+
+                    return '<span class="text-success"><b>' . __('Completed') . '</b></span>';
+                }
+            })
+
             ->editColumn('created_by', function ($row) {
 
                 return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
-            ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'order_id', 'branch', 'customer', 'due', 'payment_status', 'created_by'])
+            ->rawColumns(['action', 'date', 'total_item', 'total_ordered_qty', 'total_delivered_qty', 'total_left_qty', 'delivery_status', 'total_invoice_amount', 'received_amount', 'order_id', 'branch', 'customer', 'due', 'payment_status', 'created_by'])
             ->make(true);
     }
 
@@ -192,7 +223,7 @@ class SalesOrderService
             ->groupBy('sales.sales_order_id')->get();
 
         $order->total_delivered_qty = $totalDeliveredQty->sum('total_delivered_qty');
-        $totalLeftQty = $order->total_do_qty - $order->total_delivered_qty;
+        $totalLeftQty = $order->total_ordered_qty - $order->total_delivered_qty;
         $order->total_left_qty = $totalLeftQty;
         $order->save();
 

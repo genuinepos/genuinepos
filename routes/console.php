@@ -64,7 +64,19 @@ Artisan::command('sync:gs', function () {
         }
     }
 
-    $products = Product::all();
+    $deleteUnusedSettings = GeneralSetting::whereIn('key', [
+        'addons__hrm',
+        'addons__manage_task',
+        'addons__service',
+        'addons__manufacturing',
+        'addons__e_commerce',
+        'addons__branch_limit',
+        'addons__cash_counter_limit',
+    ])->get();
+
+    foreach ($deleteUnusedSettings as $deleteUnusedSetting) {
+        $deleteUnusedSetting->delete();
+    }
 });
 
 Artisan::command('sync:table', function () {

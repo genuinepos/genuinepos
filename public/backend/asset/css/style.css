@@ -2512,3 +2512,7 @@ label.col-6 {
 .modal-footer{
     padding: 0px .5rem!important;
 }
+
+.selectable td {
+    cursor: pointer;
+}

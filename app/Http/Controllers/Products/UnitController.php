@@ -15,11 +15,8 @@ use App\Interfaces\CodeGenerationServiceInterface;
 
 class UnitController extends Controller
 {
-    public function __construct(
-        private UnitService $unitService,
-        private UserActivityLogService $userActivityLogService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private UnitService $unitService, private UserActivityLogService $userActivityLogService)
+    {
     }
 
     public function index(Request $request)

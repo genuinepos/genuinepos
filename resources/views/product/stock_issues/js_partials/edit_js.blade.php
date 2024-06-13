@@ -526,7 +526,7 @@
         $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
         $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     $('#e_quantity').on('input keypress', function(e) {
@@ -714,7 +714,8 @@
 
                 toastr.success(data);
                 window.location = "{{ url()->previous() }}";
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.loading_button').hide();
                 $('.error').html('');
@@ -729,7 +730,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

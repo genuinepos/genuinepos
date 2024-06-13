@@ -59,18 +59,24 @@ class RolePermissionSeeder extends Seeder
         $permissions = $this->getPermissionsArray();
         foreach ($permissions as $permission) {
 
-            $permissionExists = Permission::where('id', $permission['id'])->where('name', $permission['name'])->exists();
+            // $permissionExists = Permission::where('id', $permission['id'])->where('name', $permission['name'])->exists();
 
-            if (!$permissionExists) {
+            // if (!$permissionExists) {
 
-                Permission::create([
-                    'id' => $permission['id'],
-                    'name' => $permission['name'],
-                    // 'guard_name' => 'web',
-                ]);
+            //     Permission::create([
+            //         'id' => $permission['id'],
+            //         'name' => $permission['name'],
+            //         // 'guard_name' => 'web',
+            //     ]);
 
-                // echo 'Created: ' . $permission['name'] . PHP_EOL;
-            }
+            //     // echo 'Created: ' . $permission['name'] . PHP_EOL;
+            // }
+
+            Permission::create([
+                'id' => $permission['id'],
+                'name' => $permission['name'],
+                // 'guard_name' => 'web',
+            ]);
         }
     }
 
@@ -436,8 +442,8 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '271', 'name' => 'profit_loss'],
             ['id' => '272', 'name' => 'financial_report'],
-            ['id' => '273', 'name' => 'profit_loss_account'],
-            ['id' => '274', 'name' => 'balance_sheet'],
+            // ['id' => '273', 'name' => 'profit_loss_account'],
+            // ['id' => '274', 'name' => 'balance_sheet'],
             ['id' => '275', 'name' => 'trial_balance'],
             ['id' => '276', 'name' => 'cash_flow'],
 
@@ -469,15 +475,15 @@ class RolePermissionSeeder extends Seeder
             ['id' => '298', 'name' => 'attendances_edit'],
             ['id' => '299', 'name' => 'attendances_delete'],
 
-            ['id' => '300', 'name' => 'allowances_index'],
-            ['id' => '301', 'name' => 'allowances_create'],
-            ['id' => '302', 'name' => 'allowances_edit'],
-            ['id' => '303', 'name' => 'allowances_delete'],
+            // ['id' => '300', 'name' => 'allowances_index'],
+            // ['id' => '301', 'name' => 'allowances_create'],
+            // ['id' => '302', 'name' => 'allowances_edit'],
+            // ['id' => '303', 'name' => 'allowances_delete'],
 
-            ['id' => '304', 'name' => 'deductions_index'],
-            ['id' => '305', 'name' => 'deductions_create'],
-            ['id' => '306', 'name' => 'deductions_edit'],
-            ['id' => '307', 'name' => 'deductions_delete'],
+            // ['id' => '304', 'name' => 'deductions_index'],
+            // ['id' => '305', 'name' => 'deductions_create'],
+            // ['id' => '306', 'name' => 'deductions_edit'],
+            // ['id' => '307', 'name' => 'deductions_delete'],
 
             ['id' => '308', 'name' => 'holidays_index'],
             ['id' => '309', 'name' => 'holidays_create'],
@@ -590,6 +596,41 @@ class RolePermissionSeeder extends Seeder
             ['id' => '402', 'name' => 'stock_issues_add'],
             ['id' => '403', 'name' => 'stock_issues_edit'],
             ['id' => '404', 'name' => 'stock_issues_delete'],
+
+            ['id' => '405', 'name' => 'expense_report'],
+            ['id' => '406', 'name' => 'day_book'],
+            ['id' => '407', 'name' => 'purchase_order_to_invoice'],
+
+            ['id' => '408', 'name' => 'allowances_and_deductions_index'],
+            ['id' => '409', 'name' => 'allowances_and_deductions_create'],
+            ['id' => '410', 'name' => 'allowances_and_deductions_edit'],
+            ['id' => '411', 'name' => 'allowances_and_deductions_delete'],
+
+            ['id' => '412', 'name' => 'status_index'],
+            ['id' => '413', 'name' => 'status_create'],
+            ['id' => '414', 'name' => 'status_edit'],
+            ['id' => '415', 'name' => 'status_delete'],
+
+            ['id' => '416', 'name' => 'devices_index'],
+            ['id' => '417', 'name' => 'devices_create'],
+            ['id' => '418', 'name' => 'devices_edit'],
+            ['id' => '419', 'name' => 'devices_delete'],
+
+            ['id' => '420', 'name' => 'device_models_index'],
+            ['id' => '421', 'name' => 'device_models_create'],
+            ['id' => '422', 'name' => 'device_models_edit'],
+            ['id' => '423', 'name' => 'device_models_delete'],
+
+            ['id' => '424', 'name' => 'servicing_settings'],
+            ['id' => '425', 'name' => 'job_card_pdf_print_label_settings'],
+
+            ['id' => '426', 'name' => 'job_cards_index'],
+            ['id' => '427', 'name' => 'job_cards_create'],
+            ['id' => '428', 'name' => 'job_cards_edit'],
+            ['id' => '429', 'name' => 'job_cards_delete'],
+            ['id' => '430', 'name' => 'job_cards_generate_pdf'],
+            ['id' => '431', 'name' => 'job_cards_generate_label'],
+            ['id' => '432', 'name' => 'job_cards_change_status'],
         ];
 
         return $permissions;

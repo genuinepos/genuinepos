@@ -87,15 +87,6 @@
                                         <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Business lifetime Price') }}">
                                         <span class="text-danger error error_business_lifetime_price"></span>
                                     </div>
-
-                                    <div class="mb-1">
-                                        <label class="form-label" class="form-label">{{ __('Select Currency') }}</label>
-                                        <select required name="currency_id" id="currency_id" class="form-select">
-                                            @foreach ($currencies as $currency)
-                                                <option {{ $plan->currency_id == $currency->id ? 'SELECTED' : '' }} value="{{ $currency->id }}">{{ $currency->code }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
                                 @else
                                     <div class="mb-1">
                                         <label class="form-label">{{ __('Trial Days') }} <span class="text-danger">*</span></label>
@@ -310,7 +301,7 @@
                             return;
                         }
 
-                        toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                        toastr.error(err.responseJSON.message);
 
                         $.each(err.responseJSON.errors, function(key, error) {
 

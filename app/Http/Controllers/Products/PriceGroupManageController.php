@@ -16,7 +16,6 @@ class PriceGroupManageController extends Controller
         private ManagePriceGroupService $managePriceGroupService,
         private ProductService $productService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($productId, $type)

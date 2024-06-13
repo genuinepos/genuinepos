@@ -161,7 +161,7 @@
             });
 
             // pass editable data to edit modal fields
-            $(document).on('click', '#edit', function(e) {
+            $(document).on('click', '#editBrand', function(e) {
                 e.preventDefault();
 
                 var url = $(this).attr('href');
@@ -198,7 +198,7 @@
                 });
             });
 
-            $(document).on('click', '#delete', function(e) {
+            $(document).on('click', '#deleteBrand', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);
@@ -234,8 +234,28 @@
                     data: request,
                     success: function(data) {
 
-                        brandsTable.ajax.reload();
+                        if (!$.isEmptyObject(data.errorMsg)) {
+
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
+                        brandsTable.ajax.reload(null, false);
                         toastr.error(data);
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
+                        }
+
+                        toastr.error(err.responseJSON.message);
                     }
                 });
             });

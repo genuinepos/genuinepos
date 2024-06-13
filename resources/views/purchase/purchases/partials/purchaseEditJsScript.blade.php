@@ -70,10 +70,16 @@
 
         var previousPaid = $('#previous_paid').val() ? $('#previous_paid').val() : 0;
         var currentPurchasedAmount = $('#current_purchased_amount').val() ? $('#current_purchased_amount').val() : 0;
-        var purchasedAmount = parseFloat(calcTotalPurchaseAmount) - parseFloat(currentPurchasedAmount) - parseFloat(previousPaid);
+        // var purchasedAmount = parseFloat(calcTotalPurchaseAmount) - parseFloat(currentPurchasedAmount) - parseFloat(previousPaid);
+        var purchasedAmount = parseFloat(calcTotalPurchaseAmount) - parseFloat(currentPurchasedAmount);
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
+
+        var dueOnInvoice = parseFloat(calcTotalPurchaseAmount) - parseFloat(previousPaid) - parseFloat(payingAmount);
+
+        $('#due_on_invoice').val(parseFloat(dueOnInvoice).toFixed(2));
+
         var currentBalance = 0;
         if (accountDefaultBalanceType == 'dr') {
 
@@ -667,7 +673,7 @@
             $('.batch_no_expire_date_fields').addClass('d-none');
         }
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {
@@ -1021,7 +1027,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -1084,7 +1090,6 @@
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");

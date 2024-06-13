@@ -91,6 +91,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'prefix__payroll_voucher_prefix', 'value' => 'PRL', 'branch_id' => null],
             ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => 'PRLP', 'branch_id' => null],
             ['key' => 'prefix__stock_issue_voucher_prefix', 'value' => 'STI', 'branch_id' => null],
+            ['key' => 'prefix__job_card_no_prefix', 'value' => 'JOB', 'branch_id' => null],
             ['key' => 'prefix__supplier_id', 'value' => 'S', 'branch_id' => null],
             ['key' => 'prefix__customer_id', 'value' => 'C', 'branch_id' => null, 'parent_branch_id' => null],
             // ['key' => 'email_setting__MAIL_MAILER', 'value' => 'smtp', 'branch_id' => null],
@@ -163,6 +164,48 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'print_page_size__payroll_payment_voucher_page_size', 'value' => 1, 'branch_id' => null],
             ['key' => 'print_page_size__bom_voucher_page_size', 'value' => 1, 'branch_id' => null],
             ['key' => 'print_page_size__production_voucher_page_size', 'value' => 1, 'branch_id' => null],
+
+            ['key' => 'service_settings__default_status_id', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__default_checklist', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__product_configuration', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__default_problems_report', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__product_condition', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__terms_and_condition', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__custom_field_1_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__custom_field_2_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__custom_field_3_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__custom_field_4_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings__custom_field_5_label', 'value' => null, 'branch_id' => null],
+
+            ['key' => 'service_settings_pdf_label__show_customer_info', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_label_name', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_contact_id', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_id_label_name', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_customer_tax_no', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_tax_no_label_name', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_1', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_2', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_3', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_4', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_5', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__label_width', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__label_height', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_name_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_address_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_phone_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_alt_phone_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__customer_email_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__sales_person_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__barcode_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__status_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__due_date_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__technician_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__problems_in_label_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__job_card_no_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__serial_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__model_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__location_in_label', 'value' => null, 'branch_id' => null],
+            ['key' => 'service_settings_pdf_label__password_in_label', 'value' => null, 'branch_id' => null],
         ];
 
         return $generalSettings;
@@ -175,7 +218,7 @@ class GeneralSettingsSeeder extends Seeder
      */
     public function run(CacheServiceInterface $cacheService)
     {
-        $cacheService->removeGeneralSettings();
+        $cacheService->forgetGeneralSettingsCache();
         GeneralSetting::truncate();
         $settings = $this->getSettings();
         foreach ($settings as $setting) {
@@ -185,6 +228,5 @@ class GeneralSettingsSeeder extends Seeder
                 'branch_id' => $setting['branch_id'],
             ]);
         }
-        $cacheService->syncGeneralSettings();
     }
 }

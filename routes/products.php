@@ -12,7 +12,9 @@ use App\Http\Controllers\Products\StockIssueController;
 use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\OpeningStockController;
+use App\Http\Controllers\Products\ProductStockController;
 use App\Http\Controllers\Products\ProductImportController;
+use App\Http\Controllers\Products\ProductLedgerController;
 use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\QuickProductAddController;
 use App\Http\Controllers\Products\PriceGroupManageController;
@@ -32,6 +34,16 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::delete('delete/{id}', 'delete')->name('products.delete');
     Route::get('form/part/{type}', 'formPart')->name('products.form.part');
     Route::get('get/last/product/id', 'getLastProductId')->name('products.get.last.product.id');
+
+    Route::controller(ProductLedgerController::class)->prefix('ledger')->group(function () {
+        Route::get('index/{id}', 'index')->name('products.ledger.index');
+        Route::get('print/{id}', 'print')->name('products.ledger.print');
+    });
+
+    Route::controller(ProductStockController::class)->prefix('stock')->group(function () {
+
+        Route::get('product/stock/{id}', 'productStock')->name('products.stock');
+    });
 
     Route::controller(OpeningStockController::class)->prefix('opening-stock')->group(function () {
         Route::get('create/or/edit/{productId}', 'createOrEdit')->name('product.opening.stocks.create');

@@ -14,7 +14,7 @@ class AccountLedgerService
             2 => ['name' => 'Sales Return', 'id' => 'sale_return_id', 'voucher_no' => 'sale_return_voucher', 'details_id' => 'sale_return_id', 'link' => 'sales.returns.show'],
             3 => ['name' => 'Purchase', 'id' => 'purchase_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchases.show'],
             4 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchase.returns.show'],
-            5 => ['name' => 'Expenses', 'id' => 'voucher_description_id', 'voucher_no' => 'expense_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'expenses.show'],
+            5 => ['name' => 'Expenses', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'expenses.show'],
             7 => ['name' => 'Stock Adjustment', 'id' => 'adjustment_id', 'voucher_no' => 'stock_adjustment_voucher', 'details_id' => 'adjustment_id', 'link' => 'stock.adjustments.show'],
             8 => ['name' => 'Receipt', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'receipts.show'],
             9 => ['name' => 'Payment', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'payments.show'],

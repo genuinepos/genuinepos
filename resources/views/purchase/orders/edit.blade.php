@@ -141,7 +141,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('P/o ID.') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="order_id" id="order_id" class="form-control" data-next="pay_term_number" value="{{ $order->invoice_id }}" placeholder="{{ __('Purchase Order Id') }}" autocomplete="off">
+                                            <input readonly type="text" name="order_id" id="order_id" class="form-control fw-bold" data-next="pay_term_number" value="{{ $order->invoice_id }}" placeholder="{{ __('Purchase Order Id') }}" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -149,7 +149,7 @@
                                         <label class=" col-4"><b>{{ __('Pay Term') }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
-                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" value="{{ $order->pay_term_number }}" placeholder="Number">
+                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" value="{{ $order->pay_term_number }}" placeholder="{{ __("Number") }}" autocomplete="off">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="date">
                                                     <option value="">@lang('menu.pay_term')</option>
                                                     <option {{ $order->pay_term == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.days')</option>
@@ -617,7 +617,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                            <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">{{ __('Save Changes') }}</button>
+                            <button type="submit" id="save_changes" class="btn btn-success submit_button">{{ __('Save Changes') }}</button>
                         </div>
                     </div>
                 </div>

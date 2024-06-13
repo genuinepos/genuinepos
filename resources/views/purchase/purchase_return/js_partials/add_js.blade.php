@@ -35,8 +35,6 @@
 
         ul = document.getElementById('list');
         selectObjClassName = 'selectProduct';
-
-        $('#purchase_id').val('');
     }
 
     $('#search_product').focus(function(e) {
@@ -87,7 +85,7 @@
         var warehouse_id = $(this).data('warehouse_id');
         var warehouse_name = $(this).data('warehouse_name');
         var supplier_account_id = $(this).data('supplier_account_id');
-        var supplier_curr_balance = $(this).data('current_balance');
+        var closing_balance = $(this).data('closing_balance');
 
         var url = "{{ route('purchases.products.for.purchase.return', [':purchase_id']) }}";
         var route = url.replace(':purchase_id', purchase_id);
@@ -111,7 +109,7 @@
                 $('#purchase_id').val(purchase_id);
                 $('#e_warehouse_id').val(warehouse_id);
                 $('#supplier_account_id').val(supplier_account_id).trigger('change');
-                $('#current_balance').val(supplier_curr_balance);
+                $('#closing_balance').val(closing_balance);
                 $('.invoice_search_result').hide();
                 $('#return_item_list').empty();
                 $('#search_product').prop('disabled', true);
@@ -148,7 +146,7 @@
 
         if ($('#supplier_account_id').val() == '') {
 
-            toastr.error('Please select a listed supplier first.');
+            toastr.error("{{ __('Please select a listed supplier first.') }}");
             $(this).val('');
             return;
         }
@@ -471,7 +469,7 @@
                         tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="' + e_discount + '">';
                         tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
                         tr += '<input type="hidden" name="purchase_product_ids[]" value="">';
-                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + warehouse_id + '" value="' + e_product_id + e_variant_id + warehouse_id + '">';
+                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + e_warehouse_id + '">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
@@ -603,7 +601,7 @@
         $('#e_unit_cost_inc_tax').val(unit_cost_inc_tax);
         $('#e_base_unit_cost_exc_tax').val(unit_cost_exc_tax);
         $('#e_subtotal').val(subtotal);
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function calculateEditOrAddAmount() {
@@ -926,7 +924,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

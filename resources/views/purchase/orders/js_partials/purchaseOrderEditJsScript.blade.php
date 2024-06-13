@@ -568,7 +568,7 @@
         $('#e_selling_price').val(parseFloat(selling_price).toFixed(2));
         $('#e_description').val(description);
         $('#e_quantity').focus().select();
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {
@@ -858,7 +858,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -919,7 +919,6 @@
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");

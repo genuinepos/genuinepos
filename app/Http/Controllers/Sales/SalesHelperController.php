@@ -18,7 +18,6 @@ class SalesHelperController extends Controller
         private SalesHelperService $salesHelperService,
         private SaleProductService $saleProductService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function posSelectableProducts(Request $request)
@@ -79,6 +78,7 @@ class SalesHelperController extends Controller
         $printPageSize = $request->print_page_size;
 
         $sale = $this->saleService->singleSale(id: $saleId, with: [
+            'salesOrder',
             'branch',
             'branch.parentBranch',
             'customer',

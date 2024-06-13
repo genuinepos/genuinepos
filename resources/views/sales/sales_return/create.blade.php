@@ -165,7 +165,7 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Invoice ID') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Sales Invoice') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __('Serach Sales Invoice ID') }}" autocomplete="off">
@@ -182,7 +182,7 @@
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="sale_account_id">
                                                     <option value="">{{ __('Select Warehouse') }}</option>

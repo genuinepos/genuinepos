@@ -115,7 +115,7 @@
                                                 </select>
 
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('supplier_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_account_id"></span>
@@ -400,10 +400,10 @@
                                                                 @endphp
                                                                 <span id="span_unit_cost_exc_tax" class="fw-bold">{{ $purchaseProduct->unit_cost_exc_tax }}</span>
                                                                 <input type="hidden" name="unit_costs_exc_tax[]" id="unit_cost_exc_tax" value="{{ $purchaseProduct->unit_cost_exc_tax }}">
-                                                                <p class="p-0 m-0 fw-bold">{{ __('Batch No/Exprie Date') }}: <span id="span_batch_expire_date"> {{ $has_batch_no_expire_date == 1 ? $purchaseProduct->batch_number . '|' . ($purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '') : 'N/a' }}</span>
-                                                                    <input type="hidden" name="batch_numbers[]" id="batch_number" value="{{ $purchaseProduct->batch_number }}">
-                                                                    <input type="hidden" name="expire_dates[]" id="expire_date" value="{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}">
-                                                                    <input type="hidden" id="has_batch_no_expire_date" value="{{ $has_batch_no_expire_date }}">
+                                                                <p class="p-0 m-0 fw-bold">{{ __('Batch No/Exprie Date') }}: <span id="span_batch_expire_date"> {{ $has_batch_no_expire_date == 1 ? $purchaseProduct->batch_number . '|' . ($purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '') : 'N/a' }}</span></p>
+                                                                <input type="hidden" name="batch_numbers[]" id="batch_number" value="{{ $purchaseProduct->batch_number }}">
+                                                                <input type="hidden" name="expire_dates[]" id="expire_date" value="{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}">
+                                                                <input type="hidden" id="has_batch_no_expire_date" value="{{ $has_batch_no_expire_date }}">
                                                             </td>
 
                                                             <td class="text-start">
@@ -567,7 +567,7 @@
                                                     <div class="input-group">
                                                         <label class="col-4"><b>{{ __('Total Invoice Amount') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="hidden" step="any" id="current_purchased_amount" value="{{ $purchase->total_purchase_amount }}" >
+                                                            <input readonly type="hidden" step="any" id="current_purchased_amount" value="{{ $purchase->total_purchase_amount }}">
 
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control fw-bold" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
                                                             <input type="hidden" name="purchase_ledger_amount" id="purchase_ledger_amount" value="0">
@@ -633,9 +633,12 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Previous paid') }}</b></label>
+                                                        <label class="col-4"><b>{{ __('Previous paid & Due (On Invoice)') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="text" name="current_balance" class="form-control text-success fw-bold" id="previous_paid" value="{{ $purchase->paid }}" tabindex="-1">
+                                                            <div class="input-group">
+                                                                <input readonly type="number" step="any" class="form-control text-success fw-bold" id="previous_paid" value="{{ $purchase->paid }}" tabindex="-1">
+                                                                <input readonly type="number" step="any" class="form-control text-danger fw-bold" id="due_on_invoice" tabindex="-1">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -662,7 +665,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
-                                <button id="save" class="btn btn-sm btn-success submit_button float-end">{{ __('Save Changes') }}</button>
+                                <button id="save" class="btn btn-success submit_button float-end">{{ __('Save Changes') }}</button>
                             </div>
                         </div>
                     </div>

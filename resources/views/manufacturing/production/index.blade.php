@@ -166,7 +166,7 @@
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    text: '<i class="fas fa-file-excel"></i>' + "{{ __('Excel') }}",
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:first-child)'
@@ -174,7 +174,7 @@
                 },
                 {
                     extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    text: '<i class="fas fa-file-pdf"></i>' + "{{ __('Pdf') }}",
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:first-child)'
@@ -182,10 +182,10 @@
                 },
                 {
                     extend: 'print',
-                    text: '<i class="fas fa-print"></i> Print',
+                    text: '<i class="fas fa-print"></i>' + "{{ __('Print') }}",
                     className: 'btn btn-primary',
                     exportOptions: {
-                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                        columns: 'th:not(:first-child)'
                     }
                 },
             ],
@@ -330,23 +330,6 @@
             });
         });
 
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
-        });
-
         $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -381,8 +364,29 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    production_table.ajax.reload();
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    production_table.ajax.reload(null, false);
                     toastr.error(data);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });

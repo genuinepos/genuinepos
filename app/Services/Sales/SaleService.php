@@ -21,6 +21,7 @@ class SaleService
         $sales = '';
 
         $query = DB::table('sales')
+            ->leftJoin('sales as salesOrder', 'sales.sales_order_id', 'salesOrder.id')
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
@@ -43,6 +44,8 @@ class SaleService
             'sales.is_return_available',
             'sales.shipment_status',
             'sales.sale_screen',
+            'salesOrder.id as sales_order_id',
+            'salesOrder.order_id',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -114,7 +117,15 @@ class SaleService
                 $html .= $row->shipment_status != ShipmentStatus::NoStatus->value && $row->shipment_status != ShipmentStatus::Cancelled->value ? ' <i class="fas fa-shipping-fast text-dark"></i>' : '';
                 $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
-                return '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+                $link = '';
+                $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+
+                if ($row->sales_order_id) {
+
+                    $link .= '<p class="p-0 m-0">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a>';
+                }
+
+                return $link;
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -213,6 +224,7 @@ class SaleService
         $addSale->total_qty = $request->total_qty;
         $addSale->total_sold_qty = $request->status == SaleStatus::Final->value ? $request->total_qty : 0;
         $addSale->total_ordered_qty = $request->status == SaleStatus::Order->value ? $request->total_qty : 0;
+        $addSale->total_left_qty = $request->status == SaleStatus::Order->value ? $request->total_qty : 0;
         $addSale->total_quotation_qty = $request->status == SaleStatus::Quotation->value ? $request->total_qty : 0;
         $addSale->net_total_amount = $request->net_total_amount;
         $addSale->order_discount_type = $request->order_discount_type;
@@ -230,6 +242,7 @@ class SaleService
         $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
         $addSale->total_invoice_amount = $request->total_invoice_amount;
         $addSale->due = $request->total_invoice_amount;
+        $addSale->sales_order_id = isset($request->sales_order_id) ? $request->sales_order_id : null;
         $addSale->save();
 
         return $addSale;
@@ -276,6 +289,7 @@ class SaleService
     public function deleteSale(int $id): array|object
     {
         $deleteSale = $this->singleSale(id: $id, with: [
+            'salesOrder',
             'references',
             'saleProducts',
             'saleProducts.product',

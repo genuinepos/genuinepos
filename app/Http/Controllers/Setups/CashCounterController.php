@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Setups;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Setups\CashCounterService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Setups\CashCounterStoreRequest;
+use App\Http\Requests\Setups\CashCounterDeleteRequest;
+use App\Http\Requests\Setups\CashCounterUpdateRequest;
 
 class CashCounterController extends Controller
 {
     public function __construct(private CashCounterService $cashCounterService, private BranchService $branchService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -38,12 +40,8 @@ class CashCounterController extends Controller
         return view('setups.cash_counter.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(CashCounterStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('cash_counters_add') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
-
-        $this->cashCounterService->cashCounterStoreValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
@@ -76,10 +74,8 @@ class CashCounterController extends Controller
         return view('setups.cash_counter.ajax_view.edit', compact('cashCounter'));
     }
 
-    public function update(Request $request, $id)
+    public function update($id, CashCounterUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('cash_counters_edit') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
-
         try {
             DB::beginTransaction();
 
@@ -94,14 +90,17 @@ class CashCounterController extends Controller
         return response()->json(__('Cash counter updated Successfully.'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id, CashCounterDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('cash_counters_delete') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
-
         try {
             DB::beginTransaction();
 
-            $this->cashCounterService->deleteCashCounter($id);
+            $deleteCashCounter = $this->cashCounterService->deleteCashCounter($id);
+
+            if ($deleteCashCounter['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteCashCounter['msg']]);
+            }
 
             DB::commit();
         } catch (Exception $e) {

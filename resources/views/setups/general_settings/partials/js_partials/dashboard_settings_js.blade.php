@@ -39,7 +39,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
                 $.each(err.responseJSON.errors, function(key, error) {
 
                     $('.error_' + key + '').html(error[0]);

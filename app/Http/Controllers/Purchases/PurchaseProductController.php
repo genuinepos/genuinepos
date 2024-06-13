@@ -17,15 +17,11 @@ class PurchaseProductController extends Controller
         private AccountService $accountService,
         private CategoryService $categoryService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchased_product_list')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchased_product_list'), 403);
 
         if ($request->ajax()) {
 

@@ -14,7 +14,6 @@ class WorkSpaceTaskController extends Controller
 {
     public function __construct(private WorkspaceTaskService $workspaceTaskService, private WorkspaceService $workspaceService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($workspaceId)
@@ -28,8 +27,6 @@ class WorkSpaceTaskController extends Controller
 
     public function store(Request $request)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceTaskService->addWorkspaceTask(request: $request);
 
         return response()->json(__('Task added successfully.'));
@@ -37,8 +34,6 @@ class WorkSpaceTaskController extends Controller
 
     public function taskList($workspaceId)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $wsTasks = DB::table('workspace_tasks')->where('workspace_id', $workspaceId)
             ->leftJoin('users', 'workspace_tasks.user_id', 'users.id')
             ->select(
@@ -67,8 +62,6 @@ class WorkSpaceTaskController extends Controller
 
     public function update(Request $request)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceTaskService->updateWorkspaceTask(request: $request);
 
         return response()->json(__('Task updated successfully.'));
@@ -76,8 +69,6 @@ class WorkSpaceTaskController extends Controller
 
     public function assignUser(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceTaskService->assignUser(request: $request, id: $id);
 
         return response()->json(__('Successfully'));
@@ -85,8 +76,6 @@ class WorkSpaceTaskController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceTaskService->changeStatus(request: $request, id: $id);
 
         return response()->json(__('Successfully'));
@@ -94,8 +83,6 @@ class WorkSpaceTaskController extends Controller
 
     public function changePriority(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceTaskService->changePriority(request: $request, id: $id);
 
         return response()->json(__('Successfully'));
@@ -103,8 +90,6 @@ class WorkSpaceTaskController extends Controller
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceTaskService->deleteWorkspaceTask(id: $id);
 
         return response()->json(__('Task deleted successfully.'));

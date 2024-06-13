@@ -13,14 +13,11 @@ class CapitalAccountController extends Controller
         private CapitalAccountService $capitalAccountService,
         private AccountGroupService $accountGroupService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('capital_accounts_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('capital_accounts_index'), 403);
 
         if ($request->ajax()) {
 

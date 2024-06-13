@@ -30,7 +30,7 @@
                 <div class="form-group row mt-1">
                     <div class="col-md-6">
                         <label class="fw-bold">{{ __('Clock Out Date') }} <span class="text-danger">*</span></label>
-                        <input type="text" name="clock_out_date" class="form-control" id="attendance_clock_out_date" data-next="attendance_clock_out" value="{{ $attendance->clock_out_date ? date($dateFormat, strtotime($attendance->clock_out_date)) : date($dateFormat)  }}" placeholder="{{ __('Clock Out Date') }}">
+                        <input type="text" name="clock_out_date" class="form-control" id="attendance_clock_out_date" data-next="attendance_clock_out" value="{{ $attendance->clock_out_date ? date($dateFormat, strtotime($attendance->clock_out_date)) : date($dateFormat) }}" placeholder="{{ __('Clock Out Date') }}">
                         <span class="error error_attendance_clock_out_date"></span>
                     </div>
 
@@ -44,7 +44,7 @@
                     <div class="col-md-6">
                         <label class="fw-bold">{{ __('Shift') }}</label>
                         <select name="shift_id" class="form-control" id="attendance_shift_id" data-next="attendance_clock_in_note">
-                            <option value="">{{ __("Select Shift") }}</option>
+                            <option value="">{{ __('Select Shift') }}</option>
                             @foreach ($shifts as $shift)
                                 <option {{ $attendance->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->name }}</option>
                             @endforeach
@@ -82,96 +82,4 @@
     </div>
 </div>
 
-<script>
-    $(document).on('click keypress focus blur change', '.form-control', function(event) {
-
-        $('.attendance_submit_button').prop('type', 'button');
-    });
-
-    $(document).on('change keypress', 'input', function(e) {
-
-        var nextId = $(this).data('next');
-
-        if (e.which == 13) {
-
-            e.preventDefault();
-
-            $('#' + nextId).focus().select();
-        }
-    });
-
-    $(document).on('change keypress click', 'select', function(e) {
-
-        var nextId = $(this).data('next');
-
-        if (e.which == 0) {
-
-            $('#' + nextId).focus().select();
-        }
-    });
-
-    var isAllowSubmit = true;
-    $(document).on('click', '.attendance_submit_button', function() {
-
-        if (isAllowSubmit) {
-
-            $(this).prop('type', 'submit');
-        } else {
-
-            $(this).prop('type', 'button');
-        }
-    });
-
-    $('#edit_attendance_form').on('submit', function(e) {
-        e.preventDefault();
-
-        $('.attendance_loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-
-                $('.attendance_loading_button').hide();
-                $('.error').html('');
-                if (!$.isEmptyObject(data.errorMsg)) {
-
-                    toastr.error(data.errorMsg, 'ERROR');
-                    return;
-                }
-
-                toastr.success(data);
-                $('#attendanceAddOrEditModal').modal('hide');
-                attendancesTable.ajax.reload();
-            },
-            error: function(err) {
-
-                $('.attendance_loading_button').hide();
-                $('.error').html('');
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
-                } else if (err.status == 403) {
-
-                    toastr.error("{{ __('Access Denied') }}");
-                    return;
-                }
-
-                $.each(err.responseJSON.errors, function(key, error) {
-
-                    $('.error_attendance_' + key + '').html(error[0]);
-                });
-            }
-        });
-    });
-</script>
-
+@include('hrm.attendances.ajax_view.js_partials.edit_js')

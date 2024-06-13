@@ -30,21 +30,10 @@ class Plan extends Model
         return \Modules\SAAS\Database\factories\PlanFactory::new();
     }
 
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class, 'currency_id');
-    }
-
     public function userSubscriptions()
     {
         return $this->hasMany(UserSubscription::class, 'plan_id');
     }
-
-    // public function features()
-    // {
-    //     return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
-    //         ->withPivot('capacity');
-    // }
 
     public function getPriceLabelAttribute()
     {

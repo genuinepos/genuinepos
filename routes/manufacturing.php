@@ -13,6 +13,7 @@ Route::group(['prefix' => 'manufacturing'], function () {
 
         Route::get('/', 'index')->name('manufacturing.process.index');
         Route::get('show/{id}', 'show')->name('manufacturing.process.show');
+        Route::get('print/{id}', 'print')->name('manufacturing.process.print');
         Route::get('select/product/modal', 'selectProductModal')->name('manufacturing.process.select.product.modal');
         Route::get('create', 'create')->name('manufacturing.process.create');
         Route::post('store', 'store')->name('manufacturing.process.store');
@@ -30,6 +31,7 @@ Route::group(['prefix' => 'manufacturing'], function () {
 
         Route::get('/', 'index')->name('manufacturing.productions.index');
         Route::get('show/{id}', 'show')->name('manufacturing.productions.show');
+        Route::get('print/{id}', 'print')->name('manufacturing.productions.print');
         Route::get('create', 'create')->name('manufacturing.productions.create');
         Route::post('store', 'store')->name('manufacturing.productions.store');
         Route::get('edit/{id}', 'edit')->name('manufacturing.productions.edit');

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Models\Product;
+use App\Models\Products\Product;
 use Illuminate\Http\Request;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
@@ -20,7 +20,6 @@ class BarcodeController extends Controller
         private AccountService $accountService,
         private PurchaseProductService $purchaseProductService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
@@ -59,6 +58,7 @@ class BarcodeController extends Controller
             )->groupBy([
                 'products.id',
                 'products.tax_ac_id',
+                'products.tax_type',
                 'products.name',
                 'products.product_code',
                 'products.product_price',
@@ -86,7 +86,7 @@ class BarcodeController extends Controller
 
         if (!isset($req->product_ids)) {
 
-            session()->flash('errorMsg', 'Product list is empty.');
+            session()->flash('errorMsg', __('Product list is empty.'));
 
             return redirect()->back();
         }

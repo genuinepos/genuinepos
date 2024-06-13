@@ -1,5 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
     $account = $purchase?->supplier;
@@ -65,22 +66,22 @@
                         @if ($purchase?->branch?->parent_branch_id)
 
                             @if ($purchase->branch?->parentBranch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $purchase?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($purchase->branch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $purchase?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -125,7 +126,7 @@
             </div>
 
             <div class="row mt-2">
-                <div class="col-6">
+                <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span>{{ $purchase->supplier->name }}</li>
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span>{{ $purchase->supplier->address }}</li>
@@ -133,14 +134,22 @@
                     </ul>
                 </div>
 
-                <div class="col-6">
+                <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
-                            {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}
+                            {{ date($dateFormat, strtotime($purchase->date)) }}
                         </li>
 
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span>{{ $purchase->invoice_id }}</li>
 
+                        @if ($purchase?->purchaseOrder)
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span>{{ $purchase?->purchaseOrder?->invoice_id }}</li>
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="col-4">
+                    <ul class="list-unstyled">
                         <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
                             @php
                                 $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -177,6 +186,9 @@
                     </thead>
                     <tbody class="purchase_print_product_list">
                         @foreach ($purchase->purchaseProducts as $purchaseProduct)
+                            @if ($purchase?->purchaseOrder && $purchaseProduct->quantity <= 0)
+                                @continue
+                            @endif
                             <tr>
                                 @php
                                     $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->variant_name : '';
@@ -186,7 +198,7 @@
                                     <p>{{ Str::limit($purchaseProduct->product->name, 25) . ' ' . $variant }}</p>
                                     <small class="d-block text-muted" style="font-size: 9px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                     @endif
                                 </td>
                                 <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -305,7 +317,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
+                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($dateFormat) }}</small>
                     </div>
 
                     <div class="col-4 text-center">
@@ -378,22 +390,22 @@
                         @if ($purchase?->branch?->parent_branch_id)
 
                             @if ($purchase->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->parentBranch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $purchase?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($purchase->branch?->logo)
-                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $purchase?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase?->branch?->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $purchase?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -449,7 +461,7 @@
                 <div class="col-6">
                     <ul class="list-unstyled">
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Date') }} : </span>
-                            {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}
+                            {{ date($dateFormat, strtotime($purchase->date)) }}
                         </li>
 
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Invoice ID') }} : </span>{{ $purchase->invoice_id }}</li>
@@ -499,7 +511,7 @@
                                     <p>{{ Str::limit($purchaseProduct->product->name, 25) . ' ' . $variant }}</p>
                                     <small class="d-block text-muted" style="font-size: 9px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                        <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                     @endif
                                 </td>
                                 <td class="text-start" style="font-size:9px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -618,7 +630,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
+                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($dateFormat) }}</small>
                     </div>
 
                     <div class="col-4 text-center">

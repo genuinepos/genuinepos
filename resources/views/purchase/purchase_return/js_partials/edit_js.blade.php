@@ -35,8 +35,6 @@
 
         ul = document.getElementById('list');
         selectObjClassName = 'selectProduct';
-
-        $('#purchase_id').val('');
     }
 
     $('#search_product').focus(function(e) {
@@ -87,7 +85,7 @@
         var warehouse_id = $(this).data('warehouse_id');
         var warehouse_name = $(this).data('warehouse_name');
         var supplier_account_id = $(this).data('supplier_account_id');
-        var supplier_curr_balance = $(this).data('current_balance');
+        var closing_balance = $(this).data('closing_balance');
 
         var url = "{{ route('purchases.products.for.purchase.return', [':purchase_id']) }}";
         var route = url.replace(':purchase_id', purchase_id);
@@ -111,7 +109,7 @@
                 $('#purchase_id').val(purchase_id);
                 $('#e_warehouse_id').val(warehouse_id);
                 $('#supplier_account_id').val(supplier_account_id).trigger('change');
-                $('#current_balance').val(supplier_curr_balance);
+                $('#closing_balance').val(closing_balance);
                 $('.invoice_search_result').hide();
                 $('#return_item_list').empty();
                 $('#search_product').prop('disabled', true);
@@ -620,7 +618,7 @@
         $('#e_unit_cost_inc_tax').val(unit_cost_inc_tax);
         $('#e_base_unit_cost_exc_tax').val(unit_cost_exc_tax);
         $('#e_subtotal').val(subtotal);
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function calculateEditOrAddAmount() {
@@ -795,10 +793,16 @@
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
 
         var previousReceived = $('#previous_received').val() ? $('#previous_received').val() : 0;
-        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousReceived);
+        var currTotalReturnAmount = $('#curr_total_return_amount').val() ? $('#curr_total_return_amount').val() : 0;
+        // var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousReceived);
+        var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(currTotalReturnAmount);
         var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
+
+        var dueOnVoucher = parseFloat(calcTotalAmount) - parseFloat(previousReceived) - parseFloat(receivedAmount);
+        $('#due_on_voucher').val(dueOnVoucher)
+
         var currentBalance = 0;
         if (accountDefaultBalanceType == 'dr') {
 
@@ -899,7 +903,6 @@
                 }
 
                 toastr.success(data);
-                return;
                 window.location = "{{ url()->previous() }}";
             },
             error: function(err) {
@@ -917,7 +920,7 @@
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

@@ -19,6 +19,10 @@ class AccountBalanceService
                 'account_groups.sub_sub_group_number',
             )->first();
 
+        if (!isset($account)) {
+            return [];
+        }
+
         $converter = new \App\Utils\Converter();
         $amounts = '';
         $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId);

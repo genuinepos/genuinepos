@@ -12,6 +12,7 @@ use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Accounts\AccountGroup;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class BranchService
@@ -19,7 +20,6 @@ class BranchService
     public function branchListTable()
     {
         $generalSettings = config('generalSettings');
-        $logoUrl = asset('uploads/branch_logo');
         $branches = '';
         $query = DB::table('branches')->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
@@ -66,7 +66,7 @@ class BranchService
                 }
             })
 
-            ->editColumn('logo', function ($row) use ($logoUrl) {
+            ->editColumn('logo', function ($row) {
 
                 $photo = asset('images/general_default.png');
 
@@ -166,13 +166,15 @@ class BranchService
                 $addBranch->logo = $branchLogoName;
             }
         }
-        
+
         $addBranch->save();
 
         if ($subscription->is_trial_plan == BooleanType::False->value) {
 
             (new \App\Services\Setups\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $shopHistory->id, isCreated: BooleanType::True->value);
         }
+
+        $this->forgetCache();
 
         return $this->singleBranch(id: $addBranch->id, with: ['parentBranch']);
     }
@@ -219,6 +221,8 @@ class BranchService
         }
 
         $updateBranch->save();
+
+        $this->forgetCache();
     }
 
     public function deleteBranch(int $id): array
@@ -241,7 +245,7 @@ class BranchService
         }
 
         $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
-        if (file_exists($dir . $deleteBranch->logo)) {
+        if (isset($deleteBranch->logo) && file_exists($dir . $deleteBranch->logo)) {
 
             unlink($dir . $deleteBranch->logo);
         }
@@ -253,10 +257,28 @@ class BranchService
 
         $deleteBranch->delete();
 
+        $this->forgetCache();
+
         return ['pass' => true];
     }
 
-    public function addBranchDefaultAccounts(int $branchId): void
+    public function deleteLogo(int $id): void
+    {
+        $deleteLogo = $this->singleBranch(id: $id);
+
+        $dir = public_path('uploads/' . tenant('id') . '/' . 'branch_logo/');
+        if (isset($deleteLogo->logo) && file_exists($dir . $deleteLogo->logo)) {
+
+            unlink($dir . $deleteLogo->logo);
+        }
+
+        $deleteLogo->logo = null;
+        $deleteLogo->save();
+
+        $this->forgetCache();
+    }
+
+    public function addBranchDefaultAccounts(int $branchId, ?int $parentBranchId = null): void
     {
         $cashInHand = DB::table('account_groups')->where('sub_sub_group_number', 2)->first();
         $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
@@ -280,10 +302,17 @@ class BranchService
             ['account_group_id' => $directExpenseGroup->id, 'is_walk_in_customer' => 0, 'name' => 'Roll Pages', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:11:59', 'updated_at' => '2023-08-08 18:11:59', 'branch_id' => $branchId],
             ['account_group_id' => $directIncomeGroup->id, 'is_walk_in_customer' => 0, 'name' => 'Sale Damage Goods', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:12:33', 'updated_at' => '2023-08-08 18:12:33', 'branch_id' => $branchId],
             ['account_group_id' => $directExpenseGroup->id, 'is_walk_in_customer' => 0, 'name' => 'Lost/Damage Stock', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:13:13', 'updated_at' => '2023-08-08 18:13:13', 'branch_id' => $branchId],
-            ['account_group_id' => $accountReceivablesAccountGroup->id, 'is_walk_in_customer' => 1, 'name' => 'Walk-In-Customer', 'phone' => 0, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:13:13', 'updated_at' => '2023-08-08 18:13:13', 'branch_id' => $branchId],
-            ['account_group_id' => $suspenseAccountGroup->id, 'is_walk_in_customer' => 0, 'name' => 'Profit Loss Account', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => '1', 'created_at' => '2023-08-08 18:13:57', 'updated_at' => '2023-08-08 18:13:57', 'branch_id' => $branchId],
+            // ['account_group_id' => $accountReceivablesAccountGroup->id, 'is_walk_in_customer' => 1, 'name' => 'Walk-In-Customer', 'phone' => 0, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:13:13', 'updated_at' => '2023-08-08 18:13:13', 'branch_id' => $branchId],
+            // ['account_group_id' => $suspenseAccountGroup->id, 'is_walk_in_customer' => 0, 'name' => 'Profit Loss Account', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => '1', 'created_at' => '2023-08-08 18:13:57', 'updated_at' => '2023-08-08 18:13:57', 'branch_id' => $branchId],
             // ['account_group_id' => $capitalAccountGroup->id, 'name' => 'Capital Account', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => '1', 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:14:40', 'updated_at' => '2023-08-08 18:14:40', 'branch_id' => $branchId],
         ];
+
+        if (!isset($parentBranchId)) {
+
+            $accounts[] = [
+                'account_group_id' => $accountReceivablesAccountGroup->id, 'is_walk_in_customer' => 1, 'name' => 'Walk-In-Customer', 'phone' => 0, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:13:13', 'updated_at' => '2023-08-08 18:13:13', 'branch_id' => $branchId
+            ];
+        }
 
         Account::insert($accounts);
     }
@@ -298,6 +327,17 @@ class BranchService
         }
 
         return $query;
+    }
+
+    public function switchableBranches()
+    {
+        $branchesMethod = $this->branches(with: ['parentBranch']);
+        $tenantId = tenant('id');
+        $cacheKey = "{$tenantId}_switchableBranches";
+        return Cache::rememberForever($cacheKey, function () use ($branchesMethod) {
+
+            return $branchesMethod->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        });
     }
 
     public function singleBranch(?int $id, array $with = null)
@@ -320,14 +360,14 @@ class BranchService
         $addUser->phone = $request->user_phone;
         $addUser->branch_id = $branchId;
 
-        $addUser->allow_login = 1;
+        $addUser->allow_login = BooleanType::True->value;
         $addUser->email = $request->user_email;
         $addUser->username = $request->user_username;
         $addUser->password = Hash::make($request->password);
 
         // Assign role
         $addUser->role_type = 3;
-        $addUser->is_belonging_an_area = 1;
+        $addUser->is_belonging_an_area = BooleanType::True->value;
 
         $roleId = $request->role_id ?? 3;
         $role = Role::find($roleId);
@@ -402,61 +442,10 @@ class BranchService
         return ['pass' => true];
     }
 
-    public function branchStoreValidation(object $request)
+    private function forgetCache(): void
     {
-        $request->validate([
-            'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
-            'area_name' => 'required',
-            'branch_code' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'timezone' => 'required',
-            'currency_id' => 'required',
-            'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
-            'logo' => 'sometimes|image|max:1024',
-            'user_first_name' => Rule::when($request->add_initial_user == 1, 'required'),
-            'user_phone' => Rule::when($request->add_initial_user == 1, 'required'),
-            'user_email' => Rule::when($request->add_initial_user == 1, 'required'),
-            'user_username' => Rule::when($request->add_initial_user == 1, 'required'),
-            'password' => Rule::when($request->add_initial_user == 1, 'required|confirmed'),
-        ]);
-
-        // if (BranchType::DifferentShop->value == $request->branch_type) {
-
-        //     $request->validate([
-        //         'name' => 'required',
-        //     ]);
-        // }
-
-        // if ($request->add_initial_user) {
-
-        //     $request->validate([
-        //         'first_name' => 'required',
-        //         'user_phone' => 'required',
-        //         'username' => 'required|unique:users,username',
-        //         'password' => 'required|confirmed',
-        //     ]);
-        // }
-    }
-
-    public function branchUpdateValidation(object $request)
-    {
-        $request->validate([
-            'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
-            'area_name' => 'required',
-            'branch_code' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'timezone' => 'required',
-            'currency_id' => 'required',
-            'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
-            'logo' => 'sometimes|image|max:1024',
-        ]);
+        $tenantId = tenant('id');
+        $cacheKey = "{$tenantId}_switchableBranches";
+        Cache::forget($cacheKey);
     }
 }

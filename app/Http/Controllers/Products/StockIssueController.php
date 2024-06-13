@@ -12,16 +12,9 @@ use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 
 class StockIssueController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('subscriptionRestrictions');
-    }
-
     public function index(Request $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
-        $indexMethodContainer = $stockIssueControllerMethodContainersInterface->indexMethodContainer(
-            request: $request,
-        );
+        $indexMethodContainer = $stockIssueControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 

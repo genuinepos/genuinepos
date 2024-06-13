@@ -2,6 +2,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
+    $('.select2').select2();
+
+    var itemUnitsArray = [];
+
     $('.collapse_table').on('click', function() {
 
         $('.last_p_product_list').toggle(500);
@@ -682,7 +686,7 @@
             $('.batch_no_expire_date_fields').addClass('d-none');
         }
 
-        $('#add_item').html('Edit');
+        $('#add_item').html("{{ __('Update') }}");
     });
 
     function clearEditItemFileds() {
@@ -1039,21 +1043,19 @@
                 if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
-                } else if (data.successMsg) {
+                    return;
+                }
+
+                if (data.successMsg) {
 
                     toastr.success(data.successMsg);
-                    $('#add_purchase_form')[0].reset();
-                    $('#purchase_list').empty();
-
-                    $("#supplier_account_id").select2("destroy");
-                    $("#supplier_account_id").select2();
+                    afterCreatePurchase();
+                    return;
                 } else {
 
                     toastr.success("{{ __('Purchase created successfully.') }}");
-                    $('#add_purchase_form')[0].reset();
-                    $('#purchase_list').empty();
-                    $("#supplier_account_id").select2("destroy");
-                    $("#supplier_account_id").select2();
+
+                    afterCreatePurchase();
 
                     $(data).printThis({
                         debug: false,
@@ -1064,8 +1066,11 @@
                         printDelay: 1000,
                         header: null,
                     });
+
+
                 }
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -1082,7 +1087,7 @@
                     return;
                 }
 
-                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -1096,6 +1101,40 @@
             isAllowSubmit = true;
         }
     });
+
+    function afterCreatePurchase() {
+
+        $('#add_purchase_form')[0].reset();
+        $('#purchase_list').empty();
+        $("#supplier_account_id").select2("destroy");
+        $("#supplier_account_id").select2();
+        getPurchaseInvoiceId();
+    }
+
+    function getPurchaseInvoiceId() {
+
+        $.ajax({
+            url: "{{ route('purchases.invoice.id') }}",
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                $('#invoice_id').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
 
     setInterval(function() {
         $('#search_product').removeClass('is-invalid');
@@ -1148,7 +1187,6 @@
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");
@@ -1253,6 +1291,50 @@
     $('#select_print_page_size').on('change', function() {
         var value = $(this).val();
         $('#print_page_size').val(value);
+    });
+</script>
+
+<script>
+    $('select').on('select2:close', function(e) {
+
+        var nextId = $(this).data('next');
+
+        setTimeout(function() {
+
+            $('#' + nextId).focus();
+        }, 100);
+    });
+
+    $(document).on('change keypress click', 'select', function(e) {
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 0) {
+
+            $('#' + nextId).focus().select();
+        }
+    });
+
+    $(document).on('change keypress', 'input', function(e) {
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 13) {
+
+            if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
+
+                $('#date').focus().select();
+                return;
+            }
+
+            if ($(this).attr('id') == 'paying_amount' && ($('#paying_amount').val() == 0 || $('#paying_amount').val() == '')) {
+
+                $('#save_and_print').focus().select();
+                return;
+            }
+
+            $('#' + nextId).focus().select();
+        }
     });
 </script>
 

@@ -166,9 +166,29 @@
             async: false,
             data: request,
             success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
                 toastr.error(data);
-                paymentMethodTable.ajax.reload();
-                $('#deleted_form')[0].reset();
+                paymentMethodTable.ajax.reload(null, false);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+
+                toastr.error(err.responseJSON.message);
             }
         });
     });

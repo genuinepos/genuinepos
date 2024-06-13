@@ -18,7 +18,7 @@ class DepartmentService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                
+
                 if (auth()->user()->can('departments_edit')) {
 
                     $html .= '<a href="' . route('hrm.departments.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
@@ -84,19 +84,5 @@ class DepartmentService
         }
 
         return $query;
-    }
-
-    function storeValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_departments,name',
-        ]);
-    }
-
-    function updateValidation(object $request, int $id): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_departments,name,' . $id,
-        ]);
     }
 }

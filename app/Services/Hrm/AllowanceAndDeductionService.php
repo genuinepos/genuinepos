@@ -18,12 +18,12 @@ class AllowanceAndDeductionService
 
                 $html = '<div class="dropdown table-dropdown">';
 
-                if (auth()->user()->can('allowances_edit') || auth()->user()->can('deductions_edit')) {
+                if (auth()->user()->can('allowances_and_deductions_edit')) {
 
                     $html .= '<a href="' . route('hrm.allowances.deductions.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                 }
 
-                if (auth()->user()->can('allowances_edit') || auth()->user()->can('deductions_edit')) {
+                if (auth()->user()->can('allowances_and_deductions_delete')) {
 
                     $html .= '<a href="' . route('hrm.allowances.deductions.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 }
@@ -90,22 +90,5 @@ class AllowanceAndDeductionService
         }
 
         return $query->where('id', $id)->first();
-    }
-
-
-    public function storeValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_allowances,name',
-            'amount' => 'required',
-        ]);
-    }
-
-    public function updateValidation(object $request, int $id): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_allowances,name,' . $id,
-            'amount' => 'required',
-        ]);
     }
 }

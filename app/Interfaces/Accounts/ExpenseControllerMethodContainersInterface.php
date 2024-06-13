@@ -7,48 +7,20 @@ interface ExpenseControllerMethodContainersInterface
     /**
      * @return \App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContainersService
      */
-    public function showMethodContainer(
-        int $id,
-        object $accountingVoucherService,
-    ): ?array;
 
-    public function printMethodContainer(
-        int $id,
-        object $request,
-        object $accountingVoucherService,
-    ): ?array;
+    public function indexMethodContainer(object $request): object|array;
 
-    public function createMethodContainer(
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-    ): ?array;
+    public function showMethodContainer(int $id): ?array;
 
-    public function storeMethodContainer(
-        object $request,
-        object $expenseService,
-        object $accountLedgerService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $dayBookService,
-        object $codeGenerator,
-    ): ?array;
+    public function printMethodContainer(int $id, object $request): ?array;
 
-    public function editMethodContainer(
-        int $id,
-        object $accountingVoucherService,
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-    ): ?array;
+    public function createMethodContainer(): ?array;
 
-    public function updateMethodContainer(
-        int $id,
-        object $request,
-        object $expenseService,
-        object $accountLedgerService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $dayBookService,
-    ): ?array;
+    public function storeMethodContainer(object $request, object $codeGenerator): ?array;
+
+    public function editMethodContainer(int $id): ?array;
+
+    public function updateMethodContainer(int $id, object $request): ?array;
+
+    public function deleteMethodContainer(int $id): void;
 }

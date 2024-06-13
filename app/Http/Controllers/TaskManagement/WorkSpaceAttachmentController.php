@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\TaskManagement\WorkspaceAttachmentService;
+use App\Http\Requests\TaskManagement\WorkSpaceAttachmentDeleteRequest;
 
 class WorkSpaceAttachmentController extends Controller
 {
-    public function __construct(
-        private WorkspaceAttachmentService $workspaceAttachmentService,
-    ) {
-        $this->middleware('subscriptionRestrictions');
+    public function __construct(private WorkspaceAttachmentService $workspaceAttachmentService) {
     }
 
     public function index($workspaceId)
     {
-        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value, 403);
 
         $attachments = $this->workspaceAttachmentService->workspaceAttachments()
             ->where('workspace_id', $workspaceId)
@@ -29,8 +28,6 @@ class WorkSpaceAttachmentController extends Controller
 
     public function delete($id)
     {
-        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $this->workspaceAttachmentService->deleteWorkspaceAttachment(id: $id);
 
         return response()->json(__('Document deleted successfully.'));

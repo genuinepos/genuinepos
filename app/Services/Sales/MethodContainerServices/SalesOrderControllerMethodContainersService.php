@@ -2,21 +2,76 @@
 
 namespace App\Services\Sales\MethodContainerServices;
 
-use App\Enums\AccountingVoucherType;
-use App\Enums\AccountLedgerVoucherType;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
+use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
+use App\Enums\AccountingVoucherType;
+use App\Services\Setups\BranchService;
+use App\Enums\AccountLedgerVoucherType;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
+use App\Services\Sales\SalesOrderService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Users\UserActivityLogService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Sales\SalesOrderProductService;
+use App\Services\Products\ManagePriceGroupService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class SalesOrderControllerMethodContainersService implements SalesOrderControllerMethodContainersInterface
 {
-    public function showMethodContainer(
-        int $id,
-        object $salesOrderService,
-        object $saleProductService,
-    ): array {
+    public function __construct(
+        private SaleService $saleService,
+        private SalesOrderService $salesOrderService,
+        private SaleProductService $saleProductService,
+        private SalesOrderProductService $salesOrderProductService,
+        private DayBookService $dayBookService,
+        private AccountService $accountService,
+        private AccountLedgerService $accountLedgerService,
+        private AccountFilterService $accountFilterService,
+        private PaymentMethodService $paymentMethodService,
+        private BranchService $branchService,
+        private PriceGroupService $priceGroupService,
+        private ManagePriceGroupService $managePriceGroupService,
+        private AccountingVoucherService $accountingVoucherService,
+        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
+        private UserActivityLogService $userActivityLogService,
+    ) {
+    }
 
+    public function indexMethodContainer(object $request, ?int $customerAccountId): array|object
+    {
         $data = [];
-        $order = $salesOrderService->singleSalesOrder(id: $id, with: [
+        if ($request->ajax()) {
+
+            return $this->salesOrderService->salesOrderListTable(request: $request, customerAccountId: $customerAccountId);
+        }
+
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return $data;
+    }
+
+    public function showMethodContainer(int $id): array
+    {
+        $data = [];
+        $order = $this->salesOrderService->singleSalesOrder(id: $id, with: [
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'saleProducts',
@@ -38,23 +93,15 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
             'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
         ]);
 
-        $data['customerCopySaleProducts'] = $saleProductService->customerCopySaleProducts(saleId: $order->id);
+        $data['customerCopySaleProducts'] = $this->saleProductService->customerCopySaleProducts(saleId: $order->id);
         $data['order'] = $order;
 
         return $data;
     }
 
-    public function editMethodContainer(
-        int $id,
-        object $salesOrderService,
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-        object $priceGroupService,
-        object $managePriceGroupService,
-    ): array {
-
-        $order = $salesOrderService->singleSalesOrder(id: $id, with: [
+    public function editMethodContainer(int $id): array
+    {
+        $order = $this->salesOrderService->singleSalesOrder(id: $id, with: [
             'customer',
             'customer.group',
             'saleProducts',
@@ -68,7 +115,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $generalSettings = config('generalSettings');
         $ownBranchIdOrParentBranchId = $order?->branch?->parent_branch_id ? $order?->branch?->parent_branch_id : $order->branch_id;
 
-        $accounts = $accountService->accounts(with: [
+        $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
@@ -78,50 +125,36 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
             ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
             ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])->get();
 
-        $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
+        $data['accounts'] = $this->accountFilterService->filterCashBankAccounts($accounts);
 
-        $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+        $data['methods'] = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
-        $data['saleAccounts'] = $accountService->accounts()
+        $data['saleAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_group_number', 15)
             ->where('accounts.branch_id', $order->branch_id)
             ->get(['accounts.id', 'accounts.name']);
 
-        $data['taxAccounts'] = $accountService->accounts()
+        $data['taxAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
             // ->where('accounts.branch_id', $order->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
+        $data['priceGroups'] = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
-        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
+        $data['priceGroupProducts'] = $this->managePriceGroupService->priceGroupProducts();
 
         $data['order'] = $order;
 
         return $data;
     }
 
-    public function updateMethodContainer(
-        int $id,
-        object $request,
-        object $saleService,
-        object $salesOrderService,
-        object $salesOrderProductService,
-        object $dayBookService,
-        object $accountService,
-        object $accountLedgerService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $accountingVoucherDescriptionReferenceService,
-        object $userActivityLogUtil,
-        object $codeGenerator,
-    ): ?array {
-
-        $restrictions = $saleService->restrictions(request: $request, accountService: $accountService, checkCustomerChangeRestriction: true, saleId: $id);
+    public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array
+    {
+        $restrictions = $this->saleService->restrictions(request: $request, accountService: $accountService, checkCustomerChangeRestriction: true, saleId: $id);
 
         if ($restrictions['pass'] == false) {
 
@@ -132,42 +165,42 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
-        $order = $salesOrderService->singleSalesOrder(id: $id, with: ['saleProducts']);
+        $order = $this->salesOrderService->singleSalesOrder(id: $id, with: ['saleProducts']);
 
         $storedCurrSaleAccountId = $order->sale_account_id;
         $storedCurrCustomerAccountId = $order->customer_account_id;
         $storedCurrSaleTaxAccountId = $order->sale_tax_ac_id;
 
-        $updateSalesOrder = $salesOrderService->updateSalesOrder(request: $request, updateSalesOrder: $order);
+        $updateSalesOrder = $this->salesOrderService->updateSalesOrder(request: $request, updateSalesOrder: $order);
 
         // Update Day Book entry for Sale
-        $dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::SalesOrder->value, date: $request->date, accountId: $request->customer_account_id, transId: $updateSalesOrder->id, amount: $request->total_invoice_amount, amountType: 'debit');
+        $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::SalesOrder->value, date: $request->date, accountId: $request->customer_account_id, transId: $updateSalesOrder->id, amount: $request->total_invoice_amount, amountType: 'debit');
 
-        $updateSalesOrderProducts = $salesOrderProductService->updateSalesOrderProducts(request: $request, salesOrder: $updateSalesOrder);
+        $updateSalesOrderProducts = $this->salesOrderProductService->updateSalesOrderProducts(request: $request, salesOrder: $updateSalesOrder);
 
         if ($request->received_amount > 0) {
 
-            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $updateSalesOrder->id);
+            $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $updateSalesOrder->id);
 
             // Add Debit Account Accounting voucher Description
-            $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'dr', amount: $request->received_amount);
+            $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'dr', amount: $request->received_amount);
 
             //Add Debit Ledger Entry
-            $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
 
             // Add Payment Description Credit Entry
-            $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->customer_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount, note: $request->payment_note);
+            $this->addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->customer_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount, note: $request->payment_note);
 
             // Add Accounting VoucherDescription References
-            $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->customer_account_id, amount: $request->received_amount, refIdColName: 'sale_id', refIds: [$updateSalesOrder->id]);
+            $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->customer_account_id, amount: $request->received_amount, refIdColName: 'sale_id', refIds: [$updateSalesOrder->id]);
 
             //Add Credit Ledger Entry
-            $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
         }
 
-        $order = $salesOrderService->singleSalesOrder(id: $id, with: ['saleProducts']);
+        $order = $this->salesOrderService->singleSalesOrder(id: $id, with: ['saleProducts']);
 
-        $deletedUnusedSalesOrderProducts = $order->saleProducts()->where('is_delete_in_update', 1)->get();
+        $deletedUnusedSalesOrderProducts = $order->saleProducts()->where('is_delete_in_update', BooleanType::True->value)->get();
 
         if (count($deletedUnusedSalesOrderProducts) > 0) {
 
@@ -177,13 +210,39 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
             }
         }
 
-        $saleService->adjustSaleInvoiceAmounts(sale: $order);
+        $this->saleService->adjustSaleInvoiceAmounts(sale: $order);
 
-        $salesOrderService->calculateDeliveryLeftQty(order: $order);
+        $this->salesOrderService->calculateDeliveryLeftQty(order: $order);
 
         // Add user Log
-        $userActivityLogUtil->addLog(action: 2, subject_type: 8, data_obj: $order);
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::SalesOrder->value, data_obj: $order);
 
         return null;
+    }
+
+    public function searchByOrderIdMethodContainer(string $keyWord): array|object
+    {
+        $orders = DB::table('sales')
+            ->leftJoin('accounts', 'sales.customer_account_id', 'accounts.id')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('sales.order_id', 'like', "%{$keyWord}%")
+            ->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.status', SaleStatus::Order->value)
+            ->select(
+                'sales.id as sales_order_id',
+                'sales.order_id',
+                'sales.customer_account_id',
+                'accounts.name as customer_name',
+                'accounts.phone as customer_phone',
+                'account_groups.default_balance_type',
+            )->limit(35)->get();
+
+        if (count($orders) > 0) {
+
+            return view('search_results_view.sales_order_search_result_list', compact('orders'));
+        } else {
+
+            return ['noResult' => 'no result'];
+        }
     }
 }

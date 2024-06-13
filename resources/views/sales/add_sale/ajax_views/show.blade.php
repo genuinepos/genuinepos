@@ -33,7 +33,11 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($dateFormat . ' ' . $timeFormat, strtotime($sale->sale_date_ts)) }}</li>
+
                             <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong> {{ $sale->invoice_id }}</li>
+                            @if (isset($sale->salesOrder))
+                                <li style="font-size:11px!important;"><strong>{{ __('Sales Order ID') }} : </strong> {{ $sale?->salesOrder?->order_id }}</li>
+                            @endif
 
                             <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
                                 @php
@@ -286,13 +290,10 @@
                     @if ($sale->sale_screen == App\Enums\SaleScreenType::AddSale->value)
 
                         @if (auth()->user()->can('edit_add_sale') && $sale->branch_id == auth()->user()->branch_id)
-
                             <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
-
                         @if (auth()->user()->can('pos_edit') && $sale->branch_id == auth()->user()->branch_id)
-
                             <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @endif

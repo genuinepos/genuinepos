@@ -39,6 +39,7 @@ class ManageCustomerService
 
         $customers = $query->select(
             'contacts.id',
+            'contacts.type',
             'contacts.contact_id',
             'contacts.prefix',
             'contacts.name',
@@ -112,6 +113,7 @@ class ManageCustomerService
             ),
         )->groupBy(
             'contacts.id',
+            'contacts.type',
             'contacts.contact_id',
             'contacts.prefix',
             'contacts.name',
@@ -121,7 +123,7 @@ class ManageCustomerService
             'contacts.credit_limit',
             // 'customer_groups.name',
             'account_groups.default_balance_type',
-        )->orderBy('contacts.id', 'asc');
+        )->orderBy('contacts.id', 'desc');
 
         return DataTables::of($customers)
             ->addColumn('action', function ($row) {
@@ -146,7 +148,7 @@ class ManageCustomerService
 
                 if (auth()->user()->can('customer_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id]) . '">' . __('Delete') . '</a>';
+                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id, $row->type]) . '">' . __('Delete') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -159,7 +161,7 @@ class ManageCustomerService
 
             ->editColumn('contact_id', function ($row) {
 
-                return $row->contact_id.'('.$row->prefix.')';
+                return $row->contact_id . '(' . $row->prefix . ')';
             })
 
             ->editColumn('credit_limit', function ($row) {
@@ -181,7 +183,9 @@ class ManageCustomerService
                     $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
                 }
 
-                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount) . '</span>';
+                $__openingBalanceInFlatAmount = $openingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($openingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount);
+
+                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . $__openingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('total_sale', function ($row) {
@@ -212,20 +216,20 @@ class ManageCustomerService
                     $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
                 }
 
-                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+                $__totalReturn = $totalReturn < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($totalReturn)) . '</span>)' : \App\Utils\Converter::format_in_bdt($totalReturn);
+
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . $__totalReturn . '</span>';
             })
 
             ->editColumn('total_received', function ($row) {
 
                 $totalReceived = $row->total_received;
-
                 return '<span class="total_received" data-value="' . $totalReceived . '">' . \App\Utils\Converter::format_in_bdt($totalReceived) . '</span>';
             })
 
             ->editColumn('total_paid', function ($row) {
 
                 $totalPaid = $row->total_paid;
-
                 return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
             })
 
@@ -261,7 +265,9 @@ class ManageCustomerService
                     $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
                 }
 
-                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount) . '</span>';
+                $__closingBalanceInFlatAmount = $closingBalanceInFlatAmount < 0 ? '(<span class="text-danger">' . \App\Utils\Converter::format_in_bdt(abs($closingBalanceInFlatAmount)) . '</span>)' : \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount);
+
+                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . $__closingBalanceInFlatAmount . '</span>';
             })
 
             ->editColumn('status', function ($row) {

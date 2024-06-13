@@ -1,18 +1,15 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\SAAS\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\SAAS\Entities\Currency;
 
-class CurrencySeeder extends Seeder
+class CurrencyDatabaseSeedSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $currencies = [
             ['id' => '1', 'country' => 'Albania', 'currency' => 'Leke', 'code' => 'ALL', 'symbol' => 'Lek', 'thousand_separator' => ',', 'decimal_separator' => '.', 'created_at' => null, 'updated_at' => null],
@@ -157,6 +154,6 @@ class CurrencySeeder extends Seeder
             ['id' => '140', 'country' => 'Kuwait', 'currency' => 'Kuwaiti dinar', 'code' => 'KWD', 'symbol' => 'KD', 'thousand_separator' => ',', 'decimal_separator' => '.', 'created_at' => null, 'updated_at' => null],
         ];
 
-        Currency::insert($currencies);
+        \Illuminate\Support\Facades\DB::table('currencies')->insert($currencies);
     }
 }

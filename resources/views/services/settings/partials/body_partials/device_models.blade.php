@@ -5,7 +5,7 @@
         </div>
 
         <div class="col-6 d-flex justify-content-end">
-            @if (auth()->user()->can('product_unit_add'))
+            @if (auth()->user()->can('device_models_create'))
                 <a href="{{ route('services.settings.device.models.create') }}" class="btn btn-sm btn-primary" id="addDeviceModel"><i class="fas fa-plus-square"></i> {{ __('Add Device Model') }}</a>
             @endif
         </div>
@@ -35,7 +35,9 @@
     </div>
 </div>
 
-<form id="delete_device_model_form" action="" method="post">
-    @method('DELETE')
-    @csrf
-</form>
+@if (auth()->user()->can('device_models_delete'))
+    <form id="delete_device_model_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+@endif

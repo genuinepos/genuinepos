@@ -1,11 +1,11 @@
-<div class="tab_contant devices d-hide"  id="tab_contant">
+<div class="tab_contant devices d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
             <h6>{{ __('List of Devices') }}</h6>
         </div>
 
         <div class="col-6 d-flex justify-content-end">
-            @if (auth()->user()->can('product_unit_add'))
+            @if (auth()->user()->can('devices_create'))
                 <a href="{{ route('services.settings.devices.create') }}" class="btn btn-sm btn-primary" id="addDevice"><i class="fas fa-plus-square"></i> {{ __('Add Device') }}</a>
             @endif
         </div>
@@ -33,7 +33,9 @@
     </div>
 </div>
 
-<form id="delete_device_form" action="" method="post">
-    @method('DELETE')
-    @csrf
-</form>
+@if (auth()->user()->can('devices_delete'))
+    <form id="delete_device_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+@endif

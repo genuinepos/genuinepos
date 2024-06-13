@@ -86,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        dd('OK');
         $this->app->singleton(GeneralSetting::class, function () {
             return new GeneralSetting();
         });

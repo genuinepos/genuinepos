@@ -26,11 +26,11 @@ class PosSaleController extends Controller
         return view('sales.pos.index', compact('branches', 'customerAccounts'));
     }
 
-    public function create(PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    public function create(PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface, $jobCardId = 'no_id', $saleScreenType = null)
     {
         abort_if(!auth()->user()->can('pos_add'), 403);
 
-        return $posSaleControllerMethodContainersInterface->createMethodContainer();
+        return $posSaleControllerMethodContainersInterface->createMethodContainer(jobCardId: $jobCardId, saleScreenType: $saleScreenType);
     }
 
     public function store(Request $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)

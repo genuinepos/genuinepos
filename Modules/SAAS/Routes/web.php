@@ -27,6 +27,11 @@ use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
 use Modules\SAAS\Http\Controllers\UserSubscriptionTransactionController;
 
+Route::get('saas-test', function () {
+    $registrar = app(\Spatie\Permission\PermissionRegistrar::class);
+    dd($registrar->getCacheKey());
+});
+
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
 

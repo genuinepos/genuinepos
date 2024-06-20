@@ -15,12 +15,36 @@ return new class extends Migration
 
             $table->string('tenant_id', 255)->after('id')->nullable();
             $table->tinyInteger('user_type')->after('tenant_id')->default(1)->comment('1=authorized_user,2=subscriber_user');
-            $table->dropColumn('stripe_id');
-            $table->dropColumn('pm_type');
-            $table->dropColumn('pm_last_four');
-            $table->dropColumn('trial_ends_at');
-            $table->dropColumn('primary_tenant_id');
-            $table->dropColumn('ip_address');
+
+            if (Schema::hasColumn('users', 'stripe_id')) {
+
+                $table->dropColumn('stripe_id');
+            }
+
+            if (Schema::hasColumn('users', 'pm_type')) {
+
+                $table->dropColumn('pm_type');
+            }
+
+            if (Schema::hasColumn('users', 'pm_last_four')) {
+
+                $table->dropColumn('pm_last_four');
+            }
+
+            if (Schema::hasColumn('users', 'trial_ends_at')) {
+
+                $table->dropColumn('trial_ends_at');
+            }
+
+            if (Schema::hasColumn('users', 'primary_tenant_id')) {
+
+                $table->dropColumn('primary_tenant_id');
+            }
+
+            if (Schema::hasColumn('users', 'ip_address')) {
+
+                $table->dropColumn('ip_address');
+            }
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->onUpdate('cascade')->onDelete('cascade');
         });

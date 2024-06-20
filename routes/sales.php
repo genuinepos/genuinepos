@@ -59,7 +59,7 @@ Route::prefix('sales')->group(function () {
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
 
         Route::get('/', 'index')->name('sales.pos.index');
-        Route::get('create', 'create')->name('sales.pos.create');
+        Route::get('create/{jobCardId?}/{saleScreenType?}', 'create')->name('sales.pos.create');
         Route::post('store', 'store')->name('sales.pos.store');
         Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');
         Route::post('update/{saleId}', 'update')->name('sales.pos.update');

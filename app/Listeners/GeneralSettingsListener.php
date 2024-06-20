@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -33,7 +34,9 @@ class GeneralSettingsListener
         // $generalSettings = Cache::get('generalSettings');
         // dd($generalSettings);
         try {
+            // return dd($permissionCacheKey);
 
+            // Session::put('tenantId', tenant('id'));
             // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
             // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
 
@@ -276,6 +279,8 @@ class GeneralSettingsListener
                 // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
                 // Tenant separated email config ends
             ]);
+
+
 
             $dateFormat = $generalSettings['business_or_shop__date_format'];
             $__date_format = str_replace('-', '/', $dateFormat);

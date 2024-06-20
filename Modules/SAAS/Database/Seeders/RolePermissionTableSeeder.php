@@ -3,15 +3,32 @@
 namespace Modules\SAAS\Database\Seeders;
 
 use App\Models\User;
+
 use Illuminate\Database\Seeder;
-use Modules\SAAS\Entities\Permission;
 use Modules\SAAS\Entities\Role;
+use Modules\SAAS\Entities\Permission;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 
 class RolePermissionTableSeeder extends Seeder
 {
     public function run()
     {
-        foreach ($this->rolesArray() as $role) {
+        Artisan::call('optimize:clear');
+        Schema::disableForeignKeyConstraints();
+
+        if (Role::count() == 0) {
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE `roles` AUTO_INCREMENT = 1');
+        }
+
+        Permission::truncate();
+        if (Permission::count() == 0) {
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE `permissions` AUTO_INCREMENT = 1');
+        }
+
+        Schema::enableForeignKeyConstraints();
+
+        foreach ($this->rolesArray() as $key => $role) {
 
             $role = Role::where('name', $role)->first();
 
@@ -23,7 +40,7 @@ class RolePermissionTableSeeder extends Seeder
 
         foreach ($this->permissionsArray() as $permission) {
 
-            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+            Permission::UpdateOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
         $adminRole = User::whereName('admin')->first() ?? Role::first();

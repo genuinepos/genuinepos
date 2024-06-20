@@ -175,11 +175,11 @@ class JobCardController extends Controller
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $generalSettings = config('generalSettings');
-        $productConfigurationItems = isset($generalSettings['service_settings__product_configuration']) ? explode(',', $generalSettings['service_settings__product_configuration']) : null;
+        $productConfigurationItems = isset($generalSettings['service_settings__product_configuration']) ? explode(',', $generalSettings['service_settings__product_configuration']) : [];
 
-        $defaultProblemsReportItems = isset($generalSettings['service_settings__default_problems_report']) ? explode(',', $generalSettings['service_settings__default_problems_report']) : null;
+        $defaultProblemsReportItems = isset($generalSettings['service_settings__default_problems_report']) ? explode(',', $generalSettings['service_settings__default_problems_report']) : [];
 
-        $defaultProductConditionItems = isset($generalSettings['service_settings__product_condition']) ? explode(',', $generalSettings['service_settings__product_condition']) : null;
+        $defaultProductConditionItems = isset($generalSettings['service_settings__product_condition']) ? explode(',', $generalSettings['service_settings__product_condition']) : [];
 
         $defaultChecklist = isset($generalSettings['service_settings__default_checklist']) ? $generalSettings['service_settings__default_checklist'] : null;
 
@@ -281,11 +281,11 @@ class JobCardController extends Controller
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $generalSettings = config('generalSettings');
-        $productConfigurationItems = isset($generalSettings['service_settings__product_configuration']) ? explode(',', $generalSettings['service_settings__product_configuration']) : null;
+        $productConfigurationItems = isset($generalSettings['service_settings__product_configuration']) ? explode(',', $generalSettings['service_settings__product_configuration']) : [];
 
-        $defaultProblemsReportItems = isset($generalSettings['service_settings__default_problems_report']) ? explode(',', $generalSettings['service_settings__default_problems_report']) : null;
+        $defaultProblemsReportItems = isset($generalSettings['service_settings__default_problems_report']) ? explode(',', $generalSettings['service_settings__default_problems_report']) : [];
 
-        $defaultProductConditionItems = isset($generalSettings['service_settings__product_condition']) ? explode(',', $generalSettings['service_settings__product_condition']) : null;
+        $defaultProductConditionItems = isset($generalSettings['service_settings__product_condition']) ? explode(',', $generalSettings['service_settings__product_condition']) : [];
 
         $defaultChecklist = isset($generalSettings['service_settings__default_checklist']) ? $generalSettings['service_settings__default_checklist'] : null;
 

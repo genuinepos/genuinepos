@@ -10,7 +10,8 @@
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
-    <link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fontawesome6/css/all.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
@@ -30,6 +31,7 @@
     <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
 
@@ -335,7 +337,7 @@
 
                             <div class="col-md-3">
                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                             </div>
 
                             <div class="col-md-3">
@@ -346,7 +348,7 @@
                                         <option value="2">{{ __('Percentage') }}</option>
                                     </select>
 
-                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" class="form-control fw-bold" id="e_unit_discount" value="0.00" />
+                                    <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" class="form-control fw-bold" id="e_unit_discount" value="0.00" />
                                     <input type="hidden" id="e_discount_amount" />
                                 </div>
                             </div>

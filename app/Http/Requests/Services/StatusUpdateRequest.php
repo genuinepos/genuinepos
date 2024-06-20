@@ -13,7 +13,7 @@ class StatusUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('status_edit') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value;
+        return auth()->user()->can('status_edit') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

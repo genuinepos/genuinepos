@@ -13,7 +13,7 @@ class StatusStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('status_create') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value;
+        return auth()->user()->can('status_create') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

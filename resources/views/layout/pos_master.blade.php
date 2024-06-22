@@ -31,7 +31,12 @@
     <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+    @if ($saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value)
+        <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/css-toggle-switch@latest/dist/toggle-switch.css" />
+    @endif
+
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
 
@@ -145,6 +150,62 @@
                 @yield('pos_content')
             </div>
         </div>
+
+        @if ($saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value)
+            <div class="modal fade" id="serviceChecklistModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+                <div class="modal-dialog double-col-modal" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title">{{ __('Servicing Checklist') }}</h6>
+                            <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row gx-2 gy-1 mt-1">
+                                <div class="col-md-12">
+                                    <p><span class="fw-bold">{{ __('Servicing Checklist: ') }}</span> <small>{{ __('N/A = Not Applicable') }}</small></p>
+                                </div>
+
+                                <hr>
+                                <div class="row gx-3" id="check_list_area">
+                                    @if (isset($jobCard) && isset($jobCard->service_checklist) && is_array($jobCard->service_checklist))
+                                        @php
+                                            $index = 0;
+                                        @endphp
+                                        @foreach ($jobCard->service_checklist as $key => $value)
+                                            <div class="col-md-4">
+                                                <p class="fw-bold text-dark">{{ $key }}</p>
+                                                <div class="switch-toggle switch-candy">
+                                                    <input type="radio" @checked($value == 'yes') id="{{ $index }}_yes" name="checklist[{{ $key }}]" value="yes">
+                                                    <label for="{{ $index }}_yes" class="text-success">✔</label>
+
+                                                    <input type="radio" @checked($value == 'no') id="{{ $index }}_no" name="checklist[{{ $key }}]" value="no">
+                                                    <label for="{{ $index }}_no" class="text-danger">❌</label>
+
+                                                    <input type="radio" @checked($value == 'na') id="{{ $index }}_na" name="checklist[{{ $key }}]" value="na">
+                                                    <label for="{{ $index }}_na">N/A</label>
+                                                    <a></a>
+                                                </div>
+                                            </div>
+                                            @php
+                                                $index++;
+                                            @endphp
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="form-group row mt-3">
+                                <div class="col-md-12 text-end">
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 p-1">{{ __('Close') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!--Add Payment modal-->
         <div class="modal fade in" id="otherPaymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -498,6 +559,8 @@
 
     <!--Add shortcut menu modal-->
     <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+
 
     <form id="deleted_form" action="" method="post">
         @method('DELETE')

@@ -632,6 +632,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '430', 'name' => 'job_cards_generate_pdf'],
             ['id' => '431', 'name' => 'job_cards_generate_label'],
             ['id' => '432', 'name' => 'job_cards_change_status'],
+
+            ['id' => '433', 'name' => 'service_invoices_index'],
+            ['id' => '434', 'name' => 'service_invoices_create'],
+            ['id' => '435', 'name' => 'service_invoices_edit'],
+            ['id' => '436', 'name' => 'service_invoices_delete'],
         ];
 
         return $permissions;

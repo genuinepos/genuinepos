@@ -53,12 +53,30 @@
         height: auto;
         width: 70%;
     }
+
+    .select2-container .select2-selection--single {
+        height: 26px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 32px !important;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        width: 233px;
+    }
 </style>
 
 <div class="head-pos">
     <input type="hidden" name="status" id="status">
+    <input type="hidden" name="sale_screen_type" id="sale_screen_type" value="{{ $saleScreenType }}">
     <input type="hidden" name="is_full_credit_sale" id="is_full_credit_sale" value="0">
     <input type="text" class="d-hide" name="ex_sale_id" id="ex_sale_id">
+
+    @if (isset($jobCard))
+        <input type="text" class="d-hide" name="job_card_id" id="job_card_id" value="{{ $jobCard->id }}">
+    @endif
+
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <input type="hidden" name="sale_account_id" value="{{ $openedCashRegister->sale_account_id }}">
     <input type="hidden" id="store_url" value="{{ route('sales.pos.store') }}">
@@ -122,7 +140,7 @@
                             <div class="col-lg-6 col-12 sm-input-sec-w">
                                 <div class="input-group flex-nowrap mb-1">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-user input_i"></i></span>
                                     </div>
                                     <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                         @foreach ($customerAccounts as $customerAccount)
@@ -130,18 +148,18 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                     </div>
                                 </div>
 
                                 <div class="search_item_area">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                            <span class="input-group-text"><i class="fas fa-barcode input_i"></i></span>
                                         </div>
                                         <input type="text" name="search_product" class="form-control" id="search_product" placeholder="{{ __('Search Product by Name/Barcode') }}" autofocus autocomplete="off">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                            <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                         </div>
                                     </div>
 

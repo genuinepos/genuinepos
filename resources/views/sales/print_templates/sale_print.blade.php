@@ -186,19 +186,6 @@
                     @if ($invoiceLayout->is_header_less == 1)
                         <div class="middle_header_text text-center">
                             <h5 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h5>
-                            {{-- <h6>
-                                @php
-                                    $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                @endphp
-
-                                @if ($sale->due <= 0)
-                                    @lang('menu.paid')
-                                @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    @lang('menu.partial')
-                                @elseif($payable == $sale->due)
-                                    @lang('menu.due')
-                                @endif
-                            </h6> --}}
                         </div>
                     @endif
 
@@ -210,6 +197,12 @@
                         <li style="font-size:11px!important;">
                             <span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat . ' ' . $timeFormat, strtotime($sale->sale_date_ts)) }}
                         </li>
+
+                        @if ($sale?->jobCard)
+                            <li style="font-size:11px!important;">
+                                <span class="fw-bold">{{ __('Job No.') }} : </span> {{ $sale?->jobCard?->job_no }}
+                            </li>
+                        @endif
 
                         <li style="font-size:11px!important;">
                             <span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $sale->invoice_id }}
@@ -333,21 +326,89 @@
                     @if ($invoiceLayout->account_name || $invoiceLayout->account_no || $invoiceLayout->bank_name || $invoiceLayout->bank_branch)
                         <div class="bank_details" style="width:100%; border:1px solid black;padding:2px 3px;">
                             @if ($invoiceLayout->account_name)
-                                <p style="font-size:11px!important;">{{ __('Account Name') }} : {{ $invoiceLayout->account_name }}</p>
+                                <p style="font-size:10px!important;">{{ __('Account Name') }} : {{ $invoiceLayout->account_name }}</p>
                             @endif
 
                             @if ($invoiceLayout->account_no)
-                                <p style="font-size:11px!important;">{{ __('Account No') }} : {{ $invoiceLayout->account_no }}</p>
+                                <p style="font-size:10px!important;">{{ __('Account No') }} : {{ $invoiceLayout->account_no }}</p>
                             @endif
 
                             @if ($invoiceLayout->bank_name)
-                                <p style="font-size:11px!important;">{{ __('Bank') }} : {{ $invoiceLayout->bank_name }}</p>
+                                <p style="font-size:10px!important;">{{ __('Bank') }} : {{ $invoiceLayout->bank_name }}</p>
                             @endif
 
                             @if ($invoiceLayout->bank_branch)
-                                <p style="font-size:11px!important;">{{ __('Branch') }} : {{ $invoiceLayout->bank_branch }}</p>
+                                <p style="font-size:10px!important;">{{ __('Branch') }} : {{ $invoiceLayout->bank_branch }}</p>
                             @endif
                         </div>
+                    @endif
+
+                    @if ($sale->sale_screen == \App\Enums\SaleScreenType::ServicePosSale->value)
+                        <table class="table print-table table-sm table-bordered mt-2">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Delivery Date') }}</td>
+                                    <td style="font-size:10px!important;">: {{ isset($sale->jobCard) && isset($sale->jobCard->delivery_date_ts) ? date($dateFormat, strtotime($sale->jobCard->delivery_date_ts)) : '' }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Service Completed On') }}</td>
+                                    <td style="font-size:10px!important;">: {{ isset($sale->jobCard) && isset($sale->jobCard->completed_at_ts) ? date($dateFormat, strtotime($sale->jobCard->completed_at_ts)) : '' }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Status') }}</td>
+                                    <td style="font-size:10px!important;">: {{ $sale?->jobCard?->status?->name }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Brand.') }}</td>
+                                    <td style="font-size:10px!important;">: {{ $sale?->jobCard?->brand?->name }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Device') }}</td>
+                                    <td style="font-size:10px!important;">: {{ $sale?->jobCard?->device?->name }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Device Model') }}</td>
+                                    <td style="font-size:10px!important;">: {{ $sale?->jobCard?->deviceModel?->name }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Serial No.') }}</td>
+                                    <td style="font-size:10px!important;">: {{ $sale?->jobCard?->serial_no }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important;">{{ __('Servicing Checklist') }}</td>
+                                    <td style="font-size:10px!important;">:
+                                        @if (isset($sale->jobCard) && isset($sale->jobCard->service_checklist) && is_array($sale->jobCard->service_checklist))
+                                            @foreach ($sale->jobCard->service_checklist as $key => $value)
+                                                <span>
+                                                    @if ($value == 'yes')
+                                                        ✔
+                                                    @elseif ($value == 'no')
+                                                        ❌
+                                                    @else
+                                                        🚫
+                                                    @endif
+                                                    {{ $key }}
+                                                </span>
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style="font-size:10px!important; width:50%;">{{ __('Problems Reported By Customer') }}</td>
+                                    <td style="font-size:10px!important;">:
+                                        {{ $sale?->jobCard?->problems_report }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     @endif
                 </div>
                 <div class="col-6">

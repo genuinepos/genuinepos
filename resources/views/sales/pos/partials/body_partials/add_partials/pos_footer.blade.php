@@ -17,8 +17,11 @@
             </div>
 
             @if ($generalSettings['pos__is_show_recent_transactions'] == '1')
+                @php
+                    $__saleScreenType = $saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value ? \App\Enums\SaleScreenType::ServicePosSale->value : \App\Enums\SaleScreenType::PosSale->value;
+                @endphp
                 <div class="pos-foot-con d-inline-block position-absolute" style="right: -10px; top: 50%; transform: translateY(-41%)">
-                    <a href="{{ route('sales.helper.recent.transaction.modal', ['initialStatus' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => App\Enums\SaleScreenType::PosSale->value, 'limit' => 20]) }}" class="btn btn-sm btn-primary resent-tn h-auto py-1" id="recentTransactionsBtn" tabindex="-1">{{ __('Recent Transactions') }}</a>
+                    <a href="{{ route('sales.helper.recent.transaction.modal', ['initialStatus' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => $__saleScreenType, 'limit' => 20]) }}" class="btn btn-sm btn-primary resent-tn h-auto py-1" id="recentTransactionsBtn" tabindex="-1">{{ __('Recent Transactions') }}</a>
                 </div>
             @endif
         </div>

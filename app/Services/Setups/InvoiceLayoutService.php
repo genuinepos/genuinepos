@@ -6,6 +6,7 @@ use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Models\Setups\InvoiceLayout;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class InvoiceLayoutService
@@ -139,7 +140,10 @@ class InvoiceLayoutService
 
     public function updateInvoiceLayout(int $id, object $request): void
     {
-        $updateInvoiceLayout = InvoiceLayout::where('id', $id)->first();
+        $updateInvoiceLayout = $this->singleInvoiceLayout(id: $id);
+
+        // dd($updateInvoiceLayout);
+
         $updateInvoiceLayout->name = $request->name;
         $updateInvoiceLayout->show_shop_logo = $request->show_shop_logo;
         $updateInvoiceLayout->show_total_in_word = $request->show_total_in_word;
@@ -167,13 +171,15 @@ class InvoiceLayoutService
         $updateInvoiceLayout->customer_address = $request->customer_address;
         $updateInvoiceLayout->customer_tax_no = $request->customer_tax_no;
         $updateInvoiceLayout->customer_phone = $request->customer_phone;
-        $updateInvoiceLayout->bank_name = $request->bank_name;
+        $updateInvoiceLayout->bank_name = isset($request->bank_name) ? $request->bank_name : null;
         $updateInvoiceLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : null;
         $updateInvoiceLayout->account_name = isset($request->account_name) ? $request->account_name : null;
         $updateInvoiceLayout->account_no = isset($request->account_no) ? $request->account_no : null;
         $updateInvoiceLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : null;
         $updateInvoiceLayout->footer_text = isset($request->footer_text) ? $request->footer_text : null;
         $updateInvoiceLayout->save();
+
+        // dd($updateInvoiceLayout);
 
         $this->forgetCache(id: $id);
     }
@@ -288,6 +294,7 @@ class InvoiceLayoutService
 
     private function forgetCache(int $id): void
     {
+        $tenantId = tenant('id');
         $cacheKey = "{$tenantId}_invoiceAddSaleLayout_{$id}";
         Cache::forget($cacheKey);
         $cacheKey = "{$tenantId}_invoicePosSaleLayout_{$id}";

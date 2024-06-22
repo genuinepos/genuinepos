@@ -155,8 +155,8 @@
                 if (item) {
 
                     var hrml = '';
-                    hrml += '<div class="col-md-2">';
-                    hrml += '<p class="fw-bold text-primary">' + item + '</p>';
+                    hrml += '<div class="col-md-4">';
+                    hrml += '<p class="fw-bold text-dark">' + item + '</p>';
                     hrml += '<div class="switch-toggle switch-candy">';
                     hrml += '<input id="' + index + '_yes" name="checklist[' + item + ']" type="radio" value="yes">';
                     hrml += '<label for="' + index + '_yes" class="text-success">✔</label>';
@@ -257,5 +257,12 @@
             return totalDays - 1;
         },
         format: _expectedDateFormat,
+    });
+
+    $(document).on('click', '#date_clear', function(e) {
+
+        var id = $(this).data('clear_date_id');
+        console.log(id);
+        $('#'+id).val('');
     });
 </script>

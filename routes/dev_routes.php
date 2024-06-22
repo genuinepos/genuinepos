@@ -25,6 +25,19 @@ Route::get('my-test', function () {
     //     Log::info("Storing data in cache for key: $cacheKey");
     //     return $settings;
     // });
+
+    $value = 'asdfsadf';
+
+    return $intValue = filter_var($value, FILTER_VALIDATE_INT);
+
+    // Check if the conversion was successful
+    if ($intValue === false) {
+        // Return null if the conversion was not successful
+        return null;
+    }
+
+    // Return the converted integer value
+    return $intValue;
 });
 
 Route::get('t-id', function () {

@@ -82,6 +82,11 @@ class SalesHelperController extends Controller
             'branch',
             'branch.parentBranch',
             'customer',
+            'jobCard',
+            'jobCard.status',
+            'jobCard.brand',
+            'jobCard.device',
+            'jobCard.deviceModel',
             'saleProducts',
             'saleProducts.product',
         ]);

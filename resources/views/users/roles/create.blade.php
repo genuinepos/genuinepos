@@ -2474,7 +2474,7 @@
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="job_cards_edit" id="status_edit" class="job_cards services">
+                                                        <input type="checkbox" name="job_cards_edit" id="job_cards_edit" class="job_cards services">
                                                         <label for="job_cards_edit">{{ __('Job Card Edit') }}</label>
                                                     </p>
 
@@ -2496,6 +2496,40 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="job_cards_change_status" id="job_cards_change_status" class="job_cards services">
                                                         <label for="job_cards_change_status"> {{ __('Job Card Change Status') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="service_invoices" id="select_all" data-target="service_invoices" autocomplete="off">
+                                                            <strong>{{ __('Invoices') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_invoices_index" id="service_invoices_index" class="service_invoices services">
+                                                        <label for="service_invoices_index">{{ __('Invoice List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_invoices_only_own" id="service_invoices_only_own" class="service_invoices services">
+                                                        <label for="service_invoices_only_own">{{ __('Invoice Only Created By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_invoices_create" id="job_cards_create" class="service_invoices services">
+                                                        <label for="service_invoices_create">{{ __('Invoice Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_invoices_edit" id="service_invoices_edit" class="service_invoices services">
+                                                        <label for="service_invoices_edit">{{ __('Invoice Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_invoices_delete" id="service_invoices_delete" class="service_invoices services">
+                                                        <label for="service_invoices_delete"> {{ __('Invoice Delete') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

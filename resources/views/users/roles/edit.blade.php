@@ -2464,7 +2464,7 @@
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_edit')) name="job_cards_edit" id="status_edit" class="job_cards services">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('job_cards_edit')) name="job_cards_edit" id="job_cards_edit" class="job_cards services">
                                                         <label for="job_cards_edit">{{ __('Job Card Edit') }}</label>
                                                     </p>
 
@@ -2486,6 +2486,91 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" @checked($role->hasPermissionTo('job_cards_change_status')) name="job_cards_change_status" id="job_cards_change_status" class="job_cards services">
                                                         <label for="job_cards_change_status"> {{ __('Job Card Change Status') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="service_invoices" id="select_all" data-target="service_invoices" autocomplete="off">
+                                                            <strong>{{ __('Invoices') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        @php
+                                                            $serviceInvoicesIndexExists = false;
+
+                                                            try {
+                                                                $serviceInvoicesIndexExists = $role?->hasPermissionTo('service_invoices_index');
+                                                            } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+                                                                // Permission does not exist, handle this gracefully
+                                                                $serviceInvoicesIndexExists = false;
+                                                            }
+                                                        @endphp
+                                                        <input type="checkbox" @checked($serviceInvoicesIndexExists) name="service_invoices_index" id="service_invoices_index" class="service_invoices services">
+                                                        <label for="service_invoices_index">{{ __('Invoice List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        @php
+                                                            $serviceInvoicesOnlyOwnExists = false;
+
+                                                            try {
+                                                                $serviceInvoicesOnlyOwnExists = $role?->hasPermissionTo('service_invoices_only_own');
+                                                            } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+                                                                // Permission does not exist, handle this gracefully
+                                                                $serviceInvoicesOnlyOwnExists = false;
+                                                            }
+                                                        @endphp
+
+                                                        <input type="checkbox" @checked($serviceInvoicesOnlyOwnExists) name="service_invoices_only_own" id="service_invoices_only_own" class="service_invoices services">
+                                                        <label for="service_invoices_only_own">{{ __('Invoice Only Created By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        @php
+                                                            $serviceInvoicesCreateExists = false;
+
+                                                            try {
+                                                                $serviceInvoicesCreateExists = $role?->hasPermissionTo('service_invoices_create');
+                                                            } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+                                                                // Permission does not exist, handle this gracefully
+                                                                $serviceInvoicesCreateExists = false;
+                                                            }
+                                                        @endphp
+                                                        <input type="checkbox" @checked($serviceInvoicesCreateExists) name="service_invoices_create" id="job_cards_create" class="service_invoices services">
+                                                        <label for="service_invoices_create">{{ __('Invoice Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        @php
+                                                            $serviceInvoicesEditExists = false;
+
+                                                            try {
+                                                                $serviceInvoicesEditExists = $role?->hasPermissionTo('service_invoices_edit');
+                                                            } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+                                                                // Permission does not exist, handle this gracefully
+                                                                $serviceInvoicesEditExists = false;
+                                                            }
+                                                        @endphp
+                                                        <input type="checkbox" @checked($serviceInvoicesEditExists)  name="service_invoices_edit" id="service_invoices_edit" class="service_invoices services">
+                                                        <label for="service_invoices_edit">{{ __('Invoice Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        @php
+                                                            $serviceInvoicesDeleteExists = false;
+
+                                                            try {
+                                                                $serviceInvoicesDeleteExists = $role?->hasPermissionTo('service_invoices_delete');
+                                                            } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+                                                                // Permission does not exist, handle this gracefully
+                                                                $serviceInvoicesDeleteExists = false;
+                                                            }
+                                                        @endphp
+                                                        <input type="checkbox" @checked($serviceInvoicesDeleteExists)  name="service_invoices_delete" id="service_invoices_delete" class="service_invoices services">
+                                                        <label for="service_invoices_delete"> {{ __('Invoice Delete') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

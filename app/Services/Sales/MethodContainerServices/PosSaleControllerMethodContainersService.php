@@ -150,7 +150,19 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
                 if (isset($jobCardId) && $jobCardId != 'no_id') {
 
-                    $jobCardData['jobCard'] = $this->jobCardService->singleJobCard(id: $jobCardId);
+                    $jobCardId = filter_var($jobCardId, FILTER_VALIDATE_INT);
+
+                    if (isset($jobCardId)) {
+
+                        $jobCardData['jobCard'] = $this->jobCardService->singleJobCard(id: $jobCardId, with: [
+                            'jobCardProducts',
+                            'jobCardProducts.product',
+                            'jobCardProducts.product.unit',
+                            'jobCardProducts.variant',
+                            'jobCardProducts.unit:id,name,code_name,base_unit_id,base_unit_multiplier',
+                            'jobCardProducts.unit.baseUnit:id,base_unit_id,name,code_name',
+                        ]);
+                    }
                 }
 
                 $jobCardData['devices'] = $this->deviceService->devices()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name']);
@@ -202,7 +214,9 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             return ['pass' => false, 'msg' => $restrictions['msg']];
         }
 
-        $addPosSale = $this->posSaleService->addPosSale(request: $request, saleScreenType: SaleScreenType::PosSale->value, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: $quotationPrefix, dateFormat: $generalSettings['business_or_shop__date_format']);
+        $saleScreenType = $request->sale_screen_type == SaleScreenType::ServicePosSale->value ? SaleScreenType::ServicePosSale->value : SaleScreenType::PosSale->value;
+
+        $addPosSale = $this->posSaleService->addPosSale(request: $request, saleScreenType: $saleScreenType, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: $quotationPrefix, dateFormat: $generalSettings['business_or_shop__date_format']);
 
         if ($request->status == SaleStatus::Final->value) {
 
@@ -268,12 +282,22 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: date('Y-m-d'), account_id: $request->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $receivedAmount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
         }
 
+        if ($request->sale_screen_type == SaleScreenType::ServicePosSale->value) {
+
+            $this->jobCardService->addOrUpdateJobCardBySale(request: $request, saleId: $addPosSale->id);
+        }
+
         $sale = $this->saleService->singleSale(
             id: $addPosSale->id,
             with: [
                 'branch',
                 'branch.parentBranch',
                 'customer',
+                'jobCard',
+                'jobCard.status',
+                'jobCard.brand',
+                'jobCard.device',
+                'jobCard.deviceModel',
                 'saleProducts',
                 'saleProducts.product',
             ]

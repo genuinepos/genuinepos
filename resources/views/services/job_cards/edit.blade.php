@@ -246,7 +246,7 @@
 
                                     <div class="row gx-2 gy-1 mt-1">
                                         <div class="col-md-12">
-                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>N/A = Not Applicable</small></p>
+                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>{{ __("N/A = Not Applicable") }}</small></p>
                                         </div>
 
                                         <hr>

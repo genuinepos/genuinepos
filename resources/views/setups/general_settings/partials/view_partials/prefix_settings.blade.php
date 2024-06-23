@@ -6,27 +6,29 @@
     </div>
     @csrf
 
-    <div class="form-group row">
-        <div class="col-lg-3 col-md-6">
-            <label class="fw-bold">{{ __('Sales Invoice Prefix') }}</label>
-            <input type="text" name="sales_invoice_prefix" class="form-control" id="sales_invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __('Invoice Prefix') }}" />
-        </div>
+    @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+        <div class="form-group row">
+            <div class="col-lg-3 col-md-6">
+                <label class="fw-bold">{{ __('Sales Invoice Prefix') }}</label>
+                <input type="text" name="sales_invoice_prefix" class="form-control" id="sales_invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __('Invoice Prefix') }}" />
+            </div>
 
-        <div class="col-lg-3 col-md-6">
-            <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
-            <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Quotation Prefix') }}" />
-        </div>
+            <div class="col-lg-3 col-md-6">
+                <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
+                <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Quotation Prefix') }}" />
+            </div>
 
-        <div class="col-lg-3 col-md-6">
-            <label class="fw-bold">{{ __('Sales Order Prefix') }}</label>
-            <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __('Sales Order Prefix') }}" />
-        </div>
+            <div class="col-lg-3 col-md-6">
+                <label class="fw-bold">{{ __('Sales Order Prefix') }}</label>
+                <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __('Sales Order Prefix') }}" />
+            </div>
 
-        <div class="col-lg-3 col-md-6">
-            <label class="fw-bold">{{ __('Sales Return Prefix') }}</label>
-            <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __('Sales Return Prefix') }}" />
+            <div class="col-lg-3 col-md-6">
+                <label class="fw-bold">{{ __('Sales Return Prefix') }}</label>
+                <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __('Sales Return Prefix') }}" />
+            </div>
         </div>
-    </div>
+    @endif
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">

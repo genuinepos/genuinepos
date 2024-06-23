@@ -2,6 +2,7 @@
 
 namespace App\Services\Setups;
 
+use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
 use App\Models\Setups\BranchSetting;
 use App\Services\CacheServiceInterface;
@@ -230,7 +231,21 @@ class BranchSettingService
 
                     if (
                         ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
-                        config('generalSettings')['subscription']->features['hrm'] == 0
+                        config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        $key == 'job_card_no_prefix' &&
+                        (isset(config('generalSettings')->features['services']) && config('generalSettings')->features['services'] == BooleanType::False->value)
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        ($key == 'sales_invoice_prefix' || $key == 'quotation_prefix' || $key == 'sales_order_prefix' || $key == 'sales_return_prefix') &&
+                        config('generalSettings')->features['sales'] == BooleanType::False->value
                     ) {
                         continue;
                     }

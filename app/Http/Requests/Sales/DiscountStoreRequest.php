@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sales;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DiscountStoreRequest extends FormRequest
@@ -11,7 +12,7 @@ class DiscountStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('discounts');
+        return auth()->user()->can('discounts') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

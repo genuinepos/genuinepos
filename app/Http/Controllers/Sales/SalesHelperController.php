@@ -20,6 +20,15 @@ class SalesHelperController extends Controller
     ) {
     }
 
+    public function salesListTable(Request $request, $customerAccountId = null, $saleScreen = null)
+    {
+        if ($request->ajax()) {
+
+            $customerAccountId = $customerAccountId == 'null' ? null : $customerAccountId;
+            return $this->salesHelperService->salesListTable(customerAccountId: $customerAccountId, saleScreen: $saleScreen, request: $request);
+        }
+    }
+
     public function posSelectableProducts(Request $request)
     {
         $products = $this->salesHelperService->getPosSelectableProducts($request);

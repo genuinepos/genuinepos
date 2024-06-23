@@ -82,7 +82,7 @@ class UpgradePlanController extends Controller
         try {
             DB::beginTransaction();
 
-            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: BooleanType::True->value);
+            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: BooleanType::True->value, tenantId: $tenant->id);
 
             $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
             $shopPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->shop_price);
@@ -103,7 +103,7 @@ class UpgradePlanController extends Controller
 
         $this->deleteTrialPeriodDataService->cleanDataFromDB();
         Session::forget('startupType');
-        
+
         DB::reconnect();
 
         if ($tenant?->user) {
@@ -111,7 +111,6 @@ class UpgradePlanController extends Controller
             $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
             dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, appUrl: $appUrl));
         }
-
 
         return response()->json(__('Plan upgraded successfully'));
     }

@@ -240,7 +240,12 @@
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('supplier_manage') ? 'CHECKED' : '' }} name="supplier_manage" id="supplier_manage" class="contacts contact_all">
-                                                        <label for="supplier_manage">{{ __('Manage Supplier') }}</label>
+                                                        <label for="supplier_manage">{{ __('Supplier Manage') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('supplier_ledger') ? 'CHECKED' : '' }} name="supplier_ledger" id="supplier_ledger" class="contacts contact_all">
+                                                        <label for="supplier_ledger">{{ __('Supplier Ledger') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
@@ -279,7 +284,12 @@
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('customer_manage') ? 'CHECKED' : '' }} name="customer_manage" id="customer_manage" class="contacts customer_all">
-                                                        <label for="customer_manage">{{ __('Manage Customer') }}</label>
+                                                        <label for="customer_manage">{{ __('Customer Manage') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_ledger') ? 'CHECKED' : '' }} name="customer_ledger" id="customer_ledger" class="contacts customer_all">
+                                                        <label for="customer_ledger">{{ __('Customer Ledger') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">

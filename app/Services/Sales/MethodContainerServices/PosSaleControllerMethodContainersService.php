@@ -80,10 +80,10 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
     public function indexMethodContainer(object $request): array|object
     {
         $data = [];
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
 
-            return $this->saleService->salesListTable(request: $request, saleScreen: SaleScreenType::PosSale->value);
-        }
+        //     return $this->saleService->salesListTable(request: $request, saleScreen: SaleScreenType::PosSale->value);
+        // }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -175,7 +175,6 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
                 $jobCardData['defaultChecklist'] = isset($generalSettings['service_settings__default_checklist']) ? $generalSettings['service_settings__default_checklist'] : null;
             }
-
 
             $data = array_merge(compact(
                 'branchName',
@@ -356,7 +355,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         return ['sale' => $sale, 'customerCopySaleProducts' => $customerCopySaleProducts];
     }
 
-    public function editMethodContainer(int $id): mixed
+    public function editMethodContainer(int $id, ?int $saleScreenType = null): mixed
     {
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['user', 'branch', 'branch.parentBranch', 'cashCounter'])
             ->where('user_id', auth()->user()->id)
@@ -424,6 +423,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 'methods',
                 'taxAccounts',
                 'customerAccounts',
+                'saleScreenType',
             ));
         } else {
 

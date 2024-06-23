@@ -72,7 +72,7 @@ class SubscriptionService
         return $addSubscription;
     }
 
-    public function updateSubscription(object $request, ?object $plan = null, int $isTrialPlan = 0, int $subscriptionUpdateType = 1): object
+    public function updateSubscription(object $request, ?object $plan = null, int $isTrialPlan = 0, int $subscriptionUpdateType = 1, ?string $tenantId = null): object
     {
         $updateSubscription = $this->singleSubscription(with: ['dueSubscriptionTransaction']);
 
@@ -198,7 +198,7 @@ class SubscriptionService
 
         $updateSubscription->save();
 
-        $this->forgetCache();
+        $this->forgetCache(tenantId: $tenantId);
 
         return $updateSubscription;
     }
@@ -215,9 +215,9 @@ class SubscriptionService
         return $query->first();
     }
 
-    private function forgetCache(): void
+    private function forgetCache(?string $tenantId = null): void
     {
-        $tenantId = tenant('id');
+        $__tenantId = isset($tenantId) ? $tenantId : tenant('id');
         $cacheKey = "{$tenantId}_GeneralSettings_subscription";
         Cache::forget($cacheKey);
     }

@@ -43,7 +43,8 @@
             [10, 25, 50, 100, 500, 1000, "All"]
         ],
         "ajax": {
-            "url": "{{ route('sales.index', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::AddSale->value]) }}",
+            // "url": "{{ route('sales.index', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::AddSale->value]) }}",
+            "url": "{{ route('sales.helper.sales.list.table', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::AddSale->value]) }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.customer_account_id = $('#customer_account_id').val();

@@ -50,7 +50,7 @@ class UpdateExpireDateController extends Controller
 
         DB::statement('use ' . $tenant->tenancy_db_name);
 
-        $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdateExpireDate->value);
+        $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdateExpireDate->value, tenantId: $tenant->id);
 
         foreach ($request->shop_expire_date_history_ids as $index => $shopExpireDateHistoryId) {
 

@@ -2104,7 +2104,7 @@
             @endif
 
             @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == '1' && $generalSettings['modules__service'] == '1')
-                @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('job_cards_index') || auth()->user()->can('job_cards_create') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('job_cards_index') || auth()->user()->can('job_cards_create') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings') || auth()->user()->can('service_invoices_create') || auth()->user()->can('service_invoices_index'))
                     <div class="sub-menu_t" id="service">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -2145,27 +2145,31 @@
                                             </div>
                                         @endif
 
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('sales.pos.create', ['no_id', \App\Enums\SaleScreenType::ServicePosSale->value]) }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-circle"></i></span>
+                                        @if (auth()->user()->can('service_invoices_create'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('sales.pos.create', ['no_id', \App\Enums\SaleScreenType::ServicePosSale->value]) }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Add Invoice') }}</p>
-                                            </a>
-                                        </div>
+                                                    <p class="switch_text">{{ __('Add Invoice') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
-                                        <div class="sub-menu-col">
-                                            <a href="#" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
+                                        @if (auth()->user()->can('service_invoices_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('services.invoices.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Invoice List') }}</p>
-                                            </a>
-                                        </div>
+                                                    <p class="switch_text">{{ __('Invoice List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
                                         <div class="sub-menu-col">
                                             <a href="#" class="switch-bar-wrap">

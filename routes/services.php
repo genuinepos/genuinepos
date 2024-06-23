@@ -6,6 +6,7 @@ use App\Http\Controllers\Services\StatusController;
 use App\Http\Controllers\Services\JobCardController;
 use App\Http\Controllers\Services\SettingController;
 use App\Http\Controllers\Services\DeviceModelController;
+use App\Http\Controllers\Services\ServiceInvoiceController;
 
 Route::prefix('services')->group(function () {
 
@@ -61,5 +62,10 @@ Route::prefix('services')->group(function () {
         Route::post('change/status/{id}', 'changeStatus')->name('services.job.cards.change.status');
         Route::delete('delete/{id}', 'delete')->name('services.job.cards.delete');
         Route::get('no', 'jobCardNo')->name('services.job.cards.no');
+    });
+
+    Route::controller(ServiceInvoiceController::class)->prefix('invoices')->group(function () {
+
+        Route::get('/', 'index')->name('services.invoices.index');
     });
 });

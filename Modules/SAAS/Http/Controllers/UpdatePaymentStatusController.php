@@ -49,7 +49,7 @@ class UpdatePaymentStatusController extends Controller
 
         DB::statement('use ' . $tenant->tenancy_db_name);
 
-        $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdatePaymentStatus->value);
+        $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdatePaymentStatus->value, tenantId: $tenant->id);
 
         if ($request->payment_status == BooleanType::True->value && $updateSubscription?->dueSubscriptionTransaction) {
 

@@ -107,16 +107,18 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('add_sale_settings'))
-                                            <li class="menu_list">
-                                                <a class="menu_btn" data-form="add_sale_settings_form" href="#">{{ __('Add Sale Settings') }}</a>
-                                            </li>
-                                        @endif
+                                        @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+                                            @if (auth()->user()->can('add_sale_settings'))
+                                                <li class="menu_list">
+                                                    <a class="menu_btn" data-form="add_sale_settings_form" href="#">{{ __('Add Sale Settings') }}</a>
+                                                </li>
+                                            @endif
 
-                                        @if (auth()->user()->can('pos_sale_settings'))
-                                            <li class="menu_list">
-                                                <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('Pos Sale Settings') }}</a>
-                                            </li>
+                                            @if (auth()->user()->can('pos_sale_settings'))
+                                                <li class="menu_list">
+                                                    <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('Pos Sale Settings') }}</a>
+                                                </li>
+                                            @endif
                                         @endif
 
                                         @if (auth()->user()->can('prefix_settings'))
@@ -191,12 +193,14 @@
                                     @include('setups.general_settings.partials.view_partials.manufacturing_settings')
                                 @endif
 
-                                @if (auth()->user()->can('add_sale_settings'))
-                                    @include('setups.general_settings.partials.view_partials.add_sale_settings')
-                                @endif
+                                @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+                                    @if (auth()->user()->can('add_sale_settings'))
+                                        @include('setups.general_settings.partials.view_partials.add_sale_settings')
+                                    @endif
 
-                                @if (auth()->user()->can('pos_sale_settings'))
-                                    @include('setups.general_settings.partials.view_partials.pos_sale_settings')
+                                    @if (auth()->user()->can('pos_sale_settings'))
+                                        @include('setups.general_settings.partials.view_partials.pos_sale_settings')
+                                    @endif
                                 @endif
 
                                 @if (auth()->user()->can('prefix_settings'))
@@ -262,8 +266,17 @@
     @include('setups.general_settings.partials.js_partials.invoice_layout_settings_js')
     @include('setups.general_settings.partials.js_partials.product_settings_js')
     @include('setups.general_settings.partials.js_partials.purchase_settings_js')
-    @include('setups.general_settings.partials.js_partials.add_sale_settings_js')
-    @include('setups.general_settings.partials.js_partials.pos_settings_js')
+
+    @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+        @if (auth()->user()->can('add_sale_settings'))
+            @include('setups.general_settings.partials.js_partials.add_sale_settings_js')
+        @endif
+
+        @if (auth()->user()->can('pos_sale_settings'))
+            @include('setups.general_settings.partials.js_partials.pos_settings_js')
+        @endif
+    @endif
+
     @include('setups.general_settings.partials.js_partials.system_settings_js')
     @include('setups.general_settings.partials.js_partials.reward_point_settings_js')
     @include('setups.general_settings.partials.js_partials.module_settings_js')

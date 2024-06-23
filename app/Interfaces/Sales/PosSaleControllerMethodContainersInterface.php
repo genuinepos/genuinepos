@@ -14,7 +14,7 @@ interface PosSaleControllerMethodContainersInterface
 
     public function storeMethodContainer(object $request, object $codeGenerator): array|object;
 
-    public function editMethodContainer(int $id): mixed;
+    public function editMethodContainer(int $id, ?int $saleScreenType = null): mixed;
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): array|object;
 

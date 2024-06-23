@@ -146,7 +146,8 @@
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
-            "url": "{{ route('sales.index', ['customerAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
+            // "url": "{{ route('sales.index', ['customerAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
+            "url": "{{ route('sales.helper.sales.list.table', ['customerAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
                 d.branch_id = $('#sales_branch_id').val();
                 d.payment_status = $('#sales_payment_status').val();

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sales\SalesOrderEditRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Sales\SalesOrderIndexRequest;
+use App\Http\Requests\Sales\SalesOrderUpdateRequest;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 
 class SalesOrderController extends Controller
 {
-    public function index(Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, $customerAccountId = null)
+    public function index(SalesOrderIndexRequest $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, $customerAccountId = null)
     {
-        abort_if(!auth()->user()->can('sales_order_list'), 403);
-
         $indexMethodContainer = $salesOrderControllerMethodContainersInterface->indexMethodContainer(request: $request, customerAccountId: $customerAccountId);
 
         if ($request->ajax()) {
@@ -35,7 +35,7 @@ class SalesOrderController extends Controller
         return view('sales.add_sale.orders.ajax_views.show', compact('order', 'customerCopySaleProducts'));
     }
 
-    public function edit($id, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
+    public function edit($id, SalesOrderEditRequest $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
     {
         $editMethodContainer = $salesOrderControllerMethodContainersInterface->editMethodContainer(id: $id);
 
@@ -44,7 +44,7 @@ class SalesOrderController extends Controller
         return view('sales.add_sale.orders.edit', compact('order', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
     }
 
-    public function update($id, Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, CodeGenerationServiceInterface $codeGenerator)
+    public function update($id, SalesOrderUpdateRequest $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
             DB::beginTransaction();

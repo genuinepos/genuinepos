@@ -53,11 +53,29 @@
         height: auto;
         width: 70%;
     }
+
+    .select2-container .select2-selection--single {
+        height: 26px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 32px !important;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        width: 233px;
+    }
 </style>
 
 <div class="head-pos">
     <input type="hidden" name="status" id="status">
+    <input type="hidden" name="sale_screen_type" id="sale_screen_type" value="{{ $saleScreenType }}">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
+
+    @if (isset($sale->jobCard))
+        <input type="text" class="d-hide" name="job_card_id" id="job_card_id" value="{{ $sale?->jobCard?->id }}">
+    @endif
+    
     <nav class="pos-navigation">
         <div class="col-lg-9 nav-left-sec">
             <div class="row g-1 align-items-center">

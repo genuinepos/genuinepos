@@ -85,6 +85,13 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'salesOrder:id,order_id',
+
+            'jobCard',
+            'jobCard.status',
+            'jobCard.brand',
+            'jobCard.device',
+            'jobCard.deviceModel',
+
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',

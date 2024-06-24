@@ -1,7 +1,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script>
     var defaultProblemsReportItems = @json($defaultProblemsReportItems);
-    var defaultChecklist = "{{ $defaultChecklist }}";
+    var defaultChecklist = "{{ isset($defaultChecklist) ? $defaultChecklist : null }}";
     var input = document.querySelector('input[name="problems_report"]');
     // init Tagify script on the above inputs
     tagify = new Tagify(input, {

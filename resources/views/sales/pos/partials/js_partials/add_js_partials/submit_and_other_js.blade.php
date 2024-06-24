@@ -210,6 +210,12 @@
 
             $("#device_id").select2("destroy");
             $("#device_id").select2();
+
+            $("#device_model_id").select2("destroy");
+            $("#device_model_id").select2();
+
+            $("#status_id").select2("destroy");
+            $("#status_id").select2();
         @endif
     }
 

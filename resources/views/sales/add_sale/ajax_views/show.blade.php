@@ -23,23 +23,29 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Customer') }} : - </strong></li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Name') }} : </strong><span>{{ $sale->customer->name }}</span></li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong><span>{{ $sale->customer->address }}</span></li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }}: </strong><span>{{ $sale->customer->phone }}</span></li>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Customer') }} : - </span></li>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Name') }} : </span><span>{{ $sale->customer->name }}</span></li>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span><span>{{ $sale->customer->address }}</span></li>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Phone') }}: </span><span>{{ $sale->customer->phone }}</span></li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($dateFormat . ' ' . $timeFormat, strtotime($sale->sale_date_ts)) }}</li>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat . ' ' . $timeFormat, strtotime($sale->sale_date_ts)) }}</li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong> {{ $sale->invoice_id }}</li>
-                            @if (isset($sale->salesOrder))
-                                <li style="font-size:11px!important;"><strong>{{ __('Sales Order ID') }} : </strong> {{ $sale?->salesOrder?->order_id }}</li>
+                            @if ($sale?->jobCard)
+                                <li style="font-size:11px!important;">
+                                    <span class="fw-bold">{{ __('Job No.') }} : </span> {{ $sale?->jobCard?->job_no }}
+                                </li>
                             @endif
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $sale->invoice_id }}</li>
+                            @if (isset($sale->salesOrder))
+                                <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sales Order ID') }} : </span> {{ $sale?->salesOrder?->order_id }}</li>
+                            @endif
+
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
                                 @php
                                     $receivable = $sale->total_invoice_amount - $sale->sale_return_amount;
                                 @endphp
@@ -52,7 +58,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Shipment Status') }} : </strong>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Shipment Status') }} : </span>
                                 @if ($sale->shipment_status == App\Enums\ShipmentStatus::NoStatus->value)
                                     <span>{{ __('Not-Available') }}</span>
                                 @elseif($sale->shipment_status == App\Enums\ShipmentStatus::Ordered->value)
@@ -71,7 +77,7 @@
                             </li>
 
                             <li style="font-size:11px!important;">
-                                <strong>{{ __('Created By') }} : </strong>
+                                <span class="fw-bold">{{ __('Created By') }} : </span>
                                 {{ $sale?->createdBy?->prefix . ' ' . $sale?->createdBy?->name . ' ' . $sale?->createdBy?->last_name }}
                             </li>
                         </ul>
@@ -79,7 +85,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Shop/Business') }} : </span>
                                 @php
                                     $branchName = '';
                                     if ($sale->branch_id) {
@@ -96,7 +102,7 @@
                                 {{ $branchName }}
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Email') }} : </strong>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Email') }} : </span>
                                 @if ($sale->branch)
                                     {{ $sale->branch->email }}
                                 @else
@@ -104,7 +110,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Phone') }} : </span>
                                 @if ($sale->branch)
                                     {{ $sale->branch->phone }}
                                 @else
@@ -191,60 +197,158 @@
                     <div class="col-md-7">
                         <p class="fw-bold">{{ __('Recipts Against Sale') }}</p>
                         @include('sales.add_sale.ajax_views.partials.sale_details_receipt_list')
+
+                        @if ($sale->sale_screen == \App\Enums\SaleScreenType::ServicePosSale->value)
+                            <div class="mt-2">
+                                <table id="" class="table modal-table table-sm">
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Delivery Date') }}</td>
+                                        <td style="font-size:11px!important;">: {{ isset($sale->jobCard) && isset($sale->jobCard->delivery_date_ts) ? date($dateFormat, strtotime($sale->jobCard->delivery_date_ts)) : '' }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Service Completed On') }}</td>
+                                        <td style="font-size:11px!important;">: {{ isset($sale->jobCard) && isset($sale->jobCard->completed_at_ts) ? date($dateFormat, strtotime($sale->jobCard->completed_at_ts)) : '' }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Status') }}</td>
+                                        <td style="font-size:11px!important;">: {{ $sale?->jobCard?->status?->name }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Brand.') }}</td>
+                                        <td style="font-size:11px!important;">: {{ $sale?->jobCard?->brand?->name }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Device') }}</td>
+                                        <td style="font-size:11px!important;">: {{ $sale?->jobCard?->device?->name }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Device Model') }}</td>
+                                        <td style="font-size:11px!important;">: {{ $sale?->jobCard?->deviceModel?->name }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Serial No.') }}</td>
+                                        <td style="font-size:11px!important;">: {{ $sale?->serial_no }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Servicing Checklist') }}</td>
+                                        <td style="font-size:11px!important;">:
+                                            @if (isset($sale->jobCard) && isset($sale->jobCard->service_checklist) && is_array($sale->jobCard->service_checklist))
+                                                @foreach ($sale->jobCard->service_checklist as $key => $value)
+                                                    <span>
+                                                        @if ($value == 'yes')
+                                                            ✔
+                                                        @elseif ($value == 'no')
+                                                            ❌
+                                                        @else
+                                                            🚫
+                                                        @endif
+                                                        {{ $key }}
+                                                    </span>
+                                                @endforeach
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Problems Reported By Customer') }}</td>
+                                        <td style="font-size:11px!important;">: {{ $sale?->jobCard?->problems_report }}</td>
+                                    </tr>
+                                </table>
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Delivery Date') }} : </span> {{ isset($sale->jobCard) && isset($sale->jobCard->delivery_date_ts) ? date($dateFormat, strtotime($sale->jobCard->delivery_date_ts)) : '' }}</p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Service Completed On') }} : </span> {{ isset($sale->jobCard) && isset($sale->jobCard->completed_at_ts) ? date($dateFormat, strtotime($sale->jobCard->completed_at_ts)) : '' }}</p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Status') }} : </span> {{ $sale?->jobCard?->status?->name }}</p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Brand.') }} : </span> {{ $sale?->jobCard?->brand?->name }}</p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}</p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Device Model') }} : </span> {{ $sale?->jobCard?->deviceModel?->name }}</p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Serial No.') }} : </span></p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Servicing Checklist') }} : </span>
+                                    @if (isset($sale->jobCard) && isset($sale->jobCard->service_checklist) && is_array($sale->jobCard->service_checklist))
+                                        @foreach ($sale->jobCard->service_checklist as $key => $value)
+                                            <span>
+                                                @if ($value == 'yes')
+                                                    ✔
+                                                @elseif ($value == 'no')
+                                                    ❌
+                                                @else
+                                                    🚫
+                                                @endif
+                                                {{ $key }}
+                                            </span>
+                                        @endforeach
+                                    @endif
+                                </p> --}}
+
+                                {{-- <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Problems Reported By Customer') }} : </span> {{ $sale?->jobCard?->problems_report }}</p> --}}
+                            </div>
+                        @endif
                     </div>
 
                     <div class="col-md-5">
                         <div class="table-responsive">
-                            <table class="display table modal-table table-sm">
+                            <table id="" class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </td>
                                     <td class="text-end">
                                         {{ $sale->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $sale->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ '(' . $sale->order_tax_percent . '%)=' . $sale->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Invoice Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Invoice Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end">
+                                    <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>
                                 </tr>

@@ -1,11 +1,155 @@
 <style>
     .set-height {
         position: relative;
+        height: {{ $saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value ? '442px!important' : '350px' }};
     }
 </style>
+
+@php
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+@endphp
+
+@if ($saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value)
+    <style>
+        .tagify--focus {
+            height: auto !important;
+        }
+
+        tags.tagify {
+            min-width: 100%;
+        }
+
+        .tagify__input {
+            min-width: 100%;
+        }
+
+        span.tagify__tag-text {
+            font-size: 9px;
+        }
+
+        .tagify__input {
+            display: inline-block;
+            min-width: 110px;
+            margin: 8px 2px;
+            padding: var(--tag-pad);
+            line-height: 5px;
+            position: relative;
+            white-space: pre-wrap;
+            color: var(--input-color);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+    </style>
+@endif
+
 <div class="set-height">
+    @if ($saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value)
+        <div class="form-field-area px-2 py-1">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Delivery Date') }}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-calendar-week input_i"></i>
+                            </span>
+                        </div>
+
+                        <input type="text" name="delivery_date" class="form-control" id="delivery_date" value="{{ isset($sale->jobCard) && isset($sale->jobCard->delivery_date_ts) ? date($dateFormat, strtotime($sale?->jobCard?->delivery_date_ts)) : '' }}" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text add_button" id="date_clear" data-clear_date_id="delivery_date">
+                                <i class="fa-regular fa-circle-xmark text-danger fw-bold input_i"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Service Completed On') }}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-calendar-week input_i"></i>
+                            </span>
+                        </div>
+
+                        <input type="text" name="service_complete_date" class="form-control" id="service_complete_date" value="{{ isset($sale->jobCard) && isset($sale->jobCard->completed_at_ts) ? date($dateFormat, strtotime($sale?->jobCard?->completed_at_ts)) : '' }}" placeholder="{{ __('Completed On') }}" autocomplete="off">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text add_button" id="date_clear" data-clear_date_id="service_complete_date">
+                                <i class="fa-regular fa-circle-xmark text-danger fw-bold input_i"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Status') }}</label>
+                    <select name="status_id" class="form-control" id="status_id">
+                        <option value="">{{ __('Select Status') }}</option>
+                        @foreach ($status as $status)
+                            <option @selected($sale?->jobCard?->status_id == $status->id) value="{{ $status->id }}" data-icon="fa-solid fa-circle" data-color="{{ $status->color_code }}">{{ $status->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Brand.') }}</label>
+                    <select name="brand_id" class="form-control" id="brand_id">
+                        <option value="">{{ __('Select Brand') }}</option>
+                        @foreach ($brands as $brand)
+                            <option @selected(isset($sale->jobCard) && $sale?->jobCard?->brand_id == $brand->id) value="{{ $brand->id }}">{{ $brand->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Device') }}</label>
+                    <select name="device_id" class="form-control" id="device_id">
+                        <option value="">{{ __('Select Device') }}</option>
+                        @foreach ($devices as $device)
+                            <option @selected(isset($sale->jobCard) && $sale?->jobCard?->device_id == $device->id) value="{{ $device->id }}">{{ $device->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Device Model') }}</label>
+                    <select name="device_model_id" class="form-control" id="device_model_id">
+                        <option value="">{{ __('Select Device Model') }}</option>
+                        @foreach ($deviceModels as $deviceModel)
+                            <option @selected(isset($sale->jobCard) && $sale?->jobCard?->device_model_id == $deviceModel->id) data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="row align-items-end mt-1">
+                <div class="col-md-4">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Serial No') }}</label>
+                    <input type="text" name="serial_no" class="form-control" id="serial_no" value="{{ isset($sale->jobCard) ? $sale?->jobCard?->serial_no : '' }}" placeholder="{{ __('Serial No') }}" autocomplete="off">
+                </div>
+
+                <div class="col-md-4">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#serviceChecklistModal" class="btn btn-sm btn-primary">{{ __('Servicing Checklist') }}</button>
+                </div>
+            </div>
+
+            <div class="row align-items-end mt-1">
+                <div class="col-md-12">
+                    <label class="fw-bold" style="font-size: 10px;">{{ __('Problem Reported By The Customer') }}</label>
+                    <input name="problems_report" id="problems_report" value="{{ isset($sale->jobCard) ? $sale?->jobCard?->problems_report : '' }}">
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="data_preloader submit_preloader">
-        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
+        <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}</h6>
     </div>
     <div class="table-responsive">
         <table class="table data__table modal-table table-sm sale-product-table">
@@ -62,13 +206,13 @@
                                 $__name = $name . $variant;
                             @endphp
 
-                            <a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">{{ $__name }}</a><br/>
+                            <a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">{{ $__name }}</a><br />
                             <span><small id="span_description" style="font-size:9px;">
-                                @php
-                                    $description = strlen($saleProduct->description) > 40 ? Str::limit($saleProduct->description, 40, '...') : $saleProduct->description;
-                                @endphp
-                                {{ $description }}
-                            </small></span>
+                                    @php
+                                        $description = strlen($saleProduct->description) > 40 ? Str::limit($saleProduct->description, 40, '...') : $saleProduct->description;
+                                    @endphp
+                                    {{ $description }}
+                                </small></span>
                             <input type="hidden" id="is_show_emi_on_pos" value="{{ $saleProduct?->product?->is_show_emi_on_pos }}">
                             <input type="hidden" name="descriptions[]" id="description" value="{{ $description }}">
 

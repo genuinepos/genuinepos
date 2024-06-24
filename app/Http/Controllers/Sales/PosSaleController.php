@@ -18,11 +18,6 @@ class PosSaleController extends Controller
     {
         $indexMethodContainer = $posSaleControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
-        // if ($request->ajax()) {
-
-        //     return $indexMethodContainer;;
-        // }
-
         extract($indexMethodContainer);
 
         return view('sales.pos.index', compact('branches', 'customerAccounts'));

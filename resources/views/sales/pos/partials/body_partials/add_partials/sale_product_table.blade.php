@@ -3,36 +3,40 @@
         position: relative;
         height: {{ $saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value ? '442px!important' : '350px' }};
     }
-
-    .tagify--focus {
-        height: auto !important;
-    }
-
-    tags.tagify {
-        min-width: 100%;
-    }
-
-    .tagify__input {
-        min-width: 100%;
-    }
-
-    span.tagify__tag-text {
-        font-size: 9px;
-    }
-
-    .tagify__input {
-        display: inline-block;
-        min-width: 110px;
-        margin: 8px 2px;
-        padding: var(--tag-pad);
-        line-height: 5px;
-        position: relative;
-        white-space: pre-wrap;
-        color: var(--input-color);
-        box-sizing: border-box;
-        overflow: hidden;
-    }
 </style>
+
+@if ($saleScreenType == \App\Enums\SaleScreenType::ServicePosSale->value)
+    <style>
+        .tagify--focus {
+            height: auto !important;
+        }
+
+        tags.tagify {
+            min-width: 100%;
+        }
+
+        .tagify__input {
+            min-width: 100%;
+        }
+
+        span.tagify__tag-text {
+            font-size: 9px;
+        }
+
+        .tagify__input {
+            display: inline-block;
+            min-width: 110px;
+            margin: 8px 2px;
+            padding: var(--tag-pad);
+            line-height: 5px;
+            position: relative;
+            white-space: pre-wrap;
+            color: var(--input-color);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+    </style>
+@endif
 
 @php
     $dateFormat = $generalSettings['business_or_shop__date_format'];
@@ -60,7 +64,6 @@
                             </span>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col-md-4">

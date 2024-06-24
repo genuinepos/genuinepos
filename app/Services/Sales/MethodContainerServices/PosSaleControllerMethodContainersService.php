@@ -80,10 +80,6 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
     public function indexMethodContainer(object $request): array|object
     {
         $data = [];
-        // if ($request->ajax()) {
-
-        //     return $this->saleService->salesListTable(request: $request, saleScreen: SaleScreenType::PosSale->value);
-        // }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -367,6 +363,13 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             $sale = $this->saleService->singleSale(id: $id, with: [
                 'branch',
                 'branch.parentBranch',
+
+                'jobCard',
+                'jobCard.status',
+                'jobCard.brand',
+                'jobCard.device',
+                'jobCard.deviceModel',
+
                 'saleProducts',
                 'saleProducts.product',
                 'saleProducts.variant',
@@ -410,7 +413,21 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
 
             $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-            return view('sales.pos.edit', compact(
+            $jobCardData = [];
+            if ($saleScreenType == SaleScreenType::ServicePosSale->value) {
+
+                $generalSettings = config('generalSettings');
+
+                $jobCardData['devices'] = $this->deviceService->devices()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name']);
+
+                $jobCardData['deviceModels'] = $this->deviceModelService->deviceModels()->where('branch_id', $ownBranchIdOrParentBranchId)->get(['id', 'name', 'service_checklist']);
+
+                $jobCardData['status'] = $this->statusService->allStatus()->where('service_status.branch_id', $ownBranchIdOrParentBranchId)->orderByRaw('ISNULL(sort_order), sort_order ASC')->get(['id', 'name', 'color_code']);
+
+                $jobCardData['defaultProblemsReportItems'] = isset($generalSettings['service_settings__default_problems_report']) ? explode(',', $generalSettings['service_settings__default_problems_report']) : [];
+            }
+
+            $data = array_merge(compact(
                 'sale',
                 'branchName',
                 'openedCashRegister',
@@ -424,7 +441,9 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 'taxAccounts',
                 'customerAccounts',
                 'saleScreenType',
-            ));
+            ), $jobCardData);
+
+            return view('sales.pos.edit', $data);
         } else {
 
             return redirect()->route('cash.register.create', $id);
@@ -567,6 +586,11 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                     $this->stockChainService->adjustPurchaseProductOutLeftQty($stockChain->purchaseProduct);
                 }
             }
+        }
+
+        if ($request->sale_screen_type == SaleScreenType::ServicePosSale->value) {
+
+            $this->jobCardService->addOrUpdateJobCardBySale(request: $request, saleId: $updatePosSale->id);
         }
 
         $sale = $this->saleService->singleSale(

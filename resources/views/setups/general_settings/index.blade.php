@@ -89,10 +89,12 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('product_settings'))
-                                            <li class="menu_list">
-                                                <a class="menu_btn" data-form="product_settings_form" href="#">{{ __('Product Settings') }}</a>
-                                            </li>
+                                        @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                            @if (auth()->user()->can('product_settings'))
+                                                <li class="menu_list">
+                                                    <a class="menu_btn" data-form="product_settings_form" href="#">{{ __('Product Settings') }}</a>
+                                                </li>
+                                            @endif
                                         @endif
 
                                         @if (auth()->user()->can('purchase_settings'))
@@ -181,15 +183,17 @@
                                     @include('setups.general_settings.partials.view_partials.dashboard_settings')
                                 @endif
 
-                                @if (auth()->user()->can('product_settings'))
-                                    @include('setups.general_settings.partials.view_partials.product_settings')
+                                @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                    @if (auth()->user()->can('product_settings'))
+                                        @include('setups.general_settings.partials.view_partials.product_settings')
+                                    @endif
                                 @endif
 
                                 @if (auth()->user()->can('purchase_settings'))
                                     @include('setups.general_settings.partials.view_partials.purchase_settings')
                                 @endif
 
-                                @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
+                                @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
                                     @include('setups.general_settings.partials.view_partials.manufacturing_settings')
                                 @endif
 
@@ -264,8 +268,18 @@
     @include('setups.general_settings.partials.js_partials.prefix_settings_js')
     @include('setups.general_settings.partials.js_partials.print_settings_js')
     @include('setups.general_settings.partials.js_partials.invoice_layout_settings_js')
-    @include('setups.general_settings.partials.js_partials.product_settings_js')
+
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+        @if (auth()->user()->can('product_settings'))
+            @include('setups.general_settings.partials.js_partials.product_settings_js')
+        @endif
+    @endif
+
     @include('setups.general_settings.partials.js_partials.purchase_settings_js')
+
+    @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
+        @include('setups.general_settings.partials.js_partials.manufacturing_settings_js')
+    @endif
 
     @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
         @if (auth()->user()->can('add_sale_settings'))

@@ -184,25 +184,27 @@
                             <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                                 <div class="element-body">
                                     <div class="row gx-2 gy-1">
-                                        <div class="col-md-4">
-                                            <div class="input-group flex-nowrap">
-                                                <label class="col-4"><b>{{ __('Brand.') }}</b></label>
-                                                <div class="col-8">
-                                                    <div class="input-group flex-nowrap">
-                                                        <select name="brand_id" class="form-control select2" id="brand_id" data-next="device_id">
-                                                            <option value="">{{ __('Select Brand') }}</option>
-                                                            @foreach ($brands as $brand)
-                                                                <option @selected($brand->id == $jobCard->brand_id) value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                        @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                            <div class="col-md-4">
+                                                <div class="input-group flex-nowrap">
+                                                    <label class="col-4"><b>{{ __('Brand.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <div class="input-group flex-nowrap">
+                                                            <select name="brand_id" class="form-control select2" id="brand_id" data-next="device_id">
+                                                                <option value="">{{ __('Select Brand') }}</option>
+                                                                @foreach ($brands as $brand)
+                                                                    <option @selected($brand->id == $jobCard->brand_id) value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                @endforeach
+                                                            </select>
 
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="col-md-4">
                                             <div class="input-group flex-nowrap">
@@ -246,7 +248,7 @@
 
                                     <div class="row gx-2 gy-1 mt-1">
                                         <div class="col-md-12">
-                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>{{ __("N/A = Not Applicable") }}</small></p>
+                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>{{ __('N/A = Not Applicable') }}</small></p>
                                         </div>
 
                                         <hr>
@@ -262,7 +264,7 @@
                                                             <input type="radio" @checked($value == 'yes') id="{{ $index }}_yes" name="checklist[{{ $key }}]" value="yes">
                                                             <label for="{{ $index }}_yes" class="text-success">✔</label>
 
-                                                            <input type="radio" @checked($value == 'no') id="{{ $index }}_no" name="checklist[{{ $key }}]"  value="no">
+                                                            <input type="radio" @checked($value == 'no') id="{{ $index }}_no" name="checklist[{{ $key }}]" value="no">
                                                             <label for="{{ $index }}_no" class="text-danger">❌</label>
 
                                                             <input type="radio" @checked($value == 'na') id="{{ $index }}_na" name="checklist[{{ $key }}]" value="na">
@@ -293,7 +295,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Password') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="password" class="form-control" id="password"  data-next="price_group_id" value="{{ $jobCard->password }}" placeholder="{{ __('Password') }}">
+                                                    <input type="text" name="password" class="form-control" id="password" data-next="price_group_id" value="{{ $jobCard->password }}" placeholder="{{ __('Password') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -546,7 +548,7 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Technician Comment') }}</b></label>
-                                                <input type="text" name="technician_comment" class="form-control"  id="technician_comment" data-next="status_id" value="{{ $jobCard->technician_comment }}" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
+                                                <input type="text" name="technician_comment" class="form-control" id="technician_comment" data-next="status_id" value="{{ $jobCard->technician_comment }}" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
                                             </div>
                                         </div>
 

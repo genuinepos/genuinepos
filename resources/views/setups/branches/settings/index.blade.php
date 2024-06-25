@@ -86,10 +86,12 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('product_settings'))
-                                            <li class="menu_list">
-                                                <a class="menu_btn" data-form="product_settings_form" href="#">{{ __('Product Settings') }}</a>
-                                            </li>
+                                        @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                            @if (auth()->user()->can('product_settings'))
+                                                <li class="menu_list">
+                                                    <a class="menu_btn" data-form="product_settings_form" href="#">{{ __('Product Settings') }}</a>
+                                                </li>
+                                            @endif
                                         @endif
 
                                         @if (auth()->user()->can('purchase_settings'))
@@ -98,7 +100,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
+                                        @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="manufacturing_settings_form" href="#">{{ __('Manufacturing Settings') }}</a>
                                             </li>
@@ -184,15 +186,17 @@
                                     @include('setups.branches.settings.partials.view_partials.dashboard_settings')
                                 @endif
 
-                                @if (auth()->user()->can('product_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.product_settings')
+                                @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                    @if (auth()->user()->can('product_settings'))
+                                        @include('setups.branches.settings.partials.view_partials.product_settings')
+                                    @endif
                                 @endif
 
                                 @if (auth()->user()->can('purchase_settings'))
                                     @include('setups.branches.settings.partials.view_partials.purchase_settings')
                                 @endif
 
-                                @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
+                                @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
                                     @include('setups.branches.settings.partials.view_partials.manufacturing_settings')
                                 @endif
 
@@ -256,9 +260,18 @@
 
     @include('setups.branches.settings.partials.js_partials.branch_settings_js')
     @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
-    @include('setups.branches.settings.partials.js_partials.product_settings_js')
+
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+        @if (auth()->user()->can('product_settings'))
+            @include('setups.branches.settings.partials.js_partials.product_settings_js')
+        @endif
+    @endif
+
     @include('setups.branches.settings.partials.js_partials.purchase_settings_js')
-    @include('setups.branches.settings.partials.js_partials.manufacturing_settings_js')
+    
+    @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
+        @include('setups.branches.settings.partials.js_partials.manufacturing_settings_js')
+    @endif
 
     @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
         @include('setups.branches.settings.partials.js_partials.add_sale_settings_js')

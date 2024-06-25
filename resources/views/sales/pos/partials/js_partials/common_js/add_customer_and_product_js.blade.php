@@ -92,7 +92,7 @@
         });
     @endif
 
-    @if (auth()->user()->can('product_add'))
+    @if ($generalSettings['subscription']->features['inventory'] == 1 && auth()->user()->can('product_add'))
         $('#addProduct').on('click', function() {
 
             $.ajax({

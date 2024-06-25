@@ -30,7 +30,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['inventory'] == 1)
-                    @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('product_settings') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report'))
+                    @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('product_settings') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report') || auth()->user()->can('product_expired_list'))
                         <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">

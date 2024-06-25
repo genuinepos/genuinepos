@@ -10,9 +10,13 @@ use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\CategoryService;
 use App\Services\Products\SubCategoryService;
 use App\Services\Users\UserActivityLogService;
-use App\Http\Requests\Products\SubcategoryStoreRequest;
-use App\Http\Requests\Products\SubcategoryUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Products\SubcategoryEditRequest;
+use App\Http\Requests\Products\SubcategoryIndexRequest;
+use App\Http\Requests\Products\SubcategoryStoreRequest;
+use App\Http\Requests\Products\SubcategoryCreateRequest;
+use App\Http\Requests\Products\SubcategoryDeleteRequest;
+use App\Http\Requests\Products\SubcategoryUpdateRequest;
 
 class SubCategoryController extends Controller
 {
@@ -23,20 +27,16 @@ class SubCategoryController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(SubcategoryIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->subCategoryService->subcategoriesTable();
         }
     }
 
-    public function create($fixedParentCategoryId = null)
+    public function create(SubcategoryCreateRequest $request, $fixedParentCategoryId = null)
     {
-        abort_if(!auth()->user()->can('product_category_add'), 403);
-
         $fixedParentCategory = '';
         if (isset($fixedParentCategoryId)) {
 
@@ -65,10 +65,8 @@ class SubCategoryController extends Controller
         return $addSubCategory;
     }
 
-    public function edit($id)
+    public function edit($id, SubcategoryEditRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_edit'), 403);
-
         $subcategory = $this->subCategoryService->singleSubcategory(id: $id);
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->get();
 
@@ -97,10 +95,8 @@ class SubCategoryController extends Controller
         return $this->subCategoryService->subcategories()->where('parent_category_id', $categoryId)->get();
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id, SubcategoryDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_delete'), 403);
-
         try {
             DB::beginTransaction();
 

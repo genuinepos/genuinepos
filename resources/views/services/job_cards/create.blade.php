@@ -181,25 +181,27 @@
                             <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                                 <div class="element-body">
                                     <div class="row gx-2 gy-1">
-                                        <div class="col-md-4">
-                                            <div class="input-group flex-nowrap">
-                                                <label class="col-4"><b>{{ __('Brand.') }}</b></label>
-                                                <div class="col-8">
-                                                    <div class="input-group flex-nowrap">
-                                                        <select name="brand_id" class="form-control select2" id="brand_id" data-next="device_id">
-                                                            <option value="">{{ __('Select Brand') }}</option>
-                                                            @foreach ($brands as $brand)
-                                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                        @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                            <div class="col-md-4">
+                                                <div class="input-group flex-nowrap">
+                                                    <label class="col-4"><b>{{ __('Brand.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <div class="input-group flex-nowrap">
+                                                            <select name="brand_id" class="form-control select2" id="brand_id" data-next="device_id">
+                                                                <option value="">{{ __('Select Brand') }}</option>
+                                                                @foreach ($brands as $brand)
+                                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                @endforeach
+                                                            </select>
 
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="col-md-4">
                                             <div class="input-group flex-nowrap">
@@ -243,7 +245,7 @@
 
                                     <div class="row gx-2 gy-1 mt-1">
                                         <div class="col-md-12">
-                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>{{ __("N/A = Not Applicable") }}</small></p>
+                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>{{ __('N/A = Not Applicable') }}</small></p>
                                         </div>
 
                                         <hr>
@@ -329,7 +331,7 @@
                                                 <label class="fw-bold">{{ __('Search Product') }}</label>
                                                 <div class="input-group">
                                                     <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
-                                                    @if (auth()->user()->can('product_add'))
+                                                    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                         </div>
@@ -586,7 +588,7 @@
         <div class="modal fade" id="addOrEditContactModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
 
-    @if (auth()->user()->can('product_add'))
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
         <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
         <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
@@ -594,9 +596,11 @@
         <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 
-    <!-- Add Brand Modal -->
-    <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
-    <!-- Add Brand Modal End -->
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_brand_add'))
+        <!-- Add Brand Modal -->
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <!-- Add Brand Modal End -->
+    @endif
 @endsection
 @push('scripts')
     @include('services.job_cards.js_partials.create_js')

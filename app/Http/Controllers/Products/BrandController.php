@@ -9,7 +9,11 @@ use App\Services\Products\BrandService;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\BrandEditRequest;
+use App\Http\Requests\Products\BrandIndexRequest;
 use App\Http\Requests\Products\BrandStoreRequest;
+use App\Http\Requests\Products\BrandCreateRequest;
+use App\Http\Requests\Products\BrandDeleteRequest;
 use App\Http\Requests\Products\BrandUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 
@@ -19,10 +23,8 @@ class BrandController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(BrandIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('product_brand_index'), 403);
-
         if ($request->ajax()) {
             return $this->brandService->brandsTable();
         }
@@ -30,10 +32,8 @@ class BrandController extends Controller
         return view('product.brands.index');
     }
 
-    public function create()
+    public function create(BrandCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('product_brand_add'), 403);
-
         return view('product.brands.ajax_view.create');
     }
 
@@ -54,10 +54,8 @@ class BrandController extends Controller
         return $addBrand;
     }
 
-    public function edit($id)
+    public function edit($id, BrandEditRequest $request)
     {
-        abort_if(!auth()->user()->can('product_brand_edit'), 403);
-
         $brand = $this->brandService->singleBrand(id: $id);
 
         return view('product.brands.ajax_view.edit', compact('brand'));
@@ -80,10 +78,8 @@ class BrandController extends Controller
         return response()->json(__('Brand Updated successfully.'));
     }
 
-    public function delete($id, Request $request)
+    public function delete($id, BrandDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('product_brand_delete'), 403);
-
         try {
             DB::beginTransaction();
 

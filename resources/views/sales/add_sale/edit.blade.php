@@ -245,7 +245,7 @@
                                                     <label class="fw-bold">{{ __('Search Product') }}</label>
                                                     <div class="input-group">
                                                         <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
-                                                        @if (auth()->user()->can('product_add'))
+                                                        @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
@@ -716,7 +716,7 @@
         </div>
     @endif
 
-    @if (auth()->user()->can('product_add'))
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
         <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
         <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>

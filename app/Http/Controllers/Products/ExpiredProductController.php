@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\ExpiredProductService;
-use App\Services\Setups\BranchService;
-use Illuminate\Http\Request;
+use App\Http\Requests\Products\ExpiredProductIndexRequest;
 
 class ExpiredProductController extends Controller
 {
@@ -17,7 +18,7 @@ class ExpiredProductController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(ExpiredProductIndexRequest $request)
     {
         if ($request->ajax()) {
 

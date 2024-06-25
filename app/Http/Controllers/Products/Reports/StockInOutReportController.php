@@ -6,15 +6,17 @@ use Carbon\Carbon;
 use App\Enums\RoleType;
 use App\Utils\Converter;
 use App\Enums\BooleanType;
-use App\Enums\SaleScreenType;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
+use App\Http\Requests\Products\Reports\StockInOutReportIndexRequest;
+use App\Http\Requests\Products\Reports\StockInOutReportPrintRequest;
 
 class StockInOutReportController extends Controller
 {
@@ -25,7 +27,7 @@ class StockInOutReportController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(StockInOutReportIndexRequest $request)
     {
         if ($request->ajax()) {
 
@@ -181,7 +183,7 @@ class StockInOutReportController extends Controller
         return view('product.reports.stock_in_out_report.index', compact('branches', 'customerAccounts', 'ownBranchIdOrParentBranchId'));
     }
 
-    public function print(Request $request)
+    public function print(StockInOutReportPrintRequest $request)
     {
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {

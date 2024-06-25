@@ -1127,7 +1127,7 @@
     </script>
 @endif
 
-@if (auth()->user()->can('product_add'))
+@if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
     <script>
         $('#addProduct').on('click', function() {
 

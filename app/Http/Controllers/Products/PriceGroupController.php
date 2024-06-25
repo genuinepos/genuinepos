@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\PriceGroupService;
 use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\PriceGroupEditRequest;
+use App\Http\Requests\Products\PriceGroupIndexRequest;
 use App\Http\Requests\Products\PriceGroupStoreRequest;
+use App\Http\Requests\Products\PriceGroupCreateRequest;
+use App\Http\Requests\Products\PriceGroupDeleteRequest;
 use App\Http\Requests\Products\PriceGroupUpdateRequest;
+use App\Http\Requests\Products\PriceGroupChangeStatusRequest;
 
 class PriceGroupController extends Controller
 {
@@ -18,10 +22,8 @@ class PriceGroupController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(PriceGroupIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('selling_price_group_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->priceGroupService->priceGroupsTable();
@@ -30,10 +32,8 @@ class PriceGroupController extends Controller
         return view('product.price_group.index');
     }
 
-    public function create()
+    public function create(PriceGroupCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('selling_price_group_add'), 403);
-
         return view('product.price_group.ajax_view.create');
     }
 
@@ -55,10 +55,8 @@ class PriceGroupController extends Controller
         return $addPriceGroup;
     }
 
-    public function edit($id)
+    public function edit($id, PriceGroupEditRequest $request)
     {
-        abort_if(!auth()->user()->can('selling_price_group_edit'), 403);
-
         $priceGroup = $this->priceGroupService->singlePriceGroup(id: $id);
 
         return view('product.price_group.ajax_view.edit', compact('priceGroup'));
@@ -82,10 +80,8 @@ class PriceGroupController extends Controller
         return response()->json(__('Price group updated Successfully'));
     }
 
-    public function delete($id, Request $request)
+    public function delete($id, PriceGroupDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('selling_price_group_delete'), 403);
-
         try {
             DB::beginTransaction();
 
@@ -107,10 +103,8 @@ class PriceGroupController extends Controller
         return response()->json(__('Price group delete Successfully.'));
     }
 
-    public function changeStatus($id)
+    public function changeStatus($id, PriceGroupChangeStatusRequest $request)
     {
-        abort_if(!auth()->user()->can('selling_price_group_index'), 403);
-
         $changeStatus = $this->priceGroupService->changeStatus(id: $id);
 
         return response()->json($changeStatus['msg']);

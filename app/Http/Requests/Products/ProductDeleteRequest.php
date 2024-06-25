@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductDeleteRequest extends FormRequest
@@ -11,7 +12,7 @@ class ProductDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_delete');
+        return auth()->user()->can('product_delete') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**

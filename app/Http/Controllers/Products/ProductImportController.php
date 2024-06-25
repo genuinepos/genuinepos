@@ -12,6 +12,7 @@ use App\Services\Products\ProductStockService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Http\Requests\Products\ProductImportRequest;
+use App\Http\Requests\Products\ProductImportCreateRequest;
 
 class ProductImportController extends Controller
 {
@@ -23,7 +24,7 @@ class ProductImportController extends Controller
     ) {
     }
 
-    public function create()
+    public function create(ProductImportCreateRequest $request)
     {
         abort_if(!auth()->user()->can('product_import'), 403);
         return view('product.import.create');

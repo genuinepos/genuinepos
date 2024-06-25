@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\UserActivityLogActionType;
@@ -10,7 +9,11 @@ use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\WarrantyService;
 use App\Services\Users\UserActivityLogService;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Products\WarrantyEditRequest;
+use App\Http\Requests\Products\WarrantyIndexRequest;
 use App\Http\Requests\Products\WarrantyStoreRequest;
+use App\Http\Requests\Products\WarrantyCreateRequest;
+use App\Http\Requests\Products\WarrantyDeleteRequest;
 use App\Http\Requests\Products\WarrantyUpdateRequest;
 
 class WarrantyController extends Controller
@@ -19,10 +22,8 @@ class WarrantyController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(WarrantyIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('product_warranty_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->warrantyService->warrantiesTable();
@@ -31,7 +32,7 @@ class WarrantyController extends Controller
         return view('product.warranties.index');
     }
 
-    public function create()
+    public function create(WarrantyCreateRequest $request)
     {
         return view('product.warranties.ajax_view.create');
     }
@@ -54,10 +55,8 @@ class WarrantyController extends Controller
         return $addWarranty;
     }
 
-    public function edit($id)
+    public function edit($id, WarrantyEditRequest $request)
     {
-        abort_if(!auth()->user()->can('product_warranty_edit'), 403);
-
         $warranty = $this->warrantyService->singleWarranty(id: $id);
 
         return view('product.warranties.ajax_view.edit', compact('warranty'));
@@ -84,10 +83,8 @@ class WarrantyController extends Controller
         return response()->json(__('Warranty updated successfully'));
     }
 
-    public function delete($id, Request $request)
+    public function delete($id, WarrantyDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('product_warranty_delete'), 403);
-
         try {
             DB::beginTransaction();
 

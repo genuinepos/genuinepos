@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests\Contacts;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerImportRequest extends FormRequest
+class CustomerGroupCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('customer_import');
+        return auth()->user()->can('customer_group') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
     }
 
     /**
@@ -22,7 +23,7 @@ class CustomerImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
+            //
         ];
     }
 }

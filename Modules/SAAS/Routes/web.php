@@ -6,6 +6,7 @@ use Modules\SAAS\Http\Controllers\PlanController;
 use Modules\SAAS\Http\Controllers\RoleController;
 use Modules\SAAS\Http\Controllers\UserController;
 use Modules\SAAS\Http\Controllers\LoginController;
+
 use Modules\SAAS\Http\Controllers\CouponController;
 use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\ProfileController;
@@ -23,13 +24,13 @@ use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 use Modules\SAAS\Http\Controllers\UpdatePaymentStatusController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\CheckCouponCodeController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\DeleteFailedTenantController;
 use Modules\SAAS\Http\Controllers\UserSubscriptionTransactionController;
 
 Route::get('saas-test', function () {
-    $registrar = app(\Spatie\Permission\PermissionRegistrar::class);
-    dd($registrar->getCacheKey());
+
+    $subscriptionService = new \App\Services\Subscriptions\SubscriptionService();
+    return $subscriptionService->test(tenantId: 'businesswithshop');
 });
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');

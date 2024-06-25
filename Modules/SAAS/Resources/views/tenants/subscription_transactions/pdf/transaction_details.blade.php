@@ -314,7 +314,11 @@
                     <table>
                         <tr>
                             <td><small style="font-size: 9px!important;color:black;">{{ __('Generated Date') }} : {{ date('Y-m-d') }}</small></td>
-                            <td class="text-center"><small style="font-size: 9px!important;color:black;" class="d-block">{{ __('Powered By') }} <span class="fw-bold">@lang('SpeedDigit Software Solution').</span></small></td>
+                            <td class="text-center">
+                                @if (config('speeddigit.show_app_info_in_print') == true)
+                                    <small style="font-size: 9px!important;color:black;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
+                                @endif
+                            </td>
                             <td class="text-end"><small style="font-size: 9px!important;color:black;">{{ __('Generated Time') }} : {{ date('H:i:s') }}</small></td>
                         </tr>
                     </table>
@@ -323,5 +327,5 @@
         </div>
     </div>
 </body>
-
 </html>
+

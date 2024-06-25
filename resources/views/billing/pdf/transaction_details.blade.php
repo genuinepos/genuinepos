@@ -190,8 +190,8 @@
             <table class="table table-sm">
                 <tr style="border-bottom: 1px solid;">
                     <td>
-                          {{-- <img src="{{ asset('modules/saas/images/logo_black.png') }}" width="100" alt="{{ config('app.name') }}" style="background: gray;boarder-radius:20px;"> --}}
-                          <h2 style="text-transform: uppercase;font-weight:bolder;padding:0px;margin:0px;">{{ config('app.name') }}</h2>
+                        {{-- <img src="{{ asset('modules/saas/images/logo_black.png') }}" width="100" alt="{{ config('app.name') }}" style="background: gray;boarder-radius:20px;"> --}}
+                        <h2 style="text-transform: uppercase;font-weight:bolder;padding:0px;margin:0px;">{{ config('app.name') }}</h2>
                     </td>
                     <td class="text-end">
                         <p style="text-transform: uppercase;padding:0px;">
@@ -319,7 +319,11 @@
                     <table>
                         <tr>
                             <td><small style="font-size: 9px!important;color:black;">{{ __('Generated Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small></td>
-                            <td class="text-center"><small style="font-size: 9px!important;color:black;" class="d-block">{{ __('Powered By') }} <span class="fw-bold">@lang('SpeedDigit Software Solution').</span></small></td>
+                            <td class="text-center">
+                                @if (config('speeddigit.show_app_info_in_print') == true)
+                                    <small style="font-size: 9px!important;color:black;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
+                                @endif
+                            </td>
                             <td class="text-end"><small style="font-size: 9px!important;color:black;">{{ __('Generated Time') }} : {{ date($timeFormat) }}</small></td>
                         </tr>
                     </table>

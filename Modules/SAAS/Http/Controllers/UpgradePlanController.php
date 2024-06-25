@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
 use App\Enums\SubscriptionTransactionType;
 use App\Enums\SubscriptionTransactionDetailsType;
@@ -82,7 +83,7 @@ class UpgradePlanController extends Controller
         try {
             DB::beginTransaction();
 
-            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: BooleanType::True->value, tenantId: $tenant->id);
+            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: BooleanType::True->value);
 
             $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
             $shopPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->shop_price);
@@ -105,6 +106,7 @@ class UpgradePlanController extends Controller
         Session::forget('startupType');
 
         DB::reconnect();
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         if ($tenant?->user) {
 

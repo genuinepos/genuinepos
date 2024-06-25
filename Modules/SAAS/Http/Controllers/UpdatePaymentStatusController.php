@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
+use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Services\TenantServiceInterface;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
@@ -49,7 +50,7 @@ class UpdatePaymentStatusController extends Controller
 
         DB::statement('use ' . $tenant->tenancy_db_name);
 
-        $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdatePaymentStatus->value, tenantId: $tenant->id);
+        $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdatePaymentStatus->value);
 
         if ($request->payment_status == BooleanType::True->value && $updateSubscription?->dueSubscriptionTransaction) {
 
@@ -57,6 +58,7 @@ class UpdatePaymentStatusController extends Controller
         }
 
         DB::reconnect();
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         return response()->json(__('Payment Status is updated successfully.'));
     }

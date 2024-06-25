@@ -4,6 +4,7 @@ namespace App\Services\Subscriptions;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
+use Illuminate\Support\Facades\Log;
 use App\Enums\SubscriptionUpdateType;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Subscriptions\Subscription;
@@ -72,7 +73,7 @@ class SubscriptionService
         return $addSubscription;
     }
 
-    public function updateSubscription(object $request, ?object $plan = null, int $isTrialPlan = 0, int $subscriptionUpdateType = 1, ?string $tenantId = null): object
+    public function updateSubscription(object $request, ?object $plan = null, int $isTrialPlan = 0, int $subscriptionUpdateType = 1): object
     {
         $updateSubscription = $this->singleSubscription(with: ['dueSubscriptionTransaction']);
 
@@ -198,7 +199,7 @@ class SubscriptionService
 
         $updateSubscription->save();
 
-        $this->forgetCache(tenantId: $tenantId);
+        $this->forgetCache();
 
         return $updateSubscription;
     }
@@ -215,10 +216,12 @@ class SubscriptionService
         return $query->first();
     }
 
-    private function forgetCache(?string $tenantId = null): void
+    public function forgetCache(): void
     {
-        $__tenantId = isset($tenantId) ? $tenantId : tenant('id');
-        $cacheKey = "{$tenantId}_GeneralSettings_subscription";
-        Cache::forget($cacheKey);
+        $__tenantId = tenant('id');
+
+        $cacheKey = "{$__tenantId}_GeneralSettings_subscription";
+
+       Cache::forget($cacheKey);
     }
 }

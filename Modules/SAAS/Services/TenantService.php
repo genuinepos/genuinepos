@@ -105,7 +105,7 @@ class TenantService implements TenantServiceInterface
                     }
 
                     DB::reconnect();
-                    Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+                    // Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
                     $appUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
                     if ($plan->is_trial_plan) {

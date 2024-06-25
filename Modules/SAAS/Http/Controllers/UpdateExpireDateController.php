@@ -5,6 +5,7 @@ namespace Modules\SAAS\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
+use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Services\UpdateExpireDateService;
 use App\Services\Subscriptions\SubscriptionService;
@@ -50,13 +51,14 @@ class UpdateExpireDateController extends Controller
 
         DB::statement('use ' . $tenant->tenancy_db_name);
 
-        $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdateExpireDate->value, tenantId: $tenant->id);
+        $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdateExpireDate->value);
 
         foreach ($request->shop_expire_date_history_ids as $index => $shopExpireDateHistoryId) {
 
             $this->shopExpireDateHistoryService->updateShopExpireDateHistory(id: $shopExpireDateHistoryId, expireDate: $request->shop_new_expire_dates[$index]);
         }
         DB::reconnect();
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         return response()->json(__('Expire dates is updated successfully.'));
     }

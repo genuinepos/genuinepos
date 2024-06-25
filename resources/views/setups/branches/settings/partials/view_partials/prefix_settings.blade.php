@@ -92,24 +92,27 @@
             <input type="text" name="stock_issue_voucher_prefix" class="form-control" id="stock_issue_voucher_prefix" value="{{ isset($generalSettings['prefix__stock_issue_voucher_prefix']) ? $generalSettings['prefix__stock_issue_voucher_prefix'] : '' }}" placeholder="{{ __('Stock Issue Voucher Prefix') }}" />
         </div>
 
-        <div class="col-lg-3 col-md-6">
-            <label class="fw-bold">{{ __('Job Card No Prefix') }}</label>
-            <input type="text" name="job_card_no_prefix" class="form-control" id="job_card_no_prefix" value="{{ isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : '' }}" placeholder="{{ __('Job Card No Prefix') }}" />
-        </div>
+        @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == '1' && $generalSettings['modules__service'] == '1')
+            <div class="col-lg-3 col-md-6">
+                <label class="fw-bold">{{ __('Job Card No Prefix') }}</label>
+                <input type="text" name="job_card_no_prefix" class="form-control" id="job_card_no_prefix" value="{{ isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : '' }}" placeholder="{{ __('Job Card No Prefix') }}" />
+            </div>
+        @endif
     </div>
 
+    @if ($generalSettings['subscription']->features['contacts'] == 1)
+        <div class="form-group row mt-1">
+            <div class="col-md-4">
+                <label><strong>{{ __('Supplier ID') }}</strong></label>
+                <input type="text" name="supplier_id" class="form-control" id="supplier_id" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
+            </div>
 
-    <div class="form-group row mt-1">
-        <div class="col-md-4">
-            <label><strong>{{ __('Supplier ID') }}</strong></label>
-            <input type="text" name="supplier_id" class="form-control" id="supplier_id" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
+            <div class="col-md-4">
+                <label><strong>{{ __('Customer ID') }} </strong></label>
+                <input type="text" name="customer_id" class="form-control" value="{{ $generalSettings['prefix__customer_id'] }}" autocomplete="off">
+            </div>
         </div>
-
-        <div class="col-md-4">
-            <label><strong>{{ __('Customer ID') }} </strong></label>
-            <input type="text" name="customer_id" class="form-control" value="{{ $generalSettings['prefix__customer_id'] }}" autocomplete="off">
-        </div>
-    </div>
+    @endif
 
     <div class="row mt-2">
         <div class="col-md-12 d-flex justify-content-end">

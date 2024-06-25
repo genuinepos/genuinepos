@@ -487,8 +487,8 @@
                     </div>
 
                     <div class="col-4 text-center">
-                        @if (env('PRINT_SD_SALE') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ __('Powered By') }} <span class="fw-bold">@lang('SpeedDigit Software Solution').</span></small>
+                        @if (config('speeddigit.show_app_info_in_print') == true)
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 
@@ -975,8 +975,8 @@
                     </div>
 
                     <div class="col-4 text-center">
-                        @if (env('PRINT_SD_SALE') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ __('Powered By') }} <strong>@lang('SpeedDigit Software Solution').</strong></small>
+                        @if (config('speeddigit.show_app_info_in_print') == true)
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 
@@ -1271,10 +1271,10 @@
                                 </th>
                             </tr>
 
-                            @if (env('PRINT_SD_SALE') == true)
+                            @if (config('speeddigit.show_app_info_in_print') == true)
                                 <tr>
                                     <th class="text-center">
-                                        <span>{{ __('Powered By') }} <b>{{ __('SpeedDigit Software Solution') }}.</b> </span>
+                                        <span>{{ config('speeddigit.app_name_label_name') }} <b>{{ config('speeddigit.name') }}</b> | {{ __('M:') }} {{ config('speeddigit.phone') }}</span>
                                     </th>
                                 </tr>
                             @endif

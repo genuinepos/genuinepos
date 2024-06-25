@@ -235,11 +235,11 @@
             <small>@lang('menu.print_date') : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
         </div>
 
-        @if (env('PRINT_SD_OTHERS') == 'true')
-            <div class="col-4 text-center">
-                <small>@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
-            </div>
-        @endif
+        <div class="col-4 text-center">
+            @if (config('speeddigit.show_app_info_in_print') == true)
+                <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+            @endif
+        </div>
 
         <div class="col-4 text-end">
             <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>

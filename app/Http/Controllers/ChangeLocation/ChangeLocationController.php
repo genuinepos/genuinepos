@@ -18,7 +18,6 @@ class ChangeLocationController extends Controller
 {
     public function __construct(private BranchService $branchService, private UserService $userService, private UserActivityLogService $userActivityLogService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

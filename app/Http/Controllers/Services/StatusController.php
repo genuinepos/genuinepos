@@ -6,7 +6,10 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Services\StatusService;
+use App\Http\Requests\Services\StatusEditRequest;
 use App\Http\Requests\Services\StatusStoreRequest;
+use App\Http\Requests\Services\StatusTableRequest;
+use App\Http\Requests\Services\StatusCreateRequest;
 use App\Http\Requests\Services\StatusDeleteRequest;
 use App\Http\Requests\Services\StatusUpdateRequest;
 
@@ -16,20 +19,16 @@ class StatusController extends Controller
     {
     }
 
-    public function statusTable(Request $request)
+    public function statusTable(StatusTableRequest $request)
     {
-        abort_if(!auth()->user()->can('status_index') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         if ($request->ajax()) {
 
             return $this->statusService->statusTable();
         }
     }
 
-    public function create()
+    public function create(StatusCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('status_create') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         return view('services.settings.ajax_views.status.create');
     }
 
@@ -38,10 +37,8 @@ class StatusController extends Controller
         return $this->statusService->addStatus(request: $request);
     }
 
-    public function edit($id)
+    public function edit($id, StatusEditRequest $request)
     {
-        abort_if(!auth()->user()->can('status_edit') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         $status = $this->statusService->singleStatus(id: $id);
 
         return view('services.settings.ajax_views.status.edit', compact('status'));

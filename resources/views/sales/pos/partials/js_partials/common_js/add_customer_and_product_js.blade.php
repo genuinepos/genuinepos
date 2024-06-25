@@ -55,7 +55,7 @@
         });
     });
 
-    @if (auth()->user()->can('customer_add'))
+    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
         $('#addContact').on('click', function(e) {
 
             e.preventDefault();

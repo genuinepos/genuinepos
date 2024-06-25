@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Manufacturing;
+namespace App\Http\Requests\Services;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProcessIndexRequest extends FormRequest
+class DeviceIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('devices_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

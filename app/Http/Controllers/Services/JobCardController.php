@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Services;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
@@ -18,9 +16,12 @@ use App\Services\Products\PriceGroupService;
 use App\Services\Services\DeviceModelService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Services\JobCardProductService;
+use App\Http\Requests\Services\JobCardEditRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Products\ManagePriceGroupService;
+use App\Http\Requests\Services\JobCardIndexRequest;
 use App\Http\Requests\Services\JobCardStoreRequest;
+use App\Http\Requests\Services\JobCardCreateRequest;
 use App\Http\Requests\Services\JobCardDeleteRequest;
 use App\Http\Requests\Services\JobCardUpdateRequest;
 use App\Http\Requests\Services\JobCardChangeStatusRequest;
@@ -42,10 +43,8 @@ class JobCardController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(JobCardIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('job_cards_index') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         if ($request->ajax()) {
 
             return $this->jobCardService->jobCardsTable(request: $request);
@@ -149,10 +148,8 @@ class JobCardController extends Controller
         return view('services.print_templates.print_label', compact('jobCard'));
     }
 
-    public function create(CodeGenerationServiceInterface $codeGenerator)
+    public function create(JobCardCreateRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        abort_if(!auth()->user()->can('job_cards_create') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
@@ -234,10 +231,8 @@ class JobCardController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id, JobCardEditRequest $request)
     {
-        abort_if(!auth()->user()->can('job_cards_edit') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [

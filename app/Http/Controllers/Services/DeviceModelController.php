@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Services;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Products\BrandService;
 use App\Services\Services\DeviceService;
 use App\Services\Services\DeviceModelService;
+use App\Http\Requests\Services\DeviceModelEditRequest;
 use App\Http\Requests\Services\DeviceModelStoreRequest;
+use App\Http\Requests\Services\DeviceModelTableRequest;
+use App\Http\Requests\Services\DeviceModelCreateRequest;
 use App\Http\Requests\Services\DeviceModelDeleteRequest;
 use App\Http\Requests\Services\DeviceModelUpdateRequest;
 
@@ -21,20 +23,16 @@ class DeviceModelController extends Controller
     ) {
     }
 
-    public function deviceModelsTable(Request $request)
+    public function deviceModelsTable(DeviceModelTableRequest $request)
     {
-        abort_if(!auth()->user()->can('device_models_index') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         if ($request->ajax()) {
 
             return $this->deviceModelService->deviceModelsTable();
         }
     }
 
-    public function create()
+    public function create(DeviceModelCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('device_models_create') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         $brands = $this->brandService->brands()->get(['id', 'name']);
         $devices = $this->deviceService->devices()->get(['id', 'name']);
         return view('services.settings.ajax_views.device_models.create', compact('brands', 'devices'));
@@ -45,10 +43,8 @@ class DeviceModelController extends Controller
         return $this->deviceModelService->addDeviceModel(request: $request);
     }
 
-    public function edit($id)
+    public function edit($id, DeviceModelEditRequest $request)
     {
-        abort_if(!auth()->user()->can('device_models_edit') || (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value), 403);
-
         $deviceModel = $this->deviceModelService->singleDeviceModel(id: $id);
         $brands = $this->brandService->brands()->get(['id', 'name']);
         $devices = $this->deviceService->devices()->get(['id', 'name']);

@@ -345,7 +345,7 @@
     @endif
 
     <!--Add Customer Modal-->
-    @if (auth()->user()->can('customer_add'))
+    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

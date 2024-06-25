@@ -122,7 +122,7 @@
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('supplier_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_id"></span>
@@ -625,7 +625,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->can('supplier_add'))
+    @if ( $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

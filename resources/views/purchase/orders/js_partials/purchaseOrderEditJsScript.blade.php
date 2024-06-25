@@ -1002,7 +1002,7 @@
     });
 </script>
 
-@if (auth()->user()->can('supplier_add'))
+@if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
     <script>
         $('#addContact').on('click', function(e) {
 

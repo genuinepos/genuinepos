@@ -3,33 +3,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid var(--main-color); margin-top: 1px; border-radius: 0px; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid var(--main-color);
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 4px 4px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 4px 4px;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 10px; padding: 2px 2px; display: block; border: 1px solid gray; }
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 10px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid gray;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
 
-        .selectProduct { background-color: #746e70; color: #fff !important; }
+        .selectProduct {
+            background-color: #746e70;
+            color: #fff !important;
+        }
 
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-        h6.collapse_table:hover { background: lightgray; padding: 3px; cursor: pointer; }
+        h6.collapse_table:hover {
+            background: lightgray;
+            padding: 3px;
+            cursor: pointer;
+        }
 
-        .c-delete:focus { border: 1px solid gray; padding: 2px; }
+        .c-delete:focus {
+            border: 1px solid gray;
+            padding: 2px;
+        }
 
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 { text-align: right; padding-right: 10px; }
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
 
-        .checkbox_input_wrap { text-align: right; }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
 
-        .big_amount_field { height: 36px; font-size: 24px !important; margin-bottom: 3px; }
+        .big_amount_field {
+            height: 36px;
+            font-size: 24px !important;
+            margin-bottom: 3px;
+        }
     </style>
 @endpush
 @section('title', 'Add Purchase - ')
@@ -90,7 +141,7 @@
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('supplier_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_account_id"></span>
@@ -531,7 +582,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->can('supplier_add'))
+    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

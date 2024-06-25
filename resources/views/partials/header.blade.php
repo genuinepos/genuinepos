@@ -212,7 +212,7 @@
                                 </ul>
                             </li>
 
-                            @if ($generalSettings['modules__pos'] == '1')
+                            @if ($generalSettings['subscription']->features['sales'] == 1 && $generalSettings['modules__pos'] == '1')
                                 @if (auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                                 @endif

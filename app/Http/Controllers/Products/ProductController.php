@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Products\ProductDeleteRequest;
+use App\Http\Requests\Products\ProductEditRequest;
+use App\Http\Requests\Products\ProductIndexRequest;
 use App\Http\Requests\Products\ProductStoreRequest;
+use App\Http\Requests\Products\ProductCreateRequest;
+use App\Http\Requests\Products\ProductDeleteRequest;
 use App\Http\Requests\Products\ProductUpdateRequest;
 use App\Interfaces\Products\ProductControllerMethodContainersInterface;
 
 class ProductController extends Controller
 {
-    public function index(Request $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $isForCreatePage = 0)
+    public function index(ProductIndexRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $isForCreatePage = 0)
     {
-        abort_if(!auth()->user()->can('product_all'), 403);
-
         $indexMethodContainer = $productControllerMethodContainersInterface->indexMethodContainer(request: $request, isForCreatePage: $isForCreatePage);
 
         if ($request->ajax()) {
@@ -37,10 +38,8 @@ class ProductController extends Controller
         return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks', 'priceGroups'));
     }
 
-    public function create(Request $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $id = null)
+    public function create(ProductCreateRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $id = null)
     {
-        abort_if(!auth()->user()->can('product_add'), 403);
-
         $createMethodContainer = $productControllerMethodContainersInterface->createMethodContainer(request: $request, id: $id);
 
         if ($request->ajax()) {
@@ -73,10 +72,8 @@ class ProductController extends Controller
         return $storeMethodContainer;
     }
 
-    public function edit($id, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
+    public function edit($id, ProductEditRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('product_edit'), 403);
-
         $editMethodContainer = $productControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

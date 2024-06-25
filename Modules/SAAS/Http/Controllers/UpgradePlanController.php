@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
 use App\Enums\SubscriptionTransactionType;
 use App\Enums\SubscriptionTransactionDetailsType;
@@ -103,15 +104,15 @@ class UpgradePlanController extends Controller
 
         $this->deleteTrialPeriodDataService->cleanDataFromDB();
         Session::forget('startupType');
-        
+
         DB::reconnect();
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         if ($tenant?->user) {
 
             $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
             dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, appUrl: $appUrl));
         }
-
 
         return response()->json(__('Plan upgraded successfully'));
     }

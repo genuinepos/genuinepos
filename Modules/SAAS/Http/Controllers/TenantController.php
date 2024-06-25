@@ -13,11 +13,13 @@ use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Http\Requests\TenantStoreRequest;
 use Modules\SAAS\Http\Requests\TenantDeleteRequest;
+use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 
 class TenantController extends Controller
 {
     public function __construct(
         private TenantServiceInterface $tenantService,
+        private CurrencyServiceInterface $tenantServiceInterface,
         private PlanServiceInterface $planServiceInterface,
     ) {
     }
@@ -44,8 +46,8 @@ class TenantController extends Controller
     {
         abort_unless(auth()->user()->can('tenants_create'), 403);
         $plans = $this->planServiceInterface->plans()->where('status', BooleanType::True->value)->get();
-
-        return view('saas::tenants.create', compact('plans'));
+        $currencies = $this->tenantServiceInterface->currencies()->get(['id', 'country']);
+        return view('saas::tenants.create', compact('plans', 'currencies'));
     }
 
     public function store(TenantStoreRequest $request)

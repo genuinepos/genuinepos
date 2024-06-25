@@ -55,11 +55,13 @@ return new class extends Migration
             $table->decimal('po_pending_qty', 22)->default(0);
             $table->decimal('po_received_qty', 22)->default(0);
             $table->string('po_receiving_status', 20)->nullable()->comment('This field only for order, which numeric status = 3');
-            $table->timestamps();
+            $table->unsignedBigInteger('purchase_order_id')->nullable();
             $table->unsignedBigInteger('purchase_account_id')->nullable()->index('purchases_purchase_account_id_foreign');
+            $table->timestamps();
 
             $table->foreign('supplier_account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('purchase_tax_ac_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('purchase_order_id')->references('id')->on('purchases')->onDelete('cascade');
         });
     }
 

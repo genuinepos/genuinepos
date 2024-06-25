@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\PrintPageSize;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 use App\Services\Products\UnitService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
@@ -12,7 +14,6 @@ use App\Services\Products\PriceGroupService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
 use App\Http\Requests\Setups\GeneralSettingsRequest;
-use Intervention\Image\Facades\Image;
 
 class GeneralSettingController extends Controller
 {
@@ -243,25 +244,25 @@ class GeneralSettingController extends Controller
     public function printPageSizeSettings(Request $request)
     {
         $settings = [
-            'print_page_size__add_sale_page_size' => $request->add_sale_page_size ? $request->add_sale_page_size : 1,
-            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size ? $request->pos_sale_page_size : 1,
-            'print_page_size__quotation_page_size' => $request->quotation_page_size ? $request->quotation_page_size : 1,
-            'print_page_size__sales_order_page_size' => $request->sales_order_page_size ? $request->sales_order_page_size : 1,
-            'print_page_size__draft_page_size' => $request->draft_page_size ? $request->draft_page_size : 1,
-            'print_page_size__sales_return_page_size' => $request->sales_return_page_size ? $request->sales_return_page_size : 1,
-            'print_page_size__purchase_page_size' => $request->purchase_page_size,
-            'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size,
-            'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size,
-            'print_page_size__transfer_stock_voucher_page_size' => $request->transfer_stock_voucher_page_size,
-            'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size,
-            'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size,
-            'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size ? $request->payroll_voucher_page_size : 1,
-            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size ? $request->payroll_payment_voucher_page_size : 1,
-            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size ? $request->bom_voucher_page_size : 1,
-            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size ? $request->production_voucher_page_size : 1,
+            'print_page_size__add_sale_page_size' => $request->add_sale_page_size ? $request->add_sale_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size ? $request->pos_sale_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__quotation_page_size' => $request->quotation_page_size ? $request->quotation_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__sales_order_page_size' => $request->sales_order_page_size ? $request->sales_order_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__draft_page_size' => $request->draft_page_size ? $request->draft_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__sales_return_page_size' => $request->sales_return_page_size ? $request->sales_return_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__purchase_page_size' => $request->purchase_page_size ? $request->purchase_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size ? $request->purchase_order_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size ? $request->purchase_return_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__transfer_stock_voucher_page_size' => $request->transfer_stock_voucher_page_size ? $request->transfer_stock_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size ? $request->stock_adjustment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size ? $request->receipt_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size ? $request->payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size ? $request->payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size ? $request->payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size ? $request->payroll_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size ? $request->payroll_payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size ? $request->bom_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size ? $request->production_voucher_page_size : PrintPageSize::AFourPage->value,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -289,10 +290,15 @@ class GeneralSettingController extends Controller
         $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
         $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
         $services = isset($subscription->features['services']) && $subscription->features['services'] == 1 ? (isset($request->service) ? 1 : 0) : 1;
+
+        $addSale = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->add_sale) ? 1 : 0) : 1;
+
+        $pos = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->pos) ? 1 : 0) : 1;
+
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
-            'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
-            'modules__pos' => isset($request->pos) ? 1 : 0,
+            'modules__add_sale' => $addSale,
+            'modules__pos' => $pos,
             'modules__service' => $services,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,

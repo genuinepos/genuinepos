@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Services;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Services\StatusService;
+use App\Http\Requests\Services\SettingIndexRequest;
 
 class SettingController extends Controller
 {
@@ -12,7 +12,7 @@ class SettingController extends Controller
     {
     }
 
-    public function index() {
+    public function index(SettingIndexRequest $request) {
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 

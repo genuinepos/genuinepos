@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
 
 class GeneralSettingService implements GeneralSettingServiceInterface
@@ -17,11 +18,33 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
             foreach ($settings as $key => $value) {
 
-                if (isset($key) && isset($value)) {
+                // if (isset($key) && isset($value)) {
+                if (isset($key)) {
 
                     if (
-                        ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
-                        config('generalSettings')['subscription']->features['hrm'] == 0
+                        ($key == 'prefix__payroll_voucher_prefix' || $key == 'prefix__payroll_payment_voucher_prefix') &&
+                        config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        $key == 'prefix__job_card_no_prefix' &&
+                        (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')->features['services'] == BooleanType::False->value)
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        ($key == 'prefix__sales_invoice_prefix' || $key == 'prefix__quotation_prefix' || $key == 'prefix__sales_order_prefix' || $key == 'prefix__sales_return_prefix') &&
+                        config('generalSettings')['subscription']->features['sales'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        ($key == 'prefix__supplier_id' || $key == 'prefix__customer_id') &&
+                        config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value
                     ) {
                         continue;
                     }

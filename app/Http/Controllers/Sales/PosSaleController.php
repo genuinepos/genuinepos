@@ -2,45 +2,38 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sales\PosSaleEditRequest;
+use App\Http\Requests\Sales\PosSaleIndexRequest;
+use App\Http\Requests\Sales\PosSaleStoreRequest;
+use App\Http\Requests\Sales\PosSaleCreateRequest;
+use App\Http\Requests\Sales\PosSaleUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
 
 class PosSaleController extends Controller
 {
-    public function index(Request $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    public function index(PosSaleIndexRequest $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('pos_all'), 403);
-
         $indexMethodContainer = $posSaleControllerMethodContainersInterface->indexMethodContainer(request: $request);
-
-        if ($request->ajax()) {
-
-            return $indexMethodContainer;;
-        }
 
         extract($indexMethodContainer);
 
         return view('sales.pos.index', compact('branches', 'customerAccounts'));
     }
 
-    public function create(PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    public function create(PosSaleCreateRequest $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface, $jobCardId = 'no_id', $saleScreenType = null)
     {
-        abort_if(!auth()->user()->can('pos_add'), 403);
-
-        return $posSaleControllerMethodContainersInterface->createMethodContainer();
+        return $posSaleControllerMethodContainersInterface->createMethodContainer(jobCardId: $jobCardId, saleScreenType: $saleScreenType);
     }
 
-    public function store(Request $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    public function store(PosSaleStoreRequest $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('pos_add'), 403);
-
         try {
             DB::beginTransaction();
 
-            $storeMethodContainer =  $posSaleControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
+            $storeMethodContainer = $posSaleControllerMethodContainersInterface->storeMethodContainer(request: $request, codeGenerator: $codeGenerator);
 
             if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
@@ -58,17 +51,13 @@ class PosSaleController extends Controller
         return $posSaleControllerMethodContainersInterface->printTemplateBySaleStatusForStore(request: $request, sale: $sale, customerCopySaleProducts: $customerCopySaleProducts);
     }
 
-    public function edit($id, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    public function edit(PosSaleEditRequest $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface, $id, $saleScreenType = null)
     {
-        abort_if(!auth()->user()->can('pos_edit'), 403);
-
-        return $posSaleControllerMethodContainersInterface->editMethodContainer(id: $id);
+        return $posSaleControllerMethodContainersInterface->editMethodContainer(id: $id, saleScreenType: $saleScreenType);
     }
 
-    public function update($id, Request $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    public function update($id, PosSaleUpdateRequest $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('pos_edit'), 403);
-
         try {
             DB::beginTransaction();
 

@@ -98,6 +98,8 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });
@@ -134,6 +136,8 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });
@@ -192,6 +196,8 @@
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
+
+                    toastr.error(err.responseJSON.message);
                 }
             });
         });

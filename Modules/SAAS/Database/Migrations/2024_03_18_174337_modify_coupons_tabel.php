@@ -19,14 +19,9 @@ return new class extends Migration
             $table->boolean('is_maximum_usage')->change()->default(0);
             $table->bigInteger('no_of_usage')->change()->default(0);
 
-            if (Schema::hasColumn('coupons', 'no_of_used')) {
+            if (!Schema::hasColumn('coupons', 'no_of_used')) {
 
                 $table->integer('no_of_used')->default(0);
-            }
-
-            if (Schema::hasColumn('coupons', 'no_of_used')) {
-
-                $table->bigInteger('no_of_used')->change()->default(0);
             }
         });
     }

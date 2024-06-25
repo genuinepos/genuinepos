@@ -5,7 +5,7 @@
         var serials = document.querySelectorAll('#serial');
         var serialsArray = Array.from(serials);
 
-        serials.forEach(function (element, index) {
+        serials.forEach(function(element, index) {
 
             element.innerHTML = index + 1;
         });
@@ -18,7 +18,7 @@
         var total_item = 0;
         var total_qty = 0;
 
-        quantities.forEach(function (qty) {
+        quantities.forEach(function(qty) {
             total_item += 1;
             total_qty += parseFloat(qty.value);
         });
@@ -30,7 +30,7 @@
         var netTotalAmount = 0;
         var productTotalTaxAmount = 0;
         var i = 0;
-        subtotals.forEach(function (subtotal) {
+        subtotals.forEach(function(subtotal) {
 
             netTotalAmount += parseFloat(subtotal.value);
             productTotalTaxAmount += (quantities[i].value ? quantities[i].value : 0) * (unitTaxAmounts[i].value ? unitTaxAmounts[i].value : 0);
@@ -61,17 +61,17 @@
         var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
         var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
 
-        var calcTotalInvoiceAmount = parseFloat(netTotalAmount)
-                                - parseFloat(orderDiscountAmount)
-                                + parseFloat(calcOrderTaxAmount)
-                                + parseFloat(shipmentCharge);
+        var calcTotalInvoiceAmount = parseFloat(netTotalAmount) -
+            parseFloat(orderDiscountAmount) +
+            parseFloat(calcOrderTaxAmount) +
+            parseFloat(shipmentCharge);
 
         $('#total_invoice_amount').val(parseFloat(calcTotalInvoiceAmount).toFixed(2));
 
-        var salesLedgerAmount = parseFloat(netTotalAmount)
-            + parseFloat(shipmentCharge)
-            - parseFloat(orderDiscountAmount)
-            - parseFloat(productTotalTaxAmount);
+        var salesLedgerAmount = parseFloat(netTotalAmount) +
+            parseFloat(shipmentCharge) -
+            parseFloat(orderDiscountAmount) -
+            parseFloat(productTotalTaxAmount);
 
         $('#sales_ledger_amount').val(parseFloat(salesLedgerAmount).toFixed(2));
 
@@ -110,13 +110,13 @@
         $('#current_balance').val(parseFloat(__currentBalance).toFixed(2));
     }
 
-    $(document).on('change', '#order_discount_type', function () {
+    $(document).on('change', '#order_discount_type', function() {
 
         calculateTotalAmount();
     });
 
     // change purchase tax and calculate total amount
-    $(document).on('change', '#sale_tax_ac_id', function () {
+    $(document).on('change', '#sale_tax_ac_id', function() {
 
         var orderTaxPercent = $(this).find('option:selected').data('order_tax_percent') ? $(this).find('option:selected').data('order_tax_percent') : 0;
         $('#order_tax_percent').val(parseFloat(orderTaxPercent).toFixed(2));
@@ -124,19 +124,19 @@
     });
 
     // Input paying amount and calculate due amount
-    $(document).on('input', '#received_amount', function () {
+    $(document).on('input', '#received_amount', function() {
 
         calculateTotalAmount();
     });
 
     // Input order discount and calculate total amount
-    $(document).on('input', '#order_discount', function () {
+    $(document).on('input', '#order_discount', function() {
 
         calculateTotalAmount();
     });
 
     // Cash receive by modal input with change value
-    $('#modal_received_amount').on('input', function () {
+    $('#modal_received_amount').on('input', function() {
 
         var totalReceivable = $('#total_receivable_amount').val();
         // Update purchase due
@@ -150,4 +150,8 @@
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
         $('#current_balance').val(parseFloat(currentBalance >= 0 ? currentBalance : 0).toFixed(2));
     });
+
+    @if (isset($jobCard))
+        calculateTotalAmount();
+    @endif
 </script>

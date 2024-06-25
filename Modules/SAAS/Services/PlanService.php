@@ -5,6 +5,10 @@ namespace Modules\SAAS\Services;
 use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use Modules\SAAS\Entities\Plan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 
 class PlanService implements PlanServiceInterface
@@ -85,6 +89,8 @@ class PlanService implements PlanServiceInterface
         $updatePlan->status = $request->status;
         $updatePlan->save();
 
+        $this->clearTenantPlanCache(planId: $updatePlan->id);
+
         return null;
     }
 
@@ -144,6 +150,66 @@ class PlanService implements PlanServiceInterface
         }
 
         return $query->where('is_trial_plan', BooleanType::True->value)->firstOrFail();
+    }
+
+    private function clearTenantPlanCache(int $planId): void
+    {
+        Artisan::call('cache:clear');
+        // $userSubscriptions = DB::table('user_subscriptions')
+        //     ->where('plan_id', $planId)
+        //     ->leftJoin('users', 'user_subscriptions.user_id', 'users.id')
+        //     ->select('users.tenant_id')
+        //     ->get();
+
+        // foreach ($userSubscriptions as $userSubscription) {
+
+        //     if ($userSubscription->tenant_id) {
+
+        //         Artisan::call('tenants:run cache:clear --tenants=' . $userSubscription->tenant_id);
+        //     }
+        // }
+
+        // // // Get the default database connection name
+        // // $defaultConnection = DB::getDefaultConnection();
+
+        // // // Fetch user subscriptions with tenant IDs
+        // // $userSubscriptions = DB::table('user_subscriptions')
+        // //     ->where('plan_id', $planId)
+        // //     ->leftJoin('users', 'user_subscriptions.user_id', 'users.id')
+        // //     ->select('users.tenant_id')
+        // //     ->get();
+
+        // // foreach ($userSubscriptions as $userSubscription) {
+
+        // //     if ($userSubscription->tenant_id) {
+        // //         // Switch to the tenant's database
+        // //         $tenantDatabase = 'pos_' . $userSubscription->tenant_id;
+        // //         DB::statement('use ' . $tenantDatabase);
+
+        // //         $cacheKey = $userSubscription->tenant_id . "_GeneralSettings_subscription";
+
+        // //         // Log the cache key for debugging
+        // //         Log::info("Checking cache key: " . $cacheKey);
+
+        // //         // Verify the cache key exists
+        // //         if (Cache::store('redis')->has($cacheKey)) { // Change 'redis' to your cache store if different
+        // //             Log::info("Cache key exists: " . $cacheKey);
+
+        // //             // Forget cache for the tenant
+        // //             if (Cache::store('redis')->forget($cacheKey)) { // Change 'redis' to your cache store if different
+        // //                 Log::info("Cache cleared for key: " . $cacheKey);
+        // //             } else {
+        // //                 Log::warning("Failed to clear cache for key: " . $cacheKey);
+        // //             }
+        // //         } else {
+        // //             Log::warning("Cache key does not exist: " . $cacheKey);
+        // //         }
+
+        // //         // Reconnect to the default database
+        // //         DB::setDefaultConnection($defaultConnection);
+        // //         DB::reconnect($defaultConnection);
+        // //     }
+        // // }
     }
 
     private function preparedPlanFeatures(object $request): array

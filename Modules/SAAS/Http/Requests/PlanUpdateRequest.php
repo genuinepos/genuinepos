@@ -20,7 +20,6 @@ class PlanUpdateRequest extends FormRequest
             'price_per_year' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
             'lifetime_price' => Rule::when($request->is_trial_plan == 0 && $request->has_lifetime_period == 1, 'required|numeric'),
             'applicable_lifetime_years' => Rule::when($request->is_trial_plan == 0 && $request->has_lifetime_period == 1, 'required|numeric'),
-            'currency_id' => Rule::when($request->is_trial_plan == 0, 'required'),
             'trial_days' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
             'trial_shop_count' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
             'status' => 'required',

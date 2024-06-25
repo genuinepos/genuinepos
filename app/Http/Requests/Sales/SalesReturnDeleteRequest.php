@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sales;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SalesReturnDeleteRequest extends FormRequest
@@ -11,7 +12,7 @@ class SalesReturnDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('delete_sales_return');
+        return auth()->user()->can('delete_sales_return') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

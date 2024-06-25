@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Products;
 
 use App\Enums\BooleanType;
-use App\Enums\ProductLedgerVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Products\OpeningStockService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductService;
-use App\Services\Products\ProductStockService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Setups\WarehouseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Enums\ProductLedgerVoucherType;
+use App\Services\Products\ProductService;
+use App\Services\Setups\WarehouseService;
+use App\Services\Products\OpeningStockService;
+use App\Services\Products\ProductStockService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Http\Requests\Products\OpeningStockRequest;
 
 class OpeningStockController extends Controller
 {
@@ -26,7 +27,7 @@ class OpeningStockController extends Controller
     ) {
     }
 
-    public function createOrEdit($productId)
+    public function createOrEdit($productId, OpeningStockRequest $request)
     {
         $product = $this->productService->singleProduct(id: $productId, with: ['variants']);
 
@@ -38,7 +39,7 @@ class OpeningStockController extends Controller
         return view('product.products.opening_stock.create_or_edit', compact('product', 'warehouses'));
     }
 
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(OpeningStockRequest $request)
     {
         try {
             DB::beginTransaction();

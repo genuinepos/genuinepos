@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('sale_id')->nullable();
-            $table->string('job_no', 255);
+            $table->string('job_no', 255)->nullable();
             $table->unsignedBigInteger('customer_account_id');
             $table->tinyInteger('service_type');
             $table->text('address')->nullable();
@@ -43,6 +43,7 @@ return new class extends Migration
             $table->timestamp('date_ts');
             $table->timestamp('delivery_date_ts')->nullable();
             $table->timestamp('due_date_ts')->nullable();
+            $table->timestamp('completed_at_ts')->nullable();
             $table->unsignedBigInteger('created_by_id')->nullable();
             $table->timestamps();
 

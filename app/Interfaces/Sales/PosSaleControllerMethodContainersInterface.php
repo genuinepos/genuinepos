@@ -10,11 +10,11 @@ interface PosSaleControllerMethodContainersInterface
 
     public function indexMethodContainer(object $request): array|object;
 
-    public function createMethodContainer(): mixed;
+    public function createMethodContainer(int|string $jobCardId = 'no_id', ?int $saleScreenType = null): mixed;
 
     public function storeMethodContainer(object $request, object $codeGenerator): array|object;
 
-    public function editMethodContainer(int $id): mixed;
+    public function editMethodContainer(int $id, ?int $saleScreenType = null): mixed;
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): array|object;
 

@@ -26,7 +26,7 @@ class SendSubscriptionPlanUpgradeMailQueueJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $email = new SendSubscriptionPlanUpgradeMail(user: $this->user, planName: $planName, data: $this->data, isTrialPlan: $this->isTrialPlan);
+        $email = new SendSubscriptionPlanUpgradeMail(user: $this->user, planName: $this->planName, data: $this->data, isTrialPlan: $this->isTrialPlan);
         Mail::to($this->user->email)->send($email);
     }
 }

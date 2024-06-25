@@ -143,6 +143,8 @@
                     return;
                 }
 
+                toastr.error(err.responseJSON.message);
+
                 $.each(err.responseJSON.errors, function(key, error) {
 
                     $('.error_category_' + key + '').html(error[0]);

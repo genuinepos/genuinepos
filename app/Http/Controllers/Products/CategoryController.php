@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\CategoryService;
 use App\Services\Users\UserActivityLogService;
-use App\Http\Requests\Products\CategoryStoreRequest;
-use App\Http\Requests\Products\CategoryUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Products\CategoryEditRequest;
+use App\Http\Requests\Products\CategoryIndexRequest;
+use App\Http\Requests\Products\CategoryStoreRequest;
+use App\Http\Requests\Products\CategoryCreateRequest;
+use App\Http\Requests\Products\CategoryDeleteRequest;
+use App\Http\Requests\Products\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -19,10 +22,8 @@ class CategoryController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(CategoryIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->categoryService->categoriesTable();
@@ -31,10 +32,8 @@ class CategoryController extends Controller
         return view('product.categories.index');
     }
 
-    public function create()
+    public function create(CategoryCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_index'), 403);
-
         return view('product.categories.ajax_view.category.create');
     }
 
@@ -56,10 +55,8 @@ class CategoryController extends Controller
         return $addCategory;
     }
 
-    public function edit($id)
+    public function edit($id, CategoryEditRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_edit'), 403);
-
         $category = $this->categoryService->singleCategory($id);
 
         return view('product.categories.ajax_view.category.edit', compact('category'));
@@ -83,10 +80,8 @@ class CategoryController extends Controller
         return response()->json(__('Category updated successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id, CategoryDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('product_category_delete'), 403);
-
         try {
             DB::beginTransaction();
 

@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Models\Products\Product;
 use Illuminate\Http\Request;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
+use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Setups\BarcodeSetting;
 use App\Services\Accounts\AccountService;
-use App\Services\Purchases\PurchaseProductService;
 use App\Services\Setups\BarcodeSettingService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Http\Requests\Products\BarcodeIndexRequest;
+use App\Http\Requests\Products\BarcodePreviewRequest;
 
 class BarcodeController extends Controller
 {
@@ -22,10 +24,8 @@ class BarcodeController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(BarcodeIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('generate_barcode'), 403);
-
         $barcodeSettings = $this->barcodeSettingService->barcodeSettings()
             ->select('id', 'name', 'is_default')
             ->orderBy('is_continuous', 'desc')->get();
@@ -80,7 +80,7 @@ class BarcodeController extends Controller
         return view('product.barcode.index', compact('barcodeSettings', 'purchasedProducts', 'taxAccounts'));
     }
 
-    public function preview(Request $request)
+    public function preview(BarcodePreviewRequest $request)
     {
         $req = $request;
 

@@ -4,6 +4,7 @@ namespace App\Services\Subscriptions;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
+use Illuminate\Support\Facades\Log;
 use App\Enums\SubscriptionUpdateType;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Subscriptions\Subscription;
@@ -215,10 +216,12 @@ class SubscriptionService
         return $query->first();
     }
 
-    private function forgetCache(): void
+    public function forgetCache(): void
     {
-        $tenantId = tenant('id');
-        $cacheKey = "{$tenantId}_GeneralSettings_subscription";
-        Cache::forget($cacheKey);
+        $__tenantId = tenant('id');
+
+        $cacheKey = "{$__tenantId}_GeneralSettings_subscription";
+
+       Cache::forget($cacheKey);
     }
 }

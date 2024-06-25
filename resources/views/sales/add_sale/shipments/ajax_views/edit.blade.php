@@ -124,10 +124,18 @@
 
                 if ($('#sales-order-table').html() != undefined) {
 
-                    $('#sales-order-table').DataTable().ajax.reload();
+                    $('#sales-order-table').DataTable().ajax.reload(null, false);
                 }
 
-                $('#sales-table').DataTable().ajax.reload();
+                if ($('#sales-table').html() != undefined) {
+
+                    $('#sales-table').DataTable().ajax.reload(null, false);
+                }
+
+                if ($('#invoices-table').html() != undefined) {
+
+                    $('#invoices-table').DataTable().ajax.reload(null, false);
+                }
             },
             error: function(err) {
 

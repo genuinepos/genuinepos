@@ -9,6 +9,7 @@ use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Models\Services\JobCard;
 
 class Sale extends BaseModel
 {
@@ -50,6 +51,11 @@ class Sale extends BaseModel
     public function accountingVouchers()
     {
         return $this->hasMany(AccountingVoucher::class, 'sale_ref_id');
+    }
+
+    public function jobCard()
+    {
+        return $this->hasOne(JobCard::class, 'sale_id');
     }
 
     public function createdBy()

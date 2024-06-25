@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Products\QuickProductStoreRequest;
+use App\Http\Requests\Products\QuickProductCreateRequest;
 use App\Interfaces\Products\QuickProductAddControllerMethodContainersInterface;
 
 class QuickProductAddController extends Controller
 {
-    public function create(QuickProductAddControllerMethodContainersInterface $quickProductAddControllerMethodContainersInterface)
+    public function create(QuickProductCreateRequest $request, QuickProductAddControllerMethodContainersInterface $quickProductAddControllerMethodContainersInterface)
     {
         $createMethodContainer = $quickProductAddControllerMethodContainersInterface->createMethodContainer();
 
@@ -18,7 +19,7 @@ class QuickProductAddController extends Controller
         return view('product.products.quick_add_product.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'lastProductSerialCode', 'warehouses'));
     }
 
-    public function store(Request $request, QuickProductAddControllerMethodContainersInterface $quickProductAddControllerMethodContainersInterface)
+    public function store(QuickProductStoreRequest $request, QuickProductAddControllerMethodContainersInterface $quickProductAddControllerMethodContainersInterface)
     {
         try {
             DB::beginTransaction();

@@ -66,6 +66,26 @@
         var url = $(this).attr('action');
         $('.submit_preloader').show();
 
+        var allTr = $('#product_list').find('tr');
+
+        var pass = true;
+        allTr.each(function(index, value) {
+
+            var check = __chackStockLimitation($(this), index);
+
+            if (check == false) {
+                pass = false;
+                return;
+            }
+        });
+
+        if (pass == false) {
+
+            $('.submit_preloader').hide();
+            $('.loading_button').hide();
+            return;
+        }
+
         isAjaxIn = false;
         isAllowSubmit = false;
         $.ajax({
@@ -75,6 +95,7 @@
             url: url,
             type: 'post',
             data: request,
+            async: true,
             success: function(data) {
 
                 isAjaxIn = true;
@@ -115,6 +136,15 @@
                     });
 
                     document.getElementById('search_product').focus();
+                }
+
+                var jobCardId = $('#job_card_id').val() ? $('#job_card_id').val() : '';
+
+
+                if (jobCardId) {
+                    setTimeout(function() {
+                        window.location = "{{ route('services.job.cards.index') }}";
+                    }, 2000);
                 }
             },
             error: function(err) {
@@ -171,6 +201,22 @@
         $("#customer_account_id").select2("destroy");
         $("#customer_account_id").select2();
         activeSelectedItems();
+
+        @if ($saleScreenType == 3)
+            $('#check_list_area').empty();
+
+            $("#brand_id").select2("destroy");
+            $("#brand_id").select2();
+
+            $("#device_id").select2("destroy");
+            $("#device_id").select2();
+
+            $("#device_model_id").select2("destroy");
+            $("#device_model_id").select2();
+
+            $("#status_id").select2("destroy");
+            $("#status_id").select2();
+        @endif
     }
 
     $(document).on('click enter', '#final_and_quick_cash_receive', function(e) {
@@ -217,6 +263,26 @@
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
     });
+
+    var index = 0;
+
+    function __chackStockLimitation(tr, index) {
+
+        var quantity = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
+
+        var current_stock = tr.find('#current_stock').val();
+
+        var productName = tr.find('#current_stock').data('product_name');
+        var unitName = tr.find('#current_stock').data('unit_name');
+
+        if (parseFloat(quantity) > parseFloat(current_stock)) {
+
+            toastr.error("{{ __('Serial No: ') }} " + (index + 1) + ',' + " {{ __('Product Name: ') }}" + productName + " {{ __('Only ') }}" + current_stock + '/' + unitName + " {{ __('is available in this Shop/Business.') }}");
+            return false;
+        }
+
+        return true;
+    }
 
     var width = $(".function-sec .btn-bg").width();
     $(".function-sec .btn-bg").height(width / 1.2);

@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Sales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sales\DraftEditRequest;
+use App\Http\Requests\Sales\DraftIndexRequest;
 use App\Http\Requests\Sales\DraftUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 
 class DraftController extends Controller
 {
-    public function index(Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
+    public function index(DraftIndexRequest $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('sale_draft'), 403);
-
         $indexMethodContainer = $draftControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -36,7 +36,7 @@ class DraftController extends Controller
         return view('sales.add_sale.drafts.ajax_views.show', compact('draft', 'customerCopySaleProducts'));
     }
 
-    public function edit($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
+    public function edit($id, DraftEditRequest $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
         $editMethodContainer = $draftControllerMethodContainersInterface->editMethodContainer(id: $id);
 

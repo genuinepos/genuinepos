@@ -1040,143 +1040,151 @@
 </script>
 
 <script>
-    $(document).on('click', '#addBrand', function(e) {
-        e.preventDefault();
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_brand_add'))
+        $(document).on('click', '#addBrand', function(e) {
+            e.preventDefault();
 
-        var url = "{{ route('brands.create') }}";
+            var url = "{{ route('brands.create') }}";
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
 
-                $('#brandAddOrEditModal').html(data);
-                $('#brandAddOrEditModal').modal('show');
+                    $('#brandAddOrEditModal').html(data);
+                    $('#brandAddOrEditModal').modal('show');
 
-                setTimeout(function() {
+                    setTimeout(function() {
 
-                    $('#brand_name').focus();
-                }, 500);
-            },
-            error: function(err) {
+                        $('#brand_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
 
-                if (err.status == 0) {
+                    if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
                 }
-            }
+            });
         });
-    });
+    @endif
 
-    $(document).on('click', '#addDevice', function(e) {
-        e.preventDefault();
+    @if (auth()->user()->can('devices_create'))
+        $(document).on('click', '#addDevice', function(e) {
+            e.preventDefault();
 
-        var url = "{{ route('services.settings.devices.create') }}";
+            var url = "{{ route('services.settings.devices.create') }}";
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
 
-                $('#deviceAddOrEditModal').html(data);
-                $('#deviceAddOrEditModal').modal('show');
+                    $('#deviceAddOrEditModal').html(data);
+                    $('#deviceAddOrEditModal').modal('show');
 
-                setTimeout(function() {
+                    setTimeout(function() {
 
-                    $('#device_name').focus();
-                }, 500);
-            },
-            error: function(err) {
+                        $('#device_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
 
-                if (err.status == 0) {
+                    if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
-
-                toastr.error(err.responseJSON.message);
-            }
+            });
         });
-    });
+    @endif
 
-    $(document).on('click', '#addDeviceModel', function(e) {
-        e.preventDefault();
+    @if (auth()->user()->can('device_models_create'))
+        $(document).on('click', '#addDeviceModel', function(e) {
+            e.preventDefault();
 
-        var url = "{{ route('services.settings.device.models.create') }}";
+            var url = "{{ route('services.settings.device.models.create') }}";
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
 
-                $('#deviceModelAddOrEditModal').html(data);
-                $('#deviceModelAddOrEditModal').modal('show');
+                    $('#deviceModelAddOrEditModal').html(data);
+                    $('#deviceModelAddOrEditModal').modal('show');
 
-                setTimeout(function() {
+                    setTimeout(function() {
 
-                    $('#device_model_name').focus();
-                }, 500);
-            },
-            error: function(err) {
+                        $('#device_model_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
 
-                if (err.status == 0) {
+                    if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
-
-                toastr.error(err.responseJSON.message);
-            }
+            });
         });
-    });
+    @endif
 
-    $(document).on('click', '#addStatus', function(e) {
-        e.preventDefault();
+    @if (auth()->user()->can('status_create'))
+        $(document).on('click', '#addStatus', function(e) {
+            e.preventDefault();
 
-        var url = "{{ route('services.settings.status.create') }}";
+            var url = "{{ route('services.settings.status.create') }}";
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
 
-                $('#statusAddOrEditModal').html(data);
-                $('#statusAddOrEditModal').modal('show');
+                    $('#statusAddOrEditModal').html(data);
+                    $('#statusAddOrEditModal').modal('show');
 
-                setTimeout(function() {
+                    setTimeout(function() {
 
-                    $('#status_name').focus();
-                }, 500);
-            },
-            error: function(err) {
+                        $('#status_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
 
-                if (err.status == 0) {
+                    if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                    return;
-                } else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+
+                    toastr.error(err.responseJSON.message);
                 }
-
-                toastr.error(err.responseJSON.message);
-            }
+            });
         });
-    });
+    @endif
 </script>
 
 <script>
@@ -1377,7 +1385,7 @@
     });
 </script>
 
-@if (auth()->user()->can('customer_add'))
+@if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
     <script>
         $('#addContact').on('click', function(e) {
 
@@ -1416,7 +1424,7 @@
     </script>
 @endif
 
-@if (auth()->user()->can('product_add'))
+@if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
     <script>
         $('#addProduct').on('click', function() {
 

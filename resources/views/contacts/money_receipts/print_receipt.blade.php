@@ -92,11 +92,11 @@
 
                     <p>
                         @if ($moneyReceipt?->branch)
-                            <strong>@lang('menu.email') : </strong>{{ $moneyReceipt?->branch?->email }},
-                            <strong>@lang('menu.phone') : </strong>{{ $moneyReceipt?->branch?->phone }}
+                            <strong>{{ __("Email") }} : </strong>{{ $moneyReceipt?->branch?->email }},
+                            <strong>{{ __("Phone") }} : </strong>{{ $moneyReceipt?->branch?->phone }}
                         @else
-                            <strong>@lang('menu.email') : </strong>{{ $generalSettings['business_or_shop__email'] }},
-                            <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business_or_shop__phone'] }}
+                            <strong>{{ __("Email") }} : </strong>{{ $generalSettings['business_or_shop__email'] }},
+                            <strong>{{ __("Phone") }} : </strong>{{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>

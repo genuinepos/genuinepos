@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Contacts;
+namespace App\Http\Requests\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupplierImportRequest extends FormRequest
+class UnitEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('supplier_import');
+        return auth()->user()->can('product_unit_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**
@@ -22,7 +23,7 @@ class SupplierImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
+            //
         ];
     }
 }

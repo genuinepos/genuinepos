@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         // echo 'Start'.PHP_EOL;
+        // Artisan::call('optimize:clear');
         Artisan::call('permission:cache-reset');
         $this->truncateRolePermissionDataButKeepOldData();
         $this->createRolePermission();
@@ -94,6 +95,7 @@ class RolePermissionSeeder extends Seeder
 
                 $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
                 $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
+                $hasServiceInvoicesOnlyOwnPermission = $role->hasPermissionTo('service_invoices_only_own');
                 $hasShopIndexPermission = $role->hasPermissionTo('branches_index');
                 $hasShopCreatePermission = $role->hasPermissionTo('branches_create');
                 $hasShopEditPermission = $role->hasPermissionTo('branches_edit');
@@ -116,6 +118,7 @@ class RolePermissionSeeder extends Seeder
 
                         $role->revokePermissionTo('user_activities_log_only_own_log');
                         $role->revokePermissionTo('view_own_sale');
+                        $role->revokePermissionTo('service_invoices_only_own');
                     }
 
                     if ($role->id == 2) {
@@ -128,6 +131,11 @@ class RolePermissionSeeder extends Seeder
                         if (!$hasViewOwnSalePermission) {
 
                             $role->revokePermissionTo('view_own_sale');
+                        }
+
+                        if (!$hasServiceInvoicesOnlyOwnPermission) {
+
+                            $role->revokePermissionTo('service_invoices_only_own');
                         }
 
                         if (!$hasShopIndexPermission) {
@@ -185,6 +193,7 @@ class RolePermissionSeeder extends Seeder
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('has_access_to_all_area');
                     $role->revokePermissionTo('view_own_sale');
+                    $role->revokePermissionTo('service_invoices_only_own');
                     $role->revokePermissionTo('branches_index');
                     $role->revokePermissionTo('branches_create');
                     $role->revokePermissionTo('branches_edit');
@@ -631,6 +640,16 @@ class RolePermissionSeeder extends Seeder
             ['id' => '430', 'name' => 'job_cards_generate_pdf'],
             ['id' => '431', 'name' => 'job_cards_generate_label'],
             ['id' => '432', 'name' => 'job_cards_change_status'],
+
+            ['id' => '433', 'name' => 'service_invoices_index'],
+            ['id' => '434', 'name' => 'service_invoices_create'],
+            ['id' => '435', 'name' => 'service_invoices_edit'],
+            ['id' => '436', 'name' => 'service_invoices_delete'],
+
+            ['id' => '437', 'name' => 'supplier_ledger'],
+            ['id' => '438', 'name' => 'customer_ledger'],
+
+            ['id' => '439', 'name' => 'service_invoices_only_own'],
         ];
 
         return $permissions;

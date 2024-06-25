@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Sales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sales\QuotationEditRequest;
+use App\Http\Requests\Sales\QuotationIndexRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Sales\QuotationUpdateRequest;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
 class QuotationController extends Controller
 {
-    public function index(Request $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
+    public function index(QuotationIndexRequest $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('sale_quotation'), 403);
-
         $indexMethodContainer = $quotationControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -36,7 +36,7 @@ class QuotationController extends Controller
         return view('sales.add_sale.quotations.ajax_views.show', compact('quotation', 'customerCopySaleProducts'));
     }
 
-    public function edit($id, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
+    public function edit($id, QuotationEditRequest $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
         $editMethodContainer = $quotationControllerMethodContainersInterface->editMethodContainer(id: $id);
 

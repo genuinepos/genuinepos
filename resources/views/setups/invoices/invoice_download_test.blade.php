@@ -63,7 +63,7 @@
             margin: 0;
         }
 
-        p{
+        p {
             font-size: 11px;
             padding: 0px;
             margin: 0px;
@@ -110,23 +110,39 @@
                         <td class="text-start">
                             <table>
                                 <tr>
-                                    <th><p>{{ __('Customer') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)->user->name }}</p></td>
+                                    <th>
+                                        <p>{{ __('Customer') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)->user->name }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Address') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)->user->persent_address }}</p></td>
+                                    <th>
+                                        <p>{{ __('Address') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)->user->persent_address }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Email') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)->user->email }}</p></td>
+                                    <th>
+                                        <p>{{ __('Email') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)->user->email }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Phone') }}</p></th>
-                                    <td><p>: {{ optional($transaction->subscription)->user->phone }}</p></td>
+                                    <th>
+                                        <p>{{ __('Phone') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ optional($transaction->subscription)->user->phone }}</p>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -134,18 +150,30 @@
                         <td class="text-start">
                             <table>
                                 <tr>
-                                    <th><p>{{ __('Date') }}</p></th>
-                                    <td><p>: {{ $transaction->created_at->format('d-m-Y') }}</p></td>
+                                    <th>
+                                        <p>{{ __('Date') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ $transaction->created_at->format('d-m-Y') }}</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Invoice ID') }}</p></th>
-                                    <td><p>: #</p></td>
+                                    <th>
+                                        <p>{{ __('Invoice ID') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: #</p>
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th><p>{{ __('Transaction Type') }}</p></th>
-                                    <td><p>: {{ App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name }}</p></td>
+                                    <th>
+                                        <p>{{ __('Transaction Type') }}</p>
+                                    </th>
+                                    <td>
+                                        <p>: {{ App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name }}</p>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -153,13 +181,13 @@
                 </table>
             </div>
 
-            
+
             <div class="sale_product_table pt-2 pb-2">
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr style="border-bottom: 1px solid">
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Plan") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Price") }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Plan') }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Shop Count') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Period') }}</th>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Period Count') }}</th>
@@ -240,7 +268,11 @@
                     <table>
                         <tr>
                             <td><small style="font-size: 9px!important;color:black;">{{ __('Generated Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small></td>
-                            <td class="text-center"><small style="font-size: 9px!important;color:black;" class="d-block">{{ __('Powered By') }} <span class="fw-bold">@lang('SpeedDigit Software Solution').</span></small></td>
+                            <td class="text-center">
+                                @if (config('speeddigit.show_app_info_in_print') == true)
+                                    <small style="font-size: 9px!important;color:black;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
+                                @endif
+                            </td>
                             <td class="text-end"><small style="font-size: 9px!important;color:black;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small></td>
                         </tr>
                     </table>

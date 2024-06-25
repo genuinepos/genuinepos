@@ -1,5 +1,4 @@
 @php
-    // $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
@@ -136,7 +135,7 @@
                                             @foreach ($jobCard->service_checklist as $key => $value)
                                                 <span>
                                                     @if ($value == 'yes')
-                                                        ✔
+                                                        <span class="text-success">✔</span>
                                                     @elseif ($value == 'no')
                                                         ❌
                                                     @else
@@ -145,7 +144,7 @@
                                                     {{ $key }}
                                                 </span>
                                             @endforeach
-                                        {{-- @elseif (isset($jobCard->service_checklist) && is_string($jobCard->service_checklist))
+                                            {{-- @elseif (isset($jobCard->service_checklist) && is_string($jobCard->service_checklist))
                                             @php
                                                 $checklist = json_decode($jobCard->service_checklist, true);
                                             @endphp
@@ -393,7 +392,7 @@
 
             <div class="modal-footer">
                 <div class="btn-box">
-                    @if (auth()->user()->can('pos_edit') && $jobCard->branch_id == auth()->user()->branch_id)
+                    @if (auth()->user()->can('job_cards_edit') && $jobCard->branch_id == auth()->user()->branch_id)
                         <a href="{{ route('services.job.cards.edit', [$jobCard->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                     @endif
 

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Contacts\Reports;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\Accounts\AccountService;
 use App\Services\Contacts\Reports\CustomerReportService;
+use App\Http\Requests\Contacts\Reports\CustomerReportIndexRequest;
+use App\Http\Requests\Contacts\Reports\CustomerReportPrintRequest;
 
 class CustomerReportController extends Controller
 {
@@ -18,13 +19,10 @@ class CustomerReportController extends Controller
         private BranchService $branchService,
         private AccountService $accountService,
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
-    public function index(Request $request)
+    public function index(CustomerReportIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_report'), 403);
-
         if ($request->ajax()) {
 
             return $this->customerReportService->customersReportTable(request: $request);
@@ -41,7 +39,7 @@ class CustomerReportController extends Controller
         return view('contacts.reports.customer_report.index', compact('branches', 'customerAccounts'));
     }
 
-    public function print(Request $request)
+    public function print(CustomerReportPrintRequest $request)
     {
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {

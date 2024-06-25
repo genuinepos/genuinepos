@@ -15,7 +15,6 @@ class ExpenseReportController extends Controller
         private AccountGroupService $accountGroupService,
         private BranchService $branchService
     ) {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

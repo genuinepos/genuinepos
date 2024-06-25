@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Products\Reports;
 
 use App\Enums\BooleanType;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
@@ -12,6 +11,10 @@ use App\Services\Setups\BranchService;
 use App\Services\Products\BrandService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\Products\CategoryService;
+use App\Http\Requests\Products\Reports\StockReportIndexRequest;
+use App\Http\Requests\Products\Reports\StockReportBranchStockRequest;
+use App\Http\Requests\Products\Reports\StockReportWarehouseStockRequest;
+use App\Http\Requests\Products\Reports\StockReportBranchStockPrintRequest;
 
 class StockReportController extends Controller
 {
@@ -23,7 +26,7 @@ class StockReportController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(StockReportIndexRequest $request)
     {
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
         $brands = $this->brandService->brands()->get(['id', 'name']);
@@ -34,7 +37,7 @@ class StockReportController extends Controller
         return view('product.reports.stock_report.index', compact('branches', 'brands', 'units', 'categories'));
     }
 
-    public function branchStock(Request $request)
+    public function branchStock(StockReportBranchStockRequest $request)
     {
         if ($request->ajax()) {
 
@@ -121,7 +124,7 @@ class StockReportController extends Controller
     }
 
     // Get all product stock **requested by ajax**
-    public function warehouseStock(Request $request)
+    public function warehouseStock(StockReportWarehouseStockRequest $request)
     {
         if ($request->ajax()) {
 
@@ -167,7 +170,7 @@ class StockReportController extends Controller
                 ->editColumn('stock_location', function ($row) use ($generalSettings) {
 
                     $html = '';
-                    if ($row->is_global == 1) {
+                    if ($row->is_global == BooleanType::True->value) {
 
                         $html .= '<p class="p-0 m-0">' . $row->warehouse_name . '/' . $row->warehouse_code . '-(<b>' . __('Global Warehouse') . '</b>)' . '</p>';
                     } else {
@@ -218,7 +221,7 @@ class StockReportController extends Controller
         }
     }
 
-    public function branchStockPrint(Request $request)
+    public function branchStockPrint(StockReportBranchStockPrintRequest $request)
     {
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
@@ -341,13 +344,14 @@ class StockReportController extends Controller
             $query->where('products.tax_id', $request->tax_id);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('warehouses.branch_id', auth()->user()->branch_id);
 
             if (empty($request->warehouse_id)) {
 
-                $query->orWhere('warehouses.is_global', 1);
+                $query->orWhere('warehouses.is_global', BooleanType::True->value);
             }
         }
 

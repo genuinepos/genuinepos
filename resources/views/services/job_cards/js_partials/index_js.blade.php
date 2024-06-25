@@ -82,6 +82,11 @@
                 data: 'action'
             },
             {
+                data: 'job_no',
+                name: 'service_job_cards.job_no',
+                className: 'fw-bold'
+            },
+            {
                 data: 'service_type',
                 name: 'service_job_cards.service_type'
             },
@@ -100,11 +105,6 @@
             {
                 data: 'due_date',
                 name: 'service_job_cards.due_date_ts'
-            },
-            {
-                data: 'job_no',
-                name: 'service_job_cards.job_no',
-                className: 'fw-bold'
             },
             {
                 data: 'branch',

@@ -160,12 +160,12 @@
                                         <thead>
                                             <tr>
                                                 <th>{{ __('Action') }}</th>
+                                                <th>{{ __('Job No.') }}</th>
                                                 <th>{{ __('Service Type') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Delivery Date') }}</th>
                                                 <th>{{ __('Due Date') }}</th>
-                                                <th>{{ __('Job No.') }}</th>
                                                 <th>{{ __('Shop/Business') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
                                                 <th>{{ __('Status') }}</th>

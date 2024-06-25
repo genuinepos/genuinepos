@@ -15,171 +15,228 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SaleService
 {
-    public function salesListTable(object $request, int $customerAccountId = null, int $saleScreen = null): object
+    public function salesListTable(object $request, int|string $customerAccountId = null, ?int $saleScreen = null): object
     {
         $generalSettings = config('generalSettings');
         $sales = '';
 
-        $query = DB::table('sales')
-            ->leftJoin('sales as salesOrder', 'sales.sales_order_id', 'salesOrder.id')
-            ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
-            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
-            ->where('sales.status', SaleStatus::Final->value);
+        $query = DB::table('sales');
+        $query->leftJoin('sales as salesOrder', 'sales.sales_order_id', 'salesOrder.id');
+        $query->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id');
+        $query->leftJoin('branches', 'sales.branch_id', 'branches.id');
+
+        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
+
+            $query->leftJoin('service_job_cards', 'sales.id', 'service_job_cards.sale_id');
+            $query->leftJoin('service_devices', 'service_job_cards.device_id', 'service_devices.id');
+            $query->leftJoin('service_device_models', 'service_job_cards.device_model_id', 'service_device_models.id');
+            $query->leftJoin('service_status', 'service_job_cards.status_id', 'service_status.id');
+        }
+
+        $query->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+        $query->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id');
+        $query->where('sales.status', SaleStatus::Final->value);
 
         $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
 
+        $jobCardData = [];
+        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
+
+            $jobCardData = [
+                'service_job_cards.id as job_card_id',
+                'service_job_cards.job_no',
+                'service_job_cards.delivery_date_ts',
+                'service_job_cards.serial_no',
+                'service_devices.name as device_name',
+                'service_device_models.name as device_model_name',
+                'service_status.name as status_name',
+                'service_status.color_code as status_color_code',
+            ];
+        }
+
         $sales = $query->select(
-            'sales.id',
-            'sales.branch_id',
-            'sales.invoice_id',
-            'sales.date',
-            'sales.total_item',
-            'sales.total_qty',
-            'sales.total_invoice_amount',
-            'sales.sale_return_amount',
-            'sales.paid as received_amount',
-            'sales.due',
-            'sales.is_return_available',
-            'sales.shipment_status',
-            'sales.sale_screen',
-            'salesOrder.id as sales_order_id',
-            'salesOrder.order_id',
-            'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
-            'branches.branch_code',
-            'parentBranch.name as parent_branch_name',
-            'customers.name as customer_name',
-            'created_by.prefix as created_prefix',
-            'created_by.name as created_name',
-            'created_by.last_name as created_last_name',
+            array_merge([
+                'sales.id',
+                'sales.branch_id',
+                'sales.invoice_id',
+                'sales.date',
+                'sales.total_item',
+                'sales.total_qty',
+                'sales.total_invoice_amount',
+                'sales.sale_return_amount',
+                'sales.paid as received_amount',
+                'sales.due',
+                'sales.is_return_available',
+                'sales.shipment_status',
+                'sales.sale_screen',
+                'salesOrder.id as sales_order_id',
+                'salesOrder.order_id',
+                'branches.name as branch_name',
+                'branches.area_name as branch_area_name',
+                'branches.branch_code',
+                'parentBranch.name as parent_branch_name',
+                'customers.name as customer_name',
+                'created_by.prefix as created_prefix',
+                'created_by.name as created_name',
+                'created_by.last_name as created_last_name'
+            ], $jobCardData)
         )->orderBy('sales.sale_date_ts', 'desc');
 
-        return DataTables::of($sales)
-            ->addColumn('action', function ($row) {
+        $dataTables = DataTables::of($sales);
 
-                $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('sales.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
+        $dataTables->addColumn('action', function ($row) {
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+            $html = '<div class="btn-group" role="group">';
+            $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+            $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+            $html .= '<a href="' . route('sales.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
-                    if ($row->sale_screen == SaleScreenType::AddSale->value) {
+            if (auth()->user()->branch_id == $row->branch_id) {
 
-                        if (auth()->user()->can('edit_add_sale')) {
+                if ($row->sale_screen == SaleScreenType::AddSale->value) {
 
-                            $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __('Edit') . '</a>';
-                        }
-                    } elseif ($row->sale_screen == SaleScreenType::PosSale->value) {
+                    if (auth()->user()->can('edit_add_sale')) {
 
-                        if (auth()->user()->can('pos_edit')) {
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                    }
+                } elseif ($row->sale_screen == SaleScreenType::PosSale->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
 
-                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '">' . __('Edit') . '</a>';
-                        }
+                    if (auth()->user()->can('pos_edit')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
                     }
                 }
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                if (auth()->user()->can('delete_add_sale')) {
 
-                    if (auth()->user()->can('delete_add_sale')) {
-
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
-                    }
+                    $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                 }
+            }
 
-                if (auth()->user()->can('shipment_access')) {
+            if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
-                }
+                $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
+            }
 
-                // if (auth()->user()->can('shipment_access')) {
+            // if (auth()->user()->can('shipment_access')) {
 
-                //     $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
-                // }
+            //     $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
+            // }
 
-                $html .= '</div>';
-                $html .= '</div>';
+            $html .= '</div>';
+            $html .= '</div>';
 
-                return $html;
-            })
-            ->editColumn('date', function ($row) use ($generalSettings) {
+            return $html;
+        });
+
+        $dataTables->editColumn('date', function ($row) use ($generalSettings) {
+
+            $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
+
+            return date($__date_format, strtotime($row->date));
+        });
+
+        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
+
+            $dataTables->editColumn('delivery_date', function ($row) use ($generalSettings) {
 
                 $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
-                return date($__date_format, strtotime($row->date));
-            })
-            ->editColumn('invoice_id', function ($row) {
+                return isset($row->delivery_date_ts) ? date($__date_format, strtotime($row->delivery_date_ts)) : '';
+            });
 
-                $html = '';
-                $html .= $row->invoice_id;
-                $html .= $row->shipment_status != ShipmentStatus::NoStatus->value && $row->shipment_status != ShipmentStatus::Cancelled->value ? ' <i class="fas fa-shipping-fast text-dark"></i>' : '';
-                $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
+            $dataTables->editColumn('job_no', function ($row) use ($generalSettings) {
 
-                $link = '';
-                $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+                if (isset($row->job_no)) {
 
-                if ($row->sales_order_id) {
-
-                    $link .= '<p class="p-0 m-0">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a>';
+                    return '<a href="' . route('services.job.cards.show', [$row->job_card_id]) . '" id="details_btn">' . $row->job_no . '</a>';
                 }
+            });
 
-                return $link;
-            })
-            ->editColumn('branch', function ($row) use ($generalSettings) {
+            $dataTables->editColumn('status_name', function ($row) use ($generalSettings) {
 
-                if ($row->branch_id) {
+                if (isset($row->status_name)) {
 
-                    if ($row->parent_branch_name) {
+                    return '<span class="fw-bold" style="color:' . $row->status_color_code . ';">' . $row->status_name . '</span>';
+                }
+            });
+        }
 
-                        return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
-                    } else {
+        $dataTables->editColumn('invoice_id', function ($row) {
 
-                        return $row->branch_name . '(' . $row->branch_area_name . ')';
-                    }
+            $html = '';
+            $html .= $row->invoice_id;
+            $html .= $row->shipment_status != ShipmentStatus::NoStatus->value && $row->shipment_status != ShipmentStatus::Cancelled->value ? ' <i class="fas fa-shipping-fast text-dark"></i>' : '';
+            $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
+
+            $link = '';
+            $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+
+            if ($row->sales_order_id) {
+
+                $link .= '<p class="p-0 m-0">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a>';
+            }
+
+            return $link;
+        });
+
+        $dataTables->editColumn('branch', function ($row) use ($generalSettings) {
+
+            if ($row->branch_id) {
+
+                if ($row->parent_branch_name) {
+
+                    return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                 } else {
 
-                    return $generalSettings['business_or_shop__business_name'];
+                    return $row->branch_name . '(' . $row->branch_area_name . ')';
                 }
-            })
-            ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
+            } else {
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+                return $generalSettings['business_or_shop__business_name'];
+            }
+        });
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+        $dataTables->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+        $dataTables->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
 
-            ->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
+        $dataTables->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
 
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->sale_return_amount) . '</span>')
+        $dataTables->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>');
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+        $dataTables->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>');
 
-            ->editColumn('payment_status', function ($row) {
+        $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->sale_return_amount) . '</span>');
 
-                $receivable = $row->total_invoice_amount - $row->sale_return_amount;
+        $dataTables->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>');
 
-                if ($row->due <= 0) {
+        $dataTables->editColumn('payment_status', function ($row) {
 
-                    return '<span class="text-success"><b>' . __('Paid') . '</span>';
-                } elseif ($row->due > 0 && $row->due < $receivable) {
+            $receivable = $row->total_invoice_amount - $row->sale_return_amount;
 
-                    return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
-                } elseif ($receivable == $row->due) {
+            if ($row->due <= 0) {
 
-                    return '<span class="text-danger"><b>' . __('Due') . '</b></span>';
-                }
-            })
+                return '<span class="text-success"><b>' . __('Paid') . '</span>';
+            } elseif ($row->due > 0 && $row->due < $receivable) {
 
-            ->editColumn('created_by', function ($row) {
+                return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
+            } elseif ($receivable == $row->due) {
 
-                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
-            })
+                return '<span class="text-danger"><b>' . __('Due') . '</b></span>';
+            }
+        });
 
-            ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'invoice_id', 'branch', 'customer', 'due', 'sale_return_amount', 'payment_status', 'created_by'])
-            ->make(true);
+        $dataTables->editColumn('created_by', function ($row) {
+
+            return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+        });
+
+        $jobCardRawCols = ['delivery_date', 'job_no', 'status_name'];
+
+        $dataTables->rawColumns(array_merge(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'invoice_id', 'branch', 'customer', 'due', 'sale_return_amount', 'payment_status', 'created_by'], $jobCardRawCols));
+
+        return $dataTables->make(true);
     }
 
     public function addSale(object $request, int $saleScreenType, object $codeGenerator, ?string $invoicePrefix, ?string $quotationPrefix, ?string $salesOrderPrefix): object
@@ -479,7 +536,7 @@ class SaleService
         return ['pass' => true];
     }
 
-    private function filteredQuery(object $request, object $query, int $customerAccountId = null, int $saleScreen = null)
+    private function filteredQuery(object $request, object $query, ?int $customerAccountId = null, int $saleScreen = null)
     {
         if ($request->branch_id) {
 
@@ -581,18 +638,5 @@ class SaleService
 
             return view('sales.print_templates.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts', 'printPageSize'));
         }
-    }
-
-    public function addSaleValidation(object $request): ?array
-    {
-        return $request->validate([
-            'status' => 'required',
-            'date' => 'required|date',
-            'sale_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'sale_account_id.required' => __('Sales A/c is required'),
-            'account_id.required' => __('Debit A/c is required'),
-        ]);
     }
 }

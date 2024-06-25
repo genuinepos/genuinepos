@@ -114,7 +114,7 @@
                                                         </select>
 
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
+                                                            <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                                         </div>
                                                     </div>
                                                     <span class="error error_customer_account_id"></span>
@@ -147,7 +147,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Service Type') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <select required name="service_type" class="form-control" id="service_type" data-next="status_id">
+                                                    <select required name="service_type" class="form-control" id="service_type" data-next="delivery_date">
                                                         @foreach (\App\Enums\ServiceType::cases() as $item)
                                                             <option value="{{ $item->value }}">{{ str($item->name)->headline() }}</option>
                                                         @endforeach
@@ -161,7 +161,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Pick Up/On site address') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="address" class="form-control" id="address" placeholder="{{ __('Pick up/On site address') }}">
+                                                    <input type="text" name="address" class="form-control" id="address" data-next="delivery_date" placeholder="{{ __('Pick up/On site address') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="brand_id" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -181,32 +181,34 @@
                             <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                                 <div class="element-body">
                                     <div class="row gx-2 gy-1">
-                                        <div class="col-md-4">
-                                            <div class="input-group flex-nowrap">
-                                                <label class="col-4"><b>{{ __('Brand.') }}</b></label>
-                                                <div class="col-8">
-                                                    <div class="input-group flex-nowrap">
-                                                        <select name="brand_id" class="form-control select2" id="brand_id">
-                                                            <option value="">{{ __('Select Brand') }}</option>
-                                                            @foreach ($brands as $brand)
-                                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                        @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
+                                            <div class="col-md-4">
+                                                <div class="input-group flex-nowrap">
+                                                    <label class="col-4"><b>{{ __('Brand.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <div class="input-group flex-nowrap">
+                                                            <select name="brand_id" class="form-control select2" id="brand_id" data-next="device_id">
+                                                                <option value="">{{ __('Select Brand') }}</option>
+                                                                @foreach ($brands as $brand)
+                                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                @endforeach
+                                                            </select>
 
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" id="{{ auth()->user()->can('product_brand_add') ? 'addBrand' : '' }}"><i class="fas fa-plus-square input_i"></i></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="col-md-4">
                                             <div class="input-group flex-nowrap">
                                                 <label class="col-4"><b>{{ __('Device') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="device_id" class="form-control select2" id="device_id">
+                                                        <select name="device_id" class="form-control select2" id="device_id" data-next="device_model_id">
                                                             <option value="">{{ __('Select Device') }}</option>
                                                             @foreach ($devices as $device)
                                                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
@@ -225,7 +227,7 @@
                                                 <label class="col-4"><b>{{ __('Device Model') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="device_model_id" class="form-control select2" id="device_model_id">
+                                                        <select name="device_model_id" class="form-control select2" id="device_model_id" data-next="serial_no">
                                                             <option value="">{{ __('Select Device Model') }}</option>
                                                             @foreach ($deviceModels as $deviceModel)
                                                                 <option data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
@@ -243,7 +245,7 @@
 
                                     <div class="row gx-2 gy-1 mt-1">
                                         <div class="col-md-12">
-                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>N/A = Not Applicable</small></p>
+                                            <p><span class="fw-bold">{{ __('Pre Servicing Checklist: ') }}</span> <small>{{ __('N/A = Not Applicable') }}</small></p>
                                         </div>
 
                                         <hr>
@@ -257,7 +259,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Serial Number') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="serial_no" class="form-control" id="serial_no" placeholder="{{ __('Serial Number') }}">
+                                                    <input type="text" name="serial_no" class="form-control" id="serial_no" data-next="password" placeholder="{{ __('Serial Number') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -266,7 +268,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Password') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="password" class="form-control" id="password" placeholder="{{ __('Password') }}">
+                                                    <input type="text" name="password" class="form-control" id="password" data-next="price_group_id" placeholder="{{ __('Password') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -277,7 +279,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Product Configuration') }}</b></label>
                                                 <div class="col-8">
-                                                    <input name="product_configuration" class="tags-look" id="product_configuration" placeholder="{{ __('Product Configuration') }}">
+                                                    <input name="product_configuration" class="tags-look" id="product_configuration" placeholder="{{ __('Product Configuration') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -286,7 +288,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Problem Reports') }}</b></label>
                                                 <div class="col-8">
-                                                    <input name="problems_report" class="tags-look" id="problems_report" placeholder="{{ __('Problem Reported By The Customer') }}">
+                                                    <input name="problems_report" class="tags-look" id="problems_report" placeholder="{{ __('Problem Reported By The Customer') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -295,7 +297,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Product Condition') }}</b></label>
                                                 <div class="col-8">
-                                                    <input name="product_condition" class="tags-look" id="product_condition" placeholder="{{ __('Condition Of The Product') }}">
+                                                    <input name="product_condition" class="tags-look" id="product_condition" placeholder="{{ __('Condition Of The Product') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -329,7 +331,7 @@
                                                 <label class="fw-bold">{{ __('Search Product') }}</label>
                                                 <div class="input-group">
                                                     <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
-                                                    @if (auth()->user()->can('product_add'))
+                                                    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                         </div>
@@ -366,13 +368,13 @@
 
                                         <div class="col-xl-2 col-md-6">
                                             <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                            <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                            <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00" autocomplete="off">
                                         </div>
 
                                         <div class="col-xl-2 col-md-6">
                                             <label class="fw-bold">{{ __('Discount') }}</label>
                                             <div class="input-group">
-                                                <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
+                                                <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00" autocomplete="off">
 
                                                 <select id="e_discount_type" class="form-control">
                                                     <option value="1">{{ __('Fixed') }}(0.00)</option>
@@ -445,7 +447,7 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Technician Comment') }}</b></label>
-                                                <input type="text" name="technician_comment" class="form-control" id="technician_comment" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
+                                                <input type="text" name="technician_comment" class="form-control" id="technician_comment" data-next="status_id" placeholder="{{ __('Technician Comment') }}" autocomplete="off">
                                             </div>
                                         </div>
 
@@ -454,7 +456,7 @@
                                                 <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select name="status_id" class="form-control select2" id="status_id" data-next="save_and_print">
+                                                        <select name="status_id" class="form-control select2" id="status_id" data-next="due_date">
                                                             <option value="">{{ __('Select Status') }}</option>
                                                             @foreach ($status as $status)
                                                                 @php
@@ -497,7 +499,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Due Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="due_date" class="form-control" id="due_date" placeholder="{{ __('Due Date') }}" autocomplete="off">
+                                                    <input type="text" name="due_date" class="form-control" id="due_date" data-next="custom_field_1" placeholder="{{ __('Due Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -524,21 +526,21 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_1" class="form-control" id="custom_field_1" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_1" class="form-control" id="custom_field_1" data-next="custom_field_2" placeholder="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_2" class="form-control" id="custom_field_2" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_2" class="form-control" id="custom_field_2" data-next="custom_field_3" placeholder="{{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 1') }}</b></label>
-                                                <input type="text" name="custom_field_3" class="form-control" id="custom_field_3" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_3" class="form-control" id="custom_field_3" data-next="custom_field_4" placeholder="{{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }}" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -547,14 +549,14 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}</b></label>
-                                                <input type="text" name="custom_field_4" class="form-control" id="custom_field_4" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_4" class="form-control" id="custom_field_4" data-next="custom_field_5" placeholder="{{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }}" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}</b></label>
-                                                <input type="text" name="custom_field_5" class="form-control" id="custom_field_5" data-next="code" placeholder="{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}" autocomplete="off">
+                                                <input type="text" name="custom_field_5" class="form-control" id="custom_field_5" data-next="save_and_print" placeholder="{{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }}" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -582,11 +584,11 @@
 
     <div class="modal fade" id="statusAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 
-    @if (auth()->user()->can('customer_add'))
+    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
         <div class="modal fade" id="addOrEditContactModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
 
-    @if (auth()->user()->can('product_add'))
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
         <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
         <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
@@ -594,9 +596,11 @@
         <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 
-    <!-- Add Brand Modal -->
-    <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
-    <!-- Add Brand Modal End -->
+    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_brand_add'))
+        <!-- Add Brand Modal -->
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <!-- Add Brand Modal End -->
+    @endif
 @endsection
 @push('scripts')
     @include('services.job_cards.js_partials.create_js')

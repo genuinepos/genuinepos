@@ -9,7 +9,11 @@ use App\Services\Products\UnitService;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\UnitEditRequest;
+use App\Http\Requests\Products\UnitIndexRequest;
 use App\Http\Requests\Products\UnitStoreRequest;
+use App\Http\Requests\Products\UnitCreateRequest;
+use App\Http\Requests\Products\UnitDeleteRequest;
 use App\Http\Requests\Products\UnitUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 
@@ -19,10 +23,8 @@ class UnitController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(UnitIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('product_unit_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->unitService->unitsTable();
@@ -31,10 +33,8 @@ class UnitController extends Controller
         return view('product.units.index');
     }
 
-    public function create($isAllowedMultipleUnit = 0)
+    public function create($isAllowedMultipleUnit = 0, UnitCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('product_unit_add'), 403);
-
         $baseUnits = $this->unitService->units()->where('base_unit_id', null)->get();
 
         return view('product.units.ajax_view.create', compact('baseUnits', 'isAllowedMultipleUnit'));
@@ -57,10 +57,8 @@ class UnitController extends Controller
         return $addUnit;
     }
 
-    public function edit($id)
+    public function edit($id, UnitEditRequest $request)
     {
-        abort_if(!auth()->user()->can('product_unit_edit'), 403);
-
         $unit = $this->unitService->singleUnit(id: $id);
         $baseUnits = $this->unitService->units()->where('base_unit_id', null)->get();
 
@@ -87,10 +85,8 @@ class UnitController extends Controller
         return response()->json(__('Unit is updated Successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id, UnitDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('product_unit_delete'), 403);
-
         try {
             DB::beginTransaction();
 

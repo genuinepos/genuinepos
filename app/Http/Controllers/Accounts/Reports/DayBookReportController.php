@@ -11,7 +11,6 @@ class DayBookReportController extends Controller
 {
     public function __construct(private DayBookReportService $dayBookReportService, private BranchService $branchService)
     {
-        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

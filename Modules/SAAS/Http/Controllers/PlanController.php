@@ -3,7 +3,11 @@
 namespace Modules\SAAS\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Modules\SAAS\Http\Requests\PlanEditRequest;
+use Modules\SAAS\Http\Requests\PlanIndexRequest;
 use Modules\SAAS\Http\Requests\PlanStoreRequest;
+use Modules\SAAS\Http\Requests\PlanCreateRequest;
+use Modules\SAAS\Http\Requests\PlanDeleteRequest;
 use Modules\SAAS\Http\Requests\PlanUpdateRequest;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;
@@ -16,19 +20,15 @@ class PlanController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(PlanIndexRequest $request)
     {
-        abort_unless(auth()->user()->can('plans_index'), 403);
-
         $plans = $this->planServiceInterface->plans()->paginate();
 
         return view('saas::plans.index', compact('plans'));
     }
 
-    public function create()
+    public function create(PlanCreateRequest $request)
     {
-        abort_unless(auth()->user()->can('plans_create'), 403);
-
         $features = config('planfeatures');
 
         return view('saas::plans.create', compact('features'));
@@ -43,13 +43,11 @@ class PlanController extends Controller
             return response()->json(['errorMsg' => $storePlan['msg']]);
         }
 
-        return response()->json('Plan created successfully!');
+        return response()->json(__('Plan created successfully!'));
     }
 
     public function show($id)
     {
-        abort_unless(auth()->user()->can('plans_show'), 403);
-
         return view('saas::plans.show');
     }
 
@@ -58,10 +56,8 @@ class PlanController extends Controller
         return $this->planServiceInterface->singlePlanById(id: $id);
     }
 
-    public function edit($id)
+    public function edit($id, PlanEditRequest $request)
     {
-        abort_unless(auth()->user()->can('plans_update'), 403);
-
         $features = config('planfeatures');
 
         $plan = $this->planServiceInterface->singlePlanById(id: $id);
@@ -78,10 +74,10 @@ class PlanController extends Controller
             return response()->json(['errorMsg' => $updatePlan['msg']]);
         }
 
-        return response()->json('Plan updated successfully!');
+        return response()->json(__('Plan updated successfully!'));
     }
 
-    public function destroy($id)
+    public function destroy($id, PlanDeleteRequest $request)
     {
         $deletePlan = $this->planServiceInterface->deletePlan(id: $id);
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
+use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Services\TenantServiceInterface;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
@@ -57,6 +58,7 @@ class UpdatePaymentStatusController extends Controller
         }
 
         DB::reconnect();
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         return response()->json(__('Payment Status is updated successfully.'));
     }

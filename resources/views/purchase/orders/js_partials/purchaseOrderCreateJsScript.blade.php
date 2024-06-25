@@ -1088,7 +1088,7 @@
     });
 </script>
 
-@if (auth()->user()->can('supplier_add'))
+@if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
     <script>
         $('#addContact').on('click', function(e) {
 
@@ -1127,7 +1127,7 @@
     </script>
 @endif
 
-@if (auth()->user()->can('product_add'))
+@if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
     <script>
         $('#addProduct').on('click', function() {
 

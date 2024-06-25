@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\ManageSupplierService;
+use App\Http\Requests\Contacts\ManageSupplierRequest;
+use App\Http\Requests\Contacts\ManageSupplierIndexRequest;
 
 class ManageSupplierController extends Controller
 {
@@ -18,10 +19,8 @@ class ManageSupplierController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(ManageSupplierIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('supplier_manage') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
-
         if ($request->ajax()) {
 
             return $this->manageSupplierService->supplierListTable($request);
@@ -38,10 +37,8 @@ class ManageSupplierController extends Controller
         return view('contacts.manage_suppliers.index', compact('branches'));
     }
 
-    public function manage($id)
+    public function manage($id, ManageSupplierRequest $request)
     {
-        abort_if(!auth()->user()->can('supplier_manage') || config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value, 403);
-
         $contact = $this->contactService->singleContact(id: $id, with: ['account:id,contact_id']);
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();

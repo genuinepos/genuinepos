@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\UserActivityLogActionType;
@@ -10,7 +9,11 @@ use App\Enums\UserActivityLogSubjectType;
 use App\Services\Products\BulkVariantService;
 use App\Services\Users\UserActivityLogService;
 use App\Services\Products\BulkVariantChildService;
+use App\Http\Requests\Products\BulkVariantEditRequest;
+use App\Http\Requests\Products\BulkVariantIndexRequest;
 use App\Http\Requests\Products\BulkVariantStoreRequest;
+use App\Http\Requests\Products\BulkVariantCreateRequest;
+use App\Http\Requests\Products\BulkVariantDeleteRequest;
 use App\Http\Requests\Products\BulkVariantUpdateRequest;
 
 class BulkVariantController extends Controller
@@ -22,10 +25,8 @@ class BulkVariantController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(BulkVariantIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('product_variant_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->bulkVariantService->bulkVariantListTable();
@@ -34,10 +35,8 @@ class BulkVariantController extends Controller
         return view('product.bulk_variants.index');
     }
 
-    public function create()
+    public function create(BulkVariantCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('product_variant_add'), 403);
-
         return view('product.bulk_variants.ajax_view.create');
     }
 
@@ -58,10 +57,8 @@ class BulkVariantController extends Controller
         return response()->json(__('Bulk Variant created Successfully'));
     }
 
-    public function edit($id)
+    public function edit($id, BulkVariantEditRequest $request)
     {
-        abort_if(!auth()->user()->can('product_variant_edit'), 403);
-
         $bulkVariant = $this->bulkVariantService->singleBulkVariant(id: $id, with: ['bulkVariantChild']);
 
         return view('product.bulk_variants.ajax_view.edit', compact('bulkVariant'));
@@ -84,10 +81,8 @@ class BulkVariantController extends Controller
         return response()->json(__('Bulk Variant is updated successfully'));
     }
 
-    public function delete($id, Request $request)
+    public function delete($id, BulkVariantDeleteRequest $request)
     {
-        abort_if(!auth()->user()->can('product_variant_delete'), 403);
-
         try {
             DB::beginTransaction();
 

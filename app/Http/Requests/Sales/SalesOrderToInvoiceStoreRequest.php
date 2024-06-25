@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sales;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SalesOrderToInvoiceStoreRequest extends FormRequest
@@ -11,7 +12,7 @@ class SalesOrderToInvoiceStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sales_order_to_invoice');
+        return auth()->user()->can('sales_order_to_invoice') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Contacts;
 
 use Exception;
-use Illuminate\Http\Request;
 use App\Imports\SupplierImport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -13,7 +12,8 @@ use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Interfaces\CodeGenerationServiceInterface;
-use App\Http\Requests\Contacts\SupplierImportRequest;
+use App\Http\Requests\Contacts\SupplierImportStoreRequest;
+use App\Http\Requests\Contacts\SupplierImportCreateRequest;
 
 class SupplierImportController extends Controller
 {
@@ -26,14 +26,12 @@ class SupplierImportController extends Controller
     ) {
     }
 
-    public function create()
+    public function create(SupplierImportCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('supplier_import'), 403);
-
         return view('contacts.import_suppliers.create');
     }
 
-    public function store(SupplierImportRequest $request)
+    public function store(SupplierImportStoreRequest $request)
     {
         try {
             DB::beginTransaction();

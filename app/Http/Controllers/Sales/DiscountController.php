@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sales\DiscountEditRequest;
+use App\Http\Requests\Sales\DiscountIndexRequest;
 use App\Http\Requests\Sales\DiscountStoreRequest;
+use App\Http\Requests\Sales\DiscountCreateRequest;
+use App\Http\Requests\Sales\DiscountDeleteRequest;
 use App\Http\Requests\Sales\DiscountUpdateRequest;
+use App\Http\Requests\Sales\DiscountChangeStatusRequest;
 use App\Interfaces\Sales\DiscountControllerMethodContainersInterface;
 
 class DiscountController extends Controller
 {
-    public function index(Request $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
+    public function index(DiscountIndexRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('discounts'), 403);
-
         $indexMethodContainer = $discountControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -25,10 +27,8 @@ class DiscountController extends Controller
         return view('sales.discounts.index');
     }
 
-    public function create(DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
+    public function create(DiscountCreateRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('discounts'), 403);
-
         $createMethodContainer = $discountControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -57,7 +57,7 @@ class DiscountController extends Controller
         return response()->json(__('Discount created successfully'));
     }
 
-    public function edit($id, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
+    public function edit($id, DiscountEditRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
         $editMethodContainer = $discountControllerMethodContainersInterface->editMethodContainer(id: $id);
 
@@ -87,13 +87,13 @@ class DiscountController extends Controller
         return response()->json(__('Discount updated successfully'));
     }
 
-    public function delete($id, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
+    public function delete($id, DiscountDeleteRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
         $discountControllerMethodContainersInterface->deleteMethodContainer(id: $id);
         return response()->json(__('Discount deleted successfully'));
     }
 
-    public function changeStatus($id, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
+    public function changeStatus($id, DiscountChangeStatusRequest $request, DiscountControllerMethodContainersInterface $discountControllerMethodContainersInterface)
     {
         $discountControllerMethodContainersInterface->changeStatusMethodContainer(id: $id);
         return response()->json(__('Discount status has been changed successfully'));

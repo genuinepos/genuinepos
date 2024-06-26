@@ -146,7 +146,7 @@
 
         if ($('#supplier_account_id').val() == '') {
 
-            toastr.error('Please select a listed supplier first.');
+            toastr.error("{{ __('Please select a listed supplier first.') }}");
             $(this).val('');
             return;
         }

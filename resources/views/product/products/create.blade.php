@@ -302,7 +302,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Unit Cost(Exc. Tax)") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="product_cost" placeholder="0.00" value="{{ isset($product) ? $product->product_cost : '' }}" data-next="tax_ac_id" autocomplete="off">
+                                                        <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="product_cost" placeholder="0.00" value="{{ isset($product) ? $product->product_cost : '' }}" data-next="{{$generalSettings['product__is_enable_price_tax'] == '1' ? 'tax_ac_id' : 'profit' }}" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>

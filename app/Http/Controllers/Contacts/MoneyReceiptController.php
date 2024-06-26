@@ -7,31 +7,28 @@ use App\Http\Controllers\Controller;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\MoneyReceiptService;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Contacts\MoneyReceiptEditRequest;
+use App\Http\Requests\Contacts\MoneyReceiptIndexRequest;
 use App\Http\Requests\Contacts\MoneyReceiptStoreRequest;
+use App\Http\Requests\Contacts\MoneyReceiptCreateRequest;
 use App\Http\Requests\Contacts\MoneyReceiptDeleteRequest;
 use App\Http\Requests\Contacts\MoneyReceiptUpdateRequest;
 
 class MoneyReceiptController extends Controller
 {
-    public function __construct(
-        private MoneyReceiptService $moneyReceiptService,
-        private ContactService $contactService
-    ) {
+    public function __construct(private MoneyReceiptService $moneyReceiptService, private ContactService $contactService)
+    {
     }
 
-    public function index($contactId)
+    public function index($contactId, MoneyReceiptIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('money_receipt_index'), 403);
-
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch', 'moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch', 'moneyReceiptsOfOwnBranch.branch.parentBranch']);
 
         return view('contacts.money_receipts.index', compact('contact'));
     }
 
-    public function create($contactId)
+    public function create($contactId, MoneyReceiptCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('money_receipt_add'), 403);
-
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch']);
 
         return view('contacts.money_receipts.create', compact('contact'));
@@ -54,10 +51,8 @@ class MoneyReceiptController extends Controller
         return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 
-    public function edit($receiptId)
+    public function edit($receiptId, MoneyReceiptEditRequest $request)
     {
-        abort_if(!auth()->user()->can('money_receipt_edit'), 403);
-
         try {
             DB::beginTransaction();
 

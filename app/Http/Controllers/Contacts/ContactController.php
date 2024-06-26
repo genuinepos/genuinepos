@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Enums\ContactType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Contacts\ContactEditRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Contacts\ContactStoreRequest;
+use App\Http\Requests\Contacts\ContactCreateRequest;
 use App\Http\Requests\Contacts\ContactDeleteRequest;
 use App\Http\Requests\Contacts\ContactUpdateRequest;
 use App\Interfaces\Contacts\ContactControllerMethodContainersInterface;
 
 class ContactController extends Controller
 {
-    public function create($type, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
+    public function create($type, ContactCreateRequest $request, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
     {
-        if ($type == ContactType::Customer->value) {
-
-            abort_if(!auth()->user()->can('customer_add'), 403);
-        } elseif ($type == ContactType::Supplier->value) {
-
-            abort_if(!auth()->user()->can('supplier_add'), 403);
-        }
-
         $createMethodContainer = $contactControllerMethodContainersInterface->createMethodContainer(type: $type);
 
         extract($createMethodContainer);
@@ -47,16 +39,8 @@ class ContactController extends Controller
         return $storeMethodContainer;
     }
 
-    public function edit($id, $type, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
+    public function edit($id, $type, ContactEditRequest $request, ContactControllerMethodContainersInterface $contactControllerMethodContainersInterface)
     {
-        if ($type == ContactType::Customer->value) {
-
-            abort_if(!auth()->user()->can('customer_edit'), 403);
-        } elseif ($type == ContactType::Supplier->value) {
-
-            abort_if(!auth()->user()->can('supplier_edit'), 403);
-        }
-
         $editMethodContainer = $contactControllerMethodContainersInterface->editMethodContainer(id: $id, type: $type);
 
         extract($editMethodContainer);

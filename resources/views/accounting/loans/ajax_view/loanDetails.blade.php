@@ -168,9 +168,9 @@
                     </td>
                 </tr>
 
-                @if (env('PRINT_SD_PAYMENT') == true)
+                @if (config('speeddigit.show_app_info_in_print') == true)
                     <tr>
-                        <td colspan="2" class="text-center">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></td>
+                        <td colspan="2" class="text-center">{{ config('speeddigit.app_name_label_name') }} <b>{{ config('speeddigit.name') }}</b> | {{ __("M:") }} {{ config('speeddigit.phone') }}</td>
                     </tr>
                 @endif
             </tbody>

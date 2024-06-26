@@ -58,14 +58,14 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     ) {
     }
 
-    public function indexMethodContainer(int|string $customerAccountId = null, string $saleScreen = null, object $request): array|object
+    public function indexMethodContainer(object $request): array|object
     {
         $data = [];
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
 
-            $customerAccountId = $customerAccountId == 'null' ? null : $customerAccountId;
-            return $this->saleService->salesListTable(request: $request, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
-        }
+        //     $customerAccountId = $customerAccountId == 'null' ? null : $customerAccountId;
+        //     return $this->saleService->salesListTable(request: $request, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
+        // }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -85,6 +85,13 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'salesOrder:id,order_id',
+
+            'jobCard',
+            'jobCard.status',
+            'jobCard.brand',
+            'jobCard.device',
+            'jobCard.deviceModel',
+
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',
@@ -138,7 +145,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ->get(['accounts.id', 'accounts.name']);
 
         $data['warehouses'] = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $data['taxAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')

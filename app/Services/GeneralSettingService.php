@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
 
 class GeneralSettingService implements GeneralSettingServiceInterface
@@ -17,14 +18,21 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
             foreach ($settings as $key => $value) {
 
-                if (isset($key) && isset($value)) {
+                // if (isset($key) && isset($value)) {
+                if (isset($key)) {
 
-                    if (($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix')) {
+                    $exists = GeneralSetting::where('key', $key)->where('branch_id', null)->first();
+                    if (isset($exists)) {
 
-                        continue;
+                        $exists->update(['value' => $value]);
+                    } else {
+
+                        GeneralSetting::insert([
+                            'key' => $key,
+                            'value' => $value,
+                            'branch_id' => null,
+                        ]);
                     }
-
-                    GeneralSetting::where('key', $key)->where('branch_id', null)->update(['value' => $value]);
                 }
             }
 
@@ -100,6 +108,8 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
         $businessLogo->value = null;
         $businessLogo->save();
+
+        $this->cacheService->forgetGeneralSettingsCache();
 
         return true;
     }

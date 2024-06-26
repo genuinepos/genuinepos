@@ -32,6 +32,8 @@ Route::prefix('setups')->group(function () {
         Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
         Route::post('send/sms/settings', 'sendSmsSettings')->name('settings.send.sms.settings');
         Route::post('rp/settings', 'rewardPointSettings')->name('settings.reward.point.settings');
+        Route::post('service/settings', 'serviceSettings')->name('settings.service.settings');
+        Route::post('pdf/label/settings', 'servicePdfAndLabelSettings')->name('settings.pdf.and.label.settings');
         Route::delete('delete/business/logo', 'deleteBusinessLogo')->name('settings.business.logo.delete');
     });
 
@@ -64,6 +66,8 @@ Route::prefix('setups')->group(function () {
             Route::post('send/email/{id}', 'sendEmailSettings')->name('branches.settings.send.email');
             Route::post('send/sms/{id}', 'sendSmsSettings')->name('branches.settings.sms');
             Route::post('reward/point/{id}', 'rewardPointSettings')->name('branches.settings.reward.point');
+            Route::post('service/{id}', 'serviceSettings')->name('branches.settings.service.settings');
+            Route::post('pdf/label/{id}', 'servicePdfAndLabelSettings')->name('branches.settings.pdf.and.label.settings');
         });
     });
 

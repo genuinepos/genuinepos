@@ -7,6 +7,7 @@ use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Enums\PaymentStatus;
 use Illuminate\Http\Request;
+use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
@@ -178,6 +179,8 @@ class SalesReportController extends Controller
 
     private function filter(object $request, object $query): object
     {
+        $generalSettings = config('generalSettings');
+
         if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
@@ -213,6 +216,48 @@ class SalesReportController extends Controller
             } elseif ($request->payment_status == PaymentStatus::Due->value) {
 
                 $query->where('sales.paid', '=', 0);
+            }
+        }
+
+        $saleScreenTypes = [
+            auth()->user()->can('view_add_sale') ? SaleScreenType::AddSale->value : null,
+            auth()->user()->can('pos_all') ? SaleScreenType::PosSale->value : null,
+            auth()->user()->can('service_invoices_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value ? SaleScreenType::ServicePosSale->value : null,
+        ];
+
+        $query->whereIn('sales.sale_screen', $saleScreenTypes);
+
+        // if (auth()->user()->can('service_invoices_only_own')) {
+
+        //     $query->where(function ($query) {
+
+        //         if ($query->sale_screen == SaleScreenType::ServicePosSale->value) {
+        //             $query->where('sales.created_by_id', auth()->user()->id);
+        //         }
+        //     });
+        // }
+
+        // if (auth()->user()->can('view_own_sale')) {
+
+        //     $query->where(function ($query) {
+
+        //         if ($query->sale_screen == SaleScreenType::PosSale->value) {
+        //             $query->where('sales.created_by_id', auth()->user()->id);
+        //         }
+        //     });
+        // }
+
+        if ($generalSettings['subscription']->features['sales'] == BooleanType::True->value) {
+
+            if (auth()->user()->can('view_own_sale')) {
+
+                $query->where('sales.created_by_id', auth()->user()->id);
+            }
+        } else if ($generalSettings['subscription']->features['sales'] == BooleanType::False->value && auth()->user()->can('service_invoices_index') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == BooleanType::True->value) {
+
+            if (auth()->user()->can('service_invoices_only_own')) {
+
+                $query->where('sales.created_by_id', auth()->user()->id);
             }
         }
 

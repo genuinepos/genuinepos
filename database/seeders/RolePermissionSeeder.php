@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         // echo 'Start'.PHP_EOL;
+        // Artisan::call('optimize:clear');
         Artisan::call('permission:cache-reset');
         $this->truncateRolePermissionDataButKeepOldData();
         $this->createRolePermission();
@@ -94,6 +95,7 @@ class RolePermissionSeeder extends Seeder
 
                 $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
                 $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
+                $hasServiceInvoicesOnlyOwnPermission = $role->hasPermissionTo('service_invoices_only_own');
                 $hasShopIndexPermission = $role->hasPermissionTo('branches_index');
                 $hasShopCreatePermission = $role->hasPermissionTo('branches_create');
                 $hasShopEditPermission = $role->hasPermissionTo('branches_edit');
@@ -110,6 +112,7 @@ class RolePermissionSeeder extends Seeder
 
                         $role->revokePermissionTo('user_activities_log_only_own_log');
                         $role->revokePermissionTo('view_own_sale');
+                        $role->revokePermissionTo('service_invoices_only_own');
                     }
 
                     if ($role->id == 2) {
@@ -122,6 +125,11 @@ class RolePermissionSeeder extends Seeder
                         if (!$hasViewOwnSalePermission) {
 
                             $role->revokePermissionTo('view_own_sale');
+                        }
+
+                        if (!$hasServiceInvoicesOnlyOwnPermission) {
+
+                            $role->revokePermissionTo('service_invoices_only_own');
                         }
 
                         if (!$hasShopIndexPermission) {
@@ -149,6 +157,7 @@ class RolePermissionSeeder extends Seeder
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('has_access_to_all_area');
                     $role->revokePermissionTo('view_own_sale');
+                    $role->revokePermissionTo('service_invoices_only_own');
                     $role->revokePermissionTo('branches_index');
                     $role->revokePermissionTo('branches_create');
                     $role->revokePermissionTo('branches_edit');
@@ -555,6 +564,42 @@ class RolePermissionSeeder extends Seeder
             ['id' => '409', 'name' => 'allowances_and_deductions_create'],
             ['id' => '410', 'name' => 'allowances_and_deductions_edit'],
             ['id' => '411', 'name' => 'allowances_and_deductions_delete'],
+
+            ['id' => '412', 'name' => 'status_index'],
+            ['id' => '413', 'name' => 'status_create'],
+            ['id' => '414', 'name' => 'status_edit'],
+            ['id' => '415', 'name' => 'status_delete'],
+
+            ['id' => '416', 'name' => 'devices_index'],
+            ['id' => '417', 'name' => 'devices_create'],
+            ['id' => '418', 'name' => 'devices_edit'],
+            ['id' => '419', 'name' => 'devices_delete'],
+
+            ['id' => '420', 'name' => 'device_models_index'],
+            ['id' => '421', 'name' => 'device_models_create'],
+            ['id' => '422', 'name' => 'device_models_edit'],
+            ['id' => '423', 'name' => 'device_models_delete'],
+
+            ['id' => '424', 'name' => 'servicing_settings'],
+            ['id' => '425', 'name' => 'job_card_pdf_print_label_settings'],
+
+            ['id' => '426', 'name' => 'job_cards_index'],
+            ['id' => '427', 'name' => 'job_cards_create'],
+            ['id' => '428', 'name' => 'job_cards_edit'],
+            ['id' => '429', 'name' => 'job_cards_delete'],
+            ['id' => '430', 'name' => 'job_cards_generate_pdf'],
+            ['id' => '431', 'name' => 'job_cards_generate_label'],
+            ['id' => '432', 'name' => 'job_cards_change_status'],
+
+            ['id' => '433', 'name' => 'service_invoices_index'],
+            ['id' => '434', 'name' => 'service_invoices_create'],
+            ['id' => '435', 'name' => 'service_invoices_edit'],
+            ['id' => '436', 'name' => 'service_invoices_delete'],
+
+            ['id' => '437', 'name' => 'supplier_ledger'],
+            ['id' => '438', 'name' => 'customer_ledger'],
+
+            ['id' => '439', 'name' => 'service_invoices_only_own'],
         ];
 
         return $permissions;

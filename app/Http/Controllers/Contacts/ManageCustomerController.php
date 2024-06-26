@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\ManageCustomerService;
+use App\Http\Requests\Contacts\ManageCustomerRequest;
+use App\Http\Requests\Contacts\ManageCustomerIndexRequest;
 
 class ManageCustomerController extends Controller
 {
@@ -18,10 +19,8 @@ class ManageCustomerController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(ManageCustomerIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_manage'), 403);
-
         if ($request->ajax()) {
 
             return $this->manageCustomerService->customerListTable($request);
@@ -36,10 +35,8 @@ class ManageCustomerController extends Controller
         return view('contacts.manage_customers.index', compact('branches'));
     }
 
-    public function manage($id)
+    public function manage($id, ManageCustomerRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_manage'), 403);
-
         $contact = $this->contactService->singleContact(id: $id, with: [
             'account:id,contact_id,branch_id',
             'account.branch:id,name,branch_code,parent_branch_id',

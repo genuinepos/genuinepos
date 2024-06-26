@@ -20,13 +20,18 @@ class CurrentAssetsCashFlowService
 
         $query = DB::table('account_groups')
             ->where('account_groups.sub_group_number', 1)
-            ->where('account_groups.sub_sub_group_number', '!=', 6)
+            // ->where('account_groups.sub_sub_group_number', '!=', 6)
             ->leftJoin('accounts', 'account_groups.id', 'accounts.account_group_id')
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
-            ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
+            ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id')
+            ->whereNotIn('account_groups.id', function ($query) {
+                $query->select('id')
+                    ->from('account_groups')
+                    ->whereIn('sub_sub_group_number', [6]);
+            });
 
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)

@@ -2,6 +2,7 @@
 
 namespace App\Services\Setups;
 
+use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
 use App\Models\Setups\BranchSetting;
 use App\Services\CacheServiceInterface;
@@ -96,6 +97,7 @@ class BranchSettingService
             ['key' => 'prefix__payroll_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRL', 'branch_id' => $branchId],
             ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRLP', 'branch_id' => $branchId],
             ['key' => 'prefix__stock_issue_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'STI', 'branch_id' => $branchId],
+            ['key' => 'prefix__job_card_no_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'JOB', 'branch_id' => $branchId],
             ['key' => 'prefix__supplier_id', 'value' => $branchPrefix . $numberOfChildBranch . 'S', 'branch_id' => $branchId],
             ['key' => 'prefix__customer_id', 'value' => $branchPrefix . $numberOfChildBranch . 'C', 'branch_id' => $branchId],
             // ['id' => '103', 'key' => 'email_setting__MAIL_MAILER', 'value' => 'smtp', 'branch_id' => null],
@@ -163,6 +165,47 @@ class BranchSettingService
             ['key' => 'print_page_size__payroll_payment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__bom_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__production_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+
+            ['key' => 'service_settings__default_status_id', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__default_checklist', 'value' => 'Display | Camera | Buttery', 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__product_configuration', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__default_problems_report', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__product_condition', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__terms_and_condition', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__custom_field_1_label', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__custom_field_2_label', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__custom_field_3_label', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__custom_field_4_label', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings__custom_field_5_label', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+
+            ['key' => 'service_settings_pdf_label__show_customer_info', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_label_name', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_contact_id', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_id_label_name', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_customer_tax_no', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_tax_no_label_name', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_1', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_2', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_3', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_4', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__show_custom_field_5', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__label_width', 'value' => 75, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__label_height', 'value' => 55, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_name_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_address_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_phone_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_alt_phone_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__customer_email_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__sales_person_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__barcode_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__status_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__due_date_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__technician_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__problems_in_label_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__job_card_no_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__serial_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__model_in_label', 'value' => 1, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
+            ['key' => 'service_settings_pdf_label__password_in_label', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
         ];
 
         foreach ($generalSettings as $setting) {
@@ -178,17 +221,14 @@ class BranchSettingService
         }
     }
 
-    public function updateAndSync(array $settings, int $branchId): void
+    public function updateAndSync(array $settings, ?int $branchId): void
     {
         if (is_array($settings)) {
 
             foreach ($settings as $key => $value) {
 
-                if (isset($key) && isset($value)) {
-
-                    if (($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix')) {
-                        continue;
-                    }
+                // if (isset($key) && isset($value)) {
+                if (isset($key)) {
 
                     $branchSetting = GeneralSetting::where('branch_id', $branchId)->where('key', $key)->first();
                     if ($branchSetting) {

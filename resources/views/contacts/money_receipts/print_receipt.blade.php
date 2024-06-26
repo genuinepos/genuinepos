@@ -92,11 +92,11 @@
 
                     <p>
                         @if ($moneyReceipt?->branch)
-                            <strong>@lang('menu.email') : </strong>{{ $moneyReceipt?->branch?->email }},
-                            <strong>@lang('menu.phone') : </strong>{{ $moneyReceipt?->branch?->phone }}
+                            <strong>{{ __("Email") }} : </strong>{{ $moneyReceipt?->branch?->email }},
+                            <strong>{{ __("Phone") }} : </strong>{{ $moneyReceipt?->branch?->phone }}
                         @else
-                            <strong>@lang('menu.email') : </strong>{{ $generalSettings['business_or_shop__email'] }},
-                            <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business_or_shop__phone'] }}
+                            <strong>{{ __("Email") }} : </strong>{{ $generalSettings['business_or_shop__email'] }},
+                            <strong>{{ __("Phone") }} : </strong>{{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -231,11 +231,11 @@
                     <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
-                <div class="col-4 text-center">
+                {{-- <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
                         <small class="d-block" style="font-size: 9px!important;">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
                     @endif
-                </div>
+                </div> --}}
 
                 <div class="col-4 text-end">
                     <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>

@@ -71,11 +71,13 @@
         font-size: 8px !important;
     }
 </style>
+
 @php
     $dateFormat = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $currency = $generalSettings['business_or_shop__currency_symbol'];
 @endphp
+
 <div class="print_area">
     <div class="row" style="border-bottom: 1px solid black;">
         <div class="col-4 mb-1">
@@ -284,8 +286,8 @@
             </div>
 
             <div class="col-4 text-center">
-                @if (config('company.print_on_sale'))
-                    <small>{{ __('Powered By') }} <strong>{{ __('Speed Digit Software Solution') }}.</strong></small>
+                @if (config('speeddigit.show_app_info_in_print') == true)
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 

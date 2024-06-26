@@ -2234,7 +2234,8 @@ table.display tbody tr:hover {
 }
 
 .dataTables_wrapper {
-    margin-top: 13px;
+    /* margin-top: 13px; */
+    margin-top: 0px;
     border-top: 0;
 }
 

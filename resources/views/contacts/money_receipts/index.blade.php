@@ -169,9 +169,7 @@
                                             {{ App\Utils\Converter::format_in_bdt($receipt->amount) }}
                                         </td>
 
-                                        <td>
-                                            {{ $receipt->status }}
-                                        </td>
+                                        <td>{{ $receipt->status }}</td>
 
                                         <td>
                                             <div class="btn-group" role="group">

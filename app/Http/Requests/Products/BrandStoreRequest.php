@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BrandStoreRequest extends FormRequest
@@ -11,7 +12,12 @@ class BrandStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_brand_add');
+        // $inventory = (config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value) ? true : false;
+        // $services = (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value) ? true : false;
+
+        // $inventoryOrServices = ($inventory || $services) ? true : false;
+
+        return auth()->user()->can('product_brand_add') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**

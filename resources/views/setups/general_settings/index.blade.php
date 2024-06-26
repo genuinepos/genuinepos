@@ -192,7 +192,6 @@
                                 @endif
 
                                 @if (auth()->user()->can('add_sale_settings'))
-
                                     @include('setups.general_settings.partials.view_partials.add_sale_settings')
                                 @endif
 
@@ -209,7 +208,6 @@
                                 @endif
 
                                 @if (auth()->user()->can('invoice_layout_settings'))
-
                                     @include('setups.general_settings.partials.view_partials.invoice_layout_settings')
                                 @endif
 
@@ -262,10 +260,25 @@
     @include('setups.general_settings.partials.js_partials.prefix_settings_js')
     @include('setups.general_settings.partials.js_partials.print_settings_js')
     @include('setups.general_settings.partials.js_partials.invoice_layout_settings_js')
-    @include('setups.general_settings.partials.js_partials.product_settings_js')
+
+    @if (auth()->user()->can('product_settings'))
+        @include('setups.general_settings.partials.js_partials.product_settings_js')
+    @endif
+
     @include('setups.general_settings.partials.js_partials.purchase_settings_js')
-    @include('setups.general_settings.partials.js_partials.add_sale_settings_js')
-    @include('setups.general_settings.partials.js_partials.pos_settings_js')
+
+    @if (auth()->user()->can('manufacturing_settings'))
+        @include('setups.general_settings.partials.js_partials.manufacturing_settings_js')
+    @endif
+
+    @if (auth()->user()->can('add_sale_settings'))
+        @include('setups.general_settings.partials.js_partials.add_sale_settings_js')
+    @endif
+
+    @if (auth()->user()->can('pos_sale_settings'))
+        @include('setups.general_settings.partials.js_partials.pos_settings_js')
+    @endif
+
     @include('setups.general_settings.partials.js_partials.system_settings_js')
     @include('setups.general_settings.partials.js_partials.reward_point_settings_js')
     @include('setups.general_settings.partials.js_partials.module_settings_js')

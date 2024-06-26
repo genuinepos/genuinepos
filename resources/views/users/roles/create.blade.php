@@ -236,8 +236,14 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="supplier_manage" id="supplier_manage" class="contacts contact_all">
-                                                    <label for="supplier_manage">{{ __('Manage Supplier') }}</label>
+                                                    <label for="supplier_manage">{{ __('Supplier Manage') }}</label>
                                                 </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="supplier_ledger" id="supplier_ledger" class="contacts contact_all">
+                                                    <label for="supplier_ledger">{{ __('Supplier Ledger') }}</label>
+                                                </p>
+
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="supplier_add" id="supplier_add" class="contacts contact_all">
                                                     <label for="supplier_add">{{ __('Add Supplier') }}</label>
@@ -269,8 +275,14 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="customer_manage" id="customer_manage" class="contacts customer_all">
-                                                    <label for="customer_manage">{{ __('Manage Customer') }}</label>
+                                                    <label for="customer_manage">{{ __('Customer Manage') }}</label>
                                                 </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="customer_ledger" id="customer_ledger" class="contacts customer_all">
+                                                    <label for="customer_ledger">{{ __('Customer Ledger') }}</label>
+                                                </p>
+
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="customer_add" id="customer_add" class="contacts customer_all">
                                                     <label for="customer_add">{{ __('Add Customer') }}</label>
@@ -625,6 +637,7 @@
                             </div>
                         </div>
 
+
                         <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">
                                 <div class="accordion-header d-flex">
@@ -653,7 +666,7 @@
 
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="purchased_product_list" id="purchased_product_list" class="purchase purchase_all">
-                                                    <label for="purchase_all">{{ __('Purchased_product_list') }}</label>
+                                                    <label for="purchase_all">{{ __('Purchased Product List') }}</label>
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
@@ -691,6 +704,10 @@
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="purchase_order_edit" id="purchase_order_edit" class="purchase purchase_order">
                                                     <label for="purchase_order_edit">{{ __('Purchase Order Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_to_invoice" id="purchase_order_to_invoice" class="purchase purchase_order">
+                                                    <label for="purchase_order_to_invoice">{{ __('P/o To Purchase Invoice') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="purchase_order_delete" id="purchase_order_delete" class="purchase purchase_order">
@@ -1023,7 +1040,7 @@
                                                     <label for="edit_sales_return">{{ __('Edit Sales Return') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_add_sales_return" id="delete_sales_return" class="sales sales_reurn">
+                                                    <input type="checkbox" name="delete_sales_return" id="delete_sales_return" class="sales sales_reurn">
                                                     <label for="delete_sales_return">{{ __('Delete Sales Return') }}</label>
                                                 </p>
                                             </div>
@@ -1392,6 +1409,45 @@
                                                     <label for="cash_counters_delete">{{ __('Cash Counter Delete') }}</label>
                                                 </p>
                                             </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="setup" id="select_all" data-target="billing" autocomplete="off">
+                                                        <strong>{{ __('Billing') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="billing_index" id="billing_index" class="billing setup">
+                                                    <label for="billing_index">{{ __('View Billing') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="billing_upgrade_plan" id="billing_upgrade_plan" class="billing setup">
+                                                    <label for="billing_upgrade_plan">{{ __('Upgrade Plan') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="billing_business_add" id="billing_business_add" class="billing setup">
+                                                    <label for="billing_business_add">{{ __('Add Multi Shop Management System/Company') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="billing_branch_add" id="billing_branch_add" class="billing setup">
+                                                    <label for="billing_branch_add">{{ __('Add/Increase Shop') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="billing_renew_branch" id="billing_renew_branch" class="billing setup">
+                                                    <label for="billing_renew_branch">{{ __('Renew Shop') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="billing_pay_due_payment" id="billing_pay_due_payment" class="billing setup">
+                                                    <label for="billing_pay_due_payment">{{ __('Pay Due Payment') }}</label>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1702,7 +1758,6 @@
                             </div>
                         </div>
 
-
                         <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">
                                 <div class="accordion-header d-flex">
@@ -1833,37 +1888,37 @@
                                             </div>
                                         </div>
 
-                                            <div class="row mt-3">
-                                                <div class="col-lg-3 col-sm-6">
-                                                    <p class="text-info checkbox_input_wrap">
-                                                        <label>
-                                                            <input type="checkbox" class="hrms" id="select_all" data-target="allowances_and_deductions" autocomplete="off">
-                                                            <strong>{{ __('Allowances & Deductions') }}</strong>
-                                                        </label>
-                                                    </p>
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="hrms" id="select_all" data-target="allowances_and_deductions" autocomplete="off">
+                                                        <strong>{{ __('Allowances & Deductions') }}</strong>
+                                                    </label>
+                                                </p>
 
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_and_deductions_index" id="allowances_and_deductions_index" class="hrms allowances_and_deductions">
-                                                        <label for="allowances_and_deductions_index">{{ __('Allowance & Deduction List') }}</label>
-                                                    </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="allowances_and_deductions_index" id="allowances_and_deductions_index" class="hrms allowances_and_deductions">
+                                                    <label for="allowances_and_deductions_index">{{ __('Allowance & Deduction List') }}</label>
+                                                </p>
 
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_and_deductions_create" id="allowances_and_deductions_create" class="hrms allowances_and_deductions">
-                                                        <label for="allowances_and_deductions_create"> {{ __('Allowance & Deduction Add') }}</label>
-                                                    </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="allowances_and_deductions_create" id="allowances_and_deductions_create" class="hrms allowances_and_deductions">
+                                                    <label for="allowances_and_deductions_create"> {{ __('Allowance & Deduction Add') }}</label>
+                                                </p>
 
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_and_deductions_edit" id="allowances_and_deductions_edit" class="hrms allowances_and_deductions">
-                                                        <label for="allowances_and_deductions_edit"> {{ __('Allowance & Deduction Edit') }}</label>
-                                                    </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="allowances_and_deductions_edit" id="allowances_and_deductions_edit" class="hrms allowances_and_deductions">
+                                                    <label for="allowances_and_deductions_edit"> {{ __('Allowance & Deduction Edit') }}</label>
+                                                </p>
 
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="allowances_and_deductions_delete" id="allowances_and_deductions_delete" class="hrms allowances_and_deductions">
-                                                        <label for="allowances_and_deductions_delete">{{ __('Allowance & Deduction Delete') }}</label>
-                                                    </p>
-                                                </div>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="allowances_and_deductions_delete" id="allowances_and_deductions_delete" class="hrms allowances_and_deductions">
+                                                    <label for="allowances_and_deductions_delete">{{ __('Allowance & Deduction Delete') }}</label>
+                                                </p>
+                                            </div>
 
-                                                {{-- <div class="col-lg-3 col-sm-6">
+                                            {{-- <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
                                                             <input type="checkbox" class="hrms" id="select_all" data-target="deductions" autocomplete="off">
@@ -1871,21 +1926,20 @@
                                                         </label>
                                                     </p>
 
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="deductions_index" id="deductions_index" class="hrms deductions">
-                                                    <label for="deductions_index">{{ __('Deduction List') }}</label>
-                                                </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="deductions_index" id="deductions_index" class="hrms deductions">
+                                                        <label for="deductions_index">{{ __('Deduction List') }}</label>
+                                                    </p>
 
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="deductions_create" id="deductions_create" class="hrms deductions">
-                                                    <label for="deductions_create"> {{ __('Deduction Add') }}</label>
-                                                </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="deductions_create" id="deductions_create" class="hrms deductions">
+                                                        <label for="deductions_create"> {{ __('Deduction Add') }}</label>
+                                                    </p>
 
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="deductions_edit" id="deductions_edit" class="hrms deductions">
-                                                    <label for="deductions_edit"> {{ __('Deduction Edit') }}</label>
-                                                </p>
-
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="deductions_edit" id="deductions_edit" class="hrms deductions">
+                                                        <label for="deductions_edit"> {{ __('Deduction Edit') }}</label>
+                                                    </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="deductions_delete" id="deductions_delete" class="hrms deductions">
@@ -1950,9 +2004,7 @@
                                                     <label for="departments_delete">{{ __('Department Delete') }}</label>
                                                 </p>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-3">
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
@@ -1981,8 +2033,9 @@
                                                     <label for="designations_delete">{{ __('Designation Delete') }}</label>
                                                 </p>
                                             </div>
+                                        </div>
 
-
+                                        <div class="row mt-3">
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
@@ -2171,35 +2224,6 @@
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
-                                                        <input type="checkbox" class="memos" id="select_all" data-target="memos" autocomplete="off">
-                                                        <strong>{{ __('Memos') }}</strong>
-                                                    </label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="memos_index" id="memos_index" class="memos task_management">
-                                                    <label for="memos_index"> {{ __('Memo List') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="memos_create" id="memos_create" class="memos task_management">
-                                                    <label for="memos_create"> {{ __('Memo Add') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="memos_edit" id="memos_edit" class="memos task_management">
-                                                    <label for="memos_edit">{{ __('Memo Edit') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="memos_delete" id="memos_delete" class="memos task_management">
-                                                    <label for="msg">{{ __('Memo Delete') }}</label>
-                                                </p>
-                                            </div>
-
-                                            <div class="col-lg-3 col-sm-6">
-                                                <p class="text-info checkbox_input_wrap">
-                                                    <label>
                                                         <input type="checkbox" class="messages" id="select_all" data-target="messages" autocomplete="off">
                                                         <strong>{{ __('Messages') }}</strong>
                                                     </label>
@@ -2281,6 +2305,181 @@
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="manufacturing_report" id="manufacturing_report" class="manufacturings manufacturing_all">
                                                     <label for="manufacturing_report">{{ __('Manufacturing Report') }}</label>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item mb-1">
+                            <div class="form_element rounded mt-0 mb-0">
+                                <div class="accordion-header d-flex">
+                                    <p class="checkbox_input_wrap ">
+                                        <input type="checkbox" class="ms-2" id="select_all" data-target="services" autocomplete="off">
+                                    </p>
+                                    <a data-bs-toggle="collapse" class="collapsed" href="#service_permission" aria-expanded="false">
+                                        {{ __('Service Permissions') }}
+                                    </a>
+                                </div>
+                                <div id="service_permission" class="collapse" data-bs-parent="#service_permission" style="">
+                                    <div class="element-body border-top">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="service_settings" id="select_all" data-target="service_settings" autocomplete="off">
+                                                        <strong>{{ __('Settings') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="status_index" id="status_index" class="service_settings services">
+                                                    <label for="status_index">{{ __('Status View') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="status_create" id="status_create" class="service_settings services">
+                                                    <label for="status_create">{{ __('Status Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="status_edit" id="status_edit" class="service_settings services">
+                                                    <label for="status_edit">{{ __('Status Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="status_delete" id="status_delete" class="service_settings services">
+                                                    <label for="status_delete"> {{ __('Status Delete') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="devices_index" id="devices_index" class="service_settings services">
+                                                    <label for="devices_index">{{ __('Device View') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="devices_create" id="devices_create" class="service_settings services">
+                                                    <label for="devices_create"> {{ __('Device Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="devices_edit" id="devices_edit" class="service_settings services">
+                                                    <label for="devices_edit"> {{ __('Device Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="devices_delete" id="devices_delete" class="service_settings services">
+                                                    <label for="devices_delete">{{ __('Device Delete') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="device_models_index" id="device_models_index" class="service_settings services">
+                                                    <label for="device_models_index">{{ __('Device Model View') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="device_models_create" id="device_models_create" class="service_settings services">
+                                                    <label for="device_models_create"> {{ __('Device Model Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="device_models_edit" id="device_models_edit" class="service_settings services">
+                                                    <label for="device_models_edit"> {{ __('Device Model Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="device_models_delete" id="device_models_delete" class="service_settings services">
+                                                    <label for="device_models_delete">{{ __('Device Model Delete') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="servicing_settings" id="servicing_settings" class="service_settings services">
+                                                    <label for="servicing_settings">{{ __('Servicing Settings') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_card_pdf_print_label_settings" id="job_card_pdf_print_label_settings" class="service_settings services">
+                                                    <label for="job_card_pdf_print_label_settings">{{ __('Job Card Print/Pdf & Label Settings') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="job_cards" id="select_all" data-target="job_cards" autocomplete="off">
+                                                        <strong>{{ __('Job Cards') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_index" id="job_cards_index" class="job_cards services">
+                                                    <label for="job_cards_index">{{ __('Job Card View') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_create" id="job_cards_create" class="job_cards services">
+                                                    <label for="job_cards_create">{{ __('Job Card Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_edit" id="job_cards_edit" class="job_cards services">
+                                                    <label for="job_cards_edit">{{ __('Job Card Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_delete" id="job_cards_delete" class="job_cards services">
+                                                    <label for="job_cards_delete"> {{ __('Job Card Delete') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_generate_pdf" id="job_cards_generate_pdf" class="job_cards services">
+                                                    <label for="job_cards_generate_pdf">{{ __('Job Card Generate Pdf') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_generate_label" id="job_cards_generate_label" class="job_cards services">
+                                                    <label for="job_cards_generate_label">{{ __('Job Card Generate Label') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="job_cards_change_status" id="job_cards_change_status" class="job_cards services">
+                                                    <label for="job_cards_change_status"> {{ __('Job Card Change Status') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="service_invoices" id="select_all" data-target="service_invoices" autocomplete="off">
+                                                        <strong>{{ __('Invoices') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="service_invoices_index" id="service_invoices_index" class="service_invoices services">
+                                                    <label for="service_invoices_index">{{ __('Invoice List') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="service_invoices_only_own" id="service_invoices_only_own" class="service_invoices services">
+                                                    <label for="service_invoices_only_own">{{ __('Invoice Only Created By Own') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="service_invoices_create" id="job_cards_create" class="service_invoices services">
+                                                    <label for="service_invoices_create">{{ __('Invoice Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="service_invoices_edit" id="service_invoices_edit" class="service_invoices services">
+                                                    <label for="service_invoices_edit">{{ __('Invoice Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="service_invoices_delete" id="service_invoices_delete" class="service_invoices services">
+                                                    <label for="service_invoices_delete"> {{ __('Invoice Delete') }}</label>
                                                 </p>
                                             </div>
                                         </div>

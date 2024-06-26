@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -64,6 +65,8 @@ class GeneralSettingsListener
                     'reward_point_settings__',
                     'send_email__',
                     'send_sms__',
+                    'service_settings__',
+                    'service_settings_pdf_label__',
                 ];
 
                 $cacheKey = "parentBranchGeneralSettings_{$branch->parent_branch_id}";
@@ -197,6 +200,8 @@ class GeneralSettingsListener
                 // 'mail.mailers.smtp.timeout' => $generalSettings['email_config__MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
                 // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
             ]);
+
+
 
             $dateFormat = $generalSettings['business_or_shop__date_format'];
             $__date_format = str_replace('-', '/', $dateFormat);

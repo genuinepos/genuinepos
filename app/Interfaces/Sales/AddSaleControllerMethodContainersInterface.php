@@ -7,7 +7,7 @@ interface AddSaleControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService
      */
-    public function indexMethodContainer(int|string $customerAccountId = null, ?string $saleScreen = null, object $request): array|object;
+    public function indexMethodContainer(object $request): array|object;
 
     public function createMethodContainer(): ?array;
 

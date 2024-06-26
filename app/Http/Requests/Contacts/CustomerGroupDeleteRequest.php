@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Contacts;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CustomerGroupDeleteRequest extends FormRequest

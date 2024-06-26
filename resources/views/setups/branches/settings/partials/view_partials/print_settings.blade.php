@@ -8,83 +8,85 @@
     <div class="form-group row mt-3">
         <div class="col-md-6">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Add Sale') }}</label>
-                        <div class="col-md-9">
-                            <select name="add_sale_page_size" class="form-control" id="add_sale_page_size">
-                                @foreach (\App\Enums\PrintPageSize::cases() as $item)
-                                    <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                @endforeach
-                            </select>
+                @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Add Sale') }}</label>
+                            <div class="col-md-9">
+                                <select name="add_sale_page_size" class="form-control" id="add_sale_page_size">
+                                    @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                        <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-1">
-                    <div class="input-group">
-                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('pos Sale') }}</label>
-                        <div class="col-md-9">
-                            <select name="pos_sale_page_size" class="form-control" id="pos_sale_page_size">
-                                @foreach (\App\Enums\PrintPageSize::cases() as $item)
-                                    <option {{ $generalSettings['print_page_size__pos_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                @endforeach
-                            </select>
+                    <div class="col-md-12 mt-1">
+                        <div class="input-group">
+                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('pos Sale') }}</label>
+                            <div class="col-md-9">
+                                <select name="pos_sale_page_size" class="form-control" id="pos_sale_page_size">
+                                    @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                        <option {{ $generalSettings['print_page_size__pos_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-1">
-                    <div class="input-group">
-                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Quotation') }}</label>
-                        <div class="col-md-9">
-                            <select name="quotation_page_size" class="form-control" id="quotation_page_size">
-                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                    <option {{ $generalSettings['print_page_size__quotation_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                @endforeach
-                            </select>
+                    <div class="col-md-12 mt-1">
+                        <div class="input-group">
+                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Quotation') }}</label>
+                            <div class="col-md-9">
+                                <select name="quotation_page_size" class="form-control" id="quotation_page_size">
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__quotation_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-1">
-                    <div class="input-group">
-                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Sales Order') }}</label>
-                        <div class="col-md-9">
-                            <select name="sales_order_page_size" class="form-control" id="sales_order_page_size">
-                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                    <option {{ $generalSettings['print_page_size__sales_order_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                @endforeach
-                            </select>
+                    <div class="col-md-12 mt-1">
+                        <div class="input-group">
+                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Sales Order') }}</label>
+                            <div class="col-md-9">
+                                <select name="sales_order_page_size" class="form-control" id="sales_order_page_size">
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__sales_order_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-1">
-                    <div class="input-group">
-                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Draft') }}</label>
-                        <div class="col-md-9">
-                            <select name="draft_page_size" class="form-control" id="draft_page_size">
-                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                    <option {{ $generalSettings['print_page_size__draft_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                @endforeach
-                            </select>
+                    <div class="col-md-12 mt-1">
+                        <div class="input-group">
+                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Draft') }}</label>
+                            <div class="col-md-9">
+                                <select name="draft_page_size" class="form-control" id="draft_page_size">
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__draft_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12 mt-1">
-                    <div class="input-group">
-                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Sales Return') }}</label>
-                        <div class="col-md-9">
-                            <select name="sales_return_page_size" class="form-control" id="sales_return_page_size">
-                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                    <option {{ $generalSettings['print_page_size__sales_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                @endforeach
-                            </select>
+                    <div class="col-md-12 mt-1">
+                        <div class="input-group">
+                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Sales Return') }}</label>
+                            <div class="col-md-9">
+                                <select name="sales_return_page_size" class="form-control" id="sales_return_page_size">
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__sales_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="col-md-12 mt-1">
                     <div class="input-group">

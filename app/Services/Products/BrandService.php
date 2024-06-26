@@ -31,12 +31,12 @@ class BrandService
 
                 if (auth()->user()->can('product_brand_edit')) {
 
-                    $html .= '<a href="' . route('brands.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('brands.edit', [$row->id]) . '" class="action-btn c-edit" id="editBrand" title="Edit"><span class="fas fa-edit"></span></a>';
                 }
 
                 if (auth()->user()->can('product_brand_delete')) {
 
-                    $html .= '<a href="' . route('brands.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="' . route('brands.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteBrand" title="Delete"><span class="fas fa-trash "></span></a>';
                 }
                 $html .= '</div>';
 

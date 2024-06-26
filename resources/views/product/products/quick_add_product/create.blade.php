@@ -81,7 +81,7 @@
                                     </select>
 
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ !auth()->user()->can('product_unit_add')? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_unit_add')? 'addUnit()': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('product_unit_add') ? 'disabled_element' : '' }} add_button" onclick="{{ auth()->user()->can('product_unit_add') ? 'addUnit();' : '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                     </div>
                                 </div>
                                 <span class="error error_unit_id"></span>
@@ -98,7 +98,7 @@
                                             @endforeach
                                         </select>
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text {{ !auth()->user()->can('product_category_add')? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_brand_add')? 'addCategory()': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                            <span class="input-group-text {{ !auth()->user()->can('product_category_add') ? 'disabled_element' : '' }} add_button" onclick="{{ auth()->user()->can('product_brand_add') ? 'addCategory();' : '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                         </div>
                                     </div>
                                     <span class="error error_category_id"></span>
@@ -126,7 +126,7 @@
                                         </select>
 
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" onclick="{{ auth()->user()->can('product_brand_add')? 'addBrand();': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add') ? 'disabled_element' : '' }}" onclick="{{ auth()->user()->can('product_brand_add') ? 'addBrand();' : '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
                                             @endforeach
                                         </select>
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text {{ !auth()->user()->can('product_warranty_add')? 'disabled_element': '' }} add_button" onclick="{{ auth()->user()->can('product_warranty_add')? 'addWarranty();': '' }} return false;"><i class="fas fa-plus-square input_i"></i><span>
+                                            <span class="input-group-text {{ !auth()->user()->can('product_warranty_add') ? 'disabled_element' : '' }} add_button" onclick="{{ auth()->user()->can('product_warranty_add') ? 'addWarranty();' : '' }} return false;"><i class="fas fa-plus-square input_i"></i><span>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@
 
                             <div class="col-md-4">
                                 <label><b>{{ __('Alert Quantity') }}</b></label>
-                                <input type="number" step="any" name="alert_quantity" class="form-control" id="quick_alert_quantity" value="0" data-next="quick_product_branch_id" autocomplete="off">
+                                <input type="number" step="any" name="alert_quantity" class="form-control" id="quick_alert_quantity" value="0" data-next="quick_product_access_branch_id" autocomplete="off">
                             </div>
                         </div>
 
@@ -217,7 +217,7 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label><b>{{ __('Unit Cost(Exc. Tax)') }}</b></label>
-                                <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="quick_product_cost" placeholder="0.00" data-next="quick_product_tax_ac_id" autocomplete="off">
+                                <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="quick_product_cost" placeholder="0.00" data-next="{{$generalSettings['product__is_enable_price_tax'] == '1' ? 'quick_product_tax_ac_id' : 'quick_product_profit' }}" autocomplete="off">
                             </div>
                         </div>
 
@@ -357,9 +357,9 @@
 
     function costCalculate() {
 
-        var tax_percent = $('#quick_product_tax_ac_id').find('option:selected').data('tax_percent');
+        var tax_percent = $('#quick_product_tax_ac_id').find('option:selected').data('tax_percent') ? $('#quick_product_tax_ac_id').find('option:selected').data('tax_percent') : 0;
         var product_cost = $('#quick_product_cost').val() ? $('#quick_product_cost').val() : 0;
-        var tax_type = $('#quick_product_tax_type').val();
+        var tax_type = $('#quick_product_tax_type').val() ? $('#quick_product_tax_type').val() : 1;
         var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
 
         if (tax_type == 2) {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\PrintPageSize;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 use App\Services\Products\UnitService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
@@ -12,7 +14,6 @@ use App\Services\Products\PriceGroupService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
 use App\Http\Requests\Setups\GeneralSettingsRequest;
-use Intervention\Image\Facades\Image;
 
 class GeneralSettingController extends Controller
 {
@@ -218,6 +219,7 @@ class GeneralSettingController extends Controller
             'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix ? $request->payroll_voucher_prefix : 'PRL',
             'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix ? $request->payroll_payment_voucher_prefix : 'RRLP',
             'prefix__stock_issue_voucher_prefix' => $request->stock_issue_voucher_prefix ? $request->stock_issue_voucher_prefix : 'ST',
+            'prefix__job_card_no_prefix' => $request->job_card_no_prefix ? $request->job_card_no_prefix : 'JOB',
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];
@@ -242,25 +244,25 @@ class GeneralSettingController extends Controller
     public function printPageSizeSettings(Request $request)
     {
         $settings = [
-            'print_page_size__add_sale_page_size' => $request->add_sale_page_size,
-            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size,
-            'print_page_size__quotation_page_size' => $request->quotation_page_size,
-            'print_page_size__sales_order_page_size' => $request->sales_order_page_size,
-            'print_page_size__draft_page_size' => $request->draft_page_size,
-            'print_page_size__sales_return_page_size' => $request->sales_return_page_size,
-            'print_page_size__purchase_page_size' => $request->purchase_page_size,
-            'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size,
-            'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size,
-            'print_page_size__transfer_stock_voucher_page_size' => $request->transfer_stock_voucher_page_size,
-            'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size,
-            'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size,
-            'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
-            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
-            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,
-            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size,
+            'print_page_size__add_sale_page_size' => $request->add_sale_page_size ? $request->add_sale_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size ? $request->pos_sale_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__quotation_page_size' => $request->quotation_page_size ? $request->quotation_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__sales_order_page_size' => $request->sales_order_page_size ? $request->sales_order_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__draft_page_size' => $request->draft_page_size ? $request->draft_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__sales_return_page_size' => $request->sales_return_page_size ? $request->sales_return_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__purchase_page_size' => $request->purchase_page_size ? $request->purchase_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size ? $request->purchase_order_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size ? $request->purchase_return_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__transfer_stock_voucher_page_size' => $request->transfer_stock_voucher_page_size ? $request->transfer_stock_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size ? $request->stock_adjustment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size ? $request->receipt_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size ? $request->payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size ? $request->payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size ? $request->payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size ? $request->payroll_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size ? $request->payroll_payment_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size ? $request->bom_voucher_page_size : PrintPageSize::AFourPage->value,
+            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size ? $request->production_voucher_page_size : PrintPageSize::AFourPage->value,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -286,6 +288,7 @@ class GeneralSettingController extends Controller
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
             'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
             'modules__pos' => isset($request->pos) ? 1 : 0,
+            'modules__service' => isset($request->service) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
@@ -345,6 +348,65 @@ class GeneralSettingController extends Controller
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json(__('Reward point settings updated successfully'));
+    }
+
+    public function serviceSettings(Request $request)
+    {
+        $settings = [
+            'service_settings__default_status_id' => $request->default_status_id,
+            'service_settings__default_checklist' => $request->default_checklist,
+            'service_settings__product_configuration' => $request->product_configuration,
+            'service_settings__default_problems_report' => $request->default_problems_report,
+            'service_settings__product_condition' => $request->product_condition,
+            'service_settings__terms_and_condition' => $request->terms_and_condition,
+            'service_settings__custom_field_1_label' => $request->custom_field_1_label,
+            'service_settings__custom_field_2_label' => $request->custom_field_2_label,
+            'service_settings__custom_field_3_label' => $request->custom_field_3_label,
+            'service_settings__custom_field_4_label' => $request->custom_field_4_label,
+            'service_settings__custom_field_5_label' => $request->custom_field_5_label,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Servicing settings updated successfully'));
+    }
+
+    public function servicePdfAndLabelSettings(Request $request)
+    {
+        $settings = [
+            'service_settings_pdf_label__show_customer_info' => $request->show_customer_info,
+            'service_settings_pdf_label__customer_label_name' => $request->customer_label_name,
+            'service_settings_pdf_label__show_contact_id' => $request->show_contact_id,
+            'service_settings_pdf_label__customer_id_label_name' => $request->customer_id_label_name,
+            'service_settings_pdf_label__show_customer_tax_no' => $request->show_customer_tax_no,
+            'service_settings_pdf_label__customer_tax_no_label_name' => $request->customer_tax_no_label_name,
+            'service_settings_pdf_label__show_custom_field_1' => $request->show_custom_field_1,
+            'service_settings_pdf_label__show_custom_field_2' => $request->show_custom_field_2,
+            'service_settings_pdf_label__show_custom_field_3' => $request->show_custom_field_3,
+            'service_settings_pdf_label__show_custom_field_4' => $request->show_custom_field_4,
+            'service_settings_pdf_label__show_custom_field_5' => $request->show_custom_field_5,
+            'service_settings_pdf_label__label_width' => $request->label_width,
+            'service_settings_pdf_label__label_height' => $request->label_height,
+            'service_settings_pdf_label__customer_name_in_label' => $request->customer_name_in_label,
+            'service_settings_pdf_label__customer_address_in_label' => $request->customer_address_in_label,
+            'service_settings_pdf_label__customer_phone_in_label' => $request->customer_phone_in_label,
+            'service_settings_pdf_label__customer_alt_phone_in_label' => $request->customer_alt_phone_in_label,
+            'service_settings_pdf_label__customer_email_in_label' => $request->customer_email_in_label,
+            'service_settings_pdf_label__sales_person_in_label' => $request->sales_person_in_label,
+            'service_settings_pdf_label__barcode_in_label' => $request->barcode_in_label,
+            'service_settings_pdf_label__status_in_label' => $request->status_in_label,
+            'service_settings_pdf_label__due_date_in_label' => $request->due_date_in_label,
+            'service_settings_pdf_label__technician_in_label' => $request->technician_in_label,
+            'service_settings_pdf_label__problems_in_label' => $request->problems_in_label,
+            'service_settings_pdf_label__job_card_no_in_label' => $request->job_card_no_in_label,
+            'service_settings_pdf_label__serial_in_label' => $request->serial_in_label,
+            'service_settings_pdf_label__model_in_label' => $request->model_in_label,
+            'service_settings_pdf_label__password_in_label' => $request->password_in_label,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Job card print/pdf & label setup updated successfully'));
     }
 
     public function deleteBusinessLogo(Request $request)

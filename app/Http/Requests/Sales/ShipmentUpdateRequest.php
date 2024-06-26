@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Sales;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShipmentUpdateRequest extends FormRequest
@@ -11,7 +12,7 @@ class ShipmentUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('shipment_access');
+        return auth()->user()->can('shipment_access') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

@@ -145,7 +145,6 @@
 
     function expenseAccounts() {
 
-        console.log('expenseAccounts');
         var branch_id = $('#branch_id').val();
         var child_branch_id = $('#child_branch_id').val();
         var expense_group_id = $('#expense_group_id').val();

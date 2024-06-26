@@ -240,10 +240,10 @@
     </div>
 </div>
 
-@if (env('PRINT_SD_OTHERS') == 'true')
+@if (config('speeddigit.show_app_info_in_print') == true)
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+            <small>{{ config('speeddigit.app_name_label_name') }} <b>{{ config('speeddigit.name') }}</b> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
         </div>
     </div>
 @endif

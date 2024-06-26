@@ -3,27 +3,27 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Enums\SaleStatus;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\CodeGenerationService;
+use App\Http\Requests\Sales\AddSaleEditRequest;
+use App\Http\Requests\Sales\AddSaleIndexRequest;
 use App\Http\Requests\Sales\AddSaleStoreRequest;
+use App\Http\Requests\Sales\AddSaleCreateRequest;
 use App\Http\Requests\Sales\AddSaleDeleteRequest;
 use App\Http\Requests\Sales\AddSaleUpdateRequest;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 
 class AddSalesController extends Controller
 {
-    public function index(Request $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, $customerAccountId = null, $saleScreen = null)
+    public function index(AddSaleIndexRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('view_add_sale'), 403);
+        $indexMethodContainer = $addSaleControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
-        $indexMethodContainer = $addSaleControllerMethodContainersInterface->indexMethodContainer(customerAccountId: $customerAccountId, saleScreen: $saleScreen, request: $request);
+        // if ($request->ajax()) {
 
-        if ($request->ajax()) {
-
-            return $indexMethodContainer;;
-        }
+        //     return $indexMethodContainer;;
+        // }
 
         extract($indexMethodContainer);
 
@@ -39,10 +39,8 @@ class AddSalesController extends Controller
         return view('sales.add_sale.ajax_views.show', compact('sale'));
     }
 
-    public function create(AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
+    public function create(AddSaleCreateRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('create_add_sale'), 403);
-
         $createMethodContainer = $addSaleControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -79,10 +77,8 @@ class AddSalesController extends Controller
         }
     }
 
-    public function edit($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
+    public function edit($id, AddSaleEditRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('edit_add_sale'), 403);
-
         $editMethodContainer = $addSaleControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

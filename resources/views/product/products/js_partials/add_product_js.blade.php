@@ -42,6 +42,7 @@
     function costCalculate() {
 
         var taxPercent = $('#tax_ac_id').find('option:selected').data('tax_percent') ? $('#tax_ac_id').find('option:selected').data('tax_percent') : 0;
+        
         var productCostExcTax = $('#product_cost').val() ? $('#product_cost').val() : 0;
         var tax_type = $('#tax_type').val() ? $('#tax_type').val() : 1;
         var taxAmount = parseFloat(productCostExcTax) / 100 * parseFloat(taxPercent);

@@ -286,8 +286,8 @@
             </div>
 
             <div class="col-4 text-center">
-                @if (config('company.print_on_sale'))
-                    <small>{{ __('Powered By') }} <strong>{{ __('Speed Digit Software Solution') }}.</strong></small>
+                @if (config('speeddigit.show_app_info_in_print') == true)
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 

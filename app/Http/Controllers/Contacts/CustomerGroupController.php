@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Contacts\CustomerGroupService;
+use App\Http\Requests\Contacts\CustomerGroupEditRequest;
+use App\Http\Requests\Contacts\CustomerGroupIndexRequest;
 use App\Http\Requests\Contacts\CustomerGroupStoreRequest;
+use App\Http\Requests\Contacts\CustomerGroupCreateRequest;
 use App\Http\Requests\Contacts\CustomerGroupDeleteRequest;
 use App\Http\Requests\Contacts\CustomerGroupUpdateRequest;
 
@@ -21,10 +22,8 @@ class CustomerGroupController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(CustomerGroupIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_group'), 403);
-
         if ($request->ajax()) {
 
             return $this->customerGroupService->customerGroupsTable($request);
@@ -35,10 +34,8 @@ class CustomerGroupController extends Controller
         return view('contacts.customer_group.index', compact('branches'));
     }
 
-    public function create()
+    public function create(CustomerGroupCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_group'), 403);
-
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
         return view('contacts.customer_group.ajax_view.create', compact('priceGroups'));
@@ -51,10 +48,8 @@ class CustomerGroupController extends Controller
         return response()->json(__('Customer group added successfully'));
     }
 
-    public function edit($id)
+    public function edit($id, CustomerGroupEditRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_group'), 403);
-
         $customerGroup = $this->customerGroupService->singleCustomerGroup(id: $id);
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 

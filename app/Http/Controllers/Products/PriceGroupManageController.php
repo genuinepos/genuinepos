@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\ProductService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Products\ProductService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Products\ManagePriceGroupService;
+use App\Http\Requests\Products\PriceGroupManageIndexRequest;
+use App\Http\Requests\Products\PriceGroupManageStoreOrUpdateRequest;
 
 class PriceGroupManageController extends Controller
 {
@@ -18,10 +19,8 @@ class PriceGroupManageController extends Controller
     ) {
     }
 
-    public function index($productId, $type)
+    public function index($productId, $type, PriceGroupManageIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('manage_price_group'), 403);
-
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $product = $this->productService->singleProduct(
             id: $productId,
@@ -42,10 +41,8 @@ class PriceGroupManageController extends Controller
         return view('product.price_group.manage.index', compact('type', 'priceGroups', 'product'));
     }
 
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(PriceGroupManageStoreOrUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('manage_price_group'), 403);
-
         try {
             DB::beginTransaction();
 

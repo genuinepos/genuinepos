@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Contacts;
 
 use Exception;
-use Illuminate\Http\Request;
 use App\Imports\CustomerImport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -13,7 +12,8 @@ use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Interfaces\CodeGenerationServiceInterface;
-use App\Http\Requests\Contacts\CustomerImportRequest;
+use App\Http\Requests\Contacts\CustomerImportStoreRequest;
+use App\Http\Requests\Contacts\CustomerImportCreateRequest;
 
 class CustomerImportController extends Controller
 {
@@ -26,14 +26,12 @@ class CustomerImportController extends Controller
     ) {
     }
 
-    public function create()
+    public function create(CustomerImportCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('customer_import'), 403);
-
         return view('contacts.import_customers.create');
     }
 
-    public function store(CustomerImportRequest $request)
+    public function store(CustomerImportStoreRequest $request)
     {
         try {
             DB::beginTransaction();

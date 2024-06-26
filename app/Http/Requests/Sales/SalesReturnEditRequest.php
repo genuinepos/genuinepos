@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Products;
+namespace App\Http\Requests\Sales;
 
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BulkVariantDeleteRequest extends FormRequest
+class SalesReturnEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_variant_delete') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('edit_sales_return') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;;
     }
 
     /**

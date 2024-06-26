@@ -251,7 +251,7 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
+            $dir = public_path('uploads/services/documents/');
 
             $addJobCard->document = FileUploader::upload($request->file('document'), $dir);
         }
@@ -318,7 +318,7 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
+            $dir = public_path('uploads/services/documents/');
             if (isset($updateJobCard->document) && file_exists($dir . $updateJobCard->document)) {
 
                 unlink($dir . $updateJobCard->document);

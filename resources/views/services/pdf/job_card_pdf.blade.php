@@ -338,20 +338,20 @@
                                 @if ($jobCard?->branch?->parent_branch_id)
 
                                     @if ($jobCard->branch?->parentBranch?->logo)
-                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $jobCard->branch?->parentBranch?->logo) }}">
+                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $jobCard->branch?->parentBranch?->logo) }}">
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:rgb(29, 28, 28);text-transform:uppercase;">{{ $jobCard->branch?->parentBranch?->name }}</span>
                                     @endif
                                 @else
                                     @if ($jobCard->branch?->logo)
-                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $jobCard->branch?->logo) }}">
+                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $jobCard->branch?->logo) }}">
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:rgb(10, 10, 10);text-transform:uppercase;">{{ $jobCard->branch?->name }}</span>
                                     @endif
                                 @endif
                             @else
                                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:rgb(16, 16, 16);text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                                 @endif

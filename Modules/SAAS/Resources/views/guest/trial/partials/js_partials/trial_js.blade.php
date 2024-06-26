@@ -213,7 +213,7 @@
                     return;
                 } else if (err.status == 500) {
 
-                    console.log('Server error.');;
+                    console.log('Server error.');
                     return;
                 }
             }
@@ -266,7 +266,7 @@
                     return;
                 } else if (err.status == 500) {
 
-                    console.log('Server error.');;
+                    console.log('Server error.');
                     return;
                 }
             }

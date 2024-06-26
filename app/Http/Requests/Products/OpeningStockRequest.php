@@ -12,7 +12,7 @@ class OpeningStockRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('openingStock_add') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;;;
+        return auth()->user()->can('openingStock_add') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**

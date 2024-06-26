@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\TaskManagement\Workspace;
-use App\Models\TaskManagement\WorkspaceTask;
 use App\Services\TaskManagement\WorkspaceService;
 use App\Services\TaskManagement\WorkspaceTaskService;
+use App\Http\Requests\TaskManagement\WorkspaceTaskIndexRequest;
+use App\Http\Requests\TaskManagement\WorkspaceTaskStoreRequest;
+use App\Http\Requests\TaskManagement\WorkspaceTaskDeleteRequest;
+use App\Http\Requests\TaskManagement\WorkspaceTaskUpdateRequest;
+use App\Http\Requests\TaskManagement\WorkspaceTaskAssignUserRequest;
+use App\Http\Requests\TaskManagement\WorkspaceTaskChangeStatusRequest;
+use App\Http\Requests\TaskManagement\WorkspaceTaskChangePriorityRequest;
 
 class WorkSpaceTaskController extends Controller
 {
@@ -16,16 +20,14 @@ class WorkSpaceTaskController extends Controller
     {
     }
 
-    public function index($workspaceId)
+    public function index($workspaceId, WorkspaceTaskIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('workspaces_manage_task') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
         $workspace = $this->workspaceService->singleWorkspace(id: $workspaceId, with: ['createdBy', 'users', 'users.user']);
 
         return view('task_management.workspaces.tasks.index', compact('workspace'));
     }
 
-    public function store(Request $request)
+    public function store(WorkspaceTaskStoreRequest $request)
     {
         $this->workspaceTaskService->addWorkspaceTask(request: $request);
 
@@ -60,35 +62,35 @@ class WorkSpaceTaskController extends Controller
         return view('task_management.workspaces.tasks.ajax_view.task_list', compact('wsTasks', 'wsUsers'));
     }
 
-    public function update(Request $request)
+    public function update(WorkspaceTaskUpdateRequest $request)
     {
         $this->workspaceTaskService->updateWorkspaceTask(request: $request);
 
         return response()->json(__('Task updated successfully.'));
     }
 
-    public function assignUser(Request $request, $id)
+    public function assignUser(WorkspaceTaskAssignUserRequest $request, $id)
     {
         $this->workspaceTaskService->assignUser(request: $request, id: $id);
 
         return response()->json(__('Successfully'));
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus(WorkspaceTaskChangeStatusRequest $request, $id)
     {
         $this->workspaceTaskService->changeStatus(request: $request, id: $id);
 
         return response()->json(__('Successfully'));
     }
 
-    public function changePriority(Request $request, $id)
+    public function changePriority(WorkspaceTaskChangePriorityRequest $request, $id)
     {
         $this->workspaceTaskService->changePriority(request: $request, id: $id);
 
         return response()->json(__('Successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(WorkspaceTaskDeleteRequest $request, $id)
     {
         $this->workspaceTaskService->deleteWorkspaceTask(id: $id);
 

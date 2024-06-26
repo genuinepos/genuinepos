@@ -21,6 +21,6 @@ class PlanDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('plans_destroy');;
+        return auth()->user()->can('plans_destroy');
     }
 }

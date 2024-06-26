@@ -21,7 +21,7 @@ class ReceiptController extends Controller
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);

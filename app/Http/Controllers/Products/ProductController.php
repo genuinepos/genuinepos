@@ -21,7 +21,7 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -44,7 +44,7 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
 
-            return $createMethodContainer;;
+            return $createMethodContainer;
         }
 
         extract($createMethodContainer);

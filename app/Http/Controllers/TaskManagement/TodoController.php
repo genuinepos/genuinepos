@@ -11,7 +11,10 @@ use App\Services\Setups\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\TodoService;
 use App\Services\TaskManagement\TodoUserService;
+use App\Http\Requests\TaskManagement\TodoEditRequest;
+use App\Http\Requests\TaskManagement\TodoIndexRequest;
 use App\Http\Requests\TaskManagement\TodoStoreRequest;
+use App\Http\Requests\TaskManagement\TodoCreateRequest;
 use App\Http\Requests\TaskManagement\TodoDeleteRequest;
 use App\Http\Requests\TaskManagement\TodoUpdateRequest;
 use App\Http\Requests\TaskManagement\TodoChangeStatusRequest;
@@ -26,10 +29,8 @@ class TodoController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(TodoIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('todo_index') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::False->value, 403);
-
         if ($request->ajax()) {
 
             return $this->todoService->todoTable(request: $request);
@@ -47,9 +48,8 @@ class TodoController extends Controller
         return view('task_management.todo.ajax_view.show', compact('todo'));
     }
 
-    public function create()
+    public function create(TodoCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('todo_create') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         return view('task_management.todo.ajax_view.create', compact('users'));
     }
@@ -72,10 +72,8 @@ class TodoController extends Controller
         return response()->json(__('Todo created successfully.'));
     }
 
-    public function edit($id)
+    public function edit($id, TodoEditRequest $request)
     {
-        abort_if(!auth()->user()->can('todo_edit') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::False->value, 403);
-
         $todo = $this->todoService->singleTodo(id: $id, with: ['users']);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
 
@@ -99,10 +97,8 @@ class TodoController extends Controller
         return response()->json(__('Todo update successfully.'));
     }
 
-    public function changeStatusModal($id)
+    public function changeStatusModal($id, TodoChangeStatusRequest $request)
     {
-        abort_if(!auth()->user()->can('todo_change_status') || config('generalSettings')['subscription']->features['task_management'] == BooleanType::False->value, 403);
-
         $todo = $this->todoService->singleTodo(id: $id);
 
         return view('task_management.todo.ajax_view.change_status', compact('todo'));

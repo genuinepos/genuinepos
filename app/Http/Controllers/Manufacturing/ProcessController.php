@@ -21,7 +21,7 @@ class ProcessController extends Controller
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         return view('manufacturing.process.index');

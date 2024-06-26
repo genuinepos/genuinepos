@@ -12,7 +12,7 @@ class StatusTableRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('status_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;;
+        return auth()->user()->can('status_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

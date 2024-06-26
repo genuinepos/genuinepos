@@ -3,13 +3,13 @@
 namespace App\Services\TaskManagement;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Models\TaskManagement\Message;
 
 class MessageService
 {
     public function addMessage(object $request): void
     {
-
         Message::insertGetId([
             'description' => $request->description,
             'branch_id' => auth()->user()->branch_id,

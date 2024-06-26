@@ -438,8 +438,7 @@
 
                     <tr>
                         <td colspan="3">
-                            <p> <span class="fw-bold">{{ __('Terms & Conditions') }} : </span> {!! isset($generalSettings['service_settings__terms_and_condition']) ? $generalSettings['service_settings__terms_and_condition'] : __('Customer ID') !!}</p>
-                            </span>
+                            <p> <span class="fw-bold">{{ __('Terms & Conditions') }} : </span> {!! isset($generalSettings['service_settings__terms_and_condition']) ? $generalSettings['service_settings__terms_and_condition'] : '' !!}</p>
                         </td>
                     </tr>
                     <tr>

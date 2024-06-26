@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PriceGroupUpdateRequest extends FormRequest
@@ -11,7 +12,7 @@ class PriceGroupUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('selling_price_group_edit');
+        return auth()->user()->can('selling_price_group_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**

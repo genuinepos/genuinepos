@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Contacts;
 
-use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Products\Reports;
 
 use Carbon\Carbon;
-use App\Enums\RoleType;
 use App\Utils\Converter;
 use App\Enums\BooleanType;
 use Illuminate\Support\Str;

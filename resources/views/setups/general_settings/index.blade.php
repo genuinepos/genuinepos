@@ -70,7 +70,6 @@
         </div>
         <div class="p-1">
             <div class="form_element rounded m-0">
-
                 <div class="element-body">
                     <div class="settings_form_area">
                         <div class="row">
@@ -255,17 +254,33 @@
         });
     </script>
 
-    @include('setups.general_settings.partials.js_partials.business_settings_js')
-    @include('setups.general_settings.partials.js_partials.dashboard_settings_js')
-    @include('setups.general_settings.partials.js_partials.prefix_settings_js')
-    @include('setups.general_settings.partials.js_partials.print_settings_js')
-    @include('setups.general_settings.partials.js_partials.invoice_layout_settings_js')
+    @if (auth()->user()->can('business_or_shop_settings'))
+        @include('setups.general_settings.partials.js_partials.business_settings_js')
+    @endif
+
+    @if (auth()->user()->can('dashboard_settings'))
+        @include('setups.general_settings.partials.js_partials.dashboard_settings_js')
+    @endif
+
+    @if (auth()->user()->can('prefix_settings'))
+        @include('setups.general_settings.partials.js_partials.prefix_settings_js')
+    @endif
+
+    @if (auth()->user()->can('print_settings'))
+        @include('setups.general_settings.partials.js_partials.print_settings_js')
+    @endif
+
+    @if (auth()->user()->can('print_settings'))
+        @include('setups.general_settings.partials.js_partials.invoice_layout_settings_js')
+    @endif
 
     @if (auth()->user()->can('product_settings'))
         @include('setups.general_settings.partials.js_partials.product_settings_js')
     @endif
 
-    @include('setups.general_settings.partials.js_partials.purchase_settings_js')
+    @if (auth()->user()->can('purchase_settings'))
+        @include('setups.general_settings.partials.js_partials.purchase_settings_js')
+    @endif
 
     @if (auth()->user()->can('manufacturing_settings'))
         @include('setups.general_settings.partials.js_partials.manufacturing_settings_js')
@@ -279,9 +294,23 @@
         @include('setups.general_settings.partials.js_partials.pos_settings_js')
     @endif
 
-    @include('setups.general_settings.partials.js_partials.system_settings_js')
-    @include('setups.general_settings.partials.js_partials.reward_point_settings_js')
-    @include('setups.general_settings.partials.js_partials.module_settings_js')
-    @include('setups.general_settings.partials.js_partials.email_settings_js')
-    @include('setups.general_settings.partials.js_partials.sms_settings_js')
+    @if (auth()->user()->can('system_settings'))
+        @include('setups.general_settings.partials.js_partials.system_settings_js')
+    @endif
+
+    @if (auth()->user()->can('reward_point_settings'))
+        @include('setups.general_settings.partials.js_partials.reward_point_settings_js')
+    @endif
+
+    @if (auth()->user()->can('module_settings'))
+        @include('setups.general_settings.partials.js_partials.module_settings_js')
+    @endif
+
+    @if (auth()->user()->can('send_email_settings'))
+        @include('setups.general_settings.partials.js_partials.email_settings_js')
+    @endif
+
+    @if (auth()->user()->can('send_sms_settings'))
+        @include('setups.general_settings.partials.js_partials.sms_settings_js')
+    @endif
 @endpush

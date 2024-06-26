@@ -6,17 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Sales\SalesReturnEditRequest;
+use App\Http\Requests\Sales\SalesReturnIndexRequest;
 use App\Http\Requests\Sales\SalesReturnStoreRequest;
+use App\Http\Requests\Sales\SalesReturnCreateRequest;
 use App\Http\Requests\Sales\SalesReturnDeleteRequest;
 use App\Http\Requests\Sales\SalesReturnUpdateRequest;
 use App\Interfaces\Sales\SalesReturnControllerMethodContainersInterface;
 
 class SalesReturnController extends Controller
 {
-    public function index(Request $request, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
+    public function index(SalesReturnIndexRequest $request, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('sales_return_index'), 403);
-
         $indexMethodContainer = $salesReturnControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -47,10 +48,8 @@ class SalesReturnController extends Controller
         return view('sales.print_templates.sales_return_print', compact('return', 'paidAmount', 'printPageSize'));
     }
 
-    public function create(SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
+    public function create(SalesReturnCreateRequest $request,SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('create_sales_return'), 403);
-
         $createMethodContainer = $salesReturnControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -87,10 +86,8 @@ class SalesReturnController extends Controller
         }
     }
 
-    public function edit($id, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
+    public function edit($id, SalesReturnEditRequest $request, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('edit_sales_return'), 403);
-
         $editMethodContainer = $salesReturnControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

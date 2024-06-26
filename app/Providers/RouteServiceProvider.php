@@ -123,6 +123,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/users.php'));
 
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/services.php'));
+
             Route::middleware(['web', 'auth', 'startup'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/change_location.php'));

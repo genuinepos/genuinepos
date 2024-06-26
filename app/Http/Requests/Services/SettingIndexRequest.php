@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Services;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SettingIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class SettingIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
+        return true;
     }
 
     /**

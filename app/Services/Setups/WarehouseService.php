@@ -116,7 +116,7 @@ class WarehouseService
         $updateWarehouse->save();
     }
 
-    public function deleteWarehouse(int $id): mixed
+    public function deleteWarehouse(int $id): array
     {
         $deleteWarehouse = $this->singleWarehouse($id);
 
@@ -126,13 +126,15 @@ class WarehouseService
 
         if ($stock->sum('total_stock') > 0) {
 
-            return ['pass' => false, 'msg' => __('The warehouse can not be deleted. Product stocks belong under this warehouse.')];
+            return ['pass' => false, 'msg' => __('The warehouse can not be deleted. Product stocks is belonging under this warehouse.')];
         }
 
         if (!is_null($deleteWarehouse)) {
 
             $deleteWarehouse->delete();
         }
+
+        return ['pass' => true];
     }
 
     public function warehouses(array $with = null)

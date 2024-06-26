@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Sales;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,7 +13,7 @@ class SalesReturnStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('create_sales_return') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('create_sales_return');
     }
 
     /**

@@ -12,7 +12,7 @@ class MoneyReceiptIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('money_receipt_index') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('money_receipt_index');
     }
 
     /**

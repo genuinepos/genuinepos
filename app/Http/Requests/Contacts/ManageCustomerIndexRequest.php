@@ -12,7 +12,7 @@ class ManageCustomerIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('customer_manage') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('customer_manage');
     }
 
     /**

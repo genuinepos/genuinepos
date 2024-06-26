@@ -57,15 +57,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="appInstallModalLabel">{{ __("Welcome to GPOS!") }}</h1>
+                    <h1 class="modal-title fs-5" id="appInstallModalLabel">{{ __('Welcome to GPOS!') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ __("If you want to add a shortcut on your desktop, click the OK button.") }}
+                    {{ __('If you want to add a shortcut on your desktop, click the OK button.') }}
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}
-                    <button type="button" id="installPwa" class="btn btn-primary">{{ __("OK") }}</button>
+                    <button type="button" id="installPwa" class="btn btn-primary">{{ __('OK') }}</button>
                 </div>
             </div>
         </div>

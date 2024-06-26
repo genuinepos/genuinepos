@@ -222,7 +222,7 @@ class SalesReportController extends Controller
         $saleScreenTypes = [
             auth()->user()->can('view_add_sale') ? SaleScreenType::AddSale->value : null,
             auth()->user()->can('pos_all') ? SaleScreenType::PosSale->value : null,
-            auth()->user()->can('service_invoices_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value ? SaleScreenType::ServicePosSale->value : null,
+            auth()->user()->can('service_invoices_index') ? SaleScreenType::ServicePosSale->value : null,
         ];
 
         $query->whereIn('sales.sale_screen', $saleScreenTypes);
@@ -247,18 +247,9 @@ class SalesReportController extends Controller
         //     });
         // }
 
-        if ($generalSettings['subscription']->features['sales'] == BooleanType::True->value) {
+        if (auth()->user()->can('view_own_sale')) {
 
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-        } else if ($generalSettings['subscription']->features['sales'] == BooleanType::False->value && auth()->user()->can('service_invoices_index') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == BooleanType::True->value) {
-
-            if (auth()->user()->can('service_invoices_only_own')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
+            $query->where('sales.created_by_id', auth()->user()->id);
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

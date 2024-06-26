@@ -12,7 +12,7 @@ class CustomerReportIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('customer_report') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('customer_report');
     }
 
     /**

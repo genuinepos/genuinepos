@@ -1409,45 +1409,6 @@
                                                     <label for="cash_counters_delete">{{ __('Cash Counter Delete') }}</label>
                                                 </p>
                                             </div>
-
-                                            <div class="col-lg-3 col-sm-6">
-                                                <p class="text-info checkbox_input_wrap">
-                                                    <label>
-                                                        <input type="checkbox" class="setup" id="select_all" data-target="billing" autocomplete="off">
-                                                        <strong>{{ __('Billing') }}</strong>
-                                                    </label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="billing_index" id="billing_index" class="billing setup">
-                                                    <label for="billing_index">{{ __('View Billing') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="billing_upgrade_plan" id="billing_upgrade_plan" class="billing setup">
-                                                    <label for="billing_upgrade_plan">{{ __('Upgrade Plan') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="billing_business_add" id="billing_business_add" class="billing setup">
-                                                    <label for="billing_business_add">{{ __('Add Multi Shop Management System/Company') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="billing_branch_add" id="billing_branch_add" class="billing setup">
-                                                    <label for="billing_branch_add">{{ __('Add/Increase Shop') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="billing_renew_branch" id="billing_renew_branch" class="billing setup">
-                                                    <label for="billing_renew_branch">{{ __('Renew Shop') }}</label>
-                                                </p>
-
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="billing_pay_due_payment" id="billing_pay_due_payment" class="billing setup">
-                                                    <label for="billing_pay_due_payment">{{ __('Pay Due Payment') }}</label>
-                                                </p>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

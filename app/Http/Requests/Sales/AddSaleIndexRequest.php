@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Sales;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddSaleIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class AddSaleIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('view_add_sale') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('view_add_sale');
     }
 
     /**

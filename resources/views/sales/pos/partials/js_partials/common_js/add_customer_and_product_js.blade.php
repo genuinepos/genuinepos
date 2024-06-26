@@ -55,7 +55,7 @@
         });
     });
 
-    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
+    @if (auth()->user()->can('customer_add'))
         $('#addContact').on('click', function(e) {
 
             e.preventDefault();
@@ -92,7 +92,7 @@
         });
     @endif
 
-    @if ($generalSettings['subscription']->features['inventory'] == 1 && auth()->user()->can('product_add'))
+    @if (auth()->user()->can('product_add'))
         $('#addProduct').on('click', function() {
 
             $.ajax({

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Products\Reports;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StockReportWarehouseStockRequest extends FormRequest
@@ -12,7 +11,7 @@ class StockReportWarehouseStockRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('stock_report') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('stock_report');
     }
 
     /**

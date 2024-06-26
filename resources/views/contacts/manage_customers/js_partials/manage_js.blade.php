@@ -136,7 +136,7 @@
 </script>
 
 <script>
-    @if (auth()->user()->can('shipment_access') && $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+    @if (auth()->user()->can('shipment_access'))
         $(document).on('click', '#editShipmentDetails', function(e) {
             e.preventDefault();
 

@@ -51,15 +51,13 @@
             </div>
         </div>
 
-        @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == '1')
-            <div class="col-md-4">
-                <div class="row">
-                    <p class="checkbox_input_wrap">
-                        <input type="checkbox" @checked(isset($generalSettings['modules__service']) && $generalSettings['modules__service'] == '1') name="service" autocomplete="off"> &nbsp; <b>{{ __('Services') }}</b>
-                    </p>
-                </div>
+        <div class="col-md-4">
+            <div class="row">
+                <p class="checkbox_input_wrap">
+                    <input type="checkbox" @checked(isset($generalSettings['modules__service']) && $generalSettings['modules__service'] == '1') name="service" autocomplete="off"> &nbsp; <b>{{ __('Services') }}</b>
+                </p>
             </div>
-        @endif
+        </div>
     </div>
 
     <div class="form-group row mt-2">

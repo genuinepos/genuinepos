@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Products;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WarrantyDeleteRequest extends FormRequest
@@ -12,7 +11,7 @@ class WarrantyDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_warranty_delete') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('product_warranty_delete');
     }
 
     /**

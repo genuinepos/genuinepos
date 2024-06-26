@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Startup;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Startup\StartupFinishRequest;
-use App\Services\Subscriptions\SubscriptionService;
 use App\Interfaces\Startup\StartupControllerMethodContainerInterface;
 
 class StartupController extends Controller

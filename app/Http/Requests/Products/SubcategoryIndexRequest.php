@@ -12,7 +12,7 @@ class SubcategoryIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_category_index') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('product_category_index');
     }
 
     /**

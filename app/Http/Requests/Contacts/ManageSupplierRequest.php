@@ -12,7 +12,7 @@ class ManageSupplierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('supplier_manage') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('supplier_manage');
     }
 
     /**

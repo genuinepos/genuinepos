@@ -6,29 +6,27 @@
     </div>
     @csrf
 
-    @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Invoice Prefix') }}</label>
-                <input type="text" name="sales_invoice_prefix" class="form-control" id="sales_invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __('Invoice Prefix') }}" />
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
-                <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Shop ID') }}" />
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Sales Order Prefix') }}</label>
-                <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __('Sales Order Prefix') }}" />
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Sales Return Prefix') }}</label>
-                <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __('Sales Return Prefix') }}" />
-            </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Invoice Prefix') }}</label>
+            <input type="text" name="sales_invoice_prefix" class="form-control" id="sales_invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __('Invoice Prefix') }}" />
         </div>
-    @endif
+
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
+            <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Shop ID') }}" />
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Sales Order Prefix') }}</label>
+            <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __('Sales Order Prefix') }}" />
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Sales Return Prefix') }}</label>
+            <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __('Sales Return Prefix') }}" />
+        </div>
+    </div>
 
     <div class="row mt-1">
         <div class="col-lg-3 col-md-6">
@@ -90,7 +88,7 @@
             <input type="text" name="stock_issue_voucher_prefix" class="form-control" id="stock_issue_voucher_prefix" value="{{ isset($generalSettings['prefix__stock_issue_voucher_prefix']) ? $generalSettings['prefix__stock_issue_voucher_prefix'] : '' }}" placeholder="{{ __('Stock Issue Voucher Prefix') }}" />
         </div>
 
-        @if (isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == '1' && $generalSettings['modules__service'] == '1')
+        @if ($generalSettings['modules__service'] == '1')
             <div class="col-lg-3 col-md-6">
                 <label class="fw-bold">{{ __('Job Card No Prefix') }}</label>
                 <input type="text" name="job_card_no_prefix" class="form-control" id="job_card_no_prefix" value="{{ isset($generalSettings['prefix__job_card_no_prefix']) ? $generalSettings['prefix__job_card_no_prefix'] : '' }}" placeholder="{{ __('Job Card No Prefix') }}" />
@@ -98,19 +96,17 @@
         @endif
     </div>
 
-    @if ($generalSettings['subscription']->features['contacts'] == 1)
-        <div class="form-group row mt-1">
-            <div class="col-md-4">
-                <label><strong>{{ __('Supplier ID') }}</strong></label>
-                <input type="text" name="supplier_id" class="form-control" id="supplier_id" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
-            </div>
-
-            <div class="col-md-4">
-                <label><strong>{{ __('Customer ID') }} </strong></label>
-                <input type="text" name="customer_id" class="form-control" value="{{ $generalSettings['prefix__customer_id'] }}" autocomplete="off">
-            </div>
+    <div class="form-group row mt-1">
+        <div class="col-md-4">
+            <label><strong>{{ __('Supplier ID') }}</strong></label>
+            <input type="text" name="supplier_id" class="form-control" id="supplier_id" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
         </div>
-    @endif
+
+        <div class="col-md-4">
+            <label><strong>{{ __('Customer ID') }} </strong></label>
+            <input type="text" name="customer_id" class="form-control" value="{{ $generalSettings['prefix__customer_id'] }}" autocomplete="off">
+        </div>
+    </div>
 
     <div class="row mt-2">
         <div class="col-md-12 d-flex justify-content-end">

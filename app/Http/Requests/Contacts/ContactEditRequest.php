@@ -16,10 +16,10 @@ class ContactEditRequest extends FormRequest
         $type = $this->route('type');
         if ($type == ContactType::Customer->value) {
 
-            return auth()->user()->can('customer_edit') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+            return auth()->user()->can('customer_edit');
         } elseif ($type == ContactType::Supplier->value) {
 
-            return auth()->user()->can('customer_edit') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+            return auth()->user()->can('customer_edit');
         }
     }
 

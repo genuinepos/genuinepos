@@ -98,7 +98,10 @@
                                         <div class="col-7">
                                             <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
                                                 <option value="" class="fw-bold">{{ __('Select Receiver Shop/Business') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                @if ($generalSettings['subscription__has_business'] == 1)
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                @endif
+                                                
                                                 @foreach ($branches as $branch)
 
                                                     <option value="{{ $branch->id }}">

@@ -2,16 +2,17 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\BooleanType;
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
+use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class QuotationService
 {
-    public function quotationListTable($request)
+    public function quotationListTable(object $request, ?int $saleScreenType = null)
     {
         $generalSettings = config('generalSettings');
         $quotations = '';
@@ -22,6 +23,14 @@ class QuotationService
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.quotation_status', BooleanType::True->value);
+
+        if ($saleScreenType == SaleScreenType::ServiceQuotation->value) {
+
+            $query->whereIn('sales.sale_screen', [SaleScreenType::ServiceQuotation->value, SaleScreenType::ServicePosSale->value]);
+        } else {
+
+            $query->whereIn('sales.sale_screen', [SaleScreenType::AddSale->value, SaleScreenType::PosSale->value]);
+        }
 
         $this->filteredQuery($request, $query);
 
@@ -34,6 +43,7 @@ class QuotationService
             'sales.total_qty',
             'sales.total_invoice_amount',
             'sales.order_status',
+            'sales.sale_screen',
 
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
@@ -55,23 +65,51 @@ class QuotationService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation')) {
+                    if ($row->sale_screen == SaleScreenType::ServiceQuotation->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
+                        if (auth()->user()->can('sale_quotation')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                            if ($row->sale_screen == SaleScreenType::ServiceQuotation->value) {
+
+                                $html .= '<a class="dropdown-item" href="' . route('services.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                            } else {
+
+                                $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                            }
+                        }
+                    } else {
+
+                        if (auth()->user()->can('sale_quotation')) {
+
+                            if ($row->sale_screen == SaleScreenType::AddSale->value) {
+
+                                $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                            } else {
+
+                                $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                            }
+                        }
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation')) {
+                    if ($row->sale_screen == SaleScreenType::ServiceQuotation->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
+                        if (auth()->user()->can('sale_quotation')) {
 
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                            $html .= '<a href="' . route('services.quotations.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                        }
+                    } else {
+
+                        if (auth()->user()->can('sale_quotation')) {
+
+                            $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                        }
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation')) {
+                    if (auth()->user()->can('sale_quotation') && $row->sale_screen != SaleScreenType::ServiceQuotation->value) {
 
                         $html .= '<a href="' . route('sale.quotations.status.edit', [$row->id]) . '" class="dropdown-item" id="changeQuotationStatusBtn">' . __('Change Current Status') . '</a>';
                     }

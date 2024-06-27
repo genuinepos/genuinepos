@@ -13,9 +13,9 @@ use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
 class QuotationController extends Controller
 {
-    public function index(QuotationIndexRequest $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
+    public function index(QuotationIndexRequest $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface, $saleScreenType = null)
     {
-        $indexMethodContainer = $quotationControllerMethodContainersInterface->indexMethodContainer(request: $request);
+        $indexMethodContainer = $quotationControllerMethodContainersInterface->indexMethodContainer(request: $request, saleScreenType: $saleScreenType);
 
         if ($request->ajax()) {
 

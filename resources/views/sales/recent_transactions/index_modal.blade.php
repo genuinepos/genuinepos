@@ -72,7 +72,7 @@
                                                         @if ($sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                                                             <a href="{{ route('sales.edit', $sale->id) }}" title="{{ __("Edit") }}"> <i class="far fa-edit text-info"></i></a>
                                                         @else
-                                                            <a id="editPosSale" href="{{ route('sales.pos.edit', $sale->id) }}" title="{{ __("Edit") }}"> <i class="far fa-edit text-info"></i></a>
+                                                            <a id="editPosSale" href="{{ route('sales.pos.edit', $sale->id, $sale->sale_screen) }}" title="{{ __("Edit") }}"> <i class="far fa-edit text-info"></i></a>
                                                         @endif
 
                                                         @php

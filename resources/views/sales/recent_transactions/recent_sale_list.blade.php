@@ -6,16 +6,12 @@
         @php
             $branchName = '';
             if ($sale->branch_id) {
-
                 if ($sale?->parent_branch_name) {
-
                     $branchName = $sale?->parent_branch_name . '(' . $sale?->branch_area_name . ')' . '-(' . $sale?->branch_code . ')';
                 } else {
-
                     $branchName = $sale?->branch_name . '(' . $sale?->branch_area_name . ')' . '-(' . $sale?->branch_code . ')';
                 }
             } else {
-
                 $branchName = $generalSettings['business_or_shop__business_name'];
             }
         @endphp
@@ -44,21 +40,21 @@
                     @if ($sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                         <a href="{{ route('sale.quotations.edit', $sale->id) }}" title="Edit"> <i class="far fa-edit text-info"></i></a>
                     @else
-                        <a id="editPosSale" href="{{ route('sales.pos.edit', $sale->id) }}" title="Edit"> <i class="far fa-edit text-info"></i></a>
+                        <a id="editPosSale" href="{{ route('sales.pos.edit', [$sale->id, $sale->sale_screen]) }}" title="Edit"> <i class="far fa-edit text-info"></i></a>
                     @endif
                 @elseif($sale->status == \App\Enums\SaleStatus::Draft->value)
                     @if ($sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                         <a href="{{ route('sale.drafts.edit', $sale->id) }}" title="Edit"> <i class="far fa-edit text-info"></i></a>
                     @else
-                        <a id="editPosSale" href="{{ route('sales.pos.edit', $sale->id) }}" title="Edit"> <i class="far fa-edit text-info"></i></a>
+                        <a id="editPosSale" href="{{ route('sales.pos.edit', [$sale->id, $sale->sale_screen]) }}" title="Edit"> <i class="far fa-edit text-info"></i></a>
                     @endif
                 @endif
 
                 @php
-                    $filename = $sale->invoice_id.$sale->draft_id.$sale->quotation_id.'__'.$sale->date.'__'.$branchName;
+                    $filename = $sale->invoice_id . $sale->draft_id . $sale->quotation_id . '__' . $sale->date . '__' . $branchName;
                 @endphp
 
-                <a href="{{ route('sales.helper.related.voucher.print', $sale->id) }}" onclick="printSalesRelatedVoucher(this); return false;" title="{{ __("Print") }}" data-filename="{{ $filename }}"> <i class="fas fa-print text-secondary"></i></a>
+                <a href="{{ route('sales.helper.related.voucher.print', $sale->id) }}" onclick="printSalesRelatedVoucher(this); return false;" title="{{ __('Print') }}" data-filename="{{ $filename }}"> <i class="fas fa-print text-secondary"></i></a>
             </td>
         </tr>
     @endforeach

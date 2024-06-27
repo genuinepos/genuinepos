@@ -48,12 +48,12 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
     ) {
     }
 
-    public function indexMethodContainer(object $request): object|array
+    public function indexMethodContainer(object $request, ?int $saleScreenType = null): object|array
     {
         $data = [];
         if ($request->ajax()) {
 
-            return $this->quotationService->quotationListTable($request);
+            return $this->quotationService->quotationListTable(request: $request, saleScreenType: $saleScreenType);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;

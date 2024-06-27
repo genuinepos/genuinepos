@@ -162,11 +162,11 @@ class PosSaleService
         } elseif ($request->status == SaleStatus::Draft->value) {
 
             $draft = $sale;
-            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts'));
+            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts', 'printPageSize'));
         } elseif ($request->status == SaleStatus::Quotation->value) {
 
             $quotation = $sale;
-            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts'));
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
         } elseif ($request->status == SaleStatus::Hold->value) {
 
             return response()->json(['holdInvoiceMsg' => __('Invoice is hold.')]);

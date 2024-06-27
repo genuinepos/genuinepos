@@ -143,7 +143,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             if ($saleScreenType == SaleScreenType::ServicePosSale->value) {
 
                 $generalSettings = config('generalSettings');
-
+ 
                 if (isset($jobCardId) && $jobCardId != 'no_id') {
 
                     $jobCardId = filter_var($jobCardId, FILTER_VALIDATE_INT);

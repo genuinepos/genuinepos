@@ -7,6 +7,7 @@ use App\Http\Controllers\Services\JobCardController;
 use App\Http\Controllers\Services\SettingController;
 use App\Http\Controllers\Services\DeviceModelController;
 use App\Http\Controllers\Services\ServiceInvoiceController;
+use App\Http\Controllers\Services\ServiceQuotationController;
 
 Route::prefix('services')->group(function () {
 
@@ -62,6 +63,16 @@ Route::prefix('services')->group(function () {
         Route::post('change/status/{id}', 'changeStatus')->name('services.job.cards.change.status');
         Route::delete('delete/{id}', 'delete')->name('services.job.cards.delete');
         Route::get('no', 'jobCardNo')->name('services.job.cards.no');
+    });
+
+    Route::controller(ServiceQuotationController::class)->prefix('quotations')->group(function () {
+
+        Route::get('/', 'index')->name('services.quotations.index');
+        Route::get('create', 'create')->name('services.quotations.create');
+        Route::post('store', 'store')->name('services.quotations.store');
+        Route::get('edit/{id}', 'edit')->name('services.quotations.edit');
+        Route::post('update/{id}', 'update')->name('services.quotations.update');
+        Route::delete('delete/{id}', 'delete')->name('services.quotations.delete');
     });
 
     Route::controller(ServiceInvoiceController::class)->prefix('invoices')->group(function () {

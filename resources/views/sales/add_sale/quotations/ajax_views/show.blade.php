@@ -230,7 +230,7 @@
                             @if (auth()->user()->can('edit_add_sale') && $quotation->branch_id == auth()->user()->branch_id)
                                 <a href="{{ route('sale.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
-                            <a href="{{ route('sales.helper.related.voucher.print', $quotation->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Quotation') }}</a>
+                            <a href="{{ route('sales.helper.related.voucher.print', [$quotation->id]) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Quotation') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -246,13 +246,15 @@
         var url = event.getAttribute('href');
         var filename = event.getAttribute('data-filename');
         var print_page_size = $('#print_page_size').val();
+        var sale_status = 4;
         var currentTitle = document.title;
 
         $.ajax({
             url: url,
             type: 'get',
             data: {
-                print_page_size
+                print_page_size,
+                sale_status
             },
             success: function(data) {
 

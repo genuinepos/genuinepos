@@ -75,7 +75,8 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
 
                 if (!\File::isDirectory($dir)) {
 
-                    \File::makeDirectory($dir, 493, true);
+                    // \File::makeDirectory($dir, 493, true);
+                    \File::makeDirectory($dir, 775, true);
                 }
 
                 $logo = $request->file('business_logo');

@@ -18,6 +18,7 @@ use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Products\ManagePriceGroupService;
+use App\Services\Services\ServiceQuotationService;
 use App\Http\Requests\Services\ServiceQuotationIndexRequest;
 use App\Http\Requests\Services\ServiceQuotationStoreRequest;
 use App\Http\Requests\Services\ServiceQuotationCreateRequest;
@@ -25,6 +26,7 @@ use App\Http\Requests\Services\ServiceQuotationCreateRequest;
 class ServiceQuotationController extends Controller
 {
     public function __construct(
+        private ServiceQuotationService $serviceQuotationService,
         private QuotationService $quotationService,
         private SaleService $saleService,
         private SaleProductService $saleProductService,
@@ -42,7 +44,7 @@ class ServiceQuotationController extends Controller
     {
         if ($request->ajax()) {
 
-            return $this->quotationService->quotationListTable(request: $request, saleScreenType: SaleScreenType::ServiceQuotation->value);
+            return $this->serviceQuotationService->serviceQuotationListTable(request: $request);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;

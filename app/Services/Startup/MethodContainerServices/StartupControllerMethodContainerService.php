@@ -71,6 +71,13 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
             $business_logo = null;
             if ($request->hasFile('business_logo')) {
 
+                $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+
+                if (!\File::isDirectory($dir)) {
+
+                    \File::makeDirectory($dir, 493, true);
+                }
+
                 $logo = $request->file('business_logo');
                 $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
                 $logo->move(public_path('uploads/' . tenant('id') . '/' . 'business_logo/'), $logoName);

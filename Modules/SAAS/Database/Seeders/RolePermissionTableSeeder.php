@@ -28,13 +28,13 @@ class RolePermissionTableSeeder extends Seeder
 
         Schema::enableForeignKeyConstraints();
 
-        foreach ($this->rolesArray() as $key => $role) {
+        foreach ($this->rolesArray() as $role) {
 
             $role = Role::where('name', $role)->first();
 
             if (!isset($role)) {
 
-                Role::create(['name' => $role, 'guard_name' => 'web']);
+                Role::create(['id' => 1, 'name' => $role, 'guard_name' => 'web']);
             }
         }
 

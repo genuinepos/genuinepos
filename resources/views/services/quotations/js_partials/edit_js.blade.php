@@ -3,7 +3,6 @@
 <script>
     $('.select2').select2();
 
-    afterChangeStatusAcivity();
     var itemUnitsArray = @json($itemUnitsArray);
 
     var priceGroups = @json($priceGroupProducts);
@@ -306,7 +305,6 @@
         var product_price_exc_tax = e.getAttribute('data-p_price_exc_tax');
         var p_tax_ac_id = e.getAttribute('data-p_tax_ac_id') != null ? e.getAttribute('data-p_tax_ac_id') : '';
         var p_tax_type = e.getAttribute('data-tax_type');
-        var is_show_emi_on_pos = e.getAttribute('data-is_show_emi_on_pos');
         $('#search_product').val('');
 
         var url = "{{ route('general.product.search.check.product.discount', ['productId' => ':product_id', 'priceGroupId' => ':price_group_id']) }}"
@@ -550,14 +548,6 @@
             );
         });
 
-        if (is_show_emi_on_pos == 0) {
-
-            $('#e_descriptions').prop('readonly', true);
-        } else {
-
-            $('#e_descriptions').prop('readonly', false);
-        }
-
         $('#search_product').val(item_name);
         $('#e_unique_id').val(unique_id);
         $('#e_item_name').val(item_name);
@@ -644,8 +634,6 @@
 
         calculateEditOrAddAmount();
         var val = $(this).val();
-        var e_is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val();
-        var status = $('#status').val();
 
         if (e.which == 0) {
 
@@ -662,8 +650,6 @@
     $('#e_tax_type').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
-        var e_is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val();
-        var status = $('#status').val();
 
         if (e.which == 0) {
 
@@ -877,7 +863,7 @@
         }
     }
 
-    //Add purchase request by ajax
+    //Edit quotation request by ajax
     $('#edit_quotation_form').on('submit', function(e) {
         e.preventDefault();
 
@@ -1203,7 +1189,6 @@
                     $('#e_tax_ac_id').val(data.tax_ac_id != null ? data.tax_ac_id : '');
                     $('#e_tax_type').val(data.tax_type);
                     $('#e_unit_cost_inc_tax').val(data.product_cost_with_tax);
-                    $('#e_is_show_emi_on_pos').val(data.is_show_emi_on_pos);
 
                     $('#e_unit_id').empty();
                     $('#e_unit_id').append('<option value="' + data.unit.id +

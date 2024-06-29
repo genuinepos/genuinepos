@@ -24,14 +24,6 @@ class QuotationService
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.quotation_status', BooleanType::True->value);
 
-        if ($saleScreenType == SaleScreenType::ServiceQuotation->value) {
-
-            $query->whereIn('sales.sale_screen', [SaleScreenType::ServiceQuotation->value, SaleScreenType::ServicePosSale->value]);
-        } else {
-
-            $query->whereIn('sales.sale_screen', [SaleScreenType::AddSale->value, SaleScreenType::PosSale->value]);
-        }
-
         $this->filteredQuery($request, $query);
 
         $quotations = $query->select(
@@ -65,51 +57,29 @@ class QuotationService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if ($row->sale_screen == SaleScreenType::ServiceQuotation->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
-                        if (auth()->user()->can('sale_quotation')) {
+                    if (auth()->user()->can('sale_quotations_edit')) {
 
-                            if ($row->sale_screen == SaleScreenType::ServiceQuotation->value) {
+                        if ($row->sale_screen == SaleScreenType::AddSale->value) {
 
-                                $html .= '<a class="dropdown-item" href="' . route('services.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
-                            } else {
+                            $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        } else {
 
-                                $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
-                            }
-                        }
-                    } else {
-
-                        if (auth()->user()->can('sale_quotation')) {
-
-                            if ($row->sale_screen == SaleScreenType::AddSale->value) {
-
-                                $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
-                            } else {
-
-                                $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '">' . __('Edit') . '</a>';
-                            }
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                         }
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if ($row->sale_screen == SaleScreenType::ServiceQuotation->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
-                        if (auth()->user()->can('sale_quotation')) {
+                    if (auth()->user()->can('sale_quotations_delete')) {
 
-                            $html .= '<a href="' . route('services.quotations.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
-                        }
-                    } else {
-
-                        if (auth()->user()->can('sale_quotation')) {
-
-                            $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
-                        }
+                        $html .= '<a href="' . route('sale.quotations.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation') && $row->sale_screen != SaleScreenType::ServiceQuotation->value) {
+                    if (auth()->user()->can('sale_quotations_change_status')) {
 
                         $html .= '<a href="' . route('sale.quotations.status.edit', [$row->id]) . '" class="dropdown-item" id="changeQuotationStatusBtn">' . __('Change Current Status') . '</a>';
                     }
@@ -307,10 +277,12 @@ class QuotationService
             $query->whereBetween('sales.quotation_date_ts', $date_range); // Final
         }
 
+        $query->whereIn('sales.sale_screen', [SaleScreenType::AddSale->value, SaleScreenType::PosSale->value]);
+
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            if (auth()->user()->can('view_own_sale')) {
+            if (auth()->user()->can('sale_quotations_only_own')) {
 
                 $query->where('sales.created_by_id', auth()->user()->id);
             }

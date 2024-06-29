@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Services;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Enums\SaleScreenType;
+use Illuminate\Support\Facades\DB;
 use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
@@ -16,6 +18,7 @@ use App\Services\Products\PriceGroupService;
 use App\Services\Products\ProductStockService;
 use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Sales\QuotationProductService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Products\ManagePriceGroupService;
 use App\Services\Services\ServiceQuotationService;
@@ -23,6 +26,7 @@ use App\Http\Requests\Services\ServiceQuotationEditRequest;
 use App\Http\Requests\Services\ServiceQuotationIndexRequest;
 use App\Http\Requests\Services\ServiceQuotationStoreRequest;
 use App\Http\Requests\Services\ServiceQuotationCreateRequest;
+use App\Http\Requests\Services\ServiceQuotationDeleteRequest;
 use App\Http\Requests\Services\ServiceQuotationUpdateRequest;
 
 class ServiceQuotationController extends Controller
@@ -32,6 +36,7 @@ class ServiceQuotationController extends Controller
         private QuotationService $quotationService,
         private SaleService $saleService,
         private SaleProductService $saleProductService,
+        private QuotationProductService $quotationProductService,
         private PriceGroupService $priceGroupService,
         private ManagePriceGroupService $managePriceGroupService,
         private AccountService $accountService,
@@ -135,7 +140,7 @@ class ServiceQuotationController extends Controller
             return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
         } else {
 
-            return response()->json(['successMsg' => __('Quotation created successfully')]);
+            return response()->json(['successMsg' => __('Service Quotation created successfully')]);
         }
     }
 
@@ -211,6 +216,22 @@ class ServiceQuotationController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Quotation update successfully'));
+        return response()->json(__('Service Quotation updated successfully'));
+    }
+
+    public function delete($id, ServiceQuotationDeleteRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->saleService->deleteSale(id: $id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Service Quotation deleted successfully'));
     }
 }

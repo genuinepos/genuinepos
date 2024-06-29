@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\QuotationEditRequest;
 use App\Http\Requests\Sales\QuotationIndexRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Sales\QuotationStatusRequest;
 use App\Http\Requests\Sales\QuotationUpdateRequest;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
@@ -66,7 +67,7 @@ class QuotationController extends Controller
         return response()->json(__('Quotation updated Successfully.'));
     }
 
-    public function editStatus($id, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
+    public function editStatus($id, QuotationStatusRequest $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
         $editStatusMethodContainer = $quotationControllerMethodContainersInterface->editStatusMethodContainer(id: $id);
         extract($editStatusMethodContainer);
@@ -74,7 +75,7 @@ class QuotationController extends Controller
         return view('sales.add_sale.quotations.ajax_views.change_quotation_status', compact('quotation'));
     }
 
-    public function updateStatus($id, Request $request, CodeGenerationServiceInterface $codeGenerator, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
+    public function updateStatus($id, QuotationStatusRequest $request, CodeGenerationServiceInterface $codeGenerator, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
         $updateStatusMethodContainer = $quotationControllerMethodContainersInterface->updateStatusMethodContainer(id: $id, request: $request, codeGenerator: $codeGenerator);
 

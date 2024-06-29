@@ -656,13 +656,30 @@ class RolePermissionSeeder extends Seeder
             ['id' => '437', 'name' => 'supplier_ledger'],
             ['id' => '438', 'name' => 'customer_ledger'],
 
-            ['id' => '439', 'name' => 'service_invoices_only_own'],
+                ['id' => '439', 'name' => 'service_invoices_only_own'],
 
             ['id' => '440', 'name' => 'service_quotations_index'],
             ['id' => '441', 'name' => 'service_quotations_only_own'],
             ['id' => '443', 'name' => 'service_quotations_create'],
             ['id' => '444', 'name' => 'service_quotations_edit'],
             ['id' => '445', 'name' => 'service_quotations_delete'],
+
+            ['id' => '446', 'name' => 'sale_quotations_index'],
+            ['id' => '447', 'name' => 'sale_quotations_only_own'],
+            ['id' => '448', 'name' => 'sale_quotations_edit'],
+            ['id' => '449', 'name' => 'sale_quotations_change_status'],
+            ['id' => '445', 'name' => 'sale_quotations_delete'],
+
+            ['id' => '451', 'name' => 'sale_drafts_index'],
+            ['id' => '452', 'name' => 'sale_drafts_only_own'],
+            ['id' => '453', 'name' => 'sale_drafts_edit'],
+            ['id' => '454', 'name' => 'sale_drafts_delete'],
+
+            ['id' => '455', 'name' => 'sales_orders_index'],
+            ['id' => '456', 'name' => 'sales_orders_only_own'],
+            ['id' => '457', 'name' => 'sales_orders_edit'],
+            ['id' => '458', 'name' => 'sales_orders_delete'],
+
         ];
 
         return $permissions;

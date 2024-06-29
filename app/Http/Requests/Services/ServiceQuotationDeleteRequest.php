@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Sales;
+namespace App\Http\Requests\Services;
 
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuotationIndexRequest extends FormRequest
+class ServiceQuotationDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sale_quotations_index') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('service_quotations_delete') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
     }
 
     /**

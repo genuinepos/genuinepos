@@ -945,10 +945,6 @@
                                                         <input type="checkbox" name="sales_order_list" id="sales_order_list" class="sales sale_all">
                                                         <label for="sales_order_list"> {{ __('Sales Order List') }}</label>
                                                     </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="sales_order_to_invoice" id="sales_order_to_invoice" class="sales sale_all">
-                                                        <label for="sales_order_to_invoice"> {{ __('Sales Order to Invoice') }}</label>
-                                                    </p>
                                                 </div>
 
                                                 <div class="col-lg-3 col-sm-6">
@@ -972,6 +968,11 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sale_quotations_edit" id="sale_quotations_edit" class="sales sale_quotations">
                                                         <label for="sale_quotations_edit">{{ __('Quotation Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_quotations_change_status" id="sale_quotations_change_status" class="sales sale_quotations">
+                                                        <label for="sale_quotations_change_status">{{ __('Quotation Change Status') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
@@ -1042,8 +1043,8 @@
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" class="sales sales_orders">
-                                                        <label for="sales_orders_delete">{{ __('Sales Order To Invoice') }}</label>
+                                                        <input type="checkbox" name="sales_order_to_invoice" id="sales_order_to_invoice" class="sales sales_orders">
+                                                        <label for="sales_order_to_invoice">{{ __('Sales Order To Invoice') }}</label>
                                                     </p>
                                                 </div>
 

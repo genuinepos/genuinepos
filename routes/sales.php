@@ -65,6 +65,7 @@ Route::prefix('sales')->group(function () {
         Route::post('store', 'store')->name('sales.pos.store');
         Route::get('edit/{saleId}/{saleScreenType?}', 'edit')->name('sales.pos.edit');
         Route::post('update/{saleId}', 'update')->name('sales.pos.update');
+        Route::delete('delete/{id}', 'delete')->name('sales.pos.delete');
 
         Route::controller(PosSaleExchangeController::class)->prefix('pos-exchange')->group(function () {
 
@@ -106,6 +107,7 @@ Route::prefix('sales')->group(function () {
         Route::post('update/{id}', 'update')->name('sale.quotations.update');
         Route::get('edit/status/{id}', 'editStatus')->name('sale.quotations.status.edit');
         Route::post('update/status/{id}', 'updateStatus')->name('sale.quotations.status.update');
+        Route::post('delete/{id}', 'delete')->name('sale.quotations.delete');
     });
 
     Route::controller(DraftController::class)->prefix('drafts')->group(function () {

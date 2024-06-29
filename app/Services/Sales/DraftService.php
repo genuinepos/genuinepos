@@ -4,7 +4,7 @@ namespace App\Services\Sales;
 
 use App\Enums\BooleanType;
 use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
+use App\Models\Sales\Sale as Draft;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -232,7 +232,7 @@ class DraftService
 
     public function singleDraft(int $id, array $with = null): ?object
     {
-        $query = Sale::query();
+        $query = Draft::query();
 
         if (isset($with)) {
 

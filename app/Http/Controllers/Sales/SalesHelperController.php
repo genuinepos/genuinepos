@@ -107,6 +107,12 @@ class SalesHelperController extends Controller
 
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
 
+        if (isset($request->sale_status) && $request->sale_status == SaleStatus::Quotation->value) {
+
+            $quotation = $sale;
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
+        }
+
         if ($sale->status == SaleStatus::Final->value) {
 
             $changeAmount = 0;

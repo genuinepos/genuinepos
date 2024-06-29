@@ -208,7 +208,7 @@
         var branch_id = $('#branch_id').val();
         var branch_name = $('#branch_id').find('option:selected').data('branch_name');
         var tax_account_id = $('#tax_account_id').val();
-        var tax_account_name = $('#tax_account_id').find('option:selected').data('tax_account_name');;
+        var tax_account_name = $('#tax_account_id').find('option:selected').data('tax_account_name');
         var from_date = $('#from_date').val();
         var to_date = $('#to_date').val();
 

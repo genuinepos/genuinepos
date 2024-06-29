@@ -44,7 +44,7 @@
     <header class="cart-header my-1">
         <div class="row">
             <div class="col-md-4">
-                <img style="height: 50px;; width:150px;" src="http://gposs.com/wp-content/uploads/2023/05/cropped-GPOSs-logo-b.png" alt="">
+                <img style="height: 50px; width:150px;" src="http://gposs.com/wp-content/uploads/2023/05/cropped-GPOSs-logo-b.png" alt="">
             </div>
             <div class="col-md-8">
                 <div class="header-link-area">

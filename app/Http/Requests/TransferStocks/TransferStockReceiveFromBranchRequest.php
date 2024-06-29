@@ -12,7 +12,7 @@ class TransferStockReceiveFromBranchRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value) {
+        if (!auth()->user()->can('transfer_stock_receive_from_branch') || config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value) {
 
             return false;
         }

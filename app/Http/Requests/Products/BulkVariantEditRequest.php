@@ -12,7 +12,7 @@ class BulkVariantEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_variant_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;;
+        return auth()->user()->can('product_variant_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**

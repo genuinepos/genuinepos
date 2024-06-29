@@ -20,7 +20,7 @@
         delay(function() {
             searchProduct(__keyWord, priceGroupId);
         }, 200); //sendAjaxical is the name of remote-command
-    });;
+    });
 
     function searchProduct(keyWord, priceGroupId) {
 
@@ -362,7 +362,7 @@
 
                                 var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 
-                                var updateVariantCost = product.update_variant_cost != 0 && product.update_variant_cost != null ? product.update_variant_cost : product.variant_cost_with_tax;;
+                                var updateVariantCost = product.update_variant_cost != 0 && product.update_variant_cost != null ? product.update_variant_cost : product.variant_cost_with_tax;
 
                                 var __updateProductCost = product.is_variant == 1 ? updateVariantCost : updateProductCost;
 

@@ -915,6 +915,7 @@
                                                         <label for="sold_product_list"> {{ __('Sold Product List') }}</label>
                                                     </p>
                                                 </div>
+
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="checkbox_input_wrap mt-4">
                                                         <input type="checkbox" name="edit_price_sale_screen" id="edit_price_sale_screen" class="sales sale_all">
@@ -949,6 +950,170 @@
                                                         <label for="sales_order_to_invoice"> {{ __('Sales Order to Invoice') }}</label>
                                                     </p>
                                                 </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="sales" id="select_all" data-target="sale_quotations" autocomplete="off">
+                                                            <strong>{{ __('Quotations') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_quotations_index" id="sale_quotations_index" class="sales sale_quotations">
+                                                        <label for="sale_quotations_index">{{ __('Quotation List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_quotations_only_own" id="sale_quotations_only_own" class="sales sale_quotations">
+                                                        <label for="sale_quotations_only_own">{{ __('Quotation List Only Created By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_quotations_edit" id="sale_quotations_edit" class="sales sale_quotations">
+                                                        <label for="sale_quotations_edit">{{ __('Quotation Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_quotations_delete" id="sale_quotations_delete" class="sales sale_quotations">
+                                                        <label for="sale_quotations_delete">{{ __('Quotation Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="sales" id="select_all" data-target="sale_drafts" autocomplete="off">
+                                                            <strong>{{ __('Drafts') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_drafts_index" id="sale_drafts_index" class="sales sale_drafts">
+                                                        <label for="sale_drafts_index">{{ __('Draft List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_drafts_only_own" id="sale_drafts_only_own" class="sales sale_drafts">
+                                                        <label for="sale_drafts_only_own">{{ __('Draft List Only Created By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_drafts_edit" id="sale_drafts_edit" class="sales sale_drafts">
+                                                        <label for="sale_drafts_edit">{{ __('Draft Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sale_drafts_delete" id="sale_drafts_delete" class="sales sale_drafts">
+                                                        <label for="sale_drafts_delete">{{ __('Draft Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <hr class="mt-2">
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="sales" id="select_all" data-target="sales_orders" autocomplete="off">
+                                                            <strong>{{ __('Sales Orders') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sales_orders_index" id="sales_orders_index" class="sales sales_orders">
+                                                        <label for="sales_orders_index">{{ __('Sales Order List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sales_orders_only_own" id="sales_orders_only_own" class="sales sales_orders">
+                                                        <label for="sales_orders_only_own">{{ __('Sales Order List Only Created By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sales_orders_edit" id="sales_orders_edit" class="sales sales_orders">
+                                                        <label for="sales_orders_edit">{{ __('Sales Order Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sales_orders_delete" id="sales_orders_delete" class="sales sales_orders">
+                                                        <label for="sales_orders_delete">{{ __('Sales Order Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" class="sales sales_orders">
+                                                        <label for="sales_orders_delete">{{ __('Sales Order To Invoice') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="sales" id="select_all" data-target="pos_sale_all" autocomplete="off">
+                                                            <strong>{{ __('POS Sales') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="pos_all" id="pos_all" class="sales pos_sale_all">
+                                                        <label for="pos_all">{{ __('Manage POS Sale') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="pos_add" id="pos_add" class="sales pos_sale_all">
+                                                        <label for="pos_add">{{ __('Add POS Sale') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="pos_edit" id="pos_edit" class="sales pos_sale_all">
+                                                        <label for="pos_edit">{{ __('Edit POS Sale') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="pos_delete" id="pos_delete" class="sales pos_sale_all">
+                                                        <label for="pos_delete">{{ __('Delete POS Sale') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="edit_price_pos_screen" id="edit_price_pos_screen" class="sales pos_sale_all">
+                                                        <label for="edit_price_pos_screen"> {{ __('Edit Product Price From POS Screen') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="edit_discount_pos_screen" id="edit_discount_pos_screen" class="sales pos_sale_all">
+                                                        <label for="edit_discount_pos_screen">{{ __('Edit Product Discount From POS Screen') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="sales" id="select_all" data-target="sales_reurn" autocomplete="off">
+                                                            <strong>{{ __('Sales Return') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sales_return_index" id="sales_return_index" class="sales sales_reurn">
+                                                        <label for="sales_return_index">{{ __('Sales Return List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="sales_return_only_own" id="sales_return_only_own" class="sales sales_reurn">
+                                                        <label for="sales_return_only_own">{{ __('Sales Return List Only Create By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="create_sales_return" id="create_sales_return" class="sales sales_reurn">
+                                                        <label for="create_sales_return">{{ __('Create Sales Return') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="edit_sales_return" id="edit_sales_return" class="sales sales_reurn">
+                                                        <label for="edit_sales_return">{{ __('Edit Sales Return') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="delete_sales_return" id="delete_sales_return" class="sales sales_reurn">
+                                                        <label for="delete_sales_return">{{ __('Delete Sales Return') }}</label>
+                                                    </p>
+                                                </div>
+
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
@@ -998,65 +1163,6 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sale_representative_report" id="sale_representative_report" class="sales sales_report">
                                                         <label for="sale_representative_report">{{ __('Sales Representative Report') }}</label>
-                                                    </p>
-                                                </div>
-                                                <div class="col-lg-3 col-sm-6">
-                                                    <p class="text-info checkbox_input_wrap">
-                                                        <label>
-                                                            <input type="checkbox" class="sales" id="select_all" data-target="pos_sale_all" autocomplete="off">
-                                                            <strong>{{ __('POS Sales') }}</strong>
-                                                        </label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="pos_all" id="pos_all" class="sales pos_sale_all">
-                                                        <label for="pos_all">{{ __('Manage POS Sale') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="pos_add" id="pos_add" class="sales pos_sale_all">
-                                                        <label for="pos_add">{{ __('Add POS Sale') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="pos_edit" id="pos_edit" class="sales pos_sale_all">
-                                                        <label for="pos_edit">{{ __('Edit POS Sale') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="pos_delete" id="pos_delete" class="sales pos_sale_all">
-                                                        <label for="pos_delete">{{ __('Delete POS Sale') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="edit_price_pos_screen" id="edit_price_pos_screen" class="sales pos_sale_all">
-                                                        <label for="edit_price_pos_screen"> {{ __('Edit Product Price From POS Screen') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="edit_discount_pos_screen" id="edit_discount_pos_screen" class="sales pos_sale_all">
-                                                        <label for="edit_discount_pos_screen">{{ __('Edit Product Discount From POS Screen') }}</label>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <hr class="mt-2">
-                                            <div class="row">
-                                                <div class="col-lg-3 col-sm-6">
-                                                    <p class="text-info checkbox_input_wrap">
-                                                        <label>
-                                                            <input type="checkbox" class="sales" id="select_all" data-target="sales_reurn" autocomplete="off">
-                                                            <strong>{{ __('Sales Return') }}</strong>
-                                                        </label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="sales_return_index" id="sales_return_index" class="sales sales_reurn">
-                                                        <label for="sales_return_index">{{ __('Sales Return List') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="create_sales_return" id="create_sales_return" class="sales sales_reurn">
-                                                        <label for="create_sales_return">{{ __('Create Sales Return') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="edit_sales_return" id="edit_sales_return" class="sales sales_reurn">
-                                                        <label for="edit_sales_return">{{ __('Edit Sales Return') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="delete_sales_return" id="delete_sales_return" class="sales sales_reurn">
-                                                        <label for="delete_sales_return">{{ __('Delete Sales Return') }}</label>
                                                     </p>
                                                 </div>
                                             </div>
@@ -2501,7 +2607,7 @@
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="service_invoices_create" id="job_cards_create" class="service_invoices services">
+                                                        <input type="checkbox" name="service_invoices_create" id="service_invoices_create" class="service_invoices services">
                                                         <label for="service_invoices_create">{{ __('Invoice Add') }}</label>
                                                     </p>
 
@@ -2513,6 +2619,40 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="service_invoices_delete" id="service_invoices_delete" class="service_invoices services">
                                                         <label for="service_invoices_delete"> {{ __('Invoice Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="service_quotations" id="select_all" data-target="service_quotations" autocomplete="off">
+                                                            <strong>{{ __('Quotations') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_quotations_index" id="service_quotations_index" class="service_quotations services">
+                                                        <label for="service_quotations_index">{{ __('Quotation List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_quotations_only_own" id="service_quotations_only_own" class="service_quotations services">
+                                                        <label for="service_quotations_only_own">{{ __('Quotation List Only Created By Own') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_quotations_create" id="service_quotations_create" class="service_quotations services">
+                                                        <label for="service_quotations_create">{{ __('Quotation Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_quotations_edit" id="service_quotations_edit" class="service_quotations services">
+                                                        <label for="service_quotations_edit">{{ __('Quotation Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="service_quotations_delete" id="service_quotations_delete" class="service_quotations services">
+                                                        <label for="service_quotations_delete"> {{ __('Quotation Delete') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

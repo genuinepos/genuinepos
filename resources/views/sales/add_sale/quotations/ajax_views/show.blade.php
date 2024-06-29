@@ -227,10 +227,28 @@
                             @php
                                 $filename = $quotation->quotation_id . '__' . $quotation->date . '__' . $branchName;
                             @endphp
-                            @if (auth()->user()->can('edit_add_sale') && $quotation->branch_id == auth()->user()->branch_id)
+                            {{-- @if (auth()->user()->can('edit_add_sale') && $quotation->branch_id == auth()->user()->branch_id)
                                 <a href="{{ route('sale.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                            @endif --}}
+
+                            @if ($quotation->branch_id == auth()->user()->branch_id)
+                                @if ($quotation->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
+                                    @if (auth()->user()->can('sale_quotation'))
+                                        <a href="{{ route('sale.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                    @endif
+                                @elseif($quotation->sale_screen == \App\Enums\SaleScreenType::PosSale->value)
+                                    @if (auth()->user()->can('pos_edit'))
+                                        <a href="{{ route('sales.pos.edit', [$quotation->id, $quotation->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                    @endif
+                                @elseif($quotation->sale_screen == \App\Enums\SaleScreenType::ServiceQuotation->value)
+                                    @if (auth()->user()->can('service_invoices_edit') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value)
+                                        <a href="{{ route('services.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                    @endif
+                                @endif
                             @endif
-                            <a href="{{ route('sales.helper.related.voucher.print', $quotation->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Quotation') }}</a>
+
+                            <a href="{{ route('sales.helper.related.voucher.print', [$quotation->id]) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Quotation') }}</a>
+                            
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -246,13 +264,15 @@
         var url = event.getAttribute('href');
         var filename = event.getAttribute('data-filename');
         var print_page_size = $('#print_page_size').val();
+        var sale_status = 4;
         var currentTitle = document.title;
 
         $.ajax({
             url: url,
             type: 'get',
             data: {
-                print_page_size
+                print_page_size,
+                sale_status
             },
             success: function(data) {
 

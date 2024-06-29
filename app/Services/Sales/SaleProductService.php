@@ -203,7 +203,7 @@ class SaleProductService
         $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
         $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$index];
         $addSaleProduct->subtotal = $request->subtotals[$index];
-        $addSaleProduct->description = $request->descriptions[$index] ? $request->descriptions[$index] : null;
+        $addSaleProduct->description = isset($request->descriptions[$index]) ? $request->descriptions[$index] : null;
         $addSaleProduct->save();
 
         return $addSaleProduct;

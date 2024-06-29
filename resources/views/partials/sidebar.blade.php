@@ -2172,7 +2172,7 @@
                                         @endif
 
                                         <div class="sub-menu-col">
-                                            <a href="#" class="switch-bar-wrap">
+                                            <a href="{{ route('services.quotations.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-plus-circle"></i></span>
@@ -2183,7 +2183,7 @@
                                         </div>
 
                                         <div class="sub-menu-col">
-                                            <a href="#" class="switch-bar-wrap">
+                                            <a href="{{ route('services.quotations.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-list"></i></span>

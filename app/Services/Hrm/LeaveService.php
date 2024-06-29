@@ -106,7 +106,7 @@ class LeaveService
         $addLeave->user_id = $request->user_id;
         $addLeave->leave_type_id = $request->leave_type_id;
         $addLeave->start_date = date('Y-m-d', strtotime($request->start_date));
-        $addLeave->end_date = date('Y-m-d', strtotime($request->end_date));;
+        $addLeave->end_date = date('Y-m-d', strtotime($request->end_date));
         $addLeave->reason = $request->reason;
         $addLeave->status = 0;
         $addLeave->created_by_id = auth()->user()->id;
@@ -120,7 +120,7 @@ class LeaveService
         $updateLeave->leave_type_id = $request->leave_type_id;
         $updateLeave->start_date = date('Y-m-d', strtotime($request->start_date));
         $updateLeave
-            ->end_date = date('Y-m-d', strtotime($request->end_date));;
+            ->end_date = date('Y-m-d', strtotime($request->end_date));
         $updateLeave->reason = $request->reason;
         $updateLeave->save();
     }

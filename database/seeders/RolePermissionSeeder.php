@@ -96,6 +96,7 @@ class RolePermissionSeeder extends Seeder
                 $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
                 $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
                 $hasServiceInvoicesOnlyOwnPermission = $role->hasPermissionTo('service_invoices_only_own');
+                $hasServiceQuotationsOnlyOwnPermission = $role->hasPermissionTo('service_quotations_only_own');
                 $hasShopIndexPermission = $role->hasPermissionTo('branches_index');
                 $hasShopCreatePermission = $role->hasPermissionTo('branches_create');
                 $hasShopEditPermission = $role->hasPermissionTo('branches_edit');
@@ -136,6 +137,11 @@ class RolePermissionSeeder extends Seeder
                         if (!$hasServiceInvoicesOnlyOwnPermission) {
 
                             $role->revokePermissionTo('service_invoices_only_own');
+                        }
+
+                        if (!$hasServiceQuotationsOnlyOwnPermission) {
+
+                            $role->revokePermissionTo('service_quotations_only_own');
                         }
 
                         if (!$hasShopIndexPermission) {
@@ -194,6 +200,7 @@ class RolePermissionSeeder extends Seeder
                     $role->revokePermissionTo('has_access_to_all_area');
                     $role->revokePermissionTo('view_own_sale');
                     $role->revokePermissionTo('service_invoices_only_own');
+                    $role->revokePermissionTo('service_quotations_only_own');
                     $role->revokePermissionTo('branches_index');
                     $role->revokePermissionTo('branches_create');
                     $role->revokePermissionTo('branches_edit');
@@ -650,6 +657,12 @@ class RolePermissionSeeder extends Seeder
             ['id' => '438', 'name' => 'customer_ledger'],
 
             ['id' => '439', 'name' => 'service_invoices_only_own'],
+
+            ['id' => '440', 'name' => 'service_quotations_index'],
+            ['id' => '441', 'name' => 'service_quotations_only_own'],
+            ['id' => '443', 'name' => 'service_quotations_create'],
+            ['id' => '444', 'name' => 'service_quotations_edit'],
+            ['id' => '445', 'name' => 'service_quotations_delete'],
         ];
 
         return $permissions;

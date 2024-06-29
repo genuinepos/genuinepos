@@ -100,7 +100,7 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(QuotationController::class)->prefix('quotations')->group(function () {
 
-        Route::get('/', 'index')->name('sale.quotations.index');
+        Route::get('index/{saleScreenType?}', 'index')->name('sale.quotations.index');
         Route::get('show/{id}', 'show')->name('sale.quotations.show');
         Route::get('edit/{id}', 'edit')->name('sale.quotations.edit');
         Route::post('update/{id}', 'update')->name('sale.quotations.update');

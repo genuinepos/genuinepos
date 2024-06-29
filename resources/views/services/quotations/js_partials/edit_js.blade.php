@@ -108,7 +108,6 @@
                             $('#e_tax_ac_id').val(product.tax_ac_id != null ? product.tax_ac_id : '');
                             $('#e_tax_type').val(product.tax_type);
                             $('#e_unit_cost_inc_tax').val(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax);
-                            $('#e_is_show_emi_on_pos').val(product.is_show_emi_on_pos);
 
                             $('#e_unit_id').empty();
                             $('#e_unit_id').append('<option value="' + product.unit.id +
@@ -236,7 +235,6 @@
                     } else if (!$.isEmptyObject(product.namedProducts)) {
 
                         if (product.namedProducts.length > 0) {
-
 
                             var li = "";
                             var products = product.namedProducts;

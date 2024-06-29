@@ -2,29 +2,46 @@
 
 namespace App\Http\Controllers\Services;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\Accounts\AccountService;
 use App\Http\Requests\Services\ServiceInvoiceIndexRequest;
+use App\Http\Requests\Services\ServiceInvoiceDeleteRequest;
+use App\Interfaces\Services\ServiceInvoiceControllerMethodContainersInterface;
 
 class ServiceInvoiceController extends Controller
 {
-    public function __construct(private AccountService $accountService, private BranchService $branchService)
+    public function index(ServiceInvoiceIndexRequest $request, ServiceInvoiceControllerMethodContainersInterface $serviceInvoiceControllerMethodContainersInterface)
     {
-    }
+        $indexMethodContainer = $serviceInvoiceControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
-    public function index(ServiceInvoiceIndexRequest $request)
-    {
-        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        if ($request->ajax()) {
 
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+            return $indexMethodContainer;
+        }
 
-        $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
-
-        $ownBranchIdOrParentBranchId = $ownBranchIdOrParentBranchId;
+        extract($indexMethodContainer);
 
         return view('services.invoices.index', compact('branches', 'customerAccounts'));
+    }
+
+    public function delete($id, ServiceInvoiceDeleteRequest $request, ServiceInvoiceControllerMethodContainersInterface $serviceInvoiceControllerMethodContainersInterface)
+    {
+        try {
+            DB::beginTransaction();
+
+            $deleteMethodContainer = $serviceInvoiceControllerMethodContainersInterface->deleteMethodContainer(id: $id);
+
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Invoice deleted successfully.'));
     }
 }

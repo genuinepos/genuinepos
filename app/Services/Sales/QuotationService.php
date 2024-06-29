@@ -5,7 +5,7 @@ namespace App\Services\Sales;
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
-use App\Models\Sales\Sale;
+use App\Models\Sales\Sale as Quotation;
 use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -323,7 +323,7 @@ class QuotationService
 
     public function singleQuotation(int $id, array $with = null): ?object
     {
-        $query = Sale::query();
+        $query = Quotation::query();
 
         if (isset($with)) {
 

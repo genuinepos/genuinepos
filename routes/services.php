@@ -78,5 +78,6 @@ Route::prefix('services')->group(function () {
     Route::controller(ServiceInvoiceController::class)->prefix('invoices')->group(function () {
 
         Route::get('/', 'index')->name('services.invoices.index');
+        Route::delete('delete/{id}', 'delete')->name('services.invoices.delete');
     });
 });

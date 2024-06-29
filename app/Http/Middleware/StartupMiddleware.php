@@ -18,7 +18,6 @@ class StartupMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $generalSettings = config('generalSettings');
-        dd($generalSettings);
         $subscription = $generalSettings['subscription'];
 
         if (

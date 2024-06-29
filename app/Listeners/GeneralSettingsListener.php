@@ -212,8 +212,9 @@ class GeneralSettingsListener
 
         $subscription = Cache::rememberForever($cacheKey, function () {
 
+            $centralDb = config('database.connections.mysql.database');
             return DB::table('subscriptions')
-                ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
+                ->leftJoin($centralDb . '.plans', 'subscriptions.plan_id', $centralDb . '.plans.id')
                 ->select(
                     [
                         'subscriptions.id',
@@ -225,11 +226,11 @@ class GeneralSettingsListener
                         'subscriptions.is_completed_business_startup',
                         'subscriptions.is_completed_branch_startup',
                         'subscriptions.business_expire_date',
-                        'pos.plans.plan_type',
-                        'pos.plans.name as plan_name',
-                        'pos.plans.is_trial_plan',
-                        'pos.plans.trial_days',
-                        'pos.plans.features',
+                        'plans.plan_type',
+                        'plans.name as plan_name',
+                        'plans.is_trial_plan',
+                        'plans.trial_days',
+                        'plans.features',
                         'subscriptions.current_shop_count',
                         'subscriptions.trial_start_date',
                         'subscriptions.has_business',

@@ -15,14 +15,19 @@ class SAASDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (User::count() === 0) {
-            $this->call(UserTableSeeder::class);
-            $this->call(RolePermissionTableSeeder::class);
-        }
+        // if (User::count() === 0) {
+        //     $this->call(UserTableSeeder::class);
+        //     $this->call(RolePermissionTableSeeder::class);
+        // }
 
-        if (Plan::count() == 0) {
-            $this->call(PlanTableSeeder::class);
-            $this->call(CurrencyDatabaseSeedSeeder::class);
-        }
+        // if (Plan::count() == 0) {
+        //     $this->call(PlanTableSeeder::class);
+        //     $this->call(CurrencyDatabaseSeedSeeder::class);
+        // }
+
+        $this->call(UserTableSeeder::class);
+        $this->call(RolePermissionTableSeeder::class);
+        $this->call(PlanTableSeeder::class);
+        $this->call(CurrencyDatabaseSeedSeeder::class);
     }
 }

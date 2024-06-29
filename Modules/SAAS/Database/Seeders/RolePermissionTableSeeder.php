@@ -40,7 +40,10 @@ class RolePermissionTableSeeder extends Seeder
 
         foreach ($this->permissionsArray() as $permission) {
 
-            Permission::UpdateOrCreate(['name' => $permission, 'guard_name' => 'web']);
+            Permission::UpdateOrCreate([
+                'id' => $permission['id'],
+                'name' => $permission['name']
+            ]);
         }
 
         $adminRole = User::whereName('admin')->first() ?? Role::first();
@@ -52,9 +55,7 @@ class RolePermissionTableSeeder extends Seeder
 
     public function rolesArray(): array
     {
-        return [
-            'admin',
-        ];
+        return ['admin'];
     }
 
     public function permissionsArray(): array

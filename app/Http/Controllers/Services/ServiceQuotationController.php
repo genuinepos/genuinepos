@@ -19,9 +19,11 @@ use App\Services\Accounts\AccountFilterService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Products\ManagePriceGroupService;
 use App\Services\Services\ServiceQuotationService;
+use App\Http\Requests\Services\ServiceQuotationEditRequest;
 use App\Http\Requests\Services\ServiceQuotationIndexRequest;
 use App\Http\Requests\Services\ServiceQuotationStoreRequest;
 use App\Http\Requests\Services\ServiceQuotationCreateRequest;
+use App\Http\Requests\Services\ServiceQuotationUpdateRequest;
 
 class ServiceQuotationController extends Controller
 {
@@ -85,37 +87,46 @@ class ServiceQuotationController extends Controller
 
     public function store(ServiceQuotationStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        $generalSettings = config('generalSettings');
+        try {
+            DB::beginTransaction();
 
-        $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
+            $generalSettings = config('generalSettings');
 
-        $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService);
-        if ($restrictions['pass'] == false) {
+            $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
+            $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService);
+            if ($restrictions['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restrictions['msg']]);
+            }
+
+            $addSale = $this->saleService->addSale(request: $request, saleScreenType: SaleScreenType::ServiceQuotation->value, codeGenerator: $codeGenerator, invoicePrefix: null, quotationPrefix: $quotationPrefix, salesOrderPrefix: null);
+
+            foreach ($request->product_ids as $index => $productId) {
+
+                $addSaleProduct = $this->saleProductService->addSaleProduct(request: $request, sale: $addSale, index: $index);
+            }
+
+            $sale = $this->saleService->singleSale(
+                id: $addSale->id,
+                with: [
+                    'branch',
+                    'branch.parentBranch',
+                    'customer',
+                    'saleProducts',
+                    'saleProducts.product',
+                ]
+            );
+
+            $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Quotation->value, dataObj: $sale);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $addSale = $this->saleService->addSale(request: $request, saleScreenType: SaleScreenType::ServiceQuotation->value, codeGenerator: $codeGenerator, invoicePrefix: null, quotationPrefix: $quotationPrefix, salesOrderPrefix: null);
-
-        foreach ($request->product_ids as $index => $productId) {
-
-            $addSaleProduct = $this->saleProductService->addSaleProduct(request: $request, sale: $addSale, index: $index);
-        }
-
-        $sale = $this->saleService->singleSale(
-            id: $addSale->id,
-            with: [
-                'branch',
-                'branch.parentBranch',
-                'customer',
-                'saleProducts',
-                'saleProducts.product',
-            ]
-        );
-
-        $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
-
-        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Quotation->value, dataObj: $sale);
 
         if ($request->action == 'save_and_print') {
 
@@ -128,7 +139,7 @@ class ServiceQuotationController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($id, ServiceQuotationEditRequest $request)
     {
         $quotation = $this->quotationService->singleQuotation(id: $id, with: [
             'customer',
@@ -152,7 +163,6 @@ class ServiceQuotationController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            // ->where('accounts.branch_id', $quotation->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
@@ -161,5 +171,46 @@ class ServiceQuotationController extends Controller
         $priceGroupProducts = $this->managePriceGroupService->priceGroupProducts();
 
         return view('services.quotations.edit', compact('quotation', 'customerAccounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
+    }
+
+    public function update($id, ServiceQuotationUpdateRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $quotation = $this->quotationService->singleQuotation(id: $id, with: ['saleProducts', 'references']);
+
+            $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $id);
+
+            if ($restrictions['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restrictions['msg']]);
+            }
+
+            $updateQuotation = $this->quotationService->updateQuotation(request: $request, updateQuotation: $quotation);
+
+            $updateQuotationProducts = $this->quotationProductService->updateQuotationProducts(request: $request, quotation: $updateQuotation);
+
+            $quotation = $this->quotationService->singleQuotation(id: $id, with: ['saleProducts']);
+
+            $deletedUnusedQuotationProducts = $quotation->saleProducts()->where('is_delete_in_update', BooleanType::True->value)->get();
+
+            if (count($deletedUnusedQuotationProducts) > 0) {
+
+                foreach ($deletedUnusedQuotationProducts as $deletedUnusedQuotationProduct) {
+
+                    $deletedUnusedQuotationProduct->delete();
+                }
+            }
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Quotation->value, dataObj: $quotation);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Quotation update successfully'));
     }
 }

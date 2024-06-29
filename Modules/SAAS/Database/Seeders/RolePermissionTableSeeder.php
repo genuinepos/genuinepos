@@ -30,9 +30,9 @@ class RolePermissionTableSeeder extends Seeder
 
         foreach ($this->rolesArray() as $role) {
 
-            $role = Role::where('name', $role)->first();
+            $existsRole = Role::where('name', $role)->first();
 
-            if (!isset($role)) {
+            if (!isset($existsRole)) {
 
                 Role::create(['id' => 1, 'name' => $role, 'guard_name' => 'web']);
             }

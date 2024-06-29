@@ -69,8 +69,6 @@ class GeneralSettingsListener
                 return $settings;
             });
 
-            dd($generalSettings);
-
             $branch = $event?->user?->branch;
             if (isset($branch) && isset($branch->parent_branch_id)) {
 
@@ -267,6 +265,8 @@ class GeneralSettingsListener
 
             $generalSettings['subscription'] = $subscription;
             $generalSettings['subscription']->features = json_decode($generalSettings['subscription']->features, true);
+
+            dd($generalSettings);
 
             config([
                 'generalSettings' => $generalSettings,

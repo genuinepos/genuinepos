@@ -154,7 +154,7 @@ class BranchService
             if (!\File::isDirectory($dir)) {
 
                 // \File::makeDirectory($dir, 493, true);
-                \File::makeDirectory($dir, 775, true);
+                \File::makeDirectory($dir, 0755, true);
             }
 
             $logo = $request->file('logo');

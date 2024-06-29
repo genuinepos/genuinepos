@@ -22,3 +22,12 @@ storage/debugbar
 packages
 public/modules
 mailhog.exe
+package-lock.json
+yarn.lock
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+/.phpunit.cache
+/node_modules
+/public/build

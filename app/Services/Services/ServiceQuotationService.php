@@ -3,7 +3,6 @@
 namespace App\Services\Services;
 
 use Carbon\Carbon;
-use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Enums\SaleScreenType;
 use App\Enums\ShipmentStatus;
@@ -12,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ServiceQuotationService
 {
-    public function ServiceQuotationListTable(object $request, ?int $saleScreenType = null)
+    public function ServiceQuotationListTable(object $request)
     {
         $generalSettings = config('generalSettings');
         $quotations = '';

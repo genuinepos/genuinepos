@@ -266,6 +266,8 @@ class GeneralSettingsListener
             $generalSettings['subscription'] = $subscription;
             $generalSettings['subscription']->features = json_decode($generalSettings['subscription']->features, true);
 
+            dd($generalSettings);
+
             config([
                 'generalSettings' => $generalSettings,
                 // Tenant separated email config start

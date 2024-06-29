@@ -69,6 +69,8 @@ class GeneralSettingsListener
                 return $settings;
             });
 
+            dd($generalSettings);
+
             $branch = $event?->user?->branch;
             if (isset($branch) && isset($branch->parent_branch_id)) {
 

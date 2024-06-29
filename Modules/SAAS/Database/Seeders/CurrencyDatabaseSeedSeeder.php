@@ -154,6 +154,14 @@ class CurrencyDatabaseSeedSeeder extends Seeder
             ['id' => '140', 'country' => 'Kuwait', 'currency' => 'Kuwaiti dinar', 'code' => 'KWD', 'symbol' => 'KD', 'thousand_separator' => ',', 'decimal_separator' => '.', 'created_at' => null, 'updated_at' => null],
         ];
 
-        \Illuminate\Support\Facades\DB::table('currencies')->insert($currencies);
+        foreach ($currencies as $currency) {
+
+            $exists = \Illuminate\Support\Facades\DB::table('currencies')->where('id', $currency['id'])->first();
+
+            if (!isset($exists)) {
+
+                \Illuminate\Support\Facades\DB::table('currencies')->insert($currency);
+            }
+        }
     }
 }

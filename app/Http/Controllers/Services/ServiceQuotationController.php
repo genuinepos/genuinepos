@@ -18,7 +18,9 @@ use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Products\ManagePriceGroupService;
+use App\Http\Requests\Services\ServiceQuotationIndexRequest;
 use App\Http\Requests\Services\ServiceQuotationStoreRequest;
+use App\Http\Requests\Services\ServiceQuotationCreateRequest;
 
 class ServiceQuotationController extends Controller
 {
@@ -36,7 +38,7 @@ class ServiceQuotationController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(ServiceQuotationIndexRequest $request)
     {
         if ($request->ajax()) {
 
@@ -53,7 +55,7 @@ class ServiceQuotationController extends Controller
         return view('services.quotations.index', compact('branches', 'customerAccounts'));
     }
 
-    public function create()
+    public function create(ServiceQuotationCreateRequest $request)
     {
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 

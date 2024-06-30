@@ -12,7 +12,7 @@ class SalesOrderEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sales_order_list') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_orders_edit') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\DraftEditRequest;
 use App\Http\Requests\Sales\DraftIndexRequest;
+use App\Http\Requests\Sales\DraftDeleteRequest;
 use App\Http\Requests\Sales\DraftUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
@@ -64,5 +65,26 @@ class DraftController extends Controller
         }
 
         return response()->json(__('Draft updated Successfully.'));
+    }
+
+    public function delete($id, DraftDeleteRequest $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
+    {
+        try {
+            DB::beginTransaction();
+
+            $deleteMethodContainer = $draftControllerMethodContainersInterface->deleteMethodContainer(id: $id);
+
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Draft is deleted successfully'));
     }
 }

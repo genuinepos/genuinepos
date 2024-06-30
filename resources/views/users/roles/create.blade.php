@@ -902,14 +902,14 @@
                                                         <input type="checkbox" name="delete_add_sale" id="delete_add_sale" class="sales sale_all">
                                                         <label for="delete_add_sale"> {{ __('Delete Add Sale') }}</label>
                                                     </p>
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sale_draft" id="sale_draft" class="sales sale_all">
                                                         <label for="sale_draft">{{ __('List Draft') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    </p> --}}
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sale_quotation" id="sale_quotation" class="sales sale_all">
                                                         <label for="sale_quotation"> {{ __('List Quotations') }}</label>
-                                                    </p>
+                                                    </p> --}}
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sold_product_list" id="sold_product_list" class="sales sale_all">
                                                         <label for="sold_product_list"> {{ __('Sold Product List') }}</label>
@@ -941,10 +941,10 @@
                                                         <input type="checkbox" name="discounts" id="discounts" class="sales sale_all">
                                                         <label for="discounts"> {{ __('Manage Discount') }}</label>
                                                     </p>
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sales_order_list" id="sales_order_list" class="sales sale_all">
                                                         <label for="sales_order_list"> {{ __('Sales Order List') }}</label>
-                                                    </p>
+                                                    </p> --}}
                                                 </div>
 
                                                 <div class="col-lg-3 col-sm-6">

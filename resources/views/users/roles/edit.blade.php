@@ -892,14 +892,14 @@
                                                         <input type="checkbox" {{ $role->hasPermissionTo('delete_add_sale') ? 'CHECKED' : '' }} name="delete_add_sale" id="delete_add_sale" class="sales sale_all">
                                                         <label for="delete_add_sale"> {{ __('Delete Add Sale') }}</label>
                                                     </p>
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sale_draft') ? 'CHECKED' : '' }} name="sale_draft" id="sale_draft" class="sales sale_all">
                                                         <label for="sale_draft">{{ __('List Draft') }}</label>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    </p> --}}
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sale_quotation') ? 'CHECKED' : '' }} name="sale_quotation" id="sale_quotation" class="sales sale_all">
                                                         <label for="sale_quotation"> {{ __('List Quotations') }}</label>
-                                                    </p>
+                                                    </p> --}}
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sold_product_list') ? 'CHECKED' : '' }} name="sold_product_list" id="sold_product_list" class="sales sale_all">
                                                         <label for="sold_product_list"> {{ __('Sold Product List') }}</label>
@@ -931,10 +931,10 @@
                                                         <input type="checkbox" {{ $role->hasPermissionTo('discounts') ? 'CHECKED' : '' }} name="discounts" id="discounts" class="sales sale_all">
                                                         <label for="discounts"> {{ __('Manage Discount') }}</label>
                                                     </p>
-                                                    <p class="checkbox_input_wrap mt-1">
+                                                    {{-- <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sales_order_list') ? 'CHECKED' : '' }} name="sales_order_list" id="sales_order_list" class="sales sale_all">
                                                         <label for="sales_order_list"> {{ __('Sales Order List') }}</label>
-                                                    </p>
+                                                    </p> --}}
                                                 </div>
 
                                                 <div class="col-lg-3 col-sm-6">

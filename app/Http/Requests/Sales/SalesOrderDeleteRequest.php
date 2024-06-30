@@ -5,14 +5,14 @@ namespace App\Http\Requests\Sales;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SalesOrderIndexRequest extends FormRequest
+class SalesOrderDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sales_orders_index') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_orders_delete') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

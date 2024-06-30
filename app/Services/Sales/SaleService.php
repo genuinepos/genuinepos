@@ -599,7 +599,7 @@ class SaleService
             $query->where('sales.sale_screen', $saleScreen);
         }
 
-        if (auth()->user()->can('view_own_sale')) {
+        if (auth()->user()->can('sales_orders_only_own')) {
 
             $query->where('sales.created_by_id', auth()->user()->id);
         }

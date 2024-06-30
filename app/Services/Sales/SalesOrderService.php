@@ -69,7 +69,7 @@ class SalesOrderService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('edit_add_sale')) {
+                    if (auth()->user()->can('sales_orders_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sale.orders.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
@@ -77,9 +77,9 @@ class SalesOrderService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('delete_add_sale')) {
+                    if (auth()->user()->can('sales_orders_delete')) {
 
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                        $html .= '<a href="' . route('sale.orders.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 

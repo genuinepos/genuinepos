@@ -245,4 +245,18 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
             return ['noResult' => 'no result'];
         }
     }
+
+    public function deleteMethodContainer(int $id): ?array
+    {
+        $deleteSale = $this->saleService->deleteSale($id);
+
+        if (isset($deleteSale['pass']) && $deleteSale['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $deleteSale['msg']];
+        }
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SalesOrder->value, dataObj: $deleteSale);
+
+        return null;
+    }
 }

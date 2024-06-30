@@ -90,6 +90,7 @@ Route::prefix('sales')->group(function () {
         Route::get('show/{id}', 'show')->name('sale.orders.show');
         Route::get('edit/{id}', 'edit')->name('sale.orders.edit');
         Route::post('update/{id}', 'update')->name('sale.orders.update');
+        Route::delete('delete/{id}', 'delete')->name('sale.orders.delete');
         Route::get('search/by/{keyword}', 'searchByOrderId')->name('sale.orders.search');
     });
 
@@ -107,15 +108,16 @@ Route::prefix('sales')->group(function () {
         Route::post('update/{id}', 'update')->name('sale.quotations.update');
         Route::get('edit/status/{id}', 'editStatus')->name('sale.quotations.status.edit');
         Route::post('update/status/{id}', 'updateStatus')->name('sale.quotations.status.update');
-        Route::post('delete/{id}', 'delete')->name('sale.quotations.delete');
+        Route::delete('delete/{id}', 'delete')->name('sale.quotations.delete');
     });
 
     Route::controller(DraftController::class)->prefix('drafts')->group(function () {
 
         Route::get('/', 'index')->name('sale.drafts.index');
         Route::get('show/{id}', 'show')->name('sale.drafts.show');
-        Route::get('edit/{id}', 'edit')->name('sale.drafts.edit');
+        Route::get('edit/{id}/{saleScreen?}', 'edit')->name('sale.drafts.edit');
         Route::post('update/{id}', 'update')->name('sale.drafts.update');
+        Route::delete('delete/{id}', 'delete')->name('sale.drafts.delete');
     });
 
     Route::controller(ShipmentController::class)->prefix('shipments')->group(function () {

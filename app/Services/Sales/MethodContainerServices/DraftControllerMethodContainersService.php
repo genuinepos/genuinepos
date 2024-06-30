@@ -15,10 +15,12 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\Sales\SalesOrderService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\DraftProductService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\StockChainService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Products\ProductStockService;
 use App\Services\Users\UserActivityLogService;
@@ -54,6 +56,8 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private WarehouseService $warehouseService,
         private ManagePriceGroupService $managePriceGroupService,
+        private StockChainService $stockChainService,
+        private SalesOrderService $salesOrderService,
         private UserActivityLogService $userActivityLogService,
     ) {
     }
@@ -259,7 +263,7 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
                     $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
                 }
 
-                $this->purchaseProductService->addPurchaseSaleProductChain($draft, $stockAccountingMethod);
+                $this->stockChainService->addStockChain(sale: $draft, stockAccountingMethod: $stockAccountingMethod);
             }
         }
 
@@ -291,6 +295,20 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         }
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Draft->value, dataObj: $draft);
+
+        return null;
+    }
+
+    public function deleteMethodContainer(int $id): ?array
+    {
+        $deleteSale = $this->saleService->deleteSale($id);
+
+        if (isset($deleteSale['pass']) && $deleteSale['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $deleteSale['msg']];
+        }
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Draft->value, dataObj: $deleteSale);
 
         return null;
     }

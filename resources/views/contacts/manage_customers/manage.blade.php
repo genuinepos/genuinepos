@@ -66,7 +66,7 @@
                             @endif
 
                             @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                                @if (auth()->user()->can('sales_order_list'))
+                                @if (auth()->user()->can('sales_orders_index'))
                                     <a id="tab_btn" data-show="sales_order" class="btn btn-sm btn-primary tab_btn" href="#">
                                         <i class="fas fa-shopping-bag"></i> {{ __('Sales Orders') }}
                                     </a>
@@ -112,7 +112,7 @@
                     @endif
 
                     @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                        @if (auth()->user()->can('sales_order_list'))
+                        @if (auth()->user()->can('sales_orders_index'))
                             @include('contacts.manage_customers.partials.tab_content_partials.sales_order')
                         @endif
                     @endif
@@ -170,7 +170,7 @@
     @endif
 
     @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        @if (auth()->user()->can('sales_order_list'))
+        @if (auth()->user()->can('sales_orders_index'))
             @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_order_js')
         @endif
     @endif

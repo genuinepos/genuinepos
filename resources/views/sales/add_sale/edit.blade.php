@@ -76,8 +76,8 @@
         }
 
         /*.select2-selection:focus {
-                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                    } */
+                             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                        } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -164,7 +164,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -247,7 +247,7 @@
                                                         <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                                         @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -283,13 +283,13 @@
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                                <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Discount') }}</label>
                                                 <div class="input-group">
-                                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
+                                                    <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
 
                                                     <select id="e_discount_type" class="form-control">
                                                         <option value="1">{{ __('Fixed') }}(0.00)</option>
@@ -387,7 +387,6 @@
                                                                     @php
 
                                                                         if (isset($saleProduct->product_id)) {
-
                                                                             $itemUnitsArray[$saleProduct->product_id][] = [
                                                                                 'unit_id' => $saleProduct->product->unit->id,
                                                                                 'unit_name' => $saleProduct->product->unit->name,
@@ -406,7 +405,14 @@
 
                                                                                 $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
-                                                                                $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $sale->branch_id);
+                                                                                $currentStock = 0;
+                                                                                if ($saleProduct?->product?->is_manage_stock == 1) {
+
+                                                                                    $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $sale->branch_id, warehouseId: $saleProduct->warehouse_id);
+                                                                                } else {
+
+                                                                                    $currentStock = PHP_INT_MAX;
+                                                                                }
 
                                                                                 $baseUnitMultiplier = $saleProduct?->unit?->base_unit_multiplier ? $saleProduct?->unit?->base_unit_multiplier : 1;
                                                                             @endphp
@@ -428,6 +434,7 @@
                                                                             <input type="hidden" name="sale_product_ids[]" value="{{ $saleProduct->id }}">
                                                                             <input type="hidden" id="current_quantity" value="{{ $saleProduct->quantity }}">
                                                                             <input type="hidden" id="current_stock" value="{{ $currentStock }}">
+                                                                            <input type="hidden" data-product_name="{{ $saleProduct->product->name . $variant }}" data-unit_name="{{ $saleProduct?->unit?->name }}" id="stock_limit" value="{{ $currentStock }}">
                                                                             <input type="hidden" class="unique_id" id="{{ $saleProduct->product_id . $variantId . $saleProduct->warehouse_id }}" value="{{ $saleProduct->product_id . $variantId . $saleProduct->warehouse_id }}">
                                                                         </td>
 

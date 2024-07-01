@@ -315,13 +315,13 @@ class SalesOrderService
             $query->where('sales.customer_account_id', $customerAccountId);
         }
 
+        if (auth()->user()->can('sales_orders_only_own')) {
+
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
+
         // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }

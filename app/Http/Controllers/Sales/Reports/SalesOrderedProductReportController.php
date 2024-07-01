@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;

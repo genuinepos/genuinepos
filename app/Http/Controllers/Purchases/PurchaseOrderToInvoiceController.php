@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Purchases\PurchaseOrderToInvoiceIndexRequest;
 use App\Http\Requests\Purchases\PurchaseOrderToInvoiceStoreRequest;
 use App\Interfaces\Purchases\PurchaseOrderToInvoiceControllerMethodContainersInterface;
 
 class PurchaseOrderToInvoiceController extends Controller
 {
     public function create(
+        PurchaseOrderToInvoiceIndexRequest $request,
         CodeGenerationServiceInterface $codeGenerator,
         PurchaseOrderToInvoiceControllerMethodContainersInterface $purchaseOrderToInvoiceControllerMethodContainersInterface,
         $id = null
     ) {
-        abort_if(!auth()->user()->can('purchase_order_to_invoice'), 403);
-
         $createMethodContainer = $purchaseOrderToInvoiceControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator, id: $id);
 
         extract($createMethodContainer);

@@ -71,8 +71,6 @@ class StockReportController extends Controller
         $filteredBrandName = $request->brand_name;
         $filteredUnitName = $request->unit_name;
 
-        $branchStocks = '';
-
         $branchStocks = $this->stockReportService->branchStockQuery(request: $request)->get();
 
         return view('product.reports.stock_report.ajax_view.branch_stock_print', compact('branchStocks', 'ownOrParentBranch', 'filteredBranchName', 'filteredCategoryName', 'filteredBrandName', 'filteredUnitName'));

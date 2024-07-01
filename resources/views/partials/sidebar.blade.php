@@ -30,7 +30,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['inventory'] == 1)
-                    @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('product_settings') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report') || auth()->user()->can('product_expired_list'))
+                    @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('stock_issues_index') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report') || auth()->user()->can('product_expired_list'))
                         <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
@@ -52,7 +52,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['sales'] == 1)
-                    @if (auth()->user()->can('pos_all') || auth()->user()->can('pos_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('view_add_sale') || auth()->user()->can('sale_draft') || auth()->user()->can('sale_quotation') || auth()->user()->can('shipment_access') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('discounts') || auth()->user()->can('sales_order_to_invoice') || auth()->user()->can('sales_report') || auth()->user()->can('sales_return_report') || auth()->user()->can('sold_product_report') || auth()->user()->can('sales_order_report') || auth()->user()->can('sales_ordered_products_report') || auth()->user()->can('received_against_sales_report') || auth()->user()->can('sales_returned_products_report') || auth()->user()->can('cash_register_report'))
+                    @if (auth()->user()->can('pos_all') || auth()->user()->can('pos_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('view_add_sale') || auth()->user()->can('sale_drafts_index') || auth()->user()->can('sale_quotations_index') || auth()->user()->can('shipment_access') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('discounts') || auth()->user()->can('sales_order_to_invoice') || auth()->user()->can('sales_report') || auth()->user()->can('sales_return_report') || auth()->user()->can('sold_product_report') || auth()->user()->can('sales_order_report') || auth()->user()->can('sales_ordered_products_report') || auth()->user()->can('received_against_sales_report') || auth()->user()->can('sales_returned_products_report') || auth()->user()->can('cash_register_report'))
                         <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/shopping-bag.svg') }}">
@@ -376,43 +376,51 @@
                                 </div>
                             </div>
 
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Manage Stock Issues') }}</p>
-                                <div class="sub-menu-row">
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('stock.issues.create') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-plus-circle"></i></span>
-                                                </div>
+                            @if (auth()->user()->can('stock_issues_index') || auth()->user()->can('stock_issues_products_index') || auth()->user()->can('stock_issues_add'))
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Manage Stock Issues') }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('stock_issues_add'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('stock.issues.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Add Stock Issue') }}</p>
+                                                </a>
                                             </div>
-                                            <p class="switch_text">{{ __('Add Stock Issue') }}</p>
-                                        </a>
-                                    </div>
+                                        @endif
 
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('stock.issues.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-list"></i></span>
-                                                </div>
+                                        @if (auth()->user()->can('stock_issues_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('stock.issues.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Stock Issue List') }}</p>
+                                                </a>
                                             </div>
-                                            <p class="switch_text">{{ __('Stock Issue List') }}</p>
-                                        </a>
-                                    </div>
+                                        @endif
 
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('stock.issued.products.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-list"></i></span>
-                                                </div>
+                                        @if (auth()->user()->can('stock_issues_products_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('stock.issued.products.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Stock Issued Product List') }}</p>
+                                                </a>
                                             </div>
-                                            <p class="switch_text">{{ __('Stock Issued Product List') }}</p>
-                                        </a>
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __('Product Reports') }}</p>
@@ -914,7 +922,7 @@
                                 </div>
 
                                 <div class="sub-menu-row">
-                                    @if (auth()->user()->can('sales_order_list'))
+                                    @if (auth()->user()->can('sales_orders_index'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('sale.orders.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -927,7 +935,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_quotation'))
+                                    @if (auth()->user()->can('sale_quotations_index'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('sale.quotations.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -940,7 +948,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_draft'))
+                                    @if (auth()->user()->can('sale_drafts_index'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('sale.drafts.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">

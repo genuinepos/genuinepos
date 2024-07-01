@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Purchases\PurchaseReturnEditRequest;
+use App\Http\Requests\Purchases\PurchaseReturnIndexRequest;
 use App\Http\Requests\Purchases\PurchaseReturnStoreRequest;
 use App\Http\Requests\Purchases\PurchaseReturnDeleteRequest;
 use App\Http\Requests\Purchases\PurchaseReturnUpdateRequest;
@@ -13,10 +15,8 @@ use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
 
 class PurchaseReturnController extends Controller
 {
-    public function index(Request $request, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
+    public function index(PurchaseReturnIndexRequest $request, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_return_index'), 403);
-
         $indexMethodContainer = $purchaseReturnControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -47,10 +47,8 @@ class PurchaseReturnController extends Controller
         return view('purchase.print_templates.print_purchase_return', compact('return', 'printPageSize'));
     }
 
-    public function create(CodeGenerationServiceInterface $codeGenerator, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
+    public function create(PurchaseReturnCreateRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_return_add'), 403);
-
         $createMethodContainer = $purchaseReturnControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
         extract($createMethodContainer);
@@ -87,10 +85,8 @@ class PurchaseReturnController extends Controller
         }
     }
 
-    public function edit($id, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
+    public function edit($id, PurchaseReturnEditRequest $request, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_return_edit'), 403);
-
         $editMethodContainer = $purchaseReturnControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

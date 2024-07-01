@@ -18,6 +18,8 @@ interface PosSaleControllerMethodContainersInterface
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): array|object;
 
+    public function deleteMethodContainer(int $id): array|object;
+
     public function printTemplateBySaleStatusForStore(object $request, object $sale, object $customerCopySaleProducts): mixed;
 
     public function printTemplateBySaleStatusForUpdate(object $request, object $sale, object $customerCopySaleProducts): mixed;

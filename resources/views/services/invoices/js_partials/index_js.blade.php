@@ -175,39 +175,42 @@
         invoicesTable.ajax.reload();
     });
 
-    $(document).on('click', '#editShipmentDetails', function(e) {
-        e.preventDefault();
+    @if (auth()->user()->can('shipment_access') && $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+        $(document).on('click', '#editShipmentDetails', function(e) {
+            e.preventDefault();
 
-        $('.data_preloader').show();
-        var url = $(this).attr('href');
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
 
-                $('#editShipmentDetailsModal').html(data);
-                $('#editShipmentDetailsModal').modal('show');
-                $('.data_preloader').hide();
+                    $('#editShipmentDetailsModal').html(data);
+                    $('#editShipmentDetailsModal').modal('show');
+                    $('.data_preloader').hide();
 
-                setTimeout(function() {
+                    setTimeout(function() {
 
-                    $('#shipment_shipment_address').focus().select();
-                }, 500);
-            },
-            error: function(err) {
+                        $('#shipment_shipment_address').focus().select();
+                    }, 500);
+                },
+                error: function(err) {
 
-                $('.data_preloader').hide();
-                if (err.status == 0) {
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                } else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
                 }
-            }
+            });
         });
-    });
+    @endif
+
 
     $(document).on('click', '#details_btn', function(e) {
         e.preventDefault();

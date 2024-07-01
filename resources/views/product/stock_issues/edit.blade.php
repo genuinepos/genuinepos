@@ -134,27 +134,29 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-3 col-md-6">
-                                    <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Department') }}</b></label>
-                                        <div class="col-8">
-                                            <div class="input-group">
-                                                <div class="input-group flex-nowrap">
-                                                    <select name="department_id" class="form-control select2" id="department_id" data-next="reported_by_id">
-                                                        <option value="">{{ __('None') }}</option>
-                                                        @foreach ($departments as $department)
-                                                            <option @selected($stockIssue->department_id == $department->id) value="{{ $department->id }}">{{ $department->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="input-group">
+                                            <label class="col-4"><b>{{ __('Department') }}</b></label>
+                                            <div class="col-8">
+                                                <div class="input-group">
+                                                    <div class="input-group flex-nowrap">
+                                                        <select name="department_id" class="form-control select2" id="department_id" data-next="reported_by_id">
+                                                            <option value="">{{ __('None') }}</option>
+                                                            @foreach ($departments as $department)
+                                                                <option @selected($stockIssue->department_id == $department->id) value="{{ $department->id }}">{{ $department->name }}</option>
+                                                            @endforeach
+                                                        </select>
 
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
@@ -268,7 +270,6 @@
                                                 @foreach ($stockIssue->stockIssuedProducts as $issuedProduct)
                                                     @php
                                                         if (isset($issuedProduct->product_id)) {
-
                                                             $itemUnitsArray[$issuedProduct->product_id][] = [
                                                                 'unit_id' => $issuedProduct->product->unit->id,
                                                                 'unit_name' => $issuedProduct->product->unit->name,
@@ -306,21 +307,15 @@
                                                             @php
                                                                 $stockLocationName = '';
                                                                 if ($issuedProduct?->stockWarehouse) {
-
                                                                     $stockLocationName = $issuedProduct?->stockWarehouse?->warehouse_name . '-(' . $issuedProduct?->stockWarehouse?->warehouse_code . ')';
                                                                 } else {
-
                                                                     if ($stockIssue?->branch) {
-
                                                                         if ($stockIssue?->branch?->parentBranch) {
-
                                                                             $stockLocationName = $stockIssue?->branch?->parentBranch->name . '(' . $stockIssue?->branch?->area_name;
                                                                         } else {
-
                                                                             $stockLocationName = $stockIssue?->branch?->name . '(' . $stockIssue?->branch?->area_name;
                                                                         }
                                                                     } else {
-
                                                                         $stockLocationName = $generalSettings['business_or_shop__business_name'];
                                                                     }
                                                                 }

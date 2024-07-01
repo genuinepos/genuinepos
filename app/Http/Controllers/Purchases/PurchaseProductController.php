@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Purchases;
 
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\CategoryService;
 use App\Services\Purchases\PurchaseProductService;
-use App\Services\Setups\BranchService;
-use Illuminate\Http\Request;
+use App\Http\Requests\Purchases\PurchaseProductIndexRequest;
 
 class PurchaseProductController extends Controller
 {
@@ -19,10 +19,8 @@ class PurchaseProductController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(PurchaseProductIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('purchased_product_list'), 403);
-
         if ($request->ajax()) {
 
             return $this->purchaseProductService->purchaseProductsTable($request);

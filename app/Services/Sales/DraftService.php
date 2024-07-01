@@ -2,11 +2,12 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\BooleanType;
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale as Draft;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
+use App\Models\Sales\Sale as Draft;
 use Yajra\DataTables\Facades\DataTables;
 
 class DraftService
@@ -25,17 +26,6 @@ class DraftService
 
         $this->filteredQuery($request, $query);
 
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-
-            $query->where('sales.branch_id', auth()->user()->branch_id);
-        }
-
         $quotations = $query->select(
             'sales.id',
             'sales.branch_id',
@@ -45,6 +35,7 @@ class DraftService
             'sales.total_qty',
             'sales.total_invoice_amount',
             'sales.order_status',
+            'sales.sale_screen',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -65,17 +56,23 @@ class DraftService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_draft')) {
+                    if (auth()->user()->can('sale_drafts_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sale.drafts.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        if ($row->sale_screen == SaleScreenType::AddSale->value) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sale.drafts.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        } else {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                        }
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_draft')) {
+                    if (auth()->user()->can('sale_drafts_delete')) {
 
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                        $html .= '<a href="' . route('sale.drafts.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
@@ -225,6 +222,17 @@ class DraftService
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sales.draft_date_ts', $date_range); // Final
+        }
+
+        if (auth()->user()->can('sale_drafts_only_own')) {
+
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('sales.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

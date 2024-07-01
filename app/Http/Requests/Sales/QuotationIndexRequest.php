@@ -12,7 +12,7 @@ class QuotationIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sale_quotation') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sale_quotations_index') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

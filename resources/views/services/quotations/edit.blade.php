@@ -136,6 +136,7 @@
         <div class="p-1">
             <form id="edit_quotation_form" action="{{ route('services.quotations.update', $quotation->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
+                <input type="hidden" name="status" id="status" value="{{ \App\Enums\SaleStatus::Quotation->value }}">
                 <section>
                     <div class="sale-content">
                         <div class="row g-1">

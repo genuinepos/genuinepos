@@ -215,7 +215,7 @@
             ],
             "ajax": {
                 // "url": "{{ route('sales.pos.index') }}",
-                "url": "{{ route('sales.helper.sales.list.table', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::PosSale->value]) }}",
+                "url": "{{ route('sales.pos.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.customer_account_id = $('#customer_account_id').val();

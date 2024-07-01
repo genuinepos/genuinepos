@@ -139,6 +139,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Tenant codes moved to (App\Listener\TenantBootstrapped::class)->handle();
     }
 }

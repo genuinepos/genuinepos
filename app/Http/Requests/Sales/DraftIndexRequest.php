@@ -12,7 +12,7 @@ class DraftIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sale_draft') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sale_drafts_index') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

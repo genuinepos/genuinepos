@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
-use App\Http\Requests\Sales\Reports\SalesReportIndexRequest;
-use App\Http\Requests\Sales\Reports\SalesReportPrintRequest;
+use App\Http\Requests\Sales\Reports\ReceivedAgainstSalesReportIndexRequest;
+use App\Http\Requests\Sales\Reports\ReceivedAgainstSalesReportPrintRequest;
 use App\Services\Sales\Reports\ReceivedAgainstSalesReportService;
 
 class ReceivedAgainstSalesReportController extends Controller
@@ -20,7 +20,7 @@ class ReceivedAgainstSalesReportController extends Controller
     ) {
     }
 
-    public function index(SalesReportIndexRequest $request)
+    public function index(ReceivedAgainstSalesReportIndexRequest $request)
     {
         if ($request->ajax()) {
 
@@ -37,7 +37,7 @@ class ReceivedAgainstSalesReportController extends Controller
         return view('sales.reports.received_against_sales_report.index', compact('branches', 'customerAccounts'));
     }
 
-    public function print(SalesReportPrintRequest $request)
+    public function print(ReceivedAgainstSalesReportPrintRequest $request)
     {
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {

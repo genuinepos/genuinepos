@@ -1,7 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .data_preloader { top: 2.3%; }
+        .data_preloader {
+            top: 2.3%;
+        }
 
         /* Search Product area style */
         .selectProduct {
@@ -9,7 +11,9 @@
             color: #fff !important;
         }
 
-        .search_area { position: relative; }
+        .search_area {
+            position: relative;
+        }
 
         .search_result {
             position: absolute;
@@ -97,15 +101,17 @@
                                                     </div>
                                                 @endif
 
-                                                <div class="col-md-2">
-                                                    <label><strong>{{ __('Department') }}</strong></label>
-                                                    <select name="department_id" class="form-control select2" id="department_id" autofocus>
-                                                        <option value="">{{ __('All') }}</option>
-                                                        @foreach ($departments as $department)
-                                                            <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                                @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                                    <div class="col-md-2">
+                                                        <label><strong>{{ __('Department') }}</strong></label>
+                                                        <select name="department_id" class="form-control select2" id="department_id" autofocus>
+                                                            <option value="">{{ __('All') }}</option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>

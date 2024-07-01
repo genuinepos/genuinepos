@@ -12,7 +12,7 @@ class SalesReportIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('received_against_sales_report') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_report') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

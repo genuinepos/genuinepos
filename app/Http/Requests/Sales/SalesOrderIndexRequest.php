@@ -12,7 +12,7 @@ class SalesOrderIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sales_order_list') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_orders_index') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

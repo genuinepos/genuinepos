@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Purchases;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PurchaseOrderUpdateRequest extends FormRequest
@@ -11,7 +12,7 @@ class PurchaseOrderUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('purchase_order_edit');
+        return auth()->user()->can('purchase_order_edit') && config('generalSettings')['subscription']->features['purchase'] == BooleanType::True->value;
     }
 
     /**

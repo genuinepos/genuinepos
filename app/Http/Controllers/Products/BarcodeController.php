@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
-use App\Models\PurchaseProduct;
-use App\Models\SupplierProduct;
-use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Setups\BarcodeSetting;

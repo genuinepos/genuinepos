@@ -29,15 +29,15 @@
                                                     <div class="col-md-2">
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    @php
-                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                        $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
-                                                                        $branchCode = '-' . $branch->branch_code;
-                                                                    @endphp
+                                                                @php
+                                                                    $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                    $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
+                                                                    $branchCode = '-' . $branch->branch_code;
+                                                                @endphp
+                                                                <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
                                                                     {{ $branchName . $areaName . $branchCode }}
                                                                 </option>
                                                             @endforeach
@@ -394,7 +394,7 @@
                         toastr.error(data.errorMsg);
                         return;
                     }
-                    
+
                     table.ajax.reload();
                     toastr.error(data);
                 },

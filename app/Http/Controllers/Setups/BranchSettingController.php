@@ -236,13 +236,12 @@ class BranchSettingController extends Controller
         $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
         $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
         $services = isset($subscription->features['services']) && $subscription->features['services'] == 1 ? (isset($request->service) ? 1 : 0) : 1;
-
         $addSale = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->add_sale) ? 1 : 0) : 1;
-
         $pos = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->pos) ? 1 : 0) : 1;
+        $purchase = isset($subscription->features['purchase']) && $subscription->features['purchase'] == 1 ? (isset($request->purchases) ? 1 : 0) : 1;
 
         $settings = [
-            'modules__purchases' => isset($request->purchases) ? 1 : 0,
+            'modules__purchases' => $purchase,
             'modules__add_sale' => $addSale,
             'modules__pos' => $pos,
             'modules__service' =>  $services,

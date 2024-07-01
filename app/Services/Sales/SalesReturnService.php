@@ -25,12 +25,6 @@ class SalesReturnService
 
         $this->filteredQuery($request, $query);
 
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            $query->where('sale_returns.branch_id', auth()->user()->branch_id);
-        }
-
         $returns = $query->select(
             'sale_returns.id',
             'sale_returns.sale_id',
@@ -349,6 +343,17 @@ class SalesReturnService
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sale_returns.date_ts', $date_range); // Final
+        }
+
+        if (auth()->user()->can('sale_drafts_only_own')) {
+
+            $query->where('sale_returns.created_by_id', auth()->user()->id);
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('sale_returns.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

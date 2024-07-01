@@ -40,7 +40,7 @@ class QuotationProductService
             $addOrUpdateQuotationProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
             $addOrUpdateQuotationProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$index];
             $addOrUpdateQuotationProduct->subtotal = $request->subtotals[$index];
-            $addOrUpdateQuotationProduct->description = $request->descriptions[$index] ? $request->descriptions[$index] : null;
+            $addOrUpdateQuotationProduct->description = isset($request->descriptions[$index]) ? $request->descriptions[$index] : null;
             $addOrUpdateQuotationProduct->is_delete_in_update = 0;
             $addOrUpdateQuotationProduct->save();
 

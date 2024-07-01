@@ -18,4 +18,6 @@ interface QuotationControllerMethodContainersInterface
     public function editStatusMethodContainer(int $id): ?array;
 
     public function updateStatusMethodContainer(int $id, object $request, object $codeGenerator): ?array;
+
+    public function deleteMethodContainer(int $id): ?array;
 }

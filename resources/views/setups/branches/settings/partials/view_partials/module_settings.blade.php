@@ -7,29 +7,33 @@
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-4">
-            <div class="row ">
-                <p class="checkbox_input_wrap">
-                    <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>{{ __('Purchases') }}</b>
-                </p>
+        @if ($generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
+            <div class="col-md-4">
+                <div class="row ">
+                    <p class="checkbox_input_wrap">
+                        <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>{{ __('Purchases') }}</b>
+                    </p>
+                </div>
             </div>
-        </div>
+        @endif
 
-        <div class="col-md-4">
-            <div class="row">
-                <p class="checkbox_input_wrap">
-                    <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>{{ __('Add Sale') }}</b>
-                </p>
+        @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+            <div class="col-md-4">
+                <div class="row">
+                    <p class="checkbox_input_wrap">
+                        <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>{{ __('Add Sale') }}</b>
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="row">
-                <p class="checkbox_input_wrap">
-                    <input type="checkbox" {{ $generalSettings['modules__pos'] == '1' ? 'CHECKED' : '' }} name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
-                </p>
+            <div class="col-md-4">
+                <div class="row">
+                    <p class="checkbox_input_wrap">
+                        <input type="checkbox" {{ $generalSettings['modules__pos'] == '1' ? 'CHECKED' : '' }} name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
+                    </p>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 
     <div class="form-group row mt-2">

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\SalesOrderEditRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Sales\SalesOrderIndexRequest;
+use App\Http\Requests\Sales\SalesOrderDeleteRequest;
 use App\Http\Requests\Sales\SalesOrderUpdateRequest;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 
@@ -63,6 +64,27 @@ class SalesOrderController extends Controller
         }
 
         return response()->json(__('Sales Order updated Successfully.'));
+    }
+
+    public function delete($id, SalesOrderDeleteRequest $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
+    {
+        try {
+            DB::beginTransaction();
+
+            $deleteMethodContainer = $salesOrderControllerMethodContainersInterface->deleteMethodContainer(id: $id);
+
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Sales order is deleted successfully'));
     }
 
     public function searchByOrderId($keyWord, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)

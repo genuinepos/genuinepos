@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Purchases;
 
 use Illuminate\Http\Request;
-use App\Enums\PurchaseStatus;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Purchases\PurchaseOrderEditRequest;
+use App\Http\Requests\Purchases\PurchaseOrderIndexRequest;
 use App\Http\Requests\Purchases\PurchaseOrderStoreRequest;
+use App\Http\Requests\Purchases\PurchaseOrderCreateRequest;
 use App\Http\Requests\Purchases\PurchaseOrderDeleteRequest;
 use App\Http\Requests\Purchases\PurchaseOrderUpdateRequest;
 use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
 
 class PurchaseOrderController extends Controller
 {
-    public function index(Request $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface, $supplierAccountId = null)
+    public function index(PurchaseOrderIndexRequest $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface, $supplierAccountId = null)
     {
-        abort_if(!auth()->user()->can('purchase_order_index'), 403);
-
         $indexMethodContainer = $purchaseOrderControllerMethodContainersInterface->indexMethodContainer(request: $request, supplierAccountId: $supplierAccountId);
 
         if ($request->ajax()) {
@@ -57,10 +57,8 @@ class PurchaseOrderController extends Controller
         return view('purchase.print_templates.print_order_supplier_copy', compact('order', 'printPageSize'));
     }
 
-    public function create(CodeGenerationServiceInterface $codeGenerator, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
+    public function create(PurchaseOrderCreateRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_order_add'), 403);
-
         $createMethodContainer = $purchaseOrderControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
         extract($createMethodContainer);
@@ -97,10 +95,8 @@ class PurchaseOrderController extends Controller
         }
     }
 
-    public function edit($id, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
+    public function edit($id, PurchaseOrderEditRequest $request, PurchaseOrderControllerMethodContainersInterface $purchaseOrderControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_order_edit'), 403);
-
         $editMethodContainer = $purchaseOrderControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

@@ -43,6 +43,13 @@ class GeneralSettingService implements GeneralSettingServiceInterface
                     }
 
                     if (
+                        ($key == 'prefix__purchase_invoice_prefix' || $key == 'prefix__purchase_order_prefix' || $key == 'prefix__purchase_return_prefix') &&
+                        config('generalSettings')['subscription']->features['purchase'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
+                    if (
                         ($key == 'prefix__supplier_id' || $key == 'prefix__customer_id') &&
                         config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value
                     ) {

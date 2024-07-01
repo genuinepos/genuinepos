@@ -94,7 +94,7 @@
                                             @endif
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_settings'))
+                                        @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="purchase_settings_form" href="#">{{ __('Purchase Settings') }}</a>
                                             </li>
@@ -192,7 +192,7 @@
                                     @endif
                                 @endif
 
-                                @if (auth()->user()->can('purchase_settings'))
+                                @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
                                     @include('setups.branches.settings.partials.view_partials.purchase_settings')
                                 @endif
 
@@ -267,8 +267,10 @@
         @endif
     @endif
 
-    @include('setups.branches.settings.partials.js_partials.purchase_settings_js')
-    
+    @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
+        @include('setups.branches.settings.partials.js_partials.purchase_settings_js')
+    @endif
+
     @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
         @include('setups.branches.settings.partials.js_partials.manufacturing_settings_js')
     @endif

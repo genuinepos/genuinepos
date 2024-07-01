@@ -4,6 +4,7 @@ namespace App\Services\Purchases\Reports;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 

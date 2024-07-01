@@ -96,7 +96,7 @@
 
     function changeUserType() {
 
-        var userType = $('#user_type').val();
+        var userType = $('#user_type').val() ? $('#user_type').val() : 1;
         if (userType == 1 || userType == 3) {
 
             $('#allow_login').val(1);

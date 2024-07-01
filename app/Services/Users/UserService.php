@@ -125,7 +125,7 @@ class UserService
     function addUser(object $request, ?object $role): void
     {
         $addUser = new User();
-        $addUser->user_type = $request->user_type;
+        $addUser->user_type = isset($request->user_type) ? $request->user_type : UserType::User->value;
         $addUser->prefix = $request->prefix;
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;
@@ -208,7 +208,7 @@ class UserService
     public function updateUser(object $request, int $id, ?object $role): void
     {
         $updateUser = $this->singleUser(id: $id);
-        $updateUser->user_type = $request->user_type;
+        $updateUser->user_type = isset($request->user_type) ? $request->user_type : UserType::User->value;
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
         $updateUser->last_name = $request->last_name;

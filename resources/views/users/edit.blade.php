@@ -138,20 +138,22 @@
                                             @endif
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Type') }}</b></label>
-                                                    <div class="col-8">
-                                                        <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
-                                                            @foreach (\App\Enums\UserType::cases() as $userType)
-                                                                <option @selected($userType->value == $user->user_type) value="{{ $userType->value }}">{{ $userType->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                        @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                            <div class="row mt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>{{ __('Type') }}</b></label>
+                                                        <div class="col-8">
+                                                            <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
+                                                                @foreach (\App\Enums\UserType::cases() as $userType)
+                                                                    <option @selected($userType->value == $user->user_type) value="{{ $userType->value }}">{{ $userType->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -189,7 +191,7 @@
 
                                                 @if ($user?->roles?->first()?->name != 'superadmin')
                                                     <div class="col-md-6">
-                                                        <small style="font-size: 9px;line-height:1.2;" class="float-end fw-bold" id="roleMsg"> {{ $user?->roles?->first()?->hasPermissionTo('has_access_to_all_area') ?  __('Selected role has access to all Shop/Place') : '' }}</small>
+                                                        <small style="font-size: 9px;line-height:1.2;" class="float-end fw-bold" id="roleMsg"> {{ $user?->roles?->first()?->hasPermissionTo('has_access_to_all_area') ? __('Selected role has access to all Shop/Place') : '' }}</small>
                                                         <div class="input-group">
                                                             <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
@@ -522,7 +524,7 @@
                                                                 <span class="error error_shift_id"></span>
 
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text {{ !auth()->user()->can('shift')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('shift')? 'addShift': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                    <span class="input-group-text {{ !auth()->user()->can('shift') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('shift') ? 'addShift' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -544,7 +546,7 @@
                                                                 </select>
 
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text {{ !auth()->user()->can('department')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('department')? 'addDepartment': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                    <span class="input-group-text {{ !auth()->user()->can('department') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('department') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -564,7 +566,7 @@
                                                                 </select>
 
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text {{ !auth()->user()->can('designation')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('designation')? 'addDesignation': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                    <span class="input-group-text {{ !auth()->user()->can('designation') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('designation') ? 'addDesignation' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                                 </div>
                                                             </div>
                                                         </div>

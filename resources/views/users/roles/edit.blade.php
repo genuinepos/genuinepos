@@ -1076,9 +1076,15 @@
                                                             <strong>{{ __('Sales Return') }}</strong>
                                                         </label>
                                                     </p>
+
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sales_return_index') ? 'CHECKED' : '' }} name="sales_return_index" id="sales_return_index" class="sales sales_reurn">
                                                         <label for="sales_return_index">{{ __('Sales Return List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('sales_return_only_own') ? 'CHECKED' : '' }} name="sales_return_only_own" id="sales_return_only_own" class="sales sales_reurn">
+                                                        <label for="sales_return_only_own">{{ __('Sales Return List Only Create By Own') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">

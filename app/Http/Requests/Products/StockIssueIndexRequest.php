@@ -5,14 +5,14 @@ namespace App\Http\Requests\Products;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StockIssueUpdateRequest extends FormRequest
+class StockIssueIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('stock_issues_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('stock_issues_index') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
     }
 
     /**
@@ -23,7 +23,7 @@ class StockIssueUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
+            //
         ];
     }
 }

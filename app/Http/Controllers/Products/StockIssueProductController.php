@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Hrm\DepartmentService;
 use App\Services\Products\StockIssueProductService;
+use App\Http\Requests\Products\StockIssueProductIndexRequest;
 
 class StockIssueProductController extends Controller
 {
@@ -17,7 +18,7 @@ class StockIssueProductController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(StockIssueProductIndexRequest $request)
     {
         if ($request->ajax()) {
 

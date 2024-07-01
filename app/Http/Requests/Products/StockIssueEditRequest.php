@@ -5,7 +5,7 @@ namespace App\Http\Requests\Products;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StockIssueUpdateRequest extends FormRequest
+class StockIssueEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class StockIssueUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
+            //
         ];
     }
 }

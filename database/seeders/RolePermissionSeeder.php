@@ -53,7 +53,7 @@ class RolePermissionSeeder extends Seeder
             $roleAlreadyExists = Role::where('id', $role['id'])->exists();
             if (!$roleAlreadyExists) {
 
-                Role::create(['id' => $role['id'], 'name' => $role['name']]);
+                Role::insert(['id' => $role['id'], 'name' => $role['name'], 'guard_name' => 'web']);
             }
         }
 
@@ -73,10 +73,10 @@ class RolePermissionSeeder extends Seeder
             //     // echo 'Created: ' . $permission['name'] . PHP_EOL;
             // }
 
-            Permission::create([
+            Permission::insert([
                 'id' => $permission['id'],
                 'name' => $permission['name'],
-                // 'guard_name' => 'web',
+                'guard_name' => 'web',
             ]);
         }
     }

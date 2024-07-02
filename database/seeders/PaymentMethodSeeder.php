@@ -33,7 +33,7 @@ class PaymentMethodSeeder extends Seeder
         }
         $paymentMethods = $this->getDefaultPaymentMethod();
         foreach ($paymentMethods as $paymentMethod) {
-            PaymentMethod::create(['name' => $paymentMethod, 'is_fixed' => 1]);
+            PaymentMethod::insert(['name' => $paymentMethod, 'is_fixed' => 1]);
         }
     }
 }

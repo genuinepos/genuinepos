@@ -26,7 +26,7 @@ class Subscription extends Model
 
     public function plan()
     {
-        DB::statement('use pos');
+        DB::statement('use ' . env('DB_DATABASE'));
         return $this->belongsTo(Plan::class, 'plan_id');
     }
 

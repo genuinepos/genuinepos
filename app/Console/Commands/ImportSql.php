@@ -18,7 +18,6 @@ class ImportSql extends Command
     // protected $signature = 'import:sql';
     protected $description = 'Import an SQL file into the specified database';
 
-
     /**
      * Execute the console command.
      */

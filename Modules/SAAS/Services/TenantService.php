@@ -105,7 +105,8 @@ class TenantService implements TenantServiceInterface
                     }
 
                     DB::reconnect();
-                    // Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
+                    Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
                     $appUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
                     if ($plan->is_trial_plan) {
@@ -132,7 +133,7 @@ class TenantService implements TenantServiceInterface
     public function tenantsTable(): object
     {
         $tenants = DB::table('tenants')
-            ->leftJoin('domains', 'tenants.id', 'domains.tenant_id')
+            ->join('domains', 'tenants.id', 'domains.tenant_id')
             ->leftJoin('users', 'tenants.id', 'users.tenant_id')
             ->leftJoin('user_subscriptions', 'users.id', 'user_subscriptions.user_id')
             ->leftJoin('plans', 'user_subscriptions.plan_id', 'plans.id')

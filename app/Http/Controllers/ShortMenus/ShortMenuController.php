@@ -4,7 +4,6 @@ namespace App\Http\Controllers\ShortMenus;
 
 use Illuminate\Http\Request;
 use App\Enums\ShortMenuScreenType;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ShortMenus\ShortMenuUser;
 use App\Services\ShortMenus\ShortMenuService;
@@ -42,6 +41,6 @@ class ShortMenuController extends Controller
     public function store($screenType, Request $request)
     {
         $this->shortMenuUserService->addOrUpdateShortMenuUser(request: $request, screenType: $screenType);
-        return response()->json('Updated successfully .');
+        return response()->json(__('Updated successfully.'));
     }
 }

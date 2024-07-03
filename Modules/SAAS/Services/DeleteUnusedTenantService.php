@@ -10,7 +10,7 @@ class DeleteUnusedTenantService
 {
     function deleteTenant(string $domainName): void
     {
-        DB::statement('use pos');
+        DB::statement('use ' . env('DB_DATABASE'));
         $tenant = Tenant::where('id', $domainName)->first();
         if (isset($tenant)) {
 

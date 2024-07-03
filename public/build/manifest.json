@@ -1,56 +1,8 @@
 {
   "Modules/SAAS/Resources/assets/css/style.css": {
-    "file": "assets/style-8f0f306c.css",
+    "file": "assets/style-a5b7c045.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/css/style.css"
-  },
-  "Modules/SAAS/Resources/assets/images/arrow-down.png": {
-    "file": "assets/arrow-down-d96f9dc0.png",
-    "src": "Modules/SAAS/Resources/assets/images/arrow-down.png"
-  },
-  "Modules/SAAS/Resources/assets/images/auth-bg-light.png": {
-    "file": "assets/auth-bg-light-c39b9a13.png",
-    "src": "Modules/SAAS/Resources/assets/images/auth-bg-light.png"
-  },
-  "Modules/SAAS/Resources/assets/images/auth-bg.png": {
-    "file": "assets/auth-bg-424d05b5.png",
-    "src": "Modules/SAAS/Resources/assets/images/auth-bg.png"
-  },
-  "Modules/SAAS/Resources/assets/images/bg-dark.jpg": {
-    "file": "assets/bg-dark-44b6918d.jpg",
-    "src": "Modules/SAAS/Resources/assets/images/bg-dark.jpg"
-  },
-  "Modules/SAAS/Resources/assets/images/bg-white.jpg": {
-    "file": "assets/bg-white-0891b343.jpg",
-    "src": "Modules/SAAS/Resources/assets/images/bg-white.jpg"
-  },
-  "Modules/SAAS/Resources/assets/images/bg.jpg": {
-    "file": "assets/bg-e324853c.jpg",
-    "src": "Modules/SAAS/Resources/assets/images/bg.jpg"
-  },
-  "Modules/SAAS/Resources/assets/images/chat-bg-black.png": {
-    "file": "assets/chat-bg-black-c1845983.png",
-    "src": "Modules/SAAS/Resources/assets/images/chat-bg-black.png"
-  },
-  "Modules/SAAS/Resources/assets/images/chat-bg.png": {
-    "file": "assets/chat-bg-671a1f39.png",
-    "src": "Modules/SAAS/Resources/assets/images/chat-bg.png"
-  },
-  "Modules/SAAS/Resources/assets/images/check-mark-black.png": {
-    "file": "assets/check-mark-black-3c059591.png",
-    "src": "Modules/SAAS/Resources/assets/images/check-mark-black.png"
-  },
-  "Modules/SAAS/Resources/assets/images/check-mark.png": {
-    "file": "assets/check-mark-ccfac1d7.png",
-    "src": "Modules/SAAS/Resources/assets/images/check-mark.png"
-  },
-  "Modules/SAAS/Resources/assets/images/circle-1.png": {
-    "file": "assets/circle-1-68217c09.png",
-    "src": "Modules/SAAS/Resources/assets/images/circle-1.png"
-  },
-  "Modules/SAAS/Resources/assets/images/circle-3.png": {
-    "file": "assets/circle-3-26d81de2.png",
-    "src": "Modules/SAAS/Resources/assets/images/circle-3.png"
   },
   "Modules/SAAS/Resources/assets/js/admin.js": {
     "file": "assets/admin-768ee0b2.js",
@@ -66,12 +18,12 @@
     "src": "Modules/SAAS/Resources/assets/js/guest.js"
   },
   "Modules/SAAS/Resources/assets/sass/admin.scss": {
-    "file": "assets/admin-fe1e9ad8.css",
+    "file": "assets/admin-fe215973.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/sass/admin.scss"
   },
   "Modules/SAAS/Resources/assets/sass/guest.scss": {
-    "file": "assets/guest-b4bbf13f.css",
+    "file": "assets/guest-f4aa056b.css",
     "isEntry": true,
     "src": "Modules/SAAS/Resources/assets/sass/guest.scss"
   },

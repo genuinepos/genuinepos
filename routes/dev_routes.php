@@ -26,6 +26,33 @@ Route::get('my-test', function () {
     //     Log::info("Storing data in cache for key: $cacheKey");
     //     return $settings;
     // });
+
+    function listFiles($dir, &$results = array())
+    {
+        $files = scandir($dir);
+
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } else if ($value != "." && $value != "..") {
+                listFiles($path, $results);
+            }
+        }
+
+        return $results;
+    }
+
+    $images = [];
+    $allFiles = listFiles(public_path());
+
+    foreach ($allFiles as $file) {
+        if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
+            $images[] = $file;
+        }
+    }
+
+    print_r($images);
 });
 
 Route::get('t-id', function () {

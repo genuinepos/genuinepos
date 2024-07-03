@@ -25,6 +25,8 @@ class LoginController extends Controller
         $userRequest = $request->validated();
         $user = User::where('email', $userRequest['email'])->first();
 
+        dd($user);
+
         if (!$user || !Hash::check($userRequest['password'], $user->password)) {
 
             throw ValidationException::withMessages([

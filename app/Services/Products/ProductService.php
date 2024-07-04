@@ -486,7 +486,7 @@ class ProductService
             // }
             // dd($request->all());
             // Upload the image stream to S3
-            $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString());
+            $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString(), 'public');
             // $result = Storage::disk('s3')->put('SpeedDigit', $request->photo);
             // $path = 'SpeedDigit/1640181205.jpg';
             // $url = Storage::disk('s3')->url($path);

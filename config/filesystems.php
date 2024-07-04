@@ -62,8 +62,8 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'asw_use_path_style_end_point' => env('AWS_USE_PATH_STYLE_END_POINT'),
-            'endpoint' => env('AWS_ENDPOINT'),
+            // 'asw_use_path_style_end_point' => env('AWS_USE_PATH_STYLE_END_POINT'),
+            // 'endpoint' => env('AWS_ENDPOINT'),
             'throw' => true,
         ],
 

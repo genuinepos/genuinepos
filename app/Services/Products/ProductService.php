@@ -484,10 +484,12 @@ class ProductService
             // if (!$imageStream) {
             //     dd('Failed to create image stream');
             // }
-
+            // dd($request->all());
             // Upload the image stream to S3
             // $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString(), 'public');
-            $result = Storage::disk('s3')->put($dir . $productThumbnailName, file_get_contents($productThumbnailPhoto), 'public');
+            $result = Storage::disk('s3')->put('SpeedDigit', $request->photo);
+            // $path = 'SpeedDigit/1640181205.jpg';
+            // $url = Storage::disk('s3')->url($path);
             dd($result);
             // Debugging: Check if the upload was successful
             if ($result) {

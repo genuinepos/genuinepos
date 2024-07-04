@@ -475,10 +475,10 @@ class ProductService
             $dir = tenant('id') . '/' . 'product/thumbnail/';
 
             // // Resize the image using Intervention Image
-            // $resizedImage = Image::make($productThumbnailPhoto)->resize(300, 300);
+            $resizedImage = Image::make($productThumbnailPhoto)->resize(300, 300);
 
             // // Stream the resized image
-            // $imageStream = $resizedImage->stream();
+            $imageStream = $resizedImage->stream();
 
             // Debugging: Check if the image stream is created successfully
             // if (!$imageStream) {
@@ -486,8 +486,8 @@ class ProductService
             // }
             // dd($request->all());
             // Upload the image stream to S3
-            // $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString(), 'public');
-            $result = Storage::disk('s3')->put('SpeedDigit', $request->photo);
+            $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString());
+            // $result = Storage::disk('s3')->put('SpeedDigit', $request->photo);
             // $path = 'SpeedDigit/1640181205.jpg';
             // $url = Storage::disk('s3')->url($path);
             dd($result);

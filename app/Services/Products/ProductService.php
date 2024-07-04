@@ -2,14 +2,15 @@
 
 namespace App\Services\Products;
 
-use App\Enums\BooleanType;
-use App\Enums\IsDeleteInUpdate;
 use App\Enums\RoleType;
-use App\Models\Products\Product;
-use App\Models\Products\ProductVariant;
-use Illuminate\Support\Facades\DB;
+use App\Enums\BooleanType;
 use Illuminate\Support\Str;
+use App\Enums\IsDeleteInUpdate;
+use App\Models\Products\Product;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
+use App\Models\Products\ProductVariant;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
@@ -439,18 +440,63 @@ class ProductService
 
         if ($request->file('photo')) {
 
+            // $path = $request->file('photo')->store('images', 's3');
+
+            // $productThumbnailPhoto = $request->file('photo');
+            // $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+
+            // // $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            // $dir = tenant('id') . '/' . 'product/thumbnail/';
+
+            // // if (!\File::isDirectory($dir)) {
+
+            // //     \File::makeDirectory($dir, 493, true);
+            // // }
+
+            // // Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
+
+            // $productThumbnailPhoto = $request->file('photo');
+            // $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+
+            // $addProduct->thumbnail_photo = $productThumbnailName;
+        }
+
+
+        if ($request->file('photo')) {
+
+            // $path = $request->file('photo')->store('gg','s3');
+            // Retrieve the uploaded file
             $productThumbnailPhoto = $request->file('photo');
+
+            // Generate a unique name for the image file
             $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            // Define the S3 directory path
+            $dir = tenant('id') . '/' . 'product/thumbnail/';
 
-            if (!\File::isDirectory($dir)) {
+            // // Resize the image using Intervention Image
+            // $resizedImage = Image::make($productThumbnailPhoto)->resize(300, 300);
 
-                \File::makeDirectory($dir, 493, true);
+            // // Stream the resized image
+            // $imageStream = $resizedImage->stream();
+
+            // Debugging: Check if the image stream is created successfully
+            // if (!$imageStream) {
+            //     dd('Failed to create image stream');
+            // }
+
+            // Upload the image stream to S3
+            // $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString(), 'public');
+            $result = Storage::disk('s3')->put($dir . $productThumbnailName, file_get_contents($productThumbnailPhoto), 'public');
+            dd($result);
+            // Debugging: Check if the upload was successful
+            if ($result) {
+                // Get the URL of the uploaded image
+                // $imageUrl = Storage::disk('s3')->url($dir . $productThumbnailName);
+                // dd($imageUrl);
+            } else {
+                dd('Image upload failed');
             }
-
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
-            $addProduct->thumbnail_photo = $productThumbnailName;
         }
 
         $addProduct->save();
@@ -517,24 +563,49 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            // $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            $dir =  tenant('id') . '/' . 'product/thumbnail/';
+
+            // if ($updateProduct->thumbnail_photo) {
+
+            //     if (file_exists($dir . $updateProduct->thumbnail_photo)) {
+
+            //         unlink($dir . $updateProduct->thumbnail_photo);
+            //     }
+            // }
 
             if ($updateProduct->thumbnail_photo) {
 
-                if (file_exists($dir . $updateProduct->thumbnail_photo)) {
+                $exists = Storage::disk('s3')->exists($dir . $updateProduct->thumbnail_photo);
 
-                    unlink($dir . $updateProduct->thumbnail_photo);
+                if ($exists) {
+
+                    Storage::disk('s3')->delete($dir . $updateProduct->thumbnail_photo);
                 }
             }
 
-            if (!\File::isDirectory($dir)) {
+            // if (!\File::isDirectory($dir)) {
 
-                \File::makeDirectory($dir, 493, true);
+            //     \File::makeDirectory($dir, 493, true);
+            // }
+
+            $exists = Storage::disk('s3')->exists($dir);
+            dd($exists);
+
+            if (!$exists) {
+
+                // Create the directory by storing an empty file with a trailing slash
+                Storage::disk('s3')->makeDirectory($dir);
             }
 
             $productThumbnailPhoto = $request->file('photo');
             $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
+            // Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
+            $resizedImage = Image::make($image)->resize(300, 300);
+            $tempPath = sys_get_temp_dir() . '/' . $productThumbnailName;
+            $resizedImage->save($tempPath);
+            Storage::disk('s3')->put(tenant('id') . '/' . 'product/thumbnail/' . $productThumbnailName, (string) $resizedImage);
+            unlink($tempPath);
             $updateProduct->thumbnail_photo = $productThumbnailName;
         }
 
@@ -626,23 +697,26 @@ class ProductService
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
             }
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
-            if (isset($deleteProduct->thumbnail_photo) && file_exists($dir . $deleteProduct->thumbnail_photo)) {
+            // $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
+            $dir =  tenant('id') . '/' . 'product/thumbnail/';
+            // if (isset($deleteProduct->thumbnail_photo) && file_exists($dir . $deleteProduct->thumbnail_photo)) {
+            if (isset($deleteProduct->thumbnail_photo) && Storage::disk('s3')->exists($dir . $deleteProduct->thumbnail_photo)) {
 
-                unlink($dir . $deleteProduct->thumbnail_photo);
+                // unlink($dir . $deleteProduct->thumbnail_photo);
+                Storage::disk('s3')->delete($dir . $deleteProduct->thumbnail_photo);
             }
 
             if (count($deleteProduct->variants) > 0) {
 
-                $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+                // $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
+                $variantImgDir = tenant('id') . '/' . 'product/variant_image/';
                 foreach ($deleteProduct->variants as $variant) {
 
-                    if ($variant->variant_image) {
+                    // if ($variant->variant_image && file_exists($variantImgDir . $variant->variant_image)) {
+                    if ($variant->variant_image && Storage::disk('s3')->exists($variantImgDir . $variant->variant_image)) {
 
-                        if (file_exists($variantImgDir . $variant->variant_image)) {
-
-                            unlink($variantImgDir . $variant->variant_image);
-                        }
+                        // unlink($variantImgDir . $variant->variant_image);
+                        Storage::disk('s3')->delete($variantImgDir . $variant->variant_image);
                     }
                 }
             }
@@ -723,29 +797,6 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
-    }
-
-    public function productUpdateValidation(object $request, int $id)
-    {
-        $request->validate(
-            [
-                'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,' . $id,
-                'unit_id' => 'required',
-                'photo' => 'sometimes|image|max:2048',
-            ],
-            [
-                'unit_id.required' => __('Product unit field is required.'),
-            ]
-        );
-
-        if ($request->is_variant == BooleanType::True->value) {
-
-            $request->validate(
-
-                ['variant_image.*' => 'sometimes|image|max:2048'],
-            );
-        }
     }
 
     public function getLastProductSerialCode(): string

@@ -490,12 +490,12 @@ class ProductService
             // $result = Storage::disk('s3')->put('SpeedDigit', $request->photo);
             // $path = 'SpeedDigit/1640181205.jpg';
             // $url = Storage::disk('s3')->url($path);
-            dd($result);
+            // dd($result);
             // Debugging: Check if the upload was successful
             if ($result) {
                 // Get the URL of the uploaded image
-                // $imageUrl = Storage::disk('s3')->url($dir . $productThumbnailName);
-                // dd($imageUrl);
+                $imageUrl = Storage::disk('s3')->url($dir . $productThumbnailName);
+                dd($imageUrl);
             } else {
                 dd('Image upload failed');
             }

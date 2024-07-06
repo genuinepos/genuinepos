@@ -7,6 +7,7 @@ use App\Enums\BooleanType;
 use App\Enums\ServiceType;
 use App\Utils\FileUploader;
 use App\Models\Services\JobCard;
+use App\Utils\CloudFileUploader;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -148,7 +149,7 @@ class JobCardService
                     $isSaleCompleted = '<strong><i class="fa-solid fa-check-double text-success"></i></strong>';
                 }
 
-                return '<a href="' . route('services.job.cards.show', [$row->id]) . '" id="details_btn">' . $row->job_no .$isSaleCompleted. '</a>';
+                return '<a href="' . route('services.job.cards.show', [$row->id]) . '" id="details_btn">' . $row->job_no . $isSaleCompleted . '</a>';
             })
 
             ->editColumn('invoice_id', function ($row) {
@@ -251,9 +252,11 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
+            $dir = tenant('id') . '/' . 'services/documents/';
 
-            $addJobCard->document = FileUploader::upload($request->file('document'), $dir);
+            // $addJobCard->document = FileUploader::fileUpload($request->file('document'), $dir);
+
+            $addJobCard->document = CloudFileUploader::fileUpload(path: $dir, uploadableFile: $request->file('document'));
         }
 
         $addJobCard->save();
@@ -318,13 +321,10 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
-            if (isset($updateJobCard->document) && file_exists($dir . $updateJobCard->document)) {
+            $dir = tenant('id') . '/' . 'services/documents/';
+            $uploadedFile = CloudFileUploader::fileUpload(path: $dir, uploadableFile: $request->file('document'), deletableFile: $updateJobCard->document);
 
-                unlink($dir . $updateJobCard->document);
-            }
-
-            $updateJobCard->document = FileUploader::upload($request->file('document'), $dir);
+            $updateJobCard->document = $uploadedFile;
         }
 
         $updateJobCard->save();
@@ -439,6 +439,9 @@ class JobCardService
 
                 return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is added against this job card.')];
             }
+
+            $dir = tenant('id') . '/' . 'services/documents/';
+            CloudFileUploader::deleteFile(path: $dir, deletableFile: $deleteJobCard->document);
 
             $deleteJobCard->delete();
         }

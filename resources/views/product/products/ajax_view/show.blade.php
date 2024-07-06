@@ -12,7 +12,7 @@
                     <div class="col-md-3">
                         <div class="carousel-item active product_image">
                             @if (isset($product->thumbnail_photo))
-                                <img class="rounded" style="height:120px;width:120px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $product->thumbnail_photo) }}" class="d-block w-100">
+                                <img class="rounded" style="height:120px;width:120px;" src="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'products/thumbnails/' . $product->thumbnail_photo) }}" class="d-block w-100">
                             @else
                                 <img class="rounded" style="height:120px;width:120px;" src="{{ asset('images/general_default.png') }}" class="d-block w-100">
                             @endif
@@ -184,7 +184,7 @@
                                         @endif
                                         <td style="font-size:11px!important;">
                                             @if ($variant->variant_image)
-                                                <img style="width:30px;height:30px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'product/variant_image/' . $variant->variant_image) }}" alt="">
+                                                <img style="width:30px;height:30px;" src="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'products/variant_images/' . $variant->variant_image) }}" alt="">
                                             @endif
                                         </td>
                                     </tr>

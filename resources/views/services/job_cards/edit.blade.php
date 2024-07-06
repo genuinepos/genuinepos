@@ -587,7 +587,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Document') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="file" name="document" class="form-control" id="document" @if ($jobCard->document) data-default-file="{{ asset('uploads/' . tenant('id') . '/' . 'services/documents/' . $jobCard->document) }}" @endif>
+                                                    <input type="file" name="document" class="form-control" id="document" @if ($jobCard->document) data-default-file="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'services/documents/' . $jobCard->document) }}" @endif>
                                                     <span class="error error_document"></span>
                                                 </div>
                                             </div>

@@ -28,7 +28,7 @@ class GeneralSettingsRequest extends FormRequest
             'email' => 'required',
             'currency_id' => 'required',
             'account_start_date' => 'required|date',
-            'business_logo' => 'sometimes|image|max:2048',
+            'business_logo' => 'sometimes|image|max:1024',
         ];
     }
 }

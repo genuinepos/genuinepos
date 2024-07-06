@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setups;
 
 use App\Enums\PrintPageSize;
 use Illuminate\Http\Request;
+use App\Utils\CloudFileUploader;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use App\Services\Products\UnitService;
@@ -67,27 +68,17 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('business_logo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+            $dir = tenant('id') . '/' . 'business_logo/';
 
-            if (isset($generalSettings['business_or_shop__business_logo'])) {
+            $uploadedFile = CloudFileUploader::uploadWithResize(
+                path: $dir,
+                uploadableFile: $request->file('business_logo'),
+                height: 40,
+                width: 100,
+                deletableFile: $generalSettings['business_or_shop__business_logo'],
+            );
 
-                $businessLogo = $generalSettings['business_or_shop__business_logo'];
-
-                if (file_exists($dir . $businessLogo)) {
-
-                    unlink($dir . $businessLogo);
-                }
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $logo = $request->file('business_logo');
-            $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-            Image::make($logo)->resize(200, 60)->save($dir . $logoName);
-            $businessLogo = $logoName;
+            $businessLogo = $uploadedFile;
         } else {
 
             $businessLogo = isset($generalSettings['business_or_shop__business_logo']) ? $generalSettings['business_or_shop__business_logo'] : null;

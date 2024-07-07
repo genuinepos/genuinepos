@@ -8,7 +8,7 @@
                     <div class="form-head">
                         <div class="head">
                             @if ($generalSettings['business_or_shop__business_logo'] != null)
-                                <img src="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif

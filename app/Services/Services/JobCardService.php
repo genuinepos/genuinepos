@@ -7,7 +7,6 @@ use App\Enums\BooleanType;
 use App\Enums\ServiceType;
 use App\Utils\FileUploader;
 use App\Models\Services\JobCard;
-use App\Utils\CloudFileUploader;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -252,11 +251,7 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = tenant('id') . '/' . 'services/documents/';
-
-            // $addJobCard->document = FileUploader::fileUpload($request->file('document'), $dir);
-
-            $addJobCard->document = CloudFileUploader::fileUpload(path: $dir, uploadableFile: $request->file('document'));
+            $addJobCard->document = FileUploader::fileUpload(fileType: 'jobCardDocument', uploadableFile: $request->file('document'));
         }
 
         $addJobCard->save();
@@ -321,8 +316,7 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = tenant('id') . '/' . 'services/documents/';
-            $uploadedFile = CloudFileUploader::fileUpload(path: $dir, uploadableFile: $request->file('document'), deletableFile: $updateJobCard->document);
+            $uploadedFile = FileUploader::fileUpload(fileType: 'jobCardDocument', uploadableFile: $request->file('document'), deletableFile: $updateJobCard->document);
 
             $updateJobCard->document = $uploadedFile;
         }
@@ -440,8 +434,7 @@ class JobCardService
                 return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is added against this job card.')];
             }
 
-            $dir = tenant('id') . '/' . 'services/documents/';
-            CloudFileUploader::deleteFile(path: $dir, deletableFile: $deleteJobCard->document);
+            FileUploader::deleteFile(fileType: 'jobCardDocument', deletableFile: $deleteJobCard->document);
 
             $deleteJobCard->delete();
         }

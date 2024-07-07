@@ -2,8 +2,8 @@
 
 namespace App\Services\Products;
 
+use App\Utils\FileUploader;
 use App\Enums\IsDeleteInUpdate;
-use App\Utils\CloudFileUploader;
 use Intervention\Image\Facades\Image;
 use App\Models\Products\ProductVariant;
 
@@ -23,9 +23,8 @@ class ProductVariantService
         if (isset($request->variant_image[$index])) {
 
             $variantImage = $request->variant_image[$index];
-            $dir = tenant('id') . '/' . 'products/variant_images/';
-            $addVariant->variant_image = CloudFileUploader::uploadWithResize(
-                path: $dir,
+            $addVariant->variant_image = FileUploader::uploadWithResize(
+                fileType: 'productVariant',
                 uploadableFile: $request->variant_image[$index],
                 height: 250,
                 width: 250,
@@ -62,16 +61,15 @@ class ProductVariantService
 
         if (isset($request->variant_image[$index])) {
 
-            $dir = tenant('id') . '/' . 'products/variant_images/';
-            $uploadedFile = CloudFileUploader::uploadWithResize(
-                path: $dir,
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'productVariant',
                 uploadableFile: $request->variant_image[$index],
                 height: 250,
                 width: 250,
                 deletableFile: $addOrUpdateVariant->variant_image,
             );
 
-            $addVariant->variant_image = $uploadedFile;
+            $addOrUpdateVariant->variant_image = $uploadedFile;
         }
 
         $addOrUpdateVariant->save();
@@ -86,10 +84,9 @@ class ProductVariantService
 
         foreach ($deleteAbleVariants as $deleteAbleVariant) {
 
-            $dir = tenant('id') . '/' . 'products/variant_images/';
             if (isset($deleteAbleVariant->variant_image)) {
 
-                CloudFileUploader::deleteFile( path: $dir, deletableFile: $deleteAbleVariant->variant_image);
+                FileUploader::deleteFile(fileType: 'productVariant', deletableFile: $deleteAbleVariant->variant_image);
             }
 
             $deleteAbleVariant->delete();

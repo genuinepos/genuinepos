@@ -141,7 +141,7 @@
                             @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
                                 <div class="col-lg-6 col-md-6">
                                     <label><b>{{ __('Logo') }}</b> {{ __('Logo') }} <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H:40px * W:100px') }}</small></label>
-                                    <input type="file" name="logo" class="form-control " id="logo" @if ($branch->logo) data-default-file="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'branch_logo/' . $branch?->logo) }}" @endif />
+                                    <input type="file" name="logo" class="form-control " id="logo" @if ($branch?->logo) data-default-file="{{ file_link('branchLogo', $branch?->logo) }}" @endif />
                                     <span class="error error_branch_logo"></span>
                                     @if ($branch->logo)
                                         <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Shop Logo') }}</a>

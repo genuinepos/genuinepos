@@ -3,10 +3,9 @@
 namespace App\Services\Products;
 
 use App\Enums\CategoryType;
-use App\Utils\CloudFileUploader;
+use App\Utils\FileUploader;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -23,7 +22,7 @@ class CategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = Storage::disk('s3')->url(tenant('id') . '/' . 'categories/' . $row->photo);
+                    $photo = file_link(fileType: 'category', fileName: $row->photo);
                 }
 
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
@@ -63,8 +62,7 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            $dir = tenant('id') . '/' . 'categories/';
-            $addCategory->photo = CloudFileUploader::uploadWithResize(path: $dir, uploadableFile: $request->file('photo'), height: 250, width: 250);
+            $addCategory->photo = FileUploader::uploadWithResize(fileType: 'category', uploadableFile: $request->file('photo'), height: 250, width: 250);
         }
 
         $addCategory->save();
@@ -80,9 +78,8 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            $dir = tenant('id') . '/' . 'categories/';
-            $uploadedFile = CloudFileUploader::uploadWithResize(
-                path: $dir,
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'category',
                 uploadableFile: $request->file('photo'),
                 height: 250,
                 width: 250,
@@ -108,8 +105,7 @@ class CategoryService
 
         if ($deleteCategory->photo) {
 
-            $dir = tenant('id') . '/' . 'categories/';
-            $uploadedFile = CloudFileUploader::deleteFile(path: $dir, deletableFile: $deleteCategory->photo);
+            $uploadedFile = FileUploader::deleteFile(fileType: 'category', deletableFile: $deleteCategory->photo);
         }
 
         if (!is_null($deleteCategory)) {

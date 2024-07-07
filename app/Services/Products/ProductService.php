@@ -4,12 +4,11 @@ namespace App\Services\Products;
 
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use Illuminate\Support\Str;
 use App\Enums\IsDeleteInUpdate;
 use App\Models\Products\Product;
-use App\Utils\CloudFileUploader;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use App\Models\Products\ProductVariant;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -137,7 +136,7 @@ class ProductService
 
                 if ($row->thumbnail_photo) {
 
-                    $photo = Storage::disk('s3')->url(tenant('id') . '/' . 'products/thumbnails/' . $row->thumbnail_photo);
+                    $photo = file_link(fileType: 'productThumbnail', fileName: $row->thumbnail_photo);
                 }
 
                 return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $photo . '">';
@@ -441,9 +440,9 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            $dir = tenant('id') . '/' . 'products/thumbnails/';
-            $addProduct->thumbnail_photo = CloudFileUploader::uploadWithResize(
-                path: $dir,
+            // $dir = tenant('id') . '/' . 'products/thumbnails/';
+            $addProduct->thumbnail_photo = FileUploader::uploadWithResize(
+                fileType: 'productThumbnail',
                 uploadableFile: $request->file('photo'),
                 height: 300,
                 width: 300,
@@ -514,8 +513,8 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            $uploadedFile = CloudFileUploader::uploadWithResize(
-                path: tenant('id') . '/' . 'products/thumbnails/',
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'productThumbnail',
                 uploadableFile: $request->file('photo'),
                 height: 300,
                 width: 300,
@@ -613,17 +612,15 @@ class ProductService
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
             }
 
-            $dir =  tenant('id') . '/' . 'products/thumbnails/';
-            CloudFileUploader::deleteFile(path: $dir, deletableFile: $deleteProduct->thumbnail_photo);
+            FileUploader::deleteFile(fileType: 'productThumbnail', deletableFile: $deleteProduct->thumbnail_photo);
 
             if (count($deleteProduct->variants) > 0) {
 
-                $variantImgDir = tenant('id') . '/' . 'products/variant_images/';
                 foreach ($deleteProduct->variants as $variant) {
 
                     if ($variant->variant_image) {
 
-                        CloudFileUploader::deleteFile(path: $variantImgDir, deletableFile: $variant->variant_image);
+                        FileUploader::deleteFile(fileType: 'productVariant', deletableFile: $variant->variant_image);
                     }
                 }
             }

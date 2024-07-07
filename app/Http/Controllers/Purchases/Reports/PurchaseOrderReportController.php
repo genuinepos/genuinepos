@@ -7,14 +7,14 @@ use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Accounts\AccountFilterService;
-use App\Services\Purchases\Reports\PurchaseOrderProductReportService;
+use App\Services\Purchases\Reports\PurchaseOrderReportService;
 use App\Http\Requests\Purchases\Reports\PurchaseOrderReportIndexRequest;
 use App\Http\Requests\Purchases\Reports\PurchaseOrderReportPrintRequest;
 
 class PurchaseOrderReportController extends Controller
 {
     public function __construct(
-        private PurchaseOrderProductReportService $purchaseOrderProductReportService,
+        private PurchaseOrderReportService $purchaseOrderReportService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
@@ -26,7 +26,7 @@ class PurchaseOrderReportController extends Controller
     {
         if ($request->ajax()) {
 
-            return $this->purchaseOrderProductReportService->purchaseOrderProductReportTable(request: $request);
+            return $this->purchaseOrderReportService->purchaseOrderProductReportTable(request: $request);
         }
 
         $branches = $this->branchService->branches(with: ['parentBranch'])
@@ -58,7 +58,7 @@ class PurchaseOrderReportController extends Controller
         $fromDate = $request->from_date;
         $toDate = $request->to_date ? $request->to_date : $request->from_date;
 
-        $orders = $this->purchaseOrderProductReportService->query(request: $request)->get();
+        $orders = $this->purchaseOrderReportService->query(request: $request)->get();
 
         return view('purchase.reports.purchase_order_report.ajax_view.print', compact('orders', 'ownOrParentBranch', 'filteredBranchName', 'filteredSupplierName', 'fromDate', 'toDate'));
     }

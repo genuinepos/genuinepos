@@ -26,6 +26,8 @@ Route::get('my-test', function () {
     //     Log::info("Storing data in cache for key: $cacheKey");
     //     return $settings;
     // });
+    $number = 10000000;
+    return format_in_bdt($number);
 });
 
 Route::get('t-id', function () {

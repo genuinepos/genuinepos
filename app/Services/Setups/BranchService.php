@@ -6,15 +6,13 @@ use App\Models\Role;
 use App\Models\User;
 use App\Enums\BranchType;
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use App\Models\Setups\Branch;
-use Illuminate\Validation\Rule;
 use App\Models\Accounts\Account;
-use App\Utils\CloudFileUploader;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Accounts\AccountGroup;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class BranchService
@@ -74,10 +72,10 @@ class BranchService
 
                 if (isset($row->parent_branch_logo)) {
 
-                    $photo = Storage::disk('s3')->url(tenant('id') . '/' . 'branch_logo/' . $row->parent_branch_logo);
+                    $photo = file_link(fileType: 'branchLogo', fileName: $row->parent_branch_logo);
                 } elseif (isset($row->logo)) {
 
-                    $photo = Storage::disk('s3')->url(tenant('id') . '/' . 'branch_logo/' . $row->logo);
+                    $photo = file_link(fileType: 'branchLogo', fileName: $row->logo);
                 }
 
                 return '<img loading="lazy" class="rounded" style="height:40px; width:60px; padding:2px 0px;" src="' . $photo . '">';
@@ -156,8 +154,8 @@ class BranchService
             $branchLogo = isset($logo) ? $logo : $request->file('branch_logo');
             if (isset($branchLogo)) {
 
-                $addBranch->logo = CloudFileUploader::uploadWithResize(
-                    path: tenant('id') . '/' . 'branch_logo/',
+                $addBranch->logo = FileUploader::uploadWithResize(
+                    fileType: 'branchLogo',
                     uploadableFile: $branchLogo,
                     height: 40,
                     width: 100,
@@ -200,8 +198,8 @@ class BranchService
 
         if ($request->hasFile('logo')) {
 
-            $uploadedFile = CloudFileUploader::uploadWithResize(
-                path: tenant('id') . '/' . 'branch_logo/',
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'branchLogo',
                 uploadableFile: $request->file('logo'),
                 height: 40,
                 width: 100,
@@ -235,7 +233,7 @@ class BranchService
             return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more purchases.')];
         }
 
-        CloudFileUploader::deleteFile(path: tenant('id') . '/' . 'branch_logo/', deletableFile: $deleteBranch->logo);
+        FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteBranch->logo);
 
         if ($deleteBranch?->shopExpireDateHistory) {
 
@@ -253,7 +251,7 @@ class BranchService
     {
         $deleteLogo = $this->singleBranch(id: $id);
 
-        CloudFileUploader::deleteFile(path: tenant('id') . '/' . 'branch_logo/', deletableFile: $deleteLogo->logo);
+        FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteLogo->logo);
 
         $deleteLogo->logo = null;
         $deleteLogo->save();

@@ -5,7 +5,7 @@
       <tr>
         <th style="text-align:left;">
             @if ($transfer->branch)
-                <img style="height: 60px; width:200px;" src="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'branch_logo/' . $transfer->branch->logo) }}">
+                <img style="height: 60px; width:200px;" src="{{ file_link('branchLogo', $transfer->branch->logo) }}">
             @else
                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/' . tenant('id') .  '/' . 'business_logo/'.$generalSettings['business_or_shop__business_logo'] }}">
             @endif

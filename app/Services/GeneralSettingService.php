@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use App\Models\GeneralSetting;
-use App\Utils\CloudFileUploader;
 
 class GeneralSettingService implements GeneralSettingServiceInterface
 {
@@ -133,8 +133,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
 
-        $dir = tenant('id') . '/' . 'business_logo/';
-        $uploadedFile = CloudFileUploader::deleteFile(path: $dir, deletableFile: $businessLogo->value);
+        $uploadedFile = FileUploader::deleteFile(fileType: 'businessLogo', deletableFile: $businessLogo->value);
 
         $businessLogo->value = null;
         $businessLogo->save();

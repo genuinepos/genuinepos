@@ -2,10 +2,7 @@
 
 namespace App\Services\TaskManagement;
 
-use Carbon\Carbon;
-use App\Enums\BooleanType;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
+use App\Utils\CloudFileUploader;
 use App\Models\TaskManagement\WorkspaceAttachment;
 
 class WorkspaceAttachmentService
@@ -16,23 +13,15 @@ class WorkspaceAttachmentService
 
             if (count($request->file('attachments')) > 0) {
 
-                $dir = public_path('uploads/' . tenant('id') . '/' . 'workspace_attachments');
-
-                if (!\File::isDirectory($dir)) {
-
-                    \File::makeDirectory($dir, 493, true);
-                }
-
                 foreach ($request->file('attachments') as $attachment) {
 
-                    $wsAttachment = $attachment;
-                    $wsAttachmentName = uniqid() . '.' . $wsAttachment->getClientOriginalExtension();
-                    $wsAttachment->move($dir, $wsAttachmentName);
+                    $dir = tenant('id') . '/' . 'workspace_attachments';
+                    $uploadedFile = CloudFileUploader::uploadFile(path: $dir, uploadableFile: $attachment);
 
                     WorkspaceAttachment::insert([
                         'workspace_id' => $workspaceId,
-                        'attachment' => $wsAttachmentName,
-                        'extension' => $wsAttachment->getClientOriginalExtension(),
+                        'attachment' => $uploadedFile,
+                        'extension' => $attachment->getClientOriginalExtension(),
                     ]);
                 }
             }
@@ -41,7 +30,6 @@ class WorkspaceAttachmentService
 
     public function deleteWorkspaceAttachment(int $id): void
     {
-
         $deleteWorkspaceAttachment = $this->singleWorkspaceAttachment(id: $id);
 
         if (isset($deleteWorkspaceAttachment)) {

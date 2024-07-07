@@ -2,10 +2,9 @@
 
 namespace App\Services\Products;
 
+use App\Utils\FileUploader;
 use App\Models\Products\Brand;
-use App\Utils\CloudFileUploader;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -23,7 +22,7 @@ class BrandService
 
                 if ($row->photo) {
 
-                    $photo = Storage::disk('s3')->url(tenant('id') . '/' . 'brands/' . $row->photo);
+                    $photo = file_link(fileType: 'brand', fileName: $row->photo);
                 }
 
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
@@ -56,8 +55,7 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            $dir = tenant('id') . '/' . 'brands/';
-            $addBrand->photo = CloudFileUploader::uploadWithResize(path: $dir, uploadableFile: $request->file('photo'), height: 250, width: 250);
+            $addBrand->photo = FileUploader::uploadWithResize(fileType: 'brand', uploadableFile: $request->file('photo'), height: 250, width: 250);
         }
 
         $addBrand->save();
@@ -72,8 +70,7 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            $dir = tenant('id') . '/' . 'brands/';
-            $uploadedFile = CloudFileUploader::uploadWithResize(path: $dir, uploadableFile: $request->file('photo'), height: 250, width: 250, deletableFile: $updateBrand->photo);
+            $uploadedFile = FileUploader::uploadWithResize(fileType: 'brand', uploadableFile: $request->file('photo'), height: 250, width: 250, deletableFile: $updateBrand->photo);
 
             $updateBrand->photo = $uploadedFile;
         }
@@ -89,8 +86,7 @@ class BrandService
 
         if (isset($deleteBrand)) {
 
-            $dir = tenant('id') . '/' . 'brands/';
-            $uploadedFile = CloudFileUploader::deleteFile(path: $dir, deletableFile: $deleteBrand->photo);
+            $uploadedFile = FileUploader::deleteFile(fileType: 'brand', deletableFile: $deleteBrand->photo);
 
             $deleteBrand->delete();
         }

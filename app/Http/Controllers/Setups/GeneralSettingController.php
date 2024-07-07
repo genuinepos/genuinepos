@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Utils\FileUploader;
 use App\Enums\PrintPageSize;
 use Illuminate\Http\Request;
-use App\Utils\CloudFileUploader;
 use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
 use App\Services\Products\UnitService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
@@ -70,8 +69,8 @@ class GeneralSettingController extends Controller
 
             $dir = tenant('id') . '/' . 'business_logo/';
 
-            $uploadedFile = CloudFileUploader::uploadWithResize(
-                path: $dir,
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'businessLogo',
                 uploadableFile: $request->file('business_logo'),
                 height: 40,
                 width: 100,

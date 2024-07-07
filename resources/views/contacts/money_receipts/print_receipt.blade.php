@@ -58,13 +58,13 @@
                 <div class="col-4">
                     @if ($moneyReceipt->branch)
                         @if ($moneyReceipt->branch->logo)
-                            <img style="height: 60px; width:200px;" src="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'branch_logo/' . $purchase->branch->logo) }}">
+                            <img style="height: 60px; width:200px;" src="{{ file_link('branchLogo', $purchase->branch->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $purchase->branch->name }}</span>
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img src="{{ Storage::disk('s3')->url(tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif

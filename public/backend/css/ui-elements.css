@@ -773,10 +773,10 @@ ul.noty_cont.noty_layout_topRight li {
 }
 
 
-/* if you use noty with customContainer you can access noty with this way 
+/* if you use noty with customContainer you can access noty with this way
 	*	 .noty_custom_container noty will add automaticly this class to your customContainer
 	*	 .noty_theme_default 		your theme
-	*	 .noty_layout_inline		your layout 
+	*	 .noty_layout_inline		your layout
 	*/
 
 
@@ -1153,7 +1153,7 @@ ul.noty_cont.noty_layout_topRight li {
 }
 
 
-/* 
+/*
     User Style:
     Change the following styles to modify the appearance of ColorBox.  They are
     ordered & tabbed in a way that represents the nesting of the generated HTML.
@@ -1479,7 +1479,7 @@ ul.noty_cont.noty_layout_topRight li {
     width: 20px;
     display: block;
     border: #033466 1px solid;
-    background: #fff url(../images/sprite-icons/icons-a.png) no-repeat 0 -1260px;
+    background: #fff url(../asset/img/sprite-icons/icons-a.png) no-repeat 0 -1260px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -1583,7 +1583,7 @@ ul.noty_cont.noty_layout_topRight li {
     width: 20px;
     display: block;
     border: #033466 1px solid;
-    background: #fff url(../images/sprite-icons/icons-a.png) no-repeat 0 -1260px;
+    background: #fff url(../asset/img/sprite-icons/icons-a.png) no-repeat 0 -1260px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;

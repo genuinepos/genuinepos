@@ -103,7 +103,7 @@ class ProductController extends Controller
 
     public function formPart($type, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface)
     {
-        $formPartMethodContainer = $productControllerMethodContainersInterface->formPartMethodContainer(id: $id);
+        $formPartMethodContainer = $productControllerMethodContainersInterface->formPartMethodContainer(type: $type);
 
         extract($formPartMethodContainer);
 

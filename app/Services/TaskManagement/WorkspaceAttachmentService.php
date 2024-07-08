@@ -2,8 +2,8 @@
 
 namespace App\Services\TaskManagement;
 
-use App\Utils\CloudFileUploader;
 use App\Models\TaskManagement\WorkspaceAttachment;
+use App\Utils\FileUploader;
 
 class WorkspaceAttachmentService
 {
@@ -15,8 +15,7 @@ class WorkspaceAttachmentService
 
                 foreach ($request->file('attachments') as $attachment) {
 
-                    $dir = tenant('id') . '/' . 'workspace_attachments';
-                    $uploadedFile = CloudFileUploader::uploadFile(path: $dir, uploadableFile: $attachment);
+                    $uploadedFile = FileUploader::fileUpload(fileType: 'workspaceAttachment', uploadableFile: $attachment);
 
                     WorkspaceAttachment::insert([
                         'workspace_id' => $workspaceId,
@@ -34,12 +33,7 @@ class WorkspaceAttachmentService
 
         if (isset($deleteWorkspaceAttachment)) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'workspace_attachments/');
-
-            if (file_exists($dir . $deleteWorkspaceAttachment->attachment)) {
-
-                unlink($dir . $deleteWorkspaceAttachment->attachment);
-            }
+            FileUploader::deleteFile(fileType: 'workspaceAttachment', deletableFile: $deleteWorkspaceAttachment->attachment);
 
             $deleteWorkspaceAttachment->delete();
         }

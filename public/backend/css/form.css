@@ -30,7 +30,7 @@ div.uploader,
 div.uploader span.action,
 div.button,
 div.button span {
-    background-image: url(../images/sprite.png);
+    background-image: url(../asset/img/sprite.png);
     background-repeat: no-repeat;
     -webkit-font-smoothing: antialiased;
 }
@@ -489,7 +489,7 @@ div.uploader.disabled span.filename {
 
 /*
 
-CORE FUNCTIONALITY 
+CORE FUNCTIONALITY
 
 Not advised to edit stuff below this line
 -----------------------------------------------------
@@ -630,12 +630,10 @@ div.uploader span.filename {
 
 div.uploader input {
     opacity: 0;
-    filter: alpha(opacity: 0);
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    float: right;
     height: 25px;
     border: none;
     cursor: default;
@@ -652,7 +650,7 @@ div.uploader input {
     position: relative;
     display: inline-block;
     zoom: 1;
-    *display: inline;
+    display: inline;
 }
 
 .chzn-container .chzn-drop {
@@ -1265,7 +1263,7 @@ legend {
     padding: .4em .8em;
     background: #fff;
     border: 1px solid #ccc;
-    background: url(../images/layout-sprite.png) no-repeat 0 -408px;
+    background: url("../asset/img/sprite-icons/layout-sprite.png") no-repeat 0 -408px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;

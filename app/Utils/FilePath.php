@@ -14,6 +14,7 @@ class FilePath
             'productThumbnail' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'products/thumbnails/' : tenant('id') . '/' . 'products/thumbnails/',
             'productVariant' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'products/variant_images/' : tenant('id') . '/' . 'products/variant_images/',
             'jobCardDocument' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'services/documents/' : tenant('id') . '/' . 'services/documents/',
+            'workspaceAttachment' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'workspace_attachments/' : tenant('id') . '/' . 'workspace_attachments/',
         ];
 
         return $arr[$fileType];

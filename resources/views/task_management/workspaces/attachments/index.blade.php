@@ -29,16 +29,16 @@
                                             <td class="text-start">{{ $loop->index + 1 }}</td>
                                             <td class="text-start">
                                                 @if ($attachment->extension == 'png' || $attachment->extension == 'jpg' || $attachment->extension == 'jpeg' || $attachment->extension == 'gif' || $attachment->extension == 'svg' || $attachment->extension == 'webp')
-                                                    <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ asset('uploads/workspace_attachments/' . $attachment->attachment) }}">
-                                                        <img style="height: 35px;width:40px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'workspace_attachments/' . $attachment->attachment) }}">
+                                                    <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ file_link('workspaceAttachment', $attachment->attachment) }}">
+                                                        <img style="height: 35px;width:40px;" src="{{ file_link('workspaceAttachment', $attachment->attachment) }}">
                                                     </a>
                                                 @else
                                                     <i class="far fa-file"></i> <span class="text-muted">{{ $attachment->attachment }}</span>
                                                 @endif
                                             </td>
                                             <td class="text-start">
-                                                <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ asset('uploads/' . tenant('id') . '/' . 'workspace_attachments/' . $attachment->attachment) }}" class="btn btn-sm btn-info text-white">{{ __('View') }}</a>
-                                                <a href="{{ asset('uploads/' . tenant('id') . '/' . 'workspace_attachments/' . $attachment->attachment) }}" class="btn btn-sm btn-secondary" download>{{ __('Download') }}</a>
+                                                <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ file_link('workspaceAttachment', $attachment->attachment) }}" class="btn btn-sm btn-info text-white">{{ __('View') }}</a>
+                                                <a href="{{ file_link('workspaceAttachment', $attachment->attachment) }}" class="btn btn-sm btn-secondary" download="File">{{ __('Download') }}</a>
                                                 <a href="{{ route('workspaces.attachments.delete', $attachment->id) }}" id="attachmentDelete" class="btn btn-sm btn-danger">{{ __('Delete') }}</a>
                                             </td>
                                         </tr>

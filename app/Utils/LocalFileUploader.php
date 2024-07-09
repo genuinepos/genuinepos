@@ -157,4 +157,23 @@ class LocalFileUploader
 
         return $fileName;
     }
+
+    public static function isFileExists(string $fileType, ?string $fileName = null): bool
+    {
+        $path = FilePath::paths(fileType: $fileType);
+
+        if ($fileName) {
+
+            if (file_exists($path . $fileName)) {
+
+                return true;
+            } else {
+
+                return false;
+            }
+        } else {
+
+            return false;
+        }
+    }
 }

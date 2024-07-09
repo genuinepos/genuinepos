@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('advertisement_id');
             $table->string('content_title')->nullable();
             $table->string('caption')->nullable();
-            $table->string('image',255)->nullable();
+            $table->string('image', 255)->nullable();
             $table->text('video')->nullable();
             $table->timestamps();
         });

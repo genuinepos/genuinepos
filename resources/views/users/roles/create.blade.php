@@ -2663,6 +2663,55 @@
                             </div>
                         @endif
 
+                        @if (isset($generalSettings['subscription']->features['advertisements']) && $generalSettings['subscription']->features['advertisements'] == 1)
+                            <div class="accordion-item mb-1">
+                                <div class="form_element rounded mt-0 mb-0">
+                                    <div class="accordion-header d-flex">
+                                        <p class="checkbox_input_wrap ">
+                                            <input type="checkbox" class="ms-2" id="select_all" data-target="advertisements" autocomplete="off">
+                                        </p>
+                                        <a data-bs-toggle="collapse" class="collapsed" href="#advertisements_permission" aria-expanded="false">
+                                            {{ __('Advertisement Permissions') }}
+                                        </a>
+                                    </div>
+                                    <div id="advertisements_permission" class="collapse" data-bs-parent="#advertisements_permission" style="">
+                                        <div class="element-body border-top">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="advertisements" id="select_all" data-target="advertisements" autocomplete="off">
+                                                            <strong>{{ __('Advertisements') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="advertisements_index" id="advertisements_index" class="advertisements">
+                                                        <label for="advertisements_index">{{ __('Advertisement List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="advertisements_create" id="advertisements_create" class="advertisements">
+                                                        <label for="advertisements_create">{{ __('Advertisement Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="advertisements_edit" id="advertisements_edit" class="advertisements">
+                                                        <label for="advertisements_edit">{{ __('Advertisement Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="advertisements_delete" id="advertisements_delete" class="advertisements">
+                                                        <label for="advertisements_delete"> {{ __('Advertisement Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">
                                 <div class="accordion-header d-flex">

@@ -234,6 +234,7 @@ class PlanService implements PlanServiceInterface
             'cash_counter_count' => isset($request->features['cash_counter_count']) ? $request->features['cash_counter_count'] : 0,
             'warehouse_count' => isset($request->features['warehouse_count']) ? $request->features['warehouse_count'] : 0,
             'ecommerce' => isset($request->features['ecommerce']) ? 1 : 0,
+            'advertisements' => isset($request->features['advertisements']) ? 1 : 0,
         ];
     }
 }

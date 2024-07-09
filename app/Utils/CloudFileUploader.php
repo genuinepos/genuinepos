@@ -2,8 +2,9 @@
 
 namespace App\Utils;
 
-use Illuminate\Support\Facades\Storage;
+use App\Utils\FilePath;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class CloudFileUploader
 {
@@ -56,13 +57,32 @@ class CloudFileUploader
     public static function deleteFile(string $fileType, ?string $deletableFile = null): void
     {
         $path = FilePath::paths(fileType: $fileType);
-        
+
         if (isset($deletableFile)) {
 
             if (Storage::disk(config('file_disk.name'))->exists($path . $deletableFile)) {
 
                 Storage::disk(config('file_disk.name'))->delete($path . $deletableFile);
             }
+        }
+    }
+
+    public static function isFileExists(string $fileType, ?string $fileName = null): bool
+    {
+        $path = FilePath::paths(fileType: $fileType);
+
+        if ($fileName) {
+
+            if (Storage::disk(config('file_disk.name'))->exists($path . $fileName)) {
+
+                return true;
+            } else {
+
+                return false;
+            }
+        } else {
+
+            return false;
         }
     }
 }

@@ -67,8 +67,6 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('business_logo')) {
 
-            $dir = tenant('id') . '/' . 'business_logo/';
-
             $uploadedFile = FileUploader::uploadWithResize(
                 fileType: 'businessLogo',
                 uploadableFile: $request->file('business_logo'),

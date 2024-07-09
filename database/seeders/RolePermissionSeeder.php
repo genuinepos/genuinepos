@@ -714,6 +714,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '458', 'name' => 'sales_orders_delete'],
 
             ['id' => '459', 'name' => 'sales_return_only_own'],
+
+            ['id' => '460', 'name' => 'advertisements_index'],
+            ['id' => '461', 'name' => 'advertisements_create'],
+            ['id' => '462', 'name' => 'advertisements_edit'],
+            ['id' => '463', 'name' => 'advertisements_delete'],
         ];
 
         return $permissions;

@@ -39,4 +39,15 @@ class FileUploader
             CloudFileUploader::deleteFile(fileType: $fileType, deletableFile: $deletableFile);
         }
     }
+
+    public static function isFileExists(string $fileType, string $fileName): bool
+    {
+        if (config('file_disk.name') == 'local') {
+
+            return LocalFileUploader::isFileExists(fileType: $fileType, fileName: $fileName);
+        } else {
+
+            return CloudFileUploader::isFileExists(fileType: $fileType, fileName: $fileName);
+        }
+    }
 }

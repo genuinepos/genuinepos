@@ -635,19 +635,6 @@
                                                     </a>
                                                 </div>
                                             @endif
-
-                                            {{-- @if (auth()->user()->can('purchase_settings'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('purchase.settings.index') }}" class="switch-bar-wrap settings-wrap">
-                                <div class="switch_bar">
-                                    <div class="bar-link">
-                                        <span><i class="fas fa-sliders-h"></i></span>
-                                    </div>
-                                </div>
-                                <p class="switch_text">{{ __("Purchase Settings") }}</p>
-                                </a>
-                            </div>
-                            @endif --}}
                                         </div>
                                     </div>
                                 @endif
@@ -2475,13 +2462,12 @@
                         </div>
                     </div>
 
-                    <!-- advertise start -->
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">{{ __('Advertisement') }}</p>
+                            <p class="sub-menu-group-title">{{ __('Advertisements') }}</p>
                             <div class="sub-menu-row">
                                 <div class="sub-menu-col">
-                                    <a href="{{ route('advertise.create') }}" class="switch-bar-wrap">
+                                    <a href="{{ route('advertisements.create') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="fas fa-sliders-h"></i></span>
@@ -2492,7 +2478,7 @@
                                 </div>
 
                                 <div class="sub-menu-col">
-                                    <a href="{{ route('advertise.index') }}" class="switch-bar-wrap">
+                                    <a href="{{ route('advertisements.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="fas fa-sliders-h"></i></span>
@@ -2504,9 +2490,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- advertise end -->
                 </div>
             </div>
+
         </div>
     </div>
 </div>

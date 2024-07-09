@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use App\Enums\SubscriptionTransactionType;
 use Modules\SAAS\Utils\ExpireDateAllocation;
@@ -270,13 +271,23 @@ class TenantService implements TenantServiceInterface
 
         Tenancy::find($id)?->delete();
 
-        $this->removeDir(dir: public_path('uploads/' . $id));
+        $this->removeDir(dir: public_path('uploads/' . $id), id: $id);
 
         return ['pass' => true];
     }
 
-    private function removeDir(string $dir): void
+    private function removeDir(string $dir, string $id): void
     {
+        if (config('file_disk.name') != 'local') {
+
+            $exists = Storage::disk(config('file_disk.name'))->exists($id);
+
+            if ($exists) {
+
+                Storage::disk(config('file_disk.name'))->deleteDirectory($id);
+            }
+        }
+
         if (is_dir($dir)) {
 
             $files = scandir($dir);

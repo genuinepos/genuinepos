@@ -83,7 +83,7 @@
                                                 <th>{{ __('Type') }}</th>
                                                 <th>{{ __('Shop/Business') }}</th>
                                                 <th>{{ __('Title') }}</th>
-                                                <th>{{ __('Attachment') }}</th>
+                                                <th>{{ __('Attachments') }}</th>
                                                 <th>{{ __('Status') }}</th>
                                                 <th>{{ __('Action') }}</th>
                                             </tr>

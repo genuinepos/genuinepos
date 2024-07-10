@@ -8,7 +8,6 @@
         * {
             margin: 0;
             padding: 0;
-            /* overflow:hidden; */
         }
 
         html,
@@ -32,7 +31,7 @@
     </style>
 
     <video style="width: 100%;height:95%;" controls autoplay loop>
-        <source src="{{ file_link('advertisementAttachment', $advertisement->attachments->[0]->video) }}" type="video/mp4">
+        <source src="{{ file_link('advertisementAttachment', $advertisement->attachments[0]->video) }}" type="video/mp4">
         {{ __('Your browser does not support the video tag.') }}
     </video>
 </body>

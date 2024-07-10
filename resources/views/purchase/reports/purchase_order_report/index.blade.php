@@ -93,7 +93,7 @@
                                                         <div class="col-md-6">
                                                             <label></label>
                                                             <div class="input-group">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i>{{ __('Print') }}</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i> {{ __('Print') }}</a>
                                                             </div>
                                                         </div>
                                                     </div>

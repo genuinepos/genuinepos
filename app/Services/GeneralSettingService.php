@@ -57,6 +57,13 @@ class GeneralSettingService implements GeneralSettingServiceInterface
                         continue;
                     }
 
+                    if (
+                        $key == 'prefix__stock_adjustment_prefix' &&
+                        config('generalSettings')['subscription']->features['stock_adjustments'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
                     $exists = GeneralSetting::where('key', $key)->where('branch_id', null)->first();
                     if (isset($exists)) {
 

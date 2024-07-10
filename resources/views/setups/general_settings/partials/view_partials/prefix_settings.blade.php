@@ -70,10 +70,12 @@
             </div>
         @endif
 
-        <div class="col-lg-3 col-md-6">
-            <label class="fw-bold">{{ __('Stock Adjustment Voucher Prefix') }}</label>
-            <input type="text" name="stock_adjustment_prefix" class="form-control" id="stock_adjustment_prefix" value="{{ $generalSettings['prefix__stock_adjustment_prefix'] }}" placeholder="{{ __('Stock Adjustment Voucher Prefix') }}" />
-        </div>
+        @if ($generalSettings['subscription']->features['stock_adjustments'] == \App\Enums\BooleanType::True->value)
+            <div class="col-lg-3 col-md-6">
+                <label class="fw-bold">{{ __('Stock Adjustment Voucher Prefix') }}</label>
+                <input type="text" name="stock_adjustment_prefix" class="form-control" id="stock_adjustment_prefix" value="{{ $generalSettings['prefix__stock_adjustment_prefix'] }}" placeholder="{{ __('Stock Adjustment Voucher Prefix') }}" />
+            </div>
+        @endif
     </div>
 
 

@@ -265,6 +265,13 @@ class BranchSettingService
                         continue;
                     }
 
+                    if (
+                        $key == 'prefix__stock_adjustment_prefix' &&
+                        config('generalSettings')['subscription']->features['stock_adjustments'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
                     $branchSetting = GeneralSetting::where('branch_id', $branchId)->where('key', $key)->first();
                     if ($branchSetting) {
 

@@ -149,8 +149,8 @@ class StockAdjustedProductReportService
             $query->whereBetween('stock_adjustments.date_ts', $date_range); // Final
         }
 
-         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-            if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('stock_adjustments.branch_id', auth()->user()->branch_id);
         }

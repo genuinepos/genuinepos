@@ -5,14 +5,14 @@ namespace App\Http\Requests\Manufacturing;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProcessIndexRequest extends FormRequest
+class ProcessEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('process_view') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
+        return auth()->user()->can('process_edit') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
     }
 
     /**

@@ -6,17 +6,18 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Manufacturing\ProcessEditRequest;
+use App\Http\Requests\Manufacturing\ProcessIndexRequest;
 use App\Http\Requests\Manufacturing\ProcessStoreRequest;
+use App\Http\Requests\Manufacturing\ProcessCreateRequest;
 use App\Http\Requests\Manufacturing\ProcessDeleteRequest;
 use App\Http\Requests\Manufacturing\ProcessUpdateRequest;
 use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 
 class ProcessController extends Controller
 {
-    public function index(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
+    public function index(ProcessIndexRequest $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $indexMethodContainer = $processControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -29,8 +30,6 @@ class ProcessController extends Controller
 
     public function show($id, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $showMethodContainer = $processControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
@@ -56,15 +55,13 @@ class ProcessController extends Controller
         return view('manufacturing.process.ajax_view.process_select_product_modal', compact('products'));
     }
 
-    public function create(Request $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
+    public function create(ProcessCreateRequest $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $createMethodContainer = $processControllerMethodContainersInterface->createMethodContainer(request: $request);
 
-        if(gettype($createMethodContainer) == 'object'){
+        if (gettype($createMethodContainer) == 'object') {
 
-           return $createMethodContainer;
+            return $createMethodContainer;
         }
 
         extract($createMethodContainer);
@@ -88,10 +85,8 @@ class ProcessController extends Controller
         return response()->json(__('Manufacturing Process created successfully'));
     }
 
-    public function edit($id, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
+    public function edit($id, ProcessEditRequest $request, ProcessControllerMethodContainersInterface $processControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $editMethodContainer = $processControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

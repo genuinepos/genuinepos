@@ -104,7 +104,6 @@
 
                     $('.nivo-caption').html('<strong>' + title + '</strong><span>' + caption + '</span>');
                 }
-
             },
             afterChange: function() {
                 // Update caption after each slide change

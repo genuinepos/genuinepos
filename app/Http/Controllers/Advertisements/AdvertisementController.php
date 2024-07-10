@@ -80,7 +80,7 @@ class AdvertisementController extends Controller
     public function edit($id, AdvertisementEditRequest $request)
     {
         $advertisement = $this->advertisementService->singleAdvertisement(id: $id, with: ['attachments' => function ($query) {
-            $query->orderByDesc('id');
+            $query->orderBy('id', 'asc');
         }]);
 
         return view('advertisements.edit', compact('advertisement'));

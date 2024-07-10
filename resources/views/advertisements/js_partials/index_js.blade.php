@@ -17,7 +17,7 @@
          },
          columns: [{
                  data: 'content_type',
-                 name: 'content_type'
+                 name: 'title'
              },
              {
                  data: 'branch',
@@ -29,11 +29,11 @@
              },
              {
                  data: 'attachment',
-                 name: 'attachment.content_title'
+                 name: 'attachments.content_title'
              },
              {
                  data: 'status',
-                 name: 'status'
+                 name: 'attachments.caption'
              },
              {
                  data: 'action',
@@ -102,4 +102,9 @@
              }
          });
      });
+
+     $(document).on('submit', '#filter_form', function(e) {
+        e.preventDefault();
+        advertisementsTable.ajax.reload();
+    });
  </script>

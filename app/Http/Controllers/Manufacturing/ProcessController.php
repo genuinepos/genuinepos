@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;

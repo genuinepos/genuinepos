@@ -13,7 +13,7 @@ class AdvertisementService
     public function advertisementsTable($request)
     {
         $generalSettings = config('generalSettings');
-        $query = Advertisement::with('branch:id,name', 'attachments');
+        $query = Advertisement::with('branch:id,name', 'attachments:id,advertisement_id,image,video,content_title,caption');
 
         $this->filter(request: $request, query: $query);
 
@@ -31,7 +31,7 @@ class AdvertisementService
                         $imageUrl = file_link(fileType: 'advertisementAttachment', fileName: $attachment->image);
                         if (FileUploader::isFileExists('advertisementAttachment', $attachment->image)) {
 
-                            $html .= '<img width="60px" height="60px" class="rounded ms-1" src="' . $imageUrl . '" />';
+                            $html .= '<img loading="lazy" width="60px" height="60px" class="rounded ms-1" src="' . $imageUrl . '" />';
                         } else {
 
                             $html .= __('Image not found:') . ' ' . $imageUrl . '<br>';
@@ -75,7 +75,11 @@ class AdvertisementService
             })
             ->addColumn('action', function ($row) {
 
-                $btn = '<a target="_blank" href="' . route('advertisements.show', [$row->id]) . '" class="edit-btn btn btn-info btn-sm text-white" title="Edit"><span class="fas fa-eye"></span></a>';
+                $btn = '';
+                if ($row->status == BooleanType::True->value) {
+
+                    $btn .= '<a target="_blank" href="' . route('advertisements.show', [$row->id]) . '" class="edit-btn btn btn-info btn-sm text-white" title="Edit"><span class="fas fa-eye"></span></a>';
+                }
 
                 if (auth()->user()->can('advertisements_edit')) {
 
@@ -114,6 +118,7 @@ class AdvertisementService
         $updateAdvertisement->save();
 
         foreach ($updateAdvertisement->attachments as $attachment) {
+            
             $attachment->is_delete_in_update = BooleanType::True->value;
             $attachment->save();
         }

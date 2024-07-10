@@ -2052,35 +2052,6 @@
                                                     </p>
                                                 </div>
 
-                                                {{-- <div class="col-lg-3 col-sm-6">
-                                                    <p class="text-info checkbox_input_wrap">
-                                                        <label>
-                                                            <input type="checkbox" class="hrms" id="select_all" data-target="deductions" autocomplete="off">
-                                                            <strong>{{ __('Deductions') }}</strong>
-                                                        </label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="deductions_index" id="deductions_index" class="hrms deductions">
-                                                        <label for="deductions_index">{{ __('Deduction List') }}</label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="deductions_create" id="deductions_create" class="hrms deductions">
-                                                        <label for="deductions_create"> {{ __('Deduction Add') }}</label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="deductions_edit" id="deductions_edit" class="hrms deductions">
-                                                        <label for="deductions_edit"> {{ __('Deduction Edit') }}</label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="deductions_delete" id="deductions_delete" class="hrms deductions">
-                                                        <label for="deductions_delete">{{ __('Deduction Delete') }}</label>
-                                                    </p>
-                                                </div> --}}
-
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>

@@ -2476,7 +2476,7 @@
                                                 <a href="{{ route('advertisements.create') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
-                                                            <span><i class="fas fa-sliders-h"></i></span>
+                                                            <span><i class="fas fa-plus-circle"></i></span>
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">{{ __('Add Advertisement') }}</p>

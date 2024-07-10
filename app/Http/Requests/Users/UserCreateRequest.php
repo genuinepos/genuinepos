@@ -5,14 +5,14 @@ namespace App\Http\Requests\Users;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleStoreRequest extends FormRequest
+class UserCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('role_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
+        return auth()->user()->can('user_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
     }
 
     /**
@@ -23,7 +23,7 @@ class RoleStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_name' => 'required|unique:roles,name',
+            //
         ];
     }
 }

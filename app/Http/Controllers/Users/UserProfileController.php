@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\Users\UserProfileService;
+use App\Http\Requests\Users\UserProfileIndexRequest;
 use App\Http\Requests\Users\UserProfileUpdateRequest;
 
 class UserProfileController extends Controller
@@ -16,7 +17,7 @@ class UserProfileController extends Controller
     {
     }
 
-    public function index()
+    public function index(UserProfileIndexRequest $request)
     {
         return view('users.profile');
     }

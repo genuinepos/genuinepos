@@ -5,14 +5,14 @@ namespace App\Http\Requests\Advertisements;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdvertisementDeleteRequest extends FormRequest
+class AdvertisementShowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('advertisements_delete') && isset(config('generalSettings')['subscription']->features['advertisements']) && config('generalSettings')['subscription']->features['advertisements'] == BooleanType::True->value;
+        return auth()->user()->can('advertisements_index') && isset(config('generalSettings')['subscription']->features['advertisements']) && config('generalSettings')['subscription']->features['advertisements'] == BooleanType::True->value;
     }
 
     /**

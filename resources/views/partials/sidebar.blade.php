@@ -170,6 +170,17 @@
                     </li>
                 @endif
 
+                @if (isset($generalSettings['subscription']->features['advertisements']) && $generalSettings['subscription']->features['advertisements'] == '1')
+                    @if (auth()->user()->can('advertisements_index') || auth()->user()->can('advertisements_create'))
+                        <li data-menu="advertisement" class="">
+                            <a href="#">
+                                <img src="{{ asset('backend/asset/img/icon/Ads.svg') }}">
+                                <p class="title">{{ __('Advertisement') }}</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
                 @if ($generalSettings['subscription']->features['setup'] == 1)
                     @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings') || auth()->user()->can('warehouses_index') || auth()->user()->can('payment_methods_index') || auth()->user()->can('invoice_layouts_index') || auth()->user()->can('cash_counters_index') || auth()->user()->can('billing_index'))
                         <li data-menu="setups" class="{{ request()->is('setups*') && !request()->is('setups/branches*') ? 'menu_active' : '' }}">
@@ -180,13 +191,6 @@
                         </li>
                     @endif
                 @endif
-
-                <li data-menu="advertisement" class="">
-                    <a href="#">
-                        <img src="{{ asset('backend/asset/img/icon/Ads.svg') }}">
-                        <p class="title">{{ __('Advertisement') }}</p>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
@@ -2447,52 +2451,58 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- sms end -->
                     </div>
                 </div>
             @endif
 
-            <div class="sub-menu_t" id="advertisement">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-md-4">
-                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+            @if (isset($generalSettings['subscription']->features['advertisements']) && $generalSettings['subscription']->features['advertisements'] == '1')
+                @if (auth()->user()->can('advertisements_index') || auth()->user()->can('advertisements_create'))
+                    <div class="sub-menu_t" id="advertisement">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container-fluid">
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Advertisements') }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('advertisements_create'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('advertisements.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-sliders-h"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Add Advertisement') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+
+                                        @if (auth()->user()->can('advertisements_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('advertisements.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-sliders-h"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Advertisement List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="container-fluid">
-                        <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">{{ __('Advertisements') }}</p>
-                            <div class="sub-menu-row">
-                                <div class="sub-menu-col">
-                                    <a href="{{ route('advertisements.create') }}" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-sliders-h"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Add Advertisement') }}</p>
-                                    </a>
-                                </div>
-
-                                <div class="sub-menu-col">
-                                    <a href="{{ route('advertisements.index') }}" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-sliders-h"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Advertisement List') }}</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+                @endif
+            @endif
         </div>
     </div>
 </div>

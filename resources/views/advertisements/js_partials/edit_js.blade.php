@@ -26,7 +26,7 @@
                 '</tr>'
             );
 
-            $("#advertisement_images").prepend(newImage);
+            $("#advertisement_images").append(newImage);
             $('.dropify').dropify();
         });
 
@@ -80,6 +80,8 @@
                     }
 
                     toastr.success(data);
+
+                    window.location = "{{ url()->previous() }}";
                 },
                 error: function(err) {
 

@@ -6,19 +6,14 @@ use App\Enums\BooleanType;
 use App\Utils\FileUploader;
 use App\Enums\AdvertisementContentType;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Traits\File\FileUploadTrait;
 use App\Models\Advertisement\Advertisement;
-use App\Models\Advertisement\AdvertiseAttachment;
 
 class AdvertisementService
 {
-    use FileUploadTrait;
-    /**
-     * Display a listing of the resource.
-     */
     public function advertisementsTable($request)
     {
-        $query = Advertisement::with('attachments');
+        $generalSettings = config('generalSettings');
+        $query = Advertisement::with('branch:id,name', 'attachments');
 
         $this->filter(request: $request, query: $query);
 
@@ -59,6 +54,17 @@ class AdvertisementService
                 return $html;
             })
 
+            ->editColumn('branch', function ($row) use ($generalSettings) {
+
+                if ($row->branch) {
+
+                    return $row->branch->name;
+                } else {
+
+                    return $generalSettings['business_or_shop__business_name'];
+                }
+            })
+
             ->addColumn('content_type', function ($row) {
 
                 return AdvertisementContentType::tryFrom($row->content_type)->name;
@@ -69,11 +75,19 @@ class AdvertisementService
             })
             ->addColumn('action', function ($row) {
 
-                $editBtn = '<a href="' . route('advertisements.edit', [$row->id]) . '" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
+                $btn = '<a target="_blank" href="' . route('advertisements.show', [$row->id]) . '" class="edit-btn btn btn-info btn-sm text-white" title="Edit"><span class="fas fa-eye"></span></a>';
 
-                $showBtn = '<a target="_blank" href="' . route('advertisements.show', [$row->id]) . '" class="edit-btn btn btn-info btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-eye"></span></a>';
+                if (auth()->user()->can('advertisements_edit')) {
 
-                return $editBtn . ' ' . $showBtn;
+                    $btn .= '<a href="' . route('advertisements.edit', [$row->id]) . '" class="edit-btn btn btn-success btn-sm text-white ms-1" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('advertisements_delete')) {
+
+                    $btn .= '<a href="' . route('advertisements.delete', [$row->id]) . '" class="edit-btn btn btn-danger btn-sm text-white ms-1" title="Delete" id="delete"><span class="fas fa-trash "></span></a>';
+                }
+
+                return $btn;
             })
 
             ->rawColumns(['attachment', 'content_type', 'status', 'action'])
@@ -92,12 +106,6 @@ class AdvertisementService
         ]);
     }
 
-    public function show(string $id)
-    {
-        $data = AdvertiseAttachment::where('advertisement_id', $id)->get();
-        return $data;
-    }
-
     public function updateAdvertisement(object $request, int $id): object
     {
         $updateAdvertisement = $this->singleAdvertisement(id: $id, with: ['attachments']);
@@ -111,107 +119,23 @@ class AdvertisementService
         }
 
         return $updateAdvertisement;
-
-        // Handle image or video update
-        // if ($advertisement->content_type == 1) {
-
-        //     if ($request->hasFile('image')) {
-
-        //         foreach ($request->file('image') as $key => $image) {
-
-        //             $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-        //             $image->move($dir, $imageName);
-
-        //             AdvertiseAttachment::create([
-        //                 'advertisement_id' => $advertisement->id,
-        //                 'content_title' => $request->input('content_title')[$key],
-        //                 'caption' => $request->input('caption')[$key],
-        //                 'image' => $imageName,
-        //             ]);
-        //         }
-        //     }
-
-        //     if (!empty($request->default_content_title)) {
-
-        //         $this->updateDefaultContent($request);
-        //     }
-        // } elseif ($advertisement->content_type == 2) {
-
-        //     if ($request->hasFile('video')) {
-
-        //         $advertiseAttachment = AdvertiseAttachment::findOrFail($request->video_id);
-
-        //         $request->validate([
-        //             'video' => 'required|mimes:mp4,avi,mov,wmv|max:102400', // 100 MB max
-        //         ], [
-        //             'video.max' => __('The video must not be larger than 100 MB.'),
-        //         ]);
-
-        //         $filePath = $dir . $advertiseAttachment->video;
-
-        //         if (file_exists($filePath)) {
-
-        //             unlink($filePath);
-        //         }
-
-        //         AdvertiseAttachment::findOrFail($request->video_id)->delete();
-        //         $videoName = time() . '.' . $request->video->getClientOriginalExtension();
-
-        //         $request->video->move($dir, $videoName);
-
-        //         AdvertiseAttachment::create([
-        //             'advertisement_id' => $advertisement->id,
-        //             'video' => $videoName,
-        //         ]);
-        //     }
-        // }
-
-        return ['status' => 'success', 'message' => __('Advertisement has been updated successfully')];
     }
 
-    public function updateDefaultContent($request)
+    public function deleteAdvertisement(int $id): void
     {
-        foreach ($request->attach_id as $key => $attachId) {
+        $deleteAdvertisement = $this->singleAdvertisement(id: $id, with: ['attachments']);
 
-            $contentTitle = $request->default_content_title[$key];
-            $caption = $request->default_caption[$key];
+        if (isset($deleteAdvertisement)) {
 
-            AdvertiseAttachment::where('id', $attachId)->update([
-                'content_title' => $contentTitle,
-                'caption' => $caption,
-            ]);
-        }
-    }
+            foreach ($deleteAdvertisement->attachments as $attachment) {
 
-    public function destroy(string $id)
-    {
-        $advertiseAttachment = AdvertiseAttachment::findOrFail($id);
+                FileUploader::deleteFile(fileType: 'advertisementAttachment', deletableFile: $attachment->image);
 
-        $advertisement = Advertisement::findOrFail($advertiseAttachment->advertisement_id);
-
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'advertisement/');
-
-        if ($advertisement->content_type == 1) {
-
-            $filePath = $dir . $advertiseAttachment->image;
-            if (file_exists($filePath)) {
-
-                unlink($filePath);
+                FileUploader::deleteFile(fileType: 'advertisementAttachment', deletableFile: $attachment->video);
             }
-        } else {
 
-            $filePath = $dir . $advertiseAttachment->video;
-
-            if (file_exists($filePath)) {
-
-                unlink($filePath);
-            }
+            $deleteAdvertisement->delete();
         }
-
-        $advertiseAttachment->delete();
-
-        return ['status' => 'success', 'message' => __('Advertisement has been deleted successfully')];
     }
 
     public function singleAdvertisement(int $id, array $with = null): ?object
@@ -223,7 +147,7 @@ class AdvertisementService
             $query->with($with);
         }
 
-        return $query->where('id', $id)->first();
+        return $query->where('id', $id)->firstOrFail();
     }
 
     private function filter(object $request, object $query)

@@ -2,8 +2,9 @@
 
 namespace App\Models\Advertisement;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Setups\Branch;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Advertisement extends Model
 {
@@ -11,7 +12,13 @@ class Advertisement extends Model
 
     protected $guarded = [];
 
-    public function attachments(){
-        return $this->hasMany(AdvertiseAttachment::class,'advertisement_id','id');
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(AdvertiseAttachment::class, 'advertisement_id', 'id');
     }
 }

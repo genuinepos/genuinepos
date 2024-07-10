@@ -91,10 +91,6 @@
                                         <td>
                                             <input type="text" name="captions[]" class="form-control" placeholder="{{ __('Enter Slider Caption') }}">
                                         </td>
-
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm" id="remove_image"><i class="fa fa-trash"></i></button>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

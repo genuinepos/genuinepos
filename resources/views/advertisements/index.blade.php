@@ -81,6 +81,7 @@
                                         <thead>
                                             <tr class="bg-navey-blue">
                                                 <th>{{ __('Type') }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
                                                 <th>{{ __('Title') }}</th>
                                                 <th>{{ __('Attachment') }}</th>
                                                 <th>{{ __('Status') }}</th>

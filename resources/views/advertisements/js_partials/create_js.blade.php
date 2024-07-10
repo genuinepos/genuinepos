@@ -2,8 +2,6 @@
 <script>
     //this is for select type video or url
     $(document).ready(function() {
-        $('.dropify').dropify();
-
         $("#content_type").change(function() {
 
             var contentType = $(this).val();
@@ -36,14 +34,16 @@
                 '</td>' +
 
                 '<td>' +
-                '<button type="button" class="btn btn-danger btn-sm delete-item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>' +
+                '<button type="button" class="btn btn-danger btn-sm" id="remove_image"><i class="fa fa-trash"></i></button>' +
                 '</td>' +
                 '</tr>'
             );
 
+            $("#advertisement_images").append(newImage);
             $('.dropify').dropify();
-            $("#advertisement_images").prepend(newImage);
         });
+
+        $('.dropify').dropify();
 
         //this is for remove image
         $(document).on('click', '#remove_image', function() {

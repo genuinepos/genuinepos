@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Advertisements;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use App\Enums\AdvertisementContentType;
 use App\Services\Advertisements\AdvertisementService;
 use App\Http\Requests\Advertisements\AdvertisementEditRequest;
+use App\Http\Requests\Advertisements\AdvertisementShowRequest;
 use App\Http\Requests\Advertisements\AdvertisementIndexRequest;
 use App\Http\Requests\Advertisements\AdvertisementStoreRequest;
 use App\Services\Advertisements\AdvertisementAttachmentService;
 use App\Http\Requests\Advertisements\AdvertisementCreateRequest;
+use App\Http\Requests\Advertisements\AdvertisementDeleteRequest;
 use App\Http\Requests\Advertisements\AdvertisementUpdateRequest;
 
 class AdvertisementController extends Controller
@@ -63,15 +65,15 @@ class AdvertisementController extends Controller
         return response()->json(__('Advertisement has been created successfully'));
     }
 
-    public function show($id)
+    public function show($id, AdvertisementShowRequest $request)
     {
-        $data = $this->advertisementService->show($id);
-        if ($data[0]->image) {
+        $advertisement = $this->advertisementService->singleAdvertisement(id: $id, with: ['attachments']);
+        if ($advertisement->content_type == AdvertisementContentType::Image->value) {
 
-            return view('advertisements.show_image', compact('data'));
+            return view('advertisements.show_image', compact('advertisement'));
         } else {
 
-            return view('advertisements.show_video', compact('data'));
+            return view('advertisements.show_video', compact('advertisement'));
         }
     }
 
@@ -101,9 +103,19 @@ class AdvertisementController extends Controller
         return response()->json(__('Advertisement has been updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($id, AdvertisementDeleteRequest $request)
     {
-        $response = $this->advertisementService->destroy($id);
-        return response()->json($response);
+        try {
+            DB::beginTransaction();
+
+            $this->advertisementService->deleteAdvertisement(id: $id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Advertisement has been deleted successfully'));
     }
 }

@@ -63,7 +63,7 @@
                                          </tr>
                                      </thead>
                                      <tbody id="advertisement_images">
-                                         @foreach ($advertisement->attachments as $attachment)
+                                         @foreach ($advertisement->attachments as $index => $attachment)
                                              <tr>
                                                  <td>
                                                      <input type="hidden" name="attachment_ids[]" value="{{ $attachment->id }}">
@@ -78,9 +78,11 @@
                                                      <input type="text" name="captions[]" value="{{ $attachment->caption }}" class="form-control" placeholder="{{ __('Enter Slider Caption') }}">
                                                  </td>
 
-                                                 <td>
-                                                     <button type="button" class="btn btn-danger btn-sm" id="remove_image"><i class="fa fa-trash"></i></button>
-                                                 </td>
+                                                 @if ($index > 0)
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" id="remove_image"><i class="fa fa-trash"></i></button>
+                                                    </td>
+                                                 @endif
                                              </tr>
                                          @endforeach
                                      </tbody>

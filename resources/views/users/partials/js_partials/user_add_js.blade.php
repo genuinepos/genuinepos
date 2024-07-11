@@ -1,4 +1,14 @@
+<script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
 <script>
+    $('#photo').dropify({
+        messages: {
+            'default': "{{ __('Drag and drop a file here or click') }}",
+            'replace': "{{ __('Drag and drop or click to replace') }}",
+            'remove': "{{ __('Remove') }}",
+            'error': "{{ __('Ooops, something wrong happended.') }}"
+        }
+    });
+    
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
         $('.submit_button').prop('type', 'button');
@@ -56,7 +66,8 @@
                 currentUserAndEmployeeCount();
                 toastr.success(data);
                 $('#first_name').focus();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -152,7 +163,8 @@
 
                 $('#current_user_count').html(data.current_user_count);
                 $('#current_employee_count').html(data.current_employee_count);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

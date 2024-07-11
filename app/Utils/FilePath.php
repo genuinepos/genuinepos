@@ -13,6 +13,7 @@ class FilePath
             'brand' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'brands/' : tenant('id') . '/' . 'brands/',
             'productThumbnail' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'products/thumbnails/' : tenant('id') . '/' . 'products/thumbnails/',
             'productVariant' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'products/variant_images/' : tenant('id') . '/' . 'products/variant_images/',
+            'user' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'user_photos/' : tenant('id') . '/' . 'user_photos/',
             'jobCardDocument' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'services/documents/' : tenant('id') . '/' . 'services/documents/',
             'workspaceAttachment' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'workspace_attachments/' : tenant('id') . '/' . 'workspace_attachments/',
             'advertisementAttachment' => config('file_disk.name') == 'local' ? 'uploads/' . tenant('id') . '/' . 'advertisement_attachments/' : tenant('id') . '/' . 'advertisement_attachments/',

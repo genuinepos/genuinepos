@@ -82,7 +82,7 @@ class AttendanceReportController extends Controller
 
         $users = $query->select('id', 'prefix', 'name', 'last_name', 'emp_id', 'branch_id')->get();
 
-        $found = $found = $this->attendanceFound(users: $users);
+        $found = $this->attendanceFound(users: $users);
 
         $holidayBranches = \App\Models\Hrm\HolidayBranch::query()->with(['holiday'])
             ->leftJoin('hrm_holidays', 'hrm_holiday_branches.holiday_id', 'hrm_holidays.id')

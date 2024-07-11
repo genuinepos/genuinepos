@@ -10,7 +10,7 @@ class LocalFileUploader
 {
     public static function uploadWithResize(string $fileType, object $uploadableFile, int $height, int $width, ?string $deletableFile = null): string
     {
-        $path = FilePath::paths(fileType: $fileType);
+        $path = public_path(FilePath::paths(fileType: $fileType));
 
         $fileName = uniqid() . '.' . $uploadableFile->getClientOriginalExtension();
 
@@ -33,7 +33,7 @@ class LocalFileUploader
 
     public static function fileUpload(string $fileType, object $uploadableFile, ?string $deletableFile = null): string
     {
-        $path = FilePath::paths(fileType: $fileType);
+        $path = public_path(FilePath::paths(fileType: $fileType));
 
         $fileFullNameWithExtension = trim($uploadableFile->getClientOriginalName());
         $arr = preg_split('/\./', $fileFullNameWithExtension);
@@ -61,7 +61,7 @@ class LocalFileUploader
 
     public static function deleteFile(string $fileType, ?string $deletableFile = null): void
     {
-        $path = FilePath::paths(fileType: $fileType);
+        $path = public_path(FilePath::paths(fileType: $fileType));
 
         if (isset($deletableFile)) {
 

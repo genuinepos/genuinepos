@@ -1,4 +1,14 @@
+<script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
 <script>
+    $('#photo').dropify({
+        messages: {
+            'default': "{{ __('Drag and drop a file here or click') }}",
+            'replace': "{{ __('Drag and drop or click to replace') }}",
+            'remove': "{{ __('Remove') }}",
+            'error': "{{ __('Ooops, something wrong happended.') }}"
+        }
+    });
+    
     // Add user by ajax
     $(document).on('submit', '#update_profile_form', function(e) {
         e.preventDefault();

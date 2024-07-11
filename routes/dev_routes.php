@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Tenant;
 use App\Models\GeneralSetting;
+use Spatie\DbDumper\Databases\MySql;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('my-test', function () {
 
@@ -26,8 +29,28 @@ Route::get('my-test', function () {
     //     Log::info("Storing data in cache for key: $cacheKey");
     //     return $settings;
     // });
-    $number = 10000000;
-    return format_in_bdt($number);
+
+    $database = 'pos';
+
+    // Get connection details
+    $username = config('database.connections.mysql.username');
+    $password = config('database.connections.mysql.password');
+    $host = config('database.connections.mysql.host');
+
+    // Check if the database exists
+  
+        $pdo = new PDO("mysql:host={$host};dbname=information_schema", $username, $password);
+        $stmt = $pdo->prepare("SELECT SCHEMA_NAME FROM SCHEMATA WHERE SCHEMA_NAME = :database");
+        $stmt->bindParam(':database', $database);
+        $stmt->execute();
+        $dbExists = $stmt->fetchColumn();
+
+        if ($dbExists) {
+           dd($dbExists);
+        } else {
+            dd('NO');
+        }
+
 });
 
 Route::get('t-id', function () {

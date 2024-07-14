@@ -1458,6 +1458,36 @@
         });
     });
 
+    $(document).on('change', '#status', function() {
+
+        
+
+        var url = "{{ route('sales.helper.invoice.or.id', ':accountId') }}";
+        var route = url.replace(':accountId', accountId);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
+
+                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                calculateTotalAmount();
+            },
+            error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    });
+
     $(document).on('click', '#recentTransactionsBtn', function(e) {
         e.preventDefault();
 

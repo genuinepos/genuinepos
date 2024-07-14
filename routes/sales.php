@@ -56,6 +56,7 @@ Route::prefix('sales')->group(function () {
         Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
         Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
         Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');
+        Route::get('sales/invoice/or/others/id/{status?}', 'salesInvoiceOrOthersId')->name('sales.helper.invoice.or.id');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {

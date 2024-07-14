@@ -613,6 +613,29 @@ class SaleService
         return $query;
     }
 
+    public function salesInvoiceOrOthersId(object $codeGenerator, ?int $status = null): string
+    {
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
+        $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
+        $salesOrderPrefix = $generalSettings['prefix__sales_order_prefix'] ? $generalSettings['prefix__sales_order_prefix'] : 'SO';
+
+        $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        if ($status == SaleStatus::Quotation->value) {
+
+            $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'quotation_id', prefix: $quotationPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($status == SaleStatus::Order->value) {
+
+            $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'order_id', prefix: $salesOrderPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($status == SaleStatus::Draft->value) {
+
+            $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'draft_id', prefix: 'DRF', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        }
+
+        return $voucherNo;
+    }
+
     public function printTemplateBySaleStatus(object $request, object $sale, object $customerCopySaleProducts): array|object
     {
         $printPageSize = $request->print_page_size;

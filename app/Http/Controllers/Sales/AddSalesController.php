@@ -39,13 +39,13 @@ class AddSalesController extends Controller
         return view('sales.add_sale.ajax_views.show', compact('sale'));
     }
 
-    public function create(AddSaleCreateRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
+    public function create(AddSaleCreateRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        $createMethodContainer = $addSaleControllerMethodContainersInterface->createMethodContainer();
+        $createMethodContainer = $addSaleControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
         extract($createMethodContainer);
 
-        return view('sales.add_sale.create', compact('customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'warehouses', 'branchName'));
+        return view('sales.add_sale.create', compact('customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'warehouses', 'branchName', 'voucherNo'));
     }
 
     public function store(AddSaleStoreRequest $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, CodeGenerationService $codeGenerator)

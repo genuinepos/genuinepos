@@ -1460,23 +1460,24 @@
 
     $(document).on('change', '#status', function() {
 
-        
+        getSalesVoucherNo();
+    });
 
-        var url = "{{ route('sales.helper.invoice.or.id', ':accountId') }}";
-        var route = url.replace(':accountId', accountId);
+    function getSalesVoucherNo() {
+
+        var status = $('#status').val();
+        var url = "{{ route('sales.helper.invoice.or.id', ':status') }}";
+        var route = url.replace(':status', status);
 
         $.ajax({
             url: route,
             type: 'get',
-            data: filterObj,
             success: function(data) {
 
-                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
-                calculateTotalAmount();
+                $('#invoice_id').val(data);
             },
             error: function(err) {
 
-                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error.') }}");
@@ -1486,7 +1487,7 @@
                 }
             }
         });
-    });
+    }
 
     $(document).on('click', '#recentTransactionsBtn', function(e) {
         e.preventDefault();

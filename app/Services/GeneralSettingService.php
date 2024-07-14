@@ -31,7 +31,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
                     if (
                         $key == 'prefix__job_card_no_prefix' &&
-                        (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')->features['services'] == BooleanType::False->value)
+                        (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value)
                     ) {
                         continue;
                     }

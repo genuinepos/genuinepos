@@ -255,14 +255,20 @@
                                         <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
                                         <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
                                         <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">
+                                            @if ($product->is_manage_stock == 1)
+                                                {{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
+                                            @else
+                                                {{ App\Utils\Converter::format_in_bdt(0) . '/' . $product?->unit?->code_name }}
+                                            @endif
+                                        </td>
 
                                         @php
                                             $currentStock = $ownBranchAndWarehouseStock->stock;
                                             $avgUnitCost = $currentStock > 0 ? $ownBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
                                             $stockValue = $avgUnitCost * $currentStock;
                                         @endphp
-                                        <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($stockValue) }}</td>
+                                        <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($product->is_manage_stock == 1 ? $stockValue : $product->product_cost_with_tax) }}</td>
                                     </tr>
                                 @endif
                             @endforeach

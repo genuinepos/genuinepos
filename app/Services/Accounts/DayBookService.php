@@ -66,11 +66,14 @@ class DayBookService
         $productId = null,
         $variantId = null,
         $branchId = null,
+        $temporaryTime = null,
     ) {
         $voucherType = $this->voucherType($voucherTypeId);
         $add = new DayBook();
         $add->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
-        $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $time = $temporaryTime ? ' ' . $temporaryTime : date(' H:i:s');
+        // $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $add->date_ts = date('Y-m-d H:i:s', strtotime($date . $time));
         $add->account_id = isset($accountId) ? $accountId : null;
         $add->product_id = isset($productId) ? $productId : null;
         $add->variant_id = isset($variantId) ? $variantId : null;

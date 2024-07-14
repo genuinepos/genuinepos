@@ -242,7 +242,7 @@
                 },
                 {
                     data: 'stock_out_date',
-                    name: 'stock_chain.created_at'
+                    name: 'stock_chains.created_at'
                 },
                 {
                     data: 'stock_out_by',

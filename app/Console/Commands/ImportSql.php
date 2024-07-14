@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Database\Connection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class ImportSql extends Command
 {
@@ -29,7 +30,7 @@ class ImportSql extends Command
         // $password = env('DB_PASSWORD');
         // $host = env('DB_HOST');
         // $port = env('DB_PORT');
-
+        // Log::info("DB Import Start");
         $file = $this->argument('file');
         $dbname = $this->argument('dbname');
         $username = $this->option('username') ?? env('DB_USERNAME');
@@ -65,7 +66,8 @@ class ImportSql extends Command
             $sql = File::get($file);
             DB::connection('custom')->unprepared($sql);
 
-            $this->info("The file {$file} has been successfully imported into the database {$dbname}.");
+            // $this->info("The file {$file} has been successfully imported into the database {$dbname}.");
+            // Log::info("The file {$file} has been successfully imported into the database {$dbname}.");
         } catch (\Exception $e) {
             $this->error("An error occurred: " . $e->getMessage());
         }

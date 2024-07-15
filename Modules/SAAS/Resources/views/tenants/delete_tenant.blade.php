@@ -7,7 +7,7 @@
                 font-size: 11px!important;
                 font-weight: 600;
             }
-            
+
             .details_table td {
                 font-size: 11px !important;
             }
@@ -47,7 +47,7 @@
                         </tr>
 
                         <tr>
-                            <th>{{ __('Subdoamin') }}</th>
+                            <th>{{ __('Subdomain') }}</th>
                             <td class="text-start">: {{ $tenant?->id }}</td>
                         </tr>
 

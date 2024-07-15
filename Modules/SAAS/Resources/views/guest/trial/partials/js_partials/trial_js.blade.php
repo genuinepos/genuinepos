@@ -52,11 +52,11 @@
                 if (res.isAvailable) {
 
                     isAvailable = true;
-                    $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
+                    $('#domainPreview').html(`<span class="text-success">✔ Domain is available<span>`);
                 }else {
 
                     isAvailable = false;
-                    $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                    $('#domainPreview').html(`<span class="text-danger">❌ Domain is not available<span>`);
                 }
             }, error: function(err) {
 
@@ -296,7 +296,7 @@
 
         if (isAvailable == false) {
 
-            $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+            $('#domainPreview').html(`<span class="text-danger">❌ Domain is not available<span>`);
             $('#response-message').addClass('d-none');
             return;
         }

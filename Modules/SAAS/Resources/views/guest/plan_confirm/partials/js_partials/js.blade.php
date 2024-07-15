@@ -53,11 +53,11 @@
                 if (res.isAvailable == true) {
 
                     isAvailable = true;
-                    $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
+                    $('#domainPreview').html(`<span class="text-success">✔ Domain is available<span>`);
                 } else if (res.isAvailable == false) {
 
                     isAvailable = false;
-                    $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                    $('#domainPreview').html(`<span class="text-danger">❌ Domain is not available<span>`);
                 }
             },
             error: function(err) {
@@ -92,7 +92,7 @@
 
             if (isAvailable == false) {
 
-                toastr.error("{{ __('Doamin is not available') }}");
+                toastr.error("{{ __('Domain is not available') }}");
                 return;
             }
 
@@ -608,7 +608,7 @@
 
         if (isAvailable == false) {
 
-            $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+            $('#domainPreview').html(`<span class="text-danger">❌ Domain is not available<span>`);
             $('#response-message').addClass('d-none');
             return;
         }

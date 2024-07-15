@@ -18,10 +18,15 @@ Artisan::command('dev:m', function () {
         ->where('migration', '2023_01_02_113358_create_purchase_sale_product_chains_table')
         ->delete();
 
-    DB::table('migrations')->insert([
-        'migration' => '2024_03_23_163909_create_stock_chains_table',
-        'batch' => 6
-    ]);
+    $exists = DB::table('migrations')->where('migration', '2024_03_23_163909_create_stock_chains_table')->first();
+
+    if (!$exists) {
+
+        DB::table('migrations')->insert([
+            'migration' => '2024_03_23_163909_create_stock_chains_table',
+            'batch' => 6
+        ]);
+    }
 });
 
 Artisan::command('sync:gs', function () {
@@ -102,50 +107,50 @@ Artisan::command('sync:table', function () {
     }
 });
 
-Artisan::command('dev:init', function () {
-    Artisan::call('db:seed --class=TenancyDatabaseSeeder');
-});
+// Artisan::command('dev:init', function () {
+//     Artisan::call('db:seed --class=TenancyDatabaseSeeder');
+// });
 
-Artisan::command('dev:seed', function () {
-    (new AccountGroupSeeder)->run();
-});
+// Artisan::command('dev:seed', function () {
+//     (new AccountGroupSeeder)->run();
+// });
 
-Artisan::command('t:1', function () {
-    $s = GeneralSetting::where('parent_branch_id', auth()->user()?->branch_id)
-        ->orWhere('branch_id', auth()->user()?->branch_id)
-        ->orWhereNull('branch_id')
-        ->distinct('key')
-        ->pluck('value', 'key')
-        ->toArray();
-    dd($s);
-});
+// Artisan::command('t:1', function () {
+//     $s = GeneralSetting::where('parent_branch_id', auth()->user()?->branch_id)
+//         ->orWhere('branch_id', auth()->user()?->branch_id)
+//         ->orWhereNull('branch_id')
+//         ->distinct('key')
+//         ->pluck('value', 'key')
+//         ->toArray();
+//     dd($s);
+// });
 
-Artisan::command('t:2', function () {
+// Artisan::command('t:2', function () {
 
-    $generalSettings = GeneralSetting::where(function ($query) {
-        $query->whereNotNull('branch_id')
-            ->whereNotNull('parent_branch_id')
-            ->orderBy('branch_id')
-            ->orderBy('parent_branch_id');
-    })
-        ->orWhere(function ($query) {
-            $query->whereNotNull('branch_id')
-                ->whereNull('parent_branch_id')
-                ->orderBy('branch_id');
-        })
-        ->orWhere(function ($query) {
-            $query->whereNull('branch_id')
-                ->whereNotNull('parent_branch_id')
-                ->orderBy('parent_branch_id');
-        })
-        ->orWhere(function ($query) {
-            $query->whereNull('branch_id')
-                ->whereNull('parent_branch_id')
-                ->orderBy(DB::raw('RAND()')); // Random order for global settings
-        })
-        ->distinct('key')
-        ->pluck('value', 'key');
-    // ->get();
+//     $generalSettings = GeneralSetting::where(function ($query) {
+//         $query->whereNotNull('branch_id')
+//             ->whereNotNull('parent_branch_id')
+//             ->orderBy('branch_id')
+//             ->orderBy('parent_branch_id');
+//     })
+//         ->orWhere(function ($query) {
+//             $query->whereNotNull('branch_id')
+//                 ->whereNull('parent_branch_id')
+//                 ->orderBy('branch_id');
+//         })
+//         ->orWhere(function ($query) {
+//             $query->whereNull('branch_id')
+//                 ->whereNotNull('parent_branch_id')
+//                 ->orderBy('parent_branch_id');
+//         })
+//         ->orWhere(function ($query) {
+//             $query->whereNull('branch_id')
+//                 ->whereNull('parent_branch_id')
+//                 ->orderBy(DB::raw('RAND()')); // Random order for global settings
+//         })
+//         ->distinct('key')
+//         ->pluck('value', 'key');
+//     // ->get();
 
-    dd($generalSettings);
-});
+//     dd($generalSettings);
+// });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Manufacturing;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProcessIndexRequest extends FormRequest
@@ -11,7 +12,7 @@ class ProcessIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('process_view') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
     }
 
     /**

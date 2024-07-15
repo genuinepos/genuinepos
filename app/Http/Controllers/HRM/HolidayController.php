@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\HolidayService;
 use App\Services\Setups\BranchService;
 use App\Services\Hrm\HolidayBranchService;
+use App\Http\Requests\HRM\HolidayEditRequest;
+use App\Http\Requests\HRM\HolidayIndexRequest;
 use App\Http\Requests\HRM\HolidayStoreRequest;
+use App\Http\Requests\HRM\HolidayCreateRequest;
 use App\Http\Requests\HRM\HolidayDeleteRequest;
 use App\Http\Requests\HRM\HolidayUpdateRequest;
 
@@ -22,10 +23,8 @@ class HolidayController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(HolidayIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('holidays_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         if ($request->ajax()) {
 
             return $this->holidayService->holidaysTable(request: $request);
@@ -36,10 +35,8 @@ class HolidayController extends Controller
         return view('hrm.holidays.index', compact('branches'));
     }
 
-    public function create()
+    public function create(HolidayCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('holidays_create') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         return view('hrm.holidays.ajax_view.create', compact('branches'));
     }
@@ -61,10 +58,8 @@ class HolidayController extends Controller
         return response()->json(__('Holiday added successfully.'));
     }
 
-    public function edit($id)
+    public function edit($id, HolidayEditRequest $request)
     {
-        abort_if(!auth()->user()->can('holidays_edit') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         $holiday = $this->holidayService->singleHoliday(id: $id, with: ['allowedBranches']);
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 

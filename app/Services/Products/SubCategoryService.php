@@ -3,9 +3,10 @@
 namespace App\Services\Products;
 
 use App\Enums\CategoryType;
+use App\Utils\FileUploader;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class SubCategoryService
@@ -31,7 +32,7 @@ class SubCategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'category/' . $row->photo);
+                    $photo = file_link(fileType: 'category', fileName: $row->photo);
                 }
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
@@ -67,17 +68,12 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $subcategoryPhoto = $request->file('photo');
-            $subcategoryPhotoName = uniqid() . '.' . $subcategoryPhoto->getClientOriginalExtension();
-            Image::make($subcategoryPhoto)->resize(250, 250)->save($dir . $subcategoryPhotoName);
-            $addSubCategory->photo = $subcategoryPhotoName;
+            $addSubCategory->photo = FileUploader::uploadWithResize(
+                fileType: 'category',
+                uploadableFile: $request->file('photo'),
+                height: 250,
+                width: 250,
+            );
         }
 
         $addSubCategory->save();
@@ -94,22 +90,15 @@ class SubCategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'category',
+                uploadableFile: $request->file('photo'),
+                height: 250,
+                width: 250,
+                deletableFile: $updateSubcategory->photo,
+            );
 
-            if ($updateSubcategory->photo && file_exists($dir . $updateSubcategory->photo)) {
-
-                unlink($dir . $updateSubcategory->photo);
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $subcategoryPhoto = $request->file('photo');
-            $subcategoryPhotoName = uniqid() . '.' . $subcategoryPhoto->getClientOriginalExtension();
-            Image::make($subcategoryPhoto)->resize(250, 250)->save($dir . $subcategoryPhotoName);
-            $updateSubcategory->photo = $subcategoryPhotoName;
+            $updateSubcategory->photo = $uploadedFile;
         }
 
         $updateSubcategory->save();
@@ -123,10 +112,9 @@ class SubCategoryService
 
         if (isset($deleteSubcategory)) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'category/');
-            if ($deleteSubcategory->photo && file_exists($dir . $deleteSubcategory->photo)) {
+            if ($deleteSubcategory->photo) {
 
-                unlink($dir . $deleteSubcategory->photo);
+                $uploadedFile = FileUploader::deleteFile(fileType: 'category', deletableFile: $deleteSubcategory->photo);
             }
 
             $deleteSubcategory->delete();

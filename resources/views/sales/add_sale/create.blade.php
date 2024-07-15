@@ -213,7 +213,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Invoice ID') }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" placeholder="{{ __('Invoice ID') }}" autocomplete="off" tabindex="-1">
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" value="{{ $voucherNo }}" placeholder="{{ __('Invoice ID') }}" autocomplete="off" tabindex="-1">
                                                     </div>
                                                 </div>
 

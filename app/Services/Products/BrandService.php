@@ -2,9 +2,10 @@
 
 namespace App\Services\Products;
 
+use App\Utils\FileUploader;
 use App\Models\Products\Brand;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class BrandService
@@ -21,8 +22,9 @@ class BrandService
 
                 if ($row->photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'brand/' . $row->photo);
+                    $photo = file_link(fileType: 'brand', fileName: $row->photo);
                 }
+
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
             ->addColumn('action', function ($row) {
@@ -53,17 +55,7 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $brandPhoto = $request->file('photo');
-            $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save($dir . $brandPhotoName);
-            $addBrand->photo = $brandPhotoName;
+            $addBrand->photo = FileUploader::uploadWithResize(fileType: 'brand', uploadableFile: $request->file('photo'), height: 250, width: 250);
         }
 
         $addBrand->save();
@@ -78,22 +70,9 @@ class BrandService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
+            $uploadedFile = FileUploader::uploadWithResize(fileType: 'brand', uploadableFile: $request->file('photo'), height: 250, width: 250, deletableFile: $updateBrand->photo);
 
-            if (isset($updateBrand->photo) && file_exists($dir . $updateBrand->photo)) {
-
-                unlink($dir . $updateBrand->photo);
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $brandPhoto = $request->file('photo');
-            $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save($dir . $brandPhotoName);
-            $updateBrand->photo = $brandPhotoName;
+            $updateBrand->photo = $uploadedFile;
         }
 
         $updateBrand->save();
@@ -107,11 +86,7 @@ class BrandService
 
         if (isset($deleteBrand)) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'brand/');
-            if (isset($deleteBrand->photo) && file_exists($dir . $deleteBrand->photo)) {
-
-                unlink($dir . $deleteBrand->photo);
-            }
+            $uploadedFile = FileUploader::deleteFile(fileType: 'brand', deletableFile: $deleteBrand->photo);
 
             $deleteBrand->delete();
         }

@@ -148,7 +148,7 @@ class JobCardService
                     $isSaleCompleted = '<strong><i class="fa-solid fa-check-double text-success"></i></strong>';
                 }
 
-                return '<a href="' . route('services.job.cards.show', [$row->id]) . '" id="details_btn">' . $row->job_no .$isSaleCompleted. '</a>';
+                return '<a href="' . route('services.job.cards.show', [$row->id]) . '" id="details_btn">' . $row->job_no . $isSaleCompleted . '</a>';
             })
 
             ->editColumn('invoice_id', function ($row) {
@@ -251,9 +251,7 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
-
-            $addJobCard->document = FileUploader::upload($request->file('document'), $dir);
+            $addJobCard->document = FileUploader::fileUpload(fileType: 'jobCardDocument', uploadableFile: $request->file('document'));
         }
 
         $addJobCard->save();
@@ -318,13 +316,9 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'services/documents/');
-            if (isset($updateJobCard->document) && file_exists($dir . $updateJobCard->document)) {
+            $uploadedFile = FileUploader::fileUpload(fileType: 'jobCardDocument', uploadableFile: $request->file('document'), deletableFile: $updateJobCard->document);
 
-                unlink($dir . $updateJobCard->document);
-            }
-
-            $updateJobCard->document = FileUploader::upload($request->file('document'), $dir);
+            $updateJobCard->document = $uploadedFile;
         }
 
         $updateJobCard->save();
@@ -439,6 +433,8 @@ class JobCardService
 
                 return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is added against this job card.')];
             }
+
+            FileUploader::deleteFile(fileType: 'jobCardDocument', deletableFile: $deleteJobCard->document);
 
             $deleteJobCard->delete();
         }

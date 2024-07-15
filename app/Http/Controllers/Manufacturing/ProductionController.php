@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\CodeGenerationService;
+use App\Http\Requests\Manufacturing\ProductionEditRequest;
+use App\Http\Requests\Manufacturing\ProductionIndexRequest;
 use App\Http\Requests\Manufacturing\ProductionStoreRequest;
+use App\Http\Requests\Manufacturing\ProductionCreateRequest;
 use App\Http\Requests\Manufacturing\ProductionDeleteRequest;
 use App\Http\Requests\Manufacturing\ProductionUpdateRequest;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 
 class ProductionController extends Controller
 {
-    public function index(Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
+    public function index(ProductionIndexRequest $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $indexMethodContainer = $productionControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
@@ -32,8 +32,6 @@ class ProductionController extends Controller
 
     public function show($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $showMethodContainer = $productionControllerMethodContainersInterface->showMethodContainer(id: $id);
 
         extract($showMethodContainer);
@@ -50,10 +48,8 @@ class ProductionController extends Controller
         return view('manufacturing.print_templates.print_production', compact('production', 'printPageSize'));
     }
 
-    public function create(ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
+    public function create(ProductionCreateRequest $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_add') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $createMethodContainer = $productionControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -90,10 +86,8 @@ class ProductionController extends Controller
         }
     }
 
-    public function edit($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
+    public function edit($id, ProductionEditRequest $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('production_edit') || config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::False->value, 403);
-
         $editMethodContainer = $productionControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

@@ -16,7 +16,7 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('user_add');
+        return auth()->user()->can('user_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
     }
 
     /**
@@ -27,7 +27,7 @@ class UserStoreRequest extends FormRequest
     public function rules(Request $request, RoleService $roleService): array
     {
         $role = $roleService->singleRole(id: $request->role_id);
-        
+
         return [
             'first_name' => 'required',
             'email' => 'required|unique:users,email',

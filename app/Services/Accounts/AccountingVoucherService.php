@@ -8,7 +8,7 @@ class AccountingVoucherService
 {
     public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, ?string $reference = null, ?int $saleRefId = null, ?int $saleReturnRefId = null, ?int $purchaseRefId = null, ?int $purchaseReturnRefId = null, ?int $stockAdjustmentRefId = null, ?int $payrollRefId = null, ?int $branchId = null): ?object
     {
-        $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $voucherType, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-');
+        $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $voucherType, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         $addAccountingVoucher = new AccountingVoucher();
         $addAccountingVoucher->branch_id = auth()->user()->branch_id;
@@ -78,6 +78,28 @@ class AccountingVoucherService
         return $updateAccountingVoucher;
     }
 
+    public function deleteAccountingVoucher($id)
+    {
+        $deletePayment = AccountingVoucher::where('id', $id)->first();
+
+        if (!is_null($deletePayment)) {
+
+            $deletePayment->delete();
+        }
+    }
+
+    public function accountingVouchers(array $with = null)
+    {
+        $query = AccountingVoucher::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function singleAccountingVoucher(int $id, array $with = null)
     {
         $query = AccountingVoucher::query();
@@ -88,15 +110,5 @@ class AccountingVoucherService
         }
 
         return $query->where('id', $id)->first();
-    }
-
-    public function deleteAccountingVoucher($id)
-    {
-        $deletePayment = AccountingVoucher::where('id', $id)->first();
-
-        if (!is_null($deletePayment)) {
-
-            $deletePayment->delete();
-        }
     }
 }

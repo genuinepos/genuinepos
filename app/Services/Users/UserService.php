@@ -110,7 +110,7 @@ class UserService
             })
             ->editColumn('allow_login', function ($row) {
 
-                if ($row->allow_login == 1) {
+                if ($row->allow_login == BooleanType::True->value) {
 
                     return '<span  class="badge badge-sm bg-success">' . __('Allowed') . '</span>';
                 } else {
@@ -197,9 +197,7 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
-
-            $addUser->photo = FileUploader::upload($request->file('photo'), $dir);
+            $addUser->photo = FileUploader::uploadWithResize(fileType: 'user', uploadableFile: $request->file('photo'), height: 300, width: 300);
         }
 
         $addUser->save();
@@ -291,21 +289,9 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
+            $uploadedFile = FileUploader::uploadWithResize(fileType: 'user', uploadableFile: $request->file('photo'), height: 300, width: 300, deletableFile: $updateUser->photo);
 
-            $newFile = FileUploader::upload($request->file('photo'), $dir);
-            if (
-                isset($updateUser->photo) &&
-                file_exists($dir . $updateUser->photo)
-            ) {
-
-                try {
-                    unlink($dir . $updateUser->photo);
-                } catch (Exception $e) {
-                }
-            }
-
-            $updateUser->photo = $newFile;
+            $updateUser->photo = $uploadedFile;
         }
 
         $updateUser->save();
@@ -321,19 +307,8 @@ class UserService
 
                 return ['pass' => false, 'msg' => __('Superadmin can not be deleted')];
             }
-
-            $dir = public_path('uploads/' . tenant('id') . '/' . 'user_photo/');
-
-            if (
-                isset($deleteUser->photo) &&
-                file_exists($dir . $deleteUser->photo)
-            ) {
-
-                try {
-                    unlink($dir . $deleteUser->photo);
-                } catch (Exception $e) {
-                }
-            }
+            
+            FileUploader::deleteFile(fileType: 'user', deletableFile: $deleteUser->photo);
 
             $deleteUser->delete();
         }

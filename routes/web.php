@@ -48,7 +48,7 @@ Route::middleware([
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/today_summary.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/users.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/communication.php'));
-        Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/advertisement.php'));
+        Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/advertisements.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/services.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/short_menus.php'));
         Route::middleware(['auth', 'startup'])->group(base_path('routes/billing.php'));

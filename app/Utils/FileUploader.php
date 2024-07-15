@@ -2,92 +2,52 @@
 
 namespace App\Utils;
 
-use Exception;
+use App\Utils\CloudFileUploader;
+use App\Utils\LocalFileUploader;
 
 class FileUploader
 {
-    public static function uploadWithFullPath(object $file, string $filePath = 'uploads/'): string
+    public static function uploadWithResize(string $fileType, object $uploadableFile, int $height, int $width, ?string $deletableFile = null): string
     {
-        if (!file_exists($filePath)) {
-            try {
-                mkdir($filePath);
-            } catch (Exception $e) {
-            }
-        }
-        $fileFullNameWithExtension = trim($file->getClientOriginalName());
-        $arr = preg_split('/\./', $fileFullNameWithExtension);
-        $extension = array_pop($arr);
-        $fullName = implode('.', $arr);
-        $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
-        $file->move($filePath, $fileName);
-        $fullPathToStoreInDb = "{$filePath}/{$fileName}";
+        if (config('file_disk.name') == 'local') {
 
-        return $fullPathToStoreInDb;
+            return LocalFileUploader::uploadWithResize(fileType: $fileType, uploadableFile: $uploadableFile, height: $height, width: $width, deletableFile: $deletableFile);
+        } else {
+
+            return CloudFileUploader::uploadWithResize(fileType: $fileType, uploadableFile: $uploadableFile, height: $height, width: $width, deletableFile: $deletableFile);
+        }
     }
 
-    public static function upload(object $file, string $filePath = 'uploads/'): string
+    public static function fileUpload(string $fileType, object $uploadableFile, ?string $deletableFile = null): string
     {
-        if (!file_exists($filePath)) {
-            try {
-                mkdir($filePath);
-            } catch (Exception $e) {
-            }
+        if (config('file_disk.name') == 'local') {
+
+            return LocalFileUploader::fileUpload(fileType: $fileType, uploadableFile: $uploadableFile, deletableFile: $deletableFile);
+        } else {
+
+            return CloudFileUploader::fileUpload(fileType: $fileType, uploadableFile: $uploadableFile, deletableFile: $deletableFile);
         }
-
-        $fileFullNameWithExtension = trim($file->getClientOriginalName());
-        $arr = preg_split('/\./', $fileFullNameWithExtension);
-        $extension = array_pop($arr);
-        $fullName = implode('.', $arr);
-        $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
-        // $file->move(public_path($filePath), $fileName);
-        $file->move($filePath, $fileName);
-
-        // \Log::info($filePath);
-        // \Log::info($fileName);
-        return $fileName;
     }
 
-    public static function uploadMultiple(?array $files, string $filesPath = 'uploads/'): ?string
+    public static function deleteFile(string $fileType, ?string $deletableFile = null): void
     {
-        if (isset($files)) {
-            if (!file_exists($filesPath)) {
-                try {
-                    mkdir($filesPath);
-                } catch (Exception $e) {
-                }
-            }
-            $filesNameArr = [];
-            foreach ($files as $key => $file) {
-                $fileFullNameWithExtension = trim($file->getClientOriginalName());
-                $arr = preg_split('/\./', $fileFullNameWithExtension);
-                $extension = array_pop($arr);
-                $fullName = implode('.', $arr);
-                $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
-                $file->move($filesPath, $fileName);
-                $filesNameArr[$key] = $fileName;
-            }
+        if (config('file_disk.name') == 'local') {
 
-            return json_encode($filesNameArr);
+            LocalFileUploader::deleteFile(fileType: $fileType, deletableFile: $deletableFile);
+        } else {
+
+            CloudFileUploader::deleteFile(fileType: $fileType, deletableFile: $deletableFile);
         }
-
-        return '';
     }
 
-    public static function uploadThumbnail(object $file, ?string $filePath = 'uploads/', ?int $width = 250, ?int $height = 250): string
+    public static function isFileExists(string $fileType, string $fileName): bool
     {
-        if (!file_exists($filePath)) {
-            try {
-                mkdir($filePath);
-            } catch (Exception $e) {
-            }
-        }
-        $fileFullNameWithExtension = trim($file->getClientOriginalName());
-        $arr = preg_split('/\./', $fileFullNameWithExtension);
-        $extension = array_pop($arr);
-        $fullName = implode('.', $arr);
-        $fileName = $fullName . '__' . uniqid() . '__' . '.' . $extension;
-        $file->move($filePath, $fileName);
+        if (config('file_disk.name') == 'local') {
 
-        return $fileName;
+            return LocalFileUploader::isFileExists(fileType: $fileType, fileName: $fileName);
+        } else {
+
+            return CloudFileUploader::isFileExists(fileType: $fileType, fileName: $fileName);
+        }
     }
 }

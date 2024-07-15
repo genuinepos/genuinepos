@@ -4,11 +4,11 @@ namespace App\Services\Products;
 
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use Illuminate\Support\Str;
 use App\Enums\IsDeleteInUpdate;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use App\Models\Products\ProductVariant;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -136,7 +136,7 @@ class ProductService
 
                 if ($row->thumbnail_photo) {
 
-                    $photo = asset('uploads/' . tenant('id') . '/' . 'product/thumbnail/' . $row->thumbnail_photo);
+                    $photo = file_link(fileType: 'productThumbnail', fileName: $row->thumbnail_photo);
                 }
 
                 return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $photo . '">';
@@ -440,65 +440,13 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            // $path = $request->file('photo')->store('images', 's3');
-
-            // $productThumbnailPhoto = $request->file('photo');
-            // $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-
-            // // $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
-            // $dir = tenant('id') . '/' . 'product/thumbnail/';
-
-            // // if (!\File::isDirectory($dir)) {
-
-            // //     \File::makeDirectory($dir, 493, true);
-            // // }
-
-            // // Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
-
-            // $productThumbnailPhoto = $request->file('photo');
-            // $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-
-            // $addProduct->thumbnail_photo = $productThumbnailName;
-        }
-
-
-        if ($request->file('photo')) {
-
-            // $path = $request->file('photo')->store('gg','s3');
-            // Retrieve the uploaded file
-            $productThumbnailPhoto = $request->file('photo');
-
-            // Generate a unique name for the image file
-            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-
-            // Define the S3 directory path
-            $dir = tenant('id') . '/' . 'product/thumbnail/';
-
-            // // Resize the image using Intervention Image
-            $resizedImage = Image::make($productThumbnailPhoto)->resize(300, 300);
-
-            // // Stream the resized image
-            $imageStream = $resizedImage->stream();
-
-            // Debugging: Check if the image stream is created successfully
-            // if (!$imageStream) {
-            //     dd('Failed to create image stream');
-            // }
-            // dd($request->all());
-            // Upload the image stream to S3
-            $result = Storage::disk('s3')->put($dir . $productThumbnailName, $imageStream->__toString());
-            // $result = Storage::disk('s3')->put('SpeedDigit', $request->photo);
-            // $path = 'SpeedDigit/1640181205.jpg';
-            // $url = Storage::disk('s3')->url($path);
-            // dd($result);
-            // Debugging: Check if the upload was successful
-            if ($result) {
-                // Get the URL of the uploaded image
-                $imageUrl = Storage::disk('s3')->url($dir . $productThumbnailName);
-                dd($imageUrl);
-            } else {
-                dd('Image upload failed');
-            }
+            // $dir = tenant('id') . '/' . 'products/thumbnails/';
+            $addProduct->thumbnail_photo = FileUploader::uploadWithResize(
+                fileType: 'productThumbnail',
+                uploadableFile: $request->file('photo'),
+                height: 300,
+                width: 300,
+            );
         }
 
         $addProduct->save();
@@ -565,50 +513,15 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            // $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
-            $dir =  tenant('id') . '/' . 'product/thumbnail/';
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'productThumbnail',
+                uploadableFile: $request->file('photo'),
+                height: 300,
+                width: 300,
+                deletableFile: $updateProduct->thumbnail_photo,
+            );
 
-            // if ($updateProduct->thumbnail_photo) {
-
-            //     if (file_exists($dir . $updateProduct->thumbnail_photo)) {
-
-            //         unlink($dir . $updateProduct->thumbnail_photo);
-            //     }
-            // }
-
-            if ($updateProduct->thumbnail_photo) {
-
-                $exists = Storage::disk('s3')->exists($dir . $updateProduct->thumbnail_photo);
-
-                if ($exists) {
-
-                    Storage::disk('s3')->delete($dir . $updateProduct->thumbnail_photo);
-                }
-            }
-
-            // if (!\File::isDirectory($dir)) {
-
-            //     \File::makeDirectory($dir, 493, true);
-            // }
-
-            $exists = Storage::disk('s3')->exists($dir);
-            dd($exists);
-
-            if (!$exists) {
-
-                // Create the directory by storing an empty file with a trailing slash
-                Storage::disk('s3')->makeDirectory($dir);
-            }
-
-            $productThumbnailPhoto = $request->file('photo');
-            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-            // Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
-            $resizedImage = Image::make($image)->resize(300, 300);
-            $tempPath = sys_get_temp_dir() . '/' . $productThumbnailName;
-            $resizedImage->save($tempPath);
-            Storage::disk('s3')->put(tenant('id') . '/' . 'product/thumbnail/' . $productThumbnailName, (string) $resizedImage);
-            unlink($tempPath);
-            $updateProduct->thumbnail_photo = $productThumbnailName;
+            $updateProduct->thumbnail_photo = $uploadedFile;
         }
 
         $updateProduct->save();
@@ -699,26 +612,15 @@ class ProductService
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
             }
 
-            // $dir = public_path('uploads/' . tenant('id') . '/' . 'product/thumbnail/');
-            $dir =  tenant('id') . '/' . 'product/thumbnail/';
-            // if (isset($deleteProduct->thumbnail_photo) && file_exists($dir . $deleteProduct->thumbnail_photo)) {
-            if (isset($deleteProduct->thumbnail_photo) && Storage::disk('s3')->exists($dir . $deleteProduct->thumbnail_photo)) {
-
-                // unlink($dir . $deleteProduct->thumbnail_photo);
-                Storage::disk('s3')->delete($dir . $deleteProduct->thumbnail_photo);
-            }
+            FileUploader::deleteFile(fileType: 'productThumbnail', deletableFile: $deleteProduct->thumbnail_photo);
 
             if (count($deleteProduct->variants) > 0) {
 
-                // $variantImgDir = public_path('uploads/' . tenant('id') . '/' . 'product/variant_image/');
-                $variantImgDir = tenant('id') . '/' . 'product/variant_image/';
                 foreach ($deleteProduct->variants as $variant) {
 
-                    // if ($variant->variant_image && file_exists($variantImgDir . $variant->variant_image)) {
-                    if ($variant->variant_image && Storage::disk('s3')->exists($variantImgDir . $variant->variant_image)) {
+                    if ($variant->variant_image) {
 
-                        // unlink($variantImgDir . $variant->variant_image);
-                        Storage::disk('s3')->delete($variantImgDir . $variant->variant_image);
+                        FileUploader::deleteFile(fileType: 'productVariant', deletableFile: $variant->variant_image);
                     }
                 }
             }

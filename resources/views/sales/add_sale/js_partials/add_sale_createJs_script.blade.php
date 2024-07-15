@@ -141,7 +141,7 @@
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
 
@@ -260,7 +260,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/' . tenant('id') . '/' . 'product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 
@@ -1399,6 +1399,8 @@
         $("#customer_account_id").select2();
         $("#customer_account_id").focus();
         afterChangeStatusAcivity(status);
+
+        getSalesVoucherNo();
     }
 
     $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
@@ -1457,6 +1459,37 @@
             }
         });
     });
+
+    $(document).on('change', '#status', function() {
+
+        getSalesVoucherNo();
+    });
+
+    function getSalesVoucherNo() {
+
+        var status = $('#status').val();
+        var url = "{{ route('sales.helper.invoice.or.id', ':status') }}";
+        var route = url.replace(':status', status);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            success: function(data) {
+
+                $('#invoice_id').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    }
 
     $(document).on('click', '#recentTransactionsBtn', function(e) {
         e.preventDefault();

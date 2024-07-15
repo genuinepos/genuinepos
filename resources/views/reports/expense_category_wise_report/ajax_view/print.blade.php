@@ -63,13 +63,13 @@
     <div class="col-4 align-items-center">
         @if ($branch_id == '')
             @if ($generalSettings['business_or_shop__business_logo'] != null)
-                <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                <img style="height: 45px; width:200px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
             @else
                 <h4 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h4>
             @endif
         @elseif($branch_id == 'NULL')
             @if ($generalSettings['business_or_shop__business_logo'] != null)
-                <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                <img style="height: 45px; width:200px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
             @else
                 <h4 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h4>
             @endif
@@ -79,7 +79,7 @@
             @endphp
 
             @if ($branch->logo != null)
-                <img style="height: 45px; width:200px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $branch->logo) }}" class="logo__img">
+                <img style="height: 45px; width:200px;" src="{{ file_link('branchLogo', $branch->logo) }}" class="logo__img">
             @else
                 <h4 class="text-uppercase fw-bold">{{ $branch->name }}</h4>
             @endif
@@ -237,7 +237,7 @@
 
         <div class="col-4 text-center">
             @if (config('speeddigit.show_app_info_in_print') == true)
-                <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
             @endif
         </div>
 

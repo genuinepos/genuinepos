@@ -56,6 +56,7 @@ Route::prefix('sales')->group(function () {
         Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
         Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
         Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');
+        Route::get('sales/invoice/or/others/id/{status?}', 'salesInvoiceOrOthersId')->name('sales.helper.invoice.or.id');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
@@ -138,6 +139,7 @@ Route::prefix('sales')->group(function () {
         Route::get('edit/{id}', 'edit')->name('sales.returns.edit');
         Route::post('update/{id}', 'update')->name('sales.returns.update');
         Route::delete('delete/{id}', 'delete')->name('sales.returns.delete');
+        Route::get('voucher/no', 'voucherNo')->name('sales.returns.voucher.no');
     });
 
     Route::controller(DiscountController::class)->prefix('discounts')->group(function () {

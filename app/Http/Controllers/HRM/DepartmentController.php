@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Enums\UserType;
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\DepartmentService;
+use App\Http\Requests\HRM\DepartmentEditRequest;
+use App\Http\Requests\HRM\DepartmentIndexRequest;
 use App\Http\Requests\HRM\DepartmentStoreRequest;
+use App\Http\Requests\HRM\DepartmentCreateRequest;
 use App\Http\Requests\HRM\DepartmentDeleteRequest;
 use App\Http\Requests\HRM\DepartmentUpdateRequest;
 
@@ -18,10 +19,8 @@ class DepartmentController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(DepartmentIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('departments_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         if ($request->ajax()) {
 
             return $this->departmentService->departmentsTable();
@@ -30,10 +29,8 @@ class DepartmentController extends Controller
         return view('hrm.departments.index');
     }
 
-    public function create()
+    public function create(DepartmentCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('departments_create') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         return view('hrm.departments.ajax_view.create');
     }
 
@@ -42,10 +39,8 @@ class DepartmentController extends Controller
         return $this->departmentService->addDepartment(request: $request);
     }
 
-    public function edit($id)
+    public function edit($id, DepartmentEditRequest $request)
     {
-        abort_if(!auth()->user()->can('departments_edit') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         $department = $this->departmentService->singleDepartment(id: $id);
 
         return view('hrm.departments.ajax_view.edit', compact('department'));

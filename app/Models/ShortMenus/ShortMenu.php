@@ -11,6 +11,8 @@ class ShortMenu extends BaseModel
 {
     use HasFactory;
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function userMenuForDashboard()
     {
         return $this->hasOne(ShortMenuUser::class, 'short_menu_id')

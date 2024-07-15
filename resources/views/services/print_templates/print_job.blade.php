@@ -56,20 +56,20 @@
                     @if ($jobCard?->branch?->parent_branch_id)
 
                         @if ($jobCard->branch?->parentBranch?->logo)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $jobCard->branch?->parentBranch?->logo) }}">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $jobCard->branch?->parentBranch?->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $jobCard->branch?->parentBranch?->name }}</span>
                         @endif
                     @else
                         @if ($jobCard->branch?->logo)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'branch_logo/' . $jobCard->branch?->logo) }}">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $jobCard->branch?->logo) }}">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $jobCard->branch?->name }}</span>
                         @endif
                     @endif
                 @else
                     @if ($generalSettings['business_or_shop__business_logo'] != null)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/' . tenant('id') . '/' . 'business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
@@ -122,7 +122,7 @@
                             <p><span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($jobCard->date_ts)) }}</p>
                             <p><span class="fw-bold">{{ __('Delivery Date') }} : </span> {{ $jobCard->delivery_date_ts ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</p>
                         </td>
-                        <td colspan="2" class="fw-bold text-center">{{ __("Job Card") }}</td>
+                        <td colspan="2" class="fw-bold text-center">{{ __('Job Card') }}</td>
                     </tr>
                     <tr>
 
@@ -443,10 +443,10 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;">
-                            {{ __("Customer signature") }}
+                            {{ __('Customer signature') }}
                         </td>
                         <td class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;">
-                            {{ __("Authorized signature") }}
+                            {{ __('Authorized signature') }}
                         </td>
                     </tr>
                 </tbody>
@@ -461,7 +461,7 @@
 
                 <div class="col-4 text-center">
                     @if (config('speeddigit.show_app_info_in_print') == true)
-                        <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                        <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                     @endif
                 </div>
 

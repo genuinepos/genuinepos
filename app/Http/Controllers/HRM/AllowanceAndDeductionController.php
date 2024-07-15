@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Models\User;
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
-use App\Models\Hrm\Allowance;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\AllowanceAndDeductionService;
+use App\Http\Requests\HRM\AllowanceAndDeductionEditRequest;
+use App\Http\Requests\HRM\AllowanceAndDeductionIndexRequest;
 use App\Http\Requests\HRM\AllowanceAndDeductionStoreRequest;
+use App\Http\Requests\HRM\AllowanceAndDeductionCreateRequest;
 use App\Http\Requests\HRM\AllowanceAndDeductionDeleteRequest;
 use App\Http\Requests\HRM\AllowanceAndDeductionUpdateRequest;
 
@@ -19,14 +17,8 @@ class AllowanceAndDeductionController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(AllowanceAndDeductionIndexRequest $request)
     {
-        abort_if(
-            !auth()->user()->can('allowances_and_deductions_index') ||
-                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
-            403
-        );
-
         if ($request->ajax()) {
 
             return $this->allowanceAndDeductionService->allowancesAndDeductionsTable();
@@ -35,14 +27,8 @@ class AllowanceAndDeductionController extends Controller
         return view('hrm.allowances_and_deductions.index');
     }
 
-    public function create()
+    public function create(AllowanceAndDeductionCreateRequest $request)
     {
-        abort_if(
-            !auth()->user()->can('allowances_and_deductions_create') ||
-                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
-            403
-        );
-
         return view('hrm.allowances_and_deductions.ajax_view.create');
     }
 
@@ -52,14 +38,8 @@ class AllowanceAndDeductionController extends Controller
         return response()->json($addAllowanceOrDeduction . ' ' . __('is added successfully'));
     }
 
-    public function edit($id)
+    public function edit($id, AllowanceAndDeductionEditRequest $request)
     {
-        abort_if(
-            !auth()->user()->can('allowances_and_deductions_edit') ||
-                config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value,
-            403
-        );
-
         $allowance = $this->allowanceAndDeductionService->singleAllowanceOrDeduction(id: $id);
         return view('hrm.allowances_and_deductions.ajax_view.edit', compact('allowance'));
     }

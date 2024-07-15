@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use App\Models\GeneralSetting;
 
 class GeneralSettingService implements GeneralSettingServiceInterface
@@ -30,7 +31,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
                     if (
                         $key == 'prefix__job_card_no_prefix' &&
-                        (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')->features['services'] == BooleanType::False->value)
+                        (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value)
                     ) {
                         continue;
                     }
@@ -52,6 +53,13 @@ class GeneralSettingService implements GeneralSettingServiceInterface
                     if (
                         ($key == 'prefix__supplier_id' || $key == 'prefix__customer_id') &&
                         config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        $key == 'prefix__stock_adjustment_prefix' &&
+                        config('generalSettings')['subscription']->features['stock_adjustments'] == BooleanType::False->value
                     ) {
                         continue;
                     }
@@ -131,15 +139,8 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     public function deleteBusinessLogo(): bool
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
-        $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
 
-        if (isset($businessLogo->value)) {
-
-            if (file_exists($dir . $businessLogo->value)) {
-
-                unlink($dir . $businessLogo->value);
-            }
-        }
+        $uploadedFile = FileUploader::deleteFile(fileType: 'businessLogo', deletableFile: $businessLogo->value);
 
         $businessLogo->value = null;
         $businessLogo->save();

@@ -32,7 +32,7 @@ class ShortMenuController extends Controller
         if ($screenType == ShortMenuScreenType::DashboardScreen->value) {
 
             return view('short_menus.short_menus_dashboard_card', compact('shortMenuUsers'));
-        }else {
+        } else {
 
             return view('short_menus.pos_shortcut_menus', compact('shortMenuUsers'));
         }

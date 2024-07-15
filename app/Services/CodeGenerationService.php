@@ -84,7 +84,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null): string
+    public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?int $branchId = null, ?string $dateTimePrefix = null, ?string $intVal = null): string
     {
         $entryRaw = DB::table($table)
             ->whereNotNull($column)
@@ -94,8 +94,10 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 
+        // dd($entryRaw);
+
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
-        $dateTimeStrPrefix = date('ym');
+        $dateTimeStrPrefix = $dateTimePrefix ? $dateTimePrefix : date('ym');
         $prefixLength = strlen($prefix);
         $splitterLength = strlen($splitter);
         $dateTimeStrPrefixLength = strlen($dateTimeStrPrefix);
@@ -105,11 +107,12 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsNextValue = 1;
 
         if (isset($entryRaw)) {
+
             $entry = trim($entryRaw->{$column});
             $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
             $serial = $splitterSplittedArray[2];
             $previousMonthDigits = substr($splitterSplittedArray[1], -2);
-            $currentMonthDigit = date('m');
+            $currentMonthDigit = $intVal ? $intVal : date('m');
 
             if (intval($currentMonthDigit) === intval($previousMonthDigits)) {
                 $lastDigitsNextValue = intval($serial) + 1;
@@ -247,9 +250,9 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         }
 
         $entryRaw = $query
-        ->orderByRaw("SUBSTRING(code, POSITION('-' IN code) + 1, CHAR_LENGTH(code)) DESC")
-        // ->orderByRaw("CAST((SUBSTRING_INDEX(code, '-', -1)) as UNSIGNED) DESC")
-        ->first(['code']);
+            ->orderByRaw("SUBSTRING(code, POSITION('-' IN code) + 1, CHAR_LENGTH(code)) DESC")
+            // ->orderByRaw("CAST((SUBSTRING_INDEX(code, '-', -1)) as UNSIGNED) DESC")
+            ->first(['code']);
 
         $lastDigitsNextValue = 1;
         $lastDigitsLength = 3;

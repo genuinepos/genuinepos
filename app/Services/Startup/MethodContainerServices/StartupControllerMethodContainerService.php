@@ -3,6 +3,7 @@
 namespace App\Services\Startup\MethodContainerServices;
 
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use App\Services\Users\RoleService;
 use App\Services\Setups\BranchService;
 use Illuminate\Support\Facades\Session;
@@ -71,18 +72,14 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
             $business_logo = null;
             if ($request->hasFile('business_logo')) {
 
-                $dir = public_path('uploads/' . tenant('id') . '/' . 'business_logo/');
+                $uploadedFile = FileUploader::uploadWithResize(
+                    fileType: 'businessLogo',
+                    uploadableFile: $request->file('business_logo'),
+                    height: 40,
+                    width: 100,
+                );
 
-                if (!\File::isDirectory($dir)) {
-
-                    // \File::makeDirectory($dir, 493, true);
-                    \File::makeDirectory($dir, 0755, true);
-                }
-
-                $logo = $request->file('business_logo');
-                $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
-                $logo->move(public_path('uploads/' . tenant('id') . '/' . 'business_logo/'), $logoName);
-                $business_logo = $logoName;
+                $business_logo = $uploadedFile;
             } else {
 
                 $business_logo = $generalSettings['business_or_shop__business_logo'] != null ? $generalSettings['business_or_shop__business_logo'] : null;

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 
@@ -17,6 +18,7 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
+        // Log::info('RolePermissionSeeder Start');
         // echo 'Start'.PHP_EOL;
         // Artisan::call('optimize:clear');
         Artisan::call('permission:cache-reset');
@@ -24,6 +26,7 @@ class RolePermissionSeeder extends Seeder
         $this->createRolePermission();
         $this->syncRolesPermissions();
         // echo 'END'.PHP_EOL;
+        // Log::info('RolePermissionSeeder End');
     }
 
     public function truncateRolePermissionDataButKeepOldData(): void
@@ -714,6 +717,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '458', 'name' => 'sales_orders_delete'],
 
             ['id' => '459', 'name' => 'sales_return_only_own'],
+
+            ['id' => '460', 'name' => 'advertisements_index'],
+            ['id' => '461', 'name' => 'advertisements_create'],
+            ['id' => '462', 'name' => 'advertisements_edit'],
+            ['id' => '463', 'name' => 'advertisements_delete'],
         ];
 
         return $permissions;

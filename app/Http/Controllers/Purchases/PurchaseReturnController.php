@@ -9,6 +9,7 @@ use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Purchases\PurchaseReturnEditRequest;
 use App\Http\Requests\Purchases\PurchaseReturnIndexRequest;
 use App\Http\Requests\Purchases\PurchaseReturnStoreRequest;
+use App\Http\Requests\Purchases\PurchaseReturnCreateRequest;
 use App\Http\Requests\Purchases\PurchaseReturnDeleteRequest;
 use App\Http\Requests\Purchases\PurchaseReturnUpdateRequest;
 use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
@@ -134,5 +135,10 @@ class PurchaseReturnController extends Controller
         }
 
         return response()->json(__('Purchase return deleted successfully'));
+    }
+
+    public function voucherNo(CodeGenerationServiceInterface $codeGenerator, PurchaseReturnControllerMethodContainersInterface $purchaseReturnControllerMethodContainersInterface)
+    {
+        return $purchaseReturnControllerMethodContainersInterface->voucherNoMethodContainer(codeGenerator: $codeGenerator);
     }
 }

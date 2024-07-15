@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Hrm\AttendanceService;
+use App\Http\Requests\HRM\AttendanceEditRequest;
+use App\Http\Requests\HRM\AttendanceIndexRequest;
 use App\Http\Requests\HRM\AttendanceStoreRequest;
+use App\Http\Requests\HRM\AttendanceCreateRequest;
 use App\Http\Requests\HRM\AttendanceDeleteRequest;
 use App\Http\Requests\HRM\AttendanceUpdateRequest;
 
@@ -23,10 +26,8 @@ class AttendanceController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(AttendanceIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('attendances_index') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         if ($request->ajax()) {
 
             return $this->attendanceService->attendancesTable(request: $request);
@@ -39,10 +40,8 @@ class AttendanceController extends Controller
         return view('hrm.attendances.index', compact('users', 'branches'));
     }
 
-    public function create()
+    public function create(AttendanceCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         $departments = DB::table('hrm_departments')->get(['id', 'name']);
         $users = DB::table('users')->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
 
@@ -70,10 +69,8 @@ class AttendanceController extends Controller
         return response()->json(__('Attendance Added Successfully!'));
     }
 
-    public function edit($id)
+    public function edit($id, AttendanceEditRequest $request)
     {
-        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value, 403);
-
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
             ->where('hrm_attendances.id', $id)

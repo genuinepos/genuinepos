@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Http\Requests\Sales\SalesOrderToInvoiceStoreRequest;
+use App\Http\Requests\Sales\SalesOrderToInvoiceCreateRequest;
 use App\Interfaces\Sales\SalesOrderToInvoiceControllerMethodContainersInterface;
 
 class SalesOrderToInvoiceController extends Controller
 {
     public function create(
+        SalesOrderToInvoiceCreateRequest $request,
         CodeGenerationServiceInterface $codeGenerator,
         SalesOrderToInvoiceControllerMethodContainersInterface $salesOrderToInvoiceControllerMethodContainersInterface,
         $id = null
     ) {
-        abort_if(!auth()->user()->can('sales_order_to_invoice'), 403);
-
         $createMethodContainer = $salesOrderToInvoiceControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator, id: $id);
 
         extract($createMethodContainer);

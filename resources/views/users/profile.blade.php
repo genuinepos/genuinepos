@@ -18,7 +18,13 @@
         .checkbox_input_wrap {
             text-align: right;
         }
+
+        .dropify-wrapper {
+            height: 100px !important;
+        }
     </style>
+
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Update Profile or Change Password')
 @section('content')
@@ -135,6 +141,15 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label class="col-lg-4 col-5"><b>{{ __('Phone') }}</b></label>
+                                            <div class="col-lg-8 col-7">
+                                                <input type="text" name="phone" class="form-control" autocomplete="off" placeholder="{{ __('Phone Number') }}" value="{{ auth()->user()->phone }}">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -244,20 +259,23 @@
                             </div>
 
                             <div class="element-body">
+
+
                                 <div class="row gx-2">
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <label class="col-lg-4 col-5"> <b>{{ __('Profile image') }}</b></label>
-                                            <div class="col-lg-8 col-7">
-                                                <input type="file" name="photo" class="form-control" autocomplete="off" placeholder="{{ __('Profile image') }}">
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-lg-4 col-5"><b>{{ __('Date Of Birth') }}</b></label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="{{ __('Date Of Birth') }}" value="{{ auth()->user()->date_of_birth }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label class="col-lg-4 col-5"><b>{{ __('Facebook Link') }}</b></label>
+                                            <div class="col-lg-8 col-7">
+                                                <input type="text" name="facebook_link" class="form-control" autocomplete="off" placeholder="{{ __('Facebook Link') }}" value="{{ auth()->user()->facebook_link }}">
                                             </div>
                                         </div>
                                     </div>
@@ -281,14 +299,9 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-lg-4 col-5"><b>{{ __('Marital Status') }}</b></label>
+                                            <label class="col-lg-4 col-5"><b>{{ __('X Link') }}</b></label>
                                             <div class="col-lg-8 col-7">
-                                                <select name="marital_status" class="form-control">
-                                                    <option value="">{{ __('Marital Status') }}</option>
-                                                    <option {{ auth()->user()->marital_status == 'Married' ? 'SELECTED' : '' }} value="Married">{{ __('Married') }}</option>
-                                                    <option {{ auth()->user()->marital_status == 'Unmarried' ? 'SELECTED' : '' }} value="Unmarried">{{ __('Unmarried') }}</option>
-                                                    <option {{ auth()->user()->marital_status == 'Divorced' ? 'SELECTED' : '' }} value="Divorced">{{ __('Divorced') }}</option>
-                                                </select>
+                                                <input type="text" name="twitter_link" class="form-control" autocomplete="off" placeholder="{{ __('X Link') }}" value="{{ auth()->user()->twitter_link }}">
                                             </div>
                                         </div>
                                     </div>
@@ -306,47 +319,43 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-lg-4 col-5"><b>{{ __('Phone') }}</b></label>
-                                            <div class="col-lg-8 col-7">
-                                                <input type="text" name="phone" class="form-control" autocomplete="off" placeholder="{{ __('Phone Number') }}" value="{{ auth()->user()->phone }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row gx-2 mt-1">
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <label class="col-lg-4 col-5"><b>{{ __('Facebook Link') }}</b></label>
-                                            <div class="col-lg-8 col-7">
-                                                <input type="text" name="facebook_link" class="form-control" autocomplete="off" placeholder="{{ __('Facebook Link') }}" value="{{ auth()->user()->facebook_link }}">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <label class="col-lg-4 col-5"><b>{{ __('X Link') }}</b></label>
-                                            <div class="col-lg-8 col-7">
-                                                <input type="text" name="twitter_link" class="form-control" autocomplete="off" placeholder="{{ __('X Link') }}" value="{{ auth()->user()->twitter_link }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row gx-2 mt-1">
-                                    <div class="col-md-6">
-                                        <div class="input-group">
                                             <label class="col-lg-4 col-5"><b>{{ __('Instagram Link') }}</b></label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="instagram_link" class="form-control" autocomplete="off" placeholder="{{ __('Instagram Link') }}" value="{{ auth()->user()->instagram_link }}">
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="row gx-2 mt-1">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label class="col-lg-4 col-5"><b>{{ __('Marital Status') }}</b></label>
+                                            <div class="col-lg-8 col-7">
+                                                <select name="marital_status" class="form-control">
+                                                    <option value="">{{ __('Marital Status') }}</option>
+                                                    <option {{ auth()->user()->marital_status == 'Married' ? 'SELECTED' : '' }} value="Married">{{ __('Married') }}</option>
+                                                    <option {{ auth()->user()->marital_status == 'Unmarried' ? 'SELECTED' : '' }} value="Unmarried">{{ __('Unmarried') }}</option>
+                                                    <option {{ auth()->user()->marital_status == 'Divorced' ? 'SELECTED' : '' }} value="Divorced">{{ __('Divorced') }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-lg-4 col-5"><b>{{ __('Id Proof Name') }}</b></label>
+                                            <label class="col-lg-4 col-5"><b>{{ __('Guardian Name') }}</b></label>
+                                            <div class="col-lg-8 col-7">
+                                                <input type="text" name="guardian_name" class="form-control" autocomplete="off" placeholder="{{ __('Guardian Name') }}" value="{{ auth()->user()->guardian_name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-2 mt-1">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label class="col-lg-4 col-5"><b>{{ __('ID Proof Name') }}</b></label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="id_proof_name" class="form-control" autocomplete="off" placeholder="{{ __('Id Proof Name') }}" value="{{ auth()->user()->id_proof_name }}">
                                             </div>
@@ -355,19 +364,8 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-lg-6 col-5"><b>{{ __('Guardian Name') }}</b></label>
-                                            <div class="col-lg-6 col-7">
-                                                <input type="text" name="guardian_name" class="form-control" autocomplete="off" placeholder="{{ __('Guardian Name') }}" value="{{ auth()->user()->guardian_name }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row gx-2 mt-1">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <label class="col-lg-3 col-5"><b>{{ __('ID Proof Number') }}</b></label>
-                                            <div class="col-lg-9 col-7">
+                                            <label class="col-lg-4 col-5"><b>{{ __('ID Proof Number') }}</b></label>
+                                            <div class="col-lg-8 col-7">
                                                 <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="@lang('menu.id_proof_number')" value="{{ auth()->user()->id_proof_number }}">
                                             </div>
                                         </div>
@@ -391,6 +389,17 @@
                                             <label class="col-lg-3 col-5"><b>{{ __('Current Address') }}</b></label>
                                             <div class="col-lg-9 col-7">
                                                 <input type="text" name="current_address" class="form-control" placeholder="{{ __('Current Address') }}" value="{{ auth()->user()->current_address }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-2 mt-1">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <label class="col-lg-3 col-5"> <b>{{ __('Profile Photo') }}</b></label>
+                                            <div class="col-lg-9 col-7">
+                                                <input type="file" name="photo" class="form-control" id="photo" @if (auth()->user()->photo) data-default-file="{{ file_link('user', auth()->user()->photo) }}" @endif data-allowed-file-extensions="png jpeg jpg gif">
                                             </div>
                                         </div>
                                     </div>

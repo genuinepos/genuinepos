@@ -61,7 +61,7 @@ class SAASServiceProvider extends ServiceProvider
 
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
-            $schedule->command('inspire')->everyMinute();
+            // $schedule->command('inspire')->everyMinute();
         });
 
         // $this->app['events']->listen(Modules\SAAS\Events\CustomerRegisteredEvent::class, Modules\SAAS\Listener\CustomerRegisteredListener::class);

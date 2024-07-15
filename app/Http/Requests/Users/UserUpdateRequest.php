@@ -17,7 +17,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('user_edit');
+        return auth()->user()->can('user_edit') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
     }
 
     /**

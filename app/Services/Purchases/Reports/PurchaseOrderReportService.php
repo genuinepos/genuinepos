@@ -9,7 +9,7 @@ use App\Enums\PurchaseStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
-class PurchaseOrderProductReportService
+class PurchaseOrderReportService
 {
     public function purchaseOrderProductReportTable(object $request): object
     {

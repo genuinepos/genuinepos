@@ -130,7 +130,6 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $generalSettings = config('generalSettings');
-
         $voucherPrefix = $generalSettings['prefix__purchase_return_prefix'] ? $generalSettings['prefix__purchase_return_prefix'] : 'PR';
 
         $data['voucherNo'] = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
@@ -514,5 +513,13 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::PurchaseReturn->value, dataObj: $deletePurchaseReturn);
 
         return null;
+    }
+
+    public function voucherNoMethodContainer(object $codeGenerator): string
+    {
+        $generalSettings = config('generalSettings');
+        $voucherPrefix = $generalSettings['prefix__purchase_return_prefix'] ? $generalSettings['prefix__purchase_return_prefix'] : 'PR';
+
+        return $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
     }
 }

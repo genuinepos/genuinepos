@@ -1,8 +1,8 @@
-/*   
-  SmartWizard 2.0 plugin 
+/*
+  SmartWizard 2.0 plugin
   jQuery Wizard control Plugin
   by Dipu
-  
+
   http://www.techlaboratory.net
   http://tech-laboratory.blogspot.com
 */
@@ -53,7 +53,7 @@
     margin: 3px 0 0 0;
     padding: 0;
     color: #5A5655;
-    /*  width:730px; 
+    /*  width:730px;
   float:right; */
     text-align: left;
     overflow: hidden;
@@ -349,7 +349,7 @@
 .button-back,
 .button-next,
 .finish {
-    background: url("../images/button-sprite.png") repeat-x 0 -340px;
+    background: url("../asset/button-sprite.png") repeat-x 0 -340px;
     box-shadow: 0 0 3px #DDDDDD;
     cursor: pointer;
     display: inline-block;
@@ -380,7 +380,7 @@
 
 .step legend {
     margin-left: 10px;
-    background: url(../images/layout-sprite.png) no-repeat 0 -408px;
+    background: url(../asset/img/sprite-icons/layout-sprite.png) no-repeat 0 -408px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;

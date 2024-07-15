@@ -20,4 +20,5 @@ return [
     'linkedin' => env('LINKEDIN_LINK','https://www.linkedin.com/'),
     'slogan' => env('SLOGAN', 'Slogan'),
     'show_app_info_in_print' => env('SHOW_APP_INFO_IN_PRINT', true),
+    'test' => tenant('id'),
 ];

@@ -13,14 +13,21 @@
                             @foreach ($shortMenus as $shortMenu)
                                 @php
                                     $userMenu = $screenType == \App\Enums\ShortMenuScreenType::DashboardScreen->value ? $shortMenu?->userMenuForDashboard : $shortMenu?->userMenuForPos;
+
+                                    $planFeature = isset($shortMenu->plan_feature) && isset($generalSettings['subscription']->features[$shortMenu->plan_feature]) ? ($generalSettings['subscription']->features[$shortMenu->plan_feature] == 1 ? true : false) : true;
+
+                                    $isModuleEnabled = isset($shortMenu->enable_module) && isset($generalSettings["$shortMenu->enable_module"]) ? ($generalSettings["$shortMenu->enable_module"] == 1 ? true : false) : true;
                                 @endphp
-                                @can($shortMenu->permission)
-                                    <li>
-                                        <p><input name="menu_ids[]" @checked(isset($userMenu)) type="checkbox" value="{{ $shortMenu->id }}" id="check_menu">
-                                            <i class="{{ $shortMenu->icon }} text-primary s-menu-icon ms-1"></i> <span class="s-menu-text">{{ $shortMenu->name }}</span>
-                                        </p>
-                                    </li>
-                                @endcan
+
+                                @if ($planFeature && $isModuleEnabled)
+                                    @can($shortMenu->permission)
+                                        <li>
+                                            <p><input name="menu_ids[]" @checked(isset($userMenu)) type="checkbox" value="{{ $shortMenu->id }}" id="check_menu">
+                                                <i class="{{ $shortMenu->icon }} text-primary s-menu-icon ms-1"></i> <span class="s-menu-text">{{ $shortMenu->name }}</span>
+                                            </p>
+                                        </li>
+                                    @endcan
+                                @endif
                             @endforeach
                         </ul>
                     </div>

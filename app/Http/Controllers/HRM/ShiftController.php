@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Http\Controllers\Controller;
 use App\Services\Hrm\ShiftService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\HRM\ShiftEditRequest;
+use App\Http\Requests\HRM\ShiftIndexRequest;
+use App\Http\Requests\HRM\ShiftStoreRequest;
+use App\Http\Requests\HRM\ShiftCreateRequest;
+use App\Http\Requests\HRM\ShiftDeleteRequest;
+use App\Http\Requests\HRM\ShiftUpdateRequest;
 
 class ShiftController extends Controller
 {
@@ -13,10 +17,8 @@ class ShiftController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(ShiftIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('shifts_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
         if ($request->ajax()) {
 
             return $this->shiftService->shiftsTable();
@@ -25,46 +27,31 @@ class ShiftController extends Controller
         return view('hrm.shifts.index');
     }
 
-    public function create()
+    public function create(ShiftCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('shifts_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
         return view('hrm.shifts.ajax.create');
     }
 
-    public function store(Request $request)
+    public function store(ShiftStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('shifts_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->shiftService->addValidation(request: $request);
         return $this->shiftService->addShift($request);
     }
 
-    public function edit($id)
+    public function edit($id, ShiftEditRequest $request)
     {
-        abort_if(!auth()->user()->can('shifts_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $shift = DB::table('hrm_shifts')->where('id', $id)->first();
-
+        $shift = $this->shiftService->singleShift(id: $id);
         return view('hrm.shifts.ajax.edit', compact('shift'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, ShiftUpdateRequest $request)
     {
-        abort_if(!auth()->user()->can('shifts_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
-        $this->shiftService->updateValidation(request: $request, id: $id);
         $this->shiftService->updateShift(request: $request, id: $id);
-
         return response()->json(__('Shift updated successfully.'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(ShiftDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('shifts_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
-
         $this->shiftService->deleteShift(id: $id);
-
         return response()->json(__('Shift deleted successfully.'));
     }
 }

@@ -121,9 +121,13 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
         return $data;
     }
 
-    public function createMethodContainer(): ?array
+    public function createMethodContainer(object $codeGenerator): ?array
     {
         $data = [];
+
+        $generalSettings = config('generalSettings');
+        $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $data['branchName'] = $this->branchService->branchName();
@@ -163,6 +167,8 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        $data['voucherNo'] = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         return $data;
     }
@@ -510,5 +516,13 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
         }
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SaleReturn->value, dataObj: $deleteSalesReturn);
+    }
+
+    public function voucherNoMethodContainer(object $codeGenerator): string
+    {
+        $generalSettings = config('generalSettings');
+        $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
+
+        return $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
     }
 }

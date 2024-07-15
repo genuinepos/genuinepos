@@ -66,7 +66,7 @@
 
     function calculateVariantAmount(parentTr) {
 
-        var taxPercent = $('#tax_ac_id').find('option:selected').data('tax_percent');
+        var taxPercent = $('#tax_ac_id').find('option:selected').data('tax_percent') ? $('#tax_ac_id').find('option:selected').data('tax_percent') : 0;
         var taxType = $('#tax_type').val() ? $('#tax_type').val() : 1;
         var variantCostExcTax = parentTr.find('#variant_cost_exc_tax').val() ? parentTr.find('#variant_cost_exc_tax').val() : 0;
         var variantProfit = parentTr.find('#variant_profit').val() ? parentTr.find('#variant_profit').val() : 0;

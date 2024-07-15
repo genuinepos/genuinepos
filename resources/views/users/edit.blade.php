@@ -22,7 +22,9 @@
         .input-group-text {
             font-size: 12px !important;
         }
+        .dropify-wrapper { height: 100px!important;}
     </style>
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Edit User - ')
 @section('content')
@@ -350,19 +352,21 @@
                                     </div>
                                     <div class="element-body">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-sm-4 col-5"> <b>{{ __('Profile image') }}</b> </label>
-                                                    <div class="col-sm-8 col-7">
-                                                        <input type="file" name="photo" class="form-control" placeholder="{{ __('Profile image') }}">
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-sm-4 col-5"><b>{{ __('Date Of Birth') }}</b></label>
                                                     <div class="col-sm-8 col-7">
                                                         <input type="text" name="date_of_birth" class="form-control" id="date_of_birth" autocomplete="off" placeholder="{{ __('Date Of Birth') }}" data-next="gender" value="{{ $user->date_of_birth }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-sm-4 col-5"><b>{{ __('Facebook Link') }}</b> </label>
+                                                    <div class="col-sm-8 col-7">
+                                                        <input type="text" name="facebook_link" class="form-control" id="facebook_link" autocomplete="off" placeholder="{{ __('Facebook Link') }}" data-next="twitter_link" value="{{ $user->facebook_link }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -385,14 +389,9 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-sm-4 col-5"><b>{{ __('Marital Status') }}</b> </label>
+                                                    <label class="col-sm-4 col-5"><b>{{ __('X Link') }}</b> </label>
                                                     <div class="col-sm-8 col-7">
-                                                        <select name="marital_status" class="form-control" id="marital_status" data-next="blood_group">
-                                                            <option value="">{{ __('Marital Status') }}</option>
-                                                            <option {{ $user->marital_status == 'Married' ? 'SELECTED' : '' }} value="Married">{{ __('Married') }}</option>
-                                                            <option {{ $user->marital_status == 'Unmarried' ? 'SELECTED' : '' }} value="Unmarried">{{ __('Unmarried') }}</option>
-                                                            <option {{ $user->marital_status == 'Divorced' ? 'SELECTED' : '' }} value="Divorced">{{ __('Divorced') }}</option>
-                                                        </select>
+                                                        <input type="text" name="twitter_link" class="form-control" id="twitter_link" autocomplete="off" placeholder="{{ __('X Link') }}" data-next="instagram_link" value="{{ $user->twitter_link }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -410,9 +409,9 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-sm-4 col-5"><b>{{ __('Facebook Link') }}</b> </label>
+                                                    <label class="col-sm-4 col-5"><b>{{ __('Instagram Link') }}</b> </label>
                                                     <div class="col-sm-8 col-7">
-                                                        <input type="text" name="facebook_link" class="form-control" id="facebook_link" autocomplete="off" placeholder="{{ __('Facebook Link') }}" data-next="twitter_link" value="{{ $user->facebook_link }}">
+                                                        <input type="text" name="instagram_link" class="form-control" id="instagram_link" autocomplete="off" placeholder="{{ __('Instagram Link') }}" data-next="id_proof_name" value="{{ $user->instagram_link }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -421,18 +420,23 @@
                                         <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-sm-4 col-5"><b>{{ __('X Link') }}</b> </label>
+                                                    <label class="col-sm-4 col-5"><b>{{ __('Marital Status') }}</b> </label>
                                                     <div class="col-sm-8 col-7">
-                                                        <input type="text" name="twitter_link" class="form-control" id="twitter_link" autocomplete="off" placeholder="{{ __('X Link') }}" data-next="instagram_link" value="{{ $user->twitter_link }}">
+                                                        <select name="marital_status" class="form-control" id="marital_status" data-next="blood_group">
+                                                            <option value="">{{ __('Marital Status') }}</option>
+                                                            <option {{ $user->marital_status == 'Married' ? 'SELECTED' : '' }} value="Married">{{ __('Married') }}</option>
+                                                            <option {{ $user->marital_status == 'Unmarried' ? 'SELECTED' : '' }} value="Unmarried">{{ __('Unmarried') }}</option>
+                                                            <option {{ $user->marital_status == 'Divorced' ? 'SELECTED' : '' }} value="Divorced">{{ __('Divorced') }}</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-sm-4 col-5"><b>{{ __('Instagram Link') }}</b> </label>
-                                                    <div class="col-sm-8 col-7">
-                                                        <input type="text" name="instagram_link" class="form-control" id="instagram_link" autocomplete="off" placeholder="{{ __('Instagram Link') }}" data-next="id_proof_name" value="{{ $user->instagram_link }}">
+                                                    <label class="col-sm-6 col-6"><b>{{ __('Guardian Name') }}</b> </label>
+                                                    <div class="col-sm-6 col-6">
+                                                        <input type="text" name="guardian_name" class="form-control" id="guardian_name" autocomplete="off" placeholder="{{ __('Guardian Name') }}" data-next="permanent_address" value="{{ $user->guardian_name }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -459,17 +463,6 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-sm-6 col-6"><b>{{ __('Guardian Name') }}</b> </label>
-                                                    <div class="col-sm-6 col-6">
-                                                        <input type="text" name="guardian_name" class="form-control" id="guardian_name" autocomplete="off" placeholder="{{ __('Guardian Name') }}" data-next="permanent_address" value="{{ $user->guardian_name }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-1">
                                             <div class="col-md-12">
                                                 <div class="input-group">
                                                     <label class="col-lg-3 col-4"><b>{{ __('Permanent Address') }}</b></label>
@@ -486,6 +479,17 @@
                                                     <label class="col-lg-3 col-4"><b>{{ __('Current Address') }}</b> </label>
                                                     <div class="col-lg-9 col-8">
                                                         <input type="text" name="current_address" class="form-control" id="current_address" placeholder="{{ __('Current Address') }}" data-next="emp_id" value="{{ $user->current_address }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-1">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <label class="col-lg-3 col-4"> <b>{{ __('Profile Photo') }}</b> </label>
+                                                    <div class="col-lg-9 col-8">
+                                                        <input type="file" name="photo" class="form-control" id="photo" @if ($user?->photo) data-default-file="{{ file_link('user', $user?->photo) }}" @endif data-allowed-file-extensions="png jpeg jpg gif">
                                                     </div>
                                                 </div>
                                             </div>

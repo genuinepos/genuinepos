@@ -9,7 +9,7 @@ interface AddSaleControllerMethodContainersInterface
      */
     public function indexMethodContainer(object $request): array|object;
 
-    public function createMethodContainer(): ?array;
+    public function createMethodContainer(object $codeGenerator): ?array;
 
     public function storeMethodContainer(object $request, object $codeGenerator): ?array;
 

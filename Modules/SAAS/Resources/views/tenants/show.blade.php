@@ -76,7 +76,7 @@
                         </tr>
 
                         <tr>
-                            <th>{{ __('Subdoamin') }}</th>
+                            <th>{{ __('Subdomain') }}</th>
                             <td class="text-start">: {{ $tenant?->id }}</td>
                         </tr>
 

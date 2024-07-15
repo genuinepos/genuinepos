@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Dashboard\DashboardService;
-use Yajra\DataTables\Facades\DataTables;
 
-define('TODAY_DATE', Carbon::today());
+// define('TODAY_DATE', Carbon::today());
 
 class DashboardController extends Controller
 {

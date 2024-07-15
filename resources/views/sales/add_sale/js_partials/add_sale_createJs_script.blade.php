@@ -1399,6 +1399,8 @@
         $("#customer_account_id").select2();
         $("#customer_account_id").focus();
         afterChangeStatusAcivity(status);
+
+        getSalesVoucherNo();
     }
 
     $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});

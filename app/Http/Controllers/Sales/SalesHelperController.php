@@ -8,6 +8,7 @@ use App\Enums\SaleScreenType;
 use App\Enums\PrintPageSize;
 use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SalesHelperService;
 
@@ -76,7 +77,6 @@ class SalesHelperController extends Controller
 
     public function productStockModal()
     {
-
         $productStocks = $this->salesHelperService->productStocks();
 
         return view('sales.product_stocks.index_modal', compact('productStocks'));
@@ -175,5 +175,10 @@ class SalesHelperController extends Controller
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
 
         return view('sales.print_templates.print_packing_slip', compact('sale', 'customerCopySaleProducts', 'printPageSize'));
+    }
+
+    public function salesInvoiceOrOthersId(CodeGenerationServiceInterface $codeGenerator, $status = null)
+    {
+        return $this->saleService->salesInvoiceOrOthersId(codeGenerator: $codeGenerator, status: $status);
     }
 }

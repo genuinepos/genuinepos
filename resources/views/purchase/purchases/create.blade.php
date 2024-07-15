@@ -573,7 +573,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-success submit_button">{{ __('Save & Print') }}</button>
                             <button type="submit" id="save" value="2" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>

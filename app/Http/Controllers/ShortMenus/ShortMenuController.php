@@ -20,7 +20,7 @@ class ShortMenuController extends Controller
     public function showModalForm($screenType)
     {
         $userMenu = $screenType == ShortMenuScreenType::DashboardScreen->value ? 'userMenuForDashboard' : 'userMenuForPos';
-         $shortMenus = $this->shortMenuService->shortMenus(with: [$userMenu])->get();
+        $shortMenus = $this->shortMenuService->shortMenus(with: [$userMenu])->get();
         return view('short_menus.short_menus_add_modal_form', compact('shortMenus', 'screenType'));
     }
 
@@ -32,7 +32,7 @@ class ShortMenuController extends Controller
         if ($screenType == ShortMenuScreenType::DashboardScreen->value) {
 
             return view('short_menus.short_menus_dashboard_card', compact('shortMenuUsers'));
-        }else {
+        } else {
 
             return view('short_menus.pos_shortcut_menus', compact('shortMenuUsers'));
         }

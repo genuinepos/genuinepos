@@ -172,7 +172,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="sale_account_id">
+                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($warehouses as $w)
                                                         <option @selected($return?->warehouse_id == $w->id) data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
@@ -194,16 +194,17 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" value="{{ $return->voucher_no }}" placeholder="{{ __('Voucher No') }}" autocomplete="off">
+                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return?->date)) }}" data-next="sale_account_id" autocomplete="off">
+                                            <span class="error error_date"></span>
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Sales Ledger') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select name="sale_account_id" class="form-control select2" id="sale_account_id" data-next="date">
+                                            <select name="sale_account_id" class="form-control select2" id="sale_account_id" data-next="price_group_id">
                                                 @foreach ($saleAccounts as $saleAccount)
                                                     <option @selected($saleAccount->id == $return->sale_account_id) value="{{ $saleAccount->id }}">
                                                         {{ $saleAccount->name }}
@@ -217,10 +218,9 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
+                                        <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return?->date)) }}" data-next="price_group_id" autocomplete="off">
-                                            <span class="error error_date"></span>
+                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" value="{{ $return->voucher_no }}" placeholder="{{ __('Voucher No') }}" autocomplete="off">
                                         </div>
                                     </div>
 

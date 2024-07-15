@@ -976,6 +976,32 @@
         $("#purchase_account_id").select2();
 
         document.getElementById('supplier_account_id').focus();
+
+        getPurchaseReturnVoucherNo();
+    }
+
+    function getPurchaseReturnVoucherNo() {
+
+        var url = "{{ route('purchase.returns.voucher.no') }}";
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#voucher_no').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
     }
 
     // Automatic remove searching product is found signal

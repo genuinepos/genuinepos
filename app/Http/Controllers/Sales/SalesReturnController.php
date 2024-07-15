@@ -48,13 +48,13 @@ class SalesReturnController extends Controller
         return view('sales.print_templates.sales_return_print', compact('return', 'paidAmount', 'printPageSize'));
     }
 
-    public function create(SalesReturnCreateRequest $request,SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
+    public function create(SalesReturnCreateRequest $request, CodeGenerationServiceInterface $codeGenerator, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
     {
-        $createMethodContainer = $salesReturnControllerMethodContainersInterface->createMethodContainer();
+        $createMethodContainer = $salesReturnControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
         extract($createMethodContainer);
 
-        return view('sales.sales_return.create', compact('accounts', 'methods', 'saleAccounts', 'warehouses', 'priceGroups', 'priceGroupProducts', 'taxAccounts', 'customerAccounts', 'branchName'));
+        return view('sales.sales_return.create', compact('accounts', 'methods', 'saleAccounts', 'warehouses', 'priceGroups', 'priceGroupProducts', 'taxAccounts', 'customerAccounts', 'branchName', 'voucherNo'));
     }
 
     public function store(SalesReturnStoreRequest $request, CodeGenerationServiceInterface $codeGenerator, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
@@ -135,5 +135,10 @@ class SalesReturnController extends Controller
         }
 
         return response()->json(__('Sales Return is deleted Successfully.'));
+    }
+
+    public function voucherNo(CodeGenerationServiceInterface $codeGenerator, SalesReturnControllerMethodContainersInterface $salesReturnControllerMethodContainersInterface)
+    {
+        return $salesReturnControllerMethodContainersInterface->voucherNoMethodContainer(codeGenerator: $codeGenerator);
     }
 }

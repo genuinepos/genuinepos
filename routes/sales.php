@@ -139,6 +139,7 @@ Route::prefix('sales')->group(function () {
         Route::get('edit/{id}', 'edit')->name('sales.returns.edit');
         Route::post('update/{id}', 'update')->name('sales.returns.update');
         Route::delete('delete/{id}', 'delete')->name('sales.returns.delete');
+        Route::get('voucher/no', 'voucherNo')->name('sales.returns.voucher.no');
     });
 
     Route::controller(DiscountController::class)->prefix('discounts')->group(function () {

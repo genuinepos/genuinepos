@@ -12,6 +12,7 @@ use App\Jobs\TenantRegisterJob;
 use Stancl\JobPipeline\JobPipeline;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Stancl\Tenancy\Resolvers\DomainTenantResolver;
 
 class TenancyServiceProvider extends ServiceProvider
 {
@@ -93,8 +94,7 @@ class TenancyServiceProvider extends ServiceProvider
             ],
 
             // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
-            Events\SyncedResourceChangedInForeignDatabase::class => [
-            ],
+            Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
     }
 
@@ -105,6 +105,16 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // enable cache
+        DomainTenantResolver::$shouldCache = true;
+
+        // seconds, 3600 is the default value
+        DomainTenantResolver::$cacheTTL = 86400;
+
+        // specify some cache store
+        // null resolves to the default cache store
+        DomainTenantResolver::$cacheStore = 'redis';
+
         $this->bootEvents();
         $this->makeTenancyMiddlewareHighestPriority();
     }

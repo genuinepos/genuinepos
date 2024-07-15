@@ -1062,7 +1062,7 @@
 
             if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
 
-                $('#sale_account_id').focus();
+                $('#date').focus();
                 return;
             }
 

@@ -23,4 +23,6 @@ interface PurchaseReturnControllerMethodContainersInterface
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array;
 
     public function deleteMethodContainer(int $id): ?array;
+
+    public function voucherNoMethodContainer(object $codeGenerator): string;
 }

@@ -27,7 +27,7 @@ class DashboardController extends Controller
             auth()->user()?->branch?->parent_branch_id :
             auth()->user()->branch_id;
 
-        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get(['id', 'name']);
 
         return view('dashboard.dashboard_1', compact('branches', 'thisWeek', 'thisYear', 'thisMonth', 'toDay'));
     }

@@ -1000,6 +1000,8 @@
         $("#sale_account_id").select2();
 
         document.getElementById('customer_account_id').focus();
+
+        getSalesReturnVoucherNo();
     }
 
     // Automatic remove searching product is found signal
@@ -1012,6 +1014,30 @@
 
         $('#search_product').removeClass('is-valid');
     }, 1000);
+
+    function getSalesReturnVoucherNo() {
+
+        var url = "{{ route('sales.returns.voucher.no') }}";
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#voucher_no').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    }
 
     $(document).on('change', '#customer_account_id', function() {
 
@@ -1094,7 +1120,7 @@
 
             if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
 
-                $('#sale_account_id').focus();
+                $('#date').focus();
                 return;
             }
 

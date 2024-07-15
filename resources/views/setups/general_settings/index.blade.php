@@ -263,9 +263,16 @@
         });
     </script>
 
-    @include('setups.general_settings.partials.js_partials.business_settings_js')
+    @if (auth()->user()->can('business_or_shop_settings'))
+        @include('setups.general_settings.partials.js_partials.business_settings_js')
+    @endif
+
     @include('setups.general_settings.partials.js_partials.dashboard_settings_js')
-    @include('setups.general_settings.partials.js_partials.prefix_settings_js')
+    
+    @if (auth()->user()->can('prefix_settings'))
+        @include('setups.general_settings.partials.js_partials.prefix_settings_js')
+    @endif
+
     @include('setups.general_settings.partials.js_partials.print_settings_js')
     @include('setups.general_settings.partials.js_partials.invoice_layout_settings_js')
 

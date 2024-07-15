@@ -14,7 +14,7 @@ class BranchUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('branches_edit') && auth()->user()->can('general_settings');
+        return auth()->user()->can('branches_edit') || auth()->user()->can('business_or_shop_settings');
     }
 
     /**

@@ -79,7 +79,8 @@ class TenantDbBackup extends Command
                 if (config('file_disk.name') != 'local') {
 
                     // Upload to S3
-                    Storage::disk(config('file_disk.name'))->put($tenant->id . '/' . 'db/' . $filename, fopen($backupPath, 'r+'));
+                    // Storage::disk(config('file_disk.name'))->put($tenant->id . '/' . 'db/' . $filename, fopen($backupPath, 'r+'));
+                    Storage::disk(config('file_disk.name'))->put($tenant->id . '/' . 'db/' . $filename, file_get_contents($backupPath));
 
                     // Clean up local dump file
                     unlink($backupPath);

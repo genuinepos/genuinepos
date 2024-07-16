@@ -551,7 +551,7 @@
                                 <button type="button" class="btn loading_button product_loading_btn d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
                                 @if(!isset($product))
 
-                                    <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save And Add Another") }}</button>
+                                    <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save & Add Another") }}</button>
                                     <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save") }}</button>
                                 @else
 

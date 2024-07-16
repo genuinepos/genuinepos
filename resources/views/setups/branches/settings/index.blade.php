@@ -257,8 +257,10 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
+    @if (auth()->user()->can('business_or_shop_settings'))
+        @include('setups.branches.settings.partials.js_partials.branch_settings_js')
+    @endif
 
-    @include('setups.branches.settings.partials.js_partials.branch_settings_js')
     @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
 
     @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
@@ -280,7 +282,10 @@
         @include('setups.branches.settings.partials.js_partials.pos_sale_settings_js')
     @endif
 
-    @include('setups.branches.settings.partials.js_partials.prefix_settings_js')
+    @if (auth()->user()->can('prefix_settings'))
+        @include('setups.branches.settings.partials.js_partials.prefix_settings_js')
+    @endif
+    
     @include('setups.branches.settings.partials.js_partials.invoice_layout_settings_js')
     @include('setups.branches.settings.partials.js_partials.print_settings_js')
     @include('setups.branches.settings.partials.js_partials.system_settings_js')

@@ -4,7 +4,7 @@
         buttons: [{
                 extend: 'excel',
                 text: 'Excel',
-                messageTop: 'List Of Shifts',
+                messageTop: 'List of Shifts',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
@@ -13,7 +13,7 @@
             {
                 extend: 'pdf',
                 text: 'Pdf',
-                messageTop: 'List Of Shifts',
+                messageTop: 'List of Shifts',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
@@ -22,7 +22,7 @@
             {
                 extend: 'print',
                 text: 'Print',
-                messageTop: '<b>List Of Shifts</b>',
+                messageTop: '<b>List of Shifts</b>',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'

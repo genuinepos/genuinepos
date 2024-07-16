@@ -5,7 +5,7 @@
         buttons: [{
                 extend: 'excel',
                 text: 'Excel',
-                messageTop: 'List Of Holidays',
+                messageTop: 'List of Holidays',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
@@ -14,7 +14,7 @@
             {
                 extend: 'pdf',
                 text: 'Pdf',
-                messageTop: 'List Of Holidays',
+                messageTop: 'List of Holidays',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
@@ -23,7 +23,7 @@
             {
                 extend: 'print',
                 text: 'Print',
-                messageTop: '<b>List Of Holidays</b>',
+                messageTop: '<b>List of Holidays</b>',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'

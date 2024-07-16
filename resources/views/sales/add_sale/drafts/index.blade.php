@@ -91,7 +91,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Drafts') }}</h6>
+                                    <h6>{{ __('List of Drafts') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)

@@ -111,7 +111,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Shipments') }}</h6>
+                                    <h6>{{ __('List of Shipments') }}</h6>
                                 </div>
                             </div>
 

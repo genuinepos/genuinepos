@@ -101,7 +101,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Pos Sales') }}</h6>
+                                    <h6>{{ __('List of Pos Sales') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('create_add_sale'))

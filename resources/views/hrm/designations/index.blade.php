@@ -30,7 +30,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('List Of Designations') }}</h6>
+                        <h6>{{ __('List of Designations') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">

@@ -100,7 +100,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Sales Returns') }}</h6>
+                                    <h6>{{ __('List of Sales Returns') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('create_sales_return'))

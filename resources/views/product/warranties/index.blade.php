@@ -71,7 +71,7 @@
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
-                    'title': 'List Of Warranties/Guaranties',
+                    'title': 'List of Warranties/Guaranties',
                     text: 'Excel',
                     className: 'btn btn-primary',
                     exportOptions: {
@@ -80,7 +80,7 @@
                 },
                 {
                     extend: 'pdf',
-                    'title': 'List Of Warranties/Guaranties',
+                    'title': 'List of Warranties/Guaranties',
                     text: 'Pdf',
                     className: 'btn btn-primary',
                     exportOptions: {
@@ -89,7 +89,7 @@
                 },
                 {
                     extend: 'print',
-                    'title': 'List Of Warranties/Guaranties',
+                    'title': 'List of Warranties/Guaranties',
                     text: 'Print',
                     className: 'btn btn-primary',
                     exportOptions: {

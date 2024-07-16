@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __('List Of Varients') }}</h6>
+                                <h6>{{ __('List of Varients') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">

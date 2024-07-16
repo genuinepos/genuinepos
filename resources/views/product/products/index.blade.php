@@ -112,7 +112,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
-                                    <h6>{{ __('List Of Products') }}</h6>
+                                    <h6>{{ __('List of Products') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('product_add'))

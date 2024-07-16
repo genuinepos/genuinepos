@@ -39,7 +39,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
         $data = [];
         if ($request->ajax()) {
 
-            return $this->accountService->accountListTable($request);
+            return $this->accountService->accountListTable(request: $request);
         }
 
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])

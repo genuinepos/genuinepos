@@ -97,7 +97,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-10">
-                                    <h6>{{ __('List Of Receipts') }}</h6>
+                                    <h6>{{ __('List of Receipts') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('purchase_add'))

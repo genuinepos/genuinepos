@@ -21,7 +21,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Discounts') }}</h6>
+                                    <h6>{{ __('List of Discounts') }}</h6>
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
@@ -71,5 +71,5 @@
 
 @endsection
 @push('scripts')
-   @include('sales.discounts.partials.js_partial.index_js')
+    @include('sales.discounts.partials.js_partial.index_js')
 @endpush

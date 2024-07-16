@@ -94,7 +94,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>{{ __('List Of Purchase Returns') }}</h6>
+                                    <h6>{{ __('List of Purchase Returns') }}</h6>
                                 </div>
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">

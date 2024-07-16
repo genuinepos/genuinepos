@@ -81,7 +81,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Receivable Transferred Stocks (From Warehouse)') }}</h6>
+                                    <h6>{{ __('List of Receivable Transferred Stocks (From Warehouse)') }}</h6>
                                 </div>
                             </div>
 

@@ -53,11 +53,11 @@
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         @if (auth()->user()->can('customer_add'))
-                            <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Customer') }}</a>
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Customer') }}</a>
                         @endif
 
                         @if (auth()->user()->can('customer_import'))
-                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
+                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
                         @endif
 
                         @if (auth()->user()->can('customer_report'))

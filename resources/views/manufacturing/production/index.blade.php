@@ -98,7 +98,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('List Of Productions') }}</h6>
+                        <h6>{{ __('List of Productions') }}</h6>
                     </div>
                     @if (auth()->user()->can('production_add'))
                         <div class="col-6 d-flex justify-content-end">

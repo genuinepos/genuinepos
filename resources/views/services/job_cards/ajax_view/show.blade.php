@@ -324,7 +324,7 @@
                     <div class="table-responsive">
                         <table class="display table modal-table table-sm">
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;">{{ __('Total Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:11px!important;">{{ __('Total Cost') }} : {{ $jobCard?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ \App\Utils\Converter::format_in_bdt($jobCard->total_cost) }}
                                 </td>

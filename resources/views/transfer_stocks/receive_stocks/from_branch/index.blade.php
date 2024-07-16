@@ -70,7 +70,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Receivable Transferred Stocks (From Shop/Business)') }}</h6>
+                                    <h6>{{ __('List of Receivable Transferred Stocks (From Shop/Business)') }}</h6>
                                 </div>
                             </div>
 

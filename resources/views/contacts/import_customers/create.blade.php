@@ -46,7 +46,7 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="col-8">
-                                                <button class="btn btn-sm btn-primary float-start m-0">{{ __('Upload') }}</button>
+                                                <button class="btn btn-sm btn-success float-start m-0">{{ __('Upload') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@
                                         <div class="input-group">
                                             <label class="col-4"><b>{{ __('Download Sample') }}</b></label>
                                             <div class="col-8">
-                                                <a href="{{ asset('import_template/customer_import_template.xlsx') }}" class="btn btn-sm btn-success" download>{{ __('Download Template File, Click Here') }}</a>
+                                                <a href="{{ asset('import_template/customer_import_template.xlsx') }}" class="btn btn-sm btn-secondary" download>{{ __('Download Template File, Click Here') }}</a>
                                             </div>
                                         </div>
                                     </div>

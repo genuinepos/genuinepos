@@ -210,7 +210,7 @@
                             <tr>
                                 <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Total Expense Paid') }} :</th>
                                 <td style="width: 70%;" class="text-start fw-bold" style="font-size:11px!important;">
-                                    : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -249,7 +249,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="2" class="text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                <th colspan="2" class="text-end">{{ __('Total') }} : ({{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                 <th>{{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }}</th>
                             </tr>
                         </tfoot>
@@ -517,7 +517,7 @@
                             <tr>
                                 <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Total Expense Paid') }} :</th>
                                 <td style="width: 70%;" class="text-start fw-bold" style="font-size:9px!important;">
-                                    : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -556,7 +556,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="2" class="text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                <th colspan="2" class="text-end">{{ __('Total') }} : ({{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                 <th>{{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }}</th>
                             </tr>
                         </tfoot>

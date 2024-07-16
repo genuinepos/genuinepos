@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('hrm.attendances.create') }}" class="btn btn-sm btn-primary" id="addAttendancs"><i class="fas fa-plus-square"></i> {{ __('Add Attendances') }}</a>
+                        <a href="{{ route('hrm.attendances.create') }}" class="btn btn-sm btn-success" id="addAttendancs"><i class="fas fa-plus-square"></i> {{ __('Add Attendances') }}</a>
                     </div>
                 </div>
 

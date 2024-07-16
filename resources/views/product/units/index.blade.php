@@ -20,12 +20,12 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __('List Of Units') }}</h6>
+                                <h6>{{ __('List of Units') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_unit_add'))
-                                    <a href="{{ route('units.create', 1) }}" class="btn btn-sm btn-primary" id="addUnit"><i class="fas fa-plus-square"></i> {{ __('Add Unit') }}</a>
+                                    <a href="{{ route('units.create', 1) }}" class="btn btn-sm btn-success" id="addUnit"><i class="fas fa-plus-square"></i> {{ __('Add Unit') }}</a>
                                 @endif
                             </div>
                         </div>

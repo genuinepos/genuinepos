@@ -123,7 +123,7 @@
 
                                     @if (auth()->user()->can('todo_create'))
                                         <div class="col-6 d-flex justify-content-end">
-                                            <a href="{{ route('todo.create') }}" class="btn btn-sm btn-primary" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                            <a href="{{ route('todo.create') }}" class="btn btn-sm btn-success" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                         </div>
                                     @endif
                                 </div>

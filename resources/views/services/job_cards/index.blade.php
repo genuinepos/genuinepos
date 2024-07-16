@@ -146,7 +146,7 @@
 
                                 @if (auth()->user()->can('job_cards_create'))
                                     <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('services.job.cards.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Job Card') }}</a>
+                                        <a href="{{ route('services.job.cards.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Job Card') }}</a>
                                     </div>
                                 @endif
                             </div>

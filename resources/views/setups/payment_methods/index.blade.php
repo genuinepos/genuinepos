@@ -39,7 +39,7 @@
                                     </div>
 
                                     <div class="col-md-6 text-end">
-                                        <a href="{{ route('payment.methods.create') }}" class="btn btn-sm btn-primary" id="addPaymentMethod"><i class="fas fa-plus-square"></i> {{ __("Add Payment Method") }}</a>
+                                        <a href="{{ route('payment.methods.create') }}" class="btn btn-sm btn-success" id="addPaymentMethod"><i class="fas fa-plus-square"></i> {{ __("Add Payment Method") }}</a>
                                     </div>
                                 </div>
                             </div>

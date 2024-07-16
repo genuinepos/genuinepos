@@ -40,8 +40,8 @@
                                             </div>
 
                                             <div class="col-md-6 text-end">
-                                                <a href="{{ route('hrm.leaves.create') }}" class="btn btn-sm btn-primary" id="addLeave"><i class="fas fa-plus-square"></i> {{ __("Add Leave") }}</a>
-                                                <a href="{{ route('hrm.leave.type.create') }}" class="btn btn-sm btn-primary p-1 d-hide" id="addLeaveType"><i class="fas fa-plus-square"></i> {{ __("Add Leave Type") }}</a>
+                                                <a href="{{ route('hrm.leaves.create') }}" class="btn btn-sm btn-success" id="addLeave"><i class="fas fa-plus-square"></i> {{ __("Add Leave") }}</a>
+                                                <a href="{{ route('hrm.leave.type.create') }}" class="btn btn-sm btn-success p-1 d-hide" id="addLeaveType"><i class="fas fa-plus-square"></i> {{ __("Add Leave Type") }}</a>
                                             </div>
                                         </div>
                                     </div>

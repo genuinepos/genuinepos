@@ -22,7 +22,7 @@
 
                     <div class="col-6 d-flex justify-content-end">
                         @if (auth()->user()->can('role_add'))
-                            <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Role') }}</a>
+                            <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Role') }}</a>
                         @endif
                     </div>
                 </div>

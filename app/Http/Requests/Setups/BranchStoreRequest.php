@@ -15,7 +15,7 @@ class BranchStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('branches_create') && $generalSettings['subscription']->current_shop_count > 1;
+        return auth()->user()->can('branches_create') && config('generalSettings')['subscription']->current_shop_count > 1;
     }
 
     /**

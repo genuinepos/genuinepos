@@ -100,7 +100,7 @@
                                 </div>
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -129,11 +129,11 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                <th id="total_purchase_amount" class="text-white"></th>
-                                                <th id="paid" class="text-white"></th>
-                                                <th id="purchase_return_amount" class="text-white"></th>
-                                                <th id="due" class="text-white"></th>
+                                                <th colspan="6" class="text-end">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                                <th id="total_purchase_amount"></th>
+                                                <th id="paid"></th>
+                                                <th id="purchase_return_amount"></th>
+                                                <th id="due"></th>
                                                 <th></th>
                                             </tr>
                                         </tfoot>

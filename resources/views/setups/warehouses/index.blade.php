@@ -75,7 +75,7 @@
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('warehouses_index'))
-                                    <a href="{{ route('warehouses.create') }}" class="btn btn-sm btn-primary" id="addWarehouse"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                    <a href="{{ route('warehouses.create') }}" class="btn btn-sm btn-success" id="addWarehouse"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                 @endif
                             </div>
                         </div>

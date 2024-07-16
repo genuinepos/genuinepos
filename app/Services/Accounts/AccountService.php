@@ -147,8 +147,7 @@ class AccountService
                 'bankParentBranch.name',
             )
             ->orderBy('account_groups.sorting_number', 'asc')
-            ->orderBy('accounts.name', 'asc')
-            ->get();
+            ->orderBy('accounts.name', 'asc');
 
         return DataTables::of($accounts)
             ->addIndexColumn()

@@ -24,7 +24,7 @@
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_brand_add'))
-                                    <a href="{{ route('brands.create') }}" class="btn btn-sm btn-primary" id="addBrand"><i class="fas fa-plus-square"></i> {{ __('Add Brand') }}</a>
+                                    <a href="{{ route('brands.create') }}" class="btn btn-sm btn-success" id="addBrand"><i class="fas fa-plus-square"></i> {{ __('Add Brand') }}</a>
                                 @endif
                             </div>
                         </div>

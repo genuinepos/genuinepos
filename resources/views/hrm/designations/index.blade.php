@@ -30,11 +30,11 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('List Of Designations') }}</h6>
+                        <h6>{{ __('List of Designations') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('hrm.designations.create') }}" class="btn btn-sm btn-primary" id="addDesignation"><i class="fas fa-plus-square"></i> {{ __('Add Designation') }}</a>
+                        <a href="{{ route('hrm.designations.create') }}" class="btn btn-sm btn-success" id="addDesignation"><i class="fas fa-plus-square"></i> {{ __('Add Designation') }}</a>
                     </div>
                 </div>
 

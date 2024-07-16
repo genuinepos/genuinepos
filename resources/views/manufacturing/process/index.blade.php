@@ -24,7 +24,7 @@
 
                     @if (auth()->user()->can('process_add'))
                         <div class="col-6 d-flex justify-content-end">
-                            <a href="{{ route('manufacturing.process.select.product.modal') }}" class="btn btn-sm btn-primary" id="getProcessSelectProductModal"><i class="fas fa-plus-square"></i> {{ __('Add New') }}</a>
+                            <a href="{{ route('manufacturing.process.select.product.modal') }}" class="btn btn-sm btn-success" id="getProcessSelectProductModal"><i class="fas fa-plus-square"></i> {{ __('Add New') }}</a>
                         </div>
                     @endif
                 </div>

@@ -101,12 +101,12 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Pos Sales') }}</h6>
+                                    <h6>{{ __('List of Pos Sales') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('create_add_sale'))
                                     <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('sales.pos.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('sales.pos.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>

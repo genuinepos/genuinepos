@@ -63,7 +63,7 @@
 
                     <div class="col-6 d-flex justify-content-end">
                         @if (auth()->user()->can('holidays_create'))
-                            <a href="{{ route('hrm.holidays.create') }}" class="btn btn-sm btn-primary" id="addHoliday"><i class="fas fa-plus-square"></i> {{ __('Add Holiday') }}</a>
+                            <a href="{{ route('hrm.holidays.create') }}" class="btn btn-sm btn-success" id="addHoliday"><i class="fas fa-plus-square"></i> {{ __('Add Holiday') }}</a>
                         @endif
                     </div>
                 </div>

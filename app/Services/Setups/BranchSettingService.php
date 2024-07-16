@@ -4,7 +4,6 @@ namespace App\Services\Setups;
 
 use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
-use App\Models\Setups\BranchSetting;
 use App\Services\CacheServiceInterface;
 
 class BranchSettingService

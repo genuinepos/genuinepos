@@ -11,7 +11,7 @@ class BranchEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (auth()->user()->can('branches_edit') || auth()->user()->can('business_or_shop_settings')) && $generalSettings['subscription']->current_shop_count > 1;
+        return (auth()->user()->can('branches_edit') || auth()->user()->can('business_or_shop_settings')) && config('generalSettings')['subscription']->current_shop_count > 1;
     }
 
     /**

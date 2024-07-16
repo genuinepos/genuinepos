@@ -61,13 +61,13 @@
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         @if (auth()->user()->can('supplier_add'))
-                            <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-success">
                                 <i class="fas fa-plus-square"></i> {{ __('Add') }}
                             </a>
                         @endif
 
                         @if (auth()->user()->can('supplier_import'))
-                            <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Suppliers') }}</a>
+                            <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Import Suppliers') }}</a>
                         @endif
 
                         <a href="{{ route('reports.suppliers.print') }}" class="btn btn-sm btn-primary" id="printReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>

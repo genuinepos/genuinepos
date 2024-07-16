@@ -35,7 +35,7 @@
 
                     <div class="col-6 d-flex justify-content-end">
                         @if (auth()->user()->can('departments_create'))
-                            <a href="{{ route('hrm.departments.create') }}" class="btn btn-sm btn-primary" id="addDepartment"><i class="fas fa-plus-square"></i> {{ __('Add Department') }}</a>
+                            <a href="{{ route('hrm.departments.create') }}" class="btn btn-sm btn-success" id="addDepartment"><i class="fas fa-plus-square"></i> {{ __('Add Department') }}</a>
                         @endif
                     </div>
                 </div>

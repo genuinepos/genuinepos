@@ -95,7 +95,7 @@
 
                     <div class="col-6 d-flex justify-content-end">
                         @if (auth()->user()->can('payrolls_create'))
-                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> {{ __('Add Payroll') }}</a>
+                            <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> {{ __('Add Payroll') }}</a>
                         @endif
                     </div>
                 </div>

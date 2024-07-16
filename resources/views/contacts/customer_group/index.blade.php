@@ -61,7 +61,7 @@
                                 </div>
                                 @if(auth()->user()->can('customer_group'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('contacts.customers.groups.create') }}" class="btn btn-sm btn-primary" id="addCustomerGroup"><i class="fas fa-plus-square"></i> {{ __("Add Customer Group") }}</a>
+                                        <a href="{{ route('contacts.customers.groups.create') }}" class="btn btn-sm btn-success" id="addCustomerGroup"><i class="fas fa-plus-square"></i> {{ __("Add Customer Group") }}</a>
                                     </div>
                                 @endif
                             </div>

@@ -26,7 +26,7 @@
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_warranty_add'))
-                                    <a href="{{ route('warranties.create') }}" class="btn btn-sm btn-primary" id="addWarranty"><i class="fas fa-plus-square"></i> {{ __('Add Warranty') }}</a>
+                                    <a href="{{ route('warranties.create') }}" class="btn btn-sm btn-success" id="addWarranty"><i class="fas fa-plus-square"></i> {{ __('Add Warranty') }}</a>
                                 @endif
                             </div>
                         </div>

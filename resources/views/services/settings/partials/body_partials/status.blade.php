@@ -6,7 +6,7 @@
 
         <div class="col-6 d-flex justify-content-end">
             @if (auth()->user()->can('status_create'))
-                <a href="{{ route('services.settings.status.create') }}" class="btn btn-sm btn-primary" id="addStatus"><i class="fas fa-plus-square"></i> {{ __('Add Status') }}</a>
+                <a href="{{ route('services.settings.status.create') }}" class="btn btn-sm btn-success" id="addStatus"><i class="fas fa-plus-square"></i> {{ __('Add Status') }}</a>
             @endif
         </div>
     </div>

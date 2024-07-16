@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('hrm.designations.create') }}" class="btn btn-sm btn-primary" id="addDesignation"><i class="fas fa-plus-square"></i> {{ __('Add Designation') }}</a>
+                        <a href="{{ route('hrm.designations.create') }}" class="btn btn-sm btn-success" id="addDesignation"><i class="fas fa-plus-square"></i> {{ __('Add Designation') }}</a>
                     </div>
                 </div>
 

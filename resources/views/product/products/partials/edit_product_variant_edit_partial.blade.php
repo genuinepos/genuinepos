@@ -6,7 +6,7 @@
 
     <div class="col-md-6">
         <div class="add_more_btn">
-            <a href="#" id="add_more_variant_btn" class="btn btn-sm btn-primary float-end">{{ __("Add More") }}</a>
+            <a href="#" id="add_more_variant_btn" class="btn btn-sm btn-success float-end">{{ __("Add More") }}</a>
         </div>
     </div>
     <div class="dynamic_variant_create_area">

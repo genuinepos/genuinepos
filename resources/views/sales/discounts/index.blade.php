@@ -25,7 +25,7 @@
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('sales.discounts.create') }}" class="btn btn-sm btn-primary" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add Discount') }}</a>
+                                    <a href="{{ route('sales.discounts.create') }}" class="btn btn-sm btn-success" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add Discount') }}</a>
                                 </div>
                             </div>
 

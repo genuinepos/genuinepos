@@ -37,7 +37,7 @@
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('hrm.shifts.create') }}" class="btn btn-sm btn-primary" id="addShift"><i class="fas fa-plus-square"></i> {{ __('Add Shift') }}</a>
+                                    <a href="{{ route('hrm.shifts.create') }}" class="btn btn-sm btn-success" id="addShift"><i class="fas fa-plus-square"></i> {{ __('Add Shift') }}</a>
                                 </div>
                             </div>
 

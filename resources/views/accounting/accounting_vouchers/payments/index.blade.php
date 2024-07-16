@@ -102,7 +102,7 @@
 
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('payments.create') }}" class="btn btn-sm btn-primary" id="addPayment"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('payments.create') }}" class="btn btn-sm btn-success" id="addPayment"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>

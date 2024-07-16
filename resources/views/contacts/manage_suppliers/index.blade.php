@@ -61,7 +61,7 @@
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         @if (auth()->user()->can('supplier_add'))
-                            <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary">
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-success">
                                 <i class="fas fa-plus-square"></i> {{ __('Add') }}
                             </a>
                         @endif

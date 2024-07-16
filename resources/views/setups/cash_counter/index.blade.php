@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
-                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-primary" id="addCashCounter"><i class="fas fa-plus-square"></i> {{ __('Add Cash Counter') }}</a>
+                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-success" id="addCashCounter"><i class="fas fa-plus-square"></i> {{ __('Add Cash Counter') }}</a>
                     </div>
                 </div>
 

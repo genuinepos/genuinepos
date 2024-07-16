@@ -99,7 +99,7 @@
 
                                 @if (auth()->user()->can('expenses_create'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('expenses.create') }}" class="btn btn-sm btn-primary" id="addExpense"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('expenses.create') }}" class="btn btn-sm btn-success" id="addExpense"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>

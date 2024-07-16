@@ -45,6 +45,29 @@
             /* -webkit-filter: brightness(); */
             filter: brightness(1);
         }
+
+        .main-content .steps-sidebar .sidebar-logo {
+
+            height: auto;
+            margin-bottom: 50px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .main-content .steps-sidebar .sidebar-content {
+            height: 100%;
+        }
+
+        .social_links li {
+            display: inline-block;
+            margin: 2px 3px;
+        }
+
+        .social_links li a {
+            font-size: 17px;
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -59,9 +82,39 @@
             <div class="sidebar-content">
                 <div class="sidebar-logo text-center pb-3">
                     <img style="height: 50px; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
+
+                    <ul class="social_links mt-2">
+                        <li>
+                            <a href="{{ config('speeddigit.website') }}" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.facebook') }}" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.twitter') }}" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.instagram') }}" target="_blank"><i class="fa-brands fa-square-instagram"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.youtube') }}" target="_blank"><i class="fa-brands fa-square-youtube"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.linkedin') }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.tiktok') }}" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                        </li>
+                    </ul>
                 </div>
 
-                <ul class="step-list scrollable">
+                {{-- <ul class="step-list scrollable">
                     <li class="active">
                         <span class="step-txt">
                             <span class="step-name">{{ __("Account Type") }}</span>
@@ -97,7 +150,7 @@
                         </span>
                         <span class="step-number border-primary">5</span>
                     </li>
-                </ul>
+                </ul> --}}
             </div>
         </div>
         <div class="all-steps">
@@ -142,7 +195,7 @@
                                             <span class="title">{{ __('Choose Shop') }}</span>
                                             {{-- <span class="dscr">Create corporate account to manage users</span> --}}
                                             <select name="branch_id" class="select2">
-                                                <option value="">{{ __("Select Shop") }}</option>
+                                                <option value="">{{ __('Select Shop') }}</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php

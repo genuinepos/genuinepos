@@ -209,6 +209,14 @@
         <div class="col-lg-3 col-sm-9 col-12 input-buttob-sec">
             <div class="input-section">
                 <div class="btn-section">
+                    {{-- <div class="date">
+                        <p><span class="time fw-bold">Invoice ID: </span> ESI-2407-0001</p>
+                    </div> --}}
+
+                    <div class="date">
+                        <p><span class="fw-bold" style="color:white!important">{{ __("Inv. ID") }}:</span> ESSI-2406-0025</p>
+                    </div>
+
                     <div class="date">
                         <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                     </div>

@@ -191,7 +191,7 @@
                         <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner"></i><span>{{ __('Loanding') }}</span> </button>
                         <button type="button" id="save_btn" name="action" value="save" class="btn btn-success manage_pg_submit_button btn-sm">{{ __('Save') }}</button>
 
-                        <button type="submit" id="save_and_new_btn" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm">{{ __('Save And Add Another') }}</button>
+                        <button type="submit" id="save_and_new_btn" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm">{{ __('Save & Add Another') }}</button>
                     </div>
                 </div>
             </form>

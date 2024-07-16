@@ -1403,7 +1403,7 @@ return [
     'guaranty' => 'Guaranty',
     'years' => 'Years',
     'add_edit_price_group' => 'Add or edit Price Group',
-    'save_and_add_another' => 'Save And Add Another',
+    'save_and_add_another' => 'Save & Add Another',
     'purchase_type' => 'Purchase Type',
     'select_purchase_type' => 'Select Purchase Type',
     'direct_purchase' => 'Direct Purchase',

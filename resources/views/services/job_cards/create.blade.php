@@ -568,7 +568,7 @@
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
 
-                                <button type="submit" name="action" value="save_and_print" class="btn btn-success submit_button p-1" id="save_and_print">{{ __('Save And Print') }}</button>
+                                <button type="submit" name="action" value="save_and_print" class="btn btn-success submit_button p-1" id="save_and_print">{{ __('Save & Print') }}</button>
                                 <button type="submit" name="action" value="save" class="btn btn-success submit_button p-1" id="save">{{ __('Save') }}</button>
                             </div>
                         </div>

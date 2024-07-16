@@ -31,6 +31,10 @@
         a#addShortcutBtn {
             background: #0ec726 !important;
         }
+
+        section.dashboard_table_section .table-responsive {
+            min-height: 0vh !important;
+        }
     </style>
 @endpush
 @section('title', 'Dashboard - ')
@@ -88,7 +92,7 @@
                                     <div class="card-counter-wrap bg-white rounded">
                                         <div class="part-txt">
                                             <h6 class="mb-1" id="status_period_name">{{ __('Today\'s Status.') }}</h6>
-                                            <h6>{{ __('All Purchase Sale & Due') }}</h6>
+                                            <h6>{{ __('All Purchase, Sales & Due') }}</h6>
                                         </div>
                                         <div class="card-counter-row">
                                             <div class="card-counter-col">
@@ -242,7 +246,7 @@
 
             <div class="row g-3">
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6>
@@ -272,7 +276,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> {{ __('Sales Order') }}</h6>
@@ -300,7 +304,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span>{{ __('Sales Due Invoices') }}</h6>
@@ -329,7 +333,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span>{{ __('Purchase Due Invoices') }}</h6>
@@ -409,6 +413,9 @@
                 processing: true,
                 serverSide: true,
                 searchable: true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.stock.alert') }}",
                     "data": function(d) {
@@ -446,6 +453,9 @@
             var saleOrderTable = $('#sales_order_table').DataTable({
                 "processing": true,
                 "serverSide": true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.sales.order') }}",
                     "data": function(d) {
@@ -485,6 +495,9 @@
             var saleDueInvoices = $('#sales_due_invoices').DataTable({
                 "processing": true,
                 "serverSide": true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.sales.due.invoices') }}",
                     "data": function(d) {
@@ -524,6 +537,9 @@
             var purchaseDueInvoicestable = $('#purchase_due_invoices_table').DataTable({
                 "processing": true,
                 "serverSide": true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.purchase.due.invoices') }}",
                     "data": function(d) {

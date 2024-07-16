@@ -10,7 +10,6 @@
 @section('content')
     <section>
         <div class="main__content">
-            <!-- =====================================================================BODY CONTENT================== -->
             <div class="sec-name">
                 <div class="breadCrumbHolder module w-100">
                     <div id="breadCrumb3" class="breadCrumb module">

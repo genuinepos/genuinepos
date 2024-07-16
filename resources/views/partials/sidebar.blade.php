@@ -524,7 +524,7 @@
                                             <a href="{{ route('contacts.customers.import.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-file-upload"></i></span>
+                                                        <span><i class="fas fa-file-import"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __('Import Customer') }}</p>

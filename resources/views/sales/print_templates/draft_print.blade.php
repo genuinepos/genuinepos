@@ -287,12 +287,12 @@
                     <table class="table print-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Net Total Amount') }} :{{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
+                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Net Total Amount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
                                 <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($draft->net_total_amount) }}</td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold"> {{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
+                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold"> {{ __('Sale Discount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     @if ($draft->order_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($draft->order_discount_amount) }}
@@ -304,21 +304,21 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
+                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Sale Tax') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     ({{ $draft->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($draft->order_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </span></td>
+                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Shipment Charge') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($draft->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </span></td>
+                                <td class="text-end" style="font-size:11px!important;"><span class="fw-bold">{{ __('Total Amount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</span></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($draft->total_invoice_amount) }}
                                 </td>
@@ -640,12 +640,12 @@
                     <table class="table print-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Net Total Amount') }} :{{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Net Total Amount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:9px!important;height:10px; line-height:10px;">{{ App\Utils\Converter::format_in_bdt($draft->net_total_amount) }}</td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Sale Discount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:9px!important;height:10px; line-height:10px;">
                                     @if ($draft->order_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($draft->order_discount_amount) }}
@@ -657,21 +657,21 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Sale Tax') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:9px!important;height:10px; line-height:10px;">
                                     ({{ $draft->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($draft->order_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Shipment Charge') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($draft->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important;">{{ __('Total Amount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($draft->total_invoice_amount) }}
                                 </td>

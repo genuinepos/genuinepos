@@ -241,7 +241,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $transferStock?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->total_stock_value) }}
                                 </td>

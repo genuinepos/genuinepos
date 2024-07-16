@@ -191,53 +191,53 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Order Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Order Discount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $order->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $order->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Order Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $order->order_tax_percent . '%)=' . $order->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Ordered Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Ordered Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($order->total_invoice_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Advance Received') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Advance Received') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($order->paid) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due (On Order)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($order->due) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt(0) }}
                                     </td>

@@ -166,7 +166,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                            <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredients') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <th class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                         </tr>
                     </tfoot>
@@ -187,11 +187,11 @@
                     <table class="table print-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                             </tr>
                             <tr>
-                                <th class="text-end" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                             </tr>
                         </tbody>
@@ -403,7 +403,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5" class="text-end" style="font-size:9px!important;">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                            <th colspan="5" class="text-end" style="font-size:9px!important;">{{ __('Total Ingredients') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <th class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                         </tr>
                     </tfoot>
@@ -424,11 +424,11 @@
                     <table class="table print-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Addl. Production Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                             </tr>
                             <tr>
-                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                             </tr>
                         </tbody>

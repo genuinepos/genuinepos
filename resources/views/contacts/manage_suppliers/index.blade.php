@@ -67,7 +67,7 @@
                         @endif
 
                         @if (auth()->user()->can('supplier_import'))
-                            <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Suppliers') }}</a>
+                            <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Import Suppliers') }}</a>
                         @endif
 
                         <a href="{{ route('reports.suppliers.print') }}" class="btn btn-sm btn-primary" id="printReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>

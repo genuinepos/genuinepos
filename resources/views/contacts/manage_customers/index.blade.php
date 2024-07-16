@@ -57,7 +57,7 @@
                         @endif
 
                         @if (auth()->user()->can('customer_import'))
-                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
+                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
                         @endif
 
                         @if (auth()->user()->can('customer_report'))

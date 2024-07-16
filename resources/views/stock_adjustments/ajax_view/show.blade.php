@@ -145,14 +145,14 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($adjustment->net_total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Recovered Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Recovered Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                                     </td>

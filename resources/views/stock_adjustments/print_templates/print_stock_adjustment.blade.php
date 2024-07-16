@@ -202,14 +202,14 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustment->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Recovered Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Recovered Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                                 </td>
@@ -466,14 +466,14 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important;">{{ __('Net Total Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustment->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important;">{{ __('Recovered Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important;">{{ __('Recovered Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                                 </td>

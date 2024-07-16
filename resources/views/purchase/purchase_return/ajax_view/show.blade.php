@@ -155,49 +155,49 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Return Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Return Discount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $return->return_discount_type == 1 ? '(Fixed)=' : '%=' }} {{ $return->return_discount_amount }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Return Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Return Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Returned Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Returned Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Received Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->received_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due (On Return Voucher)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->due) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>

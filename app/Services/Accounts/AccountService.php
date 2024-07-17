@@ -419,11 +419,12 @@ class AccountService
 
         $customerAccounts = $query->select(
             'accounts.id',
-            'is_walk_in_customer',
+            'accounts.is_walk_in_customer',
             'accounts.name',
             'accounts.phone',
             'contacts.pay_term_number',
             'contacts.pay_term',
+            'account_groups.name as account_group_name',
             'account_groups.sub_sub_group_number',
             'account_groups.default_balance_type',
         );
@@ -434,11 +435,12 @@ class AccountService
             ->where('account_groups.sub_sub_group_number', 10)
             ->select(
                 'accounts.id',
-                'is_walk_in_customer',
+                'accounts.is_walk_in_customer',
                 'accounts.name',
                 'accounts.phone',
                 'contacts.pay_term_number',
                 'contacts.pay_term',
+                'account_groups.name as account_group_name',
                 'account_groups.sub_sub_group_number',
                 'account_groups.default_balance_type',
             )

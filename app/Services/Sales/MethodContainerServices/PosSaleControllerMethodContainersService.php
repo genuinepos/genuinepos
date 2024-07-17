@@ -98,7 +98,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         return $data;
     }
 
-    public function createMethodContainer(int|string $jobCardId = 'no_id', ?int $saleScreenType = null): mixed
+    public function createMethodContainer(object $codeGenerator, int|string $jobCardId = 'no_id', ?int $saleScreenType = null): mixed
     {
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['user', 'branch', 'branch.parentBranch', 'cashCounter'])
             ->where('user_id', auth()->user()->id)
@@ -142,6 +142,8 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
             $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+            $voucherNo = $this->saleService->salesInvoiceOrOthersId(codeGenerator: $codeGenerator);
 
             $jobCardData = [];
 
@@ -189,7 +191,8 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 'methods',
                 'taxAccounts',
                 'customerAccounts',
-                'saleScreenType'
+                'saleScreenType',
+                'voucherNo',
             ), $jobCardData);
 
             return view('sales.pos.create', $data);

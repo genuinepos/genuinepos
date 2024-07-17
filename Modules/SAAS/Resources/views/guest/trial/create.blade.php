@@ -117,20 +117,20 @@
                                 <div class="container position-relative py-5" id="preloader-animitation-section">
                                     <div class="o_start_trial_message_container position-relative">
                                         <h1 class="o_start_trial_message text-white animate o_start_first one fadeInUpOne message">
-                                            Welcome to GPOS System
+                                            {{ __("Welcome to GPOS System") }}
                                             <span class="d-block">
                                                 <span class="slides fadeInUpOne">
                                                     <span class="slide1">
-                                                        <span>Build Your Shop</span>
-                                                        <span>Manage Your Inventory</span>
-                                                        <span>Mange Your Sales</span>
+                                                        <span>{{ __("Build Your Store") }}</span>
+                                                        <span>{{ __("Manage Your Inventory") }}</span>
+                                                        <span>{{ __("Mange Your Sales") }}</span>
                                                     </span>
                                                 </span>
                                             </span>
                                         </h1>
 
                                         <h2 class="o_start_trial_message text-white animate o_start_second two fadeInUpTwo" >
-                                            <span class="d-block">No. #1</span> Retail POS Software.
+                                            <span class="d-block">No. #1</span> {{ __("Retail POS Software.") }}
                                         </h2>
                                     </div>
                                 </div>

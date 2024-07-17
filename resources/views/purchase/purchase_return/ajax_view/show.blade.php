@@ -44,7 +44,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($return->branch_id) {
@@ -231,7 +231,6 @@
                 @endphp
 
                 @if (auth()->user()->can('purchase_return_edit') && $return->branch_id == auth()->user()->branch_id)
-
                     <a href="{{ route('purchase.returns.edit', $return->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                 @endif
 

@@ -53,7 +53,7 @@
     </style>
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
-@section('title', 'Shop Settings - ')
+@section('title', 'Store Settings - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -76,7 +76,7 @@
                                     <ul class="menus_unorder_list">
                                         @if (auth()->user()->can('business_or_shop_settings'))
                                             <li class="menu_list">
-                                                <a class="menu_btn menu_active" data-form="branch_settings_form" href="#">{{ __('Shop Settings') }}</a>
+                                                <a class="menu_btn menu_active" data-form="branch_settings_form" href="#">{{ __('Store Settings') }}</a>
                                             </li>
                                         @endif
 
@@ -285,7 +285,7 @@
     @if (auth()->user()->can('prefix_settings'))
         @include('setups.branches.settings.partials.js_partials.prefix_settings_js')
     @endif
-    
+
     @include('setups.branches.settings.partials.js_partials.invoice_layout_settings_js')
     @include('setups.branches.settings.partials.js_partials.print_settings_js')
     @include('setups.branches.settings.partials.js_partials.system_settings_js')

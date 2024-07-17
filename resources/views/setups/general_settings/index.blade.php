@@ -79,7 +79,7 @@
                                     <ul class="menus_unorder_list">
                                         @if (auth()->user()->can('business_or_shop_settings'))
                                             <li class="menu_list">
-                                                <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __('Business Settings') }}</a>
+                                                <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __('Company Settings') }}</a>
                                             </li>
                                         @endif
 
@@ -268,7 +268,7 @@
     @endif
 
     @include('setups.general_settings.partials.js_partials.dashboard_settings_js')
-    
+
     @if (auth()->user()->can('prefix_settings'))
         @include('setups.general_settings.partials.js_partials.prefix_settings_js')
     @endif

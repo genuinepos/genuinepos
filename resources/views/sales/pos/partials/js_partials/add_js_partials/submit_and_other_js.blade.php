@@ -277,7 +277,7 @@
 
         if (parseFloat(quantity) > parseFloat(current_stock)) {
 
-            toastr.error("{{ __('Serial No: ') }} " + (index + 1) + ',' + " {{ __('Product Name: ') }}" + productName + " {{ __('Only ') }}" + current_stock + '/' + unitName + " {{ __('is available in this Shop/Business.') }}");
+            toastr.error("{{ __('Serial No: ') }} " + (index + 1) + ',' + " {{ __('Product Name: ') }}" + productName + " {{ __('Only ') }}" + current_stock + '/' + unitName + " {{ __('is available in this store/company.') }}");
             return false;
         }
 

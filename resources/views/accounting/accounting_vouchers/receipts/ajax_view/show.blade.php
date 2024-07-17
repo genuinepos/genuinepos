@@ -53,7 +53,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($receipt->branch_id) {
@@ -168,10 +168,7 @@
                 </div>
 
                 @php
-                    $creditDescription = $receipt
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'cr')
-                        ->first();
+                    $creditDescription = $receipt->voucherDescriptions()->where('amount_type', 'cr')->first();
                 @endphp
 
                 <div class="purchase_product_table mt-2">
@@ -423,7 +420,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -441,7 +440,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

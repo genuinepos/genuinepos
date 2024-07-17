@@ -380,7 +380,7 @@
                     return;
                 }
 
-                var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }} " : " {{ __('in the Shop/Business') }} ";
+                var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }} " : " {{ __('in the Store/Company') }} ";
                 if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
                     toastr.error("{{ __('Current stock is') }} " + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);

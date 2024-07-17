@@ -14,3 +14,39 @@ if (!function_exists('file_link')) {
         }
     }
 }
+
+if (!function_exists('location_label')) {
+
+    function location_label(?string $specificName = null): string
+    {
+        $business = __('Company');
+        $store = __('Store');
+
+        if (isset($specificName)) {
+
+            if ($specificName == 'business') {
+
+                return $business;
+            } else if ($specificName == 'branch') {
+
+                return $store;
+            }
+        }
+
+        $storeWithBusiness = $store . '/' . $business;
+
+        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == \App\Enums\BooleanType::False->value) {
+
+            return $storeWithBusiness;
+        } else {
+
+            if (auth()->user()->branch_id) {
+
+                return $store;
+            } else {
+
+                return $business;
+            }
+        }
+    }
+}

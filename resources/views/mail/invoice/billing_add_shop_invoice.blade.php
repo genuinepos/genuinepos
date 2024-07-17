@@ -397,7 +397,7 @@
 @endphp
 <body>
     <div class="email-container">
-        <h2 class="page-title">Increased Shop Invoice</h2>
+        <h2 class="page-title">{{ __("Increased Store Invoice") }}</h2>
         <table>
             <tbody>
                 <tr>
@@ -408,8 +408,8 @@
                             </div>
                             <div class="content_customer" style="text-align: right;">
                                 <span style="font-weight: bold;">{{ config('speeddigit.name') }}</span> <br>
-                                Address : {{ config('speeddigit.address') }} <br>
-                                <span style="font-weight: bold;">Phone:</span> {{ config('speeddigit.phone') }}, <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
+                                {{ __("Address") }} : {{ config('speeddigit.address') }} <br>
+                                <span style="font-weight: bold;">{{ __("Phone") }}:</span> {{ config('speeddigit.phone') }}, <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
                             </div>
                         </div>
                     </td>
@@ -418,28 +418,28 @@
                     <td>
                         <div class="mail-body">
                             <div class="customer">
-                                <strong>Customer: {{ $user->name }}</strong><br>
-                                Address: {{ $user->address }} <br>
-                                Phone: {{ $user->phone }}<br>
+                                <strong>{{ __("Customer") }}: {{ $user->name }}</strong><br>
+                                {{ __("Address") }}: {{ $user->address }} <br>
+                                {{ __("Phone") }}: {{ $user->phone }}<br>
                             </div>
 
                             <div class="invoice">
-                                <strong>INVOICE</strong><br>
+                                <strong>{{ __("INVOICE") }}</strong><br>
                             </div>
 
                             <div class="date">
-                                Date: {{ date('Y-m-d') }}<br>
+                                {{ __("Date") }}: {{ date('Y-m-d') }}<br>
                             </div>
 
                             <br> <br> <br>
                             <table width="100%" border="1" cellspacing="0" cellpadding="5" style="margin: 10px 0; padding: 10px;">
                                 <!-- Table header -->
                                 <tr>
-                                    <th>Increased Shop</th>
-                                    <th>Price Per Shop</th>
-                                    <th>Pirce Period</th>
-                                    <th>Period Count</th>
-                                    <th>Subtotal</th>
+                                    <th>{{ __("Increased Store") }}</th>
+                                    <th>{{ __("Price Per Store") }}</th>
+                                    <th>{{ __("Pirce Period") }}</th>
+                                    <th>{{ __("Period Count") }}</th>
+                                    <th>{{ __("Subtotal") }}</th>
                                 </tr>
                                 <!-- Table data -->
                                 <tr>
@@ -456,33 +456,33 @@
                                 </tr>
 
                                 <tr>
-                                    <th colspan="4" style="text-align: right;">Discount</th>
+                                    <th colspan="4" style="text-align: right;">{{ __("Discount") }}</th>
                                     <th>: {{ $planPriceCurrency }} {{ $discount }}</th>
                                 </tr>
 
                                 <tr>
-                                    <th colspan="4" style="text-align: right;">Tax:</th>
+                                    <th colspan="4" style="text-align: right;">{{ __("Tax") }}:</th>
                                     <th>: Free</th>
                                 </tr>
 
                                 <tr>
-                                    <th colspan="4" style="text-align: right;">Total Payable</th>
+                                    <th colspan="4" style="text-align: right;">{{ __("Total Payable") }}</th>
                                     <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</th>
                                 </tr>
 
                                 <tr>
-                                    <th colspan="4" style="text-align: right;">Paid</th>
+                                    <th colspan="4" style="text-align: right;">{{ __("Paid") }}</th>
                                     <th>: {{ $planPriceCurrency }} {{ \App\Utils\Converter::format_in_bdt($totalPayable) }}</th>
                                 </tr>
 
                                 <tr>
-                                    <th colspan="4" style="text-align: right;">Due</th>
+                                    <th colspan="4" style="text-align: right;">{{ __("Due") }}</th>
                                     <th>: {{ $planPriceCurrency }} 0.00</th>
                                 </tr>
                             </table>
 
                             <br><br><br>
-                            <p style="text-align:center; margin-top:50px; font-size:16px;">Thanks for using our service</p>
+                            <p style="text-align:center; margin-top:50px; font-size:16px;">{{ __("Thanks for using our service") }}</p>
                         </div>
                     </td>
                 </tr>

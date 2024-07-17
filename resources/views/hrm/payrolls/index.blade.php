@@ -37,10 +37,10 @@
                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -111,7 +111,7 @@
                                     <th>{{ __('Month/Year') }}</th>
                                     <th>{{ __('Employee') }}</th>
                                     <th>{{ __('Payroll voucher') }}</th>
-                                    <th>{{ __('Shop/Business') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     <th>{{ __('Department') }}</th>
                                     <th>{{ __('Payment Status') }}</th>
                                     <th>{{ __('Gross Amount') }}</th>

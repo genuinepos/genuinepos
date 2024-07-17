@@ -26,7 +26,7 @@
             <tbody>
                 <tr>
                     <td class="fw-bold">
-                        {{ __('Multi Shop Management System') }}({{ __('Business') }})
+                        {{ __('Multi Store Management System') }}({{ __('Company') }})
                     </td>
 
                     <td>

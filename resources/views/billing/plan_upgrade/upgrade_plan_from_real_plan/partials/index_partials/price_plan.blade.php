@@ -74,7 +74,7 @@
                     <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
                 </tr>
                 <tr>
-                    <th>{{ __('Business Location (Shop)') }}</th>
+                    <th>{{ __('Business Location (Store)') }}</th>
                     @foreach ($plans as $plan)
                         <td class="text-center fw-bold">{{ __("1") }}</td>
                     @endforeach
@@ -86,7 +86,7 @@
                     <th>{{ __('Cash Counter') }}</th>
                     @foreach ($plans as $plan)
                         <td class="text-center">
-                            <span class="fw-bold">{{ isset($plan->features['cash_counter_count']) ? $plan->features['cash_counter_count'] : 0 }}</span>/{{ __("Per Shop") }}
+                            <span class="fw-bold">{{ isset($plan->features['cash_counter_count']) ? $plan->features['cash_counter_count'] : 0 }}</span>/{{ __("Per Store") }}
                         </td>
                     @endforeach
                     <td class="text-center">{{ __('Everything of business') }}</td>
@@ -142,14 +142,14 @@
                     @foreach ($plans as $plan)
                         <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
                     @endforeach
-                    <td class="text-center">Everything of business</td>
+                    <td class="text-center">{{ __("Everything of business") }}</td>
                 </tr>
                 <tr>
                     <th>{{ __('Warehouse') }}</th>
                     @foreach ($plans as $plan)
                         <td class="text-center">
                             @if (isset($plan->features['warehouse_count']) && $plan->features['warehouse_count'] > 0)
-                                <span class="fw-bold">{{ $plan->features['warehouse_count'] }}</span>/{{ __("Per Shop") }}
+                                <span class="fw-bold">{{ $plan->features['warehouse_count'] }}</span>/{{ __("Per Store") }}
                             @else
                                 <span class="icon check"><i class="far fa-minus text-secondary fa-2x"></i></span>
                             @endif
@@ -195,7 +195,7 @@
                     @foreach ($plans as $plan)
                         <td class="text-center">
                             @if (isset($plan->features['employee_count']) && $plan->features['employee_count'] > 0)
-                                {{ $plan->features['employee_count'] }}/{{ __('Per Shop Employee') }}
+                                {{ $plan->features['employee_count'] }}/{{ __('Per Store Employee') }}
                             @else
                                 <span class="icon check"><i class="far fa-minus text-secondary fa-2x"></i></span>
                             @endif

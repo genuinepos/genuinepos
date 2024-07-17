@@ -43,20 +43,16 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($stockIssue->branch_id) {
-
                                         if ($stockIssue?->branch?->parentBranch) {
-
                                             $branchName = $stockIssue?->branch?->parentBranch?->name . '(' . $stockIssue?->branch?->area_name . ')' . '-(' . $stockIssue?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $stockIssue?->branch?->name . '(' . $stockIssue?->branch?->area_name . ')' . '-(' . $stockIssue?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -65,10 +61,8 @@
 
                             <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
                                 @if ($stockIssue->branch)
-
                                     {{ $stockIssue->branch->phone }}
                                 @else
-
                                     {{ $generalSettings['business_or_shop__phone'] }}
                                 @endif
                             </li>
@@ -107,20 +101,15 @@
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 @if ($issuedProduct?->stockWarehouse)
-
                                                     {{ $issuedProduct?->stockWarehouse?->warehouse_name . '/' . $issuedProduct?->stockWarehouse?->warehouse_code }}
                                                 @else
                                                     @if ($stockIssue?->branch)
-
                                                         @if ($stockIssue?->branch?->parent_branch_id)
-
                                                             {{ $stockIssue?->branch?->parentBranch?->name }}
                                                         @else
-
                                                             {{ $stockIssue?->branch?->name }}
                                                         @endif
                                                     @else
-
                                                         {{ $generalSettings['business_or_shop__business_name'] }}
                                                     @endif
                                                 @endif
@@ -259,7 +248,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

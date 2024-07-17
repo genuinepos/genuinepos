@@ -25,7 +25,7 @@
                                         {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
+                                    {{ $generalSettings['business_or_shop__business_name'] . '('.__('Company').')' }}
                                 @endif
                             </li>
                         </ul>

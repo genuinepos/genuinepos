@@ -58,7 +58,7 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop created successfully'));
+        return response()->json(__('Store created successfully'));
     }
 
     public function edit($id, BranchEditRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
@@ -85,7 +85,7 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop updated successfully'));
+        return response()->json(__('Store updated successfully'));
     }
 
     public function delete($id, BranchDeleteRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
@@ -106,14 +106,14 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop deleted successfully'));
+        return response()->json(__('Store deleted successfully'));
     }
 
     public function deleteLogo($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         $deleteLogoMethodContainer = $branchControllerMethodContainersInterface->deleteLogoMethodContainer(id: $id);
 
-        return response()->json(__('Shop logo is deleted successfully'));
+        return response()->json(__('Store logo is deleted successfully'));
     }
 
     public function parentWithChildBranches($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)

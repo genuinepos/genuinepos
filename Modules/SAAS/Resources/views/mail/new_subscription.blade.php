@@ -144,7 +144,7 @@
 
 <body>
     <div class="email-container">
-        <h2 class="page-title">Subscription Has Been Confirmed</h2>
+        <h2 class="page-title">{{ __("Subscription Has Been Confirmed") }}</h2>
         <table>
             <tbody>
                 <tr>
@@ -157,38 +157,38 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Full Name</td>
+                    <td>{{ __("Full Name") }}</td>
                     <td>: {{ $data['fullname'] }}</td>
                 </tr>
                 <tr>
-                    <td>Email</td>
+                    <td>{{ __("Email") }}</td>
                     <td>: {{ $data['email'] }}</td>
                 </tr>
                 <tr>
-                    <td>Username</td>
+                    <td>{{ __("Username") }}</td>
                     <td>: {{ $data['username'] }}</td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td>{{ __("Password") }}</td>
                     <td>: You have entered when register</td>
                 </tr>
                 <tr>
-                    <td>App Url</td>
+                    <td>{{ __("App Url") }}</td>
                     <td>: <a href="{{ $appUrl }}">{{ $appUrl }}</a></td>
                 </tr>
                 <tr>
-                    <td>Details:</td>
+                    <td>{{ __("Details") }}:</td>
                 </tr>
                 <tr>
                     <td>
                         <table>
                             <tr style="border-bottom: 1px solid black;">
-                                <th>Plan</th>
-                                <th>Price</th>
-                                <th>Shop Count</th>
-                                <th>Price Period</th>
-                                <th>Price Period Count</th>
-                                <th>Subtotal</th>
+                                <th>{{ __("Plan") }}</th>
+                                <th>{{ __("Price") }}</th>
+                                <th>{{ __("Store Count") }}</th>
+                                <th>{{ __("Price Period") }}</th>
+                                <th>{{ __("Price Period Count") }}</th>
+                                <th>{{ __("Subtotal") }}</th>
                             </tr>
 
                             <tr>
@@ -202,7 +202,7 @@
 
                             @if (isset($data['has_business']))
                                 <tr>
-                                    <td>Multi Shop Management System(Business)</td>
+                                    <td>{{ __("Multi Store Management System") }}({{ __("Company") }})</td>
                                     <td>{{ App\Utils\Converter::format_in_bdt($data['business_price']) }}</td>
                                     <td>...</td>
                                     <td>{{ $data['business_price_period'] }}</td>
@@ -212,27 +212,27 @@
                             @endif
 
                             <tr>
-                                <td colspan="5" style="text-align: right;">Net Total</td>
+                                <td colspan="5" style="text-align: right;">{{ __("Net Total") }}</td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($data['net_total']) }}</td>
                             </tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: right;">Discount</td>
+                                <td colspan="5" style="text-align: right;">{{ __("Discount") }}</td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($data['discount']) }}</td>
                             </tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: right;">Total Payable</td>
+                                <td colspan="5" style="text-align: right;">{{ __("Total Payable") }}</td>
                                 <td>{{ App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
                             </tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: right;">Paid</td>
+                                <td colspan="5" style="text-align: right;">{{ __("Paid") }}</td>
                                 <td>{{ $data['payment_status'] == 1 ? App\Utils\Converter::format_in_bdt($data['total_payable']) : '0.00' }}</td>
                             </tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: right;">Due</td>
+                                <td colspan="5" style="text-align: right;">{{ __("Due") }}</td>
                                 <td>{{ $data['payment_status'] == 1 ? '0.00' : App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
                             </tr>
                         </table>

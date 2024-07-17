@@ -23,10 +23,10 @@
                                     <div class="form-group row">
                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-4">
-                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                <label><strong>{{ location_label() }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option value="">{{ __('All') }}</option>
-                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             @php
@@ -75,7 +75,7 @@
                                 <tr>
                                     <th>{{ __('Serial') }}</th>
                                     <th>{{ __('Layout Name') }}</th>
-                                    <th>{{ __('Shop/Business') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     <th>{{ __('Is Header Less') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>

@@ -253,7 +253,7 @@
                     return;
                 }
 
-                var stockLocationMessage = ' in the Shop';
+                var stockLocationMessage = ' in the Store';
                 if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
                     toastr.error('Current stock is ' + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);

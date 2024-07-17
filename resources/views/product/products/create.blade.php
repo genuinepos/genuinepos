@@ -235,7 +235,7 @@
                                         @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>
+                                                    <label class="col-4"><b>{{ __("Store Access") }}</b> </label>
                                                     <div class="col-8">
                                                         <input type="hidden" name="access_branch_count" value="access_branch_count">
                                                         <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>

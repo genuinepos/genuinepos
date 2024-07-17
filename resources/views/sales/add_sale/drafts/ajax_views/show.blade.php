@@ -2,10 +2,7 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $defaultLayout = DB::table('invoice_layouts')
-        ->where('branch_id', null)
-        ->where('is_default', 1)
-        ->first();
+    $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $draft?->branch?->branchSetting?->addSaleInvoiceLayout ? $draft?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
 <!-- Details Modal -->
@@ -42,7 +39,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($draft->branch_id) {
@@ -206,7 +203,6 @@
                             @endphp
 
                             @if (auth()->user()->can('edit_add_sale') && $draft->branch_id == auth()->user()->branch_id)
-
                                 <a href="{{ route('sale.drafts.edit', [$draft->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
 

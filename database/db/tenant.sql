@@ -2780,7 +2780,7 @@ INSERT INTO `short_menus` (`id`, `url`, `name`, `icon`, `permission`, `plan_feat
 (46, 'transfer.stocks.create', 'Add Transfer Stock', 'fas fa-plus-circle ', 'transfer_stock_create', 'transfer_stocks', 'modules__transfer_stock', NULL, NULL),
 (47, 'transfer.stocks.index', 'Transfer Stock', 'fas fa-list', 'transfer_stock_index', 'transfer_stocks', 'modules__transfer_stock', NULL, NULL),
 (48, 'receive.stock.from.branch.index', 'Receive From Warehouse', 'fas fa-list', 'transfer_stock_receive_from_warehouse', 'transfer_stocks', 'modules__transfer_stock', NULL, NULL),
-(49, 'receive.stock.from.warehouse.index', 'Receive From Shop/Business', 'fas fa-list', 'transfer_stock_receive_from_branch', 'transfer_stocks', 'modules__transfer_stock', NULL, NULL),
+(49, 'receive.stock.from.warehouse.index', 'Receive From Store/Company', 'fas fa-list', 'transfer_stock_receive_from_branch', 'transfer_stocks', 'modules__transfer_stock', NULL, NULL),
 (50, 'stock.adjustments.create', 'Add Stock Adjustment', 'fas fa-plus-circle', 'stock_adjustment_add', 'stock_adjustments', 'modules__stock_adjustments', NULL, NULL),
 (51, 'stock.adjustments.index', 'Stock Adjustment List', 'fas fa-list', 'stock_adjustment_all', 'stock_adjustments', 'modules__stock_adjustments', NULL, NULL),
 (52, 'banks.index', 'Banks', 'fas fa-list', 'banks_index', 'accounting', 'modules__accounting', NULL, NULL),

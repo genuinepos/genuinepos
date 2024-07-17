@@ -158,7 +158,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -171,7 +171,7 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ location_label() }}</th>
                         <th>{{ __('Opening Balance') }}</th>
                         <th>{{ __('Total Sale') }}</th>
                         <th>{{ __('Total Purchase') }}</th>
@@ -405,7 +405,7 @@
 </div>
 
 @php
-    $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
+    $fileBranchName = $filteredBranchName ? location_label() . ': ' . $filteredBranchName : $ownOrParentbranchName;
     $fileCustomerName = $filteredCustomerName ? '__' . $filteredCustomerName : '';
 
     $filename = __('Customer Report') . '__' . $fileBranchName . $fileCustomerName;

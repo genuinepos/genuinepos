@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-xl-8 col-lg-7 col-md-6">
         <div class="billing-details business-setup">
-            <h3 class="title">{{ __('Business Setup') }}</h3>
+            <h3 class="title">{{ __('Company Setup') }}</h3>
             <div class="form-row">
                 <div class="form-col-5">
                     <div class="position-relative">
-                        <label for="business">{{ __('Business Name') }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Business Name') }}" autocomplete="off">
+                        <label for="business">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+                        <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Company Name') }}" autocomplete="off">
                     </div>
                 </div>
 

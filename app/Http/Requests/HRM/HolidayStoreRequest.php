@@ -36,7 +36,7 @@ class HolidayStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'allowed_branch_ids.required' => __('Allowed shop/business is required')
+            'allowed_branch_ids.required' => __('Allowed Store/Company is required')
         ];
     }
 }

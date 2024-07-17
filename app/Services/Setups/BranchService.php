@@ -220,17 +220,17 @@ class BranchService
 
         if (count($deleteBranch->childBranches) > 0) {
 
-            return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more chain shop.')];
+            return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more chain shop.')];
         }
 
         if (count($deleteBranch->sales) > 0) {
 
-            return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more sales.')];
+            return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more sales.')];
         }
 
         if (count($deleteBranch->purchases) > 0) {
 
-            return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more purchases.')];
+            return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more purchases.')];
         }
 
         FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteBranch->logo);
@@ -402,7 +402,7 @@ class BranchService
 
         if ($branchLimit == $branchCount) {
 
-            return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
+            return ['pass' => false, 'msg' => __("Store limit is ${branchLimit}")];
         }
 
         return ['pass' => true];
@@ -417,7 +417,7 @@ class BranchService
 
         if ($branchLimit <= $branchCount) {
 
-            return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
+            return ['pass' => false, 'msg' => __("Store limit is ${branchLimit}")];
         }
 
         return ['pass' => true];

@@ -84,37 +84,37 @@
 
             if ($('#business_name').val() == '') {
 
-                toastr.error("{{ __('Business name is required.') }}");
+                toastr.error("{{ __('Company name is required.') }}");
                 return;
             }
 
             if ($('#business_address').val() == '') {
 
-                toastr.error("{{ __('Business address is required.') }}");
+                toastr.error("{{ __('Company address is required.') }}");
                 return;
             }
 
             if ($('#business_email').val() == '') {
 
-                toastr.error("{{ __('Business email address is required.') }}");
+                toastr.error("{{ __('Company email address is required.') }}");
                 return;
             }
 
             if ($('#business_currency_id').val() == '') {
 
-                toastr.error("{{ __('Business currency is required.') }}");
+                toastr.error("{{ __('Company currency is required.') }}");
                 return;
             }
 
             if ($('#business_timezone').val() == '') {
 
-                toastr.error("{{ __('Business timezone is required.') }}");
+                toastr.error("{{ __('Company timezone is required.') }}");
                 return;
             }
 
             if ($('#business_account_start_date').val() == '') {
 
-                toastr.error("{{ __('Business account start date is required.') }}");
+                toastr.error("{{ __('Company account start date is required.') }}");
                 return;
             }
         }

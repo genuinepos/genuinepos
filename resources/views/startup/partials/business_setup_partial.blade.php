@@ -1,23 +1,23 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="billing-details business-setup">
-            <h3 class="title">{{ __('Business Setup') }}</h3>
+            <h3 class="title">{{ __('Company Setup') }}</h3>
             <div class="form-row">
                 <div class="col-md-4">
-                    <label for="business_name">{{ __('Business Name') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="business_name" id="business_name" class="form-control" value="{{ $generalSettings['business_or_shop__business_name'] }}" placeholder="{{ __('Enter Business Name') }}">
+                    <label for="business_name">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+                    <input required type="text" name="business_name" id="business_name" class="form-control" value="{{ $generalSettings['business_or_shop__business_name'] }}" placeholder="{{ __('Enter Company Name') }}">
                     <span class="error error_business_name"></span>
                 </div>
 
                 <div class="col-md-4">
                     <label for="address">{{ __('Address') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="business_address" class="form-control" id="business_address" value="{{ $generalSettings['business_or_shop__address'] }}" placeholder="{{ __('Business Address') }}">
+                    <input required type="text" name="business_address" class="form-control" id="business_address" value="{{ $generalSettings['business_or_shop__address'] }}" placeholder="{{ __('Company Address') }}">
                     <span class="error error_business_address"></span>
                 </div>
 
                 <div class="col-md-4">
                     <label for="phone">{{ __('Phone') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="business_phone" class="form-control" id="business_phone" value="{{ $generalSettings['business_or_shop__phone'] }}" placeholder="{{ __('Business Phone') }}">
+                    <input required type="text" name="business_phone" class="form-control" id="business_phone" value="{{ $generalSettings['business_or_shop__phone'] }}" placeholder="{{ __('Company Phone') }}">
                     <span class="error error_business_phone"></span>
                 </div>
             </div>
@@ -117,7 +117,7 @@
 
             <div class="form-row">
                 <div class="col-md-4">
-                    <label>{{ __('Business Logo') }} <small class="text-danger">{{ __('Recommended Size : H : 60px; W: 200px;') }}</small></label>
+                    <label>{{ __('Company Logo') }} <small class="text-danger">{{ __('Recommended Size : H : 60px; W: 200px;') }}</small></label>
                     <input type="file" name="business_logo" id="business_logo" data-allowed-file-extensions="png jpeg jpg gif">
                     <span class="error error_business_logo"></span>
                 </div>

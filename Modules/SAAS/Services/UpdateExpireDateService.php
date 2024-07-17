@@ -19,7 +19,7 @@ class UpdateExpireDateService
 
             if ($__businessNewExpireDate->lt($__businessCurrentExpireDate)) {
 
-                return ['pass' => false, 'msg' => __('Business New expire date must be greater then or equal current expired date')];
+                return ['pass' => false, 'msg' => __('Company New expire date must be greater then or equal current expired date')];
             }
 
             $index++;
@@ -35,7 +35,7 @@ class UpdateExpireDateService
 
             if ($__shopNewExpireDate->lt($__shopCurrentExpireDate)) {
 
-                return ['pass' => false, 'msg' => __("(S/L No: ${index}) Shop New expire date must be greater then or equal current expired date")];
+                return ['pass' => false, 'msg' => __("(S/L No: ${index}) Store New expire date must be greater then or equal current expired date")];
             }
             $index++;
         }

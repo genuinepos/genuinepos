@@ -139,7 +139,7 @@
                                             <span class="d-block">
                                                 <span class="slides fadeInUpOne">
                                                     <span class="slide1">
-                                                        <span>{{ __("Build Your Shop") }}</span>
+                                                        <span>{{ __("Build Your Store") }}</span>
                                                         <span>{{ __("Manage Your Inventory") }}</span>
                                                         <span>{{ __("Mange Your Sales") }}</span>
                                                     </span>

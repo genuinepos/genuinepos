@@ -158,7 +158,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -396,7 +396,7 @@
 </div>
 
 @php
-    $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
+    $fileBranchName = $filteredBranchName ? location_label() . ': ' . $filteredBranchName : $ownOrParentbranchName;
     $fileSupplierName = $filteredSupplierName ? '__' . $$filteredSupplierName : '';
 
     $filename = __('Supplier Report') . '__' . $fileBranchName . $fileSupplierName;

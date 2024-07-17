@@ -51,7 +51,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-5"><b>{{ __('Sender Shop/Business') }}</b></label>
+                                        <label class="col-5"><b>{{ __('Sender Store/Company') }}</b></label>
                                         <div class="col-7">
                                             <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                             @php
@@ -90,11 +90,11 @@
 
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <label class="col-5"><b>{{ __('Receiver Shop/Business') }}</b> <span class="text-danger">*</span></label>
+                                            <label class="col-5"><b>{{ __('Receiver Store/Company') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
                                                 <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
-                                                    <option value="" class="fw-bold">{{ __('Select Receiver Shop/Business') }}</option>
-                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                    <option value="" class="fw-bold">{{ __('Select Receiver Store/Company') }}</option>
+                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option {{ $branch->id == $transferStock->receiver_branch_id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                                             @php
@@ -139,7 +139,7 @@
                                     @endphp
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <label class="col-5"><b>{{ __('Receiver Shop/Business') }}</b></label>
+                                            <label class="col-5"><b>{{ __('Receiver Store/Company') }}</b></label>
                                             <div class="col-7">
                                                 <input readonly type="text" class="form-control fw-bold" value="{{ $receiverBranch }}" autocomplete="off">
                                                 <input type="hidden" name="receiver_branch_id" class="form-control fw-bold" value="{{ $transferStock->receiver_branch_id ? $transferStock->receiver_branch_id : 'NULL' }}">

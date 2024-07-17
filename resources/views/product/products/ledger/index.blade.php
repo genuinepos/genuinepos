@@ -113,11 +113,11 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->current_shop_count > 1)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                                        <label><strong>{{ location_label() }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option data-branch_name="{{ __("All") }}" value="">{{ __('All') }}</option>
+                                                            <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
                                                             @if ($generalSettings['subscription']->has_business == 1)
-                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @endif
 
                                                             @foreach ($branches as $branch)
@@ -139,7 +139,7 @@
                                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                             <label><strong>{{ __('Warehouse') }}</strong></label>
                                                             <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
-                                                                <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
+                                                                <option data-warehouse_name="All" value="">{{ __('Select Store/Company First') }}</option>
                                                             </select>
                                                         @else
                                                             @php
@@ -236,7 +236,7 @@
                                                 @if (count($product->variants) > 0)
                                                     <th class="text-start">{{ __('Variant') }}</th>
                                                 @endif
-                                                <th class="text-start">{{ __('Shop/Business') }}</th>
+                                                <th class="text-start">{{ location_label() }}</th>
                                                 <th class="text-start">{{ __('Warehouse') }}</th>
                                                 <th class="text-start">{{ __('Voucher Type') }}</th>
                                                 <th class="text-start">{{ __('Voucher No') }}</th>

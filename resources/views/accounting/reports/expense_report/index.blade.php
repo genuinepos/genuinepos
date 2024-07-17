@@ -29,10 +29,10 @@
                                 <div class="form-group row">
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                            <label><strong>{{ location_label() }} </strong></label>
                                             <select name="branch_id" id="branch_id" class="form-control select2 filter_expense_accounts" autofocus>
                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                 @endforeach
@@ -40,9 +40,9 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Chain Shop') }} </strong></label>
+                                            <label><strong>{{ __('Chain Store') }} </strong></label>
                                             <select name="child_branch_id" class="form-control select2 filter_expense_accounts" id="child_branch_id">
-                                                <option data-child_branch_name="" value="">{{ __('Select Shop First') }}</option>
+                                                <option data-child_branch_name="" value="">{{ __('Select Store First') }}</option>
                                             </select>
                                         </div>
                                     @endif
@@ -121,7 +121,7 @@
                                 <thead>
                                     <tr>
                                         <th>{{ __('Date') }}</th>
-                                        <th>{{ __('Shop/Business') }}</th>
+                                        <th>{{ location_label() }}</th>
                                         <th>{{ __('Ledger/Account Name') }}</th>
                                         <th>{{ __('Voucher Type') }}</th>
                                         <th>{{ __('Voucher No') }}</th>

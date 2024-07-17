@@ -1206,7 +1206,7 @@
 
                                     @if (auth()->user()->can('transfer_stock_receive_from_warehouse') || auth()->user()->can('transfer_stock_receive_from_branch'))
                                         <div class="sub-menu-group">
-                                            <p class="sub-menu-group-title">{{ __('Receive Transferred Stocks') }} <strong></strong></p>
+                                            <p class="sub-menu-group-title">{{ __('Receive Transferred Stock') }} <strong></strong></p>
                                             <div class="sub-menu-row">
                                                 @if (auth()->user()->can('transfer_stock_receive_from_warehouse'))
                                                     <div class="sub-menu-col">
@@ -1229,7 +1229,7 @@
                                                                     <span><i class="fas fa-list-ul"></i></span>
                                                                 </div>
                                                             </div>
-                                                            <p class="switch_text">{{ __('Receive From Shop/Business') }}</p>
+                                                            <p class="switch_text">{{ __('Receive From') }} {{ auth()->user()->branch_id ? location_label('branch') : location_label('business') }}</p>
                                                         </a>
                                                     </div>
                                                 @endif
@@ -1912,7 +1912,7 @@
                                     <span><i class="fas fa-project-diagram"></i></span>
                                 </div>
                             </div>
-                            <p class="switch_text">{{ __('Shops') }}</p>
+                            <p class="switch_text">{{ __('Stores') }}</p>
                             </a>
                         </div>
                         @endif --}}

@@ -122,12 +122,12 @@
                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Shop/Business') }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-4"><b>{{ location_label() }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <input type="hidden" name="branch_count" value="YES">
                                                         <select required name="branch_id" class="form-control" id="branch_id" data-next="user_type">
-                                                            <option value="">{{ __('Select Shop/Business') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="">{{ __('Select Store/Company') }}</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php

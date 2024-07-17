@@ -32,10 +32,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 @php
                                                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -151,7 +151,7 @@
                                                 <tr>
                                                     <th class="text-start">{{ __('Date') }}</th>
                                                     <th class="text-start">{{ __('Particulars') }}</th>
-                                                    <th class="text-start">{{ __('Shop/Business') }}</th>
+                                                    <th class="text-start">{{ location_label() }}</th>
                                                     <th class="text-start">{{ __('Voucher Type') }}</th>
                                                     <th class="text-start">{{ __('Voucher No') }}</th>
                                                     <th class="text-start">{{ __('Tax Ledger A/c') }}</th>
@@ -183,7 +183,7 @@
                                                 <tr>
                                                     <th class="text-start">{{ __('Date') }}</th>
                                                     <th class="text-start">{{ __('Particulars') }}</th>
-                                                    <th class="text-start">{{ __('Shop/Business') }}</th>
+                                                    <th class="text-start">{{ location_label() }}</th>
                                                     <th class="text-start">{{ __('Voucher Type') }}</th>
                                                     <th class="text-start">{{ __('Voucher No') }}</th>
                                                     <th class="text-start">{{ __('Tax Ledger A/c') }}</th>

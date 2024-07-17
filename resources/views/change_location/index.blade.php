@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('Choose Store/Business') }}</title>
+    <title>{{ __('Choose Store/Company') }}</title>
 
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome6/css/all.min.css') }}">
@@ -131,8 +131,8 @@
                     </li>
                     <li>
                         <span class="step-txt">
-                            <span class="step-name">{{ __("Business Details") }}</span>
-                            <span class="step-info">{{ __("Setup your business details") }}</span>
+                            <span class="step-name">{{ __("Company Details") }}</span>
+                            <span class="step-info">{{ __("Setup your Company details") }}</span>
                         </span>
                         <span class="step-number border-primary">3</span>
                     </li>
@@ -179,7 +179,7 @@
                                             </span>
                                             <span class="part-txt">
                                                 <span class="title">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</span>
-                                                <span class="dscr">{{ __('To Supervise All Shops') }}</span>
+                                                <span class="dscr">{{ __('To Supervise All Stores') }}</span>
                                             </span>
                                         </label>
                                     </div>
@@ -192,10 +192,10 @@
                                             <i class="fa-solid fa-shop"></i>
                                         </span>
                                         <span class="part-txt">
-                                            <span class="title">{{ __('Choose Shop') }}</span>
+                                            <span class="title">{{ __('Choose Store') }}</span>
                                             {{-- <span class="dscr">Create corporate account to manage users</span> --}}
                                             <select name="branch_id" class="select2">
-                                                <option value="">{{ __('Select Shop') }}</option>
+                                                <option value="">{{ __('Select Store') }}</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -307,13 +307,13 @@
                 <div class="step-content-wrap">
                     <div class="step-content">
                         <div class="step-heading">
-                            <h4 class="step-title">Business Details</h4>
+                            <h4 class="step-title">Company Details</h4>
                             <span>For further details, visit our <a href="#">Help Page</a>.</span>
                         </div>
                         <div class="business-details-wrap">
                             <form class="row">
                                 <div class="col-12">
-                                    <label for="businessName" class="form-label">Business Name</label>
+                                    <label for="businessName" class="form-label">Company Name</label>
                                     <input type="text" id="businessName" class="form-control">
                                 </div>
                                 <div class="col-12">
@@ -331,7 +331,7 @@
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <label for="businessDscr" class="form-label">Business Description</label>
+                                    <label for="businessDscr" class="form-label">Company Description</label>
                                     <textarea id="businessDscr" rows="6" class="form-control"></textarea>
                                 </div>
                                 <div class="col-12">

@@ -133,6 +133,6 @@ class ShopRenewController extends Controller
             );
         }
 
-        return response()->json(__('Shop/Business renewed successfully'));
+        return response()->json(__('Store/company renewed successfully'));
     }
 }

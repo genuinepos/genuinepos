@@ -2,7 +2,7 @@
     <div class="container ck-container mt-3 pb-5">
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5>{{ __("Verify your Business Account") }}</h5>
+                <h5>{{ __("Verify your Company Account") }}</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('saas.business-verification.send') }}" method="POST">

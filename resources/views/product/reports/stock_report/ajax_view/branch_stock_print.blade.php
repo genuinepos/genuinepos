@@ -137,7 +137,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __('Shop/Business Stock Report Report') }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ location_label() }} {{ __('Stock Report Report') }}</strong></h6>
         </div>
     </div>
 
@@ -153,7 +153,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-3">
@@ -184,7 +184,7 @@
                     <tr>
                         <th class="text-start">{{ __('Product') }}</th>
                         <th class="text-start">{{ __('Code(SKU)') }}</th>
-                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                        <th class="text-start">{{ location_label() }}</th>
                         <th class="text-start">{{ __('Default Unit Cost Inc. Tax') }}</th>
                         <th class="text-start">{{ __('Default Unit Price Exc. Tax') }}</th>
                         <th class="text-end">{{ __('Stock') }}</th>

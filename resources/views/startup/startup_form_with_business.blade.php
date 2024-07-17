@@ -24,7 +24,7 @@
                 <div class="col-12">
                     <div class="tab-nav">
                         <button class="single-nav businessSetupTab active" id="single-nav" data-tab="businessSetupTab">
-                            <span class="txt">{{ __('Business Setup') }}</span>
+                            <span class="txt">{{ __('Company Setup') }}</span>
                         </button>
                     </div>
 

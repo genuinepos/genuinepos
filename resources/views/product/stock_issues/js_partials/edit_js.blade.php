@@ -394,7 +394,7 @@
                     check_quantity = parseFloat(e_quantity) - parseFloat(e_current_quantity);
                 }
 
-                var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }} " : " {{ __('in the Shop/Business') }} ";
+                var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }} " : " {{ __('in the Store/Company') }} ";
 
                 if (parseFloat(check_quantity) > parseFloat(data.stock)) {
 

@@ -110,7 +110,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4 text-end pe-2"><b>{{ __('Shop') }}</b></label>
+                                                <label class="col-4 text-end pe-2"><b>{{ location_label() }}</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="text" class="form-control fw-bold" value="{{ $branchName }}">
                                                 </div>

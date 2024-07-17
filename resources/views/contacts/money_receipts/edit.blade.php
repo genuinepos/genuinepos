@@ -41,7 +41,7 @@
 
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <strong>{{ __('Shop') }}: </strong> {{ $moneyReceipt?->branch ? $moneyReceipt?->branch->name : $generalSettings['business_or_shop__business_name'] }}
+                    <strong>{{ location_label() }}: </strong> {{ $moneyReceipt?->branch ? $moneyReceipt?->branch->name : $generalSettings['business_or_shop__business_name'] }}
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                     <div class="payment_top_card">
                         <table class="table table-sm display modal-table">
                             <tr>
-                                <th class="text-start" style="font-size:11px!important">{{ __('Shop') }}</th>
+                                <th class="text-start" style="font-size:11px!important">{{ location_label() }}</th>
                                 <td class="text-start" style="font-size:11px!important"> :
                                     @if ($moneyReceipt?->contact?->account?->branch)
                                         {{ $moneyReceipt?->contact?->account?->branch?->name }}

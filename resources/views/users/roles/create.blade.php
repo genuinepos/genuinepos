@@ -1223,7 +1223,7 @@
                                                 <input type="checkbox" class="ms-2" id="select_all" data-target="transfer_stocks" autocomplete="off">
                                             </p>
                                             <a data-bs-toggle="collapse" class="collapsed" href="#transfer_stocks_permission" aria-expanded="false">
-                                                {{ __('Transfer Stocks Permissions') }}
+                                                {{ __('Transfer Stock Permissions') }}
                                             </a>
                                         </div>
                                         <div id="transfer_stocks_permission" class="collapse" data-bs-parent="#transfer_stocks_permission" style="">
@@ -1262,7 +1262,7 @@
                                                         <p class="text-info checkbox_input_wrap">
                                                             <label>
                                                                 <input type="checkbox" class="transfer_stock_receive" id="select_all" data-target="transfer_stock_receive" autocomplete="off">
-                                                                <strong>{{ __('Receive Transferred Stocks') }}</strong>
+                                                                <strong>{{ __('Receive Transferred Stock') }}</strong>
                                                             </label>
                                                         </p>
 
@@ -1273,7 +1273,7 @@
 
                                                         <p class="checkbox_input_wrap mt-1">
                                                             <input type="checkbox" name="transfer_stock_receive_from_branch" id="transfer_stock_receive_from_branch" class="transfer_stock_receive transfer_stocks">
-                                                            <label for="transfer_stock_receive_from_branch">{{ __('Receive From Shop/Business') }}</label>
+                                                            <label for="transfer_stock_receive_from_branch">{{ __('Receive From Store/Company') }}</label>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1310,7 +1310,7 @@
                                                         <div class="col-md-6">
                                                             <p class="checkbox_input_wrap mt-1">
                                                                 <input type="checkbox" name="business_or_shop_settings" id="business_or_shop_settings" class="general_settings setup">
-                                                                <label for="business_or_shop_settings">{{ __('Business/Shop Settings') }}</label>
+                                                                <label for="business_or_shop_settings">{{ __('Company/Store Settings') }}</label>
                                                             </p>
 
                                                             <p class="checkbox_input_wrap mt-1">
@@ -1421,28 +1421,28 @@
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
                                                             <input type="checkbox" class="setup" id="select_all" data-target="shops" autocomplete="off">
-                                                            <strong>{{ __('Shops') }}</strong>
+                                                            <strong>{{ __('Stores') }}</strong>
                                                         </label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="branches_index" id="branches_index" class="shops setup">
-                                                        <label for="branches_index">{{ __('Shop List') }}</label>
+                                                        <label for="branches_index">{{ __('Store List') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="branches_create" id="branches_create" class="shops setup">
-                                                        <label for="branches_create">{{ __('Shop Add') }}</label>
+                                                        <label for="branches_create">{{ __('Store Add') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="branches_edit" id="branches_edit" class="shops setup">
-                                                        <label for="branches_edit">{{ __('Shop Edit') }}</label>
+                                                        <label for="branches_edit">{{ __('Store Edit') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="branches_delete" id="branches_delete" class="shops setup">
-                                                        <label for="branches_delete">{{ __('Shop Delete') }}</label>
+                                                        <label for="branches_delete">{{ __('Store Delete') }}</label>
                                                     </p>
                                                 </div>
                                             </div>
@@ -1560,17 +1560,17 @@
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="billing_business_add" id="billing_business_add" class="billing setup">
-                                                        <label for="billing_business_add">{{ __('Add Multi Shop Management System/Company') }}</label>
+                                                        <label for="billing_business_add">{{ __('Add Multi Store Management System/Company') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="billing_branch_add" id="billing_branch_add" class="billing setup">
-                                                        <label for="billing_branch_add">{{ __('Add/Increase Shop') }}</label>
+                                                        <label for="billing_branch_add">{{ __('Add/Increase Store') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="billing_renew_branch" id="billing_renew_branch" class="billing setup">
-                                                        <label for="billing_renew_branch">{{ __('Renew Shop') }}</label>
+                                                        <label for="billing_renew_branch">{{ __('Renew Store') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">

@@ -101,7 +101,7 @@ class CashCounterService
 
         if ($cashCounterLimit == $cashCounters) {
 
-            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit} for every shop.")];
+            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit} for every store.")];
         }
 
         return ['pass' => true];

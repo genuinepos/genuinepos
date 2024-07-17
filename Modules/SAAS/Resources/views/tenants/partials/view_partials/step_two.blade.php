@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-xl-8 col-lg-7 col-md-6">
         <div class="billing-details business-setup">
-            <h3 class="title">{{ __('Business Setup') }}</h3>
+            <h3 class="title">{{ __('Company Setup') }}</h3>
             <div class="form-row">
                 <div class="form-col-5">
                     <div class="position-relative">
-                        <label for="business">{{ __('Business Name') }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Business Name') }}" autocomplete="off">
+                        <label for="business">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+                        <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Company Name') }}" autocomplete="off">
                         <span class="text-danger error error_name"></span>
                     </div>
                 </div>
@@ -180,7 +180,7 @@
             <div id="response-message" class="mt-3 d-none text-start" style="height: 100px;">
                 <div class="mt-2">
                     <h6 id="response-message-text">
-                        {{ __('Creating The Business. please wait...') }}
+                        {{ __('Creating The Company. please wait...') }}
                         {{ __('Elapsed Time') }}: <span id="timespan"></span> {{ __('Seconds.') }}
 
                         <div class="spinner-border text-dark" role="status">

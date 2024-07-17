@@ -89,7 +89,7 @@ class LoginController extends Controller
             !$role->hasPermissionTo('billing_renew_branch')
         ) {
 
-            $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
+            $msg = __('Login failed. Store ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
             session()->flash('errorMsg', $msg);
             return redirect()->back();
         }

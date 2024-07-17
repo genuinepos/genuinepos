@@ -72,7 +72,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($order->branch_id) {
@@ -165,7 +165,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2" class="text-end fw-bold">{{ __("Total") }}:</td>
+                                        <td colspan="2" class="text-end fw-bold">{{ __('Total') }}:</td>
                                         <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->total_ordered_qty) }}</td>
                                         <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->total_delivered_qty) }}</td>
                                         <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($order->total_left_qty) }}</td>

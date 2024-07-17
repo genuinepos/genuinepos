@@ -397,7 +397,7 @@
 @endphp
 <body>
     <div class="email-container">
-        <h2 class="page-title">Add Multi Shop Management System Invoice</h2>
+        <h2 class="page-title">{{ __("Add Multi Store Management System Invoice") }}</h2>
         <table>
             <tbody>
                 <tr>
@@ -408,7 +408,7 @@
                             </div>
                             <div class="content_customer" style="text-align: right;">
                                 <span style="font-weight: bold;">{{ config('speeddigit.name') }}</span> <br>
-                                Address : {{ config('speeddigit.address') }} <br>
+                                {{ __("Address") }} : {{ config('speeddigit.address') }} <br>
                                 <span style="font-weight: bold;">Phone:</span> {{ config('speeddigit.phone') }}, <span style="font-weight: bold;">Email:</span> {{ config('speeddigit.email') }}
                             </div>
                         </div>
@@ -418,33 +418,33 @@
                     <td>
                         <div class="mail-body">
                             <div class="customer">
-                                <strong>Customer: {{ $user->name }}</strong><br>
-                                Address: {{ $user->address }} <br>
-                                Phone: {{ $user->phone }}<br>
+                                <strong>{{ __("Customer") }}: {{ $user->name }}</strong><br>
+                                {{ __("Address") }}: {{ $user->address }} <br>
+                                {{ __("Phone") }}: {{ $user->phone }}<br>
                             </div>
 
                             <div class="invoice">
-                                <strong>INVOICE</strong><br>
+                                <strong>{{ __("INVOICE") }}</strong><br>
                             </div>
 
                             <div class="date">
-                                Date: {{ date('Y-m-d') }}<br>
+                                {{ __("Date") }}: {{ date('Y-m-d') }}<br>
                             </div>
 
                             <br> <br> <br>
                             <table width="100%" border="1" cellspacing="0" cellpadding="5" style="margin: 10px 0; padding: 10px;">
                                 <!-- Table header -->
                                 <tr>
-                                    <th>Shop/Business Name</th>
-                                    <th>Price (As Per Plan)</th>
-                                    <th>Price Period</th>
-                                    <th>Price Period Count</th>
-                                    <th>Subtotal</th>
+                                    <th>{{ __("Store/Company Name") }}</th>
+                                    <th>{{ __("Price (As Per Plan)") }}</th>
+                                    <th>{{ __("Price Period") }}</th>
+                                    <th>{{ __("Price Period Count") }}</th>
+                                    <th>{{ __("Subtotal") }}</th>
                                 </tr>
                                 <!-- Table data -->
 
                                 <tr>
-                                    <td>Multi Shop Management System(Business)</td>
+                                    <td>{{ __("Multi Store Management System") }}({{ __("Company") }})</td>
                                     <td>{{ \App\Utils\Converter::format_in_bdt($data['business_price']) }}</td>
                                     <td>{{ $data['business_price_period'] }}</td>
                                     <td>{{ $data['business_price_period_count'] != 'lifetime' ? $data['business_price_period_count'] : 'Lifetime' }}</td>
@@ -463,7 +463,7 @@
 
                                 <tr>
                                     <th colspan="4" style="text-align: right;">Tax:</th>
-                                    <th>: Free</th>
+                                    <th>: {{ __("Free") }}</th>
                                 </tr>
 
                                 <tr>

@@ -49,10 +49,10 @@
                             <p class="text-white mt-1">
                                 @if (date('Y-m-d') > $branchExpireDate)
 
-                                    <span class="text-white">{{ __('Shop') }} | {{ __('Expired On') }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
+                                    <span class="text-white">{{ __('Store') }} | {{ __('Expired On') }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
                                 @else
 
-                                    <span class="text-white">{{ __('Shop') }} | {{ __('Expire On') }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
+                                    <span class="text-white">{{ __('Store') }} | {{ __('Expire On') }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
                                 @endif
                             </p>
                         @else
@@ -64,10 +64,10 @@
                             <p class="text-white mt-1">
                                 @if (date('Y-m-d') > $businessExpireDate)
 
-                                    <span class="text-white">{{ __("Business | Expired On") }}</span> : <span class="text-danger">{{ $__businessExpireDate }}</span>
+                                    <span class="text-white">{{ __("Company | Expired On") }}</span> : <span class="text-danger">{{ $__businessExpireDate }}</span>
                                 @else
 
-                                    <span class="text-white">{{ __("Business | Expire On") }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
+                                    <span class="text-white">{{ __("Company | Expire On") }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
                                 @endif
                             </p>
                         @endif

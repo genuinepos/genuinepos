@@ -71,7 +71,7 @@
                 <div class="col-md-4">
                     <table class="table table-sm details_table">
                         <tr>
-                            <th>{{ __('Business Name') }}</th>
+                            <th>{{ __('Company Name') }}</th>
                             <td class="text-start">: {{ $tenant->name }}</td>
                         </tr>
 
@@ -100,12 +100,12 @@
                         </tr>
 
                         <tr>
-                            <th>{{ __('Shop Count') }}</th>
+                            <th>{{ __('Store Count') }}</th>
                             <td class="text-start">: {{ $tenant?->user?->userSubscription?->current_shop_count }}</td>
                         </tr>
 
                         <tr>
-                            <th>{{ __('Has Business') }}</th>
+                            <th>{{ __('Has Company') }}</th>
                             <td class="text-start">:
                                 @if ($tenant?->user?->userSubscription?->has_business == 1)
                                     <span class="text-success fw-bold">{{ __("Yes") }}</span>

@@ -85,7 +85,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Shop/Business') }} : </span>
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ location_label() }} : </span>
                                 @php
                                     $branchName = '';
                                     if ($sale->branch_id) {

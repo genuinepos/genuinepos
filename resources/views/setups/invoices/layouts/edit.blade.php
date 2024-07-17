@@ -42,7 +42,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4 text-end pe-1"><b>{{ __('Show Shop Logo') }}</b></label>
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Show Store Logo') }}</b></label>
                                         <div class="col-8">
                                             <select name="show_shop_logo" id="show_shop_logo" class="form-control" data-next="show_total_in_word">
                                                 <option value="1">{{ __('Yes') }}</option>
@@ -182,7 +182,7 @@
 
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>{{ __('Field For Shop Address') }}</b></p>
+                            <p class="p-1 text-primary"><b>{{ __('Field For Store Address') }}</b></p>
                         </div>
 
                         <div class="element-body">
@@ -251,7 +251,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4 text-end pe-1"><b>{{ __('Shop Email Address') }}</b></label>
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Store Email Address') }}</b></label>
                                         <div class="col-8">
                                             <select name="branch_email" id="branch_email" class="form-control" data-next="customer_name">
                                                 <option value="1">{{ __('Yes') }}</option>

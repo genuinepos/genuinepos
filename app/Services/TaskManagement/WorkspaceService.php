@@ -82,7 +82,7 @@ class WorkspaceService
                     }
                 } else {
 
-                    return $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
+                    return $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')';
                 }
             })
             ->editColumn('start_date', function ($row) use ($generalSettings) {

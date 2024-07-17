@@ -239,7 +239,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'Product stock is not available in this Shop/Business.']);
+            return response()->json(['errorMsg' => 'Product stock is not available in this Store/Company.']);
         }
     }
 
@@ -286,7 +286,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => __('This variant is not available in this Shop/Business.')]);
+            return response()->json(['errorMsg' => __('This variant is not available in this Store/Company.')]);
         }
     }
 

@@ -100,7 +100,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__('Business settings updated successfully'));
+        return response()->json(__('Company settings updated successfully'));
     }
 
     public function dashboardSettings(Request $request)
@@ -411,6 +411,6 @@ class GeneralSettingController extends Controller
     {
         $this->generalSettingService->deleteBusinessLogo();
 
-        return response()->json(__('Business logo is removed successfully'));
+        return response()->json(__('Company logo is removed successfully'));
     }
 }

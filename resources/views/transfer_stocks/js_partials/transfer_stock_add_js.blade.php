@@ -291,7 +291,7 @@
             success: function(data) {
                 if ($.isEmptyObject(data.errorMsg)) {
 
-                    var stockLocationMessage = senderWarehouseId ? " {{ __('in selected warehouse') }}" : " {{ __('in the Shop/Business') }}";
+                    var stockLocationMessage = senderWarehouseId ? " {{ __('in selected warehouse') }}" : " {{ __('in the Store/Company') }}";
                     if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
                         toastr.error("{{ __('Current stock is') }} " + parseFloat(data.stock) + stockLocationMessage);

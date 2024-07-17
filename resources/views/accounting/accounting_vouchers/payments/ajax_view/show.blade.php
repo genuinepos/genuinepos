@@ -50,7 +50,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($payment->branch_id) {
@@ -165,10 +165,7 @@
                 </div>
 
                 @php
-                    $debtiDescription = $payment
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'dr')
-                        ->first();
+                    $debtiDescription = $payment->voucherDescriptions()->where('amount_type', 'dr')->first();
                 @endphp
 
                 <div class="purchase_product_table mt-2">
@@ -396,7 +393,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -428,4 +427,3 @@
         });
     };
 </script>
-

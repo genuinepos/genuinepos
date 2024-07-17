@@ -1,5 +1,5 @@
 <p>
-    <b>{{ __('Shop') }} :
+    <b>{{ location_label() }} :
         {!! auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code . ' (BL)' : $generalSettings['business_or_shop__business_name'] . '' !!}
     </b>
 </p>

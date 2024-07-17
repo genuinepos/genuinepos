@@ -516,6 +516,8 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
         }
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SaleReturn->value, dataObj: $deleteSalesReturn);
+
+        return ['pass' => true];
     }
 
     public function voucherNoMethodContainer(object $codeGenerator): string

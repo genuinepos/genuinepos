@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Utils\FilePath;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,7 +40,7 @@ class CloudFileUploader
         $arr = preg_split('/\./', $fileFullNameWithExtension);
         $extension = array_pop($arr);
         $fullName = implode('.', $arr);
-        $fileName = $fullName . '__' . time() . '__' . '.' . $extension;
+        $fileName = $fullName . '__' . strtoupper(Str::random(9)) . '__' . '.' . $extension;
 
         if (isset($deletableFile)) {
 

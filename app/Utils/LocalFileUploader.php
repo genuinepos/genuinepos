@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use Exception;
 use App\Utils\FilePath;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class LocalFileUploader
@@ -39,7 +40,7 @@ class LocalFileUploader
         $arr = preg_split('/\./', $fileFullNameWithExtension);
         $extension = array_pop($arr);
         $fullName = implode('.', $arr);
-        $fileName = $fullName . '__' . time() . '__' . '.' . $extension;
+        $fileName = $fullName . '__' . strtoupper(Str::random(9)) . '__' . '.' . $extension;
 
         if ($deletableFile) {
 

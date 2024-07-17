@@ -17,6 +17,7 @@ class ContactService
         $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter: ':', isCheckBranch: $isCheckBranch, branchId: auth()->user()->branch_id);
 
         $addContact = new Contact();
+        $addContact->branch_id = auth()->user()->branch_id;
         $addContact->contact_id = $contactId;
         $addContact->type = $type;
         $addContact->name = $name;

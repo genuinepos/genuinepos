@@ -136,9 +136,12 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             $query->where('branch_id', $branchId);
         }
 
-        $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+        $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`), CHAR_LENGTH(`$column`)) DESC")
+        // $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
+
+        // dd($entryRaw);
 
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
         //$dateTimeStrPrefix = date('ym');

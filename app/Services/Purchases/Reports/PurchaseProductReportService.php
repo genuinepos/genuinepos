@@ -94,6 +94,7 @@ class PurchaseProductReportService
             'purchases.branch_id',
             'purchases.supplier_account_id',
             'purchases.date',
+            'purchases.report_date',
             'purchases.invoice_id',
             'products.name',
             'products.product_code',

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <html lang="en">
 
@@ -82,41 +82,39 @@
 
 </html>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/plugins/custom/nivo_slider/jquery.nivo.slider.js') }}"></script>
 <script type="text/javascript">
-    $(window).load(function() {
-        $('#slider').nivoSlider({
-            effect: 'sliceDown', // Specify sets like: 'fold,fade,sliceDown'
-            animSpeed: 500, // Slide transition speed
-            pauseTime: 4000, // How long each slide will show
-            startSlide: 0, // Set starting Slide (0 index)
-            directionNav: false, // Next & Prev navigation
-            controlNav: false, // 1,2,3... navigation
-            controlNavThumbs: false, // Use thumbnails for Control Nav
-            pauseOnHover: false, // Stop animation while hovering
-            afterLoad: function() {
-                // Initialize the caption for the first slide
-                var firstSlide = $('#slider img').eq(0);
-                var title = firstSlide.attr('title');
-                var caption = firstSlide.data('caption');
-                if (caption) {
+    $('#slider').nivoSlider({
+        effect: 'sliceDown', // Specify sets like: 'fold,fade,sliceDown'
+        animSpeed: 500, // Slide transition speed
+        pauseTime: 4000, // How long each slide will show
+        startSlide: 0, // Set starting Slide (0 index)
+        directionNav: false, // Next & Prev navigation
+        controlNav: false, // 1,2,3... navigation
+        controlNavThumbs: false, // Use thumbnails for Control Nav
+        pauseOnHover: false, // Stop animation while hovering
+        afterLoad: function() {
+            // Initialize the caption for the first slide
+            var firstSlide = $('#slider img').eq(0);
+            var title = firstSlide.attr('title');
+            var caption = firstSlide.data('caption');
+            if (caption) {
 
-                    $('.nivo-caption').html('<strong>' + title + '</strong><span>' + caption + '</span>');
-                }
-            },
-            afterChange: function() {
-                // Update caption after each slide change
-                var currentSlide = $('#slider').data('nivo:vars').currentSlide;
-                var currentImage = $('#slider img').eq(currentSlide);
-                var title = currentImage.attr('title');
-                var caption = currentImage.data('caption');
-                if (caption) {
-
-                    $('.nivo-caption').html('<strong>' + title + '</strong><span>' + caption + '</span>');
-                }
+                $('.nivo-caption').html('<strong>' + title + '</strong><span>' + caption + '</span>');
             }
-        });
+        },
+        afterChange: function() {
+            // Update caption after each slide change
+            var currentSlide = $('#slider').data('nivo:vars').currentSlide;
+            var currentImage = $('#slider img').eq(currentSlide);
+            var title = currentImage.attr('title');
+            var caption = currentImage.data('caption');
+            if (caption) {
+
+                $('.nivo-caption').html('<strong>' + title + '</strong><span>' + caption + '</span>');
+            }
+        }
     });
 </script>
 {{-- <script type="text/javascript">

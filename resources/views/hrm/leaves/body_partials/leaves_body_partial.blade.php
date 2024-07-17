@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th class="text-start">{{ __('Leave No') }}</th>
-                                <th class="text-start">{{ __('Shop/Business') }}</th>
+                                <th class="text-start">{{ location_label() }}</th>
                                 <th class="text-start">{{ __('Type') }}</th>
                                 <th class="text-start">{{ __('Employee') }}</th>
                                 <th class="text-start">{{ __('Start Date') }}</th>

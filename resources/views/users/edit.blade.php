@@ -22,7 +22,10 @@
         .input-group-text {
             font-size: 12px !important;
         }
-        .dropify-wrapper { height: 100px!important;}
+
+        .dropify-wrapper {
+            height: 100px !important;
+        }
     </style>
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
@@ -117,12 +120,12 @@
                                             @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>{{ __('Shop/Business') }}</b> <span class="text-danger">*</span></label>
+                                                        <label class="col-4"><b>{{ location_label() }}</b> <span class="text-danger">*</span></label>
                                                         <div class="col-8">
                                                             <input type="hidden" name="branch_count" value="YES">
                                                             <select required name="branch_id" class="form-control" id="branch_id" data-next="user_type">
-                                                                <option value="">{{ __('Select Shop/Business') }}</option>
-                                                                <option {{ $user->branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                <option value="">{{ __('Select Store/Company') }}</option>
+                                                                <option {{ $user->branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                                                         @php
@@ -193,7 +196,7 @@
 
                                                 @if ($user?->roles?->first()?->name != 'superadmin')
                                                     <div class="col-md-6">
-                                                        <small style="font-size: 9px;line-height:1.2;" class="float-end fw-bold" id="roleMsg"> {{ $user?->roles?->first()?->hasPermissionTo('has_access_to_all_area') ? __('Selected role has access to all Shop/Place') : '' }}</small>
+                                                        <small style="font-size: 9px;line-height:1.2;" class="float-end fw-bold" id="roleMsg"> {{ $user?->roles?->first()?->hasPermissionTo('has_access_to_all_area') ? __('Selected role has access to all Store/Place') : '' }}</small>
                                                         <div class="input-group">
                                                             <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">

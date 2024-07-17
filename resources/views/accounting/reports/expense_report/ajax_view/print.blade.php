@@ -170,11 +170,11 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-3">
-            <p><strong>{{ __('Chain Shop') }} : </strong> {{ $filteredChildBranchName }} </p>
+            <p><strong>{{ __('Chain Store') }} : </strong> {{ $filteredChildBranchName }} </p>
         </div>
 
         <div class="col-3">
@@ -193,7 +193,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('Expense Ledger/Account') }}</th>
-                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ location_label() }}</th>
                         <th>{{ __('Voucher Type') }}</th>
                         <th>{{ __('Voucher No') }}</th>
                         <th>{{ __('Amount') }}</th>
@@ -328,8 +328,8 @@
 </div>
 
 @php
-    $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
-    $fileChildBranchName = $filteredChildBranchName ? '__Child Shop:' . $filteredChildBranchName : '';
+    $fileBranchName = $filteredBranchName ? location_label() . ': ' . $filteredBranchName : $ownOrParentbranchName;
+    $fileChildBranchName = $filteredChildBranchName ? '__Child Store:' . $filteredChildBranchName : '';
     $dateRange = $fromDate && $toDate ? '__' . $fromDate . '_To_' . $toDate : '';
     $filename = __('Expense Report') . $dateRange . '__' . $fileBranchName . $fileChildBranchName;
 @endphp

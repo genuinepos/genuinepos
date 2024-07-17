@@ -167,11 +167,11 @@
                     }
                 }
             @endphp
-            <p><span class="fw-bold">{{ __('Shop/Business') }} : </span> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><span class="fw-bold">{{ location_label() }} : </span> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
-            <p><span class="fw-bold">{{ __('Chain Shop') }} : </span> {{ $filteredChildBranchName }} </p>
+            <p><span class="fw-bold">{{ __('Chain Store') }} : </span> {{ $filteredChildBranchName }} </p>
         </div>
     </div>
 

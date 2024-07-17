@@ -28,10 +28,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-md-4">
-                                                        <label><strong>{{ __("Shop") }}</strong></label>
+                                                        <label><strong>{{ __("Store") }}</strong></label>
                                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">{{ __("All") }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __("Business") }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                                                             @endforeach
@@ -75,7 +75,7 @@
                                         <thead>
                                             <tr>
                                                 <th>{{ __("Serial") }}</th>
-                                                <th>{{ __("Shop") }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __("Name") }}</th>
                                                 <th>{{ __("Price Calculation type") }}</th>
                                                 <th>{{ __("Price Calculation Percent") }}</th>

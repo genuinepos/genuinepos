@@ -34,7 +34,7 @@
 
                                     @if ($generalSettings['subscription']->has_business == 1)
 
-                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                     @endif
 
                                     @foreach ($branches as $branch)

@@ -42,7 +42,7 @@
                 <div class="col-md-6">
                     <table class="table table-sm details_table">
                         <tr>
-                            <th>{{ __('Business Name') }}</th>
+                            <th>{{ __('Company Name') }}</th>
                             <td class="text-start">: {{ $tenant->name }}</td>
                         </tr>
 
@@ -66,7 +66,7 @@
                     <div class="col-md-6">
                         <div class="">
                             <label for="password" class="form-label text-bold"><b>{{ __('Enter Your Password') }}</b></label>
-                            <input type="text" name="password" id="password" class="form-control @error('password') is-invalid  @enderror" placeholder="{{ __('Enter Business password') }}" required />
+                            <input type="text" name="password" id="password" class="form-control @error('password') is-invalid  @enderror" placeholder="{{ __('Enter Company password') }}" required />
                         </div>
                     </div>
                 </div>

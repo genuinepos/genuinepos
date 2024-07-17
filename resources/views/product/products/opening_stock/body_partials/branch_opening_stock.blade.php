@@ -1,5 +1,5 @@
 <div class="row">
-    <p class="m-0"><span class="fw-bold">{{ __("Shop/Business") }}</span> :
+    <p class="m-0"><span class="fw-bold">{{ __("Store/Company") }}</span> :
         @if (auth()->user()->branch_id)
             @if (auth()->user()?->branch?->parentBranch)
                 {{ auth()->user()?->branch?->parentBranch->name.'('.auth()->user()?->branch?->area_name.')-'.auth()->user()?->branch?->branch_code }}
@@ -7,7 +7,7 @@
                 {{ auth()->user()?->branch?->name.'('.auth()->user()?->branch?->area_name.')-'.auth()->user()?->branch?->branch_code }}
             @endif
         @else
-            {{ $generalSettings['business_or_shop__business_name'].'('.__('Business').')' }}
+            {{ $generalSettings['business_or_shop__business_name'].'('.__('Company').')' }}
         @endif
     </p>
 

@@ -75,7 +75,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @if ($production->branch_id)
 
                                     @if ($production?->branch?->parentBranch)
@@ -244,7 +244,6 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end gap-2">
                         @if (auth()->user()->can('production_edit'))
-
                             <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                         <a href="{{ route('manufacturing.productions.print', $production->id) }}" onclick="printProduction(this); return false;" class="btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print') }}</a>

@@ -307,7 +307,7 @@ class UserService
 
                 return ['pass' => false, 'msg' => __('Superadmin can not be deleted')];
             }
-            
+
             FileUploader::deleteFile(fileType: 'user', deletableFile: $deleteUser->photo);
 
             $deleteUser->delete();
@@ -330,7 +330,7 @@ class UserService
             }
         } else {
 
-            $currentBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
+            $currentBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Company') . ')';
         }
 
         $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
@@ -353,7 +353,7 @@ class UserService
             }
         } else {
 
-            $switchedBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
+            $switchedBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Company') . ')';
         }
 
         $description = $currentBranch . ' ' . __('To') . ' ' . $switchedBranch;
@@ -424,7 +424,7 @@ class UserService
         $currentEmployeeCount = $this->users()->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
             ->where('branch_id', $__branchId)->count();
 
-        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected shop/business') : __('in your current shop/business.');
+        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected store/company') : __('in your current store/company.');
 
         if ($request->user_type == UserType::User->value && $currentUserCount >= $userLimit) {
 
@@ -481,7 +481,7 @@ class UserService
         $currentEmployeeCount = $this->users()->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])
             ->where('branch_id', $__branchId)->count();
 
-        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected shop/business') : __('in your current shop/business.');
+        $additionalMsg = isset($request->branch_id) && !empty($request->branch_id) ? __('in the selected store/company') : __('in your current store/company.');
 
         if ($request->user_type == UserType::User->value && $currentUserCount >= $userLimit) {
 

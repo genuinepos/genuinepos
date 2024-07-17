@@ -26,7 +26,7 @@ class SendSubscriptionAddBusinessInvoiceMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Add Multi Shop Management System Invoice',
+            subject: 'Add Multi Store Management System Invoice',
         );
     }
 

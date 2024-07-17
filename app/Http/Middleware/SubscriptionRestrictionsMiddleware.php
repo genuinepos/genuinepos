@@ -45,11 +45,11 @@ class SubscriptionRestrictionsMiddleware
 
             if (auth()->user()->can('billing_renew_branch')) {
 
-                return redirect()->route('software.service.billing.shop.renew.cart')->with(['branchExpired' => __('Shop is expired please renew the shop')]);
+                return redirect()->route('software.service.billing.shop.renew.cart')->with(['branchExpired' => __('Store is expired please renew the store')]);
             } else {
 
                 auth()->logout();
-                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact your Authority'));
+                return redirect()->back()->with('branchExpired', __('Store is expired. Please contact your Authority'));
             }
         } elseif (
             !auth()->user()?->branch_id &&
@@ -59,11 +59,11 @@ class SubscriptionRestrictionsMiddleware
 
             if (auth()->user()->can('billing_renew_branch')) {
 
-                return redirect()->route('software.service.billing.shop.renew.cart')->with(['businessExpired' => __('Business is expired please renew your business')]);
+                return redirect()->route('software.service.billing.shop.renew.cart')->with(['businessExpired' => __('Company is expired please renew your business')]);
             } else {
 
                 auth()->logout();
-                return response()->json(['businessExpired' => __('Shop is expired. Please contact your Authority')]);
+                return response()->json(['businessExpired' => __('Store is expired. Please contact your Authority')]);
             }
         }
 

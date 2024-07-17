@@ -27,18 +27,18 @@
                                                 <table class="display table table-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th>S/L</th>
-                                                            <th>Purchase Type</th>
-                                                            <th>Plan</th>
-                                                            <th>Price</th>
-                                                            <th>Store Quantity</th>
-                                                            <th>Multi Shop Management System(Business)</th>
-                                                            <th>Price Period</th>
-                                                            <th>Net Total</th>
-                                                            <th>Discount</th>
-                                                            <th>Total Payable</th>
-                                                            <th>Paid</th>
-                                                            <th>Due</th>
+                                                            <th>{{ __("S/L") }}</th>
+                                                            <th>{{ __("Purchase Type") }}</th>
+                                                            <th>{{ __("Plan") }}</th>
+                                                            <th>{{ __("Price") }}</th>
+                                                            <th>{{ __("Store Quantity") }}</th>
+                                                            <th>{{ __("Multi Store Management System") }}({{ __("Company") }})</th>
+                                                            <th>{{ __("Price Period") }}</th>
+                                                            <th>{{ __("Net Total") }}</th>
+                                                            <th>{{ __("Discount") }}</th>
+                                                            <th>{{ __("Total Payable") }}</th>
+                                                            <th>{{ __("Paid") }}</th>
+                                                            <th>{{ __("Due") }}</th>
                                                         </tr>
                                                     </thead>
 
@@ -79,7 +79,7 @@
                                                 <div class="col-md-12">
                                                     <div class="payment-method">
                                                         <div class="cart-total-panel">
-                                                            <h3 class="title">Due Amount : <span class="text-danger">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->due) }}</span></h3>
+                                                            <h3 class="title">{{ __("Due Amount") }} : <span class="text-danger">{{ \App\Utils\Converter::format_in_bdt($dueSubscriptionTransaction?->due) }}</span></h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -95,7 +95,7 @@
                                                                             <span class="sub-input"><i class="fa-regular fa-check"></i></span>
                                                                         </div>
                                                                         <span class="type">
-                                                                            Credit Card
+                                                                            {{ __("Credit Card") }}
                                                                         </span>
                                                                     </div>
                                                                     <span class="icon">
@@ -112,7 +112,7 @@
                                                                             <span class="sub-input"><i class="fa-regular fa-check"></i></span>
                                                                         </div>
                                                                         <span class="type">
-                                                                            PayPal
+                                                                            {{ __("PayPal") }}
                                                                         </span>
                                                                     </div>
                                                                     <span class="icon">
@@ -128,7 +128,7 @@
                                                                             <span class="sub-input"><i class="fa-regular fa-check"></i></span>
                                                                         </div>
                                                                         <span class="type">
-                                                                            Google Pay
+                                                                            {{ __("Google Pay") }}
                                                                         </span>
                                                                     </div>
                                                                     <span class="icon">

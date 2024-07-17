@@ -90,18 +90,18 @@
                     <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
                 </tr>
                 <tr>
-                    <th>{{ __('Business Location (Shop)') }}</th>
+                    <th>{{ __('Business Location (Store)') }}</th>
                     <td class="text-center">1</td>
                     <td class="text-center">1</td>
                     <td class="text-center">1</td>
                     <td class="text-center">
-                        {{ __('Customization package for super shop or chain shop') }}
+                        {{ __('Customization package for super Store or chain Store') }}
                     </td>
                 </tr>
                 <tr>
                     <th>{{ __('Cash Counter') }}</th>
                     @foreach ($plans as $plan)
-                        <td class="text-center">{{ isset($plan->features['cash_counter_count']) ? $plan->features['cash_counter_count'] : 0 }}/Shop</td>
+                        <td class="text-center">{{ isset($plan->features['cash_counter_count']) ? $plan->features['cash_counter_count'] : 0 }}/{{ __("Store") }}</td>
                     @endforeach
                     <td class="text-center">{{ __('Everything of business') }}</td>
                 </tr>
@@ -209,7 +209,7 @@
                     @foreach ($plans as $plan)
                         <td class="text-center">
                             @if (isset($plan->features['employee_count']) && $plan->features['employee_count'] > 0)
-                                {{ $plan->features['employee_count'] }}/{{ __('Per Shop Employee') }}
+                                {{ $plan->features['employee_count'] }}/{{ __('Per Store Employee') }}
                             @else
                                 <span class="icon check"><i class="far fa-minus text-secondary fa-2x"></i></span>
                             @endif

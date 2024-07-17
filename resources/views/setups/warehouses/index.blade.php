@@ -37,7 +37,7 @@
                                             <label><strong>{{ __('Created From') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -90,7 +90,7 @@
                                         <tr>
                                             <th class="text-start">{{ __('S/L') }}</th>
                                             <th class="text-start">{{ __('Name') }}</th>
-                                            <th class="text-start">{{ __('Shop/Business') }}</th>
+                                            <th class="text-start">{{ location_label() }}</th>
                                             <th class="text-start">{{ __('Code') }}</th>
                                             <th class="text-start">{{ __('Phone') }}</th>
                                             <th class="text-start">{{ __('Address') }}</th>

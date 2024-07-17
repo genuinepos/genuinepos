@@ -44,7 +44,7 @@
             <thead>
                 <tr>
                     <th>{{ __('No.') }}</th>
-                    <th>{{ __('Shop/Business Name') }}</th>
+                    <th>{{ __('Store Name') }}</th>
                     <th>{{ __('Expire On') }}</th>
                     <th>{{ __('Adjusted Amount') }}</th>
                 </tr>
@@ -58,7 +58,7 @@
                 @if ($currentSubscription->has_business == 1)
                     <tr>
                         <td>{{ $index }}</td>
-                        <td>{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</td>
+                        <td>{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})</td>
                         <td class="{{ date('Y-m-d') > $currentSubscription->business_expire_date ? 'text-danger' : 'text-success' }}">
                             @if ($currentSubscription->business_price_period == 'lifetime')
                                 {{ __('Lifetime') }}
@@ -113,7 +113,7 @@
                         <td>{{ $index + 1 }}</td>
                         <td>
                             <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $leftBranchExpireDateHistory->id }}">
-                            {{ __('Shop Not Yet to be created') }}
+                            {{ __('Store Not Yet to be created') }}
                         </td>
 
                         <td class="{{ date('Y-m-d') > $leftBranchExpireDateHistory->expire_date ? 'text-danger' : 'text-success' }}">

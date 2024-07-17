@@ -26,7 +26,7 @@
 
                                 <div class="col-md-4">
                                     <label><strong>{{ __('Business') }}</strong></label>
-                                    <input type="text" name="business_name" class="form-control" id="contact_business_name" data-next="contact_alternative_phone" placeholder="@lang('menu.business_name')" />
+                                    <input type="text" name="business_name" class="form-control" id="contact_business_name" data-next="contact_alternative_phone" placeholder="{{ __("Business Name") }}" />
                                 </div>
                             </div>
 

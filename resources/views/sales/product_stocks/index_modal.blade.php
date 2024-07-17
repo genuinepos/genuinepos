@@ -16,7 +16,7 @@
             <h6 class="modal-title">
                 {{ __('Product Stock') }} |
                 <b>
-                    {{ __('Shop') }} :
+                    {{ location_label() }} :
                     @if (auth()->user()?->branch)
 
                         @if (auth()->user()?->branch?->parent_branch_id)
@@ -25,7 +25,7 @@
                             {{ auth()->user()?->branch?->name }}
                         @endif
                     @else
-                        {{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Business') }})
+                        {{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Company') }})
                     @endif
                 </b>
             </h6>

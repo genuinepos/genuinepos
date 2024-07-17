@@ -209,7 +209,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
@@ -241,7 +241,7 @@
                 <thead>
                     <tr>
                         <th class="text-start">{{ __('Date') }}</th>
-                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                        <th class="text-start">{{ location_label() }}</th>
                         <th class="text-start">{{ __('Warehouse') }}</th>
                         <th class="text-start">{{ __('Voucher Type') }}</th>
                         <th class="text-start">{{ __('Voucher No') }}</th>
@@ -403,7 +403,7 @@
 </div>
 
 @php
-    $fileBranchName = $filteredBranchName ? 'Shop/Business: ' . $filteredBranchName : $ownOrParentbranchName;
+    $fileBranchName = $filteredBranchName ? location_label() . ': ' . $filteredBranchName : $ownOrParentbranchName;
     $dateRange = $fromDate && $toDate ? '__' . $fromDate . '_To_' . $toDate : '';
     $filename = __('Product Ledger') . $dateRange . '__' . $fileBranchName;
 @endphp

@@ -57,7 +57,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($purchase->branch_id) {
@@ -122,9 +122,7 @@
                                 </thead>
                                 <tbody class="purchase_product_list">
                                     @foreach ($purchase->purchaseProducts as $purchaseProduct)
-
                                         @if ($purchase?->purchaseOrder && $purchaseProduct->quantity <= 0)
-
                                             @continue
                                         @endif
 

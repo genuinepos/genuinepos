@@ -16,7 +16,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start" style="font-size: 12px;">{{ __('Business') }}</th>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Company') }}</th>
                             <td class="text-start" style="font-size: 12px;">: {{ $tenant?->name }}</td>
                         </tr>
 
@@ -57,7 +57,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-start">{{ __('S/L') }}</th>
-                                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                                        <th class="text-start">{{ __('Store/Company') }}</th>
                                         <th class="text-start">{{ __('Expire Date') }}</th>
                                         <th class="text-start">{{ __('New Expire Date') }}</th>
                                     </tr>
@@ -69,7 +69,7 @@
                                     @if ($currentSubscription->has_business)
                                         <tr>
                                             <td class="text-start">{{ $index }}</td>
-                                            <td class="text-start">{{ __('Multi Shop Management System') }}({{ __('Business') }})</td>
+                                            <td class="text-start">{{ __('Multi Store Management System') }}({{ __('Company') }})</td>
                                             <td class="text-start">
                                                 @if (date('Y-m-d') > $currentSubscription->business_expire_date)
                                                     <span class="text-danger">{{ $currentSubscription->business_expire_date }}</span>
@@ -99,7 +99,7 @@
                                                         {{ $shopExpireDateHistory?->branch?->name . '(' . $shopExpireDateHistory?->branch?->area_name . ')-' . $shopExpireDateHistory?->branch?->branch_code }}
                                                     @endif
                                                 @else
-                                                    <span class="text-danger">{{ __('Shop Not Yet To Be Created') }}</span>
+                                                    <span class="text-danger"> {{ __('Store Not Yet To Be Created') }}</span>
                                                 @endif
                                             </td>
 

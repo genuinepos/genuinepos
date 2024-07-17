@@ -77,7 +77,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th>{{ __('Shop Limit') }}</th>
+                                                    <th>{{ __('Store Limit') }}</th>
                                                     <td>:
                                                         <span class="text-danger fw-bold">{{ count($branches) }}</span> / {{ $generalSettings['subscription']->current_shop_count }}
                                                     </td>
@@ -98,11 +98,11 @@
                                 @endif
 
                                 @if ($generalSettings['subscription']->is_trial_plan == 0 && $generalSettings['subscription']->has_business == 0 && auth()->user()->can('billing_business_add') && $generalSettings['subscription']->has_due_amount == 0)
-                                    <a href="{{ route('software.service.billing.add.business.cart') }}" class="btn btn-success p-2">{{ __('Add Multi Shop Management System') }}</a>
+                                    <a href="{{ route('software.service.billing.add.business.cart') }}" class="btn btn-success p-2">{{ __('Add Multi Store Management System') }}</a>
                                 @endif
 
                                 @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add') && $generalSettings['subscription']->has_due_amount == 0)
-                                    <a href="{{ route('software.service.billing.add.shop.cart') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
+                                    <a href="{{ route('software.service.billing.add.shop.cart') }}" class="btn btn-success p-2">{{ __('Add Store') }}</a>
                                 @endif
                             </div>
                         </div>
@@ -112,12 +112,12 @@
                                 <div class="card p-1">
                                     <div class="row mb-1">
                                         <div class="col-md-6">
-                                            <h6>{{ __('List of Shops') }}</h6>
+                                            <h6>{{ __('List of Stores') }}</h6>
                                         </div>
 
                                         <div class="col-md-6 text-end">
                                             @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_renew_branch') && $generalSettings['subscription']->has_due_amount == 0)
-                                                <a href="{{ route('software.service.billing.shop.renew.cart') }}" class="btn btn-sm btn-success">{{ __('Renew Shop') }}</a>
+                                                <a href="{{ route('software.service.billing.shop.renew.cart') }}" class="btn btn-sm btn-success">{{ __('Renew Store') }}</a>
                                             @endif
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
                                                 <tr>
                                                     {{-- <th></th> --}}
                                                     <th>{{ __('Serial') }}</th>
-                                                    <th>{{ __('Shop Name') }}</th>
+                                                    <th>{{ __('Store Name') }}</th>
                                                     <th>{{ __('Registered On') }}</th>
                                                     <th>{{ __('Expiers On') }}</th>
                                                     <th>{{ __('Remaining Days') }}</th>

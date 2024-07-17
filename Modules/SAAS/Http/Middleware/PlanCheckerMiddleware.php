@@ -15,7 +15,7 @@ class PlanCheckerMiddleware
     public function handle(Request $request, Closure $next)
     {
         $tenant = tenant();
-        
+
         if (! $tenant) {
 
             throw new TenancyNotInitializedException;
@@ -36,7 +36,7 @@ class PlanCheckerMiddleware
 
             if (! $isVerified) {
 
-                return redirect()->route('verification.notice')->with('error', __('Verify your Business Email to continue'));
+                return redirect()->route('verification.notice')->with('error', __('Verify your Company Email to continue'));
             }
         } elseif ($enjoyedTrialDays > $maxTrialDays) {
 

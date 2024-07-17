@@ -58,7 +58,7 @@
                                 $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
                             @endphp
                             <p class="text-white mt-1">
-                                <span class="text-white">{{ __('Shop | Expire On') }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
+                                <span class="text-warning fw-bold">{{ __("Store") }}</span> | <span class="text-white">{{ __('Expire On') }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
                             </p>
                         @else
                             @php
@@ -67,7 +67,7 @@
                                 $__businessExpireDate = date($dateFormat, strtotime($businessExpireDate));
                             @endphp
                             <p class="text-white mt-1">
-                                <span class="text-white">{{ __('Business | Expire On') }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
+                                <span class="text-info fw-bold">{{ __("Company") }}</span> | <span class="text-white">{{ __('Expire On') }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
                             </p>
                         @endif
                     @endif

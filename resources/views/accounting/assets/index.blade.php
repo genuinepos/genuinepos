@@ -239,7 +239,7 @@
                                 <div class="col-md-12">
                                     <label><b>@lang('menu.branch') </b> <span class="text-danger">*</span></label>
                                     <select name="branch_id" class="form-control" id="branch_id">
-                                        <option value="">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
+                                        <option value="">{{ $generalSettings['business_or_shop__business_name'] }} ({{ __("Company") }})</option>
                                         @foreach ($branches as $br)
                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                         @endforeach

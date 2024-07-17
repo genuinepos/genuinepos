@@ -35,13 +35,13 @@
                 @if (auth()->user()->can('has_access_to_all_area') && ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1))
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
-                            <label class="fw-bold">{{ __('Allowed Shop/Business') }} <span class="text-danger">*</span></label>
+                            <label class="fw-bold">{{ __('Allowed Store/Company') }} <span class="text-danger">*</span></label>
                             <input type="hidden" name="allowed_branch_count" value="allowed_branch_count">
                             <select class="form-control select2" name="allowed_branch_ids[]" id="allowed_branch_id" multiple>
                                 @php
                                    $business = $holiday->allowedBranches()->where('branch_id', NUll)->first();
                                 @endphp
-                                <option value="NULL" @selected(isset($business))>{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                <option value="NULL" @selected(isset($business))>{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                 @foreach ($branches as $branch)
                                     <option
                                         @foreach ($holiday->allowedBranches as $allowedBranch)

@@ -38,20 +38,16 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($contra->branch_id) {
-
                                         if ($contra?->branch?->parentBranch) {
-
                                             $branchName = $contra?->branch?->parentBranch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $contra?->branch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -232,7 +228,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -264,4 +262,3 @@
         });
     };
 </script>
-

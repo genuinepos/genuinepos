@@ -16,7 +16,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start" style="font-size: 12px;">{{ __('Business') }}</th>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Company') }}</th>
                             <td class="text-start" style="font-size: 12px;">: {{ $tenant?->name }}</td>
                         </tr>
 

@@ -15,7 +15,7 @@
 
             <div class="col-lg-3 col-md-6">
                 <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
-                <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Shop ID') }}" />
+                <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Store ID') }}" />
             </div>
 
             <div class="col-lg-3 col-md-6">

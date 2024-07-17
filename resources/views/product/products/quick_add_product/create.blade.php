@@ -158,7 +158,7 @@
                         <div class="row mt-1">
                             @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
                                 <div class="col-md-4">
-                                    <label><b>{{ __('Access Shop') }}</b> </label>
+                                    <label><b>{{ __('Store Access') }}</b> </label>
                                     <input type="hidden" name="access_branch_count" value="access_branch_count">
                                     <select class="form-control select2" name="access_branch_ids[]" id="quick_product_access_branch_id" multiple>
                                         @foreach ($branches as $branch)
@@ -290,7 +290,7 @@
                                                     {{ auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch?->branch_code }}
                                                 @endif
                                             @else
-                                                {{ $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')' }}
+                                                {{ $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')' }}
                                             @endif
                                             <input type="hidden" name="branch_ids[]" value="{{ auth()->user()->branch_id }}">
                                             <input type="hidden" name="warehouse_ids[]">

@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title">{{ __('Add Shop') }}</h6>
+            <h6 class="modal-title">{{ __('Add Store') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -11,7 +11,7 @@
                     <div class="col-md-9" style="border-right: 1px solid #000;">
                         <div class="row">
                             <div class="col-lg-3 col-md-6">
-                                <label class="fw-bold">{{ __('Shop Type') }}</label>
+                                <label class="fw-bold">{{ __('Store Type') }}</label>
                                 <select onchange="changeBranchType(this);" name="branch_type" class="form-control" id="branch_type" data-next="branch_name">
                                     @foreach (\App\Enums\BranchType::cases() as $branchType)
                                         <option value="{{ $branchType->value }}">{{ preg_replace('/[A-Z]/', ' ' . "$0", $branchType->name) }}</option>
@@ -20,9 +20,9 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6 parent_branches_field d-hide">
-                                <label class="fw-bold">{{ __('Parent Shop') }} <span class="text-danger">*</span></label>
+                                <label class="fw-bold">{{ __('Parent Store') }}<span class="text-danger">*</span></label>
                                 <select onchange="getBranchCode(this);" name="parent_branch_id" class="form-control" id="branch_parent_branch_id" data-next="area_name">
-                                    <option value="">{{ __('Select Parent Shop') }}</option>
+                                    <option value="">{{ __('Select Parent Store') }}</option>
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}">{{ $branch->name . '/' . $branch->branch_code }}</option>
                                     @endforeach
@@ -32,8 +32,8 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6 branch_name_field">
-                                <label class="fw-bold">{{ __('Shop Name') }} <span class="text-danger">*</span></label>
-                                <input required type="text" name="name" class="form-control" id="branch_name" data-next="branch_area_name" placeholder="{{ __('Shop Name') }}" />
+                                <label class="fw-bold">{{ __('Store Name') }} <span class="text-danger">*</span></label>
+                                <input required type="text" name="name" class="form-control" id="branch_name" data-next="branch_area_name" placeholder="{{ __('Store Name') }}" />
                                 <span class="error error_branch_name"></span>
                             </div>
 
@@ -50,8 +50,8 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label class="fw-bold">{{ __('Shop ID') }} <span class="text-danger">*</span></label>
-                                <input readonly required type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branchCode }}" placeholder="{{ __('Shop ID') }}" autocomplete="off" />
+                                <label class="fw-bold">{{ __('Store ID') }} <span class="text-danger">*</span></label>
+                                <input readonly required type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branchCode }}" placeholder="{{ __('Store ID') }}" autocomplete="off" />
                                 <span class="error error_branch_code"></span>
                             </div>
                         </div>

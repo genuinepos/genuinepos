@@ -2,8 +2,8 @@
     <thead>
         <tr style="border-bottom: 1px solid">
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Plan") }}</th>
-            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Increased Shop Count") }}</th>
-            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Per Shop(As Per Plan)') }}</th>
+            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Increased Store Count") }}</th>
+            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Per Store(As Per Plan)') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Period') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Period Count') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>

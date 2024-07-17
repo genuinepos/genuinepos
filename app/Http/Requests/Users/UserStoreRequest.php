@@ -51,7 +51,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'role_id.required' => __('Role is required.'),
-            'branch_id.required' => __('Shop/Business is required.'),
+            'branch_id.required' => __('Store/Company is required.'),
         ];
     }
 }

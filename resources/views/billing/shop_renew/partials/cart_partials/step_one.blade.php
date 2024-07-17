@@ -21,7 +21,7 @@
         <table class="table table-borderless">
             <thead>
                 <tr>
-                    <th>{{ __('Shop Name') }}</th>
+                    <th>{{ __('Store Name') }}</th>
                     <th>{{ __('Expire Date') }}</th>
                     <th>{{ __('Price(As Per Period)') }}</th>
                     <th>{{ __('Renewable Price Period') }}</th>
@@ -37,7 +37,7 @@
                         <tr>
                             <td class="fw-bold">
                                 <input type="hidden" name="has_business" value="1">
-                                <input type="hidden" name="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})">
+                                <input type="hidden" name="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})">
                                 {{ $generalSettings['business_or_shop__business_name'] }}
                             </td>
 
@@ -103,8 +103,8 @@
                         <tr>
                             <td class="fw-bold">
                                 <input type="hidden" name="has_business" value="1">
-                                <input type="hidden" name="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})">
-                                {{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})
+                                <input type="hidden" name="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})">
+                                {{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})
                             </td>
 
                             <td class="{{ date('Y-m-d') > $currentSubscription->business_expire_date ? 'text-danger' : 'text-success' }}">
@@ -305,8 +305,8 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $leftBranchExpireDateHistory->id }}">
-                                <span class="text-danger fw-bold"></span>{{ __('Shop Not Yet to be created') }}
-                                <input type="hidden" name="branch_names[]" value="{{ __('Shop Not Yet to be created') }}">
+                                <span class="text-danger fw-bold"></span>{{ location_label('branch') }} {{ __('Not Yet to be created') }}
+                                <input type="hidden" name="branch_names[]" value="{{ location_label('branch') }} {{ __('Not Yet to be created') }}">
                             </td>
 
                             <td class="{{ date('Y-m-d') > $leftBranchExpireDateHistory->expire_date ? 'text-danger' : 'text-success' }}">
@@ -368,8 +368,8 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $leftBranchExpireDateHistory?->id }}">
-                                <span class="text-danger fw-bold">{{ __('Shop Not Yet to be created') }}</span>
-                                <input type="hidden" name="branch_names[]" value="{{ __('Shop Not Yet to be created') }}">
+                                <span class="text-danger fw-bold">{{ location_label('branch') }} {{ __('Not Yet to be created') }}</span>
+                                <input type="hidden" name="branch_names[]" value="{{ location_label('branch') }} {{ __('Not Yet to be created') }}">
                             </td>
 
                             <td class="{{ date('Y-m-d') > $leftBranchExpireDateHistory?->expire_date ? 'text-danger' : 'text-success' }}">

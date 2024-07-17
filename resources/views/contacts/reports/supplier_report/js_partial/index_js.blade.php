@@ -1,5 +1,5 @@
 <script>
-    var businessName = "{{ $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')' }}";
+    var businessName = "{{ $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')' }}";
 
     var suppliersReportTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",

@@ -8,7 +8,7 @@
             'error': "{{ __('Ooops, something wrong happended.') }}"
         }
     });
-    
+
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
         $('.submit_button').prop('type', 'button');
@@ -227,7 +227,7 @@
         $('#roleMsg').html('');
         if (hasAccassToAllArea == 1) {
 
-            $('#roleMsg').html('Selected Role Has Access to All Shop/Place');
+            $('#roleMsg').html('Selected Role Has Access to All Store/Place');
             $('#branch_id').prop('required', false);
         }
     });

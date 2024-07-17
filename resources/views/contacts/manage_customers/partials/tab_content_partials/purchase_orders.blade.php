@@ -16,10 +16,10 @@
                             <div class="col-lg-9 col-md-6">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
-                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                        <label><strong>{{ location_label() }}</strong></label>
                                         <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
                                             @if (!$branch)
-                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                             @else
                                                 @php
                                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -111,7 +111,7 @@
                                 <th>{{ __('Action') }}</th>
                                 <th>{{ __('Date') }}</th>
                                 <th>{{ __('P/o ID') }}</th>
-                                <th>{{ __('Shop/Business') }}</th>
+                                <th>{{ location_label() }}</th>
                                 <th>{{ __('Supplier') }}</th>
                                 <th>{{ __('Created By') }}</th>
                                 <th>{{ __('Receiving Status') }}</th>

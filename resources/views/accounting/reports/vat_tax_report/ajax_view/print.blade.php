@@ -170,7 +170,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -293,7 +293,7 @@
     $__toDate = date($dateFormat, strtotime($toDate));
     $dateRange = $__fromDate ? $__fromDate . '_to_' . $__toDate : __('All Time');
     $__filteredBranchName = $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName;
-    $__branchName = $__filteredBranchName == 'All' ? __('All Shops/Business') : $__filteredBranchName;
+    $__branchName = $__filteredBranchName == 'All' ? __('All Stores/Company') : $__filteredBranchName;
     $filename = __('Vat/Tax Report') . '__' . $dateRange . '__' . $__branchName;
 @endphp
 <span id="title" class="d-none">{{ $filename }}</span>

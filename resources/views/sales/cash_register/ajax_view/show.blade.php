@@ -158,7 +158,7 @@
                     </li>
 
                     <li style="font-size: 11px!important;">
-                        <b>{{ __('Shop') }} : </b>
+                        <b>{{ location_label() }} : </b>
                         @if ($openedCashRegister?->branch)
                             @if ($openedCashRegister?->branch?->parent_branch_id)
                                 {{ $openedCashRegister?->branch?->parentBranch?->name }}

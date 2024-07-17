@@ -27,8 +27,8 @@
             <thead>
                 <tr>
                     <th>{{ __("Plan Name") }}</th>
-                    <th>{{ __("Increase Shop Quantity") }}</th>
-                    <th>{{ __("Price Per Shop") }}</th>
+                    <th>{{ __("Increase Store Quantity") }}</th>
+                    <th>{{ __("Price Per Store") }}</th>
                     <th id="period_count_header">{{ __('Months') }}</th>
                     <th>{{ __("Subtotal") }}</th>
                 </tr>
@@ -36,7 +36,7 @@
 
             <tbody>
                 <tr>
-                    <td>{{ $plan->name }} <small style="font-size:9px;">({{ __("Current Shop Count") }} : <span class="fw-bold">{{ $generalSettings['subscription']->current_shop_count }})</span></small></td>
+                    <td>{{ $plan->name }} <small style="font-size:9px;">({{ __("Current Store Count") }} : <span class="fw-bold">{{ $generalSettings['subscription']->current_shop_count }})</span></small></td>
                     <td>
                         <div class="product-count cart-product-count">
                             <div class="quantity rapper-quantity">

@@ -3,7 +3,7 @@
         <tr style="border-bottom: 1px solid">
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Plan') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price') }}</th>
-            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Shop Count') }}</th>
+            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Store Count') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Period') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price Period Count') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
@@ -39,7 +39,7 @@
 
         @if ($transaction?->details?->has_business == 1)
             <tr>
-                <td style="font-size:11px!important;">Multi Shop Management System(Business)</td>
+                <td style="font-size:11px!important;">{{ __("Multi Store Management System") }}({{ __("Company") }})</td>
                 <td style="font-size:11px!important;">
                     @if ($transaction?->details?->country != 'bangladesh')
                         @php

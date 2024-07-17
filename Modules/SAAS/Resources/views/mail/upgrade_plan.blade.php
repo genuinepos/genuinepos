@@ -144,7 +144,7 @@
 
 <body>
     <div class="email-container">
-        <h2 class="page-title">Subscription Plan Upgraded Successfully</h2>
+        <h2 class="page-title">{{ __("Subscription Plan Upgraded Successfully") }}</h2>
         <table>
             <tbody>
                 <tr>
@@ -158,32 +158,32 @@
                 </tr>
 
                 <tr>
-                    <td>Full Name</td>
+                    <td>{{ __("Full Name") }}</td>
                     <td>: {{ $user->name }}</td>
                 </tr>
 
                 <tr>
-                    <td>Email</td>
+                    <td>{{ __("Email") }}</td>
                     <td>: {{ $user->email }}</td>
                 </tr>
 
                 <tr>
-                    <td>Go To Your App</td>
+                    <td>{{ __("Go To Your App") }}</td>
                     <td>: <a href="{{ $appUrl }}">{{ $appUrl }}</a></td>
                 </tr>
                 <tr>
-                    <td>Details:</td>
+                    <td>{{ __("Details") }}:</td>
                 </tr>
                 <tr>
                     <td>
                         <table>
                             <tr style="border-bottom: 1px solid black;">
-                                <th>Plan</th>
-                                <th>Price</th>
-                                <th>Shop Count</th>
-                                <th>Price Period</th>
-                                <th>Price Period Count</th>
-                                <th>Subtotal</th>
+                                <th>{{ __("Plan") }}</th>
+                                <th>{{ __("Price") }}</th>
+                                <th>{{ __("Store Count") }}</th>
+                                <th>{{ __("Price Period") }}</th>
+                                <th>{{ __("Price Period Count") }}</th>
+                                <th>{{ __("Subtotal") }}</th>
                             </tr>
 
                             <tr>
@@ -197,7 +197,7 @@
 
                             @if (isset($data['has_business']))
                                 <tr>
-                                    <td>Multi Shop Management System(Business)</td>
+                                    <td>{{ __("Multi Store Management System") }}({{ __("Company") }})</td>
                                     <td>{{ App\Utils\Converter::format_in_bdt($data['business_price']) }}</td>
                                     <td>...</td>
                                     <td>{{ $data['business_price_period'] }}</td>
@@ -248,8 +248,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="{{ config('speeddigit.website') }}">Visit our website</a> |
-                        <a href="{{ config('speeddigit.contact_us') }}">Contact Us</a>
+                        <a href="{{ config('speeddigit.website') }}">{{ __("Visit our website") }}</a> |
+                        <a href="{{ config('speeddigit.contact_us') }}">{{ __("Contact Us") }}</a>
                     </td>
                 </tr>
                 <tr>

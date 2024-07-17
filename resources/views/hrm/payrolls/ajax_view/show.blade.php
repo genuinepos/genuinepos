@@ -55,7 +55,7 @@
 
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($payroll->branch_id) {
@@ -253,7 +253,7 @@
                                 $filename = __('Payroll') . '__' . $payroll->voucher_no . '__' . $payroll->month . '-' . $payroll->year . '__' . $branchName;
                             @endphp
 
-                             <a href="{{ route('hrm.payrolls.print', $payroll->id) }}" onclick="printPayroll(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPayrollBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
+                            <a href="{{ route('hrm.payrolls.print', $payroll->id) }}" onclick="printPayroll(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPayrollBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -274,7 +274,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -299,7 +301,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

@@ -49,7 +49,7 @@
                     <div class="payment_top_card">
                         <table class="table table-sm display modal-table">
                             <tr>
-                                <th class="text-start" style="font-size:11px!important">{{ __('Shop') }}</th>
+                                <th class="text-start" style="font-size:11px!important">{{ location_label() }}</th>
                                 <td class="text-start" style="font-size:11px!important"> :
                                     @if ($contact?->account?->branch)
                                         {{ $contact?->account?->branch?->name }}

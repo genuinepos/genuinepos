@@ -32,10 +32,10 @@
                                 <form id="filter_form">
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -82,7 +82,7 @@
                                     <th class="text-black">{{ __('Serial') }}</th>
                                     <th class="text-black">{{ __('Counter Name') }}</th>
                                     <th class="text-black">{{ __('Short Name') }}</th>
-                                    <th class="text-black">{{ __('Shop/Business') }}</th>
+                                    <th class="text-black">{{ location_label() }}</th>
                                     <th class="text-black">{{ __('Action') }}</th>
                                 </tr>
                             </thead>

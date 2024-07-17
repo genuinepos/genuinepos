@@ -65,7 +65,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($order->branch_id) {
@@ -133,46 +133,44 @@
                                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
 
                                             @if (count($orderProduct->purchaseProducts) > 0)
-                                                <tr>
-                                                    <td colspan="3" class="text-center"><strong>{{ __('Receiving Details') }} ➡</strong></td>
+                                        <tr>
+                                            <td colspan="3" class="text-center"><strong>{{ __('Receiving Details') }} ➡</strong></td>
 
-                                                    <td colspan="8">
-                                                        <table class="table modal-table table-sm table-striped">
-                                                            <thead>
-                                                                <tr class="bg-secondary">
-                                                                    <th class="text-white" style="font-size:11px!important;">{{ __('Date') }}</th>
-                                                                    <th class="text-white" style="font-size:11px!important;">{{ __('P. Invoice ID.') }}</th>
-                                                                    <th class="text-white" style="font-size:11px!important;">{{ __('Challan No') }}</th>
-                                                                    <th class="text-white" style="font-size:11px!important;">{{ __('Lot No') }}</th>
-                                                                    <th class="text-white" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($orderProduct->purchaseProducts as $purchaseProduct)
+                                            <td colspan="8">
+                                                <table class="table modal-table table-sm table-striped">
+                                                    <thead>
+                                                        <tr class="bg-secondary">
+                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Date') }}</th>
+                                                            <th class="text-white" style="font-size:11px!important;">{{ __('P. Invoice ID.') }}</th>
+                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Challan No') }}</th>
+                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Lot No') }}</th>
+                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($orderProduct->purchaseProducts as $purchaseProduct)
+                                                            @if ($purchaseProduct->quantity <= 0)
+                                                                @continue
+                                                            @endif
 
-                                                                    @if ($purchaseProduct->quantity <= 0)
+                                                            <tr>
+                                                                <td style="font-size:11px!important;">{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct?->purchase?->date)) }}</td>
 
-                                                                        @continue
-                                                                    @endif
+                                                                <td style="font-size:11px!important;">{{ $purchaseProduct?->purchase?->invoice_id }}</td>
 
-                                                                    <tr>
-                                                                        <td style="font-size:11px!important;">{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct?->purchase?->date)) }}</td>
+                                                                <td style="font-size:11px!important;">{{ $purchaseProduct?->purchase?->challan_no }}</td>
 
-                                                                        <td style="font-size:11px!important;">{{ $purchaseProduct?->purchase?->invoice_id }}</td>
+                                                                <td style="font-size:11px!important;">{{ $purchaseProduct->lot_number }}</td>
 
-                                                                        <td style="font-size:11px!important;">{{ $purchaseProduct?->purchase?->challan_no }}</td>
-
-                                                                        <td style="font-size:11px!important;">{{ $purchaseProduct->lot_number }}</td>
-
-                                                                        <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->quantity).'/'. $purchaseProduct?->unit?->code_name }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                                                <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->quantity) . '/' . $purchaseProduct?->unit?->code_name }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </td>
                                         </tr>
+                                    @endif
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -289,12 +287,10 @@
                         @endphp
 
                         @if (auth()->user()->can('purchase_order_edit') && $order->branch_id == auth()->user()->branch_id)
-
                             <a href="{{ route('purchase.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
 
                         @if (auth()->user()->can('purchase_order_to_invoice'))
-
                             <a href="{{ route('purchase.order.to.invoice.create', [$order->id]) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> {{ __('P/o To Purchase Invoice') }}</a>
                         @endif
 

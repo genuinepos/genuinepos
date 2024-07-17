@@ -64,8 +64,8 @@
                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                     <div class="select-dropdown">
                                         <select name="branch_id" id="branch_id" autofocus>
-                                            <option value="">{{ __('All Shop/Business') }}</option>
-                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                            <option value="">{{ __('All Store/Company') }}</option>
+                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                             @endforeach
@@ -262,7 +262,7 @@
                                                 <th>{{ __('S/L') }}</th>
                                                 <th>{{ __('Product') }}</th>
                                                 {{-- <th>{{ __('Product Code(SKU)') }}</th> --}}
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Alert Qty') }}</th>
                                                 <th>{{ __('Current Stock') }}</th>
                                             </tr>
@@ -289,7 +289,7 @@
                                             <tr>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Order ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Delivery Status') }}</th>
                                                 <th>{{ __('Total Amount') }}</th>
@@ -319,7 +319,7 @@
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Invoice Amount') }}</th>
                                                 <th>{{ __('Curr. Due') }}</th>
                                             </tr>
@@ -348,7 +348,7 @@
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Purchased Amount') }}</th>
                                                 <th>{{ __('Curr. Due') }}</th>
                                             </tr>

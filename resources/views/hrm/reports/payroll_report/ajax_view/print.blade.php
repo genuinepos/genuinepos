@@ -163,7 +163,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-4">
@@ -191,7 +191,7 @@
                     <tr>
                         <th>{{ __('Employee') }}</th>
                         <th>{{ __('Payroll Voucher') }}</th>
-                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ location_label() }}</th>
                         <th>{{ __('Pay Status') }}</th>
                         <th>{{ __('Duration Unit') }}</th>
                         <th class="text-end">{{ __('Total Amount') }}</th>

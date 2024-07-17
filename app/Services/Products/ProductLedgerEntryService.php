@@ -328,7 +328,7 @@ class ProductLedgerEntryService
                 }
             } else {
 
-                $branchName = $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
+                $branchName = $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')';
             }
         }
 

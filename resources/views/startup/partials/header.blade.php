@@ -47,7 +47,7 @@
                                 $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
                             @endphp
                             <p class="text-white mt-1">
-                                <span class="text-white">{{ __('Shop Expire On') }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
+                                <span class="text-white">{{ __('Store Expire On') }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
                             </p>
                         @endif
                     @endif

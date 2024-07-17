@@ -450,7 +450,7 @@
                         check_quantity = parseFloat(e_return_quantity) - parseFloat(e_current_return_qty);
                     }
 
-                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
+                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Store/Company';
 
                     if (parseFloat(check_quantity) > parseFloat(data.stock)) {
 

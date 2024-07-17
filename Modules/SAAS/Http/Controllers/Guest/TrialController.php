@@ -37,7 +37,7 @@ class TrialController extends Controller
             $emailIsVerified->delete();
         } else {
 
-            throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
+            throw new Exception('Something went wrong, Company creation failed. Please try again!', 500);
         }
 
         $tenant = $this->tenantService->addTenant($request);
@@ -51,7 +51,7 @@ class TrialController extends Controller
         }
 
         $this->tenantService->deleteTenant(id: $request->domain);
-        throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
+        throw new Exception('Something went wrong, Company creation failed. Please try again!', 500);
     }
 
     function validation(TrialTenantStoreRequest $request)

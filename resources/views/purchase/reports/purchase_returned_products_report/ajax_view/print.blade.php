@@ -165,7 +165,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-4">
@@ -191,7 +191,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('Product') }}</th>
-                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ location_label() }}</th>
                         <th>{{ __('Stock Location') }}</th>
                         <th>{{ __('Supplier') }}</th>
                         <th>{{ __('Return Voucher No') }}</th>

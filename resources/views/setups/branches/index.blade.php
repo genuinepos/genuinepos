@@ -7,13 +7,13 @@
     </style>
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
-@section('title', 'Shop List - ')
+@section('title', 'Store List - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-4">
-                    <h5>{{ __('Shops') }}
+                    <h5>{{ location_label('branch') }}
                         <span>({{ __('Limit') }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['subscription']->current_shop_count }})</span>
                     </h5>
                 </div>
@@ -34,13 +34,13 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-6">
-                        <h6>{{ __('Shop List') }}</h6>
+                        <h6>{{ __('Store List') }}</h6>
                     </div>
 
                     @if (auth()->user()->can('branches_create') && $currentCreatedBranchCount < $generalSettings['subscription']->current_shop_count)
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="addBtn" href="{{ route('branches.create') }}" class="btn btn-sm btn-success">
-                                <i class="fas fa-plus-square"></i> {{ __('Add New Shop') }}
+                                <i class="fas fa-plus-square"></i> {{ __('Add New Store') }}
                             </a>
                         </div>
                     @endif
@@ -54,12 +54,12 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>{{ __('Shop Name') }}</th>
-                                    <th>{{ __('Shop Id') }}</th>
-                                    <th>{{ __('Parent Shop') }}</th>
+                                    <th>{{ __('Store Name') }}</th>
+                                    <th>{{ __('Store Id') }}</th>
+                                    <th>{{ __('Parent Store') }}</th>
                                     <th>{{ __('Phone') }}</th>
                                     <th>{{ __('Address') }}</th>
-                                    <th>{{ __('Shop Logo') }}</th>
+                                    <th>{{ __('Store Logo') }}</th>
                                     <th>{{ __('Expire Date') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>

@@ -17,10 +17,10 @@
                                 <form id="filter_payments" class="py-2 px-2 mt-2" method="get">
                                     <div class="form-group row align-items-end">
                                         <div class="col-lg-3 col-md-6">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
                                                 @if (!$branch)
-                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @else
                                                     @php
                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -110,7 +110,7 @@
                                 <th>{{ __('Action') }}</th>
                                 <th>{{ __('Date') }}</th>
                                 <th>{{ __('Voucher') }}</th>
-                                <th>{{ __('Shop/Business') }}</th>
+                                <th>{{ location_label() }}</th>
                                 <th>{{ __('Reference') }}</th>
                                 <th>{{ __('Remarks') }}</th>
                                 {{-- <th>{{ __("Received From") }}</th> --}}

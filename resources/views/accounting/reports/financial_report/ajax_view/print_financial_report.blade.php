@@ -175,11 +175,11 @@
                     }
                 }
             @endphp
-            <p><span class="fw-bold">{{ __('Shop/Business') }} : </span> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><span class="fw-bold">{{ location_label() }} : </span> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
-            <p><span class="fw-bold">{{ __('Chain Shop') }} : </span> {{ $filteredChildBranchName }} </p>
+            <p><span class="fw-bold">{{ __('Chain Store') }} : </span> {{ $filteredChildBranchName }} </p>
         </div>
     </div>
 
@@ -234,8 +234,8 @@
 </div>
 
 @php
-    $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
-    $fileChildBranchName = $filteredChildBranchName ? '__Child Shop:' . $filteredChildBranchName : '';
+    $fileBranchName = $filteredBranchName ? location_label() . ': ' . $filteredBranchName : $ownOrParentbranchName;
+    $fileChildBranchName = $filteredChildBranchName ? '__Child Store:' . $filteredChildBranchName : '';
     $dateRange = $fromDate && $toDate ? '__' . $fromDate . '_To_' . $toDate : '';
     $filename = __('Financial Report') . $dateRange . '__' . $fileBranchName . $fileChildBranchName;
 @endphp

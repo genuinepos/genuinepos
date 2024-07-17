@@ -1,5 +1,5 @@
-@extends('billing.layout.master', ['heading' => 'Add Shop'])
-@section('title', 'Add Shop - ')
+@extends('billing.layout.master', ['heading' => 'Add Store'])
+@section('title', 'Add Store - ')
 @push('css')
 @endpush
 @section('content')
@@ -48,7 +48,7 @@
                                 </svg>
                             </div>
                             <div class="order-complete-msg">
-                                <h2>{{ __('Shop is added successfully.') }}</h2>
+                                <h2>{{ __('Store is added successfully.') }}</h2>
                             </div>
                         </div>
                     </div>

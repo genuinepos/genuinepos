@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Transfer Stocks - ')
+@section('title', 'Transfer Stock - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -11,7 +11,7 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <h5>{{ __('Transfer Stocks') }}</h5>
+                                <h5>{{ __('Transfer Stock') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
@@ -28,8 +28,8 @@
                                                     <div class="col-md-2">
                                                         <label><strong>{{ __('Created From') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="">{{ __("All") }}</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -90,7 +90,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List of Transfer Stocks') }}</h6>
+                                    <h6>{{ __('List of Transfer Stock') }}</h6>
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">

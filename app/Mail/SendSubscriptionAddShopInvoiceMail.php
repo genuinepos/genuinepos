@@ -35,7 +35,7 @@ class SendSubscriptionAddShopInvoiceMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Increased Shop Invoice',
+            subject: 'Increased Store Invoice',
         );
     }
 

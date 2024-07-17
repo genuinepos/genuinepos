@@ -442,7 +442,7 @@
             success: function(data) {
                 if ($.isEmptyObject(data.errorMsg)) {
 
-                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
+                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Store/Company';
                     if (parseFloat(e_return_quantity) > parseFloat(data.stock)) {
 
                         toastr.error('Current stock is ' + parseFloat(data.stock) + stockLocationMessage);

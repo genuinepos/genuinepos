@@ -71,20 +71,20 @@
                                     </div>
 
                                     <div class="mb-1">
-                                        <label class="form-label">{{ __('Business Price Per Month') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_price_per_month" value="{{ $plan->business_price_per_month }}" class="form-control" id="business_price_per_month" placeholder="{{ __('Business Price Per Month') }}">
+                                        <label class="form-label">{{ __('Company Price Per Month') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_price_per_month" value="{{ $plan->business_price_per_month }}" class="form-control" id="business_price_per_month" placeholder="{{ __('Company Price Per Month') }}">
                                         <span class="text-danger error error_business_price_per_month"></span>
                                     </div>
 
                                     <div class="mb-1">
-                                        <label class="form-label">{{ __('Business Price Per Years') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_price_per_year" value="{{ $plan->business_price_per_year }}" class="form-control" id="business_price_per_year" placeholder="{{ __('Business Price Per Years') }}">
+                                        <label class="form-label">{{ __('Company Price Per Years') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_price_per_year" value="{{ $plan->business_price_per_year }}" class="form-control" id="business_price_per_year" placeholder="{{ __('Company Price Per Years') }}">
                                         <span class="text-danger error error_business_price_per_year"></span>
                                     </div>
 
                                     <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
-                                        <label class="form-label">{{ __('Business lifetime Price') }} <span class="text-danger">*</span></label>
-                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Business lifetime Price') }}">
+                                        <label class="form-label">{{ __('Company lifetime Price') }} <span class="text-danger">*</span></label>
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Company lifetime Price') }}">
                                         <span class="text-danger error error_business_lifetime_price"></span>
                                     </div>
                                 @else
@@ -95,8 +95,8 @@
                                     </div>
 
                                     <div class="mb-1">
-                                        <label class="form-label">{{ __('Trial Shop Count') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="trial_shop_count" class="form-control" id="trial_shop_count" value="{{ $plan->trial_shop_count }}" placeholder="{{ __('Trial Shop Count') }}">
+                                        <label class="form-label">{{ __('Trial Store Count') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="trial_shop_count" class="form-control" id="trial_shop_count" value="{{ $plan->trial_shop_count }}" placeholder="{{ __('Trial Store Count') }}">
                                         <span class="text-danger error error_trial_shop_count"></span>
                                     </div>
                                 @endif

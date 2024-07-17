@@ -397,7 +397,7 @@
 @endphp
 <body>
     <div class="email-container">
-        <h2 class="page-title">Shop/Business Renew Invoice</h2>
+        <h2 class="page-title">Store/Company Renew Invoice</h2>
         <table>
             <tbody>
                 <tr>
@@ -435,7 +435,7 @@
                             <table width="100%" border="1" cellspacing="0" cellpadding="5" style="margin: 10px 0; padding: 10px;">
                                 <!-- Table header -->
                                 <tr>
-                                    <th>Shop/Business Name</th>
+                                    <th>Store/Company Name</th>
                                     <th>Price (As Per Plan)</th>
                                     <th>Renewable Price Period</th>
                                     <th>Renewable Period Count</th>

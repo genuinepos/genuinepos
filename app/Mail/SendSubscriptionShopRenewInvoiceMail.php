@@ -26,7 +26,7 @@ class SendSubscriptionShopRenewInvoiceMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Shop/Business Renew Invoice',
+            subject: 'Store/Company Renew Invoice',
         );
     }
 

@@ -72,7 +72,7 @@ class InvoiceLayoutService
                     }
                 } else {
 
-                    return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Business') . '</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Company') . '</b>)';
                 }
             })
             ->addColumn('action', function ($row) {

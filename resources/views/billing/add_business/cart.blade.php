@@ -1,5 +1,5 @@
-@extends('billing.layout.master', ['heading' => 'Add Multi Shop Management System'])
-@section('title', 'Add Multi Shop Management System - ')
+@extends('billing.layout.master', ['heading' => 'Add Multi Store Management System'])
+@section('title', 'Add Multi Store Management System - ')
 @push('css')
 @endpush
 @section('content')

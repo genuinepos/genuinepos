@@ -2,7 +2,7 @@
     @csrf
     <div class="form-group">
         <div class="setting_form_heading">
-            <h6 class="text-primary">{{ __('Shop Settings') }}</h6>
+            <h6 class="text-primary">{{ __('Store Settings') }}</h6>
         </div>
     </div>
 
@@ -11,8 +11,8 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-lg-4 col-md-6">
-                    <label class="fw-bold">{{ __('Shop Name') }} <span class="text-danger">*</span></label>
-                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" value="{{ $branch->name }}" placeholder="{{ __('Shop Name') }}" />
+                    <label class="fw-bold">{{ __('Store Name') }} <span class="text-danger">*</span></label>
+                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" value="{{ $branch->name }}" placeholder="{{ __('Store Name') }}" />
                     <span class="error error_branch_name"></span>
                 </div>
 
@@ -23,8 +23,8 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6">
-                    <label class="fw-bold">{{ __('Shop ID') }}</label>
-                    <input readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
+                    <label class="fw-bold">{{ __('Store ID') }}</label>
+                    <input readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" value="{{ $branch->branch_code }}" placeholder="{{ __('Store ID') }}" />
                     <span class="error error_branch_code"></span>
                 </div>
             </div>
@@ -103,8 +103,8 @@
                 @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                     <div class="col-lg-8 col-md-6">
                         <label class="fw-bold">{{ __('Logo') }} <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H: 40px * W: 100px') }}</small></label>
-                        <input type="file" name="logo" class="form-control" id="logo" @if ($branch->logo) data-default-file="{{ file_link('branchLogo', $branch?->logo) }}" @endif/>
-                        <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Shop Logo') }}</a>
+                        <input type="file" name="logo" class="form-control" id="logo" @if ($branch->logo) data-default-file="{{ file_link('branchLogo', $branch?->logo) }}" @endif />
+                        <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Store Logo') }}</a>
                     </div>
                 @endif
             </div>

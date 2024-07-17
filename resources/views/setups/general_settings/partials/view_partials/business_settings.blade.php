@@ -2,26 +2,26 @@
     @csrf
     <div class="form-group">
         <div class="setting_form_heading">
-            <h6 class="text-primary">{{ __('Business Settings') }}</h6>
+            <h6 class="text-primary">{{ __('Company Settings') }}</h6>
         </div>
     </div>
 
     <div class="form-group row">
         <div class="col-md-4">
-            <label class="fw-bold">{{ __('Business Name') }} <span class="text-danger">*</span></label>
-            <input required type="text" name="business_name" class="form-control" value="{{ $generalSettings['business_or_shop__business_name'] }}" placeholder="{{ __('Business Name') }}" autocomplete="off">
+            <label class="fw-bold">{{ __('Company Name') }} <span class="text-danger">*</span></label>
+            <input required type="text" name="business_name" class="form-control" value="{{ $generalSettings['business_or_shop__business_name'] }}" placeholder="{{ __('Company Name') }}" autocomplete="off">
             <span class="error error_business_name"></span>
         </div>
 
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Address') }} <span class="text-danger">*</span></label>
-            <input required type="text" name="address" class="form-control" value="{{ $generalSettings['business_or_shop__address'] }}" placeholder="{{ __('Business address') }}" autocomplete="off">
+            <input required type="text" name="address" class="form-control" value="{{ $generalSettings['business_or_shop__address'] }}" placeholder="{{ __('Company address') }}" autocomplete="off">
             <span class="error error_address"></span>
         </div>
 
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Phone') }} <span class="text-danger">*</span></label>
-            <input required type="text" name="phone" class="form-control" placeholder="{{ __('Business phone number') }}" value="{{ $generalSettings['business_or_shop__phone'] }}">
+            <input required type="text" name="phone" class="form-control" placeholder="{{ __('Company phone number') }}" value="{{ $generalSettings['business_or_shop__phone'] }}">
             <span class="error error_phone"></span>
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="form-group row mt-1">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Email') }} <span class="text-danger">*</span></label>
-            <input required type="text" name="email" class="form-control" placeholder="Business email address" value="{{ $generalSettings['business_or_shop__email'] }}">
+            <input required type="text" name="email" class="form-control" placeholder="Company email address" value="{{ $generalSettings['business_or_shop__email'] }}">
             <span class="error error_email"></span>
         </div>
 
@@ -130,10 +130,10 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-8">
-            <label class="fw-bold">{{ __('Business Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 40px; W: 100px;') }}</small></label>
+            <label class="fw-bold">{{ __('Company Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 40px; W: 100px;') }}</small></label>
             <input type="file" class="form-control" name="business_logo" id="business_logo" @if ($generalSettings['business_or_shop__business_logo']) data-default-file="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" @endif>
             <span class="error error_business_logo"></span>
-            <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBusinessLogo">{{ __('Remove Business Logo') }}</a>
+            <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBusinessLogo">{{ __('Remove Company Logo') }}</a>
         </div>
     </div>
 

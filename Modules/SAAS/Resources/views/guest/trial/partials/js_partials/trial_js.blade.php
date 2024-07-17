@@ -77,7 +77,7 @@
 
             if ($('#name').val() == '') {
 
-                toastr.error("{{ __('Business name is required.') }}");
+                toastr.error("{{ __('Company name is required.') }}");
                 return;
             }
 

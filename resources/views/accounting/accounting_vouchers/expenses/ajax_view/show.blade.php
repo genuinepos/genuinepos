@@ -38,20 +38,16 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($expense->branch_id) {
-
                                         if ($expense?->branch?->parentBranch) {
-
                                             $branchName = $expense?->branch?->parentBranch?->name . '(' . $expense?->branch?->area_name . ')' . '-(' . $expense?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $expense?->branch?->name . '(' . $expense?->branch?->area_name . ')' . '-(' . $expense?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -72,14 +68,8 @@
                 <hr class="p-0 m-1">
 
                 @php
-                    $creditDescription = $expense
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'cr')
-                        ->first();
-                    $debitDescriptions = $expense
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'dr')
-                        ->get();
+                    $creditDescription = $expense->voucherDescriptions()->where('amount_type', 'cr')->first();
+                    $debitDescriptions = $expense->voucherDescriptions()->where('amount_type', 'dr')->get();
                 @endphp
 
                 <div class="row mt-2">
@@ -235,7 +225,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({

@@ -66,20 +66,20 @@
                                 </div>
 
                                 <div class="mb-1">
-                                    <label class="form-label">{{ __('Business price per month') }} <span class="text-danger">*</span></label>
-                                    <input required type="number" name="business_price_per_month" class="form-control" id="business_price_per_month" placeholder="{{ __('Business Price Per Month') }}">
+                                    <label class="form-label">{{ __('Company price per month') }} <span class="text-danger">*</span></label>
+                                    <input required type="number" name="business_price_per_month" class="form-control" id="business_price_per_month" placeholder="{{ __('Company Price Per Month') }}">
                                     <span class="text-danger error error_business_price_per_month"></span>
                                 </div>
 
                                 <div class="mb-1">
-                                    <label class="form-label">{{ __('Business price per years') }} <span class="text-danger">*</span></label>
-                                    <input required type="number" name="business_price_per_year" class="form-control" id="business_price_per_year" placeholder="{{ __('Business Price Per Year') }}">
+                                    <label class="form-label">{{ __('Company price per years') }} <span class="text-danger">*</span></label>
+                                    <input required type="number" name="business_price_per_year" class="form-control" id="business_price_per_year" placeholder="{{ __('Company Price Per Year') }}">
                                     <span class="text-danger error error_business_price_per_year"></span>
                                 </div>
 
                                 <div class="mb-1 d-none lifetime_field">
-                                    <label class="form-label">{{ __('Business price lifetime') }} <span class="text-danger">*</span></label>
-                                    <input type="number" name="business_lifetime_price" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Business Price Per lifetime') }}">
+                                    <label class="form-label">{{ __('Company price lifetime') }} <span class="text-danger">*</span></label>
+                                    <input type="number" name="business_lifetime_price" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Company Price Per lifetime') }}">
                                     <span class="text-danger error error_business_lifetime_price"></span>
                                 </div>
 

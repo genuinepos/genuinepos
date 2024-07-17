@@ -1,7 +1,7 @@
 <table class="table print-table table-sm table-bordered">
     <thead>
         <tr style="border-bottom: 1px solid">
-            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Shop/Business") }}</th>
+            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Store/Company") }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Price(As Per Plan)") }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Renewed Price Period') }}</th>
             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Renewed Price Period Count') }}</th>
@@ -11,7 +11,7 @@
     <tbody class="sale_print_product_list">
         @if ($transaction?->details?->has_business == 1)
             <tr>
-                <td style="font-size:11px!important;">Multi Shop Management System(Business)</td>
+                <td style="font-size:11px!important;">{{ __("Multi Store Management System") }}({{ __("Company") }})</td>
                 <td style="font-size:11px!important;">
                     @if ($transaction?->details?->data?->business_price_period == 'month')
                         {{ App\Utils\Converter::format_in_bdt($transaction?->details?->data?->business_price_per_month) }}

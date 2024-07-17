@@ -73,7 +73,7 @@ class ProcessService
                     }
                 } else {
 
-                    return $generalSettings['business_or_shop__business_name'] . '(Business)';
+                    return $generalSettings['business_or_shop__business_name'] . '(Company)';
                 }
             })
             ->editColumn('product', fn ($row) => $row->p_name . ' ' . $row->v_name)

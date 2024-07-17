@@ -174,7 +174,7 @@
         </div>
 
         <div class="col-3">
-            <p><strong>{{ __('Chain Store') }} : </strong> {{ $filteredChildBranchName }} </p>
+            <p><strong>{{ __('Chain Shop') }} : </strong> {{ $filteredChildBranchName }} </p>
         </div>
 
         <div class="col-3">

@@ -95,7 +95,7 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label><strong>{{ __('Chain Store') }} </strong></label>
+                                            <label><strong>{{ __('Chain Shop') }} </strong></label>
                                             <select name="child_branch_id" class="form-control select2" id="child_branch_id">
                                                 <option data-child_branch_name="" value="">{{ __('Select Store First') }}</option>
                                             </select>

@@ -243,7 +243,7 @@
                                                     {{ __("Optional") }}
                                                     <br>
                                                     <small class="text-danger">
-                                                        {{ __("Opening stock will be added to the loggedin user current shop.") }}
+                                                        {{ __("Opening stock will be added to the loggedin user current store.") }}
                                                     </small>
                                                 </td>
                                             </tr>

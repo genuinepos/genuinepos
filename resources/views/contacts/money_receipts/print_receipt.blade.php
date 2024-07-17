@@ -231,11 +231,11 @@
                     <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
-                {{-- <div class="col-4 text-center">
-                    @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
+                <div class="col-4 text-center">
+                    @if (config('speeddigit.show_app_info_in_print') == true)
+                        <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                     @endif
-                </div> --}}
+                </div>
 
                 <div class="col-4 text-end">
                     <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>

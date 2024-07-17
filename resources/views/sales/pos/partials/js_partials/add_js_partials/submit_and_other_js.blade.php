@@ -217,6 +217,33 @@
             $("#status_id").select2("destroy");
             $("#status_id").select2();
         @endif
+
+        getSalesVoucherNo();
+    }
+
+    function getSalesVoucherNo() {
+
+        var url = "{{ route('sales.helper.invoice.or.id') }}";
+        var route = url.replace(':status', status);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            success: function(data) {
+
+                $('#invoice_id').html(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
     }
 
     $(document).on('click enter', '#final_and_quick_cash_receive', function(e) {

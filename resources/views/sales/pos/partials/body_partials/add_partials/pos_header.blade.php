@@ -214,7 +214,7 @@
                     </div> --}}
 
                     <div class="date">
-                        <p><span class="fw-bold" style="color:white!important">{{ __("Inv. ID") }}:</span> ESSI-2406-0025</p>
+                        <p><span class="fw-bold" style="color:white!important">{{ __("Inv. ID") }}:</span> <small id="invoice_id">{{ $voucherNo }}</small></p>
                     </div>
 
                     <div class="date">

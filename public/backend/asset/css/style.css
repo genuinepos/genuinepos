@@ -2523,5 +2523,5 @@ label.col-6 {
 }
 
 .select2-results {
-    font-size: 11px;
+    font-size: 11px!important;
 }

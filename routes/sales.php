@@ -78,7 +78,7 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {
 
-        Route::get('create/{saleId?}', 'create')->name('cash.register.create');
+        Route::get('create/{saleId?}/{jobCardId?}/{saleScreenType?}', 'create')->name('cash.register.create');
         Route::post('store', 'store')->name('cash.register.store');
         Route::get('show/{id}', 'show')->name('cash.register.show');
         Route::get('close/{id}', 'close')->name('cash.register.close');

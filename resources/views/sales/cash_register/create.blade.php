@@ -31,6 +31,8 @@
             <form action="{{ route('cash.register.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="sale_id" value="{{ $saleId }}">
+                <input type="hidden" name="job_card_id" value="{{ $jobCardId }}">
+                <input type="hidden" name="sale_screen_type" value="{{ $saleScreenType }}">
                 <section>
                     <div class="row">
                         <div class="col-md-9">

@@ -905,7 +905,7 @@
                                                             <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __('POS Sale List') }}</p>
+                                                    <p class="switch_text">{{ __('Manage POS Sales') }}</p>
                                                 </a>
                                             </div>
                                         @endif

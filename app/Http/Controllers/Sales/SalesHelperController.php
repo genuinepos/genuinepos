@@ -102,7 +102,7 @@ class SalesHelperController extends Controller
 
         if ($sale->status != SaleStatus::Final->value && $request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
-            return response()->json(['errorMsg' => __('Pos printer page size only for Final Sale.')]);
+            return response()->json(['errorMsg' => __('POS printer page size only for Final Sale.')]);
         }
 
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
@@ -140,7 +140,7 @@ class SalesHelperController extends Controller
     {
         if ($request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
-            return response()->json(['errorMsg' => __('Pos printer page size does not support for delivery note.')]);
+            return response()->json(['errorMsg' => __('POS printer page size does not support for delivery note.')]);
         }
 
         $printPageSize = $request->print_page_size;
@@ -164,7 +164,7 @@ class SalesHelperController extends Controller
 
         if ($request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
-            return response()->json(['errorMsg' => __('Pos printer page size does not support for packing slip.')]);
+            return response()->json(['errorMsg' => __('POS printer page size does not support for packing slip.')]);
         }
 
         if ($sale->status != SaleStatus::Final->value) {

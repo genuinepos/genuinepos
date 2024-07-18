@@ -1325,7 +1325,7 @@
 
                                                             <p class="checkbox_input_wrap mt-1">
                                                                 <input {{ $role->hasPermissionTo('pos_sale_settings') ? 'CHECKED' : '' }} type="checkbox" name="pos_sale_settings" id="pos_sale_settings" class="general_settings setup">
-                                                                <label for="pos_sale_settings">{{ __('Pos Sale Settings') }}</label>
+                                                                <label for="pos_sale_settings">{{ __('POS Sale Settings') }}</label>
                                                             </p>
 
                                                             <p class="checkbox_input_wrap mt-1">

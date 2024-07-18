@@ -52,7 +52,7 @@
         </div>
 
         <div class="col-md-3">
-            <label class="fw-bold">{{ __('Pos Sale Default Tax') }}</label>
+            <label class="fw-bold">{{ __('POS Sale Default Tax') }}</label>
             <select class="form-control" name="default_tax_ac_id" id="pos_default_tax_ac_id">
                 <option value="">{{ __('None') }}</option>
                 @foreach ($taxAccounts as $tax)

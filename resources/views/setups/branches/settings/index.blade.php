@@ -115,7 +115,7 @@
 
                                             @if (auth()->user()->can('pos_sale_settings'))
                                                 <li class="menu_list">
-                                                    <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('Pos Sale Settings') }}</a>
+                                                    <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('POS Sale Settings') }}</a>
                                                 </li>
                                             @endif
                                         @endif

@@ -81,7 +81,7 @@ class TodaySummaryService
                 $purchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
                 $receiptQuery->where('accounting_vouchers.branch_id', $request->branch_id);
-                $saleReturnQuery->where('sale_returns.sale_returns.branch_id', $request->branch_id);
+                $saleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
                 $expenseQuery->where('accounting_vouchers.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
                 $payrollQuery->where('accounting_vouchers.branch_id', $request->branch_id);

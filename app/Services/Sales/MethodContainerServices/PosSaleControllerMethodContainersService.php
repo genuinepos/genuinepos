@@ -198,7 +198,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             return view('sales.pos.create', $data);
         } else {
 
-            return redirect()->route('cash.register.create');
+            return redirect()->route('cash.register.create', [BooleanType::False->value, $jobCardId, $saleScreenType]);
         }
     }
 
@@ -454,7 +454,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             return view('sales.pos.edit', $data);
         } else {
 
-            return redirect()->route('cash.register.create', $id);
+            return redirect()->route('cash.register.create', [$id, 'no_id', $saleScreenType]);
         }
     }
 

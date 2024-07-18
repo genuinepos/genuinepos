@@ -136,7 +136,12 @@
                                                     @if ($supplierAccount->is_walk_in_customer == 1)
                                                         @continue
                                                     @endif
-                                                    <option {{ $return->supplier_account_id == $supplierAccount->id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . ' | ' . $supplierAccount->account_group_name }}</option>
+
+                                                    @php
+                                                        $accountType = $supplierAccount->sub_sub_group_number == 10 ? '' : ' -(' . __('Customer') . ')';
+                                                    @endphp
+
+                                                    <option {{ $return->supplier_account_id == $supplierAccount->id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . $accountType }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_supplier_account_id"></span>

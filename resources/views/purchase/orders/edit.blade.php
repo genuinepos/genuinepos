@@ -118,7 +118,10 @@
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="pay_term_number">
                                                     <option value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
-                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" {{ $supplierAccount->id == $order->supplier_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                        @if ($supplierAccount->is_walk_in_customer == 1)
+                                                            @continue
+                                                        @endif
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" {{ $supplierAccount->id == $order->supplier_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . ' | ' . $supplierAccount->account_group_name }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
@@ -149,7 +152,7 @@
                                         <label class=" col-4"><b>{{ __('Pay Term') }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
-                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" value="{{ $order->pay_term_number }}" placeholder="{{ __("Number") }}" autocomplete="off">
+                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" value="{{ $order->pay_term_number }}" placeholder="{{ __('Number') }}" autocomplete="off">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="date">
                                                     <option value="">@lang('menu.pay_term')</option>
                                                     <option {{ $order->pay_term == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.days')</option>
@@ -625,7 +628,7 @@
         </div>
     </div>
 
-    @if ( $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
+    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

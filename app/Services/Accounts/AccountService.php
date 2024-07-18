@@ -402,7 +402,7 @@ class AccountService
         return $query;
     }
 
-    public function customerAndSupplierAccounts($ownBranchIdOrParentBranchId)
+    public function customerAndSupplierAccounts($ownBranchIdOrParentBranchId, $sortingByGroupNumber = 'asc')
     {
         $customerAccounts = '';
         $query = DB::table('accounts')
@@ -446,6 +446,7 @@ class AccountService
             )
             ->union($customerAccounts)
             // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
+            ->orderBy('sub_sub_group_number', $sortingByGroupNumber) // Order by 'is_walk_in_customer' in descending order
             ->orderBy('is_walk_in_customer', 'desc') // Order by 'is_walk_in_customer' in descending order
             ->orderBy('name', 'asc')
             ->get();

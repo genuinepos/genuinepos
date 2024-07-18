@@ -34,7 +34,7 @@ class PurchaseReturnProductReportController extends Controller
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return view('purchase.reports.purchase_returned_products_report.index', compact('branches', 'supplierAccounts', 'ownBranchIdOrParentBranchId'));
     }

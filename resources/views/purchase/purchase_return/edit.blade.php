@@ -133,7 +133,10 @@
                                             <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="purchase_invoice_id" autofocus>
                                                 <option value="">{{ __('Select Supplier') }}</option>
                                                 @foreach ($supplierAccounts as $supplierAccount)
-                                                    <option {{ $return->supplier_account_id == $supplierAccount->id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                    @if ($supplierAccount->is_walk_in_customer == 1)
+                                                        @continue
+                                                    @endif
+                                                    <option {{ $return->supplier_account_id == $supplierAccount->id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . ' | ' . $supplierAccount->account_group_name }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_supplier_account_id"></span>
@@ -527,7 +530,7 @@
                                                 <label class="col-4"><b>{{ __('Total Return Amount') }}</b></label>
                                                 <div class="col-8">
                                                     <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control fw-bold" value="{{ $return->total_return_amount }}" placeholder="{{ __('Total Return Amount') }}" tabindex="-1">
-                                                    <input type="hidden" id="curr_total_return_amount" value="{{ $return->total_return_amount  }}">
+                                                    <input type="hidden" id="curr_total_return_amount" value="{{ $return->total_return_amount }}">
                                                     <input type="hidden" name="purchase_ledger_amount" id="purchase_ledger_amount">
                                                 </div>
                                             </div>

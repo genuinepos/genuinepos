@@ -96,6 +96,10 @@
         .element-body {
             overflow: initial !important;
         }
+
+        /* .extentable-select2-field .select2-container--open .select2-dropdown--below {
+            width: 298px !important;
+        } */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -143,12 +147,12 @@
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
-                                    <div class="input-group">
+                                    <div class="input-group extentable-select2-field">
                                         <label class="col-4"><b>{{ __('Customers') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select required name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="sale_invoice_id" autofocus>
                                                 @foreach ($customerAccounts as $customerAccount)
-                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . ' | ' . $customerAccount->account_group_name }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_customer_account_id"></span>

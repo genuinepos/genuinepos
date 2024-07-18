@@ -175,7 +175,9 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
 
     public function storeMethodContainer(object $request, object $codeGenerator): ?array
     {
-        $restrictions = $this->salesReturnService->restrictions(request: $request);
+        $customerAccount = $this->accountService->singleAccountById(id: $request->customer_account_id);
+
+        $restrictions = $this->salesReturnService->restrictions(request: $request, customerAccount: $customerAccount);
 
         if ($restrictions['pass'] == false) {
 
@@ -343,7 +345,9 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array
     {
-        $restrictions = $this->salesReturnService->restrictions(request: $request, checkCustomerChangeRestriction: true, saleReturnId: $id);
+        $customerAccount = $this->accountService->singleAccountById(id: $request->customer_account_id);
+
+        $restrictions = $this->salesReturnService->restrictions(request: $request, checkCustomerChangeRestriction: true, customerAccount: $customerAccount, saleReturnId: $id);
 
         if ($restrictions['pass'] == false) {
 

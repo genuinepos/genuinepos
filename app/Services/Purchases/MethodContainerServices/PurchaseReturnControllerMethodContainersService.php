@@ -62,7 +62,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return $data;
     }
@@ -166,7 +166,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return $data;
     }
@@ -336,7 +336,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             // ->where('accounts.branch_id', $return->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         $data['return'] = $return;
 

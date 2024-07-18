@@ -32,7 +32,7 @@ class PaymentAgainstPurchaseReportController extends Controller
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
-        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return view('purchase.reports.payments_against_purchase_report.index', compact('branches', 'supplierAccounts'));
     }

@@ -1,39 +1,107 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        b { font-weight: 500 !important; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500 !important;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 { text-align: right; padding-right: 10px; }
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
 
-        .data_preloader { top: 2.3%; }
+        .data_preloader {
+            top: 2.3%;
+        }
 
-        .selected_invoice { background-color: #645f61; color: #fff !important; }
+        .selected_invoice {
+            background-color: #645f61;
+            color: #fff !important;
+        }
 
-        .invoice_search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 3px; margin-top: 1px; }
+        .invoice_search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 3px;
+            margin-top: 1px;
+        }
 
-        .invoice_search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 2px; }
+        .invoice_search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 2px;
+        }
 
-        .invoice_search_result ul li a { color: #6b6262; font-size: 10px; display: block; padding: 0px 3px; }
+        .invoice_search_result ul li a {
+            color: #6b6262;
+            font-size: 10px;
+            display: block;
+            padding: 0px 3px;
+        }
 
-        .invoice_search_result ul li a:hover { color: var(--white-color); background-color: #ada9a9; }
+        .invoice_search_result ul li a:hover {
+            color: var(--white-color);
+            background-color: #ada9a9;
+        }
 
-        .selectProduct { background-color: #645f61; color: #fff !important; }
+        .selectProduct {
+            background-color: #645f61;
+            color: #fff !important;
+        }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 95%; z-index: 9999999; padding: 0; left: 5%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 95%;
+            z-index: 9999999;
+            padding: 0;
+            left: 5%;
+            display: none;
+            border: 1px solid #706a6d;
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 0px 2px;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid lightgray;
+            margin: 2px 0px;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
 
-        .element-body { overflow: initial !important; }
+        .element-body {
+            overflow: initial !important;
+        }
 
-        .big_amount_field { height: 36px; font-size: 24px !important; margin-bottom: 3px; }
+        .big_amount_field {
+            height: 36px;
+            font-size: 24px !important;
+            margin-bottom: 3px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -87,7 +155,10 @@
                                             <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="purchase_invoice_id" autofocus>
                                                 <option data-default_balance_type="cr" value="">{{ __('Select Supplier') }}</option>
                                                 @foreach ($supplierAccounts as $supplierAccount)
-                                                    <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                    @if ($supplierAccount->is_walk_in_customer == 1)
+                                                        @continue
+                                                    @endif
+                                                    <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . ' | ' . $supplierAccount->account_group_name }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_supplier_account_id"></span>

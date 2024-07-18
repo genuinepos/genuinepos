@@ -63,8 +63,14 @@ class ImportSql extends Command
             DB::purge('custom'); // Purge the custom connection to make sure no old configuration is used.
             DB::reconnect('custom'); // Reconnect with the new configuration.
 
+            // Disable foreign key checks
+            DB::connection('custom')->unprepared('SET FOREIGN_KEY_CHECKS=0;');
+
             $sql = File::get($file);
             DB::connection('custom')->unprepared($sql);
+
+            // Enable foreign key checks
+            DB::connection('custom')->unprepared('SET FOREIGN_KEY_CHECKS=1;');
 
             // $this->info("The file {$file} has been successfully imported into the database {$dbname}.");
             // Log::info("The file {$file} has been successfully imported into the database {$dbname}.");

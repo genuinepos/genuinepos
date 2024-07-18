@@ -70,7 +70,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name']);
 
-        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return $data;
     }
@@ -168,7 +168,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             // ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return $data;
     }
@@ -353,7 +353,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             // ->where('accounts.branch_id', $purchase->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $data['supplierAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         $data['purchase'] = $purchase;
         $data['ownBranchIdOrParentBranchId'] = $ownBranchIdOrParentBranchId;

@@ -158,7 +158,7 @@
                                     </div>
                                     <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                         @foreach ($customerAccounts as $customerAccount)
-                                            <option @selected($sale->customer_account_id == $customerAccount->id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                            <option @selected($sale->customer_account_id == $customerAccount->id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . ' | ' . $customerAccount->account_group_name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">

@@ -33,7 +33,7 @@ class PurchaseReturnReportController extends Controller
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
-        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId, sortingByGroupNumber: 'desc');
 
         return view('purchase.reports.purchase_returns_report.index', compact('branches', 'supplierAccounts'));
     }

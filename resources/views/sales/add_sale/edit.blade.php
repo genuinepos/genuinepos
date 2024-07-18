@@ -75,9 +75,9 @@
             width: 143px;
         }
 
-        .select2-container--open .select2-dropdown--below {
+        /* .select2-container--open .select2-dropdown--below {
             width: 298px !important;
-        }
+        } */
 
         /*.select2-selection:focus {
                                  box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);

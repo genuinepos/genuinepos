@@ -219,8 +219,13 @@ class SalesReturnService
         return $return;
     }
 
-    public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, int $saleReturnId = null): array
+    public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, ?object $customerAccount = null, ?int $saleReturnId = null): array
     {
+        if (isset($customerAccount) && $customerAccount->is_walk_in_customer == BooleanType::True->value && $request->current_balance != 0) {
+
+            return ['pass' => false, 'msg' => __('Walk-In-Customer is not credit customer.So Walk-In-Customer current balance must be 0.')];
+        }
+
         if (!isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __('Product table is empty.')];

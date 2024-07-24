@@ -5,7 +5,7 @@ namespace App\Services\Sales;
 use Carbon\Carbon;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
-use App\Models\Sales\Sale;
+use App\Models\Sales\Sale as SalesOrder;
 use App\Enums\PaymentStatus;
 use App\Enums\OrderDeliveryStatus;
 use Illuminate\Support\Facades\DB;
@@ -331,7 +331,7 @@ class SalesOrderService
 
     public function singleSalesOrder(int $id, array $with = null): ?object
     {
-        $query = Sale::query();
+        $query = SalesOrder::query();
 
         if (isset($with)) {
 

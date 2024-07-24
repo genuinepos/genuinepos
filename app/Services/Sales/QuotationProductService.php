@@ -2,7 +2,7 @@
 
 namespace App\Services\Sales;
 
-use App\Models\Sales\SaleProduct;
+use App\Models\Sales\SaleProduct as QuotationProduct;
 
 class QuotationProductService
 {
@@ -20,7 +20,7 @@ class QuotationProductService
                 $addOrUpdateQuotationProduct = $quotationProduct;
             } else {
 
-                $addOrUpdateQuotationProduct = new SaleProduct();
+                $addOrUpdateQuotationProduct = new QuotationProduct();
             }
 
             $addOrUpdateQuotationProduct->sale_id = $quotation->id;
@@ -50,7 +50,7 @@ class QuotationProductService
 
     public function salesQuotationProducts(array $with = null): ?object
     {
-        $query = SaleProduct::query();
+        $query = QuotationProduct::query();
 
         if (isset($with)) {
 
@@ -62,7 +62,7 @@ class QuotationProductService
 
     public function singleQuotationProduct(?int $id, array $with = null): ?object
     {
-        $query = SaleProduct::query();
+        $query = QuotationProduct::query();
 
         if (isset($with)) {
 
@@ -70,5 +70,17 @@ class QuotationProductService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function quotationProducts(array $with = null): ?object
+    {
+        $query = QuotationProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 }

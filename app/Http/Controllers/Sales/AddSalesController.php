@@ -131,7 +131,7 @@ class AddSalesController extends Controller
         return response()->json(__("${__voucherName} deleted Successfully."));
     }
 
-    public function searchByInvoiceId($keyWord, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
+    public function searchByInvoiceId(AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, $keyWord = null)
     {
         $searchByInvoiceIdMethodContainer = $addSaleControllerMethodContainersInterface->searchByInvoiceIdMethodContainer(keyWord: $keyWord);
         if (isset($searchByInvoiceIdMethodContainer['noResult'])) {

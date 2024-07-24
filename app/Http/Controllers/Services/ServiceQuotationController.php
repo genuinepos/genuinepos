@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Services;
 
+use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Enums\SaleScreenType;
@@ -233,5 +234,23 @@ class ServiceQuotationController extends Controller
         }
 
         return response()->json(__('Service Quotation deleted successfully'));
+    }
+
+    public function searchByQuotationId($keyWord)
+    {
+        $quotations = DB::table('sales')
+            ->where('sales.quotation_id', 'like', "%{$keyWord}%")
+            ->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.status', SaleStatus::Quotation->value)
+            ->where('sales.sale_screen', SaleScreenType::ServiceQuotation->value)
+            ->select('sales.id', 'sales.quotation_id', 'sales.customer_account_id')->limit(35)->get();
+
+        if (count($sales) > 0) {
+
+            return view('search_results_view.service_quotation_search_result_list', compact('quotations'));
+        } else {
+
+            return ['noResult' => 'no result'];
+        }
     }
 }

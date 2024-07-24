@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Products\BrandService;
+use App\Services\Sales\QuotationService;
 use App\Services\Services\DeviceService;
 use App\Services\Services\StatusService;
 use App\Services\Accounts\AccountService;
@@ -40,6 +41,7 @@ class JobCardController extends Controller
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
+        private QuotationService $quotationService
     ) {
     }
 
@@ -148,7 +150,7 @@ class JobCardController extends Controller
         return view('services.print_templates.print_label', compact('jobCard'));
     }
 
-    public function create(JobCardCreateRequest $request, CodeGenerationServiceInterface $codeGenerator)
+    public function create(JobCardCreateRequest $request, CodeGenerationServiceInterface $codeGenerator, $quotationId = null)
     {
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -184,7 +186,19 @@ class JobCardController extends Controller
 
         $jobCardNo = $codeGenerator->generateMonthWise(table: 'service_job_cards', column: 'job_no', prefix: $jobCardNoPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
-        return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist', 'jobCardNo'));
+        $quotation = null;
+        if (isset($quotationId)) {
+
+            $quotation = $this->quotationService->singleQuotation(id: $quotationId, with: [
+                'saleProducts',
+                'saleProducts.product',
+                'saleProducts.variant',
+                'saleProducts.unit:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
+            ]);
+        }
+
+        return view('services.job_cards.create', compact('customerAccounts', 'brands', 'devices', 'deviceModels', 'status', 'taxAccounts', 'priceGroupProducts', 'priceGroups', 'productConfigurationItems', 'defaultProblemsReportItems', 'defaultProductConditionItems', 'defaultChecklist', 'jobCardNo', 'quotation'));
     }
 
     public function store(JobCardStoreRequest $request, CodeGenerationServiceInterface $codeGenerator)

@@ -1,7 +1,7 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var productConfigurationItems = @json($productConfigurationItems);
@@ -234,7 +234,110 @@
 </script>
 
 <script>
-    var itemUnitsArray = [];
+    @if (isset($quotation))
+        var itemUnitsArray = @json($itemUnitsArray);
+    @else
+        var itemUnitsArray = [];
+    @endif
+
+    var ul = document.getElementById('list');
+    var selectObjClassName = 'selectProduct';
+    $('#quotation').mousedown(function(e) {
+
+        afterClickOrFocusQuotation();
+    }).focus(function(e) {
+
+        ul = document.getElementById('quotation_list')
+        selectObjClassName = 'selected_quotation';
+    });
+
+    function afterClickOrFocusQuotation() {
+
+        ul = document.getElementById('quotation_list')
+        selectObjClassName = 'selected_quotation';
+        $('#quotation').val('');
+        $("#customer_account_id").select2("destroy");
+        $("#customer_account_id").select2();
+        $('#closing_balance').val(0);
+        $('#current_balance').val(0);
+        $('#quotation_id').val('');
+        $('#jobcard_product_list').empty();
+        $('.quotation_search_result').hide();
+        $('#invoice_list').empty();
+        calculateTotalAmount();
+    }
+
+    $('#quotation').on('input', function() {
+
+        $('.quotation_search_result').hide();
+
+        var keyWord = $(this).val();
+
+        if (keyWord === '') {
+
+            $('.quotation_search_result').hide();
+            $('#quotation_id').val('');
+            $('#search_product').prop('disabled', false);
+            return;
+        }
+
+        var url = "{{ route('services.quotations.search.by.quotation.id', [':keyWord']) }}";
+        var route = url.replace(':keyWord', keyWord);
+
+        $.ajax({
+            url: route,
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.noResult)) {
+
+                    $('.quotation_search_result').hide();
+                } else {
+
+                    $('.quotation_search_result').show();
+                    $('#quotation_list').html(data);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#selected_quotation', function(e) {
+        e.preventDefault();
+
+        var quotation = $(this).html();
+        var quotation_id = $(this).data('quotation_id');
+        var customer_account_id = $(this).data('customer_account_id');
+        var customer_curr_balance = $(this).data('current_balance');
+
+        var url = "{{ route('services.quotation.products.for.job.card', [':quotation_id']) }}";
+        var route = url.replace(':quotation_id', quotation_id);
+
+        $.ajax({
+            url: route,
+            async: true,
+            type: 'get',
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    $('#quotation').focus().select();
+                    return;
+                }
+
+                itemUnitsArray = jQuery.parseJSON(data.units);
+
+                $('#quotation').val(quotation.trim());
+                $('#quotation_id').val(quotation_id);
+                $('#customer_account_id').val(customer_account_id).trigger('change');
+                $('#current_balance').val(customer_curr_balance);
+                $('.quotation_search_result').hide();
+                $('#jobcard_product_list').empty();
+                $('#jobcard_product_list').html(data.view);
+            }
+        });
+    });
 
     // Get all price group
     var priceGroups = @json($priceGroupProducts);
@@ -1632,3 +1735,5 @@
         });
     </script>
 @endif
+
+<script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>

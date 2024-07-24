@@ -5,7 +5,7 @@ namespace App\Services\Sales;
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
-use App\Models\Sales\Sale;
+use App\Models\Sales\Sale as PosSale;
 use App\Enums\PaymentStatus;
 use App\Enums\SaleScreenType;
 use App\Enums\ShipmentStatus;
@@ -186,7 +186,7 @@ class PosSaleService
             $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'suspend_id', prefix: 'SPND', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
         }
 
-        $addSale = new Sale();
+        $addSale = new PosSale();
         $addSale->invoice_id = $request->status == SaleStatus::Final->value ? $transId : null;
         $addSale->quotation_id = $request->status == SaleStatus::Quotation->value ? $transId : null;
         $addSale->draft_id = $request->status == SaleStatus::Draft->value ? $transId : null;

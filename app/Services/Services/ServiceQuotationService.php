@@ -78,6 +78,11 @@ class ServiceQuotationService
                     }
                 }
 
+                if (auth()->user()->can('job_cards_create')) {
+
+                    $html .= '<a class="dropdown-item" href="' . route('services.job.cards.create', [$row->id]) . '">' . __('Add Job Card') . '</a>';
+                }
+
                 if (auth()->user()->can('shipment_access')) {
 
                     $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';

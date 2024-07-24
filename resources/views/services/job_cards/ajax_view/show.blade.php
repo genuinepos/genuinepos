@@ -42,9 +42,9 @@
                                 <span class="fw-bold" style="{{ $jobCard?->status?->color_code }}">{{ $jobCard?->status?->name }}</span>
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Delivery Date') }} : </strong><span>{{ date($dateFormat, strtotime($jobCard->delivery_date_ts)) }}</span></li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Delivery Date') }} : </strong><span>{{ isset($jobCard->delivery_date_ts) ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</span></li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Due Date') }} : </strong><span>{{ date($dateFormat, strtotime($jobCard->due_date_ts)) }}</span></li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Due Date') }} : </strong><span>{{ isset($jobCard->due_date_ts) ? date($dateFormat, strtotime($jobCard->due_date_ts)) : '' }}</span></li>
                         </ul>
                     </div>
 

@@ -442,7 +442,7 @@ class SaleService
             $request->status != SaleStatus::Final->value
         ) {
 
-            return ['pass' => false, 'msg' => __('Pos printer only supported for final sale.')];
+            return ['pass' => false, 'msg' => __('POS printer only supported for final sale.')];
         }
 
         if ($request->ex_sale_id) {

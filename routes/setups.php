@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\CurrencyController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
@@ -131,6 +132,16 @@ Route::prefix('setups')->group(function () {
         Route::delete('delete/{id}', 'delete')->name('barcode.settings.delete');
         Route::get('set-default/{id}', 'setDefault')->name('barcode.settings.set.default');
         Route::get('design/pages', 'designPage')->name('barcode.settings.design.pages');
+    });
+
+    Route::controller(CurrencyController::class)->prefix('currencies')->group(function () {
+
+        Route::get('/', 'index')->name('currencies.index');
+        Route::get('create', 'create')->name('currencies.create');
+        Route::post('store', 'store')->name('currencies.store');
+        Route::get('edit/{id}', 'edit')->name('currencies.edit');
+        Route::post('update/{id}', 'update')->name('currencies.update');
+        Route::delete('delete/{id}', 'delete')->name('currencies.delete');
     });
 
     Route::group(['prefix' => 'release/note'], function () {

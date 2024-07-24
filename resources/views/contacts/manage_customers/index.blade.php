@@ -78,6 +78,7 @@
                                     <th>{{ __('Customer ID') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Phone') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     {{-- <th>{{ __("Group") }}</th> --}}
                                     <th>{{ __('Credit Limit') }}</th>
                                     <th>{{ __('Opening Balance') }}</th>
@@ -93,7 +94,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="5" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>

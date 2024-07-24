@@ -905,7 +905,7 @@
                                                             <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __('POS Sale List') }}</p>
+                                                    <p class="switch_text">{{ __('Manage POS Sales') }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -1955,6 +1955,17 @@
                                                 </a>
                                             </div>
                                         @endif
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('currencies.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-file-invoice"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Manage Currency') }}</p>
+                                            </a>
+                                        </div>
 
                                         {{-- @if (auth()->user()->can('barcode_settings'))
                                             <div class="sub-menu-col">

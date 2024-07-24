@@ -103,6 +103,6 @@ class PosSaleController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Pos Sale deleted Successfully."));
+        return response()->json(__("POS Sale deleted Successfully."));
     }
 }

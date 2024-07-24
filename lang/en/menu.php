@@ -1822,7 +1822,7 @@ return [
     'sales_report' => 'Sales report',
     'edit_item_discount_from_pos_screen' => 'Edit item discount from pos screen',
     'edit_item_price_from_pos_screen' => 'Edit item price from pos screen',
-    'pos_sale_settings' => 'Pos sale settings',
+    'pos_sale_settings' => 'POS sale settings',
     'delete_pos_sale' => 'Delete pos sale',
     'edit_pos_sale' => 'Edit pos sale',
     'add_pos_sale' => 'Add pos sale',

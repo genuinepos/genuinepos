@@ -7,7 +7,9 @@
 <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('backend/asset/js/jquery.fontstar.js') }}"></script>
 <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 <!--Toaster.js js link-->
 <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
 <!--Toaster.js js link end-->

@@ -16,7 +16,7 @@
         </div>
 
         <div class="col-lg-6 col-md-6">
-            <label class="fw-bold">{{ __('Pos Sale Default Invoice Layout') }}</label>
+            <label class="fw-bold">{{ __('POS Sale Default Invoice Layout') }}</label>
             <select name="pos_sale_invoice_layout_id" class="form-control" id="pos_sale_invoice_layout_id">
                 @foreach ($invoiceLayouts as $invoiceLayout)
                     <option {{ $generalSettings['invoice_layout__pos_sale_invoice_layout_id'] == $invoiceLayout->id ? 'SELECTED' : '' }} value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>

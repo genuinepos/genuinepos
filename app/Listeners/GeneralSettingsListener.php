@@ -57,7 +57,7 @@ class GeneralSettingsListener
 
             $generalSettings = Cache::rememberForever($cacheKey, function () use ($branchId, $cacheKey) {
 
-                $settings = GeneralSetting::where('branch_id', $branchId)
+                return GeneralSetting::where('branch_id', $branchId)
                     ->orWhereIn('key', [
                         'business_or_shop__business_name',
                         'business_or_shop__business_logo',
@@ -65,9 +65,12 @@ class GeneralSettingsListener
                         'business_or_shop__email',
                         'business_or_shop__phone',
                     ])->pluck('value', 'key')->toArray();
-
-                return $settings;
             });
+
+            if (!isset($branchId)) {
+
+                session()->put('base_currency_symbol', $generalSettings['business_or_shop__currency_symbol']);
+            }
 
             $branch = $event?->user?->branch;
             if (isset($branch) && isset($branch->parent_branch_id)) {

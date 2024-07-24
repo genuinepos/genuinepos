@@ -11,8 +11,11 @@ class ManageCustomerService
 {
     public function customerListTable($request)
     {
+        $generalSettings = config('generalSettings');
+        
         $customers = '';
         $query = DB::table('contacts')
+            ->leftJoin('branches', 'contacts.branch_id', 'branches.id')
             ->leftJoin('customer_groups', 'contacts.customer_group_id', 'customer_groups.id')
             ->leftJoin('accounts', 'contacts.id', 'accounts.contact_id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -47,6 +50,7 @@ class ManageCustomerService
             'contacts.status',
             'contacts.phone',
             'contacts.credit_limit',
+            'branches.name as branch_name',
             // 'customer_groups.name as group_name',
             'account_groups.default_balance_type',
             DB::raw(
@@ -122,6 +126,7 @@ class ManageCustomerService
             'contacts.phone',
             'contacts.credit_limit',
             // 'customer_groups.name',
+            'branches.name',
             'account_groups.default_balance_type',
         )->orderBy('contacts.id', 'desc');
 
@@ -162,6 +167,17 @@ class ManageCustomerService
             ->editColumn('contact_id', function ($row) {
 
                 return $row->contact_id . '(' . $row->prefix . ')';
+            })
+
+            ->editColumn('branch', function ($row) use ($generalSettings) {
+
+                if ($row->branch_name) {
+
+                    return $row->branch_name;
+                } else {
+
+                    return $generalSettings['business_or_shop__business_name'];
+                }
             })
 
             ->editColumn('credit_limit', function ($row) {

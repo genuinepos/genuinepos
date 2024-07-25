@@ -364,7 +364,7 @@ class PurchaseService
     private function createPurchaseAction($row)
     {
         $html = '<div class="btn-group" role="group">';
-        $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+        $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
         $html .= '<a href="' . route('purchases.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';

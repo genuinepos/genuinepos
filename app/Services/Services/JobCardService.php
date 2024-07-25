@@ -198,6 +198,7 @@ class JobCardService
 
         $addJobCard = new JobCard();
         $addJobCard->branch_id = auth()->user()->branch_id;
+        $addJobCard->quotation_id = isset($request->quotation_id) ? $request->quotation_id : null;
         $addJobCard->job_no = $jobNo;
         $addJobCard->customer_account_id = $request->customer_account_id;
         $addJobCard->service_type = $request->service_type;

@@ -159,7 +159,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error.');
+                    toastr.error('Net Connection Error.');
                     return;
                 } else if (err.status == 500) {
 
@@ -241,7 +241,7 @@
                 $('#applyCouponLodingBtn').hide();
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error.');
+                    toastr.error('Net Connection Error.');
                     return;
                 } else if (err.status == 500) {
 

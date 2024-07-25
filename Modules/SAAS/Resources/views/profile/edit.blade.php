@@ -33,7 +33,7 @@
                         <select name="language" id="languageDropdown" class="form-control">
                             <option value="en" @selected($user?->language === 'en')>{{ __('English') }}</option>
                             <option value="bn" @selected($user?->language === 'bn')>{{ __('Bangla') }}</option>
-                            <option value="ar" @selected($user?->language === 'ar')>{{ __('Arabic') }}</option>
+                            {{-- <option value="ar" @selected($user?->language === 'ar')>{{ __('Arabic') }}</option> --}}
                         </select>
                     </div>
                 </div>

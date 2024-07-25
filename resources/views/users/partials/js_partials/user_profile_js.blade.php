@@ -8,7 +8,7 @@
             'error': "{{ __('Ooops, something wrong happended.') }}"
         }
     });
-    
+
     // Add user by ajax
     $(document).on('submit', '#update_profile_form', function(e) {
         e.preventDefault();
@@ -39,7 +39,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -91,7 +91,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

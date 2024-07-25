@@ -124,7 +124,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -169,7 +169,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -247,8 +247,7 @@
         afterClickOrFocusQuotation();
     }).focus(function(e) {
 
-        ul = document.getElementById('quotation_list')
-        selectObjClassName = 'selected_quotation';
+        afterClickOrFocusQuotation();
     });
 
     function afterClickOrFocusQuotation() {
@@ -258,13 +257,17 @@
         $('#quotation').val('');
         $("#customer_account_id").select2("destroy");
         $("#customer_account_id").select2();
-        $('#closing_balance').val(0);
-        $('#current_balance').val(0);
         $('#quotation_id').val('');
         $('#jobcard_product_list').empty();
         $('.quotation_search_result').hide();
-        $('#invoice_list').empty();
+        $('#quotation_list').empty();
         calculateTotalAmount();
+    }
+
+    function afterFocusSearchItemField() {
+
+        ul = document.getElementById('list');
+        selectObjClassName = 'selectProduct';
     }
 
     $('#quotation').on('input', function() {
@@ -277,7 +280,6 @@
 
             $('.quotation_search_result').hide();
             $('#quotation_id').val('');
-            $('#search_product').prop('disabled', false);
             return;
         }
 
@@ -610,7 +612,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Please check the connetion.') }}");
+                    toastr.error("{{ __('Net Connection Error. Please check the connetion.') }}");
                     return;
                 }
             }
@@ -911,17 +913,26 @@
 
     $('body').keyup(function(e) {
 
-        if (e.keyCode == 13 || e.keyCode == 9) {
+        // if (e.keyCode == 13 || e.keyCode == 9) {
 
-            if ($(".selectProduct").attr('href') == undefined) {
+        //     if ($(".selectProduct").attr('href') == undefined) {
 
-                return;
-            }
+        //         return;
+        //     }
 
-            $(".selectProduct").click();
+        //     $(".selectProduct").click();
 
+        //     $('#list').empty();
+        //     keyName = e.keyCode;
+        // }
+
+        if (e.keyCode == 13) {
+
+            $('.' + selectObjClassName).click();
+            $('.quotation_search_result').hide();
+            $('.select_area').hide();
             $('#list').empty();
-            keyName = e.keyCode;
+            $('#quotation_list').empty();
         }
     });
 
@@ -1165,7 +1176,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1200,7 +1211,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1237,7 +1248,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1274,7 +1285,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1379,7 +1390,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -1474,7 +1485,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -1577,7 +1588,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1612,7 +1623,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1709,7 +1720,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

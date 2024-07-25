@@ -252,9 +252,9 @@
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
                                     </li>
 
-                                    <li>
+                                    {{-- <li>
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('ar') ? 'text-success' : '' }}" href="{{ route('change.lang', 'ar') }}">Arabic</a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </li>
                             <li class="top-icon d-hide d-md-block">

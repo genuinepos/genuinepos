@@ -215,8 +215,16 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Quotation ID.') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="quotation" class="form-control fw-bold" id="quotation" data-next="brand_id" value="{{ $quotation?->quotation_id }}" placeholder="{{ __('Quotation ID.') }}" autocomplete="off">
-                                                    <input type="hidden" name="quotation_id" id="quotation_id" value="{{ $quotation?->id }}">
+
+
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="quotation" class="form-control fw-bold" id="quotation" data-next="brand_id" value="{{ $quotation?->quotation_id }}" placeholder="{{ __('Quotation ID.') }}" autocomplete="off">
+                                                        <input type="hidden" name="quotation_id" id="quotation_id" value="{{ $quotation?->id }}">
+
+                                                        <div class="quotation_search_result d-hide">
+                                                            <ul id="quotation_list" class="list-unstyled"></ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

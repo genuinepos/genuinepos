@@ -245,7 +245,7 @@ class ServiceQuotationController extends Controller
             ->where('sales.sale_screen', SaleScreenType::ServiceQuotation->value)
             ->select('sales.id', 'sales.quotation_id', 'sales.customer_account_id')->limit(35)->get();
 
-        if (count($sales) > 0) {
+        if (count($quotations) > 0) {
 
             return view('search_results_view.service_quotation_search_result_list', compact('quotations'));
         } else {

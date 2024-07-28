@@ -6,6 +6,7 @@ use App\Models\BaseModel;
 use App\Models\Sales\Sale;
 use App\Models\InvoiceSchema;
 use App\Models\GeneralSetting;
+use App\Models\Setups\Currency;
 use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
 use App\Models\Purchases\Purchase;
@@ -72,5 +73,10 @@ class Branch extends BaseModel
     public function currency()
     {
         return $this->hasOne(GeneralSetting::class, 'branch_id', 'id')->where('key', 'business_or_shop__currency_symbol');
+    }
+
+    public function branchCurrency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 }

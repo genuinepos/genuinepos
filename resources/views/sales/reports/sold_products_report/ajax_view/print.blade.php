@@ -227,7 +227,8 @@
                                 @php
                                     $variant = $saleProduct->variant_name ? ' - ' . $saleProduct->variant_name : '';
                                     $totalQty += $saleProduct->quantity;
-                                    $totalSubtotal += $saleProduct->subtotal;
+                                    $subtotal = curr_cnv($saleProduct->unit_price_inc_tax, $saleProduct->c_rate, $saleProduct->branch_id);
+                                    $totalSubtotal += $subtotal;
                                 @endphp
                                 {{ $saleProduct->name . $variant }}
                             </td>
@@ -263,11 +264,11 @@
                             <td class="text-start">{{ $saleProduct->customer_name }}</td>
                             <td class="text-start">{{ $saleProduct->invoice_id }}</td>
                             <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($saleProduct->quantity) . '/' . $saleProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}</td>
-                            <td class="text-end fw-bold">{{ '(' . $saleProduct->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($saleProduct->unit_tax_amount) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($saleProduct->unit_price_exc_tax, $saleProduct->c_rate, $saleProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($saleProduct->unit_discount_amount, $saleProduct->c_rate, $saleProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ '(' . $saleProduct->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt(curr_cnv($saleProduct->unit_tax_amount, $saleProduct->c_rate, $saleProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($saleProduct->unit_price_inc_tax, $saleProduct->c_rate, $saleProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($subtotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

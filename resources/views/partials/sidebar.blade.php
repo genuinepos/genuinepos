@@ -1956,17 +1956,18 @@
                                             </div>
                                         @endif
 
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('currencies.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-file-invoice"></i></span>
+                                        @if (auth()->user()->can('currencies_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('currencies.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-file-invoice"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Manage Currency') }}</p>
-                                            </a>
-                                        </div>
-
+                                                    <p class="switch_text">{{ __('Currencies') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
                                         {{-- @if (auth()->user()->can('barcode_settings'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('barcode.settings.index') }}" class="switch-bar-wrap">

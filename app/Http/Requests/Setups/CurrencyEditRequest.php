@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Setups;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CurrencyEditRequest extends FormRequest
@@ -11,7 +12,7 @@ class CurrencyEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('currencies_edit') && config('generalSettings')['subscription']->features['setup'] == BooleanType::True->value;
     }
 
     /**

@@ -722,6 +722,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '461', 'name' => 'advertisements_create'],
             ['id' => '462', 'name' => 'advertisements_edit'],
             ['id' => '463', 'name' => 'advertisements_delete'],
+
+            ['id' => '464', 'name' => 'currencies_index'],
+            ['id' => '465', 'name' => 'currencies_create'],
+            ['id' => '466', 'name' => 'currencies_edit'],
+            ['id' => '467', 'name' => 'currencies_delete'],
         ];
 
         return $permissions;

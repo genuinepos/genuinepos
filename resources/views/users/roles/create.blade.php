@@ -1543,6 +1543,37 @@
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
+                                                            <input type="checkbox" class="setup" id="select_all" data-target="currencies" autocomplete="off">
+                                                            <strong>{{ __('Currencies') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="currencies_index" id="currencies_index" class="currencies setup">
+                                                        <label for="currencies_index">{{ __('Currency List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="currencies_create" id="currencies_create" class="currencies setup">
+                                                        <label for="currencies_create">{{ __('Currency Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="currencies_edit" id="currencies_edit" class="currencies setup">
+                                                        <label for="currencies_edit">{{ __('Currency Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="currencies_delete" id="currencies_delete" class="currencies setup">
+                                                        <label for="currencies_delete">{{ __('Currency Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
                                                             <input type="checkbox" class="setup" id="select_all" data-target="billing" autocomplete="off">
                                                             <strong>{{ __('Billing') }}</strong>
                                                         </label>
@@ -1578,6 +1609,8 @@
                                                         <label for="billing_pay_due_payment">{{ __('Pay Due Payment') }}</label>
                                                     </p>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>

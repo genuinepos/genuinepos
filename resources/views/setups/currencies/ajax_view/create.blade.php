@@ -31,26 +31,37 @@
                     <span class="error error_currency_symbol"></span>
                 </div>
 
-                <div id="currency_rate_fields">
-                    <div class="form-group mt-2 row g-2">
-                        <div class="col-md-3">
-                            <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ __('Currency') }}</span></p>
+                @if ($generalSettings['subscription']->has_business == \App\Enums\BooleanType::True->value)
+                    <div id="currency_rate_fields">
+                        <div class="form-group mt-2">
+                            <p><b>{{ __('Add Current Currency Rete') }}</b></p>
+                            <hr class="p-0 m-0">
                         </div>
 
-                        <div class="col-md-1">
-                            <p class="fw-bold"> = </p>
-                        </div>
+                        <div class="form-group mt-1 row g-2">
+                            <div class="col-md-3">
+                                <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ __('Currency') }}</span></p>
+                            </div>
 
-                        <div class="col-md-4">
-                            <input type="text" name="currency_rate" class="form-control fw-bold" id="currency_rate" data-next="currency_save" placeholder="{{ __('0.00') }}" />
-                            <span class="error error_currency_rate"></span>
-                        </div>
+                            <div class="col-md-1">
+                                <p class="fw-bold"> = </p>
+                            </div>
 
-                        <div class="col-md-3">
-                            <p class="fw-bold"><span id="base_currency_name">{{ session('base_currency_symbol') }}</span></p>
+                            <div class="col-md-3">
+                                <input type="text" name="currency_rate" class="form-control fw-bold" id="currency_rate" data-next="currency_rate_date" placeholder="{{ __('0.00') }}" />
+                                <span class="error error_currency_rate"></span>
+                            </div>
+
+                            <div class="col-md-2">
+                                <p class="fw-bold"><span id="base_currency_name">{{ session('base_currency_symbol') }}</span></p>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="text" name="currency_rate_date" class="form-control fw-bold " id="currency_rate_date" data-next="currency_save" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('As Per Date') }}" />
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
@@ -170,5 +181,32 @@
         var value = $(this).val() ? $(this).val() : '';
 
         $('#currency_name').html(value);
+    });
+</script>
+
+<script>
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
+    var _expectedDateFormat = '';
+    _expectedDateFormat = dateFormat.replace('d', 'DD');
+    _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+    _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('currency_rate_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: _expectedDateFormat,
     });
 </script>

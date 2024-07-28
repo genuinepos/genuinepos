@@ -5,14 +5,14 @@ namespace App\Http\Requests\Setups;
 use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CurrencyCreateRequest extends FormRequest
+class CurrencyRateIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('currencies_create') && config('generalSettings')['subscription']->features['setup'] == BooleanType::True->value;
+        return auth()->user()->can('currencies_edit') && config('generalSettings')['subscription']->has_business == BooleanType::True->value;
     }
 
     /**

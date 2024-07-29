@@ -21,6 +21,7 @@ class PurchaseProductService
             ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'purchase_products.variant_id', 'product_variants.id')
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
@@ -106,6 +107,7 @@ class PurchaseProductService
             'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('purchases.report_date', 'desc');
 
         return DataTables::of($purchaseProducts)
@@ -141,25 +143,25 @@ class PurchaseProductService
             })
             ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
-            ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_unit_cost))
+            ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_unit_cost, $row->c_rate, $row->branch_id)))
             ->editColumn('price', function ($row) {
                 if ($row->selling_price > 0) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->selling_price);
+                    return \App\Utils\Converter::format_in_bdt(curr_cnv($row->selling_price, $row->c_rate, $row->branch_id));
                 } else {
 
                     if ($row->variant_name) {
 
-                        return \App\Utils\Converter::format_in_bdt($row->variant_price);
+                        return \App\Utils\Converter::format_in_bdt(curr_cnv($row->variant_price, $row->c_rate, $row->branch_id));
                     } else {
 
-                        return \App\Utils\Converter::format_in_bdt($row->product_price);
+                        return \App\Utils\Converter::format_in_bdt(curr_cnv($row->product_price, $row->c_rate, $row->branch_id));
                     }
                 }
 
                 return \App\Utils\Converter::format_in_bdt($row->net_unit_cost);
             })
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . \App\Utils\Converter::format_in_bdt($row->line_total) . '</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->line_total, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'quantity', 'invoice_id', 'branch', 'net_unit_cost', 'price', 'subtotal'])
             ->make(true);

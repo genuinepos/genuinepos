@@ -51,12 +51,15 @@ class PurchaseProductReportService
             })
             ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
-            ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_exc_tax))
-            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
-            ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_unit_cost))
+            ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_cost_exc_tax, $row->c_rate, $row->branch_id)))
+            
+            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)))
 
-            ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="' . $row->line_total . '">' . \App\Utils\Converter::format_in_bdt($row->line_total) . '</span>')
+            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)))
+
+            ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_unit_cost, $row->c_rate, $row->branch_id)))
+
+            ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="' . curr_cnv($row->line_total, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->line_total, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'branch', 'quantity', 'invoice_id', 'unit_cost_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'net_unit_cost', 'line_total'])
             ->make(true);
@@ -68,6 +71,7 @@ class PurchaseProductReportService
             ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'purchase_products.variant_id', 'product_variants.id')
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
@@ -107,6 +111,7 @@ class PurchaseProductReportService
             'branches.area_name as branch_area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('purchases.report_date', 'desc');
     }
 

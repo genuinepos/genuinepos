@@ -127,7 +127,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Normal') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                            <td style="padding: 0px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
+                                                            <td style="padding: 5px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
                                                         </tr>
 
                                                         <tr>

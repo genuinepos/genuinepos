@@ -148,7 +148,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th class="text-white text-end" colspan="5">{{ __('Total') }} : </th>
+                                                <th class="text-white text-end" colspan="5">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th class="text-white text-end" id="branch_stock"></th>
                                                 <th class="text-white text-end" id="branch_stock_value"></th>
                                             </tr>
@@ -372,7 +372,7 @@
             fnDrawCallback: function() {
 
                 var branch_stock = sum_table_col($('.branch_stock_table'), 'branch_stock');
-                $('#branch_stock').text(bdFormat(branch_stock));
+                $('#branch_stock').text(bdFormat(branch_stock)+'/Nos');
 
                 var branch_stock_value = sum_table_col($('.branch_stock_table'), 'branch_stock_value');
                 $('#branch_stock_value').text(bdFormat(branch_stock_value));

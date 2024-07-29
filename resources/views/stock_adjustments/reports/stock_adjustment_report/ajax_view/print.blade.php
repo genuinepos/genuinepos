@@ -215,7 +215,7 @@
                                     @if ($adjustment->parent_branch_name)
                                         {{ $adjustment->parent_branch_name . '(' . $adjustment->branch_area_name . ')' }}
                                     @else
-                                        {{ $adjustment->branch_name . '(' . $adjustment->branch_area_name . ')' }}
+                                        {{ $adjustment->branch_name . '(' . $adjustment->area_name . ')' }}
                                     @endif
                                 @else
                                     {{ $generalSettings['business_or_shop__business_name'] }}
@@ -234,17 +234,19 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($adjustment->net_total_amount) }}
                                 @php
-                                    $totalNetAmount += $adjustment->net_total_amount;
+                                    $netAmount = curr_cnv($adjustment->net_total_amount, $adjustment->c_rate, $adjustment->branch_id);
+                                    $totalNetAmount += $netAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($netAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                                 @php
-                                    $totalRecoveredAmount += $adjustment->recovered_amount;
+                                    $recoveredAmount = curr_cnv($adjustment->recovered_amount, $adjustment->c_rate, $adjustment->branch_id);
+                                    $totalRecoveredAmount += $recoveredAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($recoveredAmount) }}
                             </td>
                         </tr>
                     @endforeach

@@ -324,7 +324,7 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-end">{{ __('Total Opening Balance') }} : </th>
+                        <th class="text-end">{{ __('Total Opening Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             @php
                                 $__allTotalOpeningBalance = $allTotalOpeningBalance < 0 ? '(' . \App\Utils\Converter::format_in_bdt(abs($allTotalOpeningBalance)) . ')' : \App\Utils\Converter::format_in_bdt($allTotalOpeningBalance);
@@ -334,21 +334,21 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Sale') }} : </th>
+                        <th class="text-end">{{ __('Total Sale') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalSale) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Purchase') }} : </th>
+                        <th class="text-end">{{ __('Total Purchase') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalPurchase) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Return') }} : </th>
+                        <th class="text-end">{{ __('Total Return') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             @php
                                 $__allTotalReturn = $allTotalReturn < 0 ? '(' . \App\Utils\Converter::format_in_bdt(abs($allTotalReturn)) . ')' : \App\Utils\Converter::format_in_bdt($allTotalReturn);
@@ -358,21 +358,21 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Received') }} : </th>
+                        <th class="text-end">{{ __('Total Received') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalReceived) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Paid') }} : </th>
+                        <th class="text-end">{{ __('Total Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalPaid) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Currant Balance') }} : </th>
+                        <th class="text-end">{{ __('Total Currant Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             @php
                                 $__allTotalCurrentBalance = $allTotalCurrentBalance < 0 ? '(' . \App\Utils\Converter::format_in_bdt(abs($allTotalCurrentBalance)) . ')' : \App\Utils\Converter::format_in_bdt($allTotalCurrentBalance);

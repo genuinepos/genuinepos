@@ -215,7 +215,8 @@
                                 @php
                                     $variant = $adjustmentProduct->variant_name ? ' - ' . $adjustmentProduct->variant_name : '';
                                     $totalQty += $adjustmentProduct->quantity;
-                                    $totalSubtotal += $adjustmentProduct->subtotal;
+                                    $subtotal = curr_cnv($adjustmentProduct->unit_cost_inc_tax, $adjustmentProduct->c_rate, $adjustmentProduct->branch_id);
+                                    $totalSubtotal += $subtotal;
                                 @endphp
                                 {{ $adjustmentProduct->name . $variant }}
                             </td>
@@ -250,8 +251,8 @@
                             </td>
                             <td class="text-start">{{ $adjustmentProduct->voucher_no }}</td>
                             <td class="text-end fw-bold">{!! App\Utils\Converter::format_in_bdt($adjustmentProduct->quantity) . '/' . $adjustmentProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($adjustmentProduct->unit_cost_inc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($adjustmentProduct->subtotal) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($adjustmentProduct->unit_cost_inc_tax, $adjustmentProduct->c_rate, $adjustmentProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($subtotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

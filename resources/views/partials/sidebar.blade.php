@@ -146,7 +146,7 @@
                         <li data-menu="task-management" class="{{ request()->is('task-management*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
-                                <p class="title">{{ __('Manage Task') }}</p>
+                                <p class="title">{{ __('Task Manage') }}</p>
                             </a>
                         </li>
                     @endif

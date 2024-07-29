@@ -121,7 +121,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : </th>
+                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th class="text-start text-white" id="quantity"></th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white" id="subtotal"></th>

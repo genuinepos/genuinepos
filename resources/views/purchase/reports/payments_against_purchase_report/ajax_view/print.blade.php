@@ -259,7 +259,7 @@
 
                             <td class="text-end fw-bold">
                                 @php
-                                    $purchasedAmount = $paidAgainstPurchase?->purchase ? $paidAgainstPurchase?->purchase?->total_purhcase_amount : 0;
+                                    $purchasedAmount = curr_cnv($paidAgainstPurchase?->purchase?->total_purchase_amount, $paidAgainstPurchase?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $paidAgainstPurchase?->voucherDescription?->accountingVoucher?->branch_id);
                                 @endphp
                                 {{ App\Utils\Converter::format_in_bdt($purchasedAmount) }}
                             </td>
@@ -279,9 +279,14 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($paidAgainstPurchase->amount) }}
                                 @php
-                                    $totalPaidAmount += $paidAgainstPurchase->amount;
+                                    $paidAmount = curr_cnv($paidAgainstPurchase->amount, $paidAgainstPurchase?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $paidAgainstPurchase?->voucherDescription?->accountingVoucher?->branch_id);
+                                    $totalPaidAmount += $paidAmount;
+                                @endphp
+
+                                {{ App\Utils\Converter::format_in_bdt($paidAmount) }}
+                                @php
+
                                 @endphp
                             </td>
                         </tr>

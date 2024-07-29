@@ -231,7 +231,8 @@
                                     $totalOrderedQty += $orderProduct->ordered_quantity;
                                     $totalReceivedQty += $orderProduct->received_quantity;
                                     $totalPendingQty += $orderProduct->pending_quantity;
-                                    $totalLineTotal += $orderProduct->line_total;
+                                    $lineTotal = curr_cnv($orderProduct->line_total, $orderProduct->c_rate, $orderProduct->branch_id);
+                                    $totalLineTotal += $lineTotal;
                                 @endphp
                                 {{ $orderProduct->name . $variant }}
                             </td>
@@ -252,11 +253,11 @@
                             <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) . '/' . $orderProduct->unit_code !!}</td>
                             <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) . '/' . $orderProduct->unit_code !!}</td>
                             <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) . '/' . $orderProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_exc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount_amount) }}</td>
-                            <td class="text-end fw-bold">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($orderProduct->unit_tax_amount) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($orderProduct->unit_cost_exc_tax, $orderProduct->c_rate, $orderProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($orderProduct->unit_discount_amount, $orderProduct->c_rate, $orderProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt(curr_cnv($orderProduct->unit_tax_amount, $orderProduct->c_rate, $orderProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($orderProduct->net_unit_cost, $orderProduct->c_rate, $orderProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($lineTotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -292,7 +293,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Net Total Amount') }} : </th>
+                        <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($totalLineTotal) }}
                         </td>

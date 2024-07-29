@@ -20,7 +20,8 @@ class PurchaseOrderService
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
-            ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
+            ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         if (!empty($request->branch_id)) {
 
@@ -91,13 +92,14 @@ class PurchaseOrderService
             'purchases.po_received_qty',
             'purchases.po_receiving_status',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'suppliers.name as supplier_name',
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->where('purchases.purchase_status', PurchaseStatus::PurchaseOrder->value)->orderBy('purchases.report_date', 'desc');
 
         return DataTables::of($orders)
@@ -125,11 +127,11 @@ class PurchaseOrderService
 
                 return '<a href="' . route('purchase.orders.show', [$row->id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('po_qty', function ($row) {
 

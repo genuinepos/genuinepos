@@ -83,7 +83,9 @@ class PaymentAgainstPurchaseReportService
 
             ->editColumn('total_purchase_amount', function ($row) {
 
-                return \App\Utils\Converter::format_in_bdt($row?->sale?->total_purchase_amount);
+                $amount = curr_cnv($row?->purchase?->total_purchase_amount, $row?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->voucherDescription?->accountingVoucher?->branch_id);
+
+                return \App\Utils\Converter::format_in_bdt($amount);
             })
 
             ->editColumn('credit_account', function ($row) {
@@ -101,7 +103,12 @@ class PaymentAgainstPurchaseReportService
                 return $row->voucherDescription?->accountingVoucher?->voucherCreditDescription?->paymentMethod?->name;
             })
 
-            ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount text-danger" data-value="' . $row->amount . '">' . \App\Utils\Converter::format_in_bdt($row->amount) . '</span>')
+            ->editColumn('paid_amount', function ($row) {
+
+                $amount = curr_cnv($row->amount, $row?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->voucherDescription?->accountingVoucher?->branch_id);
+
+                return '<span class="paid_amount text-danger" data-value="' . $amount . '">' . \App\Utils\Converter::format_in_bdt($amount) . '</span>';
+            })
 
             ->rawColumns(['payment_voucher', 'payment_date', 'branch', 'purchase_or_order_id', 'purchase_date', 'supplier', 'total_purchase_amount', 'credit_account', 'payment_method', 'paid_amount'])
             ->make(true);
@@ -112,8 +119,9 @@ class PaymentAgainstPurchaseReportService
         $query = AccountingVoucherDescriptionReference::query()->with([
             'voucherDescription:id,accounting_voucher_id',
             'voucherDescription.accountingVoucher:id,voucher_no,branch_id,reference,remarks,date,date_ts',
-            'voucherDescription.accountingVoucher.branch:id,name,branch_code,area_name,parent_branch_id',
+            'voucherDescription.accountingVoucher.branch:id,currency_id,name,branch_code,area_name,parent_branch_id',
             'voucherDescription.accountingVoucher.branch.parentBranch:id,name',
+            'voucherDescription.accountingVoucher.branch.branchCurrency:id,currency_rate',
             'voucherDescription.accountingVoucher.voucherCreditDescription:id,accounting_voucher_id,account_id,payment_method_id,cheque_no,cheque_serial_no',
             'voucherDescription.accountingVoucher.voucherCreditDescription.account:id,name,account_number',
             'voucherDescription.accountingVoucher.voucherCreditDescription.paymentMethod:id,name',

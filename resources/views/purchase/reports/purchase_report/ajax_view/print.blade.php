@@ -256,52 +256,59 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                 @php
-                                    $TotalNetTotal += $purchase->net_total_amount;
+                                    $netTotal = curr_cnv($purchase->net_total_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalNetTotal += $netTotal;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($netTotal) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->order_discount_amount) }}
                                 @php
-                                    $TotalOrderDiscount += $purchase->order_discount_amount;
+                                    $orderDiscount = curr_cnv($purchase->order_discount_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalOrderDiscount += $orderDiscount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($orderDiscount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ '(' . $purchase->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount) }}
                                 @php
-                                    $TotalOrderTax += $purchase->purchase_tax_amount;
+                                    $orderTax = curr_cnv($purchase->purchase_tax_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalOrderTax += $orderTax;
                                 @endphp
+                                {{ '(' . $purchase->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($orderTax) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                 @php
-                                    $TotalPurchaseAmount += $purchase->total_purchase_amount;
+                                    $purchaseAmount = curr_cnv($purchase->total_purchase_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalPurchaseAmount += $purchaseAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($purchaseAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                 @php
-                                    $TotalPaid += $purchase->paid;
+                                    $paid = curr_cnv($purchase->paid, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalPaid += $paid;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($paid) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->purchase_return_amount) }}
                                 @php
-                                    $TotalReturn += $purchase->purchase_return_amount;
+                                    $return = curr_cnv($purchase->purchase_return_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalReturn += $return;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($return) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                 @php
-                                    $TotalDue += $purchase->due;
+                                    $due = curr_cnv($purchase->due, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalDue += $due;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($due) }}
                             </td>
                         </tr>
                     @endforeach

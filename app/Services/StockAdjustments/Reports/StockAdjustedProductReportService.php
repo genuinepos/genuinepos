@@ -75,9 +75,9 @@ class StockAdjustedProductReportService
                 return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
             })
 
-            ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_inc_tax))
+            ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_cost_inc_tax, $row->c_rate, $row->branch_id)))
 
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . curr_cnv($row->subtotal, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->subtotal, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['product', 'date', 'branch', 'stock_location', 'quantity', 'voucher_no', 'unit_cost_inc_tax', 'subtotal'])
             ->make(true);
@@ -89,6 +89,7 @@ class StockAdjustedProductReportService
             ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
             ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('warehouses', 'stock_adjustment_products.warehouse_id', 'warehouses.id')
             ->leftJoin('products', 'stock_adjustment_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'stock_adjustment_products.variant_id', 'product_variants.id')
@@ -120,6 +121,7 @@ class StockAdjustedProductReportService
             'parentBranch.name as parent_branch_name',
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
+            'currencies.currency_rate as c_rate'
         )->orderBy('stock_adjustments.date_ts', 'desc');
     }
 

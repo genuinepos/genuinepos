@@ -18,7 +18,7 @@
             <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $quotationProduct->unit_discount }}">
             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $quotationProduct->unit_discount_amount }}">
             <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $quotationProduct->unit_cost_inc_tax }}">
-
+            <input type="hidden" name="job_card_product_ids[]" value="">
             <input type="hidden" class="unique_id" id="{{ $quotationProduct->product_id . $variantId }}" value="{{ $quotationProduct->product_id . $variantId }}">
         </td>
 

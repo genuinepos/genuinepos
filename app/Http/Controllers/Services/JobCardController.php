@@ -74,7 +74,8 @@ class JobCardController extends Controller
     {
         $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
             'branch',
-            'sale',
+            'sale:id,invoice_id',
+            'quotation:id,quotation_id',
             'branch.parentBranch',
             'brand',
             'device',
@@ -95,7 +96,8 @@ class JobCardController extends Controller
     {
         $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
             'branch',
-            'sale',
+            'sale:id,invoice_id',
+            'quotation:id,quotation_id',
             'branch.parentBranch',
             'brand',
             'device',
@@ -116,7 +118,8 @@ class JobCardController extends Controller
     {
         $jobCard = $this->jobCardService->singleJobCard(id: $id, with: [
             'branch',
-            'sale',
+            'sale:id,invoice_id',
+            'quotation:id,quotation_id',
             'branch.parentBranch',
             'brand',
             'device',

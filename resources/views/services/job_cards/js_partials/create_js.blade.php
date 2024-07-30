@@ -255,6 +255,7 @@
         ul = document.getElementById('quotation_list')
         selectObjClassName = 'selected_quotation';
         $('#quotation').val('');
+        $('#customer_account_id').val($('#customer_account_id option:eq(0)').val()).trigger('change');
         $("#customer_account_id").select2("destroy");
         $("#customer_account_id").select2();
         $('#quotation_id').val('');
@@ -263,6 +264,11 @@
         $('#quotation_list').empty();
         calculateTotalAmount();
     }
+
+    $('#search_product').focus(function(e) {
+
+        afterFocusSearchItemField();
+    });
 
     function afterFocusSearchItemField() {
 
@@ -337,6 +343,7 @@
                 $('.quotation_search_result').hide();
                 $('#jobcard_product_list').empty();
                 $('#jobcard_product_list').html(data.view);
+                calculateTotalAmount();
             }
         });
     });

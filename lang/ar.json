@@ -2802,5 +2802,7 @@
     "Social Media Links": "روابط وسائل التواصل الاجتماعي",
     "Payment Confirmation": "تأكيد الدفعة",
     "Toggle navigation": "تبديل التنقل",
-    "Are you sure you want to delete this log file: :date ?": "هل أنت متأكد أنك تريد حذف ملف السجل هذا"
+    "Are you sure you want to delete this log file: :date ?": "هل أنت متأكد أنك تريد حذف ملف السجل هذا",
+    "Generate Pdf": "توليد قوات الدفاع الشعبي",
+    "Generate Label": "إنشاء العلامة"
 }

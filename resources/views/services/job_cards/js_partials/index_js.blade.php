@@ -111,6 +111,11 @@
                 name: 'branches.name'
             },
             {
+                data: 'quotation_no',
+                name: 'quotations.quotation_id',
+                className: 'fw-bold'
+            },
+            {
                 data: 'invoice_id',
                 name: 'sales.invoice_id',
                 className: 'fw-bold'

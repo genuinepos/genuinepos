@@ -247,45 +247,51 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                                 @php
-                                    $TotalNetTotal += $return->net_total_amount;
+                                    $netTotal = curr_cnv($return->net_total_amount, $return->c_rate, $return->branch_id);
+                                    $TotalNetTotal += $netTotal;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($netTotal) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
                                 @php
-                                    $TotalReturnDiscount += $return->return_discount_amount;
+                                    $returnDiscount = curr_cnv($return->return_discount_amount, $return->c_rate, $return->branch_id);
+                                    $TotalReturnDiscount += $returnDiscount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($returnDiscount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ '(' . $return->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($return->return_tax_amount) }}
                                 @php
-                                    $TotalReturnTax += $return->return_tax_amount;
+                                    $returnTax = curr_cnv($return->return_tax_amount, $return->c_rate, $return->branch_id);
+                                    $TotalReturnTax += $returnTax;
                                 @endphp
+                                {{ '(' . $return->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($returnTax) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                                 @php
-                                    $TotalReturnAmount += $return->total_return_amount;
+                                    $returnAmount = curr_cnv($return->total_return_amount, $return->c_rate, $return->branch_id);
+                                    $TotalReturnAmount += $returnAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($returnAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($return->paid) }}
                                 @php
-                                    $TotalPaid += $return->paid;
+                                    $paid = curr_cnv($return->total_return_amount, $return->c_rate, $return->branch_id);
+                                    $TotalPaid += $paid;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($paid) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($return->due) }}
                                 @php
-                                    $TotalDue += $return->due;
+                                    $due = curr_cnv($return->due, $return->c_rate, $return->branch_id);
+                                    $TotalDue += $due;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($due) }}
                             </td>
                         </tr>
                     @endforeach

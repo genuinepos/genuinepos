@@ -47,9 +47,9 @@ class StockAdjustmentReportService
                 return '<span class="fw-bold">' . StockAdjustmentType::tryFrom($row->type)->name . '</span>';
             })
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . $row->recovered_amount . '">' . \App\Utils\Converter::format_in_bdt($row->recovered_amount) . '</span>')
+            ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . curr_cnv($row->recovered_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->recovered_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('created_by', fn ($row) => $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name)
 
@@ -62,6 +62,7 @@ class StockAdjustmentReportService
         $query = DB::table('stock_adjustments')
             ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('accounts', 'stock_adjustments.expense_account_id', 'accounts.id')
             ->leftJoin('users', 'stock_adjustments.created_by_id', 'users.id');
 
@@ -70,27 +71,69 @@ class StockAdjustmentReportService
         return $query->select(
             'stock_adjustments.*',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'accounts.name as expense_ledger',
             'users.prefix as created_prefix',
             'users.name as created_name',
             'users.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('stock_adjustments.date_ts', 'desc');
     }
 
     public function stockAdjustmentAmounts(object $request): object
     {
-        $query = DB::table('stock_adjustments');
+        $authUserBranchId = auth()->user()->branch_id;
+
+        $query = DB::table('stock_adjustments')
+            ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $this->filter(request: $request, query: $query);
 
         return $query->select(
-            DB::raw("SUM(IF(type = '1', net_total_amount, 0)) as total_normal"),
-            DB::raw("SUM(IF(type = '2', net_total_amount, 0)) as total_abnormal"),
-            DB::raw('sum(net_total_amount) as total_net_amount'),
-            DB::raw('sum(recovered_amount) as total_recovered_amount'),
+            // DB::raw("SUM(IF(type = '1', net_total_amount, 0)) as total_normal"),
+            // DB::raw("SUM(IF(type = '2', net_total_amount, 0)) as total_abnormal"),
+            // DB::raw('sum(net_total_amount) as total_net_amount'),
+            // DB::raw('sum(recovered_amount) as total_recovered_amount'),
+
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN stock_adjustments.type = 1 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN stock_adjustments.net_total_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN stock_adjustments.type = 1
+                            THEN stock_adjustments.net_total_amount
+                            ELSE 0
+                        END
+                    ) AS total_normal,
+                    SUM(
+                        CASE
+                            WHEN stock_adjustments.type = 2 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN stock_adjustments.net_total_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN stock_adjustments.type = 2
+                            THEN stock_adjustments.net_total_amount
+                            ELSE 0
+                        END
+                    ) AS total_abnormal,
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN stock_adjustments.net_total_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE stock_adjustments.net_total_amount
+                        END
+                    ) AS total_net_amount,
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN stock_adjustments.recovered_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE stock_adjustments.recovered_amount
+                        END
+                    ) AS total_recovered_amount
+                '
+            )
         )->groupBy('stock_adjustments.id')->get();
     }
 

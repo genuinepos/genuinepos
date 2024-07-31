@@ -68,11 +68,11 @@ class PurchaseReturnProductReportService
             })
             ->editColumn('voucher_no', fn ($row) => '<a href="' . route('purchase.returns.show', [$row->return_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->voucher_no . '</a>')
             ->editColumn('return_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_qty) . '/<span class="return_qty" data-value="' . $row->return_qty . '">' . $row->unit_code . '</span>')
-            ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_exc_tax))
-            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
-            ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_inc_tax))
-            ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="' . $row->return_subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->return_subtotal) . '</span>')
+            ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_cost_exc_tax, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_cost_inc_tax, $row->c_rate, $row->branch_id)))
+            ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="' . curr_cnv($row->return_subtotal, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_subtotal, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'branch', 'stock_location', 'return_qty', 'voucher_no', 'unit_cost_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_cost_inc_tax', 'return_subtotal'])
             ->make(true);
@@ -84,6 +84,7 @@ class PurchaseReturnProductReportService
             ->leftJoin('purchase_returns', 'purchase_return_products.purchase_return_id', '=', 'purchase_returns.id')
             ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'purchase_return_products.variant_id', 'product_variants.id')
             ->leftJoin('accounts as suppliers', 'purchase_returns.supplier_account_id', 'suppliers.id')
@@ -122,6 +123,7 @@ class PurchaseReturnProductReportService
             'parentBranch.name as parent_branch_name',
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
+            'currencies.currency_rate as c_rate'
         )->orderBy('purchase_returns.date_ts', 'desc');
     }
 

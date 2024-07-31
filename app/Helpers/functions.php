@@ -50,3 +50,21 @@ if (!function_exists('location_label')) {
         }
     }
 }
+
+if (!function_exists('curr_cnv')) {
+
+    function curr_cnv(?float $amount = null, ?float $rate = null, ?int $branchId = null): ?float
+    {
+        $__amount = isset($amount) ? $amount : 0;
+        $__rate = isset($rate) ? $rate : 1;
+        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == \App\Enums\BooleanType::False->value && config('generalSettings')['subscription']->has_business == \App\Enums\BooleanType::True->value) {
+
+            if (isset($amount) && $amount > 0 && isset($rate) && $rate > 0 && isset($branchId)) {
+
+                return $__amount * $__rate;
+            }
+        }
+
+        return $__amount;
+    }
+}

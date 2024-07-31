@@ -34,7 +34,7 @@ Route::prefix('sales')->group(function () {
         Route::get('edit/{id}', 'edit')->name('sales.edit');
         Route::post('update/{id}', 'update')->name('sales.update');
         Route::delete('delete/{id}', 'delete')->name('sales.delete');
-        Route::get('search/by/{id}', 'searchByInvoiceId')->name('sales.search.by.invoice.id');
+        Route::get('search/by/{keyword?}', 'searchByInvoiceId')->name('sales.search.by.invoice.id');
 
         Route::controller(SoldProductController::class)->prefix('products')->group(function () {
 

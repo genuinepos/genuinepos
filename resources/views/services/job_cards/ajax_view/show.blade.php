@@ -32,6 +32,8 @@
 
                             <li style="font-size:11px!important;"><strong>{{ __('Job No') }} : </strong> {{ $jobCard->job_no }}</li>
 
+                            <li style="font-size:11px!important;"><strong>{{ __('Quotation ID') }} : </strong><span>{{ $jobCard?->quotation?->quotation_id }}</span></li>
+
                             <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong><span>{{ $jobCard?->sale?->invoice_id }}</span></li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Service Type') }} : </strong>
@@ -448,7 +450,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

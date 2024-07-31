@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Setups\Branch;
+use App\Models\Setups\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GeneralSetting extends BaseModel

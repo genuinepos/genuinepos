@@ -98,8 +98,8 @@
         }
 
         /* .extentable-select2-field .select2-container--open .select2-dropdown--below {
-                    width: 298px !important;
-                } */
+                        width: 298px !important;
+                    } */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -175,7 +175,7 @@
                                         <label class="col-4"><b>{{ __('Sales Invoice') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __('Serach Sales Invoice ID') }}" autocomplete="off">
+                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __('Search Sales Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="sale_id" id="sale_id">
 
                                                 <div class="invoice_search_result d-hide">

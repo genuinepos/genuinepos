@@ -249,59 +249,67 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 @php
-                                    $TotalNetTotal += $sale->net_total_amount;
+                                    $netTotal = curr_cnv($sale->net_total_amount, $sale->c_rate, $sale->branch_id);
+                                    $TotalNetTotal += $netTotal;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($netTotal) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
                                 @php
-                                    $TotalOrderDiscount += $sale->order_discount_amount;
+                                    $orderDiscount = curr_cnv($sale->order_discount_amount, $sale->c_rate, $sale->branch_id);
+                                    $TotalOrderDiscount += $orderDiscount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($orderDiscount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 @php
-                                    $TotalShipmentCharge += $sale->shipment_charge;
+                                    $shipmentCharge = curr_cnv($sale->shipment_charge, $sale->c_rate, $sale->branch_id);
+                                    $TotalShipmentCharge += $shipmentCharge;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($shipmentCharge) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ '(' . $sale->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}
                                 @php
+                                    $orderTax = curr_cnv($sale->order_tax_amount, $sale->c_rate, $sale->branch_id);
                                     $TotalOrderTax += $sale->order_tax_amount;
                                 @endphp
+                                {{ '(' . $sale->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($orderTax) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                 @php
-                                    $TotalSoldAmount += $sale->total_invoice_amount;
+                                    $soldAmount = curr_cnv($sale->total_invoice_amount, $sale->c_rate, $sale->branch_id);
+                                    $TotalSoldAmount += $soldAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($soldAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->received_amount) }}
                                 @php
-                                    $TotalReceived += $sale->received_amount;
+                                    $received = curr_cnv($sale->received_amount, $sale->c_rate, $sale->branch_id);
+                                    $TotalReceived += $received;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($received) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
                                 @php
-                                    $TotalReturn += $sale->sale_return_amount;
+                                    $return = curr_cnv($sale->sale_return_amount, $sale->c_rate, $sale->branch_id);
+                                    $TotalReturn += $return;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($return) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                 @php
-                                    $TotalDue += $sale->due;
+                                    $due = curr_cnv($sale->due, $sale->c_rate, $sale->branch_id);
+                                    $TotalDue += $due;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($due) }}
                             </td>
                         </tr>
                     @endforeach

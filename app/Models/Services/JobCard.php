@@ -64,6 +64,11 @@ class JobCard extends Model
         return $this->belongsTo(Sale::class, 'sale_id');
     }
 
+    public function quotation()
+    {
+        return $this->belongsTo(Sale::class, 'quotation_id');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by_id');

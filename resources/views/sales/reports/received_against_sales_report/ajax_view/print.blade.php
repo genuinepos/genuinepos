@@ -261,8 +261,9 @@
                             <td class="text-end fw-bold">
                                 @php
                                     $salesAmount = $receivedAgainstSale?->sale ? $receivedAgainstSale?->sale?->total_invoice_amount : 0;
+                                    $__salesAmount = curr_cnv($salesAmount, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch_id);
                                 @endphp
-                                {{ App\Utils\Converter::format_in_bdt($salesAmount) }}
+                                {{ App\Utils\Converter::format_in_bdt($__salesAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
@@ -280,10 +281,11 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($receivedAgainstSale->amount) }}
                                 @php
-                                    $totalReceivedAmount += $receivedAgainstSale->amount;
+                                    $receivedAmount = curr_cnv($receivedAgainstSale->amount, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch_id);
+                                    $totalReceivedAmount += $receivedAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($receivedAmount) }}
                             </td>
                         </tr>
                     @endforeach

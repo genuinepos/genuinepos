@@ -127,6 +127,7 @@ class BranchService
         $shopHistory = (new \App\Services\Setups\ShopExpireDateHistoryService)->shopExpireDateHistoryByAnyCondition()->where('is_created', BooleanType::False->value)->first();
 
         $addBranch = new Branch();
+        $addBranch->currency_id = $request->currency_id;
         $addBranch->branch_type = $request->branch_type;
         $addBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $addBranch->area_name = $request->area_name;
@@ -179,6 +180,7 @@ class BranchService
     {
         $updateBranch = $this->singleBranch($id);
 
+        $updateBranch->currency_id = $request->currency_id;
         $updateBranch->name = $request->branch_type;
         $updateBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $updateBranch->area_name = $request->area_name;

@@ -2,7 +2,7 @@
 
 namespace App\Services\Sales;
 
-use App\Models\Sales\SaleProduct;
+use App\Models\Sales\SaleProduct as DraftProduct;
 
 class DraftProductService
 {
@@ -17,7 +17,7 @@ class DraftProductService
             $addOrUpdateDraftProduct = $draftProduct;
         } else {
 
-            $addOrUpdateDraftProduct = new SaleProduct();
+            $addOrUpdateDraftProduct = new DraftProduct();
         }
 
         $addOrUpdateDraftProduct->sale_id = $draft->id;
@@ -45,7 +45,7 @@ class DraftProductService
 
     public function draftProducts(array $with = null): ?object
     {
-        $query = SaleProduct::query();
+        $query = DraftProduct::query();
 
         if (isset($with)) {
 
@@ -57,7 +57,7 @@ class DraftProductService
 
     public function singleDraftProduct(?int $id, array $with = null): ?object
     {
-        $query = SaleProduct::query();
+        $query = DraftProduct::query();
 
         if (isset($with)) {
 

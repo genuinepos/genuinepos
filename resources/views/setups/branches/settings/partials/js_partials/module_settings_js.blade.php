@@ -1,7 +1,7 @@
 <script>
     $('#module_settings_form').on('submit', function(e) {
         e.preventDefault();
-        
+
         $('.module_settings_loading_btn').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
@@ -20,7 +20,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

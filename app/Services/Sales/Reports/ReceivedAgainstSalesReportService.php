@@ -14,7 +14,7 @@ class ReceivedAgainstSalesReportService
     public function receivedAgainstSalesReportTable(object $request): object
     {
         $generalSettings = config('generalSettings');
-        
+
         $receivedAgainstSales = $this->query(request: $request);
 
         return DataTables::of($receivedAgainstSales)
@@ -84,7 +84,9 @@ class ReceivedAgainstSalesReportService
 
             ->editColumn('total_invoice_amount', function ($row) {
 
-                return \App\Utils\Converter::format_in_bdt($row?->sale?->total_invoice_amount);
+                $amount = curr_cnv($row?->sale?->total_invoice_amount, $row?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->voucherDescription?->accountingVoucher?->branch_id);
+
+                return \App\Utils\Converter::format_in_bdt($amount);
             })
 
             ->editColumn('debit_account', function ($row) {
@@ -102,7 +104,12 @@ class ReceivedAgainstSalesReportService
                 return $row->voucherDescription?->accountingVoucher?->voucherDebitDescription?->paymentMethod?->name;
             })
 
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . $row->amount . '">' . \App\Utils\Converter::format_in_bdt($row->amount) . '</span>')
+            ->editColumn('received_amount', function ($row) {
+
+                $amount = curr_cnv($row->amount, $row?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->voucherDescription?->accountingVoucher?->branch_id);
+
+                return '<span class="received_amount text-success" data-value="' . $amount . '">' . \App\Utils\Converter::format_in_bdt($amount) . '</span>';
+            })
 
             ->rawColumns(['receipt_voucher', 'receipt_date', 'branch', 'sales_or_order_id', 'sales_date', 'customer', 'total_invoice_amount', 'debit_account', 'payment_method', 'received_amount'])
             ->make(true);
@@ -113,8 +120,9 @@ class ReceivedAgainstSalesReportService
         $query = AccountingVoucherDescriptionReference::query()->with([
             'voucherDescription:id,accounting_voucher_id',
             'voucherDescription.accountingVoucher:id,voucher_no,branch_id,reference,remarks,date,date_ts',
-            'voucherDescription.accountingVoucher.branch:id,name,branch_code,area_name,parent_branch_id',
+            'voucherDescription.accountingVoucher.branch:id,currency_id,name,branch_code,area_name,parent_branch_id',
             'voucherDescription.accountingVoucher.branch.parentBranch:id,name',
+            'voucherDescription.accountingVoucher.branch.branchCurrency:id,currency_rate',
             'voucherDescription.accountingVoucher.voucherDebitDescription:id,accounting_voucher_id,account_id,payment_method_id,cheque_no,cheque_serial_no',
             'voucherDescription.accountingVoucher.voucherDebitDescription.account:id,name,account_number',
             'voucherDescription.accountingVoucher.voucherDebitDescription.paymentMethod:id,name',

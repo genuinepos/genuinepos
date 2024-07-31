@@ -181,7 +181,7 @@
                                         <label class="col-4"><b>{{ __('P. Invoice ID') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" data-next="purchase_account_id" placeholder="{{ __('Serach Purchase Invoice ID') }}" autocomplete="off">
+                                                <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" data-next="purchase_account_id" placeholder="{{ __('Search Purchase Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="purchase_id" id="purchase_id">
 
                                                 <div class="invoice_search_result d-hide">

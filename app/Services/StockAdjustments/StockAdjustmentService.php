@@ -19,20 +19,22 @@ class StockAdjustmentService
             ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('accounts', 'stock_adjustments.expense_account_id', 'accounts.id')
-            ->leftJoin('users', 'stock_adjustments.created_by_id', 'users.id');
+            ->leftJoin('users', 'stock_adjustments.created_by_id', 'users.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $this->filter(request: $request, query: $query);
 
         $adjustments = $query->select(
             'stock_adjustments.*',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'accounts.name as expense_ledger',
             'users.prefix as created_prefix',
             'users.name as created_name',
             'users.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('stock_adjustments.date_ts', 'desc');
 
         return DataTables::of($adjustments)
@@ -86,9 +88,9 @@ class StockAdjustmentService
                 return '<span class="fw-bold">' . StockAdjustmentType::tryFrom($row->type)->name . '</span>';
             })
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . $row->recovered_amount . '">' . \App\Utils\Converter::format_in_bdt($row->recovered_amount) . '</span>')
+            ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . curr_cnv($row->recovered_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->recovered_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('created_by', fn ($row) => $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name)
 

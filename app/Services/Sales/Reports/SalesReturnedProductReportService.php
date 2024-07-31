@@ -77,11 +77,11 @@ class SalesReturnedProductReportService
             })
 
             ->editColumn('return_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_qty) . '/<span class="return_qty" data-value="' . $row->return_qty . '">' . $row->unit_code . '</span>')
-            ->editColumn('unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax))
-            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
-            ->editColumn('unit_price_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax))
-            ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="' . $row->return_subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->return_subtotal) . '</span>')
+            ->editColumn('unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_price_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id)))
+            ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="' . curr_cnv($row->return_subtotal, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_subtotal, $row->c_rate, $row->branch_id)) . '</span>')
             ->rawColumns(['product', 'date', 'branch', 'stored_location', 'return_qty', 'voucher_no', 'sales_invoice_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'return_subtotal'])
             ->make(true);
     }
@@ -93,6 +93,7 @@ class SalesReturnedProductReportService
             ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
             ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('warehouses', 'sale_returns.warehouse_id', 'warehouses.id')
             ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'sale_return_products.variant_id', 'product_variants.id')
@@ -131,6 +132,7 @@ class SalesReturnedProductReportService
             'parentBranch.name as parent_branch_name',
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sale_returns.date_ts', 'desc');
     }
 

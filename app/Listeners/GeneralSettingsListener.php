@@ -67,6 +67,20 @@ class GeneralSettingsListener
                     ])->pluck('value', 'key')->toArray();
             });
 
+            $cacheKey = "{$tenantId}_baseCurrency";
+            $baseCurrency = Cache::rememberForever($cacheKey, function () use ($cacheKey) {
+
+                return DB::table('general_settings')
+                    ->where('branch_id', null)->where('key', 'business_or_shop__currency_id')
+                    ->leftJoin('currencies', 'general_settings.value', 'currencies.id')
+                    ->select('currencies.id', 'currencies.country', 'currencies.currency', 'currencies.code', 'currencies.symbol', 'currencies.currency_rate')->first();
+            });
+
+            $generalSettings['base_currency_country'] = $baseCurrency->country;
+            $generalSettings['base_currency_name'] = $baseCurrency->currency;
+            $generalSettings['base_currency_code'] = $baseCurrency->code;
+            $generalSettings['base_currency_symbol'] = $baseCurrency->symbol;
+
             if (!isset($branchId)) {
 
                 session()->put('base_currency_symbol', $generalSettings['business_or_shop__currency_symbol']);
@@ -212,7 +226,6 @@ class GeneralSettingsListener
             }
 
             $cacheKey = "{$tenantId}_GeneralSettings_subscription";
-
             $subscription = Cache::rememberForever($cacheKey, function () {
 
                 $centralDb = config('database.connections.mysql.database');

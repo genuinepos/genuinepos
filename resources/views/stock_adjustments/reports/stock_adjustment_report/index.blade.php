@@ -127,7 +127,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Normal') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                            <td style="padding: 0px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
+                                                            <td style="padding: 5px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
                                                         </tr>
 
                                                         <tr>
@@ -381,7 +381,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

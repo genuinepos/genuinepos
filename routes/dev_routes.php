@@ -78,7 +78,54 @@ Route::get('my-test', function () {
     //     $accountingVoucher->save();
     // }
 
-    return Currency::with(['assignedBranches', 'assignedBranches.branch'])->where('country', 'Belgium')->first();
+    // return Currency::with(['assignedBranches', 'assignedBranches.branch'])->where('country', 'Belgium')->first();
+
+    $dir = __DIR__ . '/../resources/views';
+    $translationKeys = [];
+
+    function checkDir($dir, &$translationKeys)
+    {
+        if (is_dir($dir)) {
+            $files = scandir($dir);
+
+            foreach ($files as $file) {
+                if ($file != "." && $file != "..") {
+                    $path = "$dir/$file";
+
+                    if (is_dir($path)) {
+                        checkDir($path, $translationKeys);
+                    } else {
+                        // Only process .blade.php files
+                        if (pathinfo($path, PATHINFO_EXTENSION) === 'php') {
+                            $content = file_get_contents($path);
+
+                            // Use regular expression to match all {{ __('...') }} patterns
+                            preg_match_all('/__\([\'"](.+?)[\'"]\)/', $content, $matches);
+
+                            foreach ($matches[1] as $key) {
+                                if (!in_array($key, $translationKeys)) {
+                                    // Set the translation key
+                                    $translationKeys[] = $key;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Start the directory scan
+    checkDir($dir, $translationKeys);
+    return $translationKeys;
+
+    $translatedArray = [];
+
+    // return count($translationKeys) . '-' . count($translatedArray);
+
+    $c = array_combine($translationKeys, $translatedArray);
+
+    return $c;
 });
 
 Route::get('t-id', function () {

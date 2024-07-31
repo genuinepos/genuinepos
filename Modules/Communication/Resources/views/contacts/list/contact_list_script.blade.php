@@ -80,7 +80,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error.');
+                        toastr.error('Net Connection Error.');
                         return;
                     }
 
@@ -113,7 +113,7 @@
                 error: function(err) {
                     $('.data_preloader').hide();
                     if (err.status == 0) {
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else {
                         toastr.error("{{ __('Server Error, Please contact to the support team.') }}");
                     }
@@ -171,7 +171,7 @@
                     $('.error').html('');
 
                     if (err.status == 0) {
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     }
 
@@ -233,7 +233,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Please check the connection.');
+                        toastr.error('Net Connection Error. Please check the connection.');
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

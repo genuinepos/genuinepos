@@ -5,7 +5,7 @@ namespace App\Services\Sales;
 use Carbon\Carbon;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
-use App\Models\Sales\Sale;
+use App\Models\Sales\Sale as SalesOrder;
 use App\Enums\PaymentStatus;
 use App\Enums\OrderDeliveryStatus;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +22,7 @@ class SalesOrderService
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.order_status', BooleanType::True->value);
 
@@ -49,6 +50,7 @@ class SalesOrderService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sales.order_date_ts', 'desc');
 
         return DataTables::of($orders)
@@ -129,11 +131,11 @@ class SalesOrderService
 
             ->editColumn('total_left_qty', fn ($row) => '<span class="total_left_qty" data-value="' . $row->total_left_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_left_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
+            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('payment_status', function ($row) {
 
@@ -331,7 +333,7 @@ class SalesOrderService
 
     public function singleSalesOrder(int $id, array $with = null): ?object
     {
-        $query = Sale::query();
+        $query = SalesOrder::query();
 
         if (isset($with)) {
 

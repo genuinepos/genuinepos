@@ -21,6 +21,7 @@ class DraftService
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.status', SaleStatus::Draft->value);
 
@@ -44,6 +45,7 @@ class DraftService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sales.draft_date_ts', 'desc');
 
         return DataTables::of($quotations)
@@ -113,7 +115,7 @@ class DraftService
 
             ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 

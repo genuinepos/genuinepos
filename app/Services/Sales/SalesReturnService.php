@@ -21,6 +21,7 @@ class SalesReturnService
             ->leftJoin('accounts as customers', 'sale_returns.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id');
 
         $this->filteredQuery($request, $query);
@@ -49,6 +50,7 @@ class SalesReturnService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sale_returns.date_ts', 'desc');
 
         return DataTables::of($returns)
@@ -118,17 +120,17 @@ class SalesReturnService
 
             ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . $row->return_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->return_discount_amount) . '</span>')
+            ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . curr_cnv($row->return_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . $row->return_tax_amount . '">' . '(' . $row->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->return_tax_amount) . '</span>')
+            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . $row->total_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_return_amount) . '</span>')
+            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('payment_status', function ($row) {
 

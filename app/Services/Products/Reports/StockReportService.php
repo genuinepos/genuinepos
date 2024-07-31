@@ -58,7 +58,7 @@ class StockReportService
             ->editColumn('stock', fn ($row) => '<span class="branch_stock" data-value="' . $row->stock . '">' . $row->stock . '/' . $row->unit_code_name . '</span>')
             ->editColumn('stock_value', function ($row) {
 
-                return '<span class="branch_stock_value" data-value="' . $row->stock_value . '">' . \App\Utils\Converter::format_in_bdt($row->stock_value) . '</span>';
+                return '<span class="branch_stock_value" data-value="' . curr_cnv($row->stock_value, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->stock_value, $row->c_rate, $row->branch_id)) . '</span>';
             })
             ->rawColumns(['product_name', 'product_code', 'branch', 'cost', 'price', 'stock', 'stock_value'])
             ->make(true);
@@ -120,7 +120,7 @@ class StockReportService
             ->editColumn('stock', fn ($row) => '<span class="warehouse_stock" data-value="' . $row->stock . '">' . $row->stock . '/' . $row->unit_code_name . '</span>')
             ->editColumn('stock_value', function ($row) {
 
-                return '<span class="warehouse_stock_value" data-value="' . $row->stock_value . '">' . \App\Utils\Converter::format_in_bdt($row->stock_value) . '</span>';
+                return '<span class="warehouse_stock_value" data-value="' . curr_cnv($row->stock_value, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->stock_value, $row->c_rate, $row->branch_id)) . '</span>';
             })
             ->rawColumns(['product_name', 'product_code', 'stock_location', 'cost', 'price', 'stock', 'stock_value'])
             ->make(true);
@@ -135,6 +135,7 @@ class StockReportService
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('branches', 'product_stocks.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->where('product_stocks.warehouse_id', null);
 
         $this->filteredBranchStockQuery(request: $request, query: $query);
@@ -156,6 +157,7 @@ class StockReportService
             'product_stocks.branch_id',
             'product_stocks.stock',
             'product_stocks.stock_value',
+            'currencies.currency_rate as c_rate'
         )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')
             ->orderBy('products.name', 'asc');
     }
@@ -169,6 +171,7 @@ class StockReportService
             ->leftJoin('warehouses', 'product_stocks.warehouse_id', 'warehouses.id')
             ->leftJoin('branches', 'warehouses.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->whereNotNull('product_stocks.warehouse_id');
 
         $this->filteredWarehouseStockQuery(request: $request, query: $query);
@@ -193,6 +196,7 @@ class StockReportService
             'product_stocks.branch_id',
             'product_stocks.stock',
             'product_stocks.stock_value',
+            'currencies.currency_rate as c_rate'
         )->orderBy('products.name', 'asc');
     }
 

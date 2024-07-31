@@ -161,12 +161,13 @@
                                             <tr>
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Job No.') }}</th>
-                                                <th>{{ __('Service Type') }}</th>
+                                                <th>{{ __('Type') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Delivery Date') }}</th>
                                                 <th>{{ __('Due Date') }}</th>
                                                 <th>{{ location_label() }}</th>
+                                                <th>{{ __('Quotation ID') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
                                                 <th>{{ __('Status') }}</th>
                                                 <th>{{ __('Device') }}</th>
@@ -179,7 +180,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="13" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                                <th colspan="14" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th id="total_cost" class="text-white text-end"></th>
                                                 <th class="text-white text-end">---</th>
                                             </tr>

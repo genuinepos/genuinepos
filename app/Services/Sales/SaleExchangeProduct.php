@@ -2,14 +2,14 @@
 
 namespace App\Services\Sales;
 
-use App\Models\Sales\SaleProduct;
+use App\Models\Sales\SaleProduct as ExchangeProduct;
 
 class SaleExchangeProduct
 {
     public function addSaleExchangeProduct(object $request, object $sale, int $index)
     {
         $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
-        $addSaleProduct = new SaleProduct();
+        $addSaleProduct = new ExchangeProduct();
         $addSaleProduct->sale_id = $sale->id;
         $addSaleProduct->branch_id = $sale->branch_id;
         $addSaleProduct->product_id = $request->product_ids[$index];

@@ -177,7 +177,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : </th>
+                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th class="text-start text-white">(<span id="ordered_quantity"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
@@ -462,7 +462,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

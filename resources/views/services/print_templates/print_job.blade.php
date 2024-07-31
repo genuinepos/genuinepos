@@ -198,6 +198,10 @@
                         </td>
                     </tr>
                     <tr>
+                        <td colspan="2" class="fw-bold">{{ __('Quotation ID') }} : </td>
+                        <td>{{ $jobCard?->quotation?->quotation_id }}</td>
+                    </tr>
+                    <tr>
                         <td colspan="2" class="fw-bold">{{ __('Invoice ID') }} : </td>
                         <td>{{ $jobCard?->sale?->invoice_id }}</td>
                     </tr>

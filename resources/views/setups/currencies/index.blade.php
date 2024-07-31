@@ -1,13 +1,14 @@
 @extends('layout.master')
 @push('stylesheets')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Manage Currency - ')
+@section('title', 'Currencies - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>{{ __('Manage Currency') }}</h5>
+                    <h5>{{ __('Currencies') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
@@ -39,7 +40,7 @@
                                             <th>{{ __('Currency Name') }}</th>
                                             <th>{{ __('Currency Code') }}</th>
                                             <th>{{ __('Currency Symbol') }}</th>
-                                            <th>{{ __('Currency Rate(As Per Base Currency)') }}</th>
+                                            <th>{{ __('Current Rate(As Per Base Currency)') }}</th>
                                             <th>{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
@@ -59,219 +60,8 @@
     </div>
 
     <div class="modal fade" id="currencyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+    <div class="modal fade" id="currencyRateAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 @endsection
 @push('scripts')
-    <script>
-        // Get all currencies by ajax
-        var currenciesTable = $('.data_tbl').DataTable({
-            dom: "lBfrtip",
-            buttons: [{
-                    extend: 'excel',
-                    text: 'Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
-                },
-            ],
-            "language": {
-                "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
-            },
-            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [
-                [10, 25, 50, 100, 500, 1000, -1],
-                [10, 25, 50, 100, 500, 1000, "All"]
-            ],
-            processing: true,
-            serverSide: true,
-            searchable: true,
-            ajax: "{{ route('currencies.index') }}",
-            columns: [{
-                    data: 'country',
-                    name: 'country'
-                },
-                {
-                    data: 'currency',
-                    name: 'currency'
-                },
-                {
-                    data: 'code',
-                    name: 'code'
-                },
-                {
-                    data: 'symbol',
-                    name: 'symbol'
-                },
-                {
-                    data: 'currency_rate',
-                    name: 'currency_rate'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                },
-            ]
-        });
-
-        // Setup ajax for csrf token.
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        // call jquery method
-        $(document).ready(function() {
-
-            $(document).on('click', '#addCurrency', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#currencyAddOrEditModal').html(data);
-                        $('#currencyAddOrEditModal').modal('show');
-
-                        setTimeout(function() {
-
-                            $('#country_name').focus();
-                        }, 500);
-                    },
-                    error: function(err) {
-
-                        if (err.status == 0) {
-
-                            toastr.error("{{ __('Net connetion error.') }}");
-                            return;
-                        } else if (err.status == 500) {
-
-                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                            return;
-                        }
-                    }
-                });
-            });
-
-            // pass editable data to edit modal fields
-            $(document).on('click', '#editCurrency', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-
-                $('.data_preloader').show();
-
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#currencyAddOrEditModal').empty();
-                        $('#currencyAddOrEditModal').html(data);
-                        $('#currencyAddOrEditModal').modal('show');
-                        $('.data_preloader').hide();
-
-                        setTimeout(function() {
-
-                            $('#country').focus().select();
-                        }, 500);
-                    },
-                    error: function(err) {
-
-                        $('.data_preloader').hide();
-                        if (err.status == 0) {
-
-                            toastr.error("{{ __('Net connetion error.') }}");
-                            return;
-                        } else if (err.status == 500) {
-
-                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                            return;
-                        }
-                    }
-                });
-            });
-
-            $(document).on('click', '#deleteCurrency', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);
-                $.confirm({
-                    'title': 'Are you sure to delete?',
-                    'content': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-modal-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no btn-danger',
-                            'action': function() {
-                                console.log('Deleted canceled.');
-                            }
-                        }
-                    }
-                });
-            });
-
-            //data delete by ajax
-            $(document).on('submit', '#deleted_form', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    async: false,
-                    data: request,
-                    success: function(data) {
-
-                        if (!$.isEmptyObject(data.errorMsg)) {
-
-                            toastr.error(data.errorMsg);
-                            return;
-                        }
-
-                        currenciesTable.ajax.reload(null, false);
-                        toastr.error(data);
-                    },
-                    error: function(err) {
-
-                        if (err.status == 0) {
-
-                            toastr.error("{{ __('Net Connetion Error.') }}");
-                            return;
-                        } else if (err.status == 500) {
-
-                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                            return;
-                        }
-
-                        toastr.error(err.responseJSON.message);
-                    }
-                });
-            });
-        });
-    </script>
+    @include('setups.currencies.js_partials.index_js')
 @endpush

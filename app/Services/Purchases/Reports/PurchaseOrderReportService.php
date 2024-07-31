@@ -57,17 +57,17 @@ class PurchaseOrderReportService
 
             ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="' . $row->po_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_pending_qty) . '</span>')
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . $row->order_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->order_discount_amount) . '</span>')
+            ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . curr_cnv($row->order_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->order_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('purchase_tax_amount', fn ($row) => '<span class="purchase_tax_amount" data-value="' . $row->purchase_tax_amount . '">' . '(' . $row->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->purchase_tax_amount) . '</span>')
+            ->editColumn('purchase_tax_amount', fn ($row) => '<span class="purchase_tax_amount" data-value="' . curr_cnv($row->purchase_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->purchase_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span></span>')
 
             ->rawColumns(['date', 'branch', 'invoice_id', 'po_qty', 'po_received_qty', 'po_pending_qty', 'net_total_amount', 'order_discount_amount', 'purchase_tax_amount', 'total_purchase_amount', 'paid', 'due'])
             ->make(true);
@@ -78,6 +78,7 @@ class PurchaseOrderReportService
         $query = DB::table('purchases')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
@@ -110,6 +111,7 @@ class PurchaseOrderReportService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->where('purchases.purchase_status', PurchaseStatus::PurchaseOrder->value)->orderBy('purchases.report_date', 'desc');
     }
 

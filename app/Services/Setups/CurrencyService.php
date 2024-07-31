@@ -2,6 +2,7 @@
 
 namespace App\Services\Setups;
 
+use App\Enums\BooleanType;
 use App\Models\Setups\Currency;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,16 +18,36 @@ class CurrencyService
 
             ->addColumn('action', function ($row) {
 
-                $html = '<div class="dropdown table-dropdown">';
+                $html = '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                $html .= '<a href="' . route('currencies.edit', [$row->id]) . '" class="action-btn c-edit" id="editCurrency" title="' . __("Edit") . '"><span class="fas fa-edit"></span></a>';
+                if (auth()->user()->can('currencies_index') && config('generalSettings')['subscription']->has_business == BooleanType::True->value) {
 
-                $html .= '<a href="' . route('currencies.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteCurrency" title="' . __("Delete") . '"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="' . route('currencies.rates.index', $row->id) . '" class="dropdown-item">' . __('Manage Rate') . '</a>';
+                }
 
+                if (auth()->user()->can('currencies_create') && config('generalSettings')['subscription']->has_business == BooleanType::True->value) {
+
+                    $html .= '<a href="' . route('currencies.rates.create', $row->id) . '" class="dropdown-item" id="addCurrencyRate">' . __('Add Rate') . '</a>';
+                }
+
+                if (auth()->user()->can('currencies_edit')) {
+
+                    $html .= '<a href="' . route('currencies.edit', $row->id) . '" class="dropdown-item" id="editCurrency">' . __('Edit') . '</a>';
+                }
+
+                if (auth()->user()->can('currencies_delete')) {
+
+                    $html .= '<a href="' . route('currencies.delete', $row->id) . '" class="dropdown-item" id="deleteCurrency">' . __('Delete') . '</a>';
+                }
+
+                $html .= '</div>';
                 $html .= '</div>';
 
                 return $html;
             })
+
             ->addColumn('currency_rate', function ($row) use ($generalSettings) {
 
                 if (isset($row->currency_rate) && $row->currency_rate != 0) {
@@ -42,7 +63,7 @@ class CurrencyService
             ->rawColumns(['symbol', 'action'])->make(true);
     }
 
-    public function addCurrency(object $request): void
+    public function addCurrency(object $request): object
     {
         $addCurrency = new Currency();
         $addCurrency->country = $request->country;
@@ -51,17 +72,28 @@ class CurrencyService
         $addCurrency->symbol = $request->symbol;
         $addCurrency->currency_rate = $request->currency_rate;
         $addCurrency->save();
+
+        return $addCurrency;
     }
 
-    public function updateCurrency(int $id, object $request): void
+    public function updateCurrency(int $id, object $request): object
     {
-        $updateCurrency = $this->singleCurrency(id: $id);
+        $updateCurrency = $this->singleCurrency(id: $id, with: ['currentCurrencyRate']);
         $updateCurrency->country = $request->country;
         $updateCurrency->currency = $request->currency;
         $updateCurrency->code = $request->code;
         $updateCurrency->symbol = $request->symbol;
         $updateCurrency->currency_rate = $request->currency_rate;
         $updateCurrency->save();
+
+        return $updateCurrency;
+    }
+
+    public function updateCurrentCurrencyRate($id): void
+    {
+        $updateCurrentCurrencyRate = $this->singleCurrency(id: $id, with: ['currentCurrencyRate']);
+        $updateCurrentCurrencyRate->currency_rate = $updateCurrentCurrencyRate?->currentCurrencyRate?->rate;
+        $updateCurrentCurrencyRate->save();
     }
 
     public function deleteCurrency(int $id): array

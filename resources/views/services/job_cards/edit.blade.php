@@ -19,6 +19,39 @@
             padding-right: 10px;
         }
 
+        .selected_quotation {
+            background-color: #645f61;
+            color: #fff !important;
+        }
+
+        .quotation_search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 3px;
+            margin-top: 1px;
+        }
+
+        .quotation_search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 2px;
+        }
+
+        .quotation_search_result ul li a {
+            color: #6b6262;
+            font-size: 10px;
+            display: block;
+            padding: 0px 3px;
+        }
+
+        .quotation_search_result ul li a:hover {
+            color: var(--white-color);
+            background-color: #ada9a9;
+        }
+
         .select_area {
             position: relative;
             background: #ffffff;
@@ -177,6 +210,24 @@
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
                                                     <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="brand_id" value="{{ isset($jobCard->delivery_date_ts) ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Quotation ID.') }}</b></label>
+                                                <div class="col-8">
+
+
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="quotation" class="form-control fw-bold" id="quotation" data-next="brand_id" value="{{ $jobCard?->quotation?->quotation_id }}" placeholder="{{ __('Quotation ID.') }}" autocomplete="off">
+                                                        <input type="hidden" name="quotation_id" id="quotation_id" value="{{ $jobCard?->quotation?->id }}">
+
+                                                        <div class="quotation_search_result d-hide">
+                                                            <ul id="quotation_list" class="list-unstyled"></ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

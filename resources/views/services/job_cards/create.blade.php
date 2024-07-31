@@ -15,6 +15,39 @@
             padding-right: 10px;
         }
 
+        .selected_quotation {
+            background-color: #645f61;
+            color: #fff !important;
+        }
+
+        .quotation_search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 3px;
+            margin-top: 1px;
+        }
+
+        .quotation_search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 2px;
+        }
+
+        .quotation_search_result ul li a {
+            color: #6b6262;
+            font-size: 10px;
+            display: block;
+            padding: 0px 3px;
+        }
+
+        .quotation_search_result ul li a:hover {
+            color: var(--white-color);
+            background-color: #ada9a9;
+        }
+
         .select_area {
             position: relative;
             background: #ffffff;
@@ -112,7 +145,7 @@
                                                                 @php
                                                                     $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
                                                                 @endphp
-                                                                <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
+                                                                <option @selected(isset($quotation) && $quotation->customer_account_id == $customerAccount->id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -173,7 +206,25 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="brand_id" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="quotation" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Quotation ID.') }}</b></label>
+                                                <div class="col-8">
+
+
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="quotation" class="form-control fw-bold" id="quotation" data-next="brand_id" value="{{ $quotation?->quotation_id }}" placeholder="{{ __('Quotation ID.') }}" autocomplete="off">
+                                                        <input type="hidden" name="quotation_id" id="quotation_id" value="{{ $quotation?->id }}">
+
+                                                        <div class="quotation_search_result d-hide">
+                                                            <ul id="quotation_list" class="list-unstyled"></ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -435,7 +486,84 @@
                                                                 <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="jobcard_product_list"></tbody>
+                                                        <tbody id="jobcard_product_list">
+
+                                                            @if (isset($quotation))
+
+                                                                @php
+                                                                    $itemUnitsArray = [];
+                                                                @endphp
+
+                                                                @foreach ($quotation->saleProducts as $saleProduct)
+                                                                    @php
+                                                                        if (isset($saleProduct->product_id)) {
+                                                                            $itemUnitsArray[$saleProduct->product_id][] = [
+                                                                                'unit_id' => $saleProduct->product->unit->id,
+                                                                                'unit_name' => $saleProduct->product->unit->name,
+                                                                                'unit_code_name' => $saleProduct->product->unit->code_name,
+                                                                                'base_unit_multiplier' => 1,
+                                                                                'multiplier_details' => '',
+                                                                                'is_base_unit' => 1,
+                                                                            ];
+                                                                        }
+
+                                                                        $baseUnitMultiplier = $saleProduct?->unit?->base_unit_multiplier ? $saleProduct?->unit?->base_unit_multiplier : 1;
+                                                                    @endphp
+
+                                                                    <tr id="select_item">
+                                                                        <td class="text-start">
+                                                                            @php
+                                                                                $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
+
+                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
+
+                                                                                $baseUnitMultiplier = $saleProduct?->unit?->base_unit_multiplier ? $saleProduct?->unit?->base_unit_multiplier : 1;
+                                                                            @endphp
+
+                                                                            <span class="product_name">{{ $saleProduct->product->name . $variant }} {!! $saleProduct?->product?->is_manage_stock == 0 ? ' <span class="badge badge-sm bg-primary"><i class="fas fa-wrench mr-1 text-white"></i></span>' : '' !!}</span>
+                                                                            <input type="hidden" id="item_name" value="{{ $saleProduct->product->name . $variant }}">
+                                                                            <input type="hidden" name="product_ids[]" id="product_id" value="{{ $saleProduct->product_id }}">
+                                                                            <input type="hidden" value="{{ $variantId }}" id="variant_id" name="variant_ids[]">
+                                                                            <input type="hidden" name="tax_types[]" id="tax_type" value="{{ $saleProduct->tax_type }}">
+                                                                            <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $saleProduct->tax_ac_id }}">
+                                                                            <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $saleProduct->unit_tax_percent }}">
+                                                                            <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $saleProduct->unit_tax_amount }}">
+                                                                            <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $saleProduct->unit_discount_type }}">
+                                                                            <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $saleProduct->unit_discount }}">
+                                                                            <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $saleProduct->unit_discount_amount }}">
+                                                                            <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $saleProduct->unit_cost_inc_tax }}">
+
+                                                                            <input type="hidden" class="unique_id" id="{{ $saleProduct->product_id . $variantId }}" value="{{ $saleProduct->product_id . $variantId }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <span id="span_quantity" class="fw-bold">{{ $saleProduct->quantity }}</span>
+                                                                            <input type="hidden" name="quantities[]" id="quantity" value="{{ $saleProduct->quantity }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <span id="span_unit">{{ $saleProduct?->unit?->name }}</span>
+                                                                            <input type="hidden" name="unit_ids[]" id="unit_id" value="{{ $saleProduct?->unit?->id }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="{{ $saleProduct->unit_price_exc_tax }}">
+                                                                            <input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="{{ $saleProduct->unit_price_inc_tax }}">
+                                                                            <span id="span_unit_price_inc_tax" class="fw-bold">{{ $saleProduct->unit_price_inc_tax }}</span>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <strong><span id="span_subtotal">{{ $saleProduct->subtotal }}</span></strong>
+                                                                            <input type="hidden" value="{{ $saleProduct->subtotal }}" readonly name="subtotals[]" id="subtotal">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>

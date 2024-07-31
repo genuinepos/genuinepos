@@ -19,7 +19,6 @@
         "laravel/ui": "^4.2.1",
         "maatwebsite/excel": "^3.1.40",
         "milon/barcode": "^10.0.0",
-        "nwidart/laravel-modules": "^10.0",
         "picqer/php-barcode-generator": "^2.2.4",
         "predis/predis": "2.0",
         "psr/simple-cache": "3.0",

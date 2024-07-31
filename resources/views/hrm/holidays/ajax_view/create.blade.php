@@ -36,7 +36,7 @@
                             <input type="hidden" name="allowed_branch_count" value="allowed_branch_count">
                             <select class="form-control select2" name="allowed_branch_ids[]" id="allowed_branch_id" multiple>
 
-                                @if ($generalSettings['subscription_has_business']->has_business == 1)
+                                @if ($generalSettings['subscription__has_business']->has_business == 1)
                                     <option @selected(!auth()->user()->branch_id) value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                 @endif
 

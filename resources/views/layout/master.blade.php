@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <title>@yield('title') {{ config('app.name') }}</title>
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    {{-- <link rel="manifest" href="{{ asset('manifest.json') }}"> --}}
     @include('layout._stylesheet')
     @stack('stylesheets')
 

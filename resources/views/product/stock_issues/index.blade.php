@@ -109,9 +109,12 @@
                                     <h6>{{ __('List of Stock Issues') }}</h6>
                                 </div>
 
-                                <div class="col-2 d-flex justify-content-end">
-                                    <a href="{{ route('stock.issues.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
-                                </div>
+                                @if (auth()->user()->can('stock_issues_add'))
+                                    <div class="col-2 d-flex justify-content-end">
+                                        <a href="{{ route('stock.issues.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                    </div>
+                                @endif
+
                             </div>
 
                             <div class="widget_content">

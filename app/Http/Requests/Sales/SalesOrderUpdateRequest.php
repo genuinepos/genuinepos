@@ -11,7 +11,7 @@ class SalesOrderUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sales_order_list');
+        return auth()->user()->can('sales_orders_edit');
     }
 
     /**

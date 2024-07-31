@@ -116,7 +116,7 @@
                                                         <label><strong>{{ location_label() }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                            @if ($generalSettings['subscription_has_business'] == 1)
+                                                            @if ($generalSettings['subscription__has_business'] == 1)
                                                                 <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @endif
 

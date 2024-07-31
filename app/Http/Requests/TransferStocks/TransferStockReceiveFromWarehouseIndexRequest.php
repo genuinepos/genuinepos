@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TransferStocks;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TransferStockReceiveFromWarehouseIndexRequest extends FormRequest
@@ -12,24 +11,7 @@ class TransferStockReceiveFromWarehouseIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (
-            !auth()->user()->can('transfer_stock_receive_from_warehouse') ||
-            config('generalSettings')['subscription']->features['transfer_stocks'] == BooleanType::False->value
-        ) {
-
-            return false;
-        }
-
-        if (
-            config('generalSettings')['subscription']->has_business == BooleanType::False->value &&
-            config('generalSettings')['subscription']->current_shop_count == 1 &&
-            config('generalSettings')['subscription']->features['warehouse_count'] == 0
-        ) {
-
-            return false;
-        }
-
-        return true;
+        return auth()->user()->can('transfer_stock_receive_from_warehouse');
     }
 
     /**

@@ -38,7 +38,6 @@ class TenantDbBackup extends Command
         foreach ($tenants as $tenant) {
 
             $database = 'pos_' . $tenant->id;
-            // $filename = 'pos_' . tenant('id') . '_' . date('Y_m_d') . '.sql';
             $filename = 'db.sql';
             $path = "backups/";
 

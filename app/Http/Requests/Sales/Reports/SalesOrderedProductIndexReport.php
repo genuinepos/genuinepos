@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Sales\Reports;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SalesOrderedProductIndexReport extends FormRequest
@@ -12,7 +11,7 @@ class SalesOrderedProductIndexReport extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sales_ordered_products_report') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_ordered_products_report');
     }
 
     /**

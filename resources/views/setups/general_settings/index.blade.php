@@ -94,7 +94,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
+                                        @if (auth()->user()->can('purchase_settings'))
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="purchase_settings_form" href="#">{{ __('Purchase Settings') }}</a>
                                             </li>
@@ -182,7 +182,7 @@
                                     @include('setups.general_settings.partials.view_partials.product_settings')
                                 @endif
 
-                                @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
+                                @if (auth()->user()->can('purchase_settings'))
                                     @include('setups.general_settings.partials.view_partials.purchase_settings')
                                 @endif
 

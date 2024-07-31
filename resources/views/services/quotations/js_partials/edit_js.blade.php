@@ -1062,7 +1062,7 @@
     calculateTotalAmount();
 </script>
 
-@if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
+@if (auth()->user()->can('customer_add'))
     <script>
         $('#addContact').on('click', function(e) {
 

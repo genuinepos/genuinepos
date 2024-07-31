@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\HRM;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AttendanceCreateRequest extends FormRequest
@@ -12,7 +11,7 @@ class AttendanceCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('attendances_create') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('attendances_create');
     }
 
     /**

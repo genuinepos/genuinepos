@@ -440,7 +440,6 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            // $dir = tenant('id') . '/' . 'products/thumbnails/';
             $addProduct->thumbnail_photo = FileUploader::uploadWithResize(
                 fileType: 'productThumbnail',
                 uploadableFile: $request->file('photo'),

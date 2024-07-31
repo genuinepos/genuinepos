@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Manufacturing;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProcessCreateRequest extends FormRequest
@@ -12,7 +11,7 @@ class ProcessCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('process_add') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
+        return auth()->user()->can('process_add');
     }
 
     /**

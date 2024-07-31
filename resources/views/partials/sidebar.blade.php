@@ -2372,54 +2372,53 @@
         </div>
     </div>
 
-    @if (isset($generalSettings['subscription']->features['advertisements']) && $generalSettings['subscription']->features['advertisements'] == '1')
-        @if (auth()->user()->can('advertisements_index') || auth()->user()->can('advertisements_create'))
-            <div class="sub-menu_t" id="advertisement">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-md-4">
-                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
-                            </div>
+    @if (auth()->user()->can('advertisements_index') || auth()->user()->can('advertisements_create'))
+        <div class="sub-menu_t" id="advertisement">
+            <div class="sub-menu-width">
+                <div class="model__close bg-secondary-2 mb-3">
+                    <div class="row align-items-center justify-content-end">
+                        <div class="col-md-4">
+                            <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                         </div>
                     </div>
+                </div>
 
-                    <div class="container-fluid">
-                        <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">{{ __('Advertisements') }}</p>
-                            <div class="sub-menu-row">
-                                @if (auth()->user()->can('advertisements_create'))
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('advertisements.create') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-plus-circle"></i></span>
-                                                </div>
+                <div class="container-fluid">
+                    <div class="sub-menu-group">
+                        <p class="sub-menu-group-title">{{ __('Advertisements') }}</p>
+                        <div class="sub-menu-row">
+                            @if (auth()->user()->can('advertisements_create'))
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('advertisements.create') }}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-plus-circle"></i></span>
                                             </div>
-                                            <p class="switch_text">{{ __('Add Advertisement') }}</p>
-                                        </a>
-                                    </div>
-                                @endif
+                                        </div>
+                                        <p class="switch_text">{{ __('Add Advertisement') }}</p>
+                                    </a>
+                                </div>
+                            @endif
 
-                                @if (auth()->user()->can('advertisements_index'))
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('advertisements.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-sliders-h"></i></span>
-                                                </div>
+                            @if (auth()->user()->can('advertisements_index'))
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('advertisements.index') }}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
-                                            <p class="switch_text">{{ __('Advertisement List') }}</p>
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
+                                        </div>
+                                        <p class="switch_text">{{ __('Advertisement List') }}</p>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-        @endif
+        </div>
     @endif
+
 </div>
 </div>
 </div>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Advertisements;
 
-use App\Enums\BooleanType;
 use Illuminate\Validation\Rule;
 use App\Enums\AdvertisementContentType;
 use Illuminate\Foundation\Http\FormRequest;
@@ -15,7 +14,7 @@ class AdvertisementUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('advertisements_edit') && isset(config('generalSettings')['subscription']->features['advertisements']) && config('generalSettings')['subscription']->features['advertisements'] == BooleanType::True->value;
+        return auth()->user()->can('advertisements_edit');
     }
 
     /**

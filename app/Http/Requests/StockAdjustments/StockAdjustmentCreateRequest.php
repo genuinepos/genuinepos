@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\StockAdjustments;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StockAdjustmentCreateRequest extends FormRequest
@@ -12,7 +11,7 @@ class StockAdjustmentCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('stock_adjustment_add') && config('generalSettings')['subscription']->features['stock_adjustments'] == BooleanType::True->value;
+        return auth()->user()->can('stock_adjustment_add');
     }
 
     /**

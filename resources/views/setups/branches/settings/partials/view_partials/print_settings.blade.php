@@ -86,46 +86,44 @@
                     </div>
                 </div>
 
-                @if ($generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
-                    <div class="col-md-12 mt-1">
-                        <div class="input-group">
-                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase') }}</label>
-                            <div class="col-md-9">
-                                <select name="purchase_page_size" class="form-control" id="purchase_page_size">
-                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                        <option {{ $generalSettings['print_page_size__purchase_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="col-md-12 mt-1">
+                    <div class="input-group">
+                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase') }}</label>
+                        <div class="col-md-9">
+                            <select name="purchase_page_size" class="form-control" id="purchase_page_size">
+                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                    <option {{ $generalSettings['print_page_size__purchase_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-12 mt-1">
-                        <div class="input-group">
-                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase Order') }}</label>
-                            <div class="col-md-9">
-                                <select name="purchase_order_page_size" class="form-control" id="purchase_order_page_size">
-                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                        <option {{ $generalSettings['print_page_size__purchase_order_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="col-md-12 mt-1">
+                    <div class="input-group">
+                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase Order') }}</label>
+                        <div class="col-md-9">
+                            <select name="purchase_order_page_size" class="form-control" id="purchase_order_page_size">
+                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                    <option {{ $generalSettings['print_page_size__purchase_order_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-12 mt-1">
-                        <div class="input-group">
-                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase Return') }}</label>
-                            <div class="col-md-9">
-                                <select name="purchase_return_page_size" class="form-control" id="purchase_return_page_size">
-                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                        <option {{ $generalSettings['print_page_size__purchase_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="col-md-12 mt-1">
+                    <div class="input-group">
+                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase Return') }}</label>
+                        <div class="col-md-9">
+                            <select name="purchase_return_page_size" class="form-control" id="purchase_return_page_size">
+                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                    <option {{ $generalSettings['print_page_size__purchase_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                @endif
+                </div>
 
                 <div class="col-md-12 mt-1">
                     <div class="input-group">

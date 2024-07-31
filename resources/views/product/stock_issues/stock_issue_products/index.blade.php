@@ -101,17 +101,15 @@
                                                     </div>
                                                 @endif
 
-                                                @if ($generalSettings['subscription']->features['hrm'] == 1)
-                                                    <div class="col-md-2">
-                                                        <label><strong>{{ __('Department') }}</strong></label>
-                                                        <select name="department_id" class="form-control select2" id="department_id" autofocus>
-                                                            <option value="">{{ __('All') }}</option>
-                                                            @foreach ($departments as $department)
-                                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                @endif
+                                                <div class="col-md-2">
+                                                    <label><strong>{{ __('Department') }}</strong></label>
+                                                    <select name="department_id" class="form-control select2" id="department_id" autofocus>
+                                                        <option value="">{{ __('All') }}</option>
+                                                        @foreach ($departments as $department)
+                                                            <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>

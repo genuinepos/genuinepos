@@ -51,29 +51,25 @@
     </div>
 
     <div class="row mt-1">
-        @if ($generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Purchase Invoice Prefix') }}</label>
-                <input type="text" name="purchase_invoice_prefix" class="form-control" id="purchase_invoice_prefix" value="{{ $generalSettings['prefix__purchase_invoice_prefix'] }}" placeholder="{{ __('Purchase Invoice Prefix') }}" />
-            </div>
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Purchase Invoice Prefix') }}</label>
+            <input type="text" name="purchase_invoice_prefix" class="form-control" id="purchase_invoice_prefix" value="{{ $generalSettings['prefix__purchase_invoice_prefix'] }}" placeholder="{{ __('Purchase Invoice Prefix') }}" />
+        </div>
 
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Purchase Order Voucher Prefix') }}</label>
-                <input type="text" name="purchase_order_prefix" class="form-control" id="purchase_order_prefix" value="{{ $generalSettings['prefix__purchase_order_prefix'] }}" placeholder="{{ __('Purchase Order Prefix') }}" />
-            </div>
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Purchase Order Voucher Prefix') }}</label>
+            <input type="text" name="purchase_order_prefix" class="form-control" id="purchase_order_prefix" value="{{ $generalSettings['prefix__purchase_order_prefix'] }}" placeholder="{{ __('Purchase Order Prefix') }}" />
+        </div>
 
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Purchase Return Voucher Prefix') }}</label>
-                <input type="text" name="purchase_return_prefix" class="form-control" id="purchase_return_prefix" value="{{ $generalSettings['prefix__purchase_return_prefix'] }}" placeholder="{{ __('Purchase Return Prefix') }}" />
-            </div>
-        @endif
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Purchase Return Voucher Prefix') }}</label>
+            <input type="text" name="purchase_return_prefix" class="form-control" id="purchase_return_prefix" value="{{ $generalSettings['prefix__purchase_return_prefix'] }}" placeholder="{{ __('Purchase Return Prefix') }}" />
+        </div>
 
-        @if ($generalSettings['subscription']->features['stock_adjustments'] == \App\Enums\BooleanType::True->value)
-            <div class="col-lg-3 col-md-6">
-                <label class="fw-bold">{{ __('Stock Adjustment Voucher Prefix') }}</label>
-                <input type="text" name="stock_adjustment_prefix" class="form-control" id="stock_adjustment_prefix" value="{{ $generalSettings['prefix__stock_adjustment_prefix'] }}" placeholder="{{ __('Stock Adjustment Voucher Prefix') }}" />
-            </div>
-        @endif
+        <div class="col-lg-3 col-md-6">
+            <label class="fw-bold">{{ __('Stock Adjustment Voucher Prefix') }}</label>
+            <input type="text" name="stock_adjustment_prefix" class="form-control" id="stock_adjustment_prefix" value="{{ $generalSettings['prefix__stock_adjustment_prefix'] }}" placeholder="{{ __('Stock Adjustment Voucher Prefix') }}" />
+        </div>
     </div>
 
     <div class="row mt-1">

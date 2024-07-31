@@ -113,7 +113,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
-                ->group(base_path('routes/advertisement.php'));
+                ->group(base_path('routes/advertisements.php'));
 
             Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)

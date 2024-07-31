@@ -136,22 +136,20 @@
                                             @endif
                                         </div>
 
-                                        @if ($generalSettings['subscription']->features['hrm'] == 1)
-                                            <div class="row mt-1">
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <label class="col-4"><b>{{ __('Type') }}</b></label>
-                                                        <div class="col-8">
-                                                            <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
-                                                                @foreach (\App\Enums\UserType::cases() as $userType)
-                                                                    <option @selected($userType->value == $user->user_type) value="{{ $userType->value }}">{{ $userType->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>{{ __('Type') }}</b></label>
+                                                    <div class="col-8">
+                                                        <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
+                                                            @foreach (\App\Enums\UserType::cases() as $userType)
+                                                                <option @selected($userType->value == $user->user_type) value="{{ $userType->value }}">{{ $userType->name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
                                 </div>
 

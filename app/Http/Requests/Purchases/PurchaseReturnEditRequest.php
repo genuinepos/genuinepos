@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Purchases;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PurchaseReturnEditRequest extends FormRequest
@@ -12,7 +11,7 @@ class PurchaseReturnEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('purchase_return_edit') && config('generalSettings')['subscription']->features['purchase'] == BooleanType::True->value;
+        return auth()->user()->can('purchase_return_edit');
     }
 
     /**

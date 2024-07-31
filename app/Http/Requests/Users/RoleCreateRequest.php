@@ -12,7 +12,7 @@ class RoleCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('role_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
+        return auth()->user()->can('role_add');
     }
 
     /**

@@ -175,7 +175,7 @@
         invoicesTable.ajax.reload();
     });
 
-    @if (auth()->user()->can('shipment_access') && $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+    @if (auth()->user()->can('shipment_access'))
         $(document).on('click', '#editShipmentDetails', function(e) {
             e.preventDefault();
 
@@ -210,7 +210,6 @@
             });
         });
     @endif
-
 
     $(document).on('click', '#details_btn', function(e) {
         e.preventDefault();

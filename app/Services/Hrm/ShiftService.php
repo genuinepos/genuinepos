@@ -91,22 +91,4 @@ class ShiftService
 
         return $query;
     }
-
-    public function addValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_shifts,name',
-            'start_time' => 'required',
-            'end_time' => 'required',
-        ]);
-    }
-
-    public function updateValidation(object $request, int $id): ?array
-    {
-        return $request->validate([
-            'name' => 'required|unique:hrm_shifts,name,' . $id,
-            'start_time' => 'required',
-            'end_time' => 'required',
-        ]);
-    }
 }

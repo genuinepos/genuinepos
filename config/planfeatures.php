@@ -20,4 +20,5 @@ return [
     'cash_counter_count' => '',
     'warehouse_count' => '',
     'ecommerce' => true,
+    'advertisements' => true,
 ];

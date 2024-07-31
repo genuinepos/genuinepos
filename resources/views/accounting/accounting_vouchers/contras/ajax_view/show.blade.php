@@ -38,20 +38,16 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($contra->branch_id) {
-
                                         if ($contra?->branch?->parentBranch) {
-
                                             $branchName = $contra?->branch?->parentBranch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $contra?->branch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -123,7 +119,7 @@
                                     <tr>
                                         <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Send Amount') }}</th>
                                         <td class="text-start fw-bold" style="font-size:11px!important;">
-                                            : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                            : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                         </td>
                                     </tr>
                                 </thead>
@@ -164,7 +160,7 @@
                                     </tr>
 
                                     <tr>
-                                        <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                        <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                         <td class="text-start fw-bold" style="font-size:11px!important;">
                                             : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                         </td>
@@ -232,7 +228,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -255,7 +253,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -264,4 +262,3 @@
         });
     };
 </script>
-

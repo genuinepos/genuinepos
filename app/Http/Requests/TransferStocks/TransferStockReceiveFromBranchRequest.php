@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TransferStocks;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TransferStockReceiveFromBranchRequest extends FormRequest

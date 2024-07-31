@@ -37,7 +37,7 @@
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('hrm.shifts.create') }}" class="btn btn-sm btn-primary" id="addShift"><i class="fas fa-plus-square"></i> {{ __('Add Shift') }}</a>
+                                    <a href="{{ route('hrm.shifts.create') }}" class="btn btn-sm btn-success" id="addShift"><i class="fas fa-plus-square"></i> {{ __('Add Shift') }}</a>
                                 </div>
                             </div>
 
@@ -80,7 +80,7 @@
             buttons: [{
                     extend: 'excel',
                     text: 'Excel',
-                    messageTop: 'List Of Shifts',
+                    messageTop: 'List of Shifts',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -89,7 +89,7 @@
                 {
                     extend: 'pdf',
                     text: 'Pdf',
-                    messageTop: 'List Of Shifts',
+                    messageTop: 'List of Shifts',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -98,7 +98,7 @@
                 {
                     extend: 'print',
                     text: 'Print',
-                    messageTop: '<b>List Of Shifts</b>',
+                    messageTop: '<b>List of Shifts</b>',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -166,7 +166,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error') }}");
+                            toastr.error("{{ __('Net Connection Error') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -201,7 +201,7 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -264,7 +264,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                             return;
                         } else if (err.status == 500) {
 

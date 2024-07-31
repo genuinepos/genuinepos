@@ -2,13 +2,14 @@
 
 namespace App\Models\Setups;
 
-use App\Models\Sales\Sale;
-use App\Models\Purchases\Purchase;
 use App\Models\BaseModel;
+use App\Models\Sales\Sale;
 use App\Models\InvoiceSchema;
+use App\Models\GeneralSetting;
+use App\Models\Setups\Currency;
 use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
-use App\Models\Setups\BranchSetting;
+use App\Models\Purchases\Purchase;
 use App\Models\Products\ProductOpeningStock;
 
 class Branch extends BaseModel
@@ -57,19 +58,19 @@ class Branch extends BaseModel
         return $this->hasMany(Warehouse::class);
     }
 
-    public function addSaleInvoiceLayout()
-    {
-        return $this->hasOne(BranchSetting::class, 'branch_id')->where('add_sale_invoice_layout_id', '!=', null);
-    }
-
-    public function posSaleInvoiceLayout()
-    {
-        return $this->hasOne(BranchSetting::class, 'branch_id')->where('pos_sale_invoice_layout_id', '!=', null);
-    }
-
     public function openingStockProduct()
     {
         return $this->hasOne(ProductOpeningStock::class, 'branch_id')
             ->where('warehouse_id', null);
+    }
+
+    public function currency()
+    {
+        return $this->hasOne(GeneralSetting::class, 'branch_id', 'id')->where('key', 'business_or_shop__currency_symbol');
+    }
+
+    public function branchCurrency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 }

@@ -2517,3 +2517,15 @@ label.col-6 {
 .selectable td {
     cursor: pointer;
 }
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    height: 25px;
+}
+
+.select2-results {
+    font-size: 11px!important;
+}
+
+.tagify {
+    background: #ffff;
+}

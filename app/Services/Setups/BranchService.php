@@ -6,8 +6,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Enums\BranchType;
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use App\Models\Setups\Branch;
-use Illuminate\Validation\Rule;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -71,10 +71,10 @@ class BranchService
 
                 if (isset($row->parent_branch_logo)) {
 
-                    $photo = asset('uploads/branch_logo/' . $row->parent_branch_logo);
+                    $photo = file_link(fileType: 'branchLogo', fileName: $row->parent_branch_logo);
                 } elseif (isset($row->logo)) {
 
-                    $photo = asset('uploads/branch_logo/' . $row->logo);
+                    $photo = file_link(fileType: 'branchLogo', fileName: $row->logo);
                 }
 
                 return '<img loading="lazy" class="rounded" style="height:40px; width:60px; padding:2px 0px;" src="' . $photo . '">';
@@ -98,6 +98,7 @@ class BranchService
     public function addBranch($request): object
     {
         $addBranch = new Branch();
+        $addBranch->currency_id = $request->currency_id;
         $addBranch->branch_type = $request->branch_type;
         $addBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $addBranch->area_name = $request->area_name;
@@ -118,21 +119,17 @@ class BranchService
         $branchLogoName = '';
         if ($request->hasFile('logo') || $request->hasFile('branch_logo')) {
 
-            $dir = public_path('uploads/branch_logo/');
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
             $logo = $request->file('logo');
 
             $branchLogo = isset($logo) ? $logo : $request->file('branch_logo');
             if (isset($branchLogo)) {
 
-                $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
-                $branchLogo->move($dir, $branchLogoName);
-                $addBranch->logo = $branchLogoName;
+                $addBranch->logo = FileUploader::uploadWithResize(
+                    fileType: 'branchLogo',
+                    uploadableFile: $branchLogo,
+                    height: 40,
+                    width: 100,
+                );
             }
         }
 
@@ -147,6 +144,7 @@ class BranchService
     {
         $updateBranch = $this->singleBranch($id);
 
+        $updateBranch->currency_id = $request->currency_id;
         $updateBranch->name = $request->branch_type;
         $updateBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $updateBranch->area_name = $request->area_name;
@@ -166,22 +164,15 @@ class BranchService
 
         if ($request->hasFile('logo')) {
 
-            $dir = public_path('uploads/branch_logo/');
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'branchLogo',
+                uploadableFile: $request->file('logo'),
+                height: 40,
+                width: 100,
+                deletableFile: $updateBranch->logo,
+            );
 
-            if (isset($updateBranch->logo) && file_exists($dir . $updateBranch->logo)) {
-
-                unlink($dir . $updateBranch->logo);
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
-            $branchLogo->move($dir, $branchLogoName);
-            $updateBranch->logo = $branchLogoName;
+            $updateBranch->logo = $uploadedFile;
         }
 
         $updateBranch->save();
@@ -202,25 +193,20 @@ class BranchService
 
         if (count($deleteBranch->childBranches) > 0) {
 
-            return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more chain shop.')];
+            return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more chain shop.')];
         }
 
         if (count($deleteBranch->sales) > 0) {
 
-            return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more sales.')];
+            return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more sales.')];
         }
 
         if (count($deleteBranch->purchases) > 0) {
 
-            return ['pass' => false, 'msg' => __('Shop can not be deleted. This shop has one or more purchases.')];
+            return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more purchases.')];
         }
 
-        $dir = public_path('uploads/branch_logo/');
-
-        if (isset($deleteBranch->logo) && file_exists($dir . $deleteBranch->logo)) {
-
-            unlink($dir . $deleteBranch->logo);
-        }
+        FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteBranch->logo);
 
         $deleteBranch->delete();
 
@@ -233,11 +219,7 @@ class BranchService
     {
         $deleteLogo = $this->singleBranch(id: $id);
 
-        $dir = public_path('uploads/branch_logo/');
-        if (isset($deleteLogo->logo) && file_exists($dir . $deleteLogo->logo)) {
-
-            unlink($dir . $deleteLogo->logo);
-        }
+        FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteLogo->logo);
 
         $deleteLogo->logo = null;
         $deleteLogo->save();
@@ -387,7 +369,7 @@ class BranchService
 
         if ($branchLimit == $branchCount) {
 
-            return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
+            return ['pass' => false, 'msg' => __("Store limit is ${branchLimit}")];
         }
 
         return ['pass' => true];
@@ -402,7 +384,7 @@ class BranchService
 
         if ($branchLimit <= $branchCount) {
 
-            return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
+            return ['pass' => false, 'msg' => __("Store limit is ${branchLimit}")];
         }
 
         return ['pass' => true];

@@ -72,7 +72,7 @@ class InvoiceLayoutService
                     }
                 } else {
 
-                    return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Business') . '</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Company') . '</b>)';
                 }
             })
             ->addColumn('action', function ($row) {
@@ -165,7 +165,7 @@ class InvoiceLayoutService
         $updateInvoiceLayout->branch_email = $request->branch_email;
         $updateInvoiceLayout->product_w_type = $request->product_w_type;
         $updateInvoiceLayout->product_w_duration = $request->product_w_duration;
-        $updateInvoiceLayout->product_w_discription = BooleanType::False->value;;
+        $updateInvoiceLayout->product_w_discription = BooleanType::False->value;
         $updateInvoiceLayout->product_discount = $request->product_discount;
         $updateInvoiceLayout->product_tax = $request->product_tax;
         $updateInvoiceLayout->customer_address = $request->customer_address;

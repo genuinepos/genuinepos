@@ -6,7 +6,7 @@
 
         <div class="col-6 d-flex justify-content-end">
             @if (auth()->user()->can('devices_create'))
-                <a href="{{ route('services.settings.devices.create') }}" class="btn btn-sm btn-primary" id="addDevice"><i class="fas fa-plus-square"></i> {{ __('Add Device') }}</a>
+                <a href="{{ route('services.settings.devices.create') }}" class="btn btn-sm btn-success" id="addDevice"><i class="fas fa-plus-square"></i> {{ __('Add Device') }}</a>
             @endif
         </div>
     </div>

@@ -118,7 +118,7 @@
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 li += '<li>';
                                 li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
@@ -162,7 +162,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 if (product.is_variant == 1) {
 
@@ -291,7 +291,7 @@
             success: function(data) {
                 if ($.isEmptyObject(data.errorMsg)) {
 
-                    var stockLocationMessage = senderWarehouseId ? " {{ __('in selected warehouse') }}" : " {{ __('in the Shop/Business') }}";
+                    var stockLocationMessage = senderWarehouseId ? " {{ __('in selected warehouse') }}" : " {{ __('in the Store/Company') }}";
                     if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
                         toastr.error("{{ __('Current stock is') }} " + parseFloat(data.stock) + stockLocationMessage);
@@ -583,7 +583,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -692,9 +692,24 @@
 
                 if (err.status == 0) {
 
+                    <<
+                    <<
+                    <<
+                    <
+                    HEAD
                     toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
+                    ===
+                    ===
+                    =
+                    toastr.error("{{ __('Net Connection Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+                    >>>
+                    >>>
+                    >
+                    33 c4b51038c7895e589fba506cf38390ca325d5c
 
                     toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                     return;

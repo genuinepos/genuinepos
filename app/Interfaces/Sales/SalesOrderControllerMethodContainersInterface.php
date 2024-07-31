@@ -16,4 +16,6 @@ interface SalesOrderControllerMethodContainersInterface
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array;
 
     public function searchByOrderIdMethodContainer(string $keyWord): array|object;
+
+    public function deleteMethodContainer(int $id): ?array;
 }

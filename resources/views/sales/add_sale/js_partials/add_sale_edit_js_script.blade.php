@@ -140,7 +140,7 @@
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
 
@@ -254,7 +254,7 @@
 
                             $.each(products, function(key, product) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
+                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 
@@ -288,7 +288,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Please check the connetion.') }}");
+                    toastr.error("{{ __('Net Connection Error. Please check the connetion.') }}");
                     return;
                 }
             }
@@ -296,6 +296,7 @@
     }
 
     var keyName = 1;
+
     function selectProduct(e) {
 
         var price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
@@ -508,7 +509,7 @@
                         check_quantity = parseFloat(e_quantity) - parseFloat(e_current_quantity);
                     }
 
-                    var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }}" : " {{ __('in the Shop/Business') }}";
+                    var stockLocationMessage = e_warehouse_id ? "{{ __('in selected warehouse') }}" : "{{ __('in the Store/Company') }}";
 
                     if (parseFloat(check_quantity) > parseFloat(data.stock)) {
 
@@ -1147,7 +1148,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -1295,7 +1296,7 @@
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -1392,7 +1393,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1427,7 +1428,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1529,7 +1530,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

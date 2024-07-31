@@ -26,7 +26,7 @@
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_warranty_add'))
-                                    <a href="{{ route('warranties.create') }}" class="btn btn-sm btn-primary" id="addWarranty"><i class="fas fa-plus-square"></i> {{ __('Add Warranty') }}</a>
+                                    <a href="{{ route('warranties.create') }}" class="btn btn-sm btn-success" id="addWarranty"><i class="fas fa-plus-square"></i> {{ __('Add Warranty') }}</a>
                                 @endif
                             </div>
                         </div>
@@ -71,7 +71,7 @@
             dom: "lBfrtip",
             buttons: [{
                     extend: 'excel',
-                    'title': 'List Of Warranties/Guaranties',
+                    'title': 'List of Warranties/Guaranties',
                     text: 'Excel',
                     className: 'btn btn-primary',
                     exportOptions: {
@@ -80,7 +80,7 @@
                 },
                 {
                     extend: 'pdf',
-                    'title': 'List Of Warranties/Guaranties',
+                    'title': 'List of Warranties/Guaranties',
                     text: 'Pdf',
                     className: 'btn btn-primary',
                     exportOptions: {
@@ -89,7 +89,7 @@
                 },
                 {
                     extend: 'print',
-                    'title': 'List Of Warranties/Guaranties',
+                    'title': 'List of Warranties/Guaranties',
                     text: 'Print',
                     className: 'btn btn-primary',
                     exportOptions: {
@@ -167,7 +167,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -201,7 +201,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -264,7 +264,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                             return;
                         } else if (err.status == 500) {
 

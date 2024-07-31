@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Receive From Shop/Business - ')
+@section('title', auth()->user()->branch_id ? 'Receive Stock From Store' : 'Receive Stock From Company')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -11,7 +11,13 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <h5>{{ __('Receive From Shop/Business') }}</h5>
+                                <h5>
+                                    @if (auth()->user()->branch_id)
+                                        {{ __('Receive Stock From Store') }}
+                                    @else
+                                        {{ __('Receive Stock From Company') }}
+                                    @endif
+                                </h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
@@ -70,7 +76,14 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Receivable Transferred Stocks (From Shop/Business)') }}</h6>
+                                    <h6>
+                                        @if (auth()->user()->branch_id)
+                                            {{ __('List of Receivable Transferred Stock (From Store)') }}
+                                        @else
+                                            {{ __('List of Receivable Transferred Stock (From Company)') }}
+                                        @endif
+
+                                    </h6>
                                 </div>
                             </div>
 
@@ -304,7 +317,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

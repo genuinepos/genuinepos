@@ -2,11 +2,8 @@
 
 namespace App\Services\TaskManagement;
 
-use Carbon\Carbon;
-use App\Enums\BooleanType;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\TaskManagement\WorkspaceAttachment;
+use App\Utils\FileUploader;
 
 class WorkspaceAttachmentService
 {
@@ -16,23 +13,14 @@ class WorkspaceAttachmentService
 
             if (count($request->file('attachments')) > 0) {
 
-                $dir = public_path('uploads/workspace_attachments');
-
-                if (!\File::isDirectory($dir)) {
-
-                    \File::makeDirectory($dir, 493, true);
-                }
-
                 foreach ($request->file('attachments') as $attachment) {
 
-                    $wsAttachment = $attachment;
-                    $wsAttachmentName = uniqid() . '.' . $wsAttachment->getClientOriginalExtension();
-                    $wsAttachment->move($dir, $wsAttachmentName);
+                    $uploadedFile = FileUploader::fileUpload(fileType: 'workspaceAttachment', uploadableFile: $attachment);
 
                     WorkspaceAttachment::insert([
                         'workspace_id' => $workspaceId,
-                        'attachment' => $wsAttachmentName,
-                        'extension' => $wsAttachment->getClientOriginalExtension(),
+                        'attachment' => $uploadedFile,
+                        'extension' => $attachment->getClientOriginalExtension(),
                     ]);
                 }
             }
@@ -41,17 +29,11 @@ class WorkspaceAttachmentService
 
     public function deleteWorkspaceAttachment(int $id): void
     {
-
         $deleteWorkspaceAttachment = $this->singleWorkspaceAttachment(id: $id);
 
         if (isset($deleteWorkspaceAttachment)) {
 
-            $dir = public_path('uploads/workspace_attachments/');
-
-            if (file_exists($dir . $deleteWorkspaceAttachment->attachment)) {
-
-                unlink($dir . $deleteWorkspaceAttachment->attachment);
-            }
+            FileUploader::deleteFile(fileType: 'workspaceAttachment', deletableFile: $deleteWorkspaceAttachment->attachment);
 
             $deleteWorkspaceAttachment->delete();
         }

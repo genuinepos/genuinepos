@@ -21,15 +21,10 @@ class SalesReturnService
             ->leftJoin('accounts as customers', 'sale_returns.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id');
 
         $this->filteredQuery($request, $query);
-
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            $query->where('sale_returns.branch_id', auth()->user()->branch_id);
-        }
 
         $returns = $query->select(
             'sale_returns.id',
@@ -55,6 +50,7 @@ class SalesReturnService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sale_returns.date_ts', 'desc');
 
         return DataTables::of($returns)
@@ -124,17 +120,17 @@ class SalesReturnService
 
             ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . $row->return_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->return_discount_amount) . '</span>')
+            ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . curr_cnv($row->return_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . $row->return_tax_amount . '">' . '(' . $row->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->return_tax_amount) . '</span>')
+            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . $row->total_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_return_amount) . '</span>')
+            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('payment_status', function ($row) {
 
@@ -225,8 +221,13 @@ class SalesReturnService
         return $return;
     }
 
-    public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, int $saleReturnId = null): array
+    public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, ?object $customerAccount = null, ?int $saleReturnId = null): array
     {
+        if (isset($customerAccount) && $customerAccount->is_walk_in_customer == BooleanType::True->value && $request->current_balance != 0) {
+
+            return ['pass' => false, 'msg' => __('Walk-In-Customer is not credit customer.So Walk-In-Customer current balance must be 0.')];
+        }
+
         if (!isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __('Product table is empty.')];
@@ -349,6 +350,17 @@ class SalesReturnService
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sale_returns.date_ts', $date_range); // Final
+        }
+
+        if (auth()->user()->can('sale_drafts_only_own')) {
+
+            $query->where('sale_returns.created_by_id', auth()->user()->id);
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('sale_returns.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

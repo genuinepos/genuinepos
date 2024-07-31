@@ -59,20 +59,20 @@
                         @if ($transferStock?->branch?->parent_branch_id)
 
                             @if ($transferStock->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $transferStock->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $transferStock->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $transferStock->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($transferStock->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $transferStock->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $transferStock->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $transferStock->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -241,7 +241,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $transferStock?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->total_stock_value) }}
                                 </td>
@@ -356,20 +356,20 @@
                         @if ($transferStock?->branch?->parent_branch_id)
 
                             @if ($transferStock->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $transferStock->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $transferStock->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $transferStock->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($transferStock->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $transferStock->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $transferStock->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $transferStock->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif

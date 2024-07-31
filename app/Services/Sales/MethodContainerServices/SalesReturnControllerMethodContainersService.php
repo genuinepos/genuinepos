@@ -121,9 +121,13 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
         return $data;
     }
 
-    public function createMethodContainer(): ?array
+    public function createMethodContainer(object $codeGenerator): ?array
     {
         $data = [];
+
+        $generalSettings = config('generalSettings');
+        $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $data['branchName'] = $this->branchService->branchName();
@@ -164,12 +168,16 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
 
         $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
+        $data['voucherNo'] = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
         return $data;
     }
 
     public function storeMethodContainer(object $request, object $codeGenerator): ?array
     {
-        $restrictions = $this->salesReturnService->restrictions(request: $request);
+        $customerAccount = $this->accountService->singleAccountById(id: $request->customer_account_id);
+
+        $restrictions = $this->salesReturnService->restrictions(request: $request, customerAccount: $customerAccount);
 
         if ($restrictions['pass'] == false) {
 
@@ -290,7 +298,7 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
             'saleReturnProducts.unit.baseUnit:id,base_unit_id,code_name',
         ]);
 
-        $ownBranchIdOrParentBranchId = $return?->branch?->parent_branch_id ? $return?->branch?->parent_branch_id : $return?->branch_id;;
+        $ownBranchIdOrParentBranchId = $return?->branch?->parent_branch_id ? $return?->branch?->parent_branch_id : $return?->branch_id;
 
         $data['branchName'] = $this->branchService->branchName(transObject: $return);
 
@@ -337,7 +345,9 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array
     {
-        $restrictions = $this->salesReturnService->restrictions(request: $request, checkCustomerChangeRestriction: true, saleReturnId: $id);
+        $customerAccount = $this->accountService->singleAccountById(id: $request->customer_account_id);
+
+        $restrictions = $this->salesReturnService->restrictions(request: $request, checkCustomerChangeRestriction: true, customerAccount: $customerAccount, saleReturnId: $id);
 
         if ($restrictions['pass'] == false) {
 
@@ -510,5 +520,15 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
         }
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::SaleReturn->value, dataObj: $deleteSalesReturn);
+
+        return ['pass' => true];
+    }
+
+    public function voucherNoMethodContainer(object $codeGenerator): string
+    {
+        $generalSettings = config('generalSettings');
+        $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
+
+        return $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
     }
 }

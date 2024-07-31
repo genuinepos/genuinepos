@@ -107,7 +107,7 @@
                                                             </li>
 
                                                             <li>
-                                                                <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; {{ __('Shop Name') }} &nbsp; </p>
+                                                                <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; {{ __('Store Name') }} &nbsp; </p>
                                                             </li>
 
                                                             <li>

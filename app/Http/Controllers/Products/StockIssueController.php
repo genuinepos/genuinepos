@@ -6,19 +6,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Products\StockIssueEditRequest;
+use App\Http\Requests\Products\StockIssueIndexRequest;
 use App\Http\Requests\Products\StockIssueStoreRequest;
+use App\Http\Requests\Products\StockIssueCreateRequest;
+use App\Http\Requests\Products\StockIssueDeleteRequest;
 use App\Http\Requests\Products\StockIssueUpdateRequest;
 use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 
 class StockIssueController extends Controller
 {
-    public function index(Request $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
+    public function index(StockIssueIndexRequest $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
         $indexMethodContainer = $stockIssueControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -44,7 +48,7 @@ class StockIssueController extends Controller
         return view('product.print_templates.print_stock_issue', compact('stockIssue', 'printPageSize'));
     }
 
-    public function create(StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
+    public function create(StockIssueCreateRequest $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
         $createMethodContainer = $stockIssueControllerMethodContainersInterface->createMethodContainer();
 
@@ -82,7 +86,7 @@ class StockIssueController extends Controller
         }
     }
 
-    public function edit($id, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
+    public function edit($id, StockIssueEditRequest $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
         $editMethodContainer = $stockIssueControllerMethodContainersInterface->editMethodContainer(id: $id);
 
@@ -112,7 +116,7 @@ class StockIssueController extends Controller
         return response()->json(__('Stock issue updated successfully.'));
     }
 
-    public function delete($id, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
+    public function delete($id, StockIssueDeleteRequest $request, StockIssueControllerMethodContainersInterface $stockIssueControllerMethodContainersInterface)
     {
         try {
             DB::beginTransaction();

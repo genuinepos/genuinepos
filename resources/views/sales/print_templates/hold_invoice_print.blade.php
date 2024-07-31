@@ -92,20 +92,20 @@
                         @if ($holdInvoice?->branch?->parent_branch_id)
 
                             @if ($holdInvoice->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $holdInvoice->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $holdInvoice->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $holdInvoice->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($holdInvoice->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $holdInvoice->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $holdInvoice->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $holdInvoice->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -331,12 +331,12 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($holdInvoice->net_total_amount) }}</td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Sale Discount') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($holdInvoice->order_discount_type == 1)
                                     ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($holdInvoice->order_discount_amount) }}
@@ -348,21 +348,21 @@
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 ({{ $holdInvoice->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($holdInvoice->order_tax_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($holdInvoice->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Amount') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($holdInvoice->total_invoice_amount) }}
                             </td>

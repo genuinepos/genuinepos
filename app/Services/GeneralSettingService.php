@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use App\Models\GeneralSetting;
 
 class GeneralSettingService implements GeneralSettingServiceInterface
@@ -96,15 +97,8 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     public function deleteBusinessLogo(): bool
     {
         $businessLogo = $this->singleGeneralSetting(key: 'business_or_shop__business_logo', branchId: null);
-        $dir = public_path('uploads/business_logo/');
 
-        if (isset($businessLogo->value)) {
-
-            if (file_exists($dir . $businessLogo->value)) {
-
-                unlink($dir . $businessLogo->value);
-            }
-        }
+        $uploadedFile = FileUploader::deleteFile(fileType: 'businessLogo', deletableFile: $businessLogo->value);
 
         $businessLogo->value = null;
         $businessLogo->save();

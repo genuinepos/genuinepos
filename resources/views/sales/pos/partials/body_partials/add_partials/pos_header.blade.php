@@ -144,7 +144,10 @@
                                     </div>
                                     <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                         @foreach ($customerAccounts as $customerAccount)
-                                            <option @selected(isset($jobCard) && $jobCard->customer_account_id == $customerAccount->id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                            @php
+                                                $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
+                                            @endphp
+                                            <option @selected(isset($jobCard) && $jobCard->customer_account_id == $customerAccount->id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
@@ -209,6 +212,14 @@
         <div class="col-lg-3 col-sm-9 col-12 input-buttob-sec">
             <div class="input-section">
                 <div class="btn-section">
+                    {{-- <div class="date">
+                        <p><span class="time fw-bold">Invoice ID: </span> ESI-2407-0001</p>
+                    </div> --}}
+
+                    <div class="date">
+                        <p><span class="fw-bold" style="color:white!important">{{ __('Inv. ID') }}:</span> <small id="invoice_id">{{ $voucherNo }}</small></p>
+                    </div>
+
                     <div class="date">
                         <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
                     </div>

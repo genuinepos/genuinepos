@@ -110,7 +110,7 @@ class UserService
             })
             ->editColumn('allow_login', function ($row) {
 
-                if ($row->allow_login == 1) {
+                if ($row->allow_login == BooleanType::True->value) {
 
                     return '<span  class="badge badge-sm bg-success">' . __('Allowed') . '</span>';
                 } else {
@@ -125,7 +125,7 @@ class UserService
     function addUser(object $request, ?object $role): void
     {
         $addUser = new User();
-        $addUser->user_type = $request->user_type;
+        $addUser->user_type = isset($request->user_type) ? $request->user_type : UserType::User->value;
         $addUser->prefix = $request->prefix;
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;
@@ -196,9 +196,7 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/user_photo/');
-
-            $addUser->photo = FileUploader::upload($request->file('photo'), $dir);
+            $addUser->photo = FileUploader::uploadWithResize(fileType: 'user', uploadableFile: $request->file('photo'), height: 300, width: 300);
         }
 
         $addUser->save();
@@ -207,7 +205,7 @@ class UserService
     public function updateUser(object $request, int $id, ?object $role): void
     {
         $updateUser = $this->singleUser(id: $id);
-        $updateUser->user_type = $request->user_type;
+        $updateUser->user_type = isset($request->user_type) ? $request->user_type : UserType::User->value;
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
         $updateUser->last_name = $request->last_name;
@@ -289,21 +287,9 @@ class UserService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/user_photo/');
+            $uploadedFile = FileUploader::uploadWithResize(fileType: 'user', uploadableFile: $request->file('photo'), height: 300, width: 300, deletableFile: $updateUser->photo);
 
-            $newFile = FileUploader::upload($request->file('photo'), $dir);
-            if (
-                isset($updateUser->photo) &&
-                file_exists($dir . $updateUser->photo)
-            ) {
-
-                try {
-                    unlink($dir . $updateUser->photo);
-                } catch (Exception $e) {
-                }
-            }
-
-            $updateUser->photo = $newFile;
+            $updateUser->photo = $uploadedFile;
         }
 
         $updateUser->save();
@@ -320,18 +306,7 @@ class UserService
                 return ['pass' => false, 'msg' => __('Superadmin can not be deleted')];
             }
 
-            $dir = public_path('uploads/user_photo/');
-
-            if (
-                isset($deleteUser->photo) &&
-                file_exists($dir . $deleteUser->photo)
-            ) {
-
-                try {
-                    unlink($dir . $deleteUser->photo);
-                } catch (Exception $e) {
-                }
-            }
+            FileUploader::deleteFile(fileType: 'user', deletableFile: $deleteUser->photo);
 
             $deleteUser->delete();
         }
@@ -353,7 +328,7 @@ class UserService
             }
         } else {
 
-            $currentBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
+            $currentBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Company') . ')';
         }
 
         $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
@@ -376,7 +351,7 @@ class UserService
             }
         } else {
 
-            $switchedBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
+            $switchedBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Company') . ')';
         }
 
         $description = $currentBranch . ' ' . __('To') . ' ' . $switchedBranch;

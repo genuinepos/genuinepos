@@ -28,10 +28,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -106,7 +106,7 @@
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('purchase.orders.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add New') }}</a>
+                                    <a href="{{ route('purchase.orders.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add New') }}</a>
                                 </div>
                             </div>
 
@@ -121,7 +121,7 @@
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('P/o ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Created By') }}</th>
                                                 <th>{{ __('Receiving Status') }}</th>

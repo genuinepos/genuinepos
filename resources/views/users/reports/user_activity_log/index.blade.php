@@ -3,9 +3,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* .log_table td {
-            font-size: 9px !important;
-            font-weight: 500 !important;
-        } */
+                font-size: 9px !important;
+                font-weight: 500 !important;
+            } */
 
         .log_table tr td {
             line-height: 1.5;
@@ -42,10 +42,10 @@
                                     {{-- @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0) --}}
                                     @if (isset($branches) && count($branches) > 0)
                                         <div class="col-md-2">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="business">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="business">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -136,7 +136,7 @@
                                 <tr>
                                     <th>{{ __('Date') }}</th>
                                     <th>{{ __('IP') }}</th>
-                                    <th>{{ __('Shop/Business') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     <th>{{ __('Action By') }}</th>
                                     <th>{{ __('Action Name') }}</th>
                                     <th>{{ __('Subject Type') }}</th>

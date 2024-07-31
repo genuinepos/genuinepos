@@ -7,6 +7,8 @@ use App\Http\Controllers\Services\JobCardController;
 use App\Http\Controllers\Services\SettingController;
 use App\Http\Controllers\Services\DeviceModelController;
 use App\Http\Controllers\Services\ServiceInvoiceController;
+use App\Http\Controllers\Services\ServiceQuotationController;
+use App\Http\Controllers\Services\ServiceQuotationProductController;
 
 Route::prefix('services')->group(function () {
 
@@ -54,7 +56,7 @@ Route::prefix('services')->group(function () {
         Route::get('generate/pdf/{id}', 'generatePdf')->name('services.job.cards.generate.pdf');
         Route::get('print/{id}', 'print')->name('services.job.cards.print');
         Route::get('generate/label/{id}', 'generateLabel')->name('services.job.cards.generate.label');
-        Route::get('create', 'create')->name('services.job.cards.create');
+        Route::get('create/{quotationId?}', 'create')->name('services.job.cards.create');
         Route::post('store', 'store')->name('services.job.cards.store');
         Route::get('edit/{id}', 'edit')->name('services.job.cards.edit');
         Route::post('update/{id}', 'update')->name('services.job.cards.update');
@@ -64,8 +66,25 @@ Route::prefix('services')->group(function () {
         Route::get('no', 'jobCardNo')->name('services.job.cards.no');
     });
 
+    Route::controller(ServiceQuotationController::class)->prefix('quotations')->group(function () {
+
+        Route::get('/', 'index')->name('services.quotations.index');
+        Route::get('create', 'create')->name('services.quotations.create');
+        Route::post('store', 'store')->name('services.quotations.store');
+        Route::get('edit/{id}', 'edit')->name('services.quotations.edit');
+        Route::post('update/{id}', 'update')->name('services.quotations.update');
+        Route::delete('delete/{id}', 'delete')->name('services.quotations.delete');
+        Route::get('search/by/{keyWord?}', 'searchByQuotationId')->name('services.quotations.search.by.quotation.id');
+
+        Route::controller(ServiceQuotationProductController::class)->prefix('products')->group(function () {
+
+            Route::get('for/job/card/{quotation_id}', 'quotationProductsForJobCard')->name('services.quotation.products.for.job.card');
+        });
+    });
+
     Route::controller(ServiceInvoiceController::class)->prefix('invoices')->group(function () {
 
         Route::get('/', 'index')->name('services.invoices.index');
+        Route::delete('delete/{id}', 'delete')->name('services.invoices.delete');
     });
 });

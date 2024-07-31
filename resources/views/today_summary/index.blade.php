@@ -12,10 +12,10 @@
                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                     <div class="col-md-6">
-                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                        <label><strong>{{ location_label() }}</strong></label>
                         <select name="branch_id" class="form-control select2" id="today_summary_branch_id" autofocus>
                             <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                            <option {{ $branchId == 'NULL' ? 'SELECTED' : '' }} data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                            <option {{ $branchId == 'NULL' ? 'SELECTED' : '' }} data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                             @foreach ($branches as $branch)
                                 @php
                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -31,7 +31,7 @@
                     </div>
                 @else
                     <div class="col-md-6">
-                        <label><strong>{{ __('Shop/Business') }} </strong></label>
+                        <label><strong>{{ location_label() }} </strong></label>
                         @php
                             $branch = '';
                             if (auth()->user()?->branch) {
@@ -41,7 +41,7 @@
                                     $branch = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch?->branch_code;
                                 }
                             } else {
-                                $branch = $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
+                                $branch = $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')';
                             }
                         @endphp
                         <input readonly type="text" class="form-control fw-bold" value="{{ $branch }}">

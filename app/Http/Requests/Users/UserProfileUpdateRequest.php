@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Users;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserProfileUpdateRequest extends FormRequest
@@ -11,7 +12,7 @@ class UserProfileUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
     }
 
     /**

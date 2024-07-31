@@ -53,7 +53,7 @@
     </style>
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
-@section('title', 'Shop Settings - ')
+@section('title', 'Store Settings - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -76,7 +76,7 @@
                                     <ul class="menus_unorder_list">
                                         @if (auth()->user()->can('business_or_shop_settings'))
                                             <li class="menu_list">
-                                                <a class="menu_btn menu_active" data-form="branch_settings_form" href="#">{{ __('Shop Settings') }}</a>
+                                                <a class="menu_btn menu_active" data-form="branch_settings_form" href="#">{{ __('Store Settings') }}</a>
                                             </li>
                                         @endif
 
@@ -92,7 +92,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_settings'))
+                                        @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="purchase_settings_form" href="#">{{ __('Purchase Settings') }}</a>
                                             </li>
@@ -112,8 +112,9 @@
 
                                         @if (auth()->user()->can('pos_sale_settings'))
                                             <li class="menu_list">
-                                                <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('Pos Sale Settings') }}</a>
+                                                <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('POS Sale Settings') }}</a>
                                             </li>
+
                                         @endif
 
                                         @if (auth()->user()->can('prefix_settings'))
@@ -186,7 +187,7 @@
                                     @include('setups.branches.settings.partials.view_partials.product_settings')
                                 @endif
 
-                                @if (auth()->user()->can('purchase_settings'))
+                                @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
                                     @include('setups.branches.settings.partials.view_partials.purchase_settings')
                                 @endif
 
@@ -249,10 +250,11 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
-
     @if (auth()->user()->can('business_or_shop_settings'))
         @include('setups.branches.settings.partials.js_partials.branch_settings_js')
     @endif
+
+    @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
 
     @if (auth()->user()->can('dashboard_settings'))
         @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
@@ -267,6 +269,7 @@
     @endif
 
     @if (auth()->user()->can('manufacturing_settings'))
+
         @include('setups.branches.settings.partials.js_partials.manufacturing_settings_js')
     @endif
 

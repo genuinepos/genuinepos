@@ -36,6 +36,7 @@
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             @if (auth()->user()->can('product_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('create_sales_return') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_return_add') || auth()->user()->can('transfer_stock_create') || auth()->user()->can('stock_adjustment_add') || auth()->user()->can('production_add') || auth()->user()->can('user_add') || auth()->user()->can('role_add'))
+
                                 <li class="top-icon d-hide d-md-block">
                                     <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
                                         <span>
@@ -47,6 +48,7 @@
                                     <ul class="dropdown-menu short_create_btn_list">
                                         <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __('Quick Add') }}</span></li>
                                         <hr class="m-0">
+
                                         @if (auth()->user()->can('product_add'))
                                             <li><a href="{{ route('products.create') }}" class="dropdown-item text-dark">{{ __('Add Product') }}</a></li>
                                         @endif
@@ -200,10 +202,9 @@
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
                                     </li>
 
-                                    <li>
+                                    {{-- <li>
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('ar') ? 'text-success' : '' }}" href="{{ route('change.lang', 'ar') }}">Arabic</a>
-                                    </li>
-
+                                    </li> --}}
                                 </ul>
                             </li>
                             <li class="top-icon d-hide d-md-block">

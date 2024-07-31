@@ -71,20 +71,20 @@
                             @if ($quotation?->branch?->parent_branch_id)
 
                                 @if ($quotation->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->parentBranch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $quotation->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $quotation->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
                                 @if ($quotation->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $quotation->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $quotation->branch?->name }}</span>
                                 @endif
                             @endif
                         @else
                             @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
@@ -308,12 +308,12 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} :{{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($quotation->net_total_amount) }}</td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Discount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     @if ($quotation->order_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($quotation->order_discount_amount) }}
@@ -325,21 +325,21 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Tax') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     ({{ $quotation->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($quotation->order_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Amount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($quotation->total_invoice_amount) }}
                                 </td>
@@ -383,7 +383,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 
@@ -460,20 +460,20 @@
                             @if ($quotation?->branch?->parent_branch_id)
 
                                 @if ($quotation->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->parentBranch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $quotation->branch?->parentBranch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $quotation->branch?->parentBranch?->name }}</span>
                                 @endif
                             @else
                                 @if ($quotation->branch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $quotation->branch?->logo) }}">
+                                    <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $quotation->branch?->logo) }}">
                                 @else
                                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $quotation->branch?->name }}</span>
                                 @endif
                             @endif
                         @else
                             @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
@@ -698,12 +698,12 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Total Amount') }} :{{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Total Amount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;height:10px; line-height:10px;">{{ App\Utils\Converter::format_in_bdt($quotation->net_total_amount) }}</td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Sale Discount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;height:10px; line-height:10px;">
                                     @if ($quotation->order_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($quotation->order_discount_amount) }}
@@ -715,21 +715,21 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Sale Tax') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;height:10px; line-height:10px;">
                                     ({{ $quotation->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($quotation->order_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Shipment Charge') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Total Amount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($quotation->total_invoice_amount) }}
                                 </td>
@@ -773,7 +773,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 

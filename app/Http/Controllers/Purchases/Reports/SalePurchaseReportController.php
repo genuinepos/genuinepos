@@ -12,7 +12,6 @@ class SalePurchaseReportController extends Controller
     public function index()
     {
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-
         return view('reports.sale_purchase_report.index', compact('branches'));
     }
 
@@ -21,9 +20,11 @@ class SalePurchaseReportController extends Controller
         $sales = '';
         $purchases = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $sales = DB::table('sales')->where('sales.status', 1)->get();
             $purchases = DB::table('purchases')->get();
         } else {
+
             $sales = DB::table('sales')->where('sales.status', 1)
                 ->where('sales.branch_id', auth()->user()->branch_id)->get();
             $purchases = DB::table('purchases')->where('purchases.branch_id', auth()->user()->branch_id)->get();

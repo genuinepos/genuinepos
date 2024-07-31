@@ -165,7 +165,7 @@
                     error: function(err) {
                         $('.loading_button').hide();
                         if (err.status == 0) {
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                             return;
                         }
                         $.each(err.responseJSON.errors, function(key, error) {

@@ -66,20 +66,20 @@
                         @if ($order?->branch?->parent_branch_id)
 
                             @if ($order->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $order->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($order->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $order->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -222,7 +222,7 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}
                                 </td>
@@ -230,49 +230,49 @@
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Discount') }} :
-                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->order_discount) }} {{ $order->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ '(' . $order->purchase_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($order->purchase_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Ordered Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Ordered Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->total_purchase_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt(isset($payingAmount) ? $payingAmount : $order->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Order)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->due) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
@@ -313,7 +313,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 
@@ -381,20 +381,20 @@
                         @if ($order?->branch?->parent_branch_id)
 
                             @if ($order?->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $order?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($order?->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $order?->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $order?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $order?->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -633,7 +633,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 

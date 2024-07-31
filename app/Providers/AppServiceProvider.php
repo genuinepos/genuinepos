@@ -34,6 +34,7 @@ use App\Interfaces\Products\StockIssueControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProcessControllerMethodContainersInterface;
 use App\Interfaces\Sales\PosSaleExchangeControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseOrderControllerMethodContainersInterface;
+use App\Interfaces\Services\ServiceInvoiceControllerMethodContainersInterface;
 use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 use App\Interfaces\Products\QuickProductAddControllerMethodContainersInterface;
 use App\Interfaces\Purchases\PurchaseReturnControllerMethodContainersInterface;
@@ -67,6 +68,7 @@ use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodConta
 use App\Services\Manufacturing\MethodContainerServices\ProcessControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\PosSaleExchangeControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseOrderControllerMethodContainersService;
+use App\Services\Services\MethodContainerServices\ServiceInvoiceControllerMethodContainersService;
 use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
 use App\Services\Products\MethodContainerServices\QuickProductAddControllerMethodContainersService;
 use App\Services\Purchases\MethodContainerServices\PurchaseReturnControllerMethodContainersService;
@@ -121,6 +123,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ReceiveStockFromBranchControllerMethodContainersInterface::class, ReceiveStockFromBranchControllerMethodContainersService::class);
         $this->app->bind(ReceiveStockFromWarehouseControllerMethodContainersInterface::class, ReceiveStockFromWarehouseControllerMethodContainersService::class);
         $this->app->bind(UserControllerMethodContainersInterface::class, UserControllerMethodContainersService::class);
+        $this->app->bind(ServiceInvoiceControllerMethodContainersInterface::class, ServiceInvoiceControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);

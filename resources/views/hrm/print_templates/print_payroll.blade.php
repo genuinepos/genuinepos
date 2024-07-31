@@ -58,22 +58,21 @@
                     @if ($payroll->branch)
 
                         @if ($payroll?->branch?->parent_branch_id)
-
                             @if ($payroll->branch?->parentBranch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payroll->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payroll->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($payroll->branch?->logo)
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payroll->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payroll->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -244,34 +243,34 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end">{{ __('Total Amount') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end">{{ __('Total Allowance') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end">{{ __('Total Deduction') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end">{{ __('Gross Amount') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end">{{ __('Paid') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->paid) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end">{{ __('Due') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->due) }}</td>
                             </tr>
                         </thead>
@@ -384,20 +383,20 @@
                         @if ($payroll?->branch?->parent_branch_id)
 
                             @if ($payroll->branch?->parentBranch?->logo)
-                                <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payroll->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payroll->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($payroll->branch?->logo)
-                                <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payroll->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payroll->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -568,34 +567,34 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end" style="font-size:9px!important;">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px!important;">{{ __('Total Amount') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:9px!important;">{{ __('Total Allowance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px!important;">{{ __('Total Allowance') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:9px!important;">{{ __('Total Deduction') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px!important;">{{ __('Total Deduction') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:9px!important;">{{ __('Gross Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px!important;">{{ __('Gross Amount') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:9px!important;">{{ __('Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px!important;">{{ __('Paid') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->paid) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:9px!important;">{{ __('Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:9px!important;">{{ __('Due') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->due) }}</td>
                             </tr>
                         </thead>

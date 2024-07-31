@@ -38,20 +38,16 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($expense->branch_id) {
-
                                         if ($expense?->branch?->parentBranch) {
-
                                             $branchName = $expense?->branch?->parentBranch?->name . '(' . $expense?->branch?->area_name . ')' . '-(' . $expense?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $expense?->branch?->name . '(' . $expense?->branch?->area_name . ')' . '-(' . $expense?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -72,14 +68,8 @@
                 <hr class="p-0 m-1">
 
                 @php
-                    $creditDescription = $expense
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'cr')
-                        ->first();
-                    $debitDescriptions = $expense
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'dr')
-                        ->get();
+                    $creditDescription = $expense->voucherDescriptions()->where('amount_type', 'cr')->first();
+                    $debitDescriptions = $expense->voucherDescriptions()->where('amount_type', 'dr')->get();
                 @endphp
 
                 <div class="row mt-2">
@@ -129,7 +119,7 @@
                                     <tr>
                                         <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Total Expense Paid') }}</th>
                                         <td style="width: 70%;" class="text-start fw-bold" style="font-size:11px!important;">
-                                            : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                            : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                         </td>
                                     </tr>
                                 </thead>
@@ -170,7 +160,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="2" class="text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                        <th colspan="2" class="text-end">{{ __('Total') }} : ({{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                         <th>{{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }}</th>
                                     </tr>
                                 </tfoot>
@@ -235,7 +225,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -258,7 +250,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

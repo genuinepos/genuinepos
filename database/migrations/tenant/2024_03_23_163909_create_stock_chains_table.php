@@ -19,6 +19,8 @@ return new class extends Migration
 
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('branch_id')->nullable()->index('branches_branch_id_foreign');
+                $table->unsignedBigInteger('product_id')->nullable();
+                $table->unsignedBigInteger('variant_id')->nullable();
                 $table->unsignedBigInteger('purchase_product_id')->nullable()->index('stock_chains_purchase_product_id_foreign');
                 $table->unsignedBigInteger('sale_product_id')->nullable()->index('stock_chains_sale_product_id_foreign');
                 $table->unsignedBigInteger('stock_issue_product_id')->nullable()->index('stock_chains_stock_issue_product_id_foreign');
@@ -31,6 +33,9 @@ return new class extends Migration
                 $table->foreign(['sale_product_id'])->references(['id'])->on('sale_products')->onDelete('CASCADE');
                 $table->foreign(['stock_issue_product_id'])->references(['id'])->on('stock_issue_products')->onDelete('CASCADE');
                 $table->foreign(['stock_adjustment_product_id'])->references(['id'])->on('stock_adjustment_products')->onDelete('CASCADE');
+
+                $table->foreign('variant_id')->references('id')->on('product_variants')->onDelete('cascade');
+                $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             });
         }
     }

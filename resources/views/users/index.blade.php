@@ -29,10 +29,10 @@
                                 <form action="" method="get">
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id">
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -74,7 +74,7 @@
                                     <th>{{ __('Type') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Phone') }}</th>
-                                    <th>{{ __('Shop/Business') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     <th>{{ __('Role') }}</th>
                                     <th>{{ __('Email') }}</th>
                                     <th>{{ __('Action') }}</th>

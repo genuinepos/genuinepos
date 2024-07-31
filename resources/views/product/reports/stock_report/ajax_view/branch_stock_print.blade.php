@@ -79,20 +79,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -137,7 +137,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __('Shop/Business Stock Report Report') }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ location_label() }} {{ __('Stock Report Report') }}</strong></h6>
         </div>
     </div>
 
@@ -153,7 +153,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-3">
@@ -184,7 +184,7 @@
                     <tr>
                         <th class="text-start">{{ __('Product') }}</th>
                         <th class="text-start">{{ __('Code(SKU)') }}</th>
-                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                        <th class="text-start">{{ location_label() }}</th>
                         <th class="text-start">{{ __('Default Unit Cost Inc. Tax') }}</th>
                         <th class="text-start">{{ __('Default Unit Price Exc. Tax') }}</th>
                         <th class="text-end">{{ __('Stock') }}</th>
@@ -274,7 +274,7 @@
 
             <div class="col-4 text-center">
                 @if (config('speeddigit.show_app_info_in_print') == true)
-                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 

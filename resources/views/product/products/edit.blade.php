@@ -219,7 +219,7 @@
                                     @if (auth()->user()->can('has_access_to_all_area') == 1)
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Access Shop') }}</b> </label>
+                                                <label class="col-4"><b>{{ __('Store Access') }}</b> </label>
                                                 <div class="col-8">
                                                     <input type="hidden" name="access_branch_count" value="access_branch_count">
                                                     <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
@@ -476,7 +476,7 @@
                                         <div class="input-group">
                                             <label class="col-2"><b>{{ __('Thumbnail Photo') }}</b> </label>
                                             <div class="col-10">
-                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ $product->thumbnail_photo ? asset('uploads/product/thumbnail/' . $product->thumbnail_photo) : '' }}">
+                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ $product->thumbnail_photo ? file_link(fileType: 'productThumbnail', fileName: $product->thumbnail_photo) : '' }}">
                                                 <span class="error error_photo"></span>
                                             </div>
                                         </div>

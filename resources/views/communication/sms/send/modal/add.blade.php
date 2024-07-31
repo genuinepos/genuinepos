@@ -10,8 +10,8 @@
 
                     <div class="row" data-select2-id="select2-data-5-qlgx">
                         <div class="col-5">
-                            <button type="button" class="btn btn-primary btn-sm mb-2 p-1" id="addMoreButton"><i
-                                    class="fas fa-plus"></i> Add More Phone</button>
+                            <button type="button" class="btn btn-success btn-sm mb-2 p-1" id="addMoreButton"><i
+                                    class="fas fa-plus"></i> {{ __("Add More Phone") }}</button>
                         </div>
 
                         <div class="col-7" data-select2-id="select2-data-4-t4zu">

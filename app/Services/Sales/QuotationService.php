@@ -2,16 +2,17 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\BooleanType;
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale as Quotation;
+use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class QuotationService
 {
-    public function quotationListTable($request)
+    public function quotationListTable(object $request, ?int $saleScreenType = null)
     {
         $generalSettings = config('generalSettings');
         $quotations = '';
@@ -20,6 +21,7 @@ class QuotationService
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.quotation_status', BooleanType::True->value);
 
@@ -34,6 +36,7 @@ class QuotationService
             'sales.total_qty',
             'sales.total_invoice_amount',
             'sales.order_status',
+            'sales.sale_screen',
 
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
@@ -43,6 +46,7 @@ class QuotationService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sales.quotation_date_ts', 'desc');
 
         return DataTables::of($quotations)
@@ -55,23 +59,29 @@ class QuotationService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation')) {
+                    if (auth()->user()->can('sale_quotations_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        if ($row->sale_screen == SaleScreenType::AddSale->value) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        } else {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                        }
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation')) {
+                    if (auth()->user()->can('sale_quotations_delete')) {
 
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                        $html .= '<a href="' . route('sale.quotations.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_quotation')) {
+                    if (auth()->user()->can('sale_quotations_change_status')) {
 
                         $html .= '<a href="' . route('sale.quotations.status.edit', [$row->id]) . '" class="dropdown-item" id="changeQuotationStatusBtn">' . __('Change Current Status') . '</a>';
                     }
@@ -129,7 +139,7 @@ class QuotationService
 
             ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
@@ -266,16 +276,18 @@ class QuotationService
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-            $query->whereBetween('sales.order_date_ts', $date_range); // Final
+            $query->whereBetween('sales.quotation_date_ts', $date_range); // Final
+        }
+
+        $query->whereIn('sales.sale_screen', [SaleScreenType::AddSale->value, SaleScreenType::PosSale->value]);
+
+        if (auth()->user()->can('sale_quotations_only_own')) {
+
+            $query->where('sales.created_by_id', auth()->user()->id);
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }
@@ -285,7 +297,7 @@ class QuotationService
 
     public function singleQuotation(int $id, array $with = null): ?object
     {
-        $query = Sale::query();
+        $query = Quotation::query();
 
         if (isset($with)) {
 

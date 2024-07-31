@@ -84,20 +84,21 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -170,7 +171,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -277,7 +278,7 @@
 
             <div class="col-4 text-center">
                 @if (config('speeddigit.show_app_info_in_print') == true)
-                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 
@@ -293,7 +294,7 @@
     $__toDate = date($dateFormat, strtotime($toDate));
     $dateRange = $__fromDate ? $__fromDate . '_to_' . $__toDate : __('All Time');
     $__filteredBranchName = $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName;
-    $__branchName = $__filteredBranchName == 'All' ? __('All Shops/Business') : $__filteredBranchName;
+    $__branchName = $__filteredBranchName == 'All' ? __('All Stores/Company') : $__filteredBranchName;
     $filename = __('Vat/Tax Report') . '__' . $dateRange . '__' . $__branchName;
 @endphp
 <span id="title" class="d-none">{{ $filename }}</span>

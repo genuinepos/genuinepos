@@ -32,6 +32,8 @@
 
                             <li style="font-size:11px!important;"><strong>{{ __('Job No') }} : </strong> {{ $jobCard->job_no }}</li>
 
+                            <li style="font-size:11px!important;"><strong>{{ __('Quotation ID') }} : </strong><span>{{ $jobCard?->quotation?->quotation_id }}</span></li>
+
                             <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong><span>{{ $jobCard?->sale?->invoice_id }}</span></li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Service Type') }} : </strong>
@@ -42,15 +44,15 @@
                                 <span class="fw-bold" style="{{ $jobCard?->status?->color_code }}">{{ $jobCard?->status?->name }}</span>
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Delivery Date') }} : </strong><span>{{ date($dateFormat, strtotime($jobCard->delivery_date_ts)) }}</span></li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Delivery Date') }} : </strong><span>{{ isset($jobCard->delivery_date_ts) ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</span></li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Due Date') }} : </strong><span>{{ date($dateFormat, strtotime($jobCard->due_date_ts)) }}</span></li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Due Date') }} : </strong><span>{{ isset($jobCard->due_date_ts) ? date($dateFormat, strtotime($jobCard->due_date_ts)) : '' }}</span></li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($jobCard->branch_id) {
@@ -324,7 +326,7 @@
                     <div class="table-responsive">
                         <table class="display table modal-table table-sm">
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;">{{ __('Total Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:11px!important;">{{ __('Total Cost') }} : {{ $jobCard?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ \App\Utils\Converter::format_in_bdt($jobCard->total_cost) }}
                                 </td>
@@ -448,7 +450,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

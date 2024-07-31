@@ -81,7 +81,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Receivable Transferred Stocks (From Warehouse)') }}</h6>
+                                    <h6>{{ __('List of Receivable Transferred Stock (From Warehouse)') }}</h6>
                                 </div>
                             </div>
 
@@ -315,7 +315,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

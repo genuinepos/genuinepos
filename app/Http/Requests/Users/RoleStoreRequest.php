@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Users;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RoleStoreRequest extends FormRequest
@@ -11,7 +12,7 @@ class RoleStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('role_add');
+        return auth()->user()->can('role_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
     }
 
     /**

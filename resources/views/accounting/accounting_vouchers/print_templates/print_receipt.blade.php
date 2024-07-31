@@ -71,20 +71,20 @@
                         @if ($receipt?->branch?->parent_branch_id)
 
                             @if ($receipt->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $receipt->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($receipt->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $receipt->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -209,7 +209,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $receipt?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end fw-bold" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                     </td>
@@ -576,20 +576,20 @@
                         @if ($receipt?->branch?->parent_branch_id)
 
                             @if ($receipt->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $receipt->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($receipt->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $receipt->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $receipt->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -714,7 +714,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:9px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:9px!important;">{{ __('Received Amount') }} : {{ $receipt?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end fw-bold" style="font-size:9px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                     </td>

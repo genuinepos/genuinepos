@@ -1,7 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .data_preloader { top: 2.3%; }
+        .data_preloader {
+            top: 2.3%;
+        }
 
         /* Search Product area style */
         .selectProduct {
@@ -9,7 +11,9 @@
             color: #fff !important;
         }
 
-        .search_area { position: relative; }
+        .search_area {
+            position: relative;
+        }
 
         .search_result {
             position: absolute;
@@ -79,10 +83,10 @@
 
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -97,15 +101,17 @@
                                                     </div>
                                                 @endif
 
-                                                <div class="col-md-2">
-                                                    <label><strong>{{ __('Department') }}</strong></label>
-                                                    <select name="department_id" class="form-control select2" id="department_id" autofocus>
-                                                        <option value="">{{ __('All') }}</option>
-                                                        @foreach ($departments as $department)
-                                                            <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                                @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                                    <div class="col-md-2">
+                                                        <label><strong>{{ __('Department') }}</strong></label>
+                                                        <select name="department_id" class="form-control select2" id="department_id" autofocus>
+                                                            <option value="">{{ __('All') }}</option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>
@@ -153,7 +159,7 @@
                                 </div>
 
                                 <div class="col-2 d-flex justify-content-end">
-                                    <a href="{{ route('stock.issues.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                    <a href="{{ route('stock.issues.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                 </div>
                             </div>
 
@@ -168,7 +174,7 @@
                                                 <th>{{ __('Product') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Voucher No') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Department') }}</th>
                                                 <th>{{ __('Reported By') }}</th>
                                                 <th>{{ __('Issued Qty') }}</th>
@@ -353,7 +359,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

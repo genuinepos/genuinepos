@@ -35,7 +35,7 @@
 
                     <div class="col-4 d-flex justify-content-end">
                         @if (auth()->user()->can('allowances_and_deductions_create'))
-                            <a href="{{ route('hrm.allowances.deductions.create') }}" class="btn btn-sm btn-primary" id="addAllowanceDeduction"><i class="fas fa-plus-square"></i> {{ __('Add Allowance/Deduction') }}</a>
+                            <a href="{{ route('hrm.allowances.deductions.create') }}" class="btn btn-sm btn-success" id="addAllowanceDeduction"><i class="fas fa-plus-square"></i> {{ __('Add Allowance/Deduction') }}</a>
                         @endif
                     </div>
                 </div>

@@ -21,7 +21,7 @@ class DiscountController extends Controller
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         return view('sales.discounts.index');

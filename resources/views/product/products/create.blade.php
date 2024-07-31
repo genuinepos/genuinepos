@@ -235,7 +235,7 @@
                                         @if (auth()->user()->can('has_access_to_all_area') == 1)
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>
+                                                    <label class="col-4"><b>{{ __("Store Access") }}</b> </label>
                                                     <div class="col-8">
                                                         <input type="hidden" name="access_branch_count" value="access_branch_count">
                                                         <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
@@ -551,7 +551,7 @@
                                 <button type="button" class="btn loading_button product_loading_btn d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
                                 @if(!isset($product))
 
-                                    <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save And Add Another") }}</button>
+                                    <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save & Add Another") }}</button>
                                     <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save") }}</button>
                                 @else
 

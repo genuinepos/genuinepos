@@ -35,7 +35,9 @@ interface CodeGenerationServiceInterface
         int $size = 13,
         string $splitter = '-',
         string $suffixSeparator = '',
-        string $branch_id = null,
+        ?int $branch_id = null,
+        ?string $dateTimePrefix = null,
+        ?string $intVal = null
     ): string;
 
     public function generateAndTypeWiseWithoutYearMonth(

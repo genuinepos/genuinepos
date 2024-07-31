@@ -5,23 +5,24 @@ namespace App\Http\Controllers\Purchases;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\Purchases\PurchaseEditRequest;
+use App\Http\Requests\Purchases\PurchaseIndexRequest;
 use App\Http\Requests\Purchases\PurchaseStoreRequest;
+use App\Http\Requests\Purchases\PurchaseCreateRequest;
 use App\Http\Requests\Purchases\PurchaseDeleteRequest;
 use App\Http\Requests\Purchases\PurchaseUpdateRequest;
-use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Purchases\PurchaseControllerMethodContainersInterface;
 
 class PurchaseController extends Controller
 {
-    public function index(Request $request, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface, $supplierAccountId = null)
+    public function index(PurchaseIndexRequest $request, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface, $supplierAccountId = null)
     {
-        abort_if(!auth()->user()->can('purchase_all'), 403);
-
         $indexMethodContainer = $purchaseControllerMethodContainersInterface->indexMethodContainer(request: $request, supplierAccountId: $supplierAccountId);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -47,10 +48,8 @@ class PurchaseController extends Controller
         return view('purchase.print_templates.print_purchase', compact('purchase', 'printPageSize'));
     }
 
-    public function create(CodeGenerationServiceInterface $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    public function create(PurchaseCreateRequest $request, CodeGenerationServiceInterface $codeGenerator, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_add'), 403);
-
         $createMethodContainer = $purchaseControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator);
 
         extract($createMethodContainer);
@@ -87,10 +86,8 @@ class PurchaseController extends Controller
         }
     }
 
-    public function edit($id, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
+    public function edit($id, PurchaseEditRequest $request, PurchaseControllerMethodContainersInterface $purchaseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('purchase_edit'), 403);
-
         $editMethodContainer = $purchaseControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

@@ -155,7 +155,7 @@
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -217,6 +217,33 @@
             $("#status_id").select2("destroy");
             $("#status_id").select2();
         @endif
+
+        getSalesVoucherNo();
+    }
+
+    function getSalesVoucherNo() {
+
+        var url = "{{ route('sales.helper.invoice.or.id') }}";
+        var route = url.replace(':status', status);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            success: function(data) {
+
+                $('#invoice_id').html(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connection Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
     }
 
     $(document).on('click enter', '#final_and_quick_cash_receive', function(e) {
@@ -277,7 +304,7 @@
 
         if (parseFloat(quantity) > parseFloat(current_stock)) {
 
-            toastr.error("{{ __('Serial No: ') }} " + (index + 1) + ',' + " {{ __('Product Name: ') }}" + productName + " {{ __('Only ') }}" + current_stock + '/' + unitName + " {{ __('is available in this Shop/Business.') }}");
+            toastr.error("{{ __('Serial No: ') }} " + (index + 1) + ',' + " {{ __('Product Name: ') }}" + productName + " {{ __('Only ') }}" + current_stock + '/' + unitName + " {{ __('is available in this store/company.') }}");
             return false;
         }
 

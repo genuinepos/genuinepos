@@ -235,7 +235,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Please check the connetion.') }}");
+                    toastr.error("{{ __('Net Connection Error. Please check the connetion.') }}");
                     return;
                 }
             }
@@ -380,7 +380,7 @@
                     return;
                 }
 
-                var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }} " : " {{ __('in the Shop/Business') }} ";
+                var stockLocationMessage = e_warehouse_id ? " {{ __('in selected warehouse') }} " : " {{ __('in the Store/Company') }} ";
                 if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
                     toastr.error("{{ __('Current stock is') }} " + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);
@@ -738,7 +738,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -902,7 +902,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error') }}");
+                    toastr.error("{{ __('Net Connection Error') }}");
                     return;
                 } else if (err.status == 500) {
 

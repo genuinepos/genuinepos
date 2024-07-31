@@ -28,13 +28,19 @@
         }
     </style>
 @endpush
-@section('title', 'Receive Stock From Shop/Business')
+@section('title', auth()->user()->branch_id ? 'Receive Stock From Store' : 'Receive Stock From Company')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __('Receive Stock From Shop/Business') }}</h6>
+                    <h6>
+                        @if (auth()->user()->branch_id)
+                            {{ __('Receive Stock From Store') }}
+                        @else
+                            {{ __('Receive Stock From Company') }}
+                        @endif
+                    </h6>
                 </div>
 
                 <div class="col-6">
@@ -240,5 +246,5 @@
     </div>
 @endsection
 @push('scripts')
-   @include('transfer_stocks.receive_stocks.from_branch.js_partial.js')
+    @include('transfer_stocks.receive_stocks.from_branch.js_partial.js')
 @endpush

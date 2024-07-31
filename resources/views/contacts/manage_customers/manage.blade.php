@@ -67,8 +67,8 @@
                                 <a id="tab_btn" data-show="sales_order" class="btn btn-sm btn-primary tab_btn" href="#">
                                     <i class="fas fa-shopping-bag"></i> {{ __('Sales Orders') }}
                                 </a>
-                            @endif
 
+                            @endif
 
                             @if (auth()->user()->can('purchase_all'))
                                 <a id="tab_btn" data-show="purchases" class="btn btn-sm btn-primary tab_btn" href="#">
@@ -109,6 +109,7 @@
 
                     @if (auth()->user()->can('sales_order_list'))
                         @include('contacts.manage_customers.partials.tab_content_partials.sales_order')
+
                     @endif
 
                     @if (auth()->user()->can('purchase_all'))

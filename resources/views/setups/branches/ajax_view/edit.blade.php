@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Shop') }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Store') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -14,14 +14,14 @@
                         @if ($branch->branch_type == \App\Enums\BranchType::ChainShop->value)
                             <div class="row">
                                 <div class="col-lg-3 col-md-6">
-                                    <label><b>{{ __('Parent Shop') }}</b> </label>
+                                    <label><b>{{ __('Parent Store') }}</b> </label>
                                     <input readonly type="text" name="name" class="form-control fw-bold" value="{{ $branch?->parentBranch?->name . '/' . $branch?->parentBranch?->branch_code }}" />
                                 </div>
                             </div>
 
                             {{-- <div class="row">
                                 <div class="col-lg-3 col-md-6">
-                                    <label> <b>{{ __('Shop Type') }}</b></label>
+                                    <label> <b>{{ __('Store Type') }}</b></label>
                                     <select name="branch_type" class="form-control" id="branch_type" data-next="branch_name">
                                         @foreach (\App\Enums\BranchType::cases() as $branchType)
                                             <option {{ $branchType->value == $branch->branch_type ? 'SELECTED' : '' }} value="{{ $branchType->value }}">{{ preg_replace('/[A-Z]/', ' ' . "$0", $branchType->name) }}</option>
@@ -30,9 +30,9 @@
                                 </div>
 
                                 <div class="col-lg-3 col-md-6 parent_branches_field {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'd-hide' }}">
-                                    <label> <b>{{ __('Parent Shop') }}</b> <span class="text-danger">*</span></label>
+                                    <label> <b>{{ __('Parent Store') }}</b> <span class="text-danger">*</span></label>
                                     <select name="parent_branch_id" class="form-control" id="branch_parent_branch_id" data-next="branch_code">
-                                        <option value="">{{ __('Select Parent Shop') }}</option>
+                                        <option value="">{{ __('Select Parent Store') }}</option>
                                         @foreach ($branches as $br)
                                             <option {{ $br->id == $branch->parent_branch_id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name . ' / ' . $br->branch_code }}</option>
                                         @endforeach
@@ -45,14 +45,14 @@
 
                             @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                                 <div class="col-lg-3 col-md-6 branch_name_field">
-                                    <label><b>{{ __('Shop Name') }}</b> <span class="text-danger">*</span></label>
-                                    <input required type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __('Shop Name') }}" />
+                                    <label><b>{{ __('Store Name') }}</b> <span class="text-danger">*</span></label>
+                                    <input required type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __('Store Name') }}" />
                                     <span class="error error_branch_name"></span>
                                 </div>
 
                                 {{-- <div class="col-lg-3 col-md-6 branch_name_field {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}">
-                                    <label><b>{{ __('Shop Name') }}</b> <span class="text-danger">*</span></label>
-                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __('Shop Name') }}" />
+                                    <label><b> {{ __('Store Name') }}</b> <span class="text-danger">*</span></label>
+                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __('Store Name') }}" />
                                     <span class="error error_branch_name"></span>
                                 </div> --}}
                             @endif
@@ -70,8 +70,8 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __('Shop ID') }}</b></label>
-                                <input required readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
+                                <label><b>{{ __('Store ID') }}</b></label>
+                                <input required readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __('Store ID') }}" />
                                 <span class="error error_branch_code"></span>
                             </div>
                         </div>
@@ -141,10 +141,12 @@
                             @if ($branch->branch_type != \App\Enums\BranchType::ChainShop->value)
                                 <div class="col-lg-6 col-md-6">
                                     <label><b>{{ __('Logo') }}</b> {{ __('Logo') }} <small class="text-danger" style="font-size: 9px;">{{ __('Req. size H:40px * W:100px') }}</small></label>
-                                    <input type="file" name="logo" class="form-control " id="logo" @if ($branch->logo) data-default-file="{{ asset('uploads/branch_logo/' . $branch?->logo) }}" @endif />
+
+                                    <input type="file" name="logo" class="form-control " id="logo" @if ($branch?->logo) data-default-file="{{ file_link('branchLogo', $branch?->logo) }}" @endif />
+
                                     <span class="error error_branch_logo"></span>
                                     @if ($branch->logo)
-                                        <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Shop Logo') }}</a>
+                                        <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBranchLogo">{{ __('Remove Store Logo') }}</a>
                                     @endif
                                 </div>
                             @endif
@@ -336,7 +338,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -479,7 +481,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

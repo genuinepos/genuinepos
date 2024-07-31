@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Pos Sales List - ')
+@section('title', 'Manage POS Sales - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -11,7 +11,7 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <h5>{{ __('Manage Pos Sales') }}</h5>
+                                <h5>{{ __('Manage POS Sales') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
@@ -27,10 +27,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-3">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -101,12 +101,12 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Pos Sales') }}</h6>
+                                    <h6>{{ __('List of POS Sales') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('create_add_sale'))
                                     <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('sales.pos.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('sales.pos.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -122,7 +122,7 @@
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __('Shop') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Payment Status') }}</th>
                                                 <th>{{ __('Total Item') }}</th>
@@ -215,7 +215,7 @@
             ],
             "ajax": {
                 // "url": "{{ route('sales.pos.index') }}",
-                "url": "{{ route('sales.helper.sales.list.table', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::PosSale->value]) }}",
+                "url": "{{ route('sales.pos.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.customer_account_id = $('#customer_account_id').val();
@@ -356,7 +356,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -385,7 +385,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -442,7 +442,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

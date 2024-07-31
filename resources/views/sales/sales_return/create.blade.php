@@ -96,6 +96,10 @@
         .element-body {
             overflow: initial !important;
         }
+
+        /* .extentable-select2-field .select2-container--open .select2-dropdown--below {
+                        width: 298px !important;
+                    } */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -143,12 +147,15 @@
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
-                                    <div class="input-group">
+                                    <div class="input-group extentable-select2-field">
                                         <label class="col-4"><b>{{ __('Customers') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select required name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="sale_invoice_id" autofocus>
                                                 @foreach ($customerAccounts as $customerAccount)
-                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                    @php
+                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
+                                                    @endphp
+                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_customer_account_id"></span>
@@ -168,7 +175,7 @@
                                         <label class="col-4"><b>{{ __('Sales Invoice') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __('Serach Sales Invoice ID') }}" autocomplete="off">
+                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __('Search Sales Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="sale_id" id="sale_id">
 
                                                 <div class="invoice_search_result d-hide">
@@ -184,7 +191,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="sale_account_id">
+                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($warehouses as $w)
                                                         <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
@@ -206,16 +213,17 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" placeholder="{{ __('Voucher No') }}" autocomplete="off">
+                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="sale_account_id" autocomplete="off">
+                                            <span class="error error_date"></span>
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Sales Ledger') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select name="sale_account_id" class="form-control select2" id="sale_account_id" data-next="date">
+                                            <select name="sale_account_id" class="form-control select2" id="sale_account_id" data-next="price_group_id">
                                                 @foreach ($saleAccounts as $saleAccount)
                                                     <option value="{{ $saleAccount->id }}">
                                                         {{ $saleAccount->name }}
@@ -229,10 +237,9 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
+                                        <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="price_group_id" autocomplete="off">
-                                            <span class="error error_date"></span>
+                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" value="{{ $voucherNo }}" placeholder="{{ __('Voucher No') }}" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -549,7 +556,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-success submit_button">{{ __('Save & Print') }}</button>
                             <button type="submit" id="save" value="save" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>

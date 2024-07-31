@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <title>@yield('title') {{ config('app.name') }}</title>
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     @include('layout._stylesheet')
     @stack('stylesheets')
 
@@ -103,7 +103,7 @@
                     $('.loader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error') }}");
+                        toastr.error("{{ __('Net Connection Error') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

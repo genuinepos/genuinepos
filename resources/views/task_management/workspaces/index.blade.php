@@ -39,10 +39,10 @@
                                 <div class="form-group row">
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-2">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -117,7 +117,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('workspaces.create') }}" class="btn btn-sm btn-primary" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                        <a href="{{ route('workspaces.create') }}" class="btn btn-sm btn-success" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                     </div>
                 </div>
 
@@ -132,7 +132,7 @@
                                     <th>{{ __('Entry Date') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Project ID') }}</th>
-                                    <th>{{ __('Shop/Business') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     <th>{{ __('Priority') }}</th>
                                     <th>{{ __('Status') }}</th>
                                     <th>{{ __('Start Date') }}</th>
@@ -287,7 +287,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -320,7 +320,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -407,7 +407,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

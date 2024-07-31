@@ -24,6 +24,7 @@ class SaleService
         $query->leftJoin('sales as salesOrder', 'sales.sales_order_id', 'salesOrder.id');
         $query->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id');
         $query->leftJoin('branches', 'sales.branch_id', 'branches.id');
+        $query->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         if ($saleScreen == SaleScreenType::ServicePosSale->value) {
 
@@ -78,7 +79,8 @@ class SaleService
                 'customers.name as customer_name',
                 'created_by.prefix as created_prefix',
                 'created_by.name as created_name',
-                'created_by.last_name as created_last_name'
+                'created_by.last_name as created_last_name',
+                'currencies.currency_rate as c_rate'
             ], $jobCardData)
         )->orderBy('sales.sale_date_ts', 'desc');
 
@@ -203,13 +205,13 @@ class SaleService
 
         $dataTables->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
 
-        $dataTables->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>');
+        $dataTables->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>');
+        $dataTables->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->sale_return_amount) . '</span>');
+        $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>');
+        $dataTables->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
 
         $dataTables->editColumn('payment_status', function ($row) {
 
@@ -300,6 +302,7 @@ class SaleService
         $addSale->total_invoice_amount = $request->total_invoice_amount;
         $addSale->due = $request->total_invoice_amount;
         $addSale->sales_order_id = isset($request->sales_order_id) ? $request->sales_order_id : null;
+        $addSale->sale_screen = $saleScreenType;
         $addSale->save();
 
         return $addSale;
@@ -441,7 +444,7 @@ class SaleService
             $request->status != SaleStatus::Final->value
         ) {
 
-            return ['pass' => false, 'msg' => __('Pos printer only supported for final sale.')];
+            return ['pass' => false, 'msg' => __('POS printer only supported for final sale.')];
         }
 
         if ($request->ex_sale_id) {
@@ -598,7 +601,7 @@ class SaleService
             $query->where('sales.sale_screen', $saleScreen);
         }
 
-        if (auth()->user()->can('view_own_sale')) {
+        if (auth()->user()->can('sales_orders_only_own')) {
 
             $query->where('sales.created_by_id', auth()->user()->id);
         }
@@ -610,6 +613,29 @@ class SaleService
         }
 
         return $query;
+    }
+
+    public function salesInvoiceOrOthersId(object $codeGenerator, ?int $status = null): string
+    {
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
+        $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
+        $salesOrderPrefix = $generalSettings['prefix__sales_order_prefix'] ? $generalSettings['prefix__sales_order_prefix'] : 'SO';
+
+        $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        if ($status == SaleStatus::Quotation->value) {
+
+            $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'quotation_id', prefix: $quotationPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($status == SaleStatus::Order->value) {
+
+            $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'order_id', prefix: $salesOrderPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($status == SaleStatus::Draft->value) {
+
+            $voucherNo = $codeGenerator->generateMonthWise(table: 'sales', column: 'draft_id', prefix: 'DRF', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        }
+
+        return $voucherNo;
     }
 
     public function printTemplateBySaleStatus(object $request, object $sale, object $customerCopySaleProducts): array|object

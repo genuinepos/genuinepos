@@ -137,6 +137,8 @@ class CustomerReportService
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branch', 'account_ledgers.branch_id', 'ledger_branch.id')
+            ->leftJoin('currencies', 'ledger_branch.currency_id', 'currencies.id')
             ->where('accounts.is_walk_in_customer', BooleanType::False->value)
             ->where('account_groups.sub_sub_group_number', 6);
 
@@ -162,10 +164,14 @@ class CustomerReportService
 
     private function dbRaw(): object
     {
+        $authUserBranchId = auth()->user()->branch_id;
+
         return  DB::raw(
             '
                 SUM(
                     CASE
+                        WHEN account_ledgers.voucher_type = 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                         WHEN account_ledgers.voucher_type = 0
                         THEN account_ledgers.debit
                         ELSE 0
@@ -173,6 +179,8 @@ class CustomerReportService
                 ) AS opening_total_debit,
                 SUM(
                     CASE
+                        WHEN account_ledgers.voucher_type = 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                         WHEN account_ledgers.voucher_type = 0
                         THEN account_ledgers.credit
                         ELSE 0
@@ -180,6 +188,8 @@ class CustomerReportService
                 ) AS opening_total_credit,
                 SUM(
                     CASE
+                        WHEN account_ledgers.voucher_type != 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                         WHEN account_ledgers.voucher_type != 0
                         THEN account_ledgers.debit
                         ELSE 0
@@ -187,6 +197,8 @@ class CustomerReportService
                 ) AS curr_total_debit,
                 SUM(
                     CASE
+                        WHEN account_ledgers.voucher_type != 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                         WHEN account_ledgers.voucher_type != 0
                         THEN account_ledgers.credit
                         ELSE 0
@@ -194,33 +206,57 @@ class CustomerReportService
                 ) AS curr_total_credit,
                 SUM(
                     CASE
-                    WHEN account_ledgers.voucher_type = 1
-                    THEN account_ledgers.debit ELSE 0 END
+                        WHEN account_ledgers.voucher_type = 1 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                        WHEN account_ledgers.voucher_type = 1
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
                 ) AS total_sale,
                 SUM(
                     CASE
-                    WHEN account_ledgers.voucher_type = 2
-                    THEN account_ledgers.credit ELSE 0 END
+                        WHEN account_ledgers.voucher_type = 2 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                         WHEN account_ledgers.voucher_type = 2
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
                 ) AS total_sales_return,
                 SUM(
                     CASE
-                    WHEN account_ledgers.voucher_type = 3
-                    THEN account_ledgers.credit ELSE 0 END
+                        WHEN account_ledgers.voucher_type = 3 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                        WHEN account_ledgers.voucher_type = 3
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
                 ) AS total_purchase,
                 SUM(
                     CASE
-                    WHEN account_ledgers.voucher_type = 4
-                    THEN account_ledgers.debit ELSE 0 END
+                        WHEN account_ledgers.voucher_type = 4 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                        WHEN account_ledgers.voucher_type = 4
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
                 ) AS total_purchase_return,
                 SUM(
                     CASE
-                    WHEN account_ledgers.voucher_type = 8
-                    THEN account_ledgers.credit ELSE 0 END
+                        WHEN account_ledgers.voucher_type = 8 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                        WHEN account_ledgers.voucher_type = 8
+                        THEN account_ledgers.credit
+                        ELSE 0
+                    END
                 ) AS total_received,
                 SUM(
                     CASE
-                    WHEN account_ledgers.voucher_type = 9
-                    THEN account_ledgers.debit ELSE 0 END
+                        WHEN account_ledgers.voucher_type = 9 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                        WHEN account_ledgers.voucher_type = 9
+                        THEN account_ledgers.debit
+                        ELSE 0
+                    END
                 ) AS total_paid
             '
         );

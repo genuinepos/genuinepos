@@ -21,11 +21,11 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Discounts') }}</h6>
+                                    <h6>{{ __('List of Discounts') }}</h6>
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('sales.discounts.create') }}" class="btn btn-sm btn-primary" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add Discount') }}</a>
+                                    <a href="{{ route('sales.discounts.create') }}" class="btn btn-sm btn-success" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add Discount') }}</a>
                                 </div>
                             </div>
 
@@ -71,5 +71,5 @@
 
 @endsection
 @push('scripts')
-   @include('sales.discounts.partials.js_partial.index_js')
+    @include('sales.discounts.partials.js_partial.index_js')
 @endpush

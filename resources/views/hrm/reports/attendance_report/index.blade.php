@@ -43,10 +43,10 @@
                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option data-branch_name="All" value="">{{ __('All') }}</option>
-                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] . __('Business') }}" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] . __('Company') }}" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     @php
                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -139,7 +139,8 @@
                     branch_id,
                     branch_name,
                     month_year
-                }, success: function(data) {
+                },
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     if (!$.isEmptyObject(data.errorMsg)) {
@@ -150,12 +151,13 @@
 
                     $('#data-list').empty();
                     $('#data-list').html(data);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error') }}");
+                        toastr.error("{{ __('Net Connection Error') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -167,7 +169,7 @@
         }
         getAttendances();
 
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             getAttendances();
         });
@@ -209,7 +211,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error') }}");
+                        toastr.error("{{ __('Net Connection Error') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -219,8 +221,6 @@
                 }
             });
         });
-
-
     </script>
 
     <script type="text/javascript">

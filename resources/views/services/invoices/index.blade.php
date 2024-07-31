@@ -27,10 +27,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-3">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -128,7 +128,7 @@
                                                 <th>{{ __('Serial No.') }}</th>
                                                 <th>{{ __('Status') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __('Shop') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Payment Status') }}</th>
                                                 <th>{{ __('Invoice Amount') }}</th>
@@ -164,7 +164,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    @if (auth()->user()->can('shipment_access') && $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+        <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    @endif
 
     <div id="details"></div>
     <div id="extra_details"></div>
@@ -173,5 +175,3 @@
 @push('scripts')
     @include('services.invoices.js_partials.index_js')
 @endpush
-
-

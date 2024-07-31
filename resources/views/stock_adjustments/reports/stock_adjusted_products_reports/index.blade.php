@@ -32,10 +32,10 @@
                                                 <div class="form-group row align-items-end">
                                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                         <div class="col-md-2">
-                                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                            <label><strong>{{ location_label() }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                 @foreach ($branches as $branch)
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -110,7 +110,7 @@
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Product') }}</th>
                                                 <th>{{ __('P. Code(SKU)') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Stock Location') }}</th>
                                                 <th>{{ __('Voucher No') }}</th>
                                                 <th>{{ __('Quantity') }}</th>
@@ -121,7 +121,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : </th>
+                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th class="text-start text-white" id="quantity"></th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white" id="subtotal"></th>
@@ -300,7 +300,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

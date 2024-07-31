@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\CurrencyController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
+use App\Http\Controllers\Setups\CurrencyRateController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
@@ -131,6 +133,26 @@ Route::prefix('setups')->group(function () {
         Route::delete('delete/{id}', 'delete')->name('barcode.settings.delete');
         Route::get('set-default/{id}', 'setDefault')->name('barcode.settings.set.default');
         Route::get('design/pages', 'designPage')->name('barcode.settings.design.pages');
+    });
+
+    Route::controller(CurrencyController::class)->prefix('currencies')->group(function () {
+
+        Route::get('/', 'index')->name('currencies.index');
+        Route::get('create', 'create')->name('currencies.create');
+        Route::post('store', 'store')->name('currencies.store');
+        Route::get('edit/{id}', 'edit')->name('currencies.edit');
+        Route::post('update/{id}', 'update')->name('currencies.update');
+        Route::delete('delete/{id}', 'delete')->name('currencies.delete');
+
+        Route::controller(CurrencyRateController::class)->prefix('rates')->group(function () {
+
+            Route::get('index/{currencyId}', 'index')->name('currencies.rates.index');
+            Route::get('create/{currencyId}', 'create')->name('currencies.rates.create');
+            Route::post('store/{currencyId}', 'store')->name('currencies.rates.store');
+            Route::get('edit/{id}', 'edit')->name('currencies.rates.edit');
+            Route::post('update/{id}', 'update')->name('currencies.rates.update');
+            Route::delete('delete/{id}', 'delete')->name('currencies.rates.delete');
+        });
     });
 
     Route::group(['prefix' => 'release/note'], function () {

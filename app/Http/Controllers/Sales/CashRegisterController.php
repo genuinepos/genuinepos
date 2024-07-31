@@ -22,7 +22,7 @@ class CashRegisterController extends Controller
     ) {
     }
 
-    public function create($saleId = null)
+    public function create($saleId = null, $jobCardId = null, $saleScreenType = null)
     {
         abort_if(!auth()->user()->can('pos_add'), 403);
 
@@ -53,10 +53,10 @@ class CashRegisterController extends Controller
 
         if (!$openedCashRegister) {
 
-            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName', 'saleId'));
+            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName', 'saleId', 'jobCardId', 'saleScreenType'));
         } else {
 
-            return redirect()->route('sales.pos.create');
+            return redirect()->route('sales.pos.create', $saleScreenType);
         }
     }
 
@@ -66,10 +66,10 @@ class CashRegisterController extends Controller
 
         if ($request->sale_id) {
 
-            return redirect()->route('sales.pos.edit', $request->sale_id);
+            return redirect()->route('sales.pos.edit', [$request->sale_id, $request->sale_screen_type]);
         } else {
 
-            return redirect()->route('sales.pos.create');
+            return redirect()->route('sales.pos.create', [$request->job_card_id, $request->sale_screen_type]);
         }
     }
 

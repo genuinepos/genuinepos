@@ -47,10 +47,10 @@
                                         <div class="form-group row align-items-end">
                                             @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                                    <label><strong>{{ location_label() }} </strong></label>
                                                     <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                         <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                         @foreach ($branches as $branch)
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -101,7 +101,7 @@
 
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i>{{ __('Print') }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i> {{ __('Print') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -127,7 +127,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Normal') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                            <td style="padding: 0px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
+                                                            <td style="padding: 5px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
                                                         </tr>
 
                                                         <tr>
@@ -171,7 +171,7 @@
                                     <tr>
                                         <th class="text-start">{{ __('Date') }}</th>
                                         <th class="text-start">{{ __('Voucher No') }}</th>
-                                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                                        <th class="text-start">{{ location_label() }}</th>
                                         <th class="text-start">{{ __('Created By') }}</th>
                                         <th class="text-start">{{ __('Type') }}</th>
                                         <th class="text-start">{{ __('Reason') }}</th>
@@ -381,7 +381,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

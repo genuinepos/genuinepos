@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\CodeGenerationService;
+use App\Http\Requests\TransferStocks\TransferStockEditRequest;
+use App\Http\Requests\TransferStocks\TransferStockIndexRequest;
 use App\Http\Requests\TransferStocks\TransferStockStoreRequest;
+use App\Http\Requests\TransferStocks\TransferStockCreateRequest;
 use App\Http\Requests\TransferStocks\TransferStockDeleteRequest;
 use App\Http\Requests\TransferStocks\TransferStockUpdateRequest;
 use App\Interfaces\TransferStocks\TransferStockControllerMethodContainersInterface;
 
 class TransferStockController extends Controller
 {
-    public function index(Request $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
+    public function index(TransferStockIndexRequest $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_index'), 403);
-
         $indexMethodContainer = $transferStockControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -48,10 +48,8 @@ class TransferStockController extends Controller
         return view('transfer_stocks.print_templates.print_transfer_stock', compact('transferStock', 'printPageSize'));
     }
 
-    public function create(TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
+    public function create(TransferStockCreateRequest $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_create'), 403);
-
         $createMethodContainer = $transferStockControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -83,10 +81,8 @@ class TransferStockController extends Controller
         }
     }
 
-    public function edit($id, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
+    public function edit($id, TransferStockEditRequest $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_edit'), 403);
-
         $editMethodContainer = $transferStockControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

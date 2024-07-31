@@ -19,6 +19,7 @@ class PurchaseReturnService
             ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
             ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('accounts as suppliers', 'purchase_returns.supplier_account_id', 'suppliers.id')
             ->leftJoin('users as createdBy', 'purchase_returns.created_by_id', 'createdBy.id');
 
@@ -64,6 +65,7 @@ class PurchaseReturnService
             'createdBy.prefix as created_prefix',
             'createdBy.name as created_name',
             'createdBy.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('purchase_returns.date_ts', 'desc');
 
         return DataTables::of($returns)
@@ -151,12 +153,12 @@ class PurchaseReturnService
             })
 
             ->editColumn('total_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->total_qty))
-            ->editColumn('net_total_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_total_amount))
-            ->editColumn('return_discount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_discount))
-            ->editColumn('return_tax_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_tax_amount))
-            ->editColumn('total_return_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->total_return_amount))
-            ->editColumn('received', fn ($row) => \App\Utils\Converter::format_in_bdt($row->received_amount))
-            ->editColumn('due', fn ($row) => \App\Utils\Converter::format_in_bdt($row->due))
+            ->editColumn('net_total_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('return_discount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount, $row->c_rate, $row->branch_id)))
+            ->editColumn('return_tax_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('total_return_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('received', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('due', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)))
 
             ->editColumn('createdBy', function ($row) {
 

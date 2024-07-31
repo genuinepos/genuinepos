@@ -75,8 +75,8 @@
         }
 
         /*.select2-selection:focus {
-                                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                                } */
+                                                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                                                } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -107,6 +107,10 @@
             border-color: #86b7fe;
             outline: 0;
         }
+
+        /* .select2-container--open .select2-dropdown--below {
+                        width: 298px !important;
+                    } */
 
         .btn-sale {
             width: calc(50% - 4px);
@@ -170,10 +174,13 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Customer') }}</b></label>
                                                     <div class="col-8">
-                                                        <div class="input-group flex-nowrap">
+                                                        <div class="input-group flex-nowrap extentable-select2-field">
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
-                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                                    @php
+                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' .__('Supplier').')';
+                                                                    @endphp
+                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                                 @endforeach
                                                             </select>
 
@@ -213,7 +220,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Invoice ID') }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" placeholder="{{ __('Invoice ID') }}" autocomplete="off" tabindex="-1">
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" value="{{ $voucherNo }}" placeholder="{{ __('Invoice ID') }}" autocomplete="off" tabindex="-1">
                                                     </div>
                                                 </div>
 

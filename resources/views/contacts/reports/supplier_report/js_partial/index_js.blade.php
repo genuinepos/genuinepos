@@ -1,5 +1,5 @@
 <script>
-    var businessName = "{{ $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')' }}";
+    var businessName = "{{ $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')' }}";
 
     var suppliersReportTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
@@ -173,7 +173,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

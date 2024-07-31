@@ -68,7 +68,7 @@
                                 <div class="col-md-12">
                                     <div class="form_element rounded mt-0 mb-1">
                                         <div class="element-body">
-                                            <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                            <form id="filter_form" action="" method="get">
                                                 <div class="form-group row align-items-end">
                                                     <div class="col-md-2 search_area">
                                                         <label><strong>{{ __('Search Product') }} </strong></label>
@@ -85,10 +85,10 @@
                                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                         <div class="col-md-2">
-                                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                            <label><strong>{{ location_label() }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                 @foreach ($branches as $branch)
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -162,7 +162,7 @@
                                             <tr>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Product') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Stock Location') }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Return Voucher No') }}</th>
@@ -461,7 +461,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

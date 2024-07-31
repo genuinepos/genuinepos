@@ -3,9 +3,10 @@
 namespace App\Services\Products;
 
 use App\Enums\CategoryType;
+use App\Utils\FileUploader;
 use App\Models\Products\Category;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryService
@@ -21,8 +22,9 @@ class CategoryService
                 $photo = asset('images/general_default.png');
                 if ($row->photo) {
 
-                    $photo = asset('uploads/category/' . $row->photo);
+                    $photo = file_link(fileType: 'category', fileName: $row->photo);
                 }
+
                 return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $photo . '">';
             })
             ->addColumn('action', function ($row) {
@@ -60,18 +62,7 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/category/');
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save($dir . $categoryPhotoName);
-
-            $addCategory->photo = $categoryPhotoName;
+            $addCategory->photo = FileUploader::uploadWithResize(fileType: 'category', uploadableFile: $request->file('photo'), height: 250, width: 250);
         }
 
         $addCategory->save();
@@ -87,22 +78,15 @@ class CategoryService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/category/');
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'category',
+                uploadableFile: $request->file('photo'),
+                height: 250,
+                width: 250,
+                deletableFile: $updateCategory->photo,
+            );
 
-            if ($updateCategory->photo && file_exists($dir . $updateCategory->photo)) {
-
-                unlink($dir . $updateCategory->photo);
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save($dir . $categoryPhotoName);
-            $updateCategory->photo = $categoryPhotoName;
+            $updateCategory->photo = $uploadedFile;
         }
 
         $updateCategory->save();
@@ -119,10 +103,9 @@ class CategoryService
             return ['pass' => false, 'msg' => 'Category can not be deleted. One or more sub-categories is belonging under this category.'];
         }
 
-        $dir = public_path('uploads/category/');
-        if ($deleteCategory->photo && file_exists($dir . $deleteCategory->photo)) {
+        if ($deleteCategory->photo) {
 
-            unlink($dir . $deleteCategory->photo);
+            $uploadedFile = FileUploader::deleteFile(fileType: 'category', deletableFile: $deleteCategory->photo);
         }
 
         if (!is_null($deleteCategory)) {

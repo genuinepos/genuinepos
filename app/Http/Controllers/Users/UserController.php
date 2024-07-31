@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\UserEditRequest;
+use App\Http\Requests\Users\UserIndexRequest;
 use App\Http\Requests\Users\UserStoreRequest;
+use App\Http\Requests\Users\UserCreateRequest;
 use App\Http\Requests\Users\UserDeleteRequest;
 use App\Http\Requests\Users\UserUpdateRequest;
 use App\Services\Users\UserActivityLogService;
@@ -13,15 +16,13 @@ use App\Interfaces\Users\UserControllerMethodContainersInterface;
 
 class UserController extends Controller
 {
-    public function index(Request $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
+    public function index(UserIndexRequest $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('user_view'), 403);
-
         $indexMethodContainer = $userControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -37,10 +38,8 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    public function create(UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
+    public function create(UserCreateRequest $request,UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('user_add'), 403);
-
         $createMethodContainer = $userControllerMethodContainersInterface->createMethodContainer();
         extract($createMethodContainer);
 
@@ -68,10 +67,8 @@ class UserController extends Controller
         return response()->json(__('User created successfully'));
     }
 
-    public function edit($id, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
+    public function edit($id, UserEditRequest $request, UserControllerMethodContainersInterface $userControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('user_edit'), 403);
-
         $editMethodContainer = $userControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

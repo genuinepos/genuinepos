@@ -56,7 +56,7 @@
         litepicker('sales_to_date');
     @endif
 
-    @if (auth()->user()->can('sales_order_list'))
+    @if (auth()->user()->can('sales_orders_index'))
         litepicker('sales_order_from_date');
         litepicker('sales_order_to_date');
     @endif
@@ -83,7 +83,7 @@
 </script>
 
 <script>
-    @if (auth()->user()->can('customer_ledger') || auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index') || auth()->user()->can('sales_order_list') || auth()->user()->can('purchase_all') || auth()->user()->can('purchase_order_index') || auth()->user()->can('receipts_index') || auth()->user()->can('payments_index'))
+    @if (auth()->user()->can('customer_ledger') || auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index') || auth()->user()->can('sales_orders_index') || auth()->user()->can('purchase_all') || auth()->user()->can('purchase_order_index') || auth()->user()->can('receipts_index') || auth()->user()->can('payments_index'))
 
         function getAccountClosingBalance(filterObj, parentDiv, changeLedgerTableCurrentTotal = false) {
 
@@ -162,7 +162,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -192,7 +192,7 @@
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -226,7 +226,7 @@
                 },
             @endif
 
-            @if (auth()->user()->can('sales_order_list'))
+            @if (auth()->user()->can('sales_orders_index'))
                 {
                     filterDatePrefix: 'sales_order_',
                     filterSummerParentDiv: 'for_sales_order',
@@ -333,7 +333,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

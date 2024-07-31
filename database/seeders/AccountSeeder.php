@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Accounts\Account;
+use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountGroup;
 use Illuminate\Support\Facades\Schema;
 
@@ -16,15 +17,15 @@ class AccountSeeder extends Seeder
      */
     public function run()
     {
-        $cashInHand = AccountGroup::where('sub_sub_group_number', 2)->first();
-        $directExpenseGroup = AccountGroup::where('sub_group_number', 10)->first();
-        $directIncomeGroup = AccountGroup::where('sub_group_number', 13)->first();
-        $salesAccountGroup = AccountGroup::where('sub_group_number', 15)->first();
-        $purchaseAccountGroup = AccountGroup::where('sub_group_number', 12)->first();
-        $accountReceivablesAccountGroup = AccountGroup::where('sub_sub_group_number', 6)->first();
+        $cashInHand = DB::table('account_groups')->where('sub_sub_group_number', 2)->first();
+        $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
+        $directIncomeGroup = DB::table('account_groups')->where('sub_group_number', 13)->first();
+        $salesAccountGroup = DB::table('account_groups')->where('sub_group_number', 15)->first();
+        $purchaseAccountGroup = DB::table('account_groups')->where('sub_group_number', 12)->first();
+        $accountReceivablesAccountGroup = DB::table('account_groups')->where('sub_sub_group_number', 6)->first();
         // $suspenseAccountGroup = AccountGroup::where('sub_group_number', 9)->first();
-        $capitalAccountGroup = AccountGroup::where('sub_group_number', 6)->first();
-        $dutiesAndTaxAccountGroup = AccountGroup::where('sub_sub_group_number', 8)->first();
+        $capitalAccountGroup = DB::table('account_groups')->where('sub_group_number', 6)->first();
+        $dutiesAndTaxAccountGroup = DB::table('account_groups')->where('sub_sub_group_number', 8)->first();
 
         $accounts = [
             ['account_group_id' => $cashInHand->id, 'name' => 'Cash', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => '1', 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'is_walk_in_customer' => 0, 'is_global' => 0, 'created_at' => '2023-08-04 17:33:01', 'updated_at' => '2023-08-04 17:33:01', 'branch_id' => null],

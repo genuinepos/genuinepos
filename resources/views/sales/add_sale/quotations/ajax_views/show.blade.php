@@ -55,7 +55,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($quotation->branch_id) {
@@ -150,32 +150,32 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($quotation->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $quotation->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $quotation->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $quotation->order_tax_percent . '%)=' . $quotation->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $quotation?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($quotation->total_invoice_amount) }}
                                     </td>
@@ -227,10 +227,28 @@
                             @php
                                 $filename = $quotation->quotation_id . '__' . $quotation->date . '__' . $branchName;
                             @endphp
-                            @if (auth()->user()->can('edit_add_sale') && $quotation->branch_id == auth()->user()->branch_id)
+                            {{-- @if (auth()->user()->can('edit_add_sale') && $quotation->branch_id == auth()->user()->branch_id)
                                 <a href="{{ route('sale.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                            @endif --}}
+
+                            @if ($quotation->branch_id == auth()->user()->branch_id)
+                                @if ($quotation->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
+                                    @if (auth()->user()->can('sale_quotations_edit'))
+                                        <a href="{{ route('sale.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                    @endif
+                                @elseif($quotation->sale_screen == \App\Enums\SaleScreenType::PosSale->value)
+                                    @if (auth()->user()->can('sale_quotations_edit'))
+                                        <a href="{{ route('sales.pos.edit', [$quotation->id, $quotation->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                    @endif
+                                @elseif($quotation->sale_screen == \App\Enums\SaleScreenType::ServiceQuotation->value)
+                                    @if (auth()->user()->can('service_quotations_edit') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value)
+                                        <a href="{{ route('services.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                    @endif
+                                @endif
                             @endif
-                            <a href="{{ route('sales.helper.related.voucher.print', $quotation->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Quotation') }}</a>
+
+                            <a href="{{ route('sales.helper.related.voucher.print', [$quotation->id]) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Quotation') }}</a>
+
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -246,13 +264,15 @@
         var url = event.getAttribute('href');
         var filename = event.getAttribute('data-filename');
         var print_page_size = $('#print_page_size').val();
+        var sale_status = 4;
         var currentTitle = document.title;
 
         $.ajax({
             url: url,
             type: 'get',
             data: {
-                print_page_size
+                print_page_size,
+                sale_status
             },
             success: function(data) {
 
@@ -283,7 +303,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

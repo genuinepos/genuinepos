@@ -1,4 +1,14 @@
+<script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
 <script>
+    $('#photo').dropify({
+        messages: {
+            'default': "{{ __('Drag and drop a file here or click') }}",
+            'replace': "{{ __('Drag and drop or click to replace') }}",
+            'remove': "{{ __('Remove') }}",
+            'error': "{{ __('Ooops, something wrong happended.') }}"
+        }
+    });
+
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
         $('.submit_button').prop('type', 'button');
@@ -53,7 +63,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -77,8 +87,7 @@
     });
 
     function changeUserType() {
-
-        var userType = $('#user_type').val();
+        var userType = $('#user_type').val() ? $('#user_type').val() : 1;
         if (userType == 1 || userType == 3) {
 
             $('#allow_login').val(1);
@@ -187,7 +196,7 @@
         $('#roleMsg').html('');
         if (hasAccassToAllArea == 1) {
 
-            $('#roleMsg').html('Selected Role Has Access to All Shop/Place');
+            $('#roleMsg').html('Selected Role Has Access to All Store/Place');
             $('#branch_id').prop('required', false);
         }
     });
@@ -218,7 +227,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error') }}");
+                    toastr.error("{{ __('Net Connection Error') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -251,7 +260,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error') }}");
+                    toastr.error("{{ __('Net Connection Error') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -284,7 +293,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error') }}");
+                    toastr.error("{{ __('Net Connection Error') }}");
                     return;
                 } else if (err.status == 500) {
 

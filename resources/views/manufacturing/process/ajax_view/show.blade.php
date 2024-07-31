@@ -25,7 +25,7 @@
                                         {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
+                                    {{ $generalSettings['business_or_shop__business_name'] . '('.__('Company').')' }}
                                 @endif
                             </li>
                         </ul>
@@ -60,7 +60,7 @@
                         </tbody>
                         <tfoot class="display data_tbl data__table">
                             <tr>
-                                <th colspan="5" class="text-end">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th colspan="5" class="text-end">{{ __('Total Ingredients') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <th class="text-start">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                             </tr>
                         </tfoot>
@@ -90,11 +90,11 @@
                             <table class="display table modal-table table-sm">
                                 <tbody>
                                     <tr>
-                                        <th class="text-end">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                        <th class="text-end">{{ __('Addl. Production Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                         <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-end">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                        <th class="text-end">{{ __('Net Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                         <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                                     </tr>
                                 </tbody>
@@ -182,7 +182,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

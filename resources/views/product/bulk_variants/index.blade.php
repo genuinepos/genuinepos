@@ -19,12 +19,12 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __('List Of Varients') }}</h6>
+                                <h6>{{ __('List of Varients') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('product_variant_add'))
-                                    <a href="{{ route('product.bulk.variants.create') }}" class="btn btn-sm btn-primary" id="addVariant"><i class="fas fa-plus-square"></i> {{ __('Add Variant') }}</a>
+                                    <a href="{{ route('product.bulk.variants.create') }}" class="btn btn-sm btn-success" id="addVariant"><i class="fas fa-plus-square"></i> {{ __('Add Variant') }}</a>
                                 @endif
                             </div>
                         </div>
@@ -145,7 +145,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -182,7 +182,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -241,7 +241,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

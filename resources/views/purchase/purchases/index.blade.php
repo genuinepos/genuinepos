@@ -26,10 +26,10 @@
                                             <div class="form-group row">
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-4">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -100,7 +100,7 @@
                                 </div>
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -116,7 +116,8 @@
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
+                                                {{-- <th>{{ location_label() }}</th> --}}
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Payment Status') }}</th>
                                                 <th>{{ __('Total Purchased Amount') }}</th>
@@ -129,11 +130,11 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                                <th id="total_purchase_amount" class="text-white"></th>
-                                                <th id="paid" class="text-white"></th>
-                                                <th id="purchase_return_amount" class="text-white"></th>
-                                                <th id="due" class="text-white"></th>
+                                                <th colspan="6" class="text-end">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                                <th id="total_purchase_amount"></th>
+                                                <th id="paid"></th>
+                                                <th id="purchase_return_amount"></th>
+                                                <th id="due"></th>
                                                 <th></th>
                                             </tr>
                                         </tfoot>

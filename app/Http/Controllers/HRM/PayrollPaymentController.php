@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CodeGenerationServiceInterface;
+use App\Http\Requests\HRM\PayrollPaymentEditRequest;
 use App\Http\Requests\HRM\PayrollPaymentStoreRequest;
+use App\Http\Requests\HRM\PayrollPaymentCreateRequest;
 use App\Http\Requests\HRM\PayrollPaymentDeleteRequest;
 use App\Http\Requests\HRM\PayrollPaymentUpdateRequest;
 use App\Interfaces\Hrm\PayrollPaymentControllerMethodContainersInterface;
@@ -23,8 +24,11 @@ class PayrollPaymentController extends Controller
         return view('hrm.payroll_payments.show', compact('payment'));
     }
 
-    public function print($id, Request $request, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
-    {
+    public function print(
+        $id,
+        Request $request,
+        PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
+    ) {
         $printMethodContainer = $payrollPaymentControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request);
 
         extract($printMethodContainer);
@@ -32,10 +36,12 @@ class PayrollPaymentController extends Controller
         return view('hrm.print_templates.print_payroll_payment', compact('payment', 'printPageSize'));
     }
 
-    public function create($payrollId, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
-    {
-        abort_if(!auth()->user()->can('payroll_payments_create'), 403);
 
+    public function create(
+        $payrollId,
+        PayrollPaymentCreateRequest $request,
+        PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
+    ) {
         $createMethodContainer = $payrollPaymentControllerMethodContainersInterface->createMethodContainer(payrollId: $payrollId);
 
         extract($createMethodContainer);
@@ -75,10 +81,12 @@ class PayrollPaymentController extends Controller
         }
     }
 
-    public function edit($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
-    {
-        abort_if(!auth()->user()->can('payroll_payments_edit'), 403);
 
+    public function edit(
+        $id,
+        PayrollPaymentEditRequest $request,
+        PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
+    ) {
         $editMethodContainer = $payrollPaymentControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);
@@ -86,8 +94,11 @@ class PayrollPaymentController extends Controller
         return view('hrm.payroll_payments.edit', compact('accounts', 'expenseAccounts', 'methods', 'payment'));
     }
 
-    public function update($id, PayrollPaymentUpdateRequest $request, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
-    {
+    public function update(
+        $id,
+        PayrollPaymentUpdateRequest $request,
+        PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
+    ) {
         try {
             DB::beginTransaction();
 
@@ -107,8 +118,11 @@ class PayrollPaymentController extends Controller
         return response()->json(__('Payroll payment updated successfully.'));
     }
 
-    public function delete($id, PayrollPaymentDeleteRequest $request, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
-    {
+    public function delete(
+        $id,
+        PayrollPaymentDeleteRequest $request,
+        PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
+    ) {
         try {
             DB::beginTransaction();
 

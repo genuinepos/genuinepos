@@ -26,7 +26,7 @@
 
                                 <div class="col-md-4">
                                     <label><strong>{{ __('Business') }}</strong></label>
-                                    <input type="text" name="business_name" class="form-control" id="contact_business_name" data-next="contact_alternative_phone" placeholder="@lang('menu.business_name')" />
+                                    <input type="text" name="business_name" class="form-control" id="contact_business_name" data-next="contact_alternative_phone" placeholder="{{ __("Business Name") }}" />
                                 </div>
                             </div>
 
@@ -260,7 +260,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

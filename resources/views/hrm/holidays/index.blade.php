@@ -36,10 +36,10 @@
                             <div class="form-group row align-items-end">
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __('Shop Acccess') }}</strong></label>
+                                    <label><strong>{{ __('Store Acccess') }}</strong></label>
                                     <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                         <option value="">{{ __('All') }}</option>
-                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                         @endforeach
@@ -63,7 +63,7 @@
 
                     <div class="col-6 d-flex justify-content-end">
                         @if (auth()->user()->can('holidays_create'))
-                            <a href="{{ route('hrm.holidays.create') }}" class="btn btn-sm btn-primary" id="addHoliday"><i class="fas fa-plus-square"></i> {{ __('Add Holiday') }}</a>
+                            <a href="{{ route('hrm.holidays.create') }}" class="btn btn-sm btn-success" id="addHoliday"><i class="fas fa-plus-square"></i> {{ __('Add Holiday') }}</a>
                         @endif
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                                 <tr>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Date') }}</th>
-                                    <th>{{ __('Allowed Shop/Business') }}</th>
+                                    <th>{{ __('Allowed Store/Company') }}</th>
                                     <th>{{ __('Note') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>

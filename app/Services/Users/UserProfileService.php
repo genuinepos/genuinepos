@@ -37,20 +37,9 @@ class UserProfileService
 
         if ($request->hasFile('photo')) {
 
-            $dir = public_path('uploads/user_photo/');
+            $uploadedFile = FileUploader::uploadWithResize(fileType: 'user', uploadableFile: $request->file('photo'), height: 300, width: 300, deletableFile: $updateProfile->photo);
 
-            $newFile = FileUploader::upload($request->file('photo'), $dir);
-            if (
-                isset($updateProfile->photo) &&
-                file_exists($dir . $updateProfile->photo)
-            ) {
-                try {
-                    unlink($dir . $updateProfile->photo);
-                } catch (Exception $e) {
-                }
-            }
-
-            $updateProfile->photo = $newFile;
+            $updateProfile->photo = $uploadedFile;
         }
 
         $updateProfile->save();

@@ -8,6 +8,7 @@ use App\Http\Requests\Sales\PosSaleEditRequest;
 use App\Http\Requests\Sales\PosSaleIndexRequest;
 use App\Http\Requests\Sales\PosSaleStoreRequest;
 use App\Http\Requests\Sales\PosSaleCreateRequest;
+use App\Http\Requests\Sales\PosSaleDeleteRequest;
 use App\Http\Requests\Sales\PosSaleUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
@@ -18,14 +19,19 @@ class PosSaleController extends Controller
     {
         $indexMethodContainer = $posSaleControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
+        if ($request->ajax()) {
+
+            return $indexMethodContainer;
+        }
+
         extract($indexMethodContainer);
 
         return view('sales.pos.index', compact('branches', 'customerAccounts'));
     }
 
-    public function create(PosSaleCreateRequest $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface, $jobCardId = 'no_id', $saleScreenType = null)
+    public function create(PosSaleCreateRequest $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface, $jobCardId = 'no_id', $saleScreenType = null)
     {
-        return $posSaleControllerMethodContainersInterface->createMethodContainer(jobCardId: $jobCardId, saleScreenType: $saleScreenType);
+        return $posSaleControllerMethodContainersInterface->createMethodContainer(codeGenerator: $codeGenerator, jobCardId: $jobCardId, saleScreenType: $saleScreenType);
     }
 
     public function store(PosSaleStoreRequest $request, CodeGenerationServiceInterface $codeGenerator, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
@@ -77,5 +83,26 @@ class PosSaleController extends Controller
         }
 
         return $posSaleControllerMethodContainersInterface->printTemplateBySaleStatusForUpdate(request: $request, sale: $sale, customerCopySaleProducts: $customerCopySaleProducts);
+    }
+
+    public function delete($id, PosSaleDeleteRequest $request, PosSaleControllerMethodContainersInterface $posSaleControllerMethodContainersInterface)
+    {
+        try {
+            DB::beginTransaction();
+
+            $deleteMethodContainer = $posSaleControllerMethodContainersInterface->deleteMethodContainer(id: $id);
+
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__("POS Sale deleted Successfully."));
     }
 }

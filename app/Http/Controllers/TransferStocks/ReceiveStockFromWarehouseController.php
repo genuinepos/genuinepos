@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransferStocks\TransferStockReceiveFromWarehouseRequest;
+use App\Http\Requests\TransferStocks\TransferStockReceiveFromWarehouseIndexRequest;
+use App\Http\Requests\TransferStocks\TransferStockReceiveFromWarehouseCreateRequest;
 use App\Interfaces\TransferStocks\ReceiveStockFromWarehouseControllerMethodContainersInterface;
 
 class ReceiveStockFromWarehouseController extends Controller
 {
-    public function index(Request $request, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
+    public function index(TransferStockReceiveFromWarehouseIndexRequest $request, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);
-
         $indexMethodContainer = $receiveStockFromWarehouseControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -27,10 +25,8 @@ class ReceiveStockFromWarehouseController extends Controller
         return view('transfer_stocks.receive_stocks.from_warehouse.index', compact('warehouses'));
     }
 
-    public function create($id, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
+    public function create($id, TransferStockReceiveFromWarehouseCreateRequest $request, ReceiveStockFromWarehouseControllerMethodContainersInterface $receiveStockFromWarehouseControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') , 403);
-
         $createMethodContainer = $receiveStockFromWarehouseControllerMethodContainersInterface->createMethodContainer(id: $id);
 
         extract($createMethodContainer);

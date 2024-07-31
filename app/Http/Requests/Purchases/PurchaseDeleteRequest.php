@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Purchases;
 
+use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PurchaseDeleteRequest extends FormRequest
@@ -11,7 +12,7 @@ class PurchaseDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('purchase_delete');
+        return auth()->user()->can('purchase_delete') && config('generalSettings')['subscription']->features['purchase'] == BooleanType::True->value;
     }
 
     /**

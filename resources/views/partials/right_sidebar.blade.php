@@ -29,7 +29,7 @@
                             <div class="select-dropdown">
                                 <select name="branch_id" id="switch_branch_id">
                                     @if ($generalSettings['subscription__has_business'] == 1)
-                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                     @endif
 
                                     @foreach ($branches as $branch)
@@ -338,7 +338,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

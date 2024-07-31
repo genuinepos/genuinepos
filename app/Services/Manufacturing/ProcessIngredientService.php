@@ -133,12 +133,12 @@ class ProcessIngredientService
 
                 if (!$productStock) {
 
-                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is not available in shop/business.')];
+                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is not available in store/company.')];
                 }
 
                 if ($productStock->stock < $ingredient->final_qty) {
 
-                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is insufficient in the shop/business.')];
+                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is insufficient in the store/company.')];
                 } else {
 
                     $ingredient->stock = $productStock->stock;

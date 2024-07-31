@@ -3,17 +3,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Search Product area style */
-        .selectProduct { background-color: #5f555a; color: #fff !important; }
+        .selectProduct {
+            background-color: #5f555a;
+            color: #fff !important;
+        }
 
-        .search_area { position: relative; }
+        .search_area {
+            position: relative;
+        }
 
-        .search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 8px; margin-top: 1px; }
+        .search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 8px;
+            margin-top: 1px;
+        }
 
-        .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
+        .search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 3px;
+        }
 
-        .search_result ul li a { color: #7b7676; font-size: 12px; display: block; padding: 3px; }
+        .search_result ul li a {
+            color: #7b7676;
+            font-size: 12px;
+            display: block;
+            padding: 3px;
+        }
 
-        .search_result ul li a:hover { color: white; background-color: #ccc1c6; }
+        .search_result ul li a:hover {
+            color: white;
+            background-color: #ccc1c6;
+        }
 
         /* Search Product area style end */
     </style>
@@ -55,10 +80,10 @@
                                                 {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -142,21 +167,21 @@
                                 </div>
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('Date') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Product') }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>

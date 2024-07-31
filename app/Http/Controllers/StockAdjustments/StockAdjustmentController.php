@@ -6,20 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\CodeGenerationService;
+use App\Http\Requests\StockAdjustments\StockAdjustmentIndexRequest;
 use App\Http\Requests\StockAdjustments\StockAdjustmentStoreRequest;
+use App\Http\Requests\StockAdjustments\StockAdjustmentCreateRequest;
+use App\Http\Requests\StockAdjustments\StockAdjustmentDeleteRequest;
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 
 class StockAdjustmentController extends Controller
 {
-    public function index(Request $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
+    public function index(StockAdjustmentIndexRequest $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('stock_adjustment_all'), 403);
-
         $indexMethodContainer = $stockAdjustmentControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -45,10 +46,8 @@ class StockAdjustmentController extends Controller
         return view('stock_adjustments.print_templates.print_stock_adjustment', compact('adjustment', 'printPageSize'));
     }
 
-    public function create(StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
+    public function create(StockAdjustmentCreateRequest $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('stock_adjustment_add'), 403);
-
         $createMethodContainer = $stockAdjustmentControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -79,10 +78,8 @@ class StockAdjustmentController extends Controller
         return response()->json(__('Stock adjustment created successfully'));
     }
 
-    public function delete($id, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
+    public function delete($id, StockAdjustmentDeleteRequest $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('stock_adjustment_delete'), 403);
-
         try {
             DB::beginTransaction();
 

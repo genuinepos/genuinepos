@@ -118,7 +118,15 @@
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="pay_term_number">
                                                     <option value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
-                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" {{ $supplierAccount->id == $order->supplier_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                        @if ($supplierAccount->is_walk_in_customer == 1)
+                                                            @continue
+                                                        @endif
+
+                                                        @php
+                                                            $accountType = $supplierAccount->sub_sub_group_number == 10 ? '' : ' -(' . __('Customer') . ')';
+                                                        @endphp
+
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" {{ $supplierAccount->id == $order->supplier_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . $accountType }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
@@ -149,7 +157,7 @@
                                         <label class=" col-4"><b>{{ __('Pay Term') }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
-                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" value="{{ $order->pay_term_number }}" placeholder="{{ __("Number") }}" autocomplete="off">
+                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" value="{{ $order->pay_term_number }}" placeholder="{{ __('Number') }}" autocomplete="off">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="date">
                                                     <option value="">@lang('menu.pay_term')</option>
                                                     <option {{ $order->pay_term == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.days')</option>
@@ -216,7 +224,7 @@
                                         <div class="searching_area" style="position: relative;">
                                             <label class="fw-bold">{{ __('Search Product') }}</label>
                                             <div class="input-group">
-                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Serach Product By Name/Code') }}">
+                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Search Product By Name/Code') }}">
 
                                                 @if (auth()->user()->can('product_add'))
                                                     <div class="input-group-prepend">

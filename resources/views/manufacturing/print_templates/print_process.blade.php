@@ -55,7 +55,7 @@
                 <div class="col-4">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
                         @else
                             @php
                                 $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
@@ -64,7 +64,7 @@
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -131,7 +131,7 @@
                                     {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                 @endif
                             @else
-                                {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
+                                {{ $generalSettings['business_or_shop__business_name'] . '('.__('Company').')' }}
                             @endif
                         </li>
                     </ul>
@@ -166,7 +166,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                            <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredients') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <th class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                         </tr>
                     </tfoot>
@@ -187,11 +187,11 @@
                     <table class="table print-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                             </tr>
                             <tr>
-                                <th class="text-end" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                             </tr>
                         </tbody>
@@ -222,7 +222,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 
@@ -292,7 +292,7 @@
                 <div class="col-4">
                     @if (auth()->user()->branch)
                         @if (auth()->user()->branch->logo)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
                         @else
                             @php
                                 $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
@@ -301,7 +301,7 @@
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -368,7 +368,7 @@
                                     {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                 @endif
                             @else
-                                {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
+                                {{ $generalSettings['business_or_shop__business_name'] . '('.__('Company').')' }}
                             @endif
                         </li>
                     </ul>
@@ -403,7 +403,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5" class="text-end" style="font-size:9px!important;">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                            <th colspan="5" class="text-end" style="font-size:9px!important;">{{ __('Total Ingredients') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <th class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                         </tr>
                     </tfoot>
@@ -424,11 +424,11 @@
                     <table class="table print-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Addl. Production Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                             </tr>
                             <tr>
-                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Cost') }} : {{ $process?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                             </tr>
                         </tbody>
@@ -464,7 +464,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 

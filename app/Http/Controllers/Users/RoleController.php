@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Models\Role;
-use Illuminate\Http\Request;
 use App\Services\Users\RoleService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\RoleEditRequest;
+use App\Http\Requests\Users\RoleIndexRequest;
 use App\Http\Requests\Users\RoleStoreRequest;
+use App\Http\Requests\Users\RoleCreateRequest;
 use App\Http\Requests\Users\RoleDeleteRequest;
 use App\Http\Requests\Users\RoleUpdateRequest;
 
@@ -16,10 +17,8 @@ class RoleController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(RoleIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('role_view'), 403);
-
         if ($request->ajax()) {
 
             return $this->roleService->rolesTable();
@@ -28,10 +27,8 @@ class RoleController extends Controller
         return view('users.roles.index');
     }
 
-    public function create()
+    public function create(RoleCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('role_add'), 403);
-
         return view('users.roles.create');
     }
 
@@ -43,21 +40,19 @@ class RoleController extends Controller
         return redirect()->route('users.role.index');
     }
 
-    public function update(RoleUpdateRequest $request, $id)
+    public function edit($id, RoleEditRequest $request)
+    {
+        $role = $this->roleService->singleRole(id: $id);
+
+        return view('users.roles.edit', compact('role'));
+    }
+
+    public function update($id, RoleUpdateRequest $request)
     {
         $this->roleService->updateRole(id: $id, request: $request);
 
         session()->flash('successMsg', __('Role updated successfully'));
         return redirect()->route('users.role.index');
-    }
-
-    public function edit($id)
-    {
-        abort_if(!auth()->user()->can('user_edit'), 403);
-
-        $role = $this->roleService->singleRole(id: $id);
-
-        return view('users.roles.edit', compact('role'));
     }
 
     public function delete(RoleDeleteRequest $request, $id)

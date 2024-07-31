@@ -96,6 +96,10 @@
         .element-body {
             overflow: initial !important;
         }
+
+        /* .select2-container--open .select2-dropdown--below {
+                width: 298px !important;
+            } */
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -136,7 +140,7 @@
                                         <div class="col-8">
                                             <select required name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="sale_invoice_id" autofocus>
                                                 @foreach ($customerAccounts as $customerAccount)
-                                                    <option @selected($customerAccount->id == $return->customer_account_id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                    <option @selected($customerAccount->id == $return->customer_account_id) data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . ' | ' . $customerAccount->account_group_name }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_customer_account_id"></span>
@@ -156,7 +160,7 @@
                                         <label class="col-4"><b>{{ __('Sales Invoice') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" value="{{ $return?->sale?->invoice_id }}" placeholder="{{ __('Serach Sales Invoice ID') }}" autocomplete="off">
+                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control fw-bold" data-next="warehouse_id" value="{{ $return?->sale?->invoice_id }}" placeholder="{{ __('Search Sales Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="sale_id" id="sale_id" value="{{ $return?->sale_id }}">
 
                                                 <div class="invoice_search_result d-hide">
@@ -172,7 +176,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="sale_account_id">
+                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($warehouses as $w)
                                                         <option @selected($return?->warehouse_id == $w->id) data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
@@ -194,16 +198,17 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" value="{{ $return->voucher_no }}" placeholder="{{ __('Voucher No') }}" autocomplete="off">
+                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return?->date)) }}" data-next="sale_account_id" autocomplete="off">
+                                            <span class="error error_date"></span>
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Sales Ledger') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select name="sale_account_id" class="form-control select2" id="sale_account_id" data-next="date">
+                                            <select name="sale_account_id" class="form-control select2" id="sale_account_id" data-next="price_group_id">
                                                 @foreach ($saleAccounts as $saleAccount)
                                                     <option @selected($saleAccount->id == $return->sale_account_id) value="{{ $saleAccount->id }}">
                                                         {{ $saleAccount->name }}
@@ -217,10 +222,9 @@
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
+                                        <label class="col-4"><b>{{ __('Voucher No') }}</b></label>
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return?->date)) }}" data-next="price_group_id" autocomplete="off">
-                                            <span class="error error_date"></span>
+                                            <input readonly type="text" name="voucher_no" id="voucher_no" class="form-control fw-bold" value="{{ $return->voucher_no }}" placeholder="{{ __('Voucher No') }}" autocomplete="off">
                                         </div>
                                     </div>
 

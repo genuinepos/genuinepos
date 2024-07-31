@@ -59,20 +59,20 @@
                         @if ($production?->branch?->parent_branch_id)
 
                             @if ($production->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $production->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $production->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($production->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $production->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $production->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -231,7 +231,7 @@
                         @endforeach
                     </tbody>
                     <tfoot>
-                        <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredient Cost') }} ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                        <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredient Cost') }} ({{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
                         <th class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($totalIngredientCost) }}</th>
                     </tfoot>
                 </table>
@@ -264,14 +264,14 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->net_cost) }}
                                 </td>
@@ -285,7 +285,7 @@
                     <table class="table print-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}
                                 </td>
@@ -299,7 +299,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}
                                 </td>
@@ -313,7 +313,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}
                                 </td>
@@ -433,20 +433,20 @@
                         @if ($production?->branch?->parent_branch_id)
 
                             @if ($production->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $production->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $production->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($production->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $production->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $production->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $production->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -609,7 +609,7 @@
                         @endforeach
                     </tbody>
                     <tfoot>
-                        <th colspan="5" class="text-end" style="font-size:9px!important;">{{ __('Total Ingredient Cost') }} ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                        <th colspan="5" class="text-end" style="font-size:9px!important;">{{ __('Total Ingredient Cost') }} ({{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
                         <th class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($totalIngredientCost) }}</th>
                     </tfoot>
                 </table>
@@ -642,14 +642,14 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Additional Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Additional Production Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Net Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($production->net_cost) }}
                                 </td>
@@ -663,7 +663,7 @@
                     <table class="table print-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}
                                 </td>
@@ -677,7 +677,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}
                                 </td>
@@ -691,7 +691,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Selling Price Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Selling Price Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}
                                 </td>

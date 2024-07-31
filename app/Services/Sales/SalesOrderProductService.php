@@ -2,7 +2,7 @@
 
 namespace App\Services\Sales;
 
-use App\Models\Sales\SaleProduct;
+use App\Models\Sales\SaleProduct as SalesOrderProduct;
 
 class SalesOrderProductService
 {
@@ -20,7 +20,7 @@ class SalesOrderProductService
                 $addOrUpdateSalesOrderProduct = $salesOrderProduct;
             } else {
 
-                $addOrUpdateSalesOrderProduct = new SaleProduct();
+                $addOrUpdateSalesOrderProduct = new SalesOrderProduct();
             }
 
             $addOrUpdateSalesOrderProduct->sale_id = $salesOrder->id;
@@ -50,7 +50,7 @@ class SalesOrderProductService
 
     public function salesOrderProducts(array $with = null): ?object
     {
-        $query = SaleProduct::query();
+        $query = SalesOrderProduct::query();
 
         if (isset($with)) {
 
@@ -62,7 +62,7 @@ class SalesOrderProductService
 
     public function singleSalesOrderProduct(?int $id, array $with = null): ?object
     {
-        $query = SaleProduct::query();
+        $query = SalesOrderProduct::query();
 
         if (isset($with)) {
 

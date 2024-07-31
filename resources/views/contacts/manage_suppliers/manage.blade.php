@@ -99,10 +99,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-lg-3 col-md-3">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
                                                             <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 @php
                                                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -302,7 +302,7 @@
                                         <tr>
                                             <td class="text-start">{{ __('Pay-Term') }}</td>
                                             <td class="text-start">:
-                                                {{ ($contact->pay_term_number ? $contact->pay_term_number : 0) .'/'. ($contact->pay_term == 1 ? __('Days') : __('Months')) }}
+                                                {{ ($contact->pay_term_number ? $contact->pay_term_number : 0) . '/' . ($contact->pay_term == 1 ? __('Days') : __('Months')) }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -331,10 +331,10 @@
                                                         {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                                <label><strong>{{ location_label() }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="purchases_branch_id" autofocus>
                                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -414,7 +414,7 @@
                                                     <th>{{ __('Action') }}</th>
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('P.Invoice ID') }}</th>
-                                                    <th>{{ __('Shop/Business') }}</th>
+                                                    <th>{{ location_label() }}</th>
                                                     <th>{{ __('Supplier') }}</th>
                                                     <th>{{ __('Payment Status') }}</th>
                                                     <th>{{ __('Total Purchased Amount') }}</th>
@@ -462,10 +462,10 @@
                                                         {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                                <label><strong>{{ location_label() }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
                                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -545,7 +545,7 @@
                                                     <th>{{ __('Action') }}</th>
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('P/o ID') }}</th>
-                                                    <th>{{ __('Shop/Business') }}</th>
+                                                    <th>{{ location_label() }}</th>
                                                     <th>{{ __('Supplier') }}</th>
                                                     <th>{{ __('Created By') }}</th>
                                                     <th>{{ __('Receiving Status') }}</th>
@@ -591,10 +591,10 @@
                                                         {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                                <label><strong>{{ location_label() }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="sales_branch_id" autofocus>
                                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -674,7 +674,7 @@
                                                     <th>{{ __('Action') }}</th>
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Invoice ID') }}</th>
-                                                    <th>{{ __('Shop') }}</th>
+                                                    <th>{{ location_label() }}</th>
                                                     <th>{{ __('Customer') }}</th>
                                                     <th>{{ __('Payment Status') }}</th>
                                                     <th>{{ __('Total Item') }}</th>
@@ -726,10 +726,10 @@
                                                         {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                                <label><strong>{{ location_label() }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="sales_order_branch_id" autofocus>
                                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -809,7 +809,7 @@
                                                     <th>{{ __('Action') }}</th>
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Order ID') }}</th>
-                                                    <th>{{ __('Shop') }}</th>
+                                                    <th>{{ location_label() }}</th>
                                                     <th>{{ __('Customer') }}</th>
                                                     <th>{{ __('Payment Status') }}</th>
                                                     <th>{{ __('Total Item') }}</th>
@@ -860,10 +860,10 @@
                                                             {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                             @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                                 <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                                    <label><strong>{{ location_label() }}</strong></label>
                                                                     <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
                                                                         <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                         @foreach ($branches as $branch)
                                                                             @php
                                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -939,7 +939,7 @@
                                                     <th>{{ __('Action') }}</th>
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Voucher') }}</th>
-                                                    <th>{{ __('Shop/Business') }}</th>
+                                                    <th>{{ location_label() }}</th>
                                                     <th>{{ __('Reference') }}</th>
                                                     <th>{{ __('Remarks') }}</th>
                                                     {{-- <th>{{ __("Received From") }}</th> --}}
@@ -988,10 +988,10 @@
                                                             {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                             @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                                 <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                                    <label><strong>{{ location_label() }}</strong></label>
                                                                     <select name="branch_id" class="form-control select2" id="receipts_branch_id" autofocus>
                                                                         <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                         @foreach ($branches as $branch)
                                                                             @php
                                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -1067,7 +1067,7 @@
                                                     <th>{{ __('Action') }}</th>
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Voucher') }}</th>
-                                                    <th>{{ __('Shop/Business') }}</th>
+                                                    <th>{{ location_label() }}</th>
                                                     <th>{{ __('Reference') }}</th>
                                                     <th>{{ __('Remarks') }}</th>
                                                     {{-- <th>{{ __("Received From") }}</th> --}}

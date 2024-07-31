@@ -84,20 +84,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -158,7 +158,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -171,7 +171,7 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ location_label() }}</th>
                         <th>{{ __('Opening Balance') }}</th>
                         <th>{{ __('Total Sale') }}</th>
                         <th>{{ __('Total Purchase') }}</th>
@@ -324,7 +324,7 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-end">{{ __('Total Opening Balance') }} : </th>
+                        <th class="text-end">{{ __('Total Opening Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             @php
                                 $__allTotalOpeningBalance = $allTotalOpeningBalance < 0 ? '(' . \App\Utils\Converter::format_in_bdt(abs($allTotalOpeningBalance)) . ')' : \App\Utils\Converter::format_in_bdt($allTotalOpeningBalance);
@@ -334,21 +334,21 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Sale') }} : </th>
+                        <th class="text-end">{{ __('Total Sale') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalSale) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Purchase') }} : </th>
+                        <th class="text-end">{{ __('Total Purchase') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalPurchase) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Return') }} : </th>
+                        <th class="text-end">{{ __('Total Return') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             @php
                                 $__allTotalReturn = $allTotalReturn < 0 ? '(' . \App\Utils\Converter::format_in_bdt(abs($allTotalReturn)) . ')' : \App\Utils\Converter::format_in_bdt($allTotalReturn);
@@ -358,21 +358,21 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Received') }} : </th>
+                        <th class="text-end">{{ __('Total Received') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalReceived) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Paid') }} : </th>
+                        <th class="text-end">{{ __('Total Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ \App\Utils\Converter::format_in_bdt($allTotalPaid) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Currant Balance') }} : </th>
+                        <th class="text-end">{{ __('Total Currant Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             @php
                                 $__allTotalCurrentBalance = $allTotalCurrentBalance < 0 ? '(' . \App\Utils\Converter::format_in_bdt(abs($allTotalCurrentBalance)) . ')' : \App\Utils\Converter::format_in_bdt($allTotalCurrentBalance);
@@ -393,7 +393,7 @@
 
             <div class="col-4 text-center">
                 @if (config('speeddigit.show_app_info_in_print') == true)
-                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 
@@ -405,7 +405,7 @@
 </div>
 
 @php
-    $fileBranchName = $filteredBranchName ? 'Shop/Business:' . $filteredBranchName : $ownOrParentbranchName;
+    $fileBranchName = $filteredBranchName ? location_label() . ': ' . $filteredBranchName : $ownOrParentbranchName;
     $fileCustomerName = $filteredCustomerName ? '__' . $filteredCustomerName : '';
 
     $filename = __('Customer Report') . '__' . $fileBranchName . $fileCustomerName;

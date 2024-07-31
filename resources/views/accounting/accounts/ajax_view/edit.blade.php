@@ -157,7 +157,7 @@
                 @if (auth()->user()->can('has_access_to_all_area'))
 
                     <div class="form-group mt-1 {{ ($account->group->sub_sub_group_number == 1 || $account->group->sub_sub_group_number == 11) && $account->group->is_allowed_bank_details == 1 ? '' : 'd-hide' }}" id="access_branches">
-                        <label><strong>{{ __('Access Shop') }}</strong></label>
+                        <label><strong>{{ __('Store Access') }}</strong></label>
                         <input type="hidden" name="branch_count" id="branch_count" value="yes">
                         <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
                             @foreach ($branches as $branch)
@@ -256,7 +256,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

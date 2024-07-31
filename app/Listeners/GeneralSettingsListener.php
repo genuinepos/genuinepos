@@ -41,7 +41,7 @@ class GeneralSettingsListener
 
             $generalSettings = Cache::rememberForever($cacheKey, function () use ($branchId, $cacheKey) {
 
-                $settings = GeneralSetting::where('branch_id', $branchId)
+                return GeneralSetting::where('branch_id', $branchId)
                     ->orWhereIn('key', [
                         'subscription__has_business',
                         'subscription__branch_count',
@@ -53,9 +53,26 @@ class GeneralSettingsListener
                         'business_or_shop__email',
                         'business_or_shop__phone',
                     ])->pluck('value', 'key')->toArray();
-
-                return $settings;
             });
+
+            $cacheKey = "baseCurrency";
+            $baseCurrency = Cache::rememberForever($cacheKey, function () use ($cacheKey) {
+
+                return DB::table('general_settings')
+                    ->where('branch_id', null)->where('key', 'business_or_shop__currency_id')
+                    ->leftJoin('currencies', 'general_settings.value', 'currencies.id')
+                    ->select('currencies.id', 'currencies.country', 'currencies.currency', 'currencies.code', 'currencies.symbol', 'currencies.currency_rate')->first();
+            });
+
+            $generalSettings['base_currency_country'] = $baseCurrency->country;
+            $generalSettings['base_currency_name'] = $baseCurrency->currency;
+            $generalSettings['base_currency_code'] = $baseCurrency->code;
+            $generalSettings['base_currency_symbol'] = $baseCurrency->symbol;
+
+            if (!isset($branchId)) {
+
+                session()->put('base_currency_symbol', $generalSettings['business_or_shop__currency_symbol']);
+            }
 
             $branch = $event?->user?->branch;
             if (isset($branch) && isset($branch->parent_branch_id)) {
@@ -200,8 +217,6 @@ class GeneralSettingsListener
                 // 'mail.mailers.smtp.timeout' => $generalSettings['email_config__MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
                 // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
             ]);
-
-
 
             $dateFormat = $generalSettings['business_or_shop__date_format'];
             $__date_format = str_replace('-', '/', $dateFormat);

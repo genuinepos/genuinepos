@@ -128,7 +128,7 @@ class StockIssueService
         $addStockIssue = new StockIssue();
         $addStockIssue->voucher_no = $voucherNo;
         $addStockIssue->date = $request->date;
-        $addStockIssue->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));;
+        $addStockIssue->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addStockIssue->department_id = $request->department_id;
         $addStockIssue->reported_by_id = $request->reported_by_id;
         $addStockIssue->total_item = $request->total_item;

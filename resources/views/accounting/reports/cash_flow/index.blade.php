@@ -2,8 +2,6 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-
-
         * {
             box-sizing: border-box;
         }
@@ -108,10 +106,10 @@
                                 <div class="form-group row">
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-2">
-                                            <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                            <label><strong>{{ location_label() }} </strong></label>
                                             <select name="branch_id" id="branch_id" class="form-control select2" autofocus>
                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                 @endforeach
@@ -121,7 +119,7 @@
                                         <div class="col-md-2">
                                             <label><strong>{{ __('Chain Shop') }} </strong></label>
                                             <select name="child_branch_id" class="form-control select2" id="child_branch_id">
-                                                <option data-child_branch_name="" value="">{{ __('Select Shop First') }}</option>
+                                                <option data-child_branch_name="" value="">{{ __('Select Store First') }}</option>
                                             </select>
                                         </div>
                                     @endif
@@ -240,7 +238,7 @@
                                                                 <strong class="ps-2">{{ __('Current Assets') }}</strong>
                                                                 <table class="group_account_table ms-2">
                                                                     <tr>
-                                                                        <td class="group_account_name ps-1"><a href="#">{{ __('Closing Stocks') }}</a></td>
+                                                                        <td class="group_account_name ps-1"><a href="#">{{ __('Closing Stock') }}</a></td>
                                                                         <td class="group_account_balance text-end">1,200.00</td>
                                                                     </tr>
 
@@ -351,7 +349,7 @@
                                                                 <strong class="ps-2">{{ __('Current Assets') }}</strong>
                                                                 <table class="group_account_table ms-2">
                                                                     <tr>
-                                                                        <td class="group_account_name ps-1"><a href="#">{{ __('Closing Stocks') }}</a></td>
+                                                                        <td class="group_account_name ps-1"><a href="#">{{ __('Closing Stock') }}</a></td>
                                                                         <td class="group_account_balance text-end">1,200.00</td>
                                                                     </tr>
 

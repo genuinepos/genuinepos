@@ -4,7 +4,6 @@ namespace App\Services\Setups;
 
 use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
-use App\Models\Setups\BranchSetting;
 use App\Services\CacheServiceInterface;
 
 class BranchSettingService
@@ -98,7 +97,7 @@ class BranchSettingService
             ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRLP', 'branch_id' => $branchId],
             ['key' => 'prefix__stock_issue_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'STI', 'branch_id' => $branchId],
             ['key' => 'prefix__job_card_no_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'JOB', 'branch_id' => $branchId],
-            ['key' => 'prefix__supplier_id', 'value' => $branchPrefix . $numberOfChildBranch . 'S', 'branch_id' => $branchId],
+            ['key' => 'prefix__supplier_id', 'value' => 'S', 'branch_id' => $branchId],
             ['key' => 'prefix__customer_id', 'value' => $branchPrefix . $numberOfChildBranch . 'C', 'branch_id' => $branchId],
             // ['id' => '103', 'key' => 'email_setting__MAIL_MAILER', 'value' => 'smtp', 'branch_id' => null],
             // ['id' => '104', 'key' => 'email_setting__MAIL_HOST', 'value' => 'smtp.gmail.com', 'branch_id' => null],

@@ -55,7 +55,7 @@
 
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($payroll->branch_id) {
@@ -176,42 +176,42 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Total Allowance') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Total Deduction') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Gross Amount') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Paid') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->paid) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Due') }} : {{ $payroll?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->due) }}
                                     </td>
@@ -253,7 +253,7 @@
                                 $filename = __('Payroll') . '__' . $payroll->voucher_no . '__' . $payroll->month . '-' . $payroll->year . '__' . $branchName;
                             @endphp
 
-                             <a href="{{ route('hrm.payrolls.print', $payroll->id) }}" onclick="printPayroll(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPayrollBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
+                            <a href="{{ route('hrm.payrolls.print', $payroll->id) }}" onclick="printPayroll(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPayrollBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -274,7 +274,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -299,11 +301,12 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

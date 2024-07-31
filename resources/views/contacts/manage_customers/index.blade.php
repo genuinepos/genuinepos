@@ -24,10 +24,10 @@
                                 <form id="filter_form">
                                     <div class="form-group row align-items-end">
                                         <div class="col-xl-6 col-lg-6 col-md-12">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                 @endforeach
@@ -53,11 +53,11 @@
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         @if (auth()->user()->can('customer_add'))
-                            <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Customer') }}</a>
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Customer') }}</a>
                         @endif
 
                         @if (auth()->user()->can('customer_import'))
-                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
+                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Import Customer') }}</a>
                         @endif
 
                         @if (auth()->user()->can('customer_report'))
@@ -78,6 +78,7 @@
                                     <th>{{ __('Customer ID') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Phone') }}</th>
+                                    <th>{{ location_label() }}</th>
                                     {{-- <th>{{ __("Group") }}</th> --}}
                                     <th>{{ __('Credit Limit') }}</th>
                                     <th>{{ __('Opening Balance') }}</th>
@@ -93,7 +94,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="5" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>

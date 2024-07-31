@@ -95,25 +95,25 @@
         fnDrawCallback: function() {
 
             var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
-            $('#opening_balance').text(bdFormat(opening_balance));
+            $('#opening_balance').text(opening_balance < 0 ? '(' + bdFormat(Math.abs(opening_balance)) + ')' : bdFormat(Math.abs(opening_balance)));
 
             var total_purchase = sum_table_col($('.data_tbl'), 'total_purchase');
-            $('#total_purchase').text(bdFormat(total_purchase));
+            $('#total_purchase').text(total_purchase < 0 ? '(' + bdFormat(Math.abs(total_purchase)) + ')' : bdFormat(Math.abs(total_purchase)));
 
             var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
-            $('#total_sale').text(bdFormat(total_sale));
+            $('#total_sale').text(total_sale < 0 ? '(' + bdFormat(Math.abs(total_sale)) + ')' : bdFormat(Math.abs(total_sale)));
 
             var total_return = sum_table_col($('.data_tbl'), 'total_return');
-            $('#total_return').text(bdFormat(total_return));
+            $('#total_return').text(total_return < 0 ? '(' + bdFormat(Math.abs(total_return)) + ')' : bdFormat(Math.abs(total_return)));
 
             var total_paid = sum_table_col($('.data_tbl'), 'total_paid');
-            $('#total_paid').text(bdFormat(total_paid));
+            $('#total_paid').text(total_paid < 0 ? '(' + bdFormat(Math.abs(total_paid)) + ')' : bdFormat(Math.abs(total_paid)));
 
             var total_received = sum_table_col($('.data_tbl'), 'total_received');
-            $('#total_received').text(bdFormat(total_received));
+            $('#total_received').text(total_received < 0 ? '(' + bdFormat(Math.abs(total_received)) + ')' : bdFormat(Math.abs(total_received)));
 
             var current_balance = sum_table_col($('.data_tbl'), 'current_balance');
-            $('#current_balance').text(bdFormat(current_balance));
+            $('#current_balance').text(current_balance < 0 ? '(' + bdFormat(Math.abs(current_balance)) + ')' : bdFormat(Math.abs(current_balance)));
 
             $('.data_preloader').hide();
         }
@@ -176,7 +176,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -211,7 +211,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -274,7 +274,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -365,7 +365,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

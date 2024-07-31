@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
@@ -10,8 +9,11 @@ use App\Services\Setups\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\WorkspaceService;
 use App\Services\TaskManagement\WorkspaceUserService;
+use App\Http\Requests\TaskManagement\WorkspaceEditRequest;
+use App\Http\Requests\TaskManagement\WorkspaceIndexRequest;
 use App\Http\Requests\TaskManagement\WorkspaceStoreRequest;
 use App\Services\TaskManagement\WorkspaceAttachmentService;
+use App\Http\Requests\TaskManagement\WorkspaceCreateRequest;
 use App\Http\Requests\TaskManagement\WorkSpaceDeleteRequest;
 use App\Http\Requests\TaskManagement\WorkspaceUpdateRequest;
 
@@ -26,10 +28,8 @@ class WorkSpaceController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(WorkspaceIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('workspaces_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->workspaceService->workspacesTable(request: $request);
@@ -41,10 +41,8 @@ class WorkSpaceController extends Controller
         return view('task_management.workspaces.index', compact('branches'));
     }
 
-    public function create()
+    public function create(WorkspaceCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('workspaces_create'), 403);
-
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)
             ->select(['id', 'prefix', 'name', 'last_name'])->get();
 
@@ -70,10 +68,8 @@ class WorkSpaceController extends Controller
         return response()->json(__('Project created successfully.'));
     }
 
-    public function edit($id)
+    public function edit($id, WorkspaceEditRequest $request)
     {
-        abort_if(!auth()->user()->can('workspaces_edit'), 403);
-
         $workspace = $this->workspaceService->singleWorkspace(id: $id, with: ['users']);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
 

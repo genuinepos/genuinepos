@@ -113,11 +113,12 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                                        <label><strong>{{ location_label() }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-
-                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            @if ($generalSettings['subscription_has_business'] == 1)
+                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                                            @endif
 
                                                             @foreach ($branches as $branch)
                                                                 @php
@@ -231,7 +232,7 @@
                                                 @if (count($product->variants) > 0)
                                                     <th class="text-start">{{ __('Variant') }}</th>
                                                 @endif
-                                                <th class="text-start">{{ __('Shop/Business') }}</th>
+                                                <th class="text-start">{{ location_label() }}</th>
                                                 <th class="text-start">{{ __('Warehouse') }}</th>
                                                 <th class="text-start">{{ __('Voucher Type') }}</th>
                                                 <th class="text-start">{{ __('Voucher No') }}</th>
@@ -506,7 +507,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -541,7 +542,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

@@ -27,10 +27,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -92,7 +92,7 @@
 
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('contras.create') }}" class="btn btn-sm btn-primary" id="addContra"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                        <a href="{{ route('contras.create') }}" class="btn btn-sm btn-success" id="addContra"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -108,7 +108,7 @@
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Voucher') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Reference') }}</th>
                                                 <th>{{ __('Remarks') }}</th>
                                                 <th>{{ __('Sender A/c') }}</th>

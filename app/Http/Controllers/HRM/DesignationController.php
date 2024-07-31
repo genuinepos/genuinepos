@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\DesignationService;
+use App\Http\Requests\HRM\DesignationEditRequest;
+use App\Http\Requests\HRM\DesignationIndexRequest;
 use App\Http\Requests\HRM\DesignationStoreRequest;
+use App\Http\Requests\HRM\DesignationCreateRequest;
 use App\Http\Requests\HRM\DesignationDeleteRequest;
 use App\Http\Requests\HRM\DesignationUpdateRequest;
 
@@ -16,10 +17,8 @@ class DesignationController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(DesignationIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('designations_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->designationService->designationsTable();
@@ -28,10 +27,8 @@ class DesignationController extends Controller
         return view('hrm.designations.index');
     }
 
-    public function create()
+    public function create(DesignationCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('designations_create'), 403);
-
         return view('hrm.designations.ajax_view.create');
     }
 
@@ -40,10 +37,8 @@ class DesignationController extends Controller
         return $this->designationService->addDesignation(request: $request);
     }
 
-    public function edit($id)
+    public function edit($id, DesignationEditRequest $request)
     {
-        abort_if(!auth()->user()->can('designations_edit'), 403);
-
         $designation = $this->designationService->singleDesignation(id: $id);
 
         return view('hrm.designations.ajax_view.edit', compact('designation'));

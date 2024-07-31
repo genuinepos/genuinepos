@@ -16,7 +16,7 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('user_add');
+        return auth()->user()->can('user_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
     }
 
     /**
@@ -50,7 +50,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'role_id.required' => __('Role is required.'),
-            'branch_id.required' => __('Shop/Business is required.'),
+            'branch_id.required' => __('Store/Company is required.'),
         ];
     }
 }

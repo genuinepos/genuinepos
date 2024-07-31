@@ -42,7 +42,7 @@
                     <div class="tab_list_area">
                         <div class="btn-group">
                             <a id="tab_btn" data-show="branch_stock" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                <i class="fas fa-scroll"></i> {{ __('Shop/Business Stock') }}
+                                <i class="fas fa-scroll"></i>{{ location_label() }} {{ __('Stock') }}
                             </a>
 
                             <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
@@ -60,10 +60,10 @@
                                         {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-4">
-                                                <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                                <label><strong>{{ location_label() }} </strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_stock_branch_id" autofocus>
                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('Company') }})</option>
                                                     @foreach ($branches as $branch)
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -146,7 +146,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th class="text-white text-end" colspan="5">{{ __('Total') }} : </th>
+                                                <th class="text-white text-end" colspan="5">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th class="text-white text-end" id="branch_stock"></th>
                                                 <th class="text-white text-end" id="branch_stock_value"></th>
                                             </tr>
@@ -368,7 +368,7 @@
             fnDrawCallback: function() {
 
                 var branch_stock = sum_table_col($('.branch_stock_table'), 'branch_stock');
-                $('#branch_stock').text(bdFormat(branch_stock));
+                $('#branch_stock').text(bdFormat(branch_stock) + '/Nos');
 
                 var branch_stock_value = sum_table_col($('.branch_stock_table'), 'branch_stock_value');
                 $('#branch_stock_value').text(bdFormat(branch_stock_value));
@@ -510,7 +510,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

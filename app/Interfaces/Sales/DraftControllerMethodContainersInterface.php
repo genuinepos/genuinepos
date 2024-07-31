@@ -14,4 +14,6 @@ interface DraftControllerMethodContainersInterface
     public function editMethodContainer(int $id): array;
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array;
+
+    public function deleteMethodContainer(int $id): ?array;
 }

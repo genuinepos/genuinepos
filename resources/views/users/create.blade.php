@@ -22,7 +22,12 @@
         .input-group-text {
             font-size: 12px !important;
         }
+
+        .dropify-wrapper {
+            height: 100px !important;
+        }
     </style>
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Add User - ')
 @section('content')
@@ -110,12 +115,12 @@
                                         @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Shop/Business') }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-4"><b>{{ location_label() }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <input type="hidden" name="branch_count" value="YES">
                                                         <select required name="branch_id" class="form-control" id="branch_id" data-next="user_type">
-                                                            <option value="">{{ __('Select Shop/Business') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="">{{ __('Select Store/Company') }}</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -133,20 +138,22 @@
                                         @endif
                                     </div>
 
-                                    <div class="row mt-1">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Type') }}</b></label>
-                                                <div class="col-8">
-                                                    <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
-                                                        @foreach (\App\Enums\UserType::cases() as $userType)
-                                                            <option value="{{ $userType->value }}">{{ $userType->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                    @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                        <div class="row mt-1">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>{{ __('Type') }}</b></label>
+                                                    <div class="col-8">
+                                                        <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
+                                                            @foreach (\App\Enums\UserType::cases() as $userType)
+                                                                <option value="{{ $userType->value }}">{{ $userType->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -327,18 +334,18 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>{{ __('Profile image') }}</b></label>
+                                                <label class="col-4"> <b>{{ __('Date Of Birth') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="file" name="photo" class="form-control" placeholder="{{ __('Profile image') }}">
+                                                    <input type="text" name="date_of_birth" class="form-control" id="date_of_birth" data-next="facebook_link" autocomplete="off" placeholder="{{ __('Date Of Birth') }}">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>{{ __('Date Of Birth') }}</b></label>
+                                                <label class="col-4"><b>{{ __('Facebook Link') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="date_of_birth" class="form-control" id="date_of_birth" data-next="gender" autocomplete="off" placeholder="{{ __('Date Of Birth') }}">
+                                                    <input type="text" name="facebook_link" class="form-control" id="facebook_link" data-next="gender" autocomplete="off" placeholder="{{ __('Facebook Link') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -349,7 +356,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Gender') }}</b></label>
                                                 <div class="col-8">
-                                                    <select name="gender" class="form-control" id="gender" data-next="marital_status">
+                                                    <select name="gender" class="form-control" id="gender" data-next="twitter_link">
                                                         <option value="">{{ __('Select Gender') }}</option>
                                                         <option value="Male">{{ __('Male') }}</option>
                                                         <option value="Female">{{ __('Female') }}</option>
@@ -361,14 +368,9 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Marital Status') }}</b></label>
+                                                <label class="col-4"><b>{{ __('X Link') }}</b></label>
                                                 <div class="col-8">
-                                                    <select name="marital_status" class="form-control" id="marital_status" data-next="blood_group">
-                                                        <option value="">{{ __('Marital Status') }}</option>
-                                                        <option value="Married">{{ __('Married') }}</option>
-                                                        <option value="Unmarried">{{ __('Unmarried') }}</option>
-                                                        <option value="Divorced">{{ __('Divorced') }}</option>
-                                                    </select>
+                                                    <input type="text" name="twitter_link" class="form-control" id="twitter_link" data-next="blood_group" autocomplete="off" placeholder="{{ __('X Link') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -379,27 +381,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Blood Group') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="blood_group" class="form-control" id="blood_group" data-next="facebook_link" placeholder="{{ __('Blood Group') }}" autocomplete="off">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Facebook Link') }}</b></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="facebook_link" class="form-control" id="facebook_link" data-next="twitter_link" autocomplete="off" placeholder="{{ __('Facebook Link') }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-1">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>{{ __('X Link') }}</b></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="twitter_link" class="form-control" id="twitter_link" data-next="instagram_link" autocomplete="off" placeholder="{{ __('X Link') }}">
+                                                    <input type="text" name="blood_group" class="form-control" id="blood_group" data-next="instagram_link" placeholder="{{ __('Blood Group') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -408,7 +390,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Instagram Link') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="instagram_link" class="form-control" id="instagram_link" data-next="guardian_name" autocomplete="off" placeholder="{{ __('Instagram Link') }}">
+                                                    <input type="text" name="instagram_link" class="form-control" id="instagram_link" data-next="marital_status" autocomplete="off" placeholder="{{ __('Instagram Link') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -417,13 +399,29 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-6"><b>{{ __('Guardian Name') }}</b></label>
-                                                <div class="col-6">
-                                                    <input type="text" name="guardian_name" class="form-control" id="guardian_name" data-next="id_proof_name" autocomplete="off" placeholder="{{ __('Guardian Name') }}">
+                                                <label class="col-4"><b>{{ __('Marital Status') }}</b></label>
+                                                <div class="col-8">
+                                                    <select name="marital_status" class="form-control" id="marital_status" data-next="guardian_name">
+                                                        <option value="">{{ __('Marital Status') }}</option>
+                                                        <option value="Married">{{ __('Married') }}</option>
+                                                        <option value="Unmarried">{{ __('Unmarried') }}</option>
+                                                        <option value="Divorced">{{ __('Divorced') }}</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Guardian Name') }}</b></label>
+                                                <div class="col-8">
+                                                    <input type="text" name="guardian_name" class="form-control" id="guardian_name" data-next="id_proof_name" autocomplete="off" placeholder="{{ __('Guardian Name') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('ID Proof Name') }}</b></label>
@@ -432,13 +430,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-lg-3 col-4"><b>{{ __('ID Proof Number') }}</b></label>
-                                                <div class="col-lg-9 col-8">
+                                                <label class="col-4"><b>{{ __('ID Proof Number') }}</b></label>
+                                                <div class="col-8">
                                                     <input type="text" name="id_proof_number" class="form-control" id="id_proof_number" data-next="permanent_address" autocomplete="off" placeholder="{{ __('ID Proof Number') }}">
                                                 </div>
                                             </div>
@@ -462,6 +458,18 @@
                                                 <label class="col-lg-3 col-4"><b>{{ __('Current Address') }}</b> </label>
                                                 <div class="col-lg-9 col-8">
                                                     <input type="text" name="current_address" class="form-control" id="current_address" data-next="emp_id" placeholder="{{ __('Current Address') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <label class="col-lg-3 col-4"><b>{{ __('Profile Photo') }}</b> </label>
+                                                <div class="col-lg-9 col-8">
+                                                    <input type="file" name="photo" class="form-control dropify" id="photo" data-allowed-file-extensions="png jpeg jpg gif">
+                                                    <span class="error error_photo"></span>
                                                 </div>
                                             </div>
                                         </div>

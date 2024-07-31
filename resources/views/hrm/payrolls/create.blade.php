@@ -13,7 +13,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __('Add Payroll Of') }} <strong>{{ $month . '/' . $year }}</strong> -- (<strong>{{ $user->prefix . ' ' . $user->name . ' ' . $user->last_name }}</strong>)</h6>
+                    <h6>{{ __('Add Payroll of') }} <strong>{{ $month . '/' . $year }}</strong> -- (<strong>{{ $user->prefix . ' ' . $user->name . ' ' . $user->last_name }}</strong>)</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>

@@ -2,33 +2,29 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransferStocks\TransferStockReceiveFromBranchRequest;
+use App\Http\Requests\TransferStocks\TransferStockReceiveFromBranchIndexRequest;
+use App\Http\Requests\TransferStocks\TransferStockReceiveFromBranchCreateRequest;
 use App\Interfaces\TransferStocks\ReceiveStockFromBranchControllerMethodContainersInterface;
 
 class ReceiveStockFromBranchController extends Controller
 {
-    public function index(Request $request, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
+    public function index(TransferStockReceiveFromBranchIndexRequest $request, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);
-
         $indexMethodContainer = $receiveStockFromBranchControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         return view('transfer_stocks.receive_stocks.from_branch.index');
     }
 
-    public function create($id, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
+    public function create($id, TransferStockReceiveFromBranchCreateRequest $request, ReceiveStockFromBranchControllerMethodContainersInterface $receiveStockFromBranchControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse'), 403);
-
         $createMethodContainer = $receiveStockFromBranchControllerMethodContainersInterface->createMethodContainer(id: $id);
 
         extract($createMethodContainer);

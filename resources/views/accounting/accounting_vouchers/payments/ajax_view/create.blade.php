@@ -3,11 +3,30 @@
     $dateFormat = $generalSettings['business_or_shop__date_format'];
 @endphp
 <style>
-    .top_card table tbody th { line-height: 1; height: 17px; font-size: 11px; }
-    .top_card table tbody td { line-height: 1; height: 17px; font-size: 11px; }
-    .sale-item-sec { height: 271px; }
-    .selected_voucher_list { height: 388px !important; }
-    .info_area { background: #efefef; padding: 4px; }
+    .top_card table tbody th {
+        line-height: 1;
+        height: 17px;
+        font-size: 11px;
+    }
+
+    .top_card table tbody td {
+        line-height: 1;
+        height: 17px;
+        font-size: 11px;
+    }
+
+    .sale-item-sec {
+        height: 271px;
+    }
+
+    .selected_voucher_list {
+        height: 388px !important;
+    }
+
+    .info_area {
+        background: #efefef;
+        padding: 4px;
+    }
 </style>
 <div class="modal-dialog modal-full-display" role="document">
     <div class="modal-content">
@@ -274,7 +293,7 @@
                     <div class="col-md-4">
 
                         <div class="row" style="border-left:1px solid black;">
-                            <p class="fw-bold">{{ __('List Of Payable Vouchers') }}</p>
+                            <p class="fw-bold">{{ __('List of Payable Vouchers') }}</p>
                             <div class="col-md-12">
                                 <div class="sale-item-sec selected_voucher_list">
                                     <div class="sale-item-inner">

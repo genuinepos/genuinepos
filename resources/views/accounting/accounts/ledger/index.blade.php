@@ -70,11 +70,13 @@
                                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
                                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                         <div class="col-md-3">
-                                                            <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                                            <label><strong>{{ location_label() }} </strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                                 <option value="">{{ __('All') }}</option>
 
-                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                @if ($generalSettings['subscription__has_business']== 1)
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                                                @endif
 
                                                                 @foreach ($branches as $branch)
                                                                     @php

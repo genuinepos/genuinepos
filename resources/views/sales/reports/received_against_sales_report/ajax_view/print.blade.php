@@ -79,20 +79,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -165,7 +165,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -186,7 +186,7 @@
                     <tr>
                         <th>{{ __('Receipt Voucher') }}</th>
                         <th>{{ __('Receipt Date') }}</th>
-                        <th>{{ __('Shop/Business') }}</th>
+                        <th>{{ location_label() }}</th>
                         <th>{{ __('Sales/Order') }}</th>
                         <th>{{ __('date') }}</th>
                         <th>{{ __('Customer') }}</th>
@@ -261,8 +261,9 @@
                             <td class="text-end fw-bold">
                                 @php
                                     $salesAmount = $receivedAgainstSale?->sale ? $receivedAgainstSale?->sale?->total_invoice_amount : 0;
+                                    $__salesAmount = curr_cnv($salesAmount, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch_id);
                                 @endphp
-                                {{ App\Utils\Converter::format_in_bdt($salesAmount) }}
+                                {{ App\Utils\Converter::format_in_bdt($__salesAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
@@ -280,10 +281,11 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($receivedAgainstSale->amount) }}
                                 @php
-                                    $totalReceivedAmount += $receivedAgainstSale->amount;
+                                    $receivedAmount = curr_cnv($receivedAgainstSale->amount, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch_id);
+                                    $totalReceivedAmount += $receivedAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($receivedAmount) }}
                             </td>
                         </tr>
                     @endforeach
@@ -315,7 +317,7 @@
 
             <div class="col-4 text-center">
                 @if (config('speeddigit.show_app_info_in_print') == true)
-                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 

@@ -79,20 +79,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -165,7 +165,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
         <div class="col-6">
@@ -194,7 +194,7 @@
                 <thead>
                     <tr>
                         <th class="text-start">{{ __('Invoice ID') }}</th>
-                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                        <th class="text-start">{{ location_label() }}</th>
                         <th class="text-start">{{ __('Supplier') }}</th>
                         <th class="text-end">{{ __('Total Item') }}</th>
                         <th class="text-end">{{ __('Total Qty') }}</th>
@@ -256,52 +256,59 @@
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                 @php
-                                    $TotalNetTotal += $purchase->net_total_amount;
+                                    $netTotal = curr_cnv($purchase->net_total_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalNetTotal += $netTotal;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($netTotal) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->order_discount_amount) }}
                                 @php
-                                    $TotalOrderDiscount += $purchase->order_discount_amount;
+                                    $orderDiscount = curr_cnv($purchase->order_discount_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalOrderDiscount += $orderDiscount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($orderDiscount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ '(' . $purchase->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount) }}
                                 @php
-                                    $TotalOrderTax += $purchase->purchase_tax_amount;
+                                    $orderTax = curr_cnv($purchase->purchase_tax_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalOrderTax += $orderTax;
                                 @endphp
+                                {{ '(' . $purchase->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($orderTax) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                 @php
-                                    $TotalPurchaseAmount += $purchase->total_purchase_amount;
+                                    $purchaseAmount = curr_cnv($purchase->total_purchase_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalPurchaseAmount += $purchaseAmount;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($purchaseAmount) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                 @php
-                                    $TotalPaid += $purchase->paid;
+                                    $paid = curr_cnv($purchase->paid, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalPaid += $paid;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($paid) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->purchase_return_amount) }}
                                 @php
-                                    $TotalReturn += $purchase->purchase_return_amount;
+                                    $return = curr_cnv($purchase->purchase_return_amount, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalReturn += $return;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($return) }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                 @php
-                                    $TotalDue += $purchase->due;
+                                    $due = curr_cnv($purchase->due, $purchase->c_rate, $purchase->branch_id);
+                                    $TotalDue += $due;
                                 @endphp
+                                {{ App\Utils\Converter::format_in_bdt($due) }}
                             </td>
                         </tr>
                     @endforeach
@@ -392,7 +399,7 @@
 
             <div class="col-4 text-center">
                 @if (config('speeddigit.show_app_info_in_print') == true)
-                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 

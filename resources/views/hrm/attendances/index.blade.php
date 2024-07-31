@@ -37,10 +37,10 @@
                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <label><strong>{{ location_label() }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('hrm.attendances.create') }}" class="btn btn-sm btn-primary" id="addAttendancs"><i class="fas fa-plus-square"></i> {{ __('Add Attendances') }}</a>
+                        <a href="{{ route('hrm.attendances.create') }}" class="btn btn-sm btn-success" id="addAttendancs"><i class="fas fa-plus-square"></i> {{ __('Add Attendances') }}</a>
                     </div>
                 </div>
 
@@ -145,5 +145,5 @@
     <div class="modal fade" id="attendanceAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
-   @include('hrm.attendances.js_partial.index_js')
+    @include('hrm.attendances.js_partial.index_js')
 @endpush

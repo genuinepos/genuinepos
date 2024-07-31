@@ -7,7 +7,7 @@ interface QuotationControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService
      */
-    public function indexMethodContainer(object $request): object|array;
+    public function indexMethodContainer(object $request, ?int $saleScreenType = null): object|array;
 
     public function showMethodContainer(int $id): ?array;
 
@@ -18,4 +18,6 @@ interface QuotationControllerMethodContainersInterface
     public function editStatusMethodContainer(int $id): ?array;
 
     public function updateStatusMethodContainer(int $id, object $request, object $codeGenerator): ?array;
+
+    public function deleteMethodContainer(int $id): ?array;
 }

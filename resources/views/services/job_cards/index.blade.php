@@ -27,10 +27,10 @@
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
                                                 @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -146,7 +146,7 @@
 
                                 @if (auth()->user()->can('job_cards_create'))
                                     <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('services.job.cards.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Job Card') }}</a>
+                                        <a href="{{ route('services.job.cards.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Job Card') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -161,12 +161,13 @@
                                             <tr>
                                                 <th>{{ __('Action') }}</th>
                                                 <th>{{ __('Job No.') }}</th>
-                                                <th>{{ __('Service Type') }}</th>
+                                                <th>{{ __('Type') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Delivery Date') }}</th>
                                                 <th>{{ __('Due Date') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
+                                                <th>{{ __('Quotation ID') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
                                                 <th>{{ __('Status') }}</th>
                                                 <th>{{ __('Device') }}</th>
@@ -179,7 +180,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="13" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                                <th colspan="14" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th id="total_cost" class="text-white text-end"></th>
                                                 <th class="text-white text-end">---</th>
                                             </tr>

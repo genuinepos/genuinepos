@@ -3,21 +3,21 @@
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>{{ __("List Of Payment Methods") }}</h6>
+                    <h6>{{ __('List of Payment Methods') }}</h6>
                 </div>
             </div>
 
             <div class="widget_content">
                 <div class="data_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                 </div>
                 <div class="table-responsive" id="data-list">
                     <table class="display data_tbl data__table">
                         <thead>
                             <tr>
-                                <th>{{ __("Serial") }}</th>
+                                <th>{{ __('Serial') }}</th>
                                 <th>{{ __('Payment Method Name') }}</th>
-                                <th>{{ __("Action") }}</th>
+                                <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

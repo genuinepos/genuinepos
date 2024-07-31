@@ -239,7 +239,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'Product stock is not available in this Shop/Business.']);
+            return response()->json(['errorMsg' => 'Product stock is not available in this Store/Company.']);
         }
     }
 
@@ -286,7 +286,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => __('This variant is not available in this Shop/Business.')]);
+            return response()->json(['errorMsg' => __('This variant is not available in this Store/Company.')]);
         }
     }
 
@@ -312,31 +312,57 @@ class GeneralProductSearchService
         }
     }
 
-    public function getAvailableStock($productId, $variantId, $branchId)
+    public function getAvailableStock($productId, $variantId, $branchId, $warehouseId = null)
     {
         $variantId = $variantId != 'noid' ? $variantId : null;
 
         $stock = 0;
-        if ($variantId) {
+        if (isset($warehouseId)) {
 
-            $variantStock = DB::table('product_stocks')->where('product_id', $productId)
-                ->where('variant_id', $variantId)
-                ->where('branch_id', $branchId)
-                ->select(DB::raw('SUM(stock) as stock'))
-                ->groupBy('branch_id', 'product_id', 'variant_id')
-                ->get();
+            if ($variantId) {
 
-            $stock = $variantStock->sum('stock');
+                $variantStock = DB::table('product_stocks')->where('product_id', $productId)
+                    ->where('variant_id', $variantId)
+                    ->where('warehouse_id', $warehouseId)
+                    ->select(DB::raw('SUM(stock) as stock'))
+                    ->groupBy('branch_id', 'product_id', 'variant_id')
+                    ->get();
+
+                $stock = $variantStock->sum('stock');
+            } else {
+
+                $productStock = DB::table('product_stocks')
+                    ->where('product_id', $productId)
+                    ->where('warehouse_id', $warehouseId)
+                    ->select(DB::raw('SUM(stock) as stock'))
+                    ->groupBy('branch_id', 'product_id', 'variant_id')
+                    ->get();
+
+                $stock = $productStock->sum('stock');
+            }
         } else {
 
-            $productStock = DB::table('product_stocks')
-                ->where('product_id', $productId)
-                ->where('branch_id', $branchId)
-                ->select(DB::raw('SUM(stock) as stock'))
-                ->groupBy('branch_id', 'product_id', 'variant_id')
-                ->get();
+            if ($variantId) {
 
-            $stock = $productStock->sum('stock');
+                $variantStock = DB::table('product_stocks')->where('product_id', $productId)
+                    ->where('variant_id', $variantId)
+                    ->where('branch_id', $branchId)
+                    ->select(DB::raw('SUM(stock) as stock'))
+                    ->groupBy('branch_id', 'product_id', 'variant_id')
+                    ->get();
+
+                $stock = $variantStock->sum('stock');
+            } else {
+
+                $productStock = DB::table('product_stocks')
+                    ->where('product_id', $productId)
+                    ->where('branch_id', $branchId)
+                    ->select(DB::raw('SUM(stock) as stock'))
+                    ->groupBy('branch_id', 'product_id', 'variant_id')
+                    ->get();
+
+                $stock = $productStock->sum('stock');
+            }
         }
 
         return $stock;

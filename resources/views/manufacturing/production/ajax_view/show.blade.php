@@ -75,7 +75,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @if ($production->branch_id)
 
                                     @if ($production?->branch?->parentBranch)
@@ -163,14 +163,14 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->net_cost) }}
                                     </td>
@@ -184,7 +184,7 @@
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}
                                     </td>
@@ -198,7 +198,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}
                                     </td>
@@ -212,7 +212,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}
                                     </td>
@@ -244,7 +244,6 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end gap-2">
                         @if (auth()->user()->can('production_edit'))
-
                             <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                         <a href="{{ route('manufacturing.productions.print', $production->id) }}" onclick="printProduction(this); return false;" class="btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print') }}</a>
@@ -304,7 +303,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

@@ -2,9 +2,9 @@
 
 namespace App\Services\Products;
 
+use App\Utils\FileUploader;
 use App\Enums\IsDeleteInUpdate;
 use App\Models\Products\ProductVariant;
-use Intervention\Image\Facades\Image;
 
 class ProductVariantService
 {
@@ -22,17 +22,13 @@ class ProductVariantService
         if (isset($request->variant_image[$index])) {
 
             $variantImage = $request->variant_image[$index];
-            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
 
-            $dir = public_path('uploads/product/variant_image/');
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            Image::make($variantImage)->resize(250, 250)->save($dir . $variantImageName);
-            $addVariant->variant_image = $variantImageName;
+            $addVariant->variant_image = FileUploader::uploadWithResize(
+                fileType: 'productVariant',
+                uploadableFile: $request->variant_image[$index],
+                height: 250,
+                width: 250,
+            );
         }
 
         $addVariant->save();
@@ -65,25 +61,15 @@ class ProductVariantService
 
         if (isset($request->variant_image[$index])) {
 
-            $dir = public_path('uploads/product/variant_image/');
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'productVariant',
+                uploadableFile: $request->variant_image[$index],
+                height: 250,
+                width: 250,
+                deletableFile: $addOrUpdateVariant->variant_image,
+            );
 
-            if (isset($addOrUpdateVariant->variant_image)) {
-
-                if (file_exists($dir . $addOrUpdateVariant->variant_image)) {
-
-                    unlink($dir . $addOrUpdateVariant->variant_image);
-                }
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $variantImage = $request->variant_image[$index];
-            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-            Image::make($variantImage)->resize(250, 250)->save($dir . $variantImageName);
-            $addOrUpdateVariant->variant_image = $variantImageName;
+            $addOrUpdateVariant->variant_image = $uploadedFile;
         }
 
         $addOrUpdateVariant->save();
@@ -98,14 +84,9 @@ class ProductVariantService
 
         foreach ($deleteAbleVariants as $deleteAbleVariant) {
 
-            $dir = public_path('uploads/product/variant_image/');
-
             if (isset($deleteAbleVariant->variant_image)) {
 
-                if (file_exists($dir . $deleteAbleVariant->variant_image)) {
-
-                    unlink($dir . $deleteAbleVariant->variant_image);
-                }
+                FileUploader::deleteFile(fileType: 'productVariant', deletableFile: $deleteAbleVariant->variant_image);
             }
 
             $deleteAbleVariant->delete();

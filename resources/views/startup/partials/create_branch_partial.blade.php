@@ -53,7 +53,7 @@
             <div class="form-row">
                 <div class="col-md-4">
                     <label for="branch_country">{{ __('Country') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="branch_country" class="form-control" id="branch_country" placeholder="{{ __('Alternative Phone') }}">
+                    <input required type="text" name="branch_country" class="form-control" id="branch_country" placeholder="{{ __('Country') }}">
                     <span class="error error_branch_country"></span>
                 </div>
 
@@ -65,7 +65,7 @@
 
                 <div class="col-md-4">
                     <label for="branch_city">{{ __('City') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="branch_city" class="form-control" id="branch_city" placeholder="{{ __('State') }}">
+                    <input required type="text" name="branch_city" class="form-control" id="branch_city" placeholder="{{ __('City') }}">
                     <span class="error error_branch_city"></span>
                 </div>
             </div>
@@ -73,13 +73,13 @@
             <div class="form-row">
                 <div class="col-md-4">
                     <label for="branch_zip_code">{{ __('Zip-code') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="branch_zip_code" class="form-control" id="branch_zip_code" placeholder="{{ __('Alternative Phone') }}">
+                    <input required type="text" name="branch_zip_code" class="form-control" id="branch_zip_code" placeholder="{{ __('Zip-code') }}">
                     <span class="error error_branch_country"></span>
                 </div>
 
                 <div class="col-md-8">
                     <label for="branch_address">{{ __('Address') }}</label>
-                    <input type="text" name="branch_address" class="form-control" id="branch_address" placeholder="{{ __('State') }}">
+                    <input type="text" name="branch_address" class="form-control" id="branch_address" placeholder="{{ __('Address') }}">
                 </div>
             </div>
 

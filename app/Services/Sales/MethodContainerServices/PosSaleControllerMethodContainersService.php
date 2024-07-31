@@ -81,6 +81,11 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
     {
         $data = [];
 
+        if ($request->ajax()) {
+
+            return $this->posSaleService->posSalesTable(request: $request);
+        }
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
@@ -93,7 +98,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         return $data;
     }
 
-    public function createMethodContainer(int|string $jobCardId = 'no_id', ?int $saleScreenType = null): mixed
+    public function createMethodContainer(object $codeGenerator, int|string $jobCardId = 'no_id', ?int $saleScreenType = null): mixed
     {
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['user', 'branch', 'branch.parentBranch', 'cashCounter'])
             ->where('user_id', auth()->user()->id)
@@ -137,6 +142,8 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
             $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+            $voucherNo = $this->saleService->salesInvoiceOrOthersId(codeGenerator: $codeGenerator);
 
             $jobCardData = [];
 
@@ -184,13 +191,14 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 'methods',
                 'taxAccounts',
                 'customerAccounts',
-                'saleScreenType'
+                'saleScreenType',
+                'voucherNo',
             ), $jobCardData);
 
             return view('sales.pos.create', $data);
         } else {
 
-            return redirect()->route('cash.register.create');
+            return redirect()->route('cash.register.create', [BooleanType::False->value, $jobCardId, $saleScreenType]);
         }
     }
 
@@ -446,7 +454,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
             return view('sales.pos.edit', $data);
         } else {
 
-            return redirect()->route('cash.register.create', $id);
+            return redirect()->route('cash.register.create', [$id, 'no_id', $saleScreenType]);
         }
     }
 
@@ -645,6 +653,43 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
 
         return ['sale' => $sale, 'customerCopySaleProducts' => $customerCopySaleProducts];
+    }
+
+    public function deleteMethodContainer(int $id): array|object
+    {
+        $deleteSale = $this->saleService->deleteSale($id);
+
+        if (isset($deleteSale['pass']) && $deleteSale['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $deleteSale['msg']];
+        }
+
+        foreach ($deleteSale->saleProducts as $saleProduct) {
+
+            $this->productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->variant_id);
+
+            $this->productStockService->adjustBranchAllStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $saleProduct->branch_id);
+
+            if ($saleProduct->warehouse_id) {
+
+                $this->productStockService->adjustWarehouseStock($saleProduct->product_id, $saleProduct->variant_id, $saleProduct->warehouse_id);
+            } else {
+
+                $this->productStockService->adjustBranchStock($saleProduct->product_id, $saleProduct->variant_id, $saleProduct->branch_id);
+            }
+
+            foreach ($saleProduct->stockChains as $stockChain) {
+
+                if ($stockChain->purchaseProduct) {
+
+                    $this->stockChainService->adjustPurchaseProductOutLeftQty($stockChain->purchaseProduct);
+                }
+            }
+        }
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Sales->value, dataObj: $deleteSale);
+
+        return $deleteSale;
     }
 
     public function printTemplateBySaleStatusForStore(object $request, object $sale, object $customerCopySaleProducts): mixed

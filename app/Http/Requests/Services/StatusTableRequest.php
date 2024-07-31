@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Services;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StatusTableRequest extends FormRequest

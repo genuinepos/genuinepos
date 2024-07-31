@@ -28,13 +28,13 @@
         }
     </style>
 @endpush
-@section('title', 'Receive Stock From Shop/Business')
+@section('title', 'Receive Stock From Store/Company')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __('Receive Stock From Shop/Business') }}</h6>
+                    <h6>{{ __('Receive Stock From Store/Company') }}</h6>
                 </div>
 
                 <div class="col-6">

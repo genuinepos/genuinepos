@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('Choose Store/Business') }}</title>
+    <title>{{ __('Choose Store/Company') }}</title>
 
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome6/css/all.min.css') }}">
@@ -45,6 +45,29 @@
             /* -webkit-filter: brightness(); */
             filter: brightness(1);
         }
+
+        .main-content .steps-sidebar .sidebar-logo {
+
+            height: auto;
+            margin-bottom: 50px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .main-content .steps-sidebar .sidebar-content {
+            height: 100%;
+        }
+
+        .social_links li {
+            display: inline-block;
+            margin: 2px 3px;
+        }
+
+        .social_links li a {
+            font-size: 17px;
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -59,9 +82,39 @@
             <div class="sidebar-content">
                 <div class="sidebar-logo text-center pb-3">
                     <img style="height: 50px; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
+
+                    <ul class="social_links mt-2">
+                        <li>
+                            <a href="{{ config('speeddigit.website') }}" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.facebook') }}" target="_blank"><i class="fa-brands fa-square-facebook"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.twitter') }}" target="_blank"><i class="fa-brands fa-square-twitter"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.instagram') }}" target="_blank"><i class="fa-brands fa-square-instagram"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.youtube') }}" target="_blank"><i class="fa-brands fa-square-youtube"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.linkedin') }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="{{ config('speeddigit.tiktok') }}" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                        </li>
+                    </ul>
                 </div>
 
-                <ul class="step-list scrollable">
+                {{-- <ul class="step-list scrollable">
                     <li class="active">
                         <span class="step-txt">
                             <span class="step-name">{{ __("Account Type") }}</span>
@@ -78,8 +131,8 @@
                     </li>
                     <li>
                         <span class="step-txt">
-                            <span class="step-name">{{ __("Business Details") }}</span>
-                            <span class="step-info">{{ __("Setup your business details") }}</span>
+                            <span class="step-name">{{ __("Company Details") }}</span>
+                            <span class="step-info">{{ __("Setup your Company details") }}</span>
                         </span>
                         <span class="step-number border-primary">3</span>
                     </li>
@@ -97,7 +150,7 @@
                         </span>
                         <span class="step-number border-primary">5</span>
                     </li>
-                </ul>
+                </ul> --}}
             </div>
         </div>
         <div class="all-steps">
@@ -126,7 +179,7 @@
                                             </span>
                                             <span class="part-txt">
                                                 <span class="title">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</span>
-                                                <span class="dscr">{{ __('To Supervise All Shops') }}</span>
+                                                <span class="dscr">{{ __('To Supervise All Stores') }}</span>
                                             </span>
                                         </label>
                                     </div>
@@ -139,10 +192,10 @@
                                             <i class="fa-solid fa-shop"></i>
                                         </span>
                                         <span class="part-txt">
-                                            <span class="title">{{ __('Choose Shop') }}</span>
+                                            <span class="title">{{ __('Choose Store') }}</span>
                                             {{-- <span class="dscr">Create corporate account to manage users</span> --}}
                                             <select name="branch_id" class="select2">
-                                                <option value="">{{ __('Select Shop') }}</option>
+                                                <option value="">{{ __('Select Store') }}</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -254,13 +307,13 @@
                 <div class="step-content-wrap">
                     <div class="step-content">
                         <div class="step-heading">
-                            <h4 class="step-title">Business Details</h4>
+                            <h4 class="step-title">Company Details</h4>
                             <span>For further details, visit our <a href="#">Help Page</a>.</span>
                         </div>
                         <div class="business-details-wrap">
                             <form class="row">
                                 <div class="col-12">
-                                    <label for="businessName" class="form-label">Business Name</label>
+                                    <label for="businessName" class="form-label">Company Name</label>
                                     <input type="text" id="businessName" class="form-control">
                                 </div>
                                 <div class="col-12">
@@ -278,7 +331,7 @@
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <label for="businessDscr" class="form-label">Business Description</label>
+                                    <label for="businessDscr" class="form-label">Company Description</label>
                                     <textarea id="businessDscr" rows="6" class="form-control"></textarea>
                                 </div>
                                 <div class="col-12">

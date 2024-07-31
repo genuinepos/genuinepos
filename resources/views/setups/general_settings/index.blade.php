@@ -78,7 +78,7 @@
                                     <ul class="menus_unorder_list">
                                         @if (auth()->user()->can('business_or_shop_settings'))
                                             <li class="menu_list">
-                                                <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __('Business Settings') }}</a>
+                                                <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __('Company Settings') }}</a>
                                             </li>
                                         @endif
 
@@ -94,7 +94,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_settings'))
+                                        @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="purchase_settings_form" href="#">{{ __('Purchase Settings') }}</a>
                                             </li>
@@ -182,7 +182,7 @@
                                     @include('setups.general_settings.partials.view_partials.product_settings')
                                 @endif
 
-                                @if (auth()->user()->can('purchase_settings'))
+                                @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
                                     @include('setups.general_settings.partials.view_partials.purchase_settings')
                                 @endif
 

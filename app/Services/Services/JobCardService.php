@@ -20,12 +20,14 @@ class JobCardService
         $query = DB::table('service_job_cards')
             ->leftJoin('accounts as customers', 'service_job_cards.customer_account_id', 'customers.id')
             ->leftJoin('sales', 'service_job_cards.sale_id', 'sales.id')
+            ->leftJoin('sales as quotations', 'service_job_cards.quotation_id', 'quotations.id')
             ->leftJoin('brands', 'service_job_cards.brand_id', 'brands.id')
             ->leftJoin('service_devices', 'service_job_cards.device_id', 'service_devices.id')
             ->leftJoin('service_device_models', 'service_job_cards.device_model_id', 'service_device_models.id')
             ->leftJoin('service_status', 'service_job_cards.status_id', 'service_status.id')
             ->leftJoin('branches', 'service_job_cards.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'service_job_cards.created_by_id', 'created_by.id')
             ->whereNotNull('job_no');
 
@@ -51,6 +53,9 @@ class JobCardService
             'sales.id as sale_id',
             'sales.invoice_id',
 
+            'quotations.id as quotation_id',
+            'quotations.quotation_id as quotation_no',
+
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -61,6 +66,7 @@ class JobCardService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('service_job_cards.date_ts', 'desc');
 
         return DataTables::of($jobCards)
@@ -145,10 +151,19 @@ class JobCardService
 
                 $isSaleCompleted = '';
                 if ($row->sale_id) {
+
                     $isSaleCompleted = '<strong><i class="fa-solid fa-check-double text-success"></i></strong>';
                 }
 
-                return '<a href="' . route('services.job.cards.show', [$row->id]) . '" id="details_btn">' . $row->job_no .$isSaleCompleted. '</a>';
+                return '<a href="' . route('services.job.cards.show', [$row->id]) . '" id="details_btn">' . $row->job_no . $isSaleCompleted . '</a>';
+            })
+
+            ->editColumn('quotation_no', function ($row) {
+
+                if ($row->quotation_no) {
+
+                    return '<a href="' . route('sale.quotations.show', [$row->quotation_id]) . '" id="details_btn">' . $row->quotation_no . '</a>';
+                }
             })
 
             ->editColumn('invoice_id', function ($row) {
@@ -176,7 +191,7 @@ class JobCardService
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_cost', fn ($row) => '<span class="total_cost" data-value="' . $row->total_cost . '">' . \App\Utils\Converter::format_in_bdt($row->total_cost) . '</span>')
+            ->editColumn('total_cost', fn ($row) => '<span class="total_cost" data-value="' . curr_cnv($row->total_cost, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_cost, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('status', function ($row) {
 
@@ -188,7 +203,7 @@ class JobCardService
                 return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
-            ->rawColumns(['action', 'date', 'delivery_date', 'due_date', 'branch', 'job_no', 'invoice_id', 'branch', 'customer', 'total_cost', 'status', 'created_by'])
+            ->rawColumns(['action', 'date', 'delivery_date', 'due_date', 'branch', 'job_no', 'quotation_no', 'invoice_id', 'branch', 'customer', 'total_cost', 'status', 'created_by'])
             ->make(true);
     }
 
@@ -198,6 +213,7 @@ class JobCardService
 
         $addJobCard = new JobCard();
         $addJobCard->branch_id = auth()->user()->branch_id;
+        $addJobCard->quotation_id = isset($request->quotation_id) ? $request->quotation_id : null;
         $addJobCard->job_no = $jobNo;
         $addJobCard->customer_account_id = $request->customer_account_id;
         $addJobCard->service_type = $request->service_type;
@@ -251,9 +267,7 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/services/documents/');
-
-            $addJobCard->document = FileUploader::upload($request->file('document'), $dir);
+            $addJobCard->document = FileUploader::fileUpload(fileType: 'jobCardDocument', uploadableFile: $request->file('document'));
         }
 
         $addJobCard->save();
@@ -264,6 +278,7 @@ class JobCardService
     public function updateJobCard(int $id, object $request): object
     {
         $updateJobCard = $this->singleJobCard(id: $id);
+        $updateJobCard->quotation_id = isset($request->quotation_id) ? $request->quotation_id : null;
         $updateJobCard->customer_account_id = $request->customer_account_id;
         $updateJobCard->service_type = $request->service_type;
         $updateJobCard->address = $request->address;
@@ -318,13 +333,9 @@ class JobCardService
 
         if ($request->hasFile('document')) {
 
-            $dir = public_path('uploads/services/documents/');
-            if (isset($updateJobCard->document) && file_exists($dir . $updateJobCard->document)) {
+            $uploadedFile = FileUploader::fileUpload(fileType: 'jobCardDocument', uploadableFile: $request->file('document'), deletableFile: $updateJobCard->document);
 
-                unlink($dir . $updateJobCard->document);
-            }
-
-            $updateJobCard->document = FileUploader::upload($request->file('document'), $dir);
+            $updateJobCard->document = $uploadedFile;
         }
 
         $updateJobCard->save();
@@ -439,6 +450,8 @@ class JobCardService
 
                 return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is added against this job card.')];
             }
+
+            FileUploader::deleteFile(fileType: 'jobCardDocument', deletableFile: $deleteJobCard->document);
 
             $deleteJobCard->delete();
         }

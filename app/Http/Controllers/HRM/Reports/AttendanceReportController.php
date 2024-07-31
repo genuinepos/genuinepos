@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\HRM\Reports;
 
-use App\Enums\BooleanType;
-use App\Enums\RoleType;
 use Carbon\Carbon;
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Hrm\DepartmentService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\HRM\Reports\AttendanceReportIndexRequest;
 
 class AttendanceReportController extends Controller
 {
@@ -22,10 +23,8 @@ class AttendanceReportController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(AttendanceReportIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('attendance_report'), 403);
-
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -82,7 +81,7 @@ class AttendanceReportController extends Controller
 
         $users = $query->select('id', 'prefix', 'name', 'last_name', 'emp_id', 'branch_id')->get();
 
-        $found = $found = $this->attendanceFound(users: $users);
+        $found = $this->attendanceFound(users: $users);
 
         $holidayBranches = \App\Models\Hrm\HolidayBranch::query()->with(['holiday'])
             ->leftJoin('hrm_holidays', 'hrm_holiday_branches.holiday_id', 'hrm_holidays.id')

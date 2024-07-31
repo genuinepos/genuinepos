@@ -11,12 +11,18 @@ class ManageCustomerService
 {
     public function customerListTable($request)
     {
+        $authUserBranchId = auth()->user()->branch_id;
+        $generalSettings = config('generalSettings');
+
         $customers = '';
         $query = DB::table('contacts')
+            ->leftJoin('branches', 'contacts.branch_id', 'branches.id')
             ->leftJoin('customer_groups', 'contacts.customer_group_id', 'customer_groups.id')
             ->leftJoin('accounts', 'contacts.id', 'accounts.contact_id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branch', 'account_ledgers.branch_id', 'ledger_branch.id')
+            ->leftJoin('currencies', 'ledger_branch.currency_id', 'currencies.id')
             ->where('contacts.type', ContactType::Customer->value);
 
         if (!empty($request->branch_id)) {
@@ -47,12 +53,15 @@ class ManageCustomerService
             'contacts.status',
             'contacts.phone',
             'contacts.credit_limit',
+            'branches.name as branch_name',
             // 'customer_groups.name as group_name',
             'account_groups.default_balance_type',
             DB::raw(
                 '
                     SUM(
                         CASE
+                            WHEN account_ledgers.voucher_type = 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                             WHEN account_ledgers.voucher_type = 0
                             THEN account_ledgers.debit
                             ELSE 0
@@ -60,6 +69,8 @@ class ManageCustomerService
                     ) AS opening_total_debit,
                     SUM(
                         CASE
+                            WHEN account_ledgers.voucher_type = 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                             WHEN account_ledgers.voucher_type = 0
                             THEN account_ledgers.credit
                             ELSE 0
@@ -67,6 +78,8 @@ class ManageCustomerService
                     ) AS opening_total_credit,
                     SUM(
                         CASE
+                            WHEN account_ledgers.voucher_type != 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                             WHEN account_ledgers.voucher_type != 0
                             THEN account_ledgers.debit
                             ELSE 0
@@ -74,6 +87,8 @@ class ManageCustomerService
                     ) AS curr_total_debit,
                     SUM(
                         CASE
+                            WHEN account_ledgers.voucher_type != 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                             WHEN account_ledgers.voucher_type != 0
                             THEN account_ledgers.credit
                             ELSE 0
@@ -81,33 +96,57 @@ class ManageCustomerService
                     ) AS curr_total_credit,
                     SUM(
                         CASE
-                        WHEN account_ledgers.voucher_type = 1
-                        THEN account_ledgers.debit ELSE 0 END
+                            WHEN account_ledgers.voucher_type = 1 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN account_ledgers.voucher_type = 1
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
                     ) AS total_sale,
                     SUM(
                         CASE
-                        WHEN account_ledgers.voucher_type = 2
-                        THEN account_ledgers.credit ELSE 0 END
+                            WHEN account_ledgers.voucher_type = 2 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN account_ledgers.voucher_type = 2
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
                     ) AS total_sales_return,
                     SUM(
                         CASE
-                        WHEN account_ledgers.voucher_type = 3
-                        THEN account_ledgers.credit ELSE 0 END
+                            WHEN account_ledgers.voucher_type = 3 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN account_ledgers.voucher_type = 3
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
                     ) AS total_purchase,
                     SUM(
                         CASE
-                        WHEN account_ledgers.voucher_type = 4
-                        THEN account_ledgers.debit ELSE 0 END
+                            WHEN account_ledgers.voucher_type = 4 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN account_ledgers.voucher_type = 4
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
                     ) AS total_purchase_return,
                     SUM(
                         CASE
-                        WHEN account_ledgers.voucher_type = 8
-                        THEN account_ledgers.credit ELSE 0 END
+                            WHEN account_ledgers.voucher_type = 8 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN account_ledgers.voucher_type = 8
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
                     ) AS total_received,
                     SUM(
                         CASE
-                        WHEN account_ledgers.voucher_type = 9
-                        THEN account_ledgers.debit ELSE 0 END
+                            WHEN account_ledgers.voucher_type = 9 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            WHEN account_ledgers.voucher_type = 9
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
                     ) AS total_paid
                 '
             ),
@@ -122,6 +161,7 @@ class ManageCustomerService
             'contacts.phone',
             'contacts.credit_limit',
             // 'customer_groups.name',
+            'branches.name',
             'account_groups.default_balance_type',
         )->orderBy('contacts.id', 'desc');
 
@@ -162,6 +202,17 @@ class ManageCustomerService
             ->editColumn('contact_id', function ($row) {
 
                 return $row->contact_id . '(' . $row->prefix . ')';
+            })
+
+            ->editColumn('branch', function ($row) use ($generalSettings) {
+
+                if ($row->branch_name) {
+
+                    return $row->branch_name;
+                } else {
+
+                    return $generalSettings['business_or_shop__business_name'];
+                }
             })
 
             ->editColumn('credit_limit', function ($row) {

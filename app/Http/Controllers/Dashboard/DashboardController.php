@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Dashboard\DashboardService;
-use Yajra\DataTables\Facades\DataTables;
 
-define('TODAY_DATE', Carbon::today());
+// define('TODAY_DATE', Carbon::today());
 
 class DashboardController extends Controller
 {
@@ -30,7 +27,7 @@ class DashboardController extends Controller
             auth()->user()?->branch?->parent_branch_id :
             auth()->user()->branch_id;
 
-        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get(['id', 'name']);
 
         return view('dashboard.dashboard_1', compact('branches', 'thisWeek', 'thisYear', 'thisMonth', 'toDay'));
     }

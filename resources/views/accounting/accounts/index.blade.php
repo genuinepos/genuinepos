@@ -23,9 +23,9 @@
                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
                                     @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                            <label><strong>{{ location_label() }} </strong></label>
                                             <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -68,11 +68,11 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('List Of Accounts') }}</h6>
+                        <h6>{{ __('List of Accounts') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('accounts.create', \App\Enums\AccountCreateAndEditType::Others->value) }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Accounts') }}</a>
+                        <a href="{{ route('accounts.create', \App\Enums\AccountCreateAndEditType::Others->value) }}" id="addAccountBtn" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Account') }}</a>
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
                                     <th class="text-start">{{ __('Name') }}</th>
                                     <th class="text-start">{{ __('A/c Number') }}</th>
                                     <th class="text-start">{{ __('Bank') }}</th>
-                                    <th class="text-start">{{ __('Shop/Business') }}</th>
+                                    <th class="text-start">{{ location_label() }}</th>
                                     <th class="text-start">{{ __('Opening Balance') }}</th>
                                     <th class="text-start">{{ __('Debit') }}</th>
                                     <th class="text-start">{{ __('Credit') }}</th>
@@ -325,7 +325,7 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                         } else {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -362,7 +362,7 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                         } else {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -421,7 +421,7 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                         } else {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

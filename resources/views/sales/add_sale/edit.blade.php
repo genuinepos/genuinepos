@@ -75,9 +75,15 @@
             width: 143px;
         }
 
+        /* .select2-container--open .select2-dropdown--below {
+                    width: 298px !important;
+                } */
+
         /*.select2-selection:focus {
-                             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                        } */
+
+                                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                                    } */
+
         label.col-2,
         label.col-3,
         label.col-4,
@@ -160,7 +166,10 @@
                                                         <div class="input-group flex-nowrap">
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
-                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $sale->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                                    @php
+                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
+                                                                    @endphp
+                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $sale->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
@@ -403,7 +412,12 @@
 
                                                                                 $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
-                                                                                $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $sale->branch_id);
+                                                                                $currentStock = 0;
+                                                                                if ($saleProduct?->product?->is_manage_stock == 1) {
+                                                                                    $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $sale->branch_id, warehouseId: $saleProduct->warehouse_id);
+                                                                                } else {
+                                                                                    $currentStock = PHP_INT_MAX;
+                                                                                }
 
                                                                                 $baseUnitMultiplier = $saleProduct?->unit?->base_unit_multiplier ? $saleProduct?->unit?->base_unit_multiplier : 1;
                                                                             @endphp
@@ -425,6 +439,7 @@
                                                                             <input type="hidden" name="sale_product_ids[]" value="{{ $saleProduct->id }}">
                                                                             <input type="hidden" id="current_quantity" value="{{ $saleProduct->quantity }}">
                                                                             <input type="hidden" id="current_stock" value="{{ $currentStock }}">
+                                                                            <input type="hidden" data-product_name="{{ $saleProduct->product->name . $variant }}" data-unit_name="{{ $saleProduct?->unit?->name }}" id="stock_limit" value="{{ $currentStock }}">
                                                                             <input type="hidden" class="unique_id" id="{{ $saleProduct->product_id . $variantId . $saleProduct->warehouse_id }}" value="{{ $saleProduct->product_id . $variantId . $saleProduct->warehouse_id }}">
                                                                         </td>
 

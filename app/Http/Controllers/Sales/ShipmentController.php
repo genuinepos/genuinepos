@@ -12,6 +12,8 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Sales\ShipmentEditRequest;
+use App\Http\Requests\Sales\ShipmentIndexRequest;
 use App\Http\Requests\Sales\ShipmentUpdateRequest;
 
 class ShipmentController extends Controller
@@ -25,10 +27,8 @@ class ShipmentController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(ShipmentIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('shipment_access'), 403);
-
         if ($request->ajax()) {
 
             return $this->shipmentService->shipmentListTable($request);
@@ -44,7 +44,7 @@ class ShipmentController extends Controller
         return view('sales.add_sale.shipments.index', compact('branches', 'customerAccounts'));
     }
 
-    public function edit($id)
+    public function edit($id, ShipmentEditRequest $request)
     {
         $sale = $this->saleService->singleSale(id: $id);
 

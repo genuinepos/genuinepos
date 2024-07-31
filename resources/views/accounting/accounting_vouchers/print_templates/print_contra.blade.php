@@ -71,20 +71,23 @@
                         @if ($contra?->branch?->parent_branch_id)
 
                             @if ($contra->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
+
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($contra->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
+
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -214,7 +217,7 @@
                             <tr>
                                 <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Send Amount') }}</th>
                                 <td class="text-start fw-bold" style="font-size:11px!important;">
-                                    : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -253,9 +256,9 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-start fw-bold" style="font-size:11px!important;">
-                                    : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -385,20 +388,23 @@
                         @if ($contra?->branch?->parent_branch_id)
 
                             @if ($contra->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
+
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($contra->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
+
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+
+                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
@@ -528,7 +534,7 @@
                             <tr>
                                 <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Send Amount') }}</th>
                                 <td class="text-start fw-bold" style="font-size:9px!important;">
-                                    : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
                         </thead>
@@ -567,9 +573,9 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Received Amount') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Received Amount') }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-start fw-bold" style="font-size:9px!important;">
-                                    : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $contra?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
                         </thead>

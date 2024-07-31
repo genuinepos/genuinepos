@@ -5,24 +5,25 @@ namespace App\Http\Controllers\Setups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Setups\BranchEditRequest;
+use App\Http\Requests\Setups\BranchIndexRequest;
 use App\Http\Requests\Setups\BranchStoreRequest;
+use App\Http\Requests\Setups\BranchCreateRequest;
 use App\Http\Requests\Setups\BranchDeleteRequest;
 use App\Http\Requests\Setups\BranchUpdateRequest;
 use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
 
 class BranchController extends Controller
 {
-    public function index(Request $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
+    public function index(BranchIndexRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         $generalSettings = config('generalSettings');
-
-        abort_if(!auth()->user()->can('branches_create'), 403);
-
+        
         $indexMethodContainer = $branchControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -30,10 +31,8 @@ class BranchController extends Controller
         return view('setups.branches.index', compact('currentCreatedBranchCount'));
     }
 
-    public function create(BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
+    public function create(BranchCreateRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('branches_create'), 403);
-
         $createMethodContainer = $branchControllerMethodContainersInterface->createMethodContainer();
 
         extract($createMethodContainer);
@@ -59,10 +58,10 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop created successfully'));
+        return response()->json(__('Store created successfully'));
     }
 
-    public function edit($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
+    public function edit($id, BranchEditRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('branches_edit'), 403);
 
@@ -86,7 +85,7 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop updated successfully'));
+        return response()->json(__('Store updated successfully'));
     }
 
     public function delete($id, BranchDeleteRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
@@ -107,14 +106,14 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Shop deleted successfully'));
+        return response()->json(__('Store deleted successfully'));
     }
 
     public function deleteLogo($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         $deleteLogoMethodContainer = $branchControllerMethodContainersInterface->deleteLogoMethodContainer(id: $id);
 
-        return response()->json(__('Shop logo is deleted successfully'));
+        return response()->json(__('Store logo is deleted successfully'));
     }
 
     public function parentWithChildBranches($id, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HRM\PayrollEditRequest;
+use App\Http\Requests\HRM\PayrollIndexRequest;
 use App\Http\Requests\HRM\PayrollStoreRequest;
+use App\Http\Requests\HRM\PayrollCreateRequest;
 use App\Http\Requests\HRM\PayrollDeleteRequest;
 use App\Http\Requests\HRM\PayrollUpdateRequest;
 use App\Interfaces\CodeGenerationServiceInterface;
@@ -14,15 +16,13 @@ use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 
 class PayrollController extends Controller
 {
-    public function index(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    public function index(PayrollIndexRequest $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_index'), 403);
-
         $indexMethodContainer = $payrollControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {
 
-            return $indexMethodContainer;;
+            return $indexMethodContainer;
         }
 
         extract($indexMethodContainer);
@@ -48,10 +48,8 @@ class PayrollController extends Controller
         return view('hrm.print_templates.print_payroll', compact('payroll', 'printPageSize'));
     }
 
-    public function create(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    public function create(PayrollCreateRequest $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_create'), 403);
-
         $createMethodContainer = $payrollControllerMethodContainersInterface->createMethodContainer(request: $request);
 
         extract($createMethodContainer);
@@ -81,10 +79,8 @@ class PayrollController extends Controller
         return response()->json(__('Payroll created successfully'));
     }
 
-    public function edit($id, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    public function edit($id, PayrollEditRequest $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('payrolls_edit'), 403);
-
         $editMethodContainer = $payrollControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

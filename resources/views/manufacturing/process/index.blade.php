@@ -24,7 +24,7 @@
 
                     @if (auth()->user()->can('process_add'))
                         <div class="col-6 d-flex justify-content-end">
-                            <a href="{{ route('manufacturing.process.select.product.modal') }}" class="btn btn-sm btn-primary" id="getProcessSelectProductModal"><i class="fas fa-plus-square"></i> {{ __('Add New') }}</a>
+                            <a href="{{ route('manufacturing.process.select.product.modal') }}" class="btn btn-sm btn-success" id="getProcessSelectProductModal"><i class="fas fa-plus-square"></i> {{ __('Add New') }}</a>
                         </div>
                     @endif
                 </div>
@@ -181,7 +181,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -212,7 +212,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -273,7 +273,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        toastr.error("{{ __('Net Connection Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

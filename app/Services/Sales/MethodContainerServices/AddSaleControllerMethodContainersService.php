@@ -116,7 +116,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         return $data;
     }
 
-    public function createMethodContainer(): array
+    public function createMethodContainer(object $codeGenerator): array
     {
         $data = [];
 
@@ -157,6 +157,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $data['priceGroupProducts'] = $this->managePriceGroupService->priceGroupProducts();
 
         $data['priceGroups'] = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
+        $data['voucherNo'] = $this->saleService->salesInvoiceOrOthersId(codeGenerator: $codeGenerator);
 
         return $data;
     }
@@ -298,7 +300,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             $subjectType = UserActivityLogSubjectType::Quotation->value;
         } elseif ($request->status == SaleStatus::Draft->value) {
 
-            $subjectType = UserActivityLogSubjectType::Draft->value;;
+            $subjectType = UserActivityLogSubjectType::Draft->value;
         }
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: $subjectType, dataObj: $sale);

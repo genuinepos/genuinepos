@@ -110,7 +110,11 @@
                                                         @if ($supplierAccount->is_walk_in_customer == 1)
                                                             @continue
                                                         @endif
-                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" {{ $supplierAccount->id == $purchase->supplier_account_id ? 'SELECTED' : '' }} value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+
+                                                        @php
+                                                            $accountType = $supplierAccount->sub_sub_group_number == 10 ? '' : ' -(' . __('Customer') . ')';
+                                                        @endphp
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" {{ $supplierAccount->id == $purchase->supplier_account_id ? 'SELECTED' : '' }} value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . $accountType }}</option>
                                                     @endforeach
                                                 </select>
 
@@ -154,7 +158,7 @@
                                         </div>
                                     @else
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Business') }} </b> </label>
+                                            <label class="col-4"><b>{{ __('Store Location') }}</b></label>
                                             <div class="col-8">
                                                 <input readonly type="text" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] }}">
                                             </div>

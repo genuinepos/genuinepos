@@ -50,7 +50,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($payment->branch_id) {
@@ -106,7 +106,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                             <td class="text-end fw-bold" style="font-size:11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                             </td>
@@ -165,10 +165,7 @@
                 </div>
 
                 @php
-                    $debtiDescription = $payment
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'dr')
-                        ->first();
+                    $debtiDescription = $payment->voucherDescriptions()->where('amount_type', 'dr')->first();
                 @endphp
 
                 <div class="purchase_product_table mt-2">
@@ -396,7 +393,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -419,7 +418,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -428,4 +427,3 @@
         });
     };
 </script>
-

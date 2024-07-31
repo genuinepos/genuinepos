@@ -15,7 +15,9 @@ use App\Services\Accounts\AccountService;
 use App\Services\Sales\SalesOrderService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\StockChainService;
 use App\Services\Setups\PaymentMethodService;
+use App\Services\Products\ProductStockService;
 use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
@@ -44,16 +46,18 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         private BranchService $branchService,
         private PriceGroupService $priceGroupService,
         private ManagePriceGroupService $managePriceGroupService,
+        private ProductStockService $productStockService,
+        private StockChainService $stockChainService,
         private UserActivityLogService $userActivityLogService,
     ) {
     }
 
-    public function indexMethodContainer(object $request): object|array
+    public function indexMethodContainer(object $request, ?int $saleScreenType = null): object|array
     {
         $data = [];
         if ($request->ajax()) {
 
-            return $this->quotationService->quotationListTable($request);
+            return $this->quotationService->quotationListTable(request: $request, saleScreenType: $saleScreenType);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
@@ -233,6 +237,51 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
 
             $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::ChangeQuotationStatus->value, dataObj: $updateQuotationStatus);
         }
+
+        return null;
+    }
+
+    public function deleteMethodContainer(int $id): ?array
+    {
+        $deleteSale = $this->saleService->deleteSale($id);
+
+        if (isset($deleteSale['pass']) && $deleteSale['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $deleteSale['msg']];
+        }
+
+        if ($deleteSale->status == SaleStatus::Final->value) {
+
+            foreach ($deleteSale->saleProducts as $saleProduct) {
+
+                $this->productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->variant_id);
+
+                $this->productStockService->adjustBranchAllStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $saleProduct->branch_id);
+
+                if ($saleProduct->warehouse_id) {
+
+                    $this->productStockService->adjustWarehouseStock($saleProduct->product_id, $saleProduct->variant_id, $saleProduct->warehouse_id);
+                } else {
+
+                    $this->productStockService->adjustBranchStock($saleProduct->product_id, $saleProduct->variant_id, $saleProduct->branch_id);
+                }
+
+                foreach ($saleProduct->stockChains as $stockChain) {
+
+                    if ($stockChain->purchaseProduct) {
+
+                        $this->stockChainService->adjustPurchaseProductOutLeftQty($stockChain->purchaseProduct);
+                    }
+                }
+            }
+
+            if (isset($deleteSale->salesOrder)) {
+
+                $this->salesOrderService->calculateDeliveryLeftQty($deleteSale->salesOrder);
+            }
+        }
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Quotation->value, dataObj: $deleteSale);
 
         return null;
     }

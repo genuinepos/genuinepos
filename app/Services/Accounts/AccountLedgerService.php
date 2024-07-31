@@ -41,12 +41,15 @@ class AccountLedgerService
         $amount_type,
         $cash_bank_account_id = null,
         $branch_id = null,
+        $temporary_time = null,
     ) {
         $branchId = $branch_id ? $branch_id : auth()->user()->branch_id;
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
         $time = $voucher_type_id == 0 ? ' 01:00:00' : date(' H:i:s');
-        $add->date = date('Y-m-d H:i:s', strtotime($date.$time));
+        $__time = $temporary_time ? ' '.$temporary_time : $time;
+        // $add->date = date('Y-m-d H:i:s', strtotime($date.$time));
+        $add->date = date('Y-m-d H:i:s', strtotime($date.$__time));
         $add->account_id = $account_id;
         $add->voucher_type = $voucher_type_id;
         $add->{$voucherType['id']} = $trans_id;

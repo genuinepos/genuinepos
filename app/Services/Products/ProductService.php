@@ -2,14 +2,15 @@
 
 namespace App\Services\Products;
 
-use App\Enums\BooleanType;
-use App\Enums\IsDeleteInUpdate;
 use App\Enums\RoleType;
-use App\Models\Products\Product;
-use App\Models\Products\ProductVariant;
-use Illuminate\Support\Facades\DB;
+use App\Enums\BooleanType;
+use App\Utils\FileUploader;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+use App\Enums\IsDeleteInUpdate;
+use App\Models\Products\Product;
+use Illuminate\Support\Facades\DB;
+use App\Models\Products\ProductVariant;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
@@ -135,7 +136,7 @@ class ProductService
 
                 if ($row->thumbnail_photo) {
 
-                    $photo = asset('uploads/product/thumbnail/' . $row->thumbnail_photo);
+                    $photo = file_link(fileType: 'productThumbnail', fileName: $row->thumbnail_photo);
                 }
 
                 return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $photo . '">';
@@ -439,18 +440,13 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            $productThumbnailPhoto = $request->file('photo');
-            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-
-            $dir = public_path('uploads/product/thumbnail/');
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
-            $addProduct->thumbnail_photo = $productThumbnailName;
+            // $dir = tenant('id') . '/' . 'products/thumbnails/';
+            $addProduct->thumbnail_photo = FileUploader::uploadWithResize(
+                fileType: 'productThumbnail',
+                uploadableFile: $request->file('photo'),
+                height: 300,
+                width: 300,
+            );
         }
 
         $addProduct->save();
@@ -517,25 +513,15 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            $dir = public_path('uploads/product/thumbnail/');
+            $uploadedFile = FileUploader::uploadWithResize(
+                fileType: 'productThumbnail',
+                uploadableFile: $request->file('photo'),
+                height: 300,
+                width: 300,
+                deletableFile: $updateProduct->thumbnail_photo,
+            );
 
-            if ($updateProduct->thumbnail_photo) {
-
-                if (file_exists($dir . $updateProduct->thumbnail_photo)) {
-
-                    unlink($dir . $updateProduct->thumbnail_photo);
-                }
-            }
-
-            if (!\File::isDirectory($dir)) {
-
-                \File::makeDirectory($dir, 493, true);
-            }
-
-            $productThumbnailPhoto = $request->file('photo');
-            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($dir . '/' . $productThumbnailName);
-            $updateProduct->thumbnail_photo = $productThumbnailName;
+            $updateProduct->thumbnail_photo = $uploadedFile;
         }
 
         $updateProduct->save();
@@ -626,23 +612,15 @@ class ProductService
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
             }
 
-            $dir = public_path('uploads/product/thumbnail/');
-            if (isset($deleteProduct->thumbnail_photo) && file_exists($dir . $deleteProduct->thumbnail_photo)) {
-
-                unlink($dir . $deleteProduct->thumbnail_photo);
-            }
+            FileUploader::deleteFile(fileType: 'productThumbnail', deletableFile: $deleteProduct->thumbnail_photo);
 
             if (count($deleteProduct->variants) > 0) {
 
-                $variantImgDir = public_path('uploads/product/variant_image/');
                 foreach ($deleteProduct->variants as $variant) {
 
                     if ($variant->variant_image) {
 
-                        if (file_exists($variantImgDir . $variant->variant_image)) {
-
-                            unlink($variantImgDir . $variant->variant_image);
-                        }
+                        FileUploader::deleteFile(fileType: 'productVariant', deletableFile: $variant->variant_image);
                     }
                 }
             }
@@ -723,29 +701,6 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
-    }
-
-    public function productUpdateValidation(object $request, int $id)
-    {
-        $request->validate(
-            [
-                'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,' . $id,
-                'unit_id' => 'required',
-                'photo' => 'sometimes|image|max:2048',
-            ],
-            [
-                'unit_id.required' => __('Product unit field is required.'),
-            ]
-        );
-
-        if ($request->is_variant == BooleanType::True->value) {
-
-            $request->validate(
-
-                ['variant_image.*' => 'sometimes|image|max:2048'],
-            );
-        }
     }
 
     public function getLastProductSerialCode(): string

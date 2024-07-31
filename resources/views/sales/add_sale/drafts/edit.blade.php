@@ -78,8 +78,8 @@
         }
 
         /*.select2-selection:focus {
-                             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                        } */
+                                                 box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                                            } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -152,11 +152,14 @@
                                                         <div class="input-group flex-nowrap">
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
-                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $draft->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                                    @php
+                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
+                                                                    @endphp
+                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $draft->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -281,13 +284,13 @@
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                                <input {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Discount') }}</label>
                                                 <div class="input-group">
-                                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
+                                                    <input {{ auth()->user()->can('edit_discount_sale_screen') ? '' : 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
 
                                                     <select id="e_discount_type" class="form-control">
                                                         <option value="1">{{ __('Fixed') }}(0.00)</option>
@@ -400,25 +403,14 @@
 
                                                                                 $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
-                                                                                $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $draft->branch_id);
+                                                                                $stockLimit = 0;
+                                                                                if ($saleProduct?->product?->is_manage_stock == 1) {
+                                                                                    $stockLimit = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $draft->branch_id, warehouseId: $saleProduct->warehouse_id);
+                                                                                } else {
+                                                                                    $stockLimit = PHP_INT_MAX;
+                                                                                }
 
                                                                                 $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
-
-                                                                                $stockLimit = 0;
-                                                                                if ($saleProduct->warehouse_id) {
-                                                                                    $stockLimit = DB::table('product_stocks')
-                                                                                        ->where('warehouse_id', $saleProduct->warehouse_id)
-                                                                                        ->where('product_id', $saleProduct->product_id)
-                                                                                        ->where('variant_id', $saleProduct->variant_id)
-                                                                                        ->first()->stock;
-                                                                                } else {
-                                                                                    $stockLimit = DB::table('product_stocks')
-                                                                                        ->where('branch_id', $draft->branch_id)
-                                                                                        ->where('warehouse_id', null)
-                                                                                        ->where('product_id', $saleProduct->product_id)
-                                                                                        ->where('variant_id', $saleProduct->variant_id)
-                                                                                        ->first()->stock;
-                                                                                }
                                                                             @endphp
 
                                                                             <span class="product_name">{{ $saleProduct->product->name . $variant }}</span>
@@ -436,7 +428,7 @@
                                                                             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $saleProduct->unit_discount_amount }}">
                                                                             <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $saleProduct->unit_cost_inc_tax }}">
                                                                             <input type="hidden" name="sale_product_ids[]" value="{{ $saleProduct->id }}">
-                                                                            <input type="hidden" id="current_stock" value="{{ $currentStock }}">
+                                                                            <input type="hidden" id="current_stock" value="{{ $stockLimit }}">
                                                                             <input type="hidden" data-product_name="{{ $saleProduct->product->name . $variant }}" data-unit_name="{{ $saleProduct?->unit?->name }}" id="stock_limit" value="{{ $stockLimit }}">
                                                                             <input type="hidden" class="unique_id" id="{{ $saleProduct->product_id . $variantId . $saleProduct->warehouse_id }}" value="{{ $saleProduct->product_id . $variantId . $saleProduct->warehouse_id }}">
                                                                         </td>

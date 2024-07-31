@@ -2,11 +2,12 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\BooleanType;
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
+use App\Models\Sales\Sale as Draft;
 use Yajra\DataTables\Facades\DataTables;
 
 class DraftService
@@ -20,21 +21,11 @@ class DraftService
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.status', SaleStatus::Draft->value);
 
         $this->filteredQuery($request, $query);
-
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-
-            $query->where('sales.branch_id', auth()->user()->branch_id);
-        }
 
         $quotations = $query->select(
             'sales.id',
@@ -45,6 +36,7 @@ class DraftService
             'sales.total_qty',
             'sales.total_invoice_amount',
             'sales.order_status',
+            'sales.sale_screen',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -53,6 +45,7 @@ class DraftService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sales.draft_date_ts', 'desc');
 
         return DataTables::of($quotations)
@@ -65,17 +58,23 @@ class DraftService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_draft')) {
+                    if (auth()->user()->can('sale_drafts_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sale.drafts.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        if ($row->sale_screen == SaleScreenType::AddSale->value) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sale.drafts.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        } else {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                        }
                     }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('sale_draft')) {
+                    if (auth()->user()->can('sale_drafts_delete')) {
 
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                        $html .= '<a href="' . route('sale.drafts.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
@@ -116,7 +115,7 @@ class DraftService
 
             ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
@@ -227,12 +226,23 @@ class DraftService
             $query->whereBetween('sales.draft_date_ts', $date_range); // Final
         }
 
+        if (auth()->user()->can('sale_drafts_only_own')) {
+
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('sales.branch_id', auth()->user()->branch_id);
+        }
+
         return $query;
     }
 
     public function singleDraft(int $id, array $with = null): ?object
     {
-        $query = Sale::query();
+        $query = Draft::query();
 
         if (isset($with)) {
 

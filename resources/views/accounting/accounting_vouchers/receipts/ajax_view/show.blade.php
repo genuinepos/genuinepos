@@ -53,7 +53,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($receipt->branch_id) {
@@ -109,7 +109,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $receipt?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                             <td class="text-end fw-bold" style="font-size:11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                             </td>
@@ -168,10 +168,7 @@
                 </div>
 
                 @php
-                    $creditDescription = $receipt
-                        ->voucherDescriptions()
-                        ->where('amount_type', 'cr')
-                        ->first();
+                    $creditDescription = $receipt->voucherDescriptions()->where('amount_type', 'cr')->first();
                 @endphp
 
                 <div class="purchase_product_table mt-2">
@@ -423,7 +420,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -441,11 +440,12 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

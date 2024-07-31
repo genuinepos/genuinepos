@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
+use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\SaleProductService;
-use App\Services\Setups\BranchService;
-use Illuminate\Http\Request;
+use App\Services\Accounts\AccountFilterService;
+use App\Http\Requests\Sales\SoldProductIndexRequest;
 
 class SoldProductController extends Controller
 {
@@ -19,10 +19,8 @@ class SoldProductController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(SoldProductIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('view_add_sale'), 403);
-
         if ($request->ajax()) {
 
             return $this->saleProductService->soldProductListTable($request);

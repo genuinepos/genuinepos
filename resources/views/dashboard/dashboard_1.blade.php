@@ -31,6 +31,10 @@
         a#addShortcutBtn {
             background: #0ec726 !important;
         }
+
+        section.dashboard_table_section .table-responsive {
+            min-height: 0vh !important;
+        }
     </style>
 @endpush
 @section('title', 'Dashboard - ')
@@ -60,8 +64,8 @@
                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                     <div class="select-dropdown">
                                         <select name="branch_id" id="branch_id" autofocus>
-                                            <option value="">{{ __('All Shop/Business') }}</option>
-                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                            <option value="">{{ __('All Store/Company') }}</option>
+                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                             @endforeach
@@ -88,7 +92,7 @@
                                     <div class="card-counter-wrap bg-white rounded">
                                         <div class="part-txt">
                                             <h6 class="mb-1" id="status_period_name">{{ __('Today\'s Status.') }}</h6>
-                                            <h6>{{ __('All Purchase Sale & Due') }}</h6>
+                                            <h6>{{ __('All Purchase, Sales & Due') }}</h6>
                                         </div>
                                         <div class="card-counter-row">
                                             <div class="card-counter-col">
@@ -242,7 +246,7 @@
 
             <div class="row g-3">
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6>
@@ -258,7 +262,7 @@
                                                 <th>{{ __('S/L') }}</th>
                                                 <th>{{ __('Product') }}</th>
                                                 {{-- <th>{{ __('Product Code(SKU)') }}</th> --}}
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Alert Qty') }}</th>
                                                 <th>{{ __('Current Stock') }}</th>
                                             </tr>
@@ -272,7 +276,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span> {{ __('Sales Order') }}</h6>
@@ -285,7 +289,7 @@
                                             <tr>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Order ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Delivery Status') }}</th>
                                                 <th>{{ __('Total Amount') }}</th>
@@ -300,7 +304,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span>{{ __('Sales Due Invoices') }}</h6>
@@ -315,7 +319,7 @@
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Invoice Amount') }}</th>
                                                 <th>{{ __('Curr. Due') }}</th>
                                             </tr>
@@ -329,7 +333,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <section>
+                    <section class="dashboard_table_section">
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6><span class="fas fa-table"></span>{{ __('Purchase Due Invoices') }}</h6>
@@ -344,7 +348,7 @@
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ location_label() }}</th>
                                                 <th>{{ __('Purchased Amount') }}</th>
                                                 <th>{{ __('Curr. Due') }}</th>
                                             </tr>
@@ -409,6 +413,9 @@
                 processing: true,
                 serverSide: true,
                 searchable: true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.stock.alert') }}",
                     "data": function(d) {
@@ -446,6 +453,9 @@
             var saleOrderTable = $('#sales_order_table').DataTable({
                 "processing": true,
                 "serverSide": true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.sales.order') }}",
                     "data": function(d) {
@@ -485,6 +495,9 @@
             var saleDueInvoices = $('#sales_due_invoices').DataTable({
                 "processing": true,
                 "serverSide": true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.sales.due.invoices') }}",
                     "data": function(d) {
@@ -524,6 +537,9 @@
             var purchaseDueInvoicestable = $('#purchase_due_invoices_table').DataTable({
                 "processing": true,
                 "serverSide": true,
+                // "language": {
+                //     "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
+                // },
                 "ajax": {
                     "url": "{{ route('dashboard.purchase.due.invoices') }}",
                     "data": function(d) {
@@ -648,7 +664,7 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            toastr.error("{{ __('Net Connection Error.') }}");
                         } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

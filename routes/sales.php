@@ -34,7 +34,7 @@ Route::prefix('sales')->group(function () {
         Route::get('edit/{id}', 'edit')->name('sales.edit');
         Route::post('update/{id}', 'update')->name('sales.update');
         Route::delete('delete/{id}', 'delete')->name('sales.delete');
-        Route::get('search/by/{id}', 'searchByInvoiceId')->name('sales.search.by.invoice.id');
+        Route::get('search/by/{keyword?}', 'searchByInvoiceId')->name('sales.search.by.invoice.id');
 
         Route::controller(SoldProductController::class)->prefix('products')->group(function () {
 
@@ -56,6 +56,7 @@ Route::prefix('sales')->group(function () {
         Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
         Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
         Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');
+        Route::get('sales/invoice/or/others/id/{status?}', 'salesInvoiceOrOthersId')->name('sales.helper.invoice.or.id');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
@@ -65,6 +66,7 @@ Route::prefix('sales')->group(function () {
         Route::post('store', 'store')->name('sales.pos.store');
         Route::get('edit/{saleId}/{saleScreenType?}', 'edit')->name('sales.pos.edit');
         Route::post('update/{saleId}', 'update')->name('sales.pos.update');
+        Route::delete('delete/{id}', 'delete')->name('sales.pos.delete');
 
         Route::controller(PosSaleExchangeController::class)->prefix('pos-exchange')->group(function () {
 
@@ -76,7 +78,7 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {
 
-        Route::get('create/{saleId?}', 'create')->name('cash.register.create');
+        Route::get('create/{saleId?}/{jobCardId?}/{saleScreenType?}', 'create')->name('cash.register.create');
         Route::post('store', 'store')->name('cash.register.store');
         Route::get('show/{id}', 'show')->name('cash.register.show');
         Route::get('close/{id}', 'close')->name('cash.register.close');
@@ -89,6 +91,7 @@ Route::prefix('sales')->group(function () {
         Route::get('show/{id}', 'show')->name('sale.orders.show');
         Route::get('edit/{id}', 'edit')->name('sale.orders.edit');
         Route::post('update/{id}', 'update')->name('sale.orders.update');
+        Route::delete('delete/{id}', 'delete')->name('sale.orders.delete');
         Route::get('search/by/{keyword}', 'searchByOrderId')->name('sale.orders.search');
     });
 
@@ -100,20 +103,22 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(QuotationController::class)->prefix('quotations')->group(function () {
 
-        Route::get('/', 'index')->name('sale.quotations.index');
+        Route::get('index/{saleScreenType?}', 'index')->name('sale.quotations.index');
         Route::get('show/{id}', 'show')->name('sale.quotations.show');
         Route::get('edit/{id}', 'edit')->name('sale.quotations.edit');
         Route::post('update/{id}', 'update')->name('sale.quotations.update');
         Route::get('edit/status/{id}', 'editStatus')->name('sale.quotations.status.edit');
         Route::post('update/status/{id}', 'updateStatus')->name('sale.quotations.status.update');
+        Route::delete('delete/{id}', 'delete')->name('sale.quotations.delete');
     });
 
     Route::controller(DraftController::class)->prefix('drafts')->group(function () {
 
         Route::get('/', 'index')->name('sale.drafts.index');
         Route::get('show/{id}', 'show')->name('sale.drafts.show');
-        Route::get('edit/{id}', 'edit')->name('sale.drafts.edit');
+        Route::get('edit/{id}/{saleScreen?}', 'edit')->name('sale.drafts.edit');
         Route::post('update/{id}', 'update')->name('sale.drafts.update');
+        Route::delete('delete/{id}', 'delete')->name('sale.drafts.delete');
     });
 
     Route::controller(ShipmentController::class)->prefix('shipments')->group(function () {
@@ -134,6 +139,7 @@ Route::prefix('sales')->group(function () {
         Route::get('edit/{id}', 'edit')->name('sales.returns.edit');
         Route::post('update/{id}', 'update')->name('sales.returns.update');
         Route::delete('delete/{id}', 'delete')->name('sales.returns.delete');
+        Route::get('voucher/no', 'voucherNo')->name('sales.returns.voucher.no');
     });
 
     Route::controller(DiscountController::class)->prefix('discounts')->group(function () {

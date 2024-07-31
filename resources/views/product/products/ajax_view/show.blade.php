@@ -12,7 +12,7 @@
                     <div class="col-md-3">
                         <div class="carousel-item active product_image">
                             @if (isset($product->thumbnail_photo))
-                                <img class="rounded" style="height:120px;width:120px;" src="{{ asset('uploads/product/thumbnail/' . $product->thumbnail_photo) }}" class="d-block w-100">
+                                <img class="rounded" style="height:120px;width:120px;" src="{{ file_link(fileType: 'productThumbnail', fileName: $product->thumbnail_photo) }}" class="d-block w-100">
                             @else
                                 <img class="rounded" style="height:120px;width:120px;" src="{{ asset('images/general_default.png') }}" class="d-block w-100">
                             @endif
@@ -184,7 +184,7 @@
                                         @endif
                                         <td style="font-size:11px!important;">
                                             @if ($variant->variant_image)
-                                                <img style="width:30px;height:30px;" src="{{ asset('uploads/product/variant_image/' . $variant->variant_image) }}" alt="">
+                                                <img style="width:30px;height:30px;" src="{{ file_link(fileType: 'productVariant', fileName: $variant->variant_image) }}" alt="">
                                             @endif
                                         </td>
                                     </tr>
@@ -255,14 +255,20 @@
                                         <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
                                         <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
                                         <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">
+                                            @if ($product->is_manage_stock == 1)
+                                                {{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
+                                            @else
+                                                {{ App\Utils\Converter::format_in_bdt(0) . '/' . $product?->unit?->code_name }}
+                                            @endif
+                                        </td>
 
                                         @php
                                             $currentStock = $ownBranchAndWarehouseStock->stock;
                                             $avgUnitCost = $currentStock > 0 ? $ownBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
                                             $stockValue = $avgUnitCost * $currentStock;
                                         @endphp
-                                        <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($stockValue) }}</td>
+                                        <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($product->is_manage_stock == 1 ? $stockValue : $product->product_cost_with_tax) }}</td>
                                     </tr>
                                 @endif
                             @endforeach

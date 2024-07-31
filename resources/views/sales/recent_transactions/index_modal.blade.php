@@ -72,7 +72,7 @@
                                                         @if ($sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                                                             <a href="{{ route('sales.edit', $sale->id) }}" title="{{ __("Edit") }}"> <i class="far fa-edit text-info"></i></a>
                                                         @else
-                                                            <a id="editPosSale" href="{{ route('sales.pos.edit', $sale->id) }}" title="{{ __("Edit") }}"> <i class="far fa-edit text-info"></i></a>
+                                                            <a id="editPosSale" href="{{ route('sales.pos.edit', $sale->id, $sale->sale_screen) }}" title="{{ __("Edit") }}"> <i class="far fa-edit text-info"></i></a>
                                                         @endif
 
                                                         @php
@@ -131,7 +131,7 @@
                 $('#recent_trans_preloader').show();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -181,7 +181,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

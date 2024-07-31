@@ -13,7 +13,7 @@ interface SalesReturnControllerMethodContainersInterface
 
     public function printMethodContainer(int $id, object $request): mixed;
 
-    public function createMethodContainer(): ?array;
+    public function createMethodContainer(object $codeGenerator): ?array;
 
     public function storeMethodContainer(object $request, object $codeGenerator): ?array;
 
@@ -22,4 +22,6 @@ interface SalesReturnControllerMethodContainersInterface
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array;
 
     public function deleteMethodContainer(int $id): array|object;
+
+    public function voucherNoMethodContainer(object $codeGenerator): string;
 }

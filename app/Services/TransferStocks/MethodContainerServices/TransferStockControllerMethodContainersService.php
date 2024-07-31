@@ -92,7 +92,7 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
         $data = [];
         $data['branchName'] = $this->branchService->branchName();
 
-        $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
+        $data['branches'] = $this->branchService->branches(with: ['parentBranch', 'branchCurrency:id,country,currency,code,symbol,currency_rate'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         $data['warehouses'] = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)

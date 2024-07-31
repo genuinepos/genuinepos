@@ -155,7 +155,13 @@
                                             <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="purchase_invoice_id" autofocus>
                                                 <option data-default_balance_type="cr" value="">{{ __('Select Supplier') }}</option>
                                                 @foreach ($supplierAccounts as $supplierAccount)
-                                                    <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                    @if ($supplierAccount->is_walk_in_customer == 1)
+                                                        @continue
+                                                    @endif
+                                                    @php
+                                                        $accountType = $supplierAccount->sub_sub_group_number == 10 ? '' : ' -(' . __('Customer') . ')';
+                                                    @endphp
+                                                    <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . $accountType }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_supplier_account_id"></span>
@@ -175,7 +181,7 @@
                                         <label class="col-4"><b>{{ __('P. Invoice ID') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" data-next="purchase_account_id" placeholder="{{ __('Serach Purchase Invoice ID') }}" autocomplete="off">
+                                                <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" data-next="purchase_account_id" placeholder="{{ __('Search Purchase Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="purchase_id" id="purchase_id">
 
                                                 <div class="invoice_search_result d-hide">
@@ -533,7 +539,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-success submit_button">{{ __('Save & Print') }}</button>
                             <button type="submit" id="save" value="save" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>

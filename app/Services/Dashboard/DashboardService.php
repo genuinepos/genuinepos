@@ -3,7 +3,6 @@
 namespace App\Services\Dashboard;
 
 use Carbon\Carbon;
-use App\Enums\RoleType;
 use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Enums\PurchaseStatus;
@@ -245,7 +244,6 @@ class DashboardService
                 $toDate = date('Y-m-d', strtotime($dateRange[1]));
 
                 $range = [Carbon::parse($formDate), Carbon::parse($toDate)->endOfDay()];
-
                 $query->whereBetween('sales.date_ts', $range); // Final
             }
         }

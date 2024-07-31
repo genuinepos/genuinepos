@@ -2,10 +2,7 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $defaultLayout = DB::table('invoice_layouts')
-        ->where('branch_id', null)
-        ->where('is_default', 1)
-        ->first();
+    $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $draft?->branch?->branchSetting?->addSaleInvoiceLayout ? $draft?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
 <!-- Details Modal -->
@@ -42,7 +39,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($draft->branch_id) {
@@ -137,32 +134,32 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($draft->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $draft->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $draft->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $draft->order_tax_percent . '%)=' . $draft->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($draft->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $draft?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($draft->total_invoice_amount) }}
                                     </td>
@@ -206,7 +203,6 @@
                             @endphp
 
                             @if (auth()->user()->can('edit_add_sale') && $draft->branch_id == auth()->user()->branch_id)
-
                                 <a href="{{ route('sale.drafts.edit', [$draft->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
 
@@ -263,7 +259,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    toastr.error("{{ __('Net Connection Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

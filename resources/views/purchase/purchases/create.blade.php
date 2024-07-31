@@ -137,7 +137,10 @@
                                                         @if ($supplierAccount->is_walk_in_customer == 1)
                                                             @continue
                                                         @endif
-                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                        @php
+                                                            $accountType = $supplierAccount->sub_sub_group_number == 10 ? '' : ' -(' . __('Customer') . ')';
+                                                        @endphp
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone . $accountType }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
@@ -573,7 +576,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-success submit_button">{{ __('Save And Print') }}</button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-success submit_button">{{ __('Save & Print') }}</button>
                             <button type="submit" id="save" value="2" class="btn btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>

@@ -34,6 +34,7 @@ class BranchSettingController extends Controller
     public function index($id)
     {
         abort_if(!$this->generalSettingService->generalSettingsPermission(), 403);
+
         $generalSettings = config('generalSettings');
         $currencies = $this->currencyService->currencies();
         $units = $this->unitService->units()->where('base_unit_id', null)->get();

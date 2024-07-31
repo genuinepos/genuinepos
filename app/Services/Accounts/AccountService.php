@@ -147,8 +147,7 @@ class AccountService
                 'bankParentBranch.name',
             )
             ->orderBy('account_groups.sorting_number', 'asc')
-            ->orderBy('accounts.name', 'asc')
-            ->get();
+            ->orderBy('accounts.name', 'asc');
 
         return DataTables::of($accounts)
             ->addIndexColumn()
@@ -403,7 +402,7 @@ class AccountService
         return $query;
     }
 
-    public function customerAndSupplierAccounts($ownBranchIdOrParentBranchId)
+    public function customerAndSupplierAccounts($ownBranchIdOrParentBranchId, $sortingByGroupNumber = 'asc')
     {
         $customerAccounts = '';
         $query = DB::table('accounts')
@@ -420,11 +419,12 @@ class AccountService
 
         $customerAccounts = $query->select(
             'accounts.id',
-            'is_walk_in_customer',
+            'accounts.is_walk_in_customer',
             'accounts.name',
             'accounts.phone',
             'contacts.pay_term_number',
             'contacts.pay_term',
+            'account_groups.name as account_group_name',
             'account_groups.sub_sub_group_number',
             'account_groups.default_balance_type',
         );
@@ -435,16 +435,18 @@ class AccountService
             ->where('account_groups.sub_sub_group_number', 10)
             ->select(
                 'accounts.id',
-                'is_walk_in_customer',
+                'accounts.is_walk_in_customer',
                 'accounts.name',
                 'accounts.phone',
                 'contacts.pay_term_number',
                 'contacts.pay_term',
+                'account_groups.name as account_group_name',
                 'account_groups.sub_sub_group_number',
                 'account_groups.default_balance_type',
             )
             ->union($customerAccounts)
             // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
+            ->orderBy('sub_sub_group_number', $sortingByGroupNumber) // Order by 'is_walk_in_customer' in descending order
             ->orderBy('is_walk_in_customer', 'desc') // Order by 'is_walk_in_customer' in descending order
             ->orderBy('name', 'asc')
             ->get();

@@ -22,6 +22,7 @@ class SaleProductService
             ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
             ->leftJoin('products', 'sale_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
@@ -106,6 +107,7 @@ class SaleProductService
             'parentBranch.name as parent_branch_name',
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sales.sale_date_ts', 'desc');
 
         return DataTables::of($saleProducts)
@@ -164,15 +166,15 @@ class SaleProductService
 
             ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="' . $row->quantity . '">' . \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_code . '</span>')
 
-            ->editColumn('unit_price_exc_tax', fn ($row) => '<span class="unit_price_exc_tax" data-value="' . $row->unit_price_exc_tax . '">' . \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax) . '</span>')
+            ->editColumn('unit_price_exc_tax', fn ($row) => '<span class="unit_price_exc_tax" data-value="' . curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('unit_discount_amount', fn ($row) => '<span class="unit_discount_amount" data-value="' . $row->unit_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->unit_discount_amount) . '</span>')
+            ->editColumn('unit_discount_amount', fn ($row) => '<span class="unit_discount_amount" data-value="' . curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('unit_tax_amount', fn ($row) => '<span class="unit_tax_amount" data-value="' . $row->unit_tax_amount . '">' . '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount) . '</span>')
+            ->editColumn('unit_tax_amount', fn ($row) => '<span class="unit_tax_amount" data-value="' . curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) . '</span>')
+            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . curr_cnv($row->subtotal, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->subtotal, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'invoice_id', 'branch', 'stock_location', 'sale_screen', 'quantity', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
             ->make(true);
@@ -203,7 +205,7 @@ class SaleProductService
         $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
         $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$index];
         $addSaleProduct->subtotal = $request->subtotals[$index];
-        $addSaleProduct->description = $request->descriptions[$index] ? $request->descriptions[$index] : null;
+        $addSaleProduct->description = isset($request->descriptions[$index]) ? $request->descriptions[$index] : null;
         $addSaleProduct->save();
 
         return $addSaleProduct;

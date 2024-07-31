@@ -14,10 +14,10 @@
                     <form id="filter_customer_ledgers" method="get" class="px-2">
                         <div class="form-group row align-items-end g-3">
                             <div class="col-lg-3 col-md-3">
-                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                <label><strong>{{ location_label() }}</strong></label>
                                 <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
                                     @if (!$branch)
-                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                     @else
                                         @php
                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;

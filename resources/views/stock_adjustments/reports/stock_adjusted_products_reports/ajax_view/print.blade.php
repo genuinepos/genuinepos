@@ -79,20 +79,20 @@
                 @if (auth()->user()?->branch?->parent_branch_id)
 
                     @if (auth()->user()?->branch?->parentBranch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                     @endif
                 @else
                     @if (auth()->user()?->branch?->logo)
-                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                        <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->logo) }}">
                     @else
                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ auth()->user()?->branch?->name }}</span>
                     @endif
                 @endif
             @else
                 @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
                     <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
@@ -165,7 +165,7 @@
                     }
                 }
             @endphp
-            <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
+            <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
     </div>
 
@@ -184,7 +184,7 @@
                     <tr>
                         <th class="text-start">{{ __('Product') }}</th>
                         <th class="text-start">{{ __('P. Code(SKU)') }}</th>
-                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                        <th class="text-start">{{ location_label() }}</th>
                         <th class="text-start">{{ __('Stock Location') }}</th>
                         <th class="text-start">{{ __('Voucher No') }}</th>
                         <th class="text-end">{{ __('Quantity') }}</th>
@@ -215,7 +215,8 @@
                                 @php
                                     $variant = $adjustmentProduct->variant_name ? ' - ' . $adjustmentProduct->variant_name : '';
                                     $totalQty += $adjustmentProduct->quantity;
-                                    $totalSubtotal += $adjustmentProduct->subtotal;
+                                    $subtotal = curr_cnv($adjustmentProduct->unit_cost_inc_tax, $adjustmentProduct->c_rate, $adjustmentProduct->branch_id);
+                                    $totalSubtotal += $subtotal;
                                 @endphp
                                 {{ $adjustmentProduct->name . $variant }}
                             </td>
@@ -250,8 +251,8 @@
                             </td>
                             <td class="text-start">{{ $adjustmentProduct->voucher_no }}</td>
                             <td class="text-end fw-bold">{!! App\Utils\Converter::format_in_bdt($adjustmentProduct->quantity) . '/' . $adjustmentProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($adjustmentProduct->unit_cost_inc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($adjustmentProduct->subtotal) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt(curr_cnv($adjustmentProduct->unit_cost_inc_tax, $adjustmentProduct->c_rate, $adjustmentProduct->branch_id)) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($subtotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -289,7 +290,7 @@
 
             <div class="col-4 text-center">
                 @if (config('speeddigit.show_app_info_in_print') == true)
-                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __("M:") }} {{ config('speeddigit.phone') }}</small>
+                    <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                 @endif
             </div>
 

@@ -60,7 +60,6 @@
                                     <th>{{ __('Phone') }}</th>
                                     <th>{{ __('Address') }}</th>
                                     <th>{{ __('Store Logo') }}</th>
-                                    <th>{{ __('Expire Date') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>

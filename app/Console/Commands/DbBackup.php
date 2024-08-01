@@ -79,7 +79,6 @@ class DbBackup extends Command
             }
         }
 
-
         // dd("Backup for database {$database} completed successfully as {$filename}!");
     }
 }

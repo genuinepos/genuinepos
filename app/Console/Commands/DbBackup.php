@@ -70,12 +70,9 @@ class DbBackup extends Command
 
             //     dd("Failed to backup database {$database}. Command: {$command}");
             // }
-
             if (config('file_disk.name') != 'local') {
-
                 // Upload to S3
-                // Storage::disk(config('file_disk.name'))->put($tenant->id . '/' . 'db/' . $filename, fopen($backupPath, 'r+'));
-                Storage::disk(config('file_disk.name'))->put('databases/'. $database . '/' . $filename, file_get_contents($backupPath));
+                Storage::disk(config('file_disk.name'))->put('db/' . $filename, file_get_contents($backupPath));
 
                 // Clean up local dump file
                 unlink($backupPath);

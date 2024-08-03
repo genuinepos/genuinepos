@@ -51,6 +51,9 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
                 'branch.parentBranch',
                 'senderBranch',
                 'senderBranch.parentBranch',
+                'receiverBranch',
+                'receiverBranch.branchCurrency',
+                'receiverBranch.parentBranch',
                 'receiverWarehouse',
                 'transferStockProducts',
                 'transferStockProducts.product',
@@ -73,6 +76,9 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
                 'branch.parentBranch',
                 'senderBranch',
                 'senderBranch.parentBranch',
+                'receiverBranch',
+                'receiverBranch.branchCurrency',
+                'receiverBranch.parentBranch',
                 'receiverWarehouse',
                 'transferStockProducts',
                 'transferStockProducts.product',
@@ -92,8 +98,7 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
         $data = [];
         $data['branchName'] = $this->branchService->branchName();
 
-        $data['branches'] = $this->branchService->branches(with: ['parentBranch', 'branchCurrency:id,country,currency,code,symbol,currency_rate'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        $data['branches'] = $this->branchService->branches(with: ['parentBranch', 'branchCurrency:id,country,currency,code,symbol,currency_rate'])->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         $data['warehouses'] = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
             ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);

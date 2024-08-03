@@ -20,10 +20,11 @@ class TransferStockService
         $query = DB::table('transfer_stocks')
             ->leftJoin('branches', 'transfer_stocks.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('branches as sender_branch', 'transfer_stocks.receiver_branch_id', 'sender_branch.id')
+            ->leftJoin('branches as sender_branch', 'transfer_stocks.sender_branch_id', 'sender_branch.id')
             ->leftJoin('branches as sender_branch_parent', 'sender_branch.parent_branch_id', 'sender_branch_parent.id')
             ->leftJoin('branches as receiver_branch', 'transfer_stocks.receiver_branch_id', 'receiver_branch.id')
             ->leftJoin('branches as receiver_branch_parent', 'receiver_branch.parent_branch_id', 'receiver_branch_parent.id')
+            ->leftJoin('currencies', 'receiver_branch.currency_id', 'currencies.id')
             ->leftJoin('warehouses as sender_warehouse', 'transfer_stocks.sender_warehouse_id', 'sender_warehouse.id')
             ->leftJoin('warehouses as receiver_warehouse', 'transfer_stocks.receiver_warehouse_id', 'receiver_warehouse.id')
             ->leftJoin('users as send_by', 'transfer_stocks.send_by_id', 'send_by.id');
@@ -51,6 +52,8 @@ class TransferStockService
             'send_by.prefix as send_prefix',
             'send_by.name as send_name',
             'send_by.last_name as send_last_name',
+            'currencies.currency_rate as c_rate',
+            'currencies.symbol as currency_symbol',
         )->orderBy('transfer_stocks.date_ts', 'desc');
 
         return DataTables::of($transferStocks)
@@ -121,7 +124,7 @@ class TransferStockService
                         $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $row->sender_parent_branch_name . '(' . $row->sender_branch_area_name . ')';
                     } else {
 
-                        $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $senderBranch = $row->sender_branch_name . '(' . $row->sender_branch_area_name . ')';
+                        $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $row->sender_branch_name . '(' . $row->sender_branch_area_name . ')';
                     }
                 } else {
 
@@ -166,7 +169,16 @@ class TransferStockService
 
             ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_stock_value', fn ($row) => '<span class="total_stock_value" data-value="' . $row->total_stock_value . '">' . \App\Utils\Converter::format_in_bdt($row->total_stock_value) . '</span>')
+            ->editColumn('total_stock_value', function ($row) use ($generalSettings) {
+
+                $currency = '';
+                if (auth()->user()->branch_id) {
+
+                    $currency = $row->currency_symbol ? $row->currency_symbol : $generalSettings['base_currency_symbol'];
+                }
+
+                return '<span class="total_stock_value" data-value="' . curr_cnv($row->total_stock_value, $row->c_rate, $row->receiver_branch_id) . '">' . $currency . '' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_stock_value, $row->c_rate, $row->receiver_branch_id)) . '</span>';
+            })
 
             ->editColumn('total_send_qty', fn ($row) => '<span class="total_send_qty" data-value="' . $row->total_send_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_send_qty) . '</span>')
 

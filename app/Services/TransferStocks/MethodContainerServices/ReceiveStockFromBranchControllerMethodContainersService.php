@@ -9,6 +9,7 @@ use App\Services\Accounts\DayBookService;
 use App\Services\Products\ProductStockService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Purchases\PurchaseProductService;
+use App\Services\Products\ProductAccessBranchService;
 use App\Services\TransferStocks\TransferStockService;
 use App\Services\TransferStocks\TransferStockProductService;
 use App\Services\TransferStocks\ReceiveStockFromBranchService;
@@ -25,6 +26,7 @@ class ReceiveStockFromBranchControllerMethodContainersService implements Receive
         private DayBookService $dayBookService,
         private ProductLedgerService $productLedgerService,
         private PurchaseProductService $purchaseProductService,
+        private ProductAccessBranchService $productAccessBranchService,
     ) {
     }
 
@@ -63,7 +65,7 @@ class ReceiveStockFromBranchControllerMethodContainersService implements Receive
 
     public function receiveMethodContainer(int $id, object $request): void
     {
-        $transferStock = $this->transferStockService->singleTransferStock(id: $id, with: ['transferStockProducts']);
+        $transferStock = $this->transferStockService->singleTransferStock(id: $id, with: ['transferStockProducts', 'receiverBranch']);
 
         $transferStock->receive_date = $request->receive_date;
         $transferStock->received_stock_value = $request->received_stock_value;
@@ -88,6 +90,10 @@ class ReceiveStockFromBranchControllerMethodContainersService implements Receive
             $this->productStockService->adjustBranchAllStock(productId: $updateTransferStockProductQty->product_id, variantId: $updateTransferStockProductQty->variant_id, branchId: $transferStock->sender_branch_id);
 
             $this->productStockService->adjustBranchStock(productId: $updateTransferStockProductQty->product_id, variantId: $updateTransferStockProductQty->variant_id, branchId: $transferStock->receiver_branch_id);
+
+            $receiverOwnBranchIdOrParentBranchId = $transferStock?->receiverBranch?->parent_branch_id ? $transferStock?->receiverBranch?->branch?->parent_branch_id : $transferStock?->receiverBranch?->id;
+
+            $this->productAccessBranchService->addSingleProductBranchStock(productId: $updateTransferStockProductQty->product_id, branchId: $receiverOwnBranchIdOrParentBranchId);
         }
 
         $this->transferStockService->updateTransferStockReceiveStatus(transferStock: $transferStock);

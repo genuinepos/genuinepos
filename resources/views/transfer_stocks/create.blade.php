@@ -117,7 +117,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Sender Store/Company') }}</b></label>
                                         <div class="col-7">
-                                            <input type="hidden" data-sender_currency="{{ auth()?->user()?->branch?->branchCurrency?->country . '-' . auth()?->user()?->branch?->branchCurrency?->currency . '-' . auth()?->user()?->branch?->branchCurrency?->code . '-' . auth()?->user()?->branch?->branchCurrency?->symbol }}" data-sender_currency_rate="{{ auth()?->user()?->branch?->branchCurrency?->currency_rate }}" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}" data-sender_is_base_currency="{{ auth()?->user()?->branch_id == null ? 1 : 0 }}" data-sender_currency_type="1">
+                                            <input type="hidden" data-sender_currency="{{ auth()?->user()?->branch?->branchCurrency?->country . '-' . auth()?->user()?->branch?->branchCurrency?->currency . '-' . auth()?->user()?->branch?->branchCurrency?->code . '-' . auth()?->user()?->branch?->branchCurrency?->symbol }}" data-sender_currency_rate="{{ auth()?->user()?->branch?->branchCurrency?->currency_rate }}" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}" data-sender_is_base_currency="{{ auth()?->user()?->branch_id == null ? 1 : 0 }}" data-sender_currency_type="{{ auth()?->user()?->branch?->branchCurrency?->type }}">
                                             <input readonly type="text" class="form-control fw-bold" value="{{ $branchName }}">
                                         </div>
                                     </div>
@@ -150,7 +150,7 @@
                                                 @endif
 
                                                 @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}" data-receiver_currency="{{ $branch?->branchCurrency?->country . '-' . $branch?->branchCurrency?->currency . '-' . $branch?->branchCurrency?->code . '-' . $branch?->branchCurrency?->symbol }}" data-receiver_is_base_currency="0" data-receiver_currency_symbol="{{ $branch?->branchCurrency?->symbol }}" data-receiver_currency_code="{{ $branch?->branchCurrency?->code }}" data-receiver_currency_rate="{{ $branch?->branchCurrency?->currency_rate }}" data-receiver_currency_type="1">
+                                                    <option value="{{ $branch->id }}" data-receiver_currency="{{ $branch?->branchCurrency?->country . '-' . $branch?->branchCurrency?->currency . '-' . $branch?->branchCurrency?->code . '-' . $branch?->branchCurrency?->symbol }}" data-receiver_is_base_currency="0" data-receiver_currency_symbol="{{ $branch?->branchCurrency?->symbol }}" data-receiver_currency_code="{{ $branch?->branchCurrency?->code }}" data-receiver_currency_rate="{{ $branch?->branchCurrency?->currency_rate }}" data-receiver_currency_type="{{ $branch?->branchCurrency?->type }}">
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                             $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';

@@ -20,9 +20,23 @@
                         <hr class="p-0 m-0">
                     </div>
 
-                    <div class="form-group mt-1 row g-2">
+                    <div class="form-group mt-2">
                         <div class="col-md-3">
-                            <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ $currencyRate?->currency?->currency }}</span></p>
+                            <select name="type" id="currency_rate_type">
+                                <option value="1">{{ __('Greater Then Base Currency') }}</option>
+                                <option @selected($currencyRate?->currency?->type == 2) value="2">{{ __('Less Then Base Currency') }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-1 row g-2">
+                        <div class="col-md-3" id="currency_name_position_one">
+                            @if ($currencyRate?->currency?->type == 1)
+                                <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ $currencyRate?->currency?->currency }}</span></p>
+                            @else
+                                <p class="fw-bold">{{ __('1') }} <span id="base_currency_name">{{ $generalSettings['base_currency_name'] }}</span></p>
+                            @endif
+                            {{-- <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ $currencyRate?->currency?->currency }}</span></p> --}}
                         </div>
 
                         <div class="col-md-1">
@@ -34,8 +48,13 @@
                             <span class="error error_currency_rate"></span>
                         </div>
 
-                        <div class="col-md-3">
-                            <p class="fw-bold"><span id="base_currency_name">{{ session('base_currency_symbol') }}</span></p>
+                        <div class="col-md-3" id="currency_name_position_two">
+                            @if ($currencyRate?->currency?->type == 1)
+                                <p class="fw-bold"><span id="base_currency_name">{{ $generalSettings['base_currency_name'] }}</span></p>
+                            @else
+                                <p class="fw-bold"><span id="currency_name">{{ $currencyRate?->currency?->currency }}</span></p>
+                            @endif
+                            {{-- <p class="fw-bold"><span id="base_currency_name">{{ session('base_currency_symbol') }}</span></p> --}}
                         </div>
                     </div>
                 </div>
@@ -150,6 +169,26 @@
         if (isAjaxIn == false) {
 
             isAllowSubmit = true;
+        }
+    });
+
+    $(document).on('change', '#currency_rate_type', function(e) {
+
+        var type = $(this).val();
+        var currencyName = "{{ $currencyRate?->currency?->currency }}";
+        var typeOnecurrency = '<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="currency_name">' + currencyName + '</span></p>';
+        var typeOneBaseCurrency = '<p class="fw-bold"><span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>';
+        var typeTwocurrency = '<p class="fw-bold" id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>';
+        var typeTwoBaseCurrency = '<p class="fw-bold"><span id="base_currency_name"></span></p>';
+
+        if (type == 1) {
+
+            $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="currency_name">' + currencyName + '</span></p>');
+            $('#currency_name_position_two').html('<p class="fw-bold"><span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>');
+        } else {
+
+            $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>');
+            $('#currency_name_position_two').html('<p class="fw-bold"><span id="currency_name">' + currencyName + '</span></p>');
         }
     });
 

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            //
+        Schema::table('currency_rates', function (Blueprint $table) {
+            $table->tinyInteger('type')->after('rate')->default(1);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            //
+        Schema::table('currency_rates', function (Blueprint $table) {
+            $table->dropColumn('type');
         });
     }
 };

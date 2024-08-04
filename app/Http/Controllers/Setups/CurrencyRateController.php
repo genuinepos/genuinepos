@@ -40,7 +40,7 @@ class CurrencyRateController extends Controller
 
     public function store($currencyId, CurrencyRateStoreRequest $request)
     {
-        $this->currencyRateService->addCurrencyRate(currencyId: $currencyId, currencyRate: $request->rate, currencyRateDate: $request->date);
+        $this->currencyRateService->addCurrencyRate(currencyId: $currencyId, currencyRate: $request->rate, currencyType: $request->type, currencyRateDate: $request->date);
         $this->currencyService->updateCurrentCurrencyRate(id: $currencyId);
 
         return response()->json(__('Currency rate added successfully.'));
@@ -54,7 +54,7 @@ class CurrencyRateController extends Controller
 
     public function update($id, CurrencyRateUpdateRequest $request)
     {
-        $this->currencyRateService->updateCurrencyRate(id: $id, currencyId: $request->currency_id, currencyRate: $request->rate, currencyRateDate: $request->date);
+        $this->currencyRateService->updateCurrencyRate(id: $id, currencyId: $request->currency_id, currencyRate: $request->rate, currencyType: $request->type, currencyRateDate: $request->date);
         $this->currencyService->updateCurrentCurrencyRate(id: $request->currency_id);
 
         return response()->json(__('Currency rate updated successfully.'));

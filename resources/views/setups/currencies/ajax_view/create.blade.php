@@ -61,8 +61,8 @@
                                 <span class="error error_currency_rate"></span>
                             </div>
 
-                            <div class="col-md-2" id="currency_name_position_tow">
-                                <p class="fw-bold"><span id="base_currency_name">{{ session('base_currency_symbol') }}</span></p>
+                            <div class="col-md-2" id="currency_name_position_two">
+                                <p class="fw-bold"><span id="base_currency_name">{{ $generalSettings['base_currency_name'] }}</span></p>
                             </div>
 
                             <div class="col-md-3">
@@ -197,18 +197,18 @@
         var type = $(this).val();
         var currencyName = $('#currency').val() ? $('#currency').val() : "{{ __('Currency') }}";
         var typeOnecurrency = '<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="currency_name">' + currencyName + '</span></p>';
-        var typeOneBaseCurrency = '<p class="fw-bold"><span id="base_currency_name">' + "{{ session('base_currency_symbol') }}" + '</span></p>';
-        var typeTwocurrency = '<p class="fw-bold" id="base_currency_name">' + "{{ session('base_currency_symbol') }}" + '</span></p>';
+        var typeOneBaseCurrency = '<p class="fw-bold"><span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>';
+        var typeTwocurrency = '<p class="fw-bold" id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>';
         var typeTwoBaseCurrency = '<p class="fw-bold"><span id="base_currency_name"></span></p>';
 
         if (type == 1) {
 
             $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="currency_name">' + currencyName + '</span></p>');
-            $('#currency_name_position_tow').html('<p class="fw-bold"><span id="base_currency_name">' + "{{ session('base_currency_symbol') }}" + '</span></p>');
+            $('#currency_name_position_two').html('<p class="fw-bold"><span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>');
         }else {
 
-            $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="base_currency_name">' + "{{ session('base_currency_symbol') }}" + '</span></p>');
-            $('#currency_name_position_tow').html('<p class="fw-bold"><span id="currency_name">' + currencyName + '</span></p>');
+            $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>');
+            $('#currency_name_position_two').html('<p class="fw-bold"><span id="currency_name">' + currencyName + '</span></p>');
         }
     });
 </script>

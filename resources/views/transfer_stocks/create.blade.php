@@ -117,13 +117,12 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Sender Store/Company') }}</b></label>
                                         <div class="col-7">
-                                            <input type="hidden" data-sender_currency="{{ auth()?->user()?->branch?->branchCurrency?->country . '-' . auth()?->user()?->branch?->branchCurrency?->currency . '-' . auth()?->user()?->branch?->branchCurrency?->code . '-' . auth()?->user()?->branch?->branchCurrency?->symbol }}" data-sender_currency_rate="{{ auth()?->user()?->branch?->branchCurrency?->currency_rate }}" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            <input type="hidden" data-sender_currency="{{ auth()?->user()?->branch?->branchCurrency?->country . '-' . auth()?->user()?->branch?->branchCurrency?->currency . '-' . auth()?->user()?->branch?->branchCurrency?->code . '-' . auth()?->user()?->branch?->branchCurrency?->symbol }}" data-sender_currency_rate="{{ auth()?->user()?->branch?->branchCurrency?->currency_rate }}" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}" data-sender_is_base_currency="{{ auth()?->user()?->branch_id == null ? 1 : 0 }}" data-sender_currency_type="{{ auth()?->user()?->branch?->branchCurrency?->type }}">
                                             <input readonly type="text" class="form-control fw-bold" value="{{ $branchName }}">
                                         </div>
                                     </div>
 
                                     @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-
                                         <div class="input-group mt-1">
                                             <label class="col-5"><b>{{ __('Send At') }}</b></label>
                                             <div class="col-7">
@@ -146,11 +145,12 @@
                                                 <option value="" class="fw-bold">{{ __('Select Receiver Store/Company') }}</option>
 
                                                 @if ($generalSettings['subscription']->has_business == 1)
-                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                                    <option data-receiver_currency="---" data-receiver_is_base_currency="1" data-receiver_currency_rate="0" data-receiver_currency_type="1" data-receiver_currency_code="{{ $generalSettings['base_currency_code'] }}"
+                                                    data-receiver_currency_symbol="{{ $generalSettings['base_currency_symbol'] }}" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                 @endif
 
                                                 @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">
+                                                    <option value="{{ $branch->id }}" data-receiver_currency="{{ $branch?->branchCurrency?->country . '-' . $branch?->branchCurrency?->currency . '-' . $branch?->branchCurrency?->code . '-' . $branch?->branchCurrency?->symbol }}" data-receiver_is_base_currency="0" data-receiver_currency_symbol="{{ $branch?->branchCurrency?->symbol }}" data-receiver_currency_code="{{ $branch?->branchCurrency?->code }}" data-receiver_currency_rate="{{ $branch?->branchCurrency?->currency_rate }}" data-receiver_currency_type="{{ $branch?->branchCurrency?->type }}">
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                             $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
@@ -211,6 +211,12 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-xl-6 align-items-end">
+                                        <div class="input-group">
+                                            <label class="text-danger" style="line-height: 1.5!important;" id="currency_conversion_msg"></label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row g-xxl-4 align-items-end">
@@ -232,7 +238,7 @@
                                     </div>
 
                                     <div class="col-xl-2 col-md-6">
-                                        <label class="fw-bold">{{ __('Unit Cost(Inc. Tax)') }}</label>
+                                        <label class="fw-bold">{{ __('Unit Cost(Inc. Tax)') }} <span id="receiver_currency_code" class="text-danger"></span></label>
                                         <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_inc_tax" placeholder="{{ __('Unit Cost(Inc. Tax)') }}" value="0.00">
                                     </div>
 

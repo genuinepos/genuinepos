@@ -111,11 +111,11 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 // });
 
 // ==================================================================data table==================
-$(document).ready(function () {
-    $('#example').DataTable({
-        select: true
-    });
-});
+// $(document).ready(function () {
+//     $('#example').DataTable({
+//         select: true
+//     });
+// });
 
 // =====================================================form repetar==========
 // $(document).ready(function () {
@@ -156,9 +156,9 @@ $(function () {
 });
 
 // =========================================rating===============
-$('.star').fontstar({}, function (value, self) {
-    console.log("hello " + value);
-});
+// $('.star').fontstar({}, function (value, self) {
+//     console.log("hello " + value);
+// });
 
 // =========================================clickeditor==================
 // $(document).ready(function () {

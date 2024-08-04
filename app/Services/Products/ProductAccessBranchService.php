@@ -38,6 +38,22 @@ class ProductAccessBranchService
         }
     }
 
+    public function addSingleProductBranchStock(int $productId, ?int $branchId = null): void
+    {
+        if ($branchId) {
+
+            $exists = ProductAccessBranch::where('branch_id', $branchId)->where('product_id', $productId)->first();
+
+            if (!isset($exists)) {
+
+                $addProductAccessBranch = new ProductAccessBranch();
+                $addProductAccessBranch->product_id = $productId;
+                $addProductAccessBranch->branch_id = $branchId;
+                $addProductAccessBranch->save();
+            }
+        }
+    }
+
     public function updateProductAccessBranches(object $request, object $product)
     {
         // if (
@@ -50,7 +66,7 @@ class ProductAccessBranchService
             auth()->user()->can('has_access_to_all_area') &&
             (config('generalSettings')['subscription']->current_shop_count > 1 || config('generalSettings')['subscription']->has_business == 1)
         ) {
-            
+
             foreach ($product->productAccessBranches as $productAccessBranch) {
 
                 if (isset($productAccessBranch->branch_id)) {
@@ -67,7 +83,7 @@ class ProductAccessBranchService
                     $productAssetBranch = $this->productAssetBranch()->where('branch_id', $branch_id)
                         ->where('product_id', $product->id)->first();
 
-                    if (! $productAssetBranch) {
+                    if (!$productAssetBranch) {
 
                         $addProductAccessBranch = new ProductAccessBranch();
                         $addProductAccessBranch->product_id = $product->id;

@@ -71,7 +71,7 @@ class CurrencyController extends Controller
 
             if (config('generalSettings')['subscription']->has_business == BooleanType::True->value) {
 
-                $this->currencyRateService->updateCurrencyRate(id: $updateCurrency?->currentCurrencyRate?->id, currencyId: $updateCurrency->id, currencyRate: $request->currency_rate, currencyRateDate: $request->currency_rate_date);
+                $this->currencyRateService->updateCurrencyRate(id: $updateCurrency?->currentCurrencyRate?->id, currencyId: $updateCurrency->id, currencyRate: $request->currency_rate, currencyType: $request->type, currencyRateDate: $request->currency_rate_date);
 
                 $this->currencyService->updateCurrentCurrencyRate(id: $updateCurrency->id);
             }

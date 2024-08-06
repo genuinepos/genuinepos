@@ -84,7 +84,6 @@ class TransferStockController extends Controller
     public function edit($id, TransferStockEditRequest $request, TransferStockControllerMethodContainersInterface $transferStockControllerMethodContainersInterface)
     {
         $editMethodContainer = $transferStockControllerMethodContainersInterface->editMethodContainer(id: $id);
-
         extract($editMethodContainer);
 
         return view('transfer_stocks.edit', compact('transferStock', 'branches', 'warehouses', 'selectedBranchWarehouses'));

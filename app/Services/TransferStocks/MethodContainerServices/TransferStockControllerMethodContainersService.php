@@ -167,9 +167,10 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
             with: [
                 'branch',
                 'branch.parentBranch',
-                'senderBranch',
+                'senderBranch.branchCurrency',
                 'senderBranch.parentBranch',
                 'receiverBranch',
+                'receiverBranch.branchCurrency',
                 'receiverBranch.parentBranch',
                 'receiverWarehouse',
                 'transferStockProducts',

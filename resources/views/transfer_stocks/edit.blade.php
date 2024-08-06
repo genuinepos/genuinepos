@@ -1,34 +1,77 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
 
-        .input-group-text-sale { font-size: 7px !important; }
+        .input-group-text-sale {
+            font-size: 7px !important;
+        }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid #706a6d;
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 0px 2px;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid lightgray;
+            margin: 2px 0px;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
 
-        .selectProduct { background-color: #746e70 !important; color: #fff !important; }
+        .selectProduct {
+            background-color: #746e70 !important;
+            color: #fff !important;
+        }
 
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 { text-align: right; padding-right: 10px; }
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
 
-        .checkbox_input_wrap { text-align: right; }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 
-@section('title', 'Edit Transfer Stock')
+@section('title', 'Edit Transfer Stock - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -53,7 +96,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Sender Store/Company') }}</b></label>
                                         <div class="col-7">
-                                            <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            <input type="hidden" data-sender_currency="{{ $transferStock?->senderBranch?->branchCurrency?->country . '-' . $transferStock?->senderBranch?->branchCurrency?->currency . '-' . $transferStock?->senderBranch?->branchCurrency?->code . '-' . $transferStock?->senderBranch?->branchCurrency?->symbol }}" data-sender_currency_rate="{{ $transferStock?->senderBranch?->branchCurrency?->currency_rate }}" name="branch_id" id="branch_id" value="{{ $transferStock?->senderBranch?->id }}" data-sender_is_base_currency="{{ $transferStock?->senderBranch?->id == null ? 1 : 0 }}" data-sender_currency_type="{{ $transferStock?->senderBranch?->branchCurrency?->type }}">
                                             @php
                                                 $branchName = '';
                                                 if ($transferStock?->senderBranch) {
@@ -94,9 +137,12 @@
                                             <div class="col-7">
                                                 <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
                                                     <option value="" class="fw-bold">{{ __('Select Receiver Store/Company') }}</option>
-                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                                    @if ($generalSettings['subscription']->has_business == 1 || $transferStock->receiver_branch_id == null)
+                                                        <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} data-receiver_currency="---" data-receiver_is_base_currency="1" data-receiver_currency_rate="0" data-receiver_currency_type="1" data-receiver_currency_code="{{ $generalSettings['base_currency_code'] }}" data-receiver_currency_symbol="{{ $generalSettings['base_currency_symbol'] }}" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                                    @endif
+
                                                     @foreach ($branches as $branch)
-                                                        <option {{ $branch->id == $transferStock->receiver_branch_id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
+                                                        <option data-receiver_currency="{{ $transferStock?->receiverBranch?->branchCurrency?->country . '-' . $transferStock?->receiverBranch?->branchCurrency?->currency . '-' . $transferStock?->receiverBranch?->branchCurrency?->code . '-' . $transferStock?->receiverBranch?->branchCurrency?->symbol }}" data-receiver_is_base_currency="0" data-receiver_currency_symbol="{{ $transferStock?->receiverBranch?->branchCurrency?->symbol }}" data-receiver_currency_code="{{ $transferStock?->receiverBranch?->branchCurrency?->code }}" data-receiver_currency_rate="{{ $transferStock?->receiverBranch?->branchCurrency?->currency_rate }}" data-receiver_currency_type="{{ $transferStock?->receiverBranch?->branchCurrency?->type }}" {{ $branch->id == $transferStock->receiver_branch_id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                 $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
@@ -126,23 +172,23 @@
                                     </div>
                                 @else
                                     @php
-                                        $receiverBranch = '';
+                                        $receiverBranchName = '';
                                         if ($transferStock?->receiverBranch) {
                                             if ($transferStock?->receiverBranch?->parent_branch_id) {
-                                                $receiverBranch = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
+                                                $receiverBranchName = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                             } else {
-                                                $receiverBranch = $transferStock?->receiverBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
+                                                $receiverBranchName = $transferStock?->receiverBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                             }
                                         } else {
-                                            $receiverBranch = $generalSettings['business_or_shop__business_name'];
+                                            $receiverBranchName = $generalSettings['business_or_shop__business_name'];
                                         }
                                     @endphp
                                     <div class="col-md-4">
                                         <div class="input-group">
                                             <label class="col-5"><b>{{ __('Receiver Store/Company') }}</b></label>
                                             <div class="col-7">
-                                                <input readonly type="text" class="form-control fw-bold" value="{{ $receiverBranch }}" autocomplete="off">
-                                                <input type="hidden" name="receiver_branch_id" class="form-control fw-bold" value="{{ $transferStock->receiver_branch_id ? $transferStock->receiver_branch_id : 'NULL' }}">
+                                                <input readonly type="text" class="form-control fw-bold" value="{{ $receiverBranchName }}" autocomplete="off">
+                                                <input type="hidden" data-receiver_currency="{{ $transferStock?->receiverBranch?->branchCurrency?->country . '-' . $transferStock?->receiverBranch?->branchCurrency?->currency . '-' . $transferStock?->receiverBranch?->branchCurrency?->code . '-' . $transferStock?->receiverBranch?->branchCurrency?->symbol }}" data-receiver_is_base_currency="{{ $transferStock?->receiverBranch?->id == null ? 1 : 0 }}" data-receiver_currency_symbol="{{ $transferStock?->receiverBranch?->branchCurrency?->symbol ?? $generalSettings['base_currency_symbol'] }}" data-receiver_currency_code="{{ $transferStock?->receiverBranch?->branchCurrency?->code ?? $generalSettings['base_currency_code'] }}" data-receiver_currency_rate="{{ $transferStock?->receiverBranch?->branchCurrency?->currency_rate }}" data-receiver_currency_type="{{ $transferStock?->receiverBranch?->branchCurrency?->type }}" name="receiver_branch_id" class="form-control fw-bold" id="receiver_branch_id" value="{{ $transferStock->receiver_branch_id ? $transferStock->receiver_branch_id : 'NULL' }}">
                                             </div>
                                         </div>
 

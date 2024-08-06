@@ -134,8 +134,6 @@
 
                             var unitCostIncTax = product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax;
 
-                            console.log(unitCostIncTax);
-
                             $('#search_product').val(name);
                             $('#e_item_name').val(name);
                             $('#e_product_id').val(product.id);
@@ -182,7 +180,7 @@
                         $('#search_product').val('');
                         var variant_product = product.variant_product;
 
-                        var unitCostIncTax = variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax
+                        var unitCostIncTax = variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax;
 
                         var name = variant_product.product.name.length > 35 ? variant_product.product.name.substring(0, 35) + '...' : variant_product.product.name;
 

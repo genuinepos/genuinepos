@@ -41,7 +41,8 @@
         serverSide: true,
         searchable: true,
         ajax: "{{ route('currencies.index') }}",
-        columns: [{
+        columns: [
+            {
                 data: 'country',
                 name: 'country'
             },
@@ -57,10 +58,12 @@
                 data: 'symbol',
                 name: 'symbol'
             },
-            {
-                data: 'currency_rate',
-                name: 'currency_rate'
-            },
+            @if ($generalSettings['subscription']->has_business == \App\Enums\BooleanType::True->value)
+                {
+                    data: 'currency_rate',
+                    name: 'currency_rate'
+                },
+            @endif
             {
                 data: 'action',
                 name: 'action'

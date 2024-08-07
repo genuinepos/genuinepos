@@ -7,7 +7,7 @@ interface TransferStockControllerMethodContainersInterface
     /**
      * @return \App\Services\TransferStocks\MethodContainerServices\TransferStockControllerMethodContainersService
      */
-    
+
     public function indexMethodContainer(object $request): array|object;
 
     public function showMethodContainer(int $id): ?array;

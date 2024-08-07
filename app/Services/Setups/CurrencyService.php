@@ -52,7 +52,13 @@ class CurrencyService
 
                 if (isset($row->currency_rate) && $row->currency_rate != 0) {
 
-                    return __('1') . ' ' . $row?->code . ' = ' . $row->currency_rate . '  ' . session('base_currency_symbol');
+                    if ($row->type == 1) {
+
+                        return __('1') . ' ' . $row?->currency . ' = ' . $row->currency_rate . '  ' . $generalSettings['base_currency_name'];
+                    } else {
+                        
+                        return __('1') . ' ' . $generalSettings['base_currency_name'] . ' = ' . $row->currency_rate . '  ' . $row?->currency;
+                    }
                 }
             })
             ->addColumn('symbol', function ($row) {
@@ -71,6 +77,7 @@ class CurrencyService
         $addCurrency->code = $request->code;
         $addCurrency->symbol = $request->symbol;
         $addCurrency->currency_rate = $request->currency_rate;
+        $addCurrency->type = $request->type;
         $addCurrency->save();
 
         return $addCurrency;
@@ -84,6 +91,7 @@ class CurrencyService
         $updateCurrency->code = $request->code;
         $updateCurrency->symbol = $request->symbol;
         $updateCurrency->currency_rate = $request->currency_rate;
+        $updateCurrency->type = $request->type;
         $updateCurrency->save();
 
         return $updateCurrency;
@@ -93,6 +101,7 @@ class CurrencyService
     {
         $updateCurrentCurrencyRate = $this->singleCurrency(id: $id, with: ['currentCurrencyRate']);
         $updateCurrentCurrencyRate->currency_rate = $updateCurrentCurrencyRate?->currentCurrencyRate?->rate;
+        $updateCurrentCurrencyRate->type = $updateCurrentCurrencyRate?->currentCurrencyRate?->type;
         $updateCurrentCurrencyRate->save();
     }
 

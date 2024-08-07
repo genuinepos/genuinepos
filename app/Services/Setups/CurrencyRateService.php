@@ -29,6 +29,7 @@ class CurrencyRateService
             'currency_rates.id',
             'currency_rates.currency_id',
             'currency_rates.rate',
+            'currency_rates.type',
             'currency_rates.date_ts',
             'currencies.currency as currency_name',
             'currencies.code as currency_code',
@@ -60,7 +61,13 @@ class CurrencyRateService
 
             ->addColumn('rate', function ($row) use ($generalSettings) {
 
-                return __('1') . ' ' . $row?->currency_name . ' = ' . $row->rate . '  ' . session('base_currency_symbol');
+                if ($row->type == 1) {
+
+                    return __('1') . ' ' . $row?->currency_name . ' = ' . $row->rate . '  ' . $generalSettings['base_currency_name'];
+                }else{
+
+                    return __('1') . ' ' . $generalSettings['base_currency_name'] . ' = ' . $row->rate . '  ' . $row?->currency_name;
+                }
             })
 
             ->addColumn('created_by', function ($row) {
@@ -71,30 +78,32 @@ class CurrencyRateService
             ->rawColumns(['date', 'rate', 'created_by', 'action'])->make(true);
     }
 
-    public function addCurrencyRate(int $currencyId, ?float $currencyRate = null, ?string $currencyRateDate = null): void
+    public function addCurrencyRate(int $currencyId, ?float $currencyRate = null, ?int $currencyType = null, ?string $currencyRateDate = null): void
     {
         if (isset($currencyRate)) {
 
             $addCurrencyRate = new CurrencyRate();
             $addCurrencyRate->currency_id = $currencyId;
             $addCurrencyRate->rate = $currencyRate;
+            $addCurrencyRate->type = $currencyType;
             $addCurrencyRate->date_ts = isset($currencyRateDate) ? date('Y-m-d H:i:s', strtotime($currencyRateDate . date(' H:i:s'))) : date('Y-m-d H:i:s');
             $addCurrencyRate->save();
         }
     }
 
-    public function updateCurrencyRate(?int $id, ?int $currencyId, ?float $currencyRate = null, ?string $currencyRateDate = null): void
+    public function updateCurrencyRate(?int $id, ?int $currencyId, ?float $currencyRate = null, ?int $currencyType = null, ?string $currencyRateDate = null): void
     {
         $updateCurrencyRate = $this->singleCurrencyRate(id: $id);
         if (isset($updateCurrencyRate)) {
 
             $updateCurrencyRate->rate = isset($currencyRate) ? $currencyRate : 0;
+            $updateCurrencyRate->type = $currencyType;
             $time = date(' H:i:s', strtotime($updateCurrencyRate->date_ts));
             $updateCurrencyRate->date_ts = isset($currencyRateDate) ? date('Y-m-d H:i:s', strtotime($currencyRateDate . $time)) : date('Y-m-d H:i:s');
             $updateCurrencyRate->save();
         } elseif (isset($currencyRate)) {
 
-            $this->addCurrencyRate(currencyId: $currencyId, currencyRate: $currencyRate, currencyRateDate: $currencyRateDate);
+            $this->addCurrencyRate(currencyId: $currencyId, currencyRate: $currencyRate, currencyType: $currencyType, currencyRateDate: $currencyRateDate);
         }
     }
 

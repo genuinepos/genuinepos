@@ -13,6 +13,8 @@ class ProfitLossService
 {
     public function profitLossAmounts(mixed $branchId = null, mixed $childBranchId = null, ?string $fromDate = null, ?string $toDate = null, bool $getParentBranchData = true): array
     {
+        $authUserBranchId = auth()->user()->branch_id;
+
         $stockAdjustments = '';
         $sales = '';
         $saleReturns = '';
@@ -26,32 +28,39 @@ class ProfitLossService
             ->leftJoin('products', 'stock_chains.sale_product_id', 'products.id')
             ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $adjustmentQuery = DB::table('stock_adjustments')
             ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $saleQuery = DB::table('sales')->where('sales.status', SaleStatus::Final->value)
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $saleReturnQuery = DB::table('sale_returns')
             ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $expenseQuery = DB::table('accounting_vouchers')->where('accounting_vouchers.voucher_type', AccountingVoucherType::Expense->value)
             ->leftJoin('branches', 'accounting_vouchers.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $payrollPaymentQuery = DB::table('accounting_vouchers')->where('accounting_vouchers.voucher_type', AccountingVoucherType::PayrollPayment->value)
             ->leftJoin('branches', 'accounting_vouchers.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $issuedProductQuery = DB::table('stock_issue_products')
             ->leftJoin('stock_issues', 'stock_issue_products.stock_issue_id', 'stock_issues.id')
             ->leftJoin('branches', 'stock_issues.branch_id', 'branches.id')
-            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         if ($fromDate) {
 
@@ -174,25 +183,133 @@ class ProfitLossService
         }
 
         $saleProducts = $saleProductQuery->select(
-            DB::raw('SUM(purchase_products.net_unit_cost * stock_chains.out_qty) as total_unit_cost'),
-            DB::raw('SUM(sale_products.unit_tax_amount * stock_chains.out_qty) as total_unit_tax_amount'),
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1 THEN
+                                purchase_products.net_unit_cost * stock_chains.out_qty * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                purchase_products.net_unit_cost * stock_chains.out_qty
+                        END
+                    ) AS total_unit_cost,
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1 THEN
+                                sale_products.unit_tax_amount * stock_chains.out_qty * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                sale_products.unit_tax_amount * stock_chains.out_qty
+                        END
+                    ) AS total_unit_tax_amount
+                '
+            ),
         )->get();
 
         $sales = $saleQuery->select(
-            DB::raw('sum(sales.total_invoice_amount) as total_sale'),
-            DB::raw('sum(sales.order_tax_amount) as total_order_tax'),
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN sales.total_invoice_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                sales.total_invoice_amount
+                        END
+                    ) AS total_sale,
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN sales.order_tax_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                sales.order_tax_amount
+                        END
+                    ) AS total_order_tax
+                '
+            ),
         )->get();
 
         $stockAdjustments = $adjustmentQuery->select(
-            DB::raw('sum(stock_adjustments.net_total_amount) as total_adjustment'),
-            DB::raw('sum(stock_adjustments.recovered_amount) as total_recovered')
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN stock_adjustments.net_total_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                stock_adjustments.net_total_amount
+                        END
+                    ) AS total_adjustment,
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN stock_adjustments.recovered_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                stock_adjustments.recovered_amount
+                        END
+                    ) AS total_recovered
+                '
+            )
         )->get();
 
-        $stockIssues = $issuedProductQuery->select(DB::raw('sum(stock_issue_products.subtotal) as total_stock_issue'))->get();
+        $stockIssues = $issuedProductQuery->select(
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN stock_issue_products.subtotal * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                stock_issue_products.subtotal
+                        END
+                    ) AS total_stock_issue
+                '
+            )
+        )->get();
 
-        $saleReturns = $saleReturnQuery->select(DB::raw('sum(sale_returns.total_return_amount) as total_sale_return'))->get();
-        $expense = $expenseQuery->select(DB::raw('sum(accounting_vouchers.total_amount) as total_expense'))->get();
-        $payrollPayments = $payrollPaymentQuery->select(DB::raw('sum(accounting_vouchers.total_amount) as total_payroll_payment'))->get();
+        $saleReturns = $saleReturnQuery->select(
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN sale_returns.total_return_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                sale_returns.total_return_amount
+                        END
+                    ) AS total_sale_return
+                '
+            )
+        )->get();
+
+        $expense = $expenseQuery->select(
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN accounting_vouchers.total_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                accounting_vouchers.total_amount
+                        END
+                    ) AS total_expense
+                '
+            )
+        )->get();
+
+        $payrollPayments = $payrollPaymentQuery->select(
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN ' . ($authUserBranchId === null ? 1 : 0) . ' = 1
+                                THEN accounting_vouchers.total_amount * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                            ELSE
+                                accounting_vouchers.total_amount
+                        END
+                    ) AS total_payroll_payment
+                '
+            )
+        )->get();
 
         $totalSale = $sales->sum('total_sale');
         $totalUnitTax = $saleProducts->sum('total_unit_tax_amount');

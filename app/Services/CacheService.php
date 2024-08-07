@@ -17,5 +17,7 @@ class CacheService implements CacheServiceInterface
         Cache::forget($cacheKey);
         $cacheKey = "parentBranchGeneralSettings_{$__branchId}";
         Cache::forget($cacheKey);
+        $cacheKey = "{$tenantId}_baseCurrency";
+        Cache::forget($cacheKey);
     }
 }

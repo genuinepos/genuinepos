@@ -350,7 +350,7 @@
             type: 'get',
             dataType: 'json',
             success: function(data) {
-                
+
                 if ($.isEmptyObject(data.errorMsg)) {
 
                     var stock = parseFloat(data.stock) + parseFloat(e_current_qty);

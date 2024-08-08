@@ -110,8 +110,7 @@
 </tr>
 
 <tr>
-    <td class="text-end fw-bold"><span>{{ __("Total") }} </span></td>
-
+    <td class="text-end fw-bold"><span>{{ __("Total") }} ({{ $generalSettings['business_or_shop__currency_symbol'] }})</span></td>
     <td class="fw-bold">:
         @if ($liabilityDetails['closingBalanceSide'] == 'dr')
             <span>(-) {{ \App\Utils\Converter::format_in_bdt($liabilityDetails['closingBalance']) }}</span>

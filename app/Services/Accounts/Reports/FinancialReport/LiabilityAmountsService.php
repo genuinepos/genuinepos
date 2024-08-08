@@ -80,6 +80,7 @@ class LiabilityAmountsService
 
     private function branchAndDivision($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $accountStartDateYmd = '';
         $fromDateYmd = '';
         $toDateYmd = '';
@@ -96,6 +97,8 @@ class LiabilityAmountsService
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
@@ -152,54 +155,66 @@ class LiabilityAmountsService
 
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS opening_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS opening_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS curr_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS curr_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
                     '
                 ),
             );
@@ -217,8 +232,32 @@ class LiabilityAmountsService
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
 
-                DB::raw('IFNULL(SUM(account_ledgers.debit), 0) as curr_total_debit'),
-                DB::raw('IFNULL(SUM(account_ledgers.credit), 0) as curr_total_credit'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    ELSE account_ledgers.debit
+                                END
+                            ), 0
+                        ) as curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    ELSE account_ledgers.credit
+                                END
+                            ), 0
+                        ) as curr_total_credit
+                    '
+                ),
             );
         }
 
@@ -275,6 +314,7 @@ class LiabilityAmountsService
 
     private function capitalAccount($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
@@ -306,6 +346,8 @@ class LiabilityAmountsService
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
@@ -331,9 +373,14 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
                                     THEN account_ledgers.debit
                                 END
                             ), 0
@@ -345,9 +392,14 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
                                     THEN account_ledgers.credit
                                 END
                             ), 0
@@ -359,10 +411,16 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                         AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
                                     THEN account_ledgers.debit
                                 END
                             ), 0
@@ -374,10 +432,16 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                         AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
                                     THEN account_ledgers.credit
                                 END
                             ), 0
@@ -402,56 +466,74 @@ class LiabilityAmountsService
                     'accounts.name as account_name',
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS opening_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS opening_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS opening_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS opening_total_credit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -475,6 +557,10 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
                                             AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                         THEN account_ledgers.debit
@@ -488,6 +574,10 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
                                             AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                         THEN account_ledgers.credit
@@ -501,6 +591,11 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
                                             AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                             AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
@@ -515,6 +610,11 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
                                             AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                             AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
@@ -542,6 +642,9 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                         THEN account_ledgers.debit
                                     END
@@ -554,6 +657,9 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                         THEN account_ledgers.credit
                                     END
@@ -566,6 +672,10 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                             AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
                                         THEN account_ledgers.debit
@@ -579,6 +689,10 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                             AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
                                         THEN account_ledgers.credit
@@ -612,8 +726,12 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
                                     THEN account_ledgers.debit
                                 END
                             ), 0
@@ -625,8 +743,12 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
                                     THEN account_ledgers.credit
                                 END
                             ), 0
@@ -654,6 +776,9 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
                                     THEN account_ledgers.debit
                                 END
@@ -666,6 +791,9 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
                                     THEN account_ledgers.credit
                                 END
@@ -695,6 +823,9 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
                                         THEN account_ledgers.debit
                                     END
@@ -707,6 +838,9 @@ class LiabilityAmountsService
                             IFNULL(
                                 SUM(
                                     CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                         WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
                                         THEN account_ledgers.credit
                                     END
@@ -731,16 +865,30 @@ class LiabilityAmountsService
 
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM( account_ledgers.debit), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        ELSE
+                                            account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(account_ledgers.credit), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        ELSE
+                                            account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -801,6 +949,7 @@ class LiabilityAmountsService
 
     private function currentLiabilities($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $accountStartDateYmd = '';
         $fromDateYmd = '';
         $toDateYmd = '';
@@ -819,6 +968,8 @@ class LiabilityAmountsService
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id')
             ->whereNotIn('account_groups.id', function ($query) {
@@ -880,54 +1031,66 @@ class LiabilityAmountsService
 
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS opening_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS opening_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS curr_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS curr_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
                     '
                 ),
             );
@@ -945,8 +1108,34 @@ class LiabilityAmountsService
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
 
-                DB::raw('IFNULL(SUM(account_ledgers.debit), 0) as curr_total_debit'),
-                DB::raw('IFNULL(SUM(account_ledgers.credit), 0) as curr_total_credit'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE
+                                    account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE
+                                    account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
+                    '
+                ),
             );
         }
 
@@ -1032,6 +1221,7 @@ class LiabilityAmountsService
 
     private function dutiesAndTaxesAccount($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
@@ -1063,6 +1253,8 @@ class LiabilityAmountsService
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
@@ -1088,6 +1280,11 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                     ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
@@ -1099,46 +1296,63 @@ class LiabilityAmountsService
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS opening_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS opening_total_credit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -1159,56 +1373,74 @@ class LiabilityAmountsService
                     'accounts.name as account_name',
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS opening_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS opening_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS opening_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS opening_total_credit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -1229,56 +1461,74 @@ class LiabilityAmountsService
                         'accounts.name as account_name',
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS opening_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS opening_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS opening_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS opening_total_credit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -1296,52 +1546,66 @@ class LiabilityAmountsService
                         'accounts.name as account_name',
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS opening_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS opening_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS opening_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS opening_total_credit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -1366,28 +1630,36 @@ class LiabilityAmountsService
 
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                            ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -1408,26 +1680,32 @@ class LiabilityAmountsService
 
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -1449,26 +1727,32 @@ class LiabilityAmountsService
 
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -1488,16 +1772,30 @@ class LiabilityAmountsService
 
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM( account_ledgers.debit), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        ELSE
+                                            account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(account_ledgers.credit), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        ELSE
+                                            account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -1558,6 +1856,7 @@ class LiabilityAmountsService
 
     private function accountPayable($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
@@ -1590,6 +1889,8 @@ class LiabilityAmountsService
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
@@ -1615,6 +1916,11 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                     ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
@@ -1629,6 +1935,11 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                     ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
@@ -1643,6 +1954,12 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                         AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
@@ -1658,6 +1975,12 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                         AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
@@ -1689,6 +2012,10 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                     THEN account_ledgers.debit
@@ -1702,6 +2029,10 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
                                     THEN account_ledgers.credit
@@ -1715,6 +2046,11 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                         AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
@@ -1729,6 +2065,11 @@ class LiabilityAmountsService
                         IFNULL(
                             SUM(
                                 CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
                                     WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
                                         AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
                                         AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
@@ -1756,56 +2097,74 @@ class LiabilityAmountsService
                         'accounts.name as account_name',
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS opening_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS opening_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS opening_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS opening_total_credit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                            AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -1823,52 +2182,66 @@ class LiabilityAmountsService
                         'accounts.name as account_name',
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS opening_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS opening_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS opening_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS opening_total_credit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                            AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                                AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -1893,28 +2266,36 @@ class LiabilityAmountsService
 
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
-                                    ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
+                                        ' . ($__branchId !== null ? 'OR parentBranch.id = ' . $__branchId : '') . '
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -1935,26 +2316,32 @@ class LiabilityAmountsService
 
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                    THEN account_ledgers.debit
-                                END
-                            ), 0
-                        ) AS curr_total_debit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.debit
+                                    END
+                                ), 0
+                            ) AS curr_total_debit
                         '
                     ),
                     DB::raw(
                         '
-                        IFNULL(
-                            SUM(
-                                CASE
-                                    WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
-                                    THEN account_ledgers.credit
-                                END
-                            ), 0
-                        ) AS curr_total_credit
+                            IFNULL(
+                                SUM(
+                                    CASE
+                                        WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            AND ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        WHEN ' . ($childBranchId !== null ? 'account_ledgers.branch_id = ' . $childBranchId : 'account_ledgers.branch_id IS NULL') . '
+                                        THEN account_ledgers.credit
+                                    END
+                                ), 0
+                            ) AS curr_total_credit
                         '
                     ),
                 );
@@ -1976,26 +2363,32 @@ class LiabilityAmountsService
 
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                        THEN account_ledgers.debit
-                                    END
-                                ), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(
-                                    CASE
-                                        WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
-                                        THEN account_ledgers.credit
-                                    END
-                                ), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                                AND ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                            WHEN ' . (auth()->user()->branch_id !== null ? 'account_ledgers.branch_id = ' . auth()->user()->branch_id : 'account_ledgers.branch_id IS NULL') . '
+                                            THEN account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -2015,16 +2408,30 @@ class LiabilityAmountsService
 
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM( account_ledgers.debit), 0
-                            ) AS curr_total_debit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        ELSE
+                                            account_ledgers.debit
+                                        END
+                                    ), 0
+                                ) AS curr_total_debit
                             '
                         ),
                         DB::raw(
                             '
-                            IFNULL(
-                                SUM(account_ledgers.credit), 0
-                            ) AS curr_total_credit
+                                IFNULL(
+                                    SUM(
+                                        CASE
+                                            WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                            THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                        ELSE
+                                            account_ledgers.credit
+                                        END
+                                    ), 0
+                                ) AS curr_total_credit
                             '
                         ),
                     );
@@ -2085,6 +2492,7 @@ class LiabilityAmountsService
 
     private function loanLiabilities($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $filteredBranchId = null;
         $filteredChildBranchId = isset($request->child_branch_id)
             && $request->child_branch_id && !empty($request->child_branch_id) ?
@@ -2137,6 +2545,8 @@ class LiabilityAmountsService
         }
 
         $query->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
@@ -2186,54 +2596,66 @@ class LiabilityAmountsService
                 'accounts.name as account_name',
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS opening_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS opening_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS curr_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS curr_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
                     '
                 ),
             );
@@ -2250,9 +2672,34 @@ class LiabilityAmountsService
                 'accounts.id as account_id',
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
-
-                DB::raw('IFNULL(SUM(account_ledgers.debit), 0) as curr_total_debit'),
-                DB::raw('IFNULL(SUM(account_ledgers.credit), 0) as curr_total_credit'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE
+                                    account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE
+                                    account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
+                    '
+                ),
             );
         }
 
@@ -2309,6 +2756,7 @@ class LiabilityAmountsService
 
     private function suspenseAccount($request, $accountStartDate)
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $accountStartDateYmd = '';
         $fromDateYmd = '';
         $toDateYmd = '';
@@ -2325,6 +2773,8 @@ class LiabilityAmountsService
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('account_groups as parentGroup', 'account_groups.parent_group_id', 'parentGroup.id')
             ->leftJoin('account_groups as accountGroup', 'accounts.account_group_id', 'accountGroup.id');
 
@@ -2378,57 +2828,68 @@ class LiabilityAmountsService
                 'accounts.id as account_id',
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
-
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS opening_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN
-                                timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS opening_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.debit
-                            END
-                        ), 0
-                    ) AS curr_total_debit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
                     '
                 ),
                 DB::raw(
                     '
-                    IFNULL(
-                        SUM(
-                            CASE
-                                WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
-                                    AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
-                                THEN account_ledgers.credit
-                            END
-                        ), 0
-                    ) AS curr_total_credit
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
                     '
                 ),
             );
@@ -2445,9 +2906,34 @@ class LiabilityAmountsService
                 'accounts.id as account_id',
                 'accountGroup.id as account_group_id',
                 'accounts.name as account_name',
-
-                DB::raw('IFNULL(SUM(account_ledgers.debit), 0) as curr_total_debit'),
-                DB::raw('IFNULL(SUM(account_ledgers.credit), 0) as curr_total_credit'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE
+                                    account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE
+                                    account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
+                    '
+                ),
             );
         }
 

@@ -3,6 +3,7 @@
 use App\Enums\ContactType;
 use App\Models\Sales\Sale;
 use App\Models\Setups\Currency;
+use App\Models\Contacts\Contact;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
@@ -12,7 +13,7 @@ Route::get('my-test', function () {
 
     try {
         DB::beginTransaction();
-        
+
         $receipts = DB::table('accounting_vouchers')->where('voucher_type', AccountingVoucherType::Receipt->value)
             ->leftJoin('accounting_voucher_descriptions', 'accounting_vouchers.id', 'accounting_voucher_descriptions.accounting_voucher_id')
             ->where('accounting_voucher_descriptions.account_id', 35)
@@ -82,10 +83,11 @@ Route::get('my-test', function () {
             $accountingVoucher->save();
         }
 
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
         $customers = Contact::where('type', ContactType::Customer->value)->get();
         foreach ($customers as $customer) {
 
-            $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
             $customer->branch_id = $ownBranchIdOrParentBranchId;
             $customer->contact_id = null;
             $customer->prefix = null;
@@ -98,10 +100,10 @@ Route::get('my-test', function () {
             $generalSettings = config('generalSettings');
             $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
             $isCheckBranch = true;
-            $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $cusIdPrefix, digits: 4, isCheckBranch: $isCheckBranch, branchId: $ownBranchIdOrParentBranchId);
+            $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: ContactType::Customer->value, prefix: $cusIdPrefix, digits: 4, isCheckBranch: $isCheckBranch, branchId: $ownBranchIdOrParentBranchId);
 
             $prefixTypeSign = 'C';
-            $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter: ':', isCheckBranch: $isCheckBranch, branchId: $ownBranchIdOrParentBranchId);
+            $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: ContactType::Customer->value, prefix: $prefixTypeSign, digits: 0, splitter: ':', isCheckBranch: $isCheckBranch, branchId: $ownBranchIdOrParentBranchId);
 
             $customer->branch_id = $ownBranchIdOrParentBranchId;
             $customer->contact_id = $contactId;
@@ -110,9 +112,10 @@ Route::get('my-test', function () {
         }
 
         DB::commit();
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
 
         DB::rollBack();
+        dd($e->getMessage());
     }
 
     // $dir = __DIR__ . '/../resources/views';

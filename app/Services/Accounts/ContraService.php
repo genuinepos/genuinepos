@@ -17,8 +17,9 @@ class ContraService
         $contras = '';
         $query = AccountingVoucher::query()
             ->with([
-                'branch:id,name,branch_code,parent_branch_id,area_name',
+                'branch:id,currency_id,name,branch_code,parent_branch_id,area_name',
                 'branch.parentBranch:id,name',
+                'branch.branchCurrency:id,currency_rate',
                 'voucherCreditDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'voucherCreditDescription.account:id,name,account_number',
                 'voucherCreditDescription.paymentMethod:id,name',
@@ -76,9 +77,6 @@ class ContraService
 
                         $html .= '<a href="' . route('contras.edit', ['id' => $row->id]) . '" class="dropdown-item" id="editContra">' . __('Edit') . '</a>';
                     }
-                }
-
-                if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('contras_delete')) {
 
@@ -125,7 +123,9 @@ class ContraService
             ->editColumn('cheque_no', fn ($row) => $row?->voucherCreditDescription?->cheque_no)
             ->editColumn('cheque_serial_no', fn ($row) => $row?->voucherCreditDescription?->cheque_serial_no)
             ->editColumn('debit_account', fn ($row) => $row?->voucherDebitDescription?->account?->name . ($row?->voucherDebitDescription?->account?->account_number ? ' / ' . $row?->voucherDebitDescription?->account?->account_number : ''))
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_amount) . '</span>')
+
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</span>')
+
             ->editColumn('created_by', function ($row) {
 
                 return $row?->createdBy?->prefix . ' ' . $row?->createdBy?->name . ' ' . $row?->createdBy?->last_name;

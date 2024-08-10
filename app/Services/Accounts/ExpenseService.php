@@ -17,8 +17,9 @@ class ExpenseService
         $expenses = '';
         $query = AccountingVoucher::query()
             ->with([
-                'branch:id,name,branch_code,parent_branch_id',
+                'branch:id,currency_id,name,area_name,branch_code,parent_branch_id',
                 'branch.parentBranch:id,name',
+                'branch.branchCurrency:id,currency_rate',
                 'voucherCreditDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'voucherCreditDescription.account:id,name,account_number',
                 'voucherCreditDescription.paymentMethod:id,name',
@@ -75,9 +76,6 @@ class ExpenseService
 
                         $html .= '<a href="' . route('expenses.edit', ['id' => $row->id]) . '" class="dropdown-item" id="editExpense">' . __('Edit') . '</a>';
                     }
-                }
-
-                if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('expenses_delete')) {
 
@@ -131,13 +129,13 @@ class ExpenseService
                 foreach ($row->voucherDebitDescriptions as $index => $description) {
 
                     $amount = \App\Utils\Converter::format_in_bdt($description->amount);
-                    $html .= '<p class="p-0 m-0" style="line-height:1.3!important;font-size:11px;">' . ($index + 1) . ' - ' . $description->account->name . ' : <strong>' . $amount . '</strong></p>';
+                    $html .= '<p class="p-0 m-0" style="line-height:1.3!important;font-size:11px;">' . ($index + 1) . ' - ' . $description->account->name . ' : <strong>' . \App\Utils\Converter::format_in_bdt(curr_cnv($amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</strong></p>';
                 }
 
                 return $html;
             })
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_amount) . '</span>')
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 

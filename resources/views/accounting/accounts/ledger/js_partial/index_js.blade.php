@@ -25,6 +25,7 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.branch_name = $('#branch_id').find('option:selected').data('branch_name');
+                d.currency_rate = $('#branch_id').find('option:selected').data('currency_rate');
                 d.from_date = $('#from_date').val();
                 d.to_date = $('#to_date').val();
                 d.note = $('#note').val();
@@ -90,6 +91,7 @@
 
         var branch_id = $('#branch_id').val();
         var branch_name = $('#branch_id').find('option:selected').data('branch_name');
+        var currency_rate = $('#branch_id').find('option:selected').data('currency_rate');
         var from_date = $('#from_date').val();
         var to_date = $('#to_date').val();
         var note = $('#note').val();
@@ -103,6 +105,7 @@
             data: {
                 branch_id,
                 branch_name,
+                currency_rate,
                 from_date,
                 to_date,
                 note,

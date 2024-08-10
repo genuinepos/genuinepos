@@ -85,7 +85,7 @@ class CurrencyRateService
             $addCurrencyRate = new CurrencyRate();
             $addCurrencyRate->currency_id = $currencyId;
             $addCurrencyRate->rate = $currencyRate;
-            $addCurrencyRate->type = $currencyType;
+            $addCurrencyRate->type = $currencyType ? $currencyType : 1;
             $addCurrencyRate->date_ts = isset($currencyRateDate) ? date('Y-m-d H:i:s', strtotime($currencyRateDate . date(' H:i:s'))) : date('Y-m-d H:i:s');
             $addCurrencyRate->save();
         }
@@ -97,7 +97,7 @@ class CurrencyRateService
         if (isset($updateCurrencyRate)) {
 
             $updateCurrencyRate->rate = isset($currencyRate) ? $currencyRate : 0;
-            $updateCurrencyRate->type = $currencyType;
+            $updateCurrencyRate->type = $currencyType ? $currencyType : 1;
             $time = date(' H:i:s', strtotime($updateCurrencyRate->date_ts));
             $updateCurrencyRate->date_ts = isset($currencyRateDate) ? date('Y-m-d H:i:s', strtotime($currencyRateDate . $time)) : date('Y-m-d H:i:s');
             $updateCurrencyRate->save();

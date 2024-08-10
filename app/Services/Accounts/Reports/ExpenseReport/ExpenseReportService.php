@@ -28,10 +28,10 @@ class ExpenseReportService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')-' . $row->branch_code;
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name . '(' . $row->area_name . ')-' . $row->branch_code;
                     }
                 } else {
 
@@ -55,7 +55,7 @@ class ExpenseReportService
                 return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
 
-            ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . \App\Utils\Converter::format_in_bdt($row->amount) . '</span>')
+            ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . curr_cnv($row->amount, $row->c_rate, $row->ledger_branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->amount, $row->c_rate, $row->ledger_branch_id)) . '</span>')
             ->rawColumns(['date', 'branch', 'voucher_type', 'voucher_no', 'amount'])
             ->make(true);
     }
@@ -67,6 +67,8 @@ class ExpenseReportService
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->leftJoin('accounting_voucher_descriptions', 'account_ledgers.voucher_description_id', 'accounting_voucher_descriptions.id')
             ->leftJoin('accounting_vouchers', 'accounting_voucher_descriptions.accounting_voucher_id', 'accounting_vouchers.id')
             ->leftJoin('stock_adjustments', 'account_ledgers.adjustment_id', 'stock_adjustments.id')
@@ -142,12 +144,14 @@ class ExpenseReportService
             'parentBranch.name as parent_branch_name',
 
             'account_ledgers.date',
+            'account_ledgers.branch_id as ledger_branch_id',
             'account_ledgers.voucher_type',
             'accounting_vouchers.id as accounting_voucher_id',
             'accounting_vouchers.voucher_no as accounting_voucher_no',
             'stock_adjustments.voucher_no as stock_adjustment_voucher',
             'stock_adjustments.id as adjustment_id',
             'account_ledgers.debit as amount',
+            'currencies.currency_rate as c_rate'
         )->orderBy('account_ledgers.date', 'desc');
     }
 }

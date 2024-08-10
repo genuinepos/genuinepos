@@ -259,11 +259,11 @@
 
                             <td class="text-start main_td">{!! $row->{$type['voucher_no']} !!}</td>
                             <td class="text-end fw-bold main_td">
-                                {{ $row->debit > 0 ? \App\Utils\Converter::format_in_bdt($row->debit) : '' }}
+                                {{ $row->debit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '' }}
                             </td>
 
                             <td class="text-end fw-bold main_td">
-                                {{ $row->credit > 0 ? \App\Utils\Converter::format_in_bdt($row->credit) : '' }}
+                                {{ $row->credit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '' }}
                             </td>
 
                             <td class="text-end fw-bold main_td">

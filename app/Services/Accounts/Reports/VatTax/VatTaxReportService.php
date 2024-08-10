@@ -39,6 +39,8 @@ class VatTaxReportService
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->with(
                 [
                     'salesReturn:id,customer_account_id,total_return_amount,due',
@@ -82,6 +84,8 @@ class VatTaxReportService
                 'branches.name as branch_name',
                 'branches.area_name as branch_area_name',
                 'parentBranch.name as parent_branch_name',
+
+                'currencies.currency_rate as c_rate'
             );
 
         return $query->orderBy('account_ledgers.date', 'desc')->orderBy('account_ledgers.id', 'desc');
@@ -145,7 +149,7 @@ class VatTaxReportService
 
                 return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
-            ->editColumn('input_amount', fn ($row) => '<span class="table_input_amount fw-bold" data-value="' . $row->debit . '">' .  \App\Utils\Converter::format_in_bdt($row->debit) . '</span>')
+            ->editColumn('input_amount', fn ($row) => '<span class="table_input_amount fw-bold" data-value="' . curr_cnv($row->debit, $row->c_rate, $row->branch_id) . '">' .  \App\Utils\Converter::format_in_bdt(curr_cnv($row->debit, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('on_amount', function ($row) {
 
@@ -184,6 +188,8 @@ class VatTaxReportService
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id')
             ->with(
                 [
                     'purchaseReturn:id,supplier_account_id,total_return_amount,due',
@@ -229,6 +235,8 @@ class VatTaxReportService
                 'branches.name as branch_name',
                 'branches.area_name as branch_area_name',
                 'parentBranch.name as parent_branch_name',
+
+                'currencies.currency_rate as c_rate'
             );
 
         return $query->orderBy('account_ledgers.date', 'desc')->orderBy('account_ledgers.id', 'desc')->get();
@@ -292,7 +300,7 @@ class VatTaxReportService
 
                 return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
-            ->editColumn('output_amount', fn ($row) => '<span class="table_input_amount fw-bold" data-value="' . $row->credit . '">' .  \App\Utils\Converter::format_in_bdt($row->credit) . '</span>')
+            ->editColumn('output_amount', fn ($row) => '<span class="table_input_amount fw-bold" data-value="' . curr_cnv($row->credit, $row->c_rate, $row->branch_id) . '">' .  \App\Utils\Converter::format_in_bdt(curr_cnv($row->credit, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->editColumn('on_amount', function ($row) {
 
@@ -305,6 +313,8 @@ class VatTaxReportService
 
     public function VatTaxAmounts(object $request): array
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
+
         $query = DB::table('account_ledgers')
             ->where('account_groups.sub_sub_group_number', 8)
             ->where('account_ledgers.amount_type', 'debit')
@@ -318,18 +328,33 @@ class VatTaxReportService
                 ]
             )
             ->leftJoin('accounts', 'account_ledgers.account_id', 'accounts.id')
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id');
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id');
 
         $this->filter(request: $request, query: $query);
 
         $inputTaxes = $query->select(
             'accounts.id',
             'accounts.name',
-            DB::raw('SUM(account_ledgers.debit) as total_input_tax')
+            DB::raw(
+                '
+                    IFNULL(
+                        SUM(
+                            CASE
+                                WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE account_ledgers.debit
+                            END
+                        ), 0
+                    ) as total_input_tax
+                '
+            )
         )->groupBy('accounts.id', 'accounts.name')->get();
 
         $totalInputTaxAmount = 0;
         foreach ($inputTaxes as $inputTax) {
+
             $totalInputTaxAmount += $inputTax->total_input_tax;
         }
 
@@ -346,14 +371,28 @@ class VatTaxReportService
                     AccountLedgerVoucherType::SalesReturnProductTax->value,
                 ]
             )->leftJoin('accounts', 'account_ledgers.account_id', 'accounts.id')
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id');
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->leftJoin('branches as ledger_branches', 'account_ledgers.branch_id', 'ledger_branches.id')
+            ->leftJoin('currencies', 'ledger_branches.currency_id', 'currencies.id');
 
         $this->filter(request: $request, query: $query);
 
         $outputTaxes = $query->select(
             'accounts.id',
             'accounts.name',
-            DB::raw('SUM(account_ledgers.credit) as total_output_tax')
+            DB::raw(
+                '
+                    IFNULL(
+                        SUM(
+                            CASE
+                                WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                ELSE account_ledgers.credit
+                            END
+                        ), 0
+                    ) as total_output_tax
+                '
+            )
         )->groupBy('accounts.id', 'accounts.name')->get();
 
         $totalOutputTaxAmount = 0;

@@ -24,8 +24,9 @@ class ReceiptService
             ->with([
                 'account:id,name,phone,address',
                 'accountingVoucher:id,branch_id,voucher_no,date,date_ts,voucher_type,sale_ref_id,purchase_return_ref_id,stock_adjustment_ref_id,total_amount,remarks,created_by_id',
-                'accountingVoucher.branch:id,name,branch_code,area_name,parent_branch_id',
+                'accountingVoucher.branch:id,currency_id,name,branch_code,area_name,parent_branch_id',
                 'accountingVoucher.branch.parentBranch:id,name',
+                'accountingVoucher.branch.branchCurrency:id,currency_rate',
                 'accountingVoucher.voucherDebitDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'accountingVoucher.voucherDebitDescription.account:id,name',
                 'accountingVoucher.voucherDebitDescription.paymentMethod:id,name',
@@ -98,9 +99,6 @@ class ReceiptService
 
                         $html .= '<a href="' . route('receipts.edit', ['id' => $row?->accountingVoucher?->id, 'creditAccountId' => $creditAccountId]) . '" class="dropdown-item" id="editReceipt">' . __('Edit') . '</a>';
                     }
-                }
-
-                if (auth()->user()->branch_id == $row?->accountingVoucher?->branch_id) {
 
                     if (auth()->user()->can('receipts_delete')) {
 
@@ -164,7 +162,7 @@ class ReceiptService
             ->editColumn('cheque_no', fn ($row) => $row?->accountingVoucher?->voucherDebitDescription?->cheque_no)
             ->editColumn('cheque_serial_no', fn ($row) => $row?->accountingVoucher?->voucherDebitDescription?->cheque_serial_no)
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->accountingVoucher->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row?->accountingVoucher->total_amount) . '</span>')
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->accountingVoucher?->total_amount, $row?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->accountingVoucher?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->accountingVoucher?->total_amount, $row?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->accountingVoucher?->branch?->id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 

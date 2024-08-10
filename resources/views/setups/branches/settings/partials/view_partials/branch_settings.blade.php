@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <label class="fw-bold">{{ __('Store Name') }} <span class="text-danger">*</span></label>
-                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" value="{{ $branch->name }}" placeholder="{{ __('Store Name') }}" />
+                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" value="{{ $branch?->name ? $branch->name : $branch?->parentBranch?->name }}" placeholder="{{ __('Store Name') }}" />
                     <span class="error error_branch_name"></span>
                 </div>
 

@@ -235,6 +235,11 @@ class BranchService
             return ['pass' => false, 'msg' => __('Store can not be deleted. This store has one or more purchases.')];
         }
 
+        if (auth()->user()->branch_id == $id) {
+
+            return ['pass' => false, 'msg' => __('Store can not be deleted. Please switch to another store then delete the store.')];
+        }
+
         FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteBranch->logo);
 
         if ($deleteBranch?->shopExpireDateHistory) {

@@ -10,6 +10,7 @@ class AccountBalanceService
 {
     public function accountBalance(?int $accountId, string $fromDate = null, string $toDate = null, mixed $branchId = null): array
     {
+        $authUserBranchId = auth()?->user()?->branch_id;
         $account = DB::table('accounts')->where('accounts.id', $accountId)
             ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -25,7 +26,10 @@ class AccountBalanceService
 
         $converter = new \App\Utils\Converter();
         $amounts = '';
-        $query = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId);
+        $query = DB::table('account_ledgers')
+        ->where('account_ledgers.account_id', $accountId)
+        ->leftJoin('branches', 'account_ledgers.branch_id', 'branches.id')
+        ->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
         $accountStartDateYmd = '';
         $fromDateYmd = '';
@@ -63,53 +67,539 @@ class AccountBalanceService
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
 
             $query->select(
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.debit end), 0) as opening_total_debit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.credit end), 0) as opening_total_credit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.debit end), 0) as curr_total_debit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.credit end), 0) as curr_total_credit"),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) < \'' . $fromDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
+                    '
+                ),
 
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 1 then account_ledgers.debit end), 0) as total_sale"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 2 then account_ledgers.credit end), 0) as total_sales_return"),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 1
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 1
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_sale
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 2
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 2
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_sales_return
+                    '
+                ),
 
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 3 then account_ledgers.credit end), 0) as total_purchase"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 4 then account_ledgers.debit end), 0) as total_purchase_return"),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 3
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 3
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_purchase
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 4
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 4
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_purchase_return
+                    '
+                ),
 
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 8 then account_ledgers.credit end), 0) as total_received"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 9 then account_ledgers.debit end), 0) as total_paid"),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 8
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 8
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_received
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 9
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                        AND account_ledgers.voucher_type = 9
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_paid
+                    '
+                ),
             );
         } elseif ($fromDateYmd && $toDateYmd && $fromDateYmd <= $accountStartDateYmd) {
 
             $query->select(
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 0 and timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.debit end), 0) as opening_total_debit"),
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 0 and timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.credit end), 0) as opening_total_credit"),
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type != 0 and timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.debit end), 0) as curr_total_debit"),
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type != 0 and timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' then account_ledgers.credit end), 0) as curr_total_credit"),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type != 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type != 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type != 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type != 0
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
+                    '
+                ),
 
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 1 then account_ledgers.debit end), 0) as total_sale"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 2 then account_ledgers.credit end), 0) as total_sales_return"),
-
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 3 then account_ledgers.credit end), 0) as total_purchase"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 4 then account_ledgers.debit end), 0) as total_purchase_return"),
-
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 8 then account_ledgers.credit end), 0) as total_received"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) > '$fromDateYmd' and timestamp(account_ledgers.date) < '$toDateYmd' and account_ledgers.voucher_type = 9 then account_ledgers.debit end), 0) as total_paid"),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 1
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_sale
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 2
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 2
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_sales_return
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 3
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 3
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_purchase
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 4
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 4
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_purchase_return
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 8
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 8
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_received
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 9
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 9
+                                        AND timestamp(account_ledgers.date) > \'' . $fromDateYmd . '\'
+                                        AND timestamp(account_ledgers.date) < \'' . $toDateYmd . '\'
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_paid
+                    '
+                ),
             );
         } else {
 
             $query->select(
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 0 then account_ledgers.debit end), 0) as opening_total_debit'),
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 0 then account_ledgers.credit end), 0) as opening_total_credit'),
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type != 0 then account_ledgers.debit end), 0) as curr_total_debit'),
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type != 0 then account_ledgers.credit end), 0) as curr_total_credit'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 0
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 0
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS opening_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 0
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 0
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS opening_total_credit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type != 0
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type != 0
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS curr_total_debit
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type != 0
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type != 0
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS curr_total_credit
+                    '
+                ),
 
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 1 then account_ledgers.debit end), 0) as total_sale'),
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 2 then account_ledgers.credit end), 0) as total_sales_return'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 1
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 1
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_sale
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 2
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 2
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_sales_return
+                    '
+                ),
 
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 3 then account_ledgers.credit end), 0) as total_purchase'),
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 4 then account_ledgers.debit end), 0) as total_purchase_return'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 3
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 3
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_purchase
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 4
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 4
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_purchase_return
+                    '
+                ),
 
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 8 then account_ledgers.credit end), 0) as total_received'),
-                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 9 then account_ledgers.debit end), 0) as total_paid'),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 8
+                                    THEN account_ledgers.credit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 8
+                                    THEN account_ledgers.credit
+                                END
+                            ), 0
+                        ) AS total_received
+                    '
+                ),
+                DB::raw(
+                    '
+                        IFNULL(
+                            SUM(
+                                CASE
+                                    WHEN ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
+                                        AND account_ledgers.voucher_type = 9
+                                    THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
+                                    WHEN account_ledgers.voucher_type = 9
+                                    THEN account_ledgers.debit
+                                END
+                            ), 0
+                        ) AS total_paid
+                    '
+                ),
             );
         }
 

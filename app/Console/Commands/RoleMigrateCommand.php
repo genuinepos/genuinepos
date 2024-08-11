@@ -29,8 +29,9 @@ class RoleMigrateCommand extends Command
      */
     public function handle()
     {
+        // dd('OUT');
         if (app()->runningInConsole()) {
-
+            dd('IN');
             Artisan::call('db:seed --class=RolePermissionSeeder');
         }
     }

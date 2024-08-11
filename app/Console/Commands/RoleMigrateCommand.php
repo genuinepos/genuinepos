@@ -34,5 +34,6 @@ class RoleMigrateCommand extends Command
             dd('IN');
             Artisan::call('db:seed --class=RolePermissionSeeder');
         }
+        dd('END');
     }
 }

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('backup:run')->everyMinute();
         // $schedule->command('tenant:db-backup')->everyMinute();
 
-        $schedule->command('tenant:db-backup')->everyMinute();
+        $schedule->command('tenant:db-backup')->hourly();
     }
 
     /**

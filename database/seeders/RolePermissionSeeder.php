@@ -21,6 +21,7 @@ class RolePermissionSeeder extends Seeder
         // Log::info('RolePermissionSeeder Start');
         // echo 'Start'.PHP_EOL;
         // Artisan::call('optimize:clear');
+        dd('in');
         Artisan::call('permission:cache-reset');
         $this->truncateRolePermissionDataButKeepOldData();
         $this->createRolePermission();

@@ -178,7 +178,7 @@
                                                 @if ($saleProduct->unit_discount_type == 1)
                                                     {{ App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}
                                                 @else
-                                                    {{ '(' . $saleProduct->unit_discount . '%)' . App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}
+                                                    {{ '(' . $saleProduct->unit_discount . '%)=' . App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}
                                                 @endif
                                             </td>
 

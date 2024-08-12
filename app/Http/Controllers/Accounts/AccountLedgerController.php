@@ -31,7 +31,7 @@ class AccountLedgerController extends Controller
         $branches = '';
         if ($account?->group?->is_global == BooleanType::True->value) {
 
-            $branches = $this->branchService->branches(with: ['parentBranch'])
+            $branches = $this->branchService->branches(with: ['parentBranch', 'branchCurrency:id,currency_rate'])
                 ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
         }
 

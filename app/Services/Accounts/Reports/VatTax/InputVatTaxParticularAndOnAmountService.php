@@ -97,7 +97,7 @@ class InputVatTaxParticularAndOnAmountService
         $purchasedAmount = $data?->purchase?->total_purchase_amount;
         $due = $data?->purchase?->due;
 
-        $html = '<span class="fw-bold">' . \App\Utils\Converter::format_in_bdt($purchasedAmount) . '</span>' . ' | ' . __('Due') . '<span class="text-danger fw-bold"> :' . \App\Utils\Converter::format_in_bdt($due) . '</span>';
+        $html = '<span class="fw-bold">' . \App\Utils\Converter::format_in_bdt(curr_cnv($purchasedAmount, $data->c_rate, $data->branch_id)) . '</span>' . ' | ' . __('Due') . '<span class="text-danger fw-bold"> :' . \App\Utils\Converter::format_in_bdt(curr_cnv($due, $data->c_rate, $data->branch_id)) . '</span>';
         return $html;
     }
 
@@ -105,7 +105,7 @@ class InputVatTaxParticularAndOnAmountService
     {
         $purchasedProductAmount = $data?->purchaseProduct?->line_total;
 
-        $html = '<span class="fw-bold">' . \App\Utils\Converter::format_in_bdt($purchasedProductAmount) . '</span>';
+        $html = '<span class="fw-bold">' . \App\Utils\Converter::format_in_bdt(curr_cnv($purchasedProductAmount, $data->c_rate, $data->branch_id)) . '</span>';
         return $html;
     }
 
@@ -114,7 +114,7 @@ class InputVatTaxParticularAndOnAmountService
         $salesReturnedAmount = $data?->salesReturn?->total_return_amount;
         $due = $data?->salesReturn?->due;
 
-        $html = '<span class="text-danger fw-bold">' . \App\Utils\Converter::format_in_bdt($salesReturnedAmount) . '</span>' . ' | ' . __('Due') . '<span class="text-danger fw-bold"> :' . \App\Utils\Converter::format_in_bdt($due) . '</span>';
+        $html = '<span class="text-danger fw-bold">' . \App\Utils\Converter::format_in_bdt(curr_cnv($salesReturnedAmount, $data->c_rate, $data->branch_id)) . '</span>' . ' | ' . __('Due') . '<span class="text-danger fw-bold"> :' . \App\Utils\Converter::format_in_bdt(curr_cnv($due, $data->c_rate, $data->branch_id)) . '</span>';
         return $html;
     }
 
@@ -122,7 +122,7 @@ class InputVatTaxParticularAndOnAmountService
     {
         $salesReturnedProductAmount = $data?->salesReturnProduct?->return_subtotal;
 
-        $html = '<span class="fw-bold">' . \App\Utils\Converter::format_in_bdt($salesReturnedProductAmount) . '</span>';
+        $html = '<span class="fw-bold">' . \App\Utils\Converter::format_in_bdt(curr_cnv($salesReturnedProductAmount, $data->c_rate, $data->branch_id)) . '</span>';
         return $html;
     }
 

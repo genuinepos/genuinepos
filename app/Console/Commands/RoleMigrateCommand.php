@@ -31,7 +31,11 @@ class RoleMigrateCommand extends Command
     {
         if (app()->runningInConsole()) {
 
-            Artisan::call('db:seed --class=RolePermissionSeeder');
+            // Artisan::call('db:seed --class=RolePermissionSeeder');
+            Artisan::call('db:seed', [
+                '--class' => 'RolePermissionSeeder',
+                '--force' => true // Optional: if seeding needs to be forced
+            ]);
         }
     }
 }

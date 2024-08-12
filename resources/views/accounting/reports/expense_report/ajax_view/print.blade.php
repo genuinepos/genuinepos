@@ -217,7 +217,7 @@
 
                         @if ($isSameDate == true)
                             @php
-                                $dateTotalAmount += $ex->amount;
+                                $dateTotalAmount += curr_cnv($ex->amount, $ex->c_rate, $ex->ledger_branch_id);
                             @endphp
                         @else
                             @if ($dateTotalAmount != 0)
@@ -249,9 +249,9 @@
                             <td class="text-start">
                                 @if ($ex->branch_id)
                                     @if ($ex->parent_branch_name)
-                                        {{ $ex->parent_branch_name . '(' . $ex->area_name . ')' }}
+                                        {{ $ex->parent_branch_name . '(' . $ex->area_name . ')-' . $ex->branch_code }}
                                     @else
-                                        {{ $ex->branch_name . '(' . $ex->area_name . ')' }}
+                                        {{ $ex->branch_name . '(' . $ex->area_name . ')-' . $ex->branch_code }}
                                     @endif
                                 @else
                                     {{ $generalSettings['business_or_shop__business_name'] }}
@@ -267,14 +267,14 @@
 
                             <td class="text-start fw-bold">{!! $ex->{$type['voucher_no']} !!}</td>
 
-                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->amount) }}</td>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt(curr_cnv($ex->amount, $ex->c_rate, $ex->ledger_branch_id)) }}</td>
                         </tr>
 
                         @php
                             $__veryLastDate = $veryLastDate;
                             $currentDate = $ex->date;
                             if ($currentDate == $__veryLastDate) {
-                                $lastDateTotalAmount += $ex->amount;
+                                $lastDateTotalAmount += curr_cnv($ex->amount, $ex->c_rate, $ex->ledger_branch_id);
                             }
                         @endphp
 

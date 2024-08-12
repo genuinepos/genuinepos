@@ -75,7 +75,7 @@
                                                                 <option value="">{{ __('All') }}</option>
 
                                                                 @if ($generalSettings['subscription__has_business']== 1)
-                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" currency_rate="" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                 @endif
 
                                                                 @foreach ($branches as $branch)
@@ -84,7 +84,7 @@
                                                                         $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                         $branchCode = '-' . $branch->branch_code;
                                                                     @endphp
-                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" currency_rate="{{ $branch?->branchCurrency?->currency_rate }}" value="{{ $branch->id }}">
                                                                         {{ $branchName . $areaName . $branchCode }}
                                                                     </option>
                                                                 @endforeach

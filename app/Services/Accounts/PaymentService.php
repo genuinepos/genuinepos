@@ -26,8 +26,9 @@ class PaymentService
             ->with([
                 'account:id,name,phone,address',
                 'accountingVoucher:id,branch_id,voucher_no,date,date_ts,voucher_type,purchase_ref_id,sale_return_ref_id,total_amount,remarks,created_by_id',
-                'accountingVoucher.branch:id,name,branch_code,parent_branch_id',
+                'accountingVoucher.branch:id,currency_id,name,area_name,branch_code,parent_branch_id',
                 'accountingVoucher.branch.parentBranch:id,name',
+                'accountingVoucher.branch.branchCurrency:id,currency_rate',
                 'accountingVoucher.voucherCreditDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'accountingVoucher.voucherCreditDescription.account:id,name',
                 'accountingVoucher.voucherCreditDescription.paymentMethod:id,name',
@@ -72,7 +73,7 @@ class PaymentService
 
         // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-            
+
             if (!isset($debitAccountId) && $account?->sub_sub_group_number != 6) {
 
                 $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
@@ -99,9 +100,6 @@ class PaymentService
 
                         $html .= '<a href="' . route('payments.edit', ['id' => $row?->accountingVoucher?->id, 'debitAccountId' => $debitAccountId]) . '" class="dropdown-item" id="editPayment">' . __('Edit') . '</a>';
                     }
-                }
-
-                if (auth()->user()->branch_id == $row?->accountingVoucher?->branch_id) {
 
                     if (auth()->user()->can('payments_delete')) {
 
@@ -164,7 +162,7 @@ class PaymentService
             ->editColumn('cheque_no', fn ($row) => $row?->accountingVoucher?->voucherCreditDescription?->cheque_no)
             ->editColumn('cheque_serial_no', fn ($row) => $row?->accountingVoucher?->voucherCreditDescription?->cheque_serial_no)
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->accountingVoucher->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row?->accountingVoucher->total_amount) . '</span>')
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->accountingVoucher?->total_amount, $row?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->accountingVoucher?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->accountingVoucher?->total_amount, $row?->accountingVoucher?->branch?->branchCurrency?->currency_rate, $row?->accountingVoucher?->branch?->id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 

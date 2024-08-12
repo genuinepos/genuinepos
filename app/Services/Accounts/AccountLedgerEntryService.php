@@ -38,8 +38,8 @@ class AccountLedgerEntryService
         $runningCredit = 0;
         foreach ($ledgers as $ledger) {
 
-            $runningDebit += $ledger->debit;
-            $runningCredit += $ledger->credit;
+            $runningDebit += curr_cnv($ledger->debit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
+            $runningCredit += curr_cnv($ledger->credit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
 
             if ($runningDebit > $runningCredit) {
 
@@ -86,8 +86,8 @@ class AccountLedgerEntryService
 
                 return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
-            ->editColumn('debit', fn ($row) => '<span class="debit fw-bold" data-value="' . $row->debit . '">' . ($row->debit > 0 ? \App\Utils\Converter::format_in_bdt($row->debit) : '') . '</span>')
-            ->editColumn('credit', fn ($row) => '<span class="credit fw-bold" data-value="' . $row->credit . '">' . ($row->credit > 0 ? \App\Utils\Converter::format_in_bdt($row->credit) : '') . '</span>')
+            ->editColumn('debit', fn ($row) => '<span class="debit fw-bold" data-value="' . curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id) . '">' . ($row->debit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '') . '</span>')
+            ->editColumn('credit', fn ($row) => '<span class="credit fw-bold" data-value="' . curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id) . '">' . ($row->credit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '') . '</span>')
             ->editColumn('running_balance', function ($row) {
 
                 return $row->running_balance > 0 ? '<span class="running_balance fw-bold">' . \App\Utils\Converter::format_in_bdt(abs($row->running_balance)) . $row->balance_type . '</span>' : '';
@@ -123,8 +123,8 @@ class AccountLedgerEntryService
         $runningCredit = 0;
         foreach ($ledgers as $ledger) {
 
-            $runningDebit += $ledger->debit;
-            $runningCredit += $ledger->credit;
+            $runningDebit += curr_cnv($ledger->debit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
+            $runningCredit += curr_cnv($ledger->credit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
 
             if ($runningDebit > $runningCredit) {
 
@@ -197,8 +197,9 @@ class AccountLedgerEntryService
                 [
                     'account:id,name,account_number,account_group_id',
                     'account.group:id,name,sub_group_number,sub_sub_group_number',
-                    'branch:id,name,area_name,branch_code,parent_branch_id',
+                    'branch:id,currency_id,name,area_name,branch_code,parent_branch_id',
                     'branch.parentBranch:id,name',
+                    'branch.branchCurrency:id,currency_rate',
                     'voucherDescription',
                     'voucherDescription.accountingVoucher:id,remarks',
                     'voucherDescription.accountingVoucher.voucherDescriptions',
@@ -372,9 +373,11 @@ class AccountLedgerEntryService
         }
 
         $branchName = '';
+        $currencyRate = null;
         if ($request->branch_name) {
 
             $branchName = $request->branch_name;
+            $currencyRate = $request->currency_rate ? $request->currency_rate : null;
         } else {
 
             if (auth()->user()?->branch) {
@@ -382,20 +385,27 @@ class AccountLedgerEntryService
                 if (auth()->user()?->branch?->parentBranch) {
 
                     $branchName = auth()->user()?->branch?->parentBranch->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch->branch_code;
+                    $currencyRate = null;
                 } else {
 
                     $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch->branch_code;
+                    $currencyRate = null;
                 }
             } else {
 
                 $branchName = $generalSettings['business_or_shop__business_name'] . '(' . __('Company') . ')';
+                $currencyRate = null;
             }
         }
 
         $arr = [
             'id' => 0,
-            // 'branch_id' => $request->branch_id ? $request->branch_id : null,
-            'branch' => (object) ['id' => null, 'name' => $branchName, 'area_name' => null, 'branch_code' => null, 'parentBranch' => null],
+            'branch_id' => $request->branch_id ? $request->branch_id : null,
+            'branch' => (object) [
+                'id' => null, 'name' => $branchName, 'area_name' => null, 'branch_code' => null, 'parentBranch' => null, 'branchCurrency' => (object)[
+                    'currency_rate' => $currencyRate
+                ]
+            ],
             'voucher_type' => 0,
             'sales_voucher' => null,
             'date' => null,

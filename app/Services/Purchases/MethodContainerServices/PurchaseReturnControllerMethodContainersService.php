@@ -46,8 +46,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {
@@ -199,8 +198,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $addReturn->id, amount: $request->return_tax_amount, amount_type: 'credit');
         }
 
-        $index = 0;
-        foreach ($request->product_ids as $productId) {
+        foreach ($request->product_ids as $index => $productId) {
 
             $addPurchaseReturnProduct = $this->purchaseReturnProductService->addPurchaseReturnProduct(request: $request, purchaseReturnId: $addReturn->id, index: $index);
 
@@ -213,8 +211,6 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
                 // Add Tax A/c ledger Entry
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturnProductTax->value, date: $request->date, account_id: $addPurchaseReturnProduct->tax_ac_id, trans_id: $addPurchaseReturnProduct->id, amount: ($addPurchaseReturnProduct->unit_tax_amount * $addPurchaseReturnProduct->return_qty), amount_type: 'credit');
             }
-
-            $index++;
         }
 
         if ($request->received_amount > 0) {
@@ -237,23 +233,20 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->supplier_account_id);
         }
 
-        $__index = 0;
-        foreach ($request->product_ids as $productId) {
+        foreach ($request->product_ids as $index => $productId) {
 
-            $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+            $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
             $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
             $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
 
-            if (isset($request->warehouse_ids[$__index])) {
+            if (isset($request->warehouse_ids[$index])) {
 
-                $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
+                $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$index]);
             } else {
 
-                $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
+                $this->productStockService->adjustBranchStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
             }
-
-            $__index++;
         }
 
         if ($request->purchase_id) {
@@ -381,8 +374,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::PurchaseReturn->value, transId: $updateReturn->id, accountId: $storedCurrReturnTaxAccountId);
         }
 
-        $index = 0;
-        foreach ($request->product_ids as $productId) {
+        foreach ($request->product_ids as $index => $productId) {
 
             $updatePurchaseReturnProduct = $this->purchaseReturnProductService->updatePurchaseReturnProduct(request: $request, purchaseReturnId: $updateReturn->id, index: $index);
 
@@ -397,8 +389,6 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
 
                 $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::PurchaseReturnProductTax->value, transId: $updatePurchaseReturnProduct->id, accountId: $updatePurchaseReturnProduct->current_tax_ac_id);
             }
-
-            $index++;
         }
 
         if ($request->received_amount > 0) {
@@ -423,23 +413,20 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $receiptDate, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
         }
 
-        $__index = 0;
-        foreach ($request->product_ids as $productId) {
+        foreach ($request->product_ids as $index => $productId) {
 
-            $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+            $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
             $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
             $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updateReturn->branch_id);
 
-            if (isset($request->warehouse_ids[$__index])) {
+            if (isset($request->warehouse_ids[$index])) {
 
-                $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
+                $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$index]);
             } else {
 
                 $this->productStockService->adjustBranchStock($productId, $variantId, branchId: $updateReturn->branch_id);
             }
-
-            $__index++;
         }
 
         $deletedUnusedPurchaseReturnProducts = $this->purchaseReturnProductService->purchaseReturnProducts()->where('purchase_return_id', $updateReturn->id)->where('is_delete_in_update', BooleanType::True->value)->get();

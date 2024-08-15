@@ -591,7 +591,7 @@ Route::get('my-test', function () {
                 $supplierAccountId = $addAccount?->id;
             }
 
-            $existsPurchaseReturn = DB::table('purchase_return')->whereDate('date_ts', $dbPurchaseReturn->report_date)->first();
+            $existsPurchaseReturn = DB::table('purchase_returns')->whereDate('date_ts', $dbPurchaseReturn->report_date)->first();
 
             if (!isset($existsPurchaseReturn)) {
 

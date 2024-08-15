@@ -203,8 +203,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             }
         }
 
-        $index = 0;
-        foreach ($request->product_ids as $productId) {
+        foreach ($request->product_ids as $index => $productId) {
 
             $addSaleProduct = $this->saleProductService->addSaleProduct(request: $request, sale: $addSale, index: $index);
 
@@ -219,8 +218,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
                     $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SaleProductTax->value, date: $request->date, account_id: $addSaleProduct->tax_ac_id, trans_id: $addSaleProduct->id, amount: ($addSaleProduct->unit_tax_amount * $addSaleProduct->quantity), amount_type: 'credit');
                 }
             }
-
-            $index++;
         }
 
         if (($request->status == SaleStatus::Final->value || $request->status == SaleStatus::Order->value) && $request->received_amount > 0) {
@@ -264,26 +261,23 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         if ($request->status == SaleStatus::Final->value) {
 
-            $__index = 0;
-            foreach ($request->product_ids as $productId) {
+            foreach ($request->product_ids as $index => $productId) {
 
-                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+                $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
                 $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
 
-                if (isset($request->warehouse_ids[$__index])) {
+                if (isset($request->warehouse_ids[$index])) {
 
-                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
+                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$index]);
                 } else {
 
                     $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
                 }
-
-                $this->stockChainService->addStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
-
-                $__index++;
             }
+
+            $this->stockChainService->addStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
         }
 
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);

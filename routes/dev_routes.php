@@ -841,11 +841,60 @@ Route::get('my-test', function () {
         }
 
         // Add Expenses
-        // $dbExpenses = DB::connection('home_care')->table('expanses')->get();
-        // foreach ($dbExpenses as $dbExpense) {
+        $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
+        $dbExpenses = DB::connection('home_care')->table('expanses')->get();
+        foreach ($dbExpenses as $dbExpense) {
 
-        //     $existsExpense = DB::table('accounting_vouchers')->where('voucher_type', AccountingVoucherType::Expense->value)->where('');
-        // }
+            $existsExpense = DB::table('accounting_vouchers')->where('voucher_type', AccountingVoucherType::Expense->value)->where('date_ts', $dbExpense->report_date)->first();
+
+            if (!isset($existsExpense)) {
+                // Add Accounting Voucher
+                $expenseVoucherPrefix = $generalSettings['prefix__expense_voucher_prefix'] ? $generalSettings['prefix__expense_voucher_prefix'] : 'EV';
+
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $request->net_total_amount, creditTotal: $request->net_total_amount, totalAmount: $request->net_total_amount);
+
+                $dbExpenseDescriptions = $dbExpenses = DB::connection('home_care')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
+                    ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
+                    ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
+                    ->get();
+
+                foreach ($dbExpenseDescriptions as $index => $dbExpenseDescription) {
+
+                    $existsExpenseAccount = DB::table('accounts')->where('accounts.name', $dbExpenseDescription->expense_category_name)->where('accounts.branch_id', auth()->user()->branch_id)->first();
+                    // 25
+                    $expenseAccountId = isset($existsExpenseAccount) ? $existsExpenseAccount->id : null;
+                    if (!isset($existsAccount)) {
+
+                        $addAccount = $accountService->addAccount(
+                            name: $dbExpenseDescription->expense_category_name,
+                            accountGroup: $directExpenseGroup,
+                        );
+
+                        $expenseAccountId = $addAccount->id;
+                    }
+
+                    // Add Expense Description Debit Entry
+                    $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $expenseAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbExpenseDescription->amount);
+
+                    if ($index == 0) {
+
+                        $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Expense->value, date: $addAccountingVoucher->date, accountId: $expenseAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $addAccountingVoucher->total_amount, amountType: 'debit');
+                    }
+
+                    //Add Debit Ledger Entry
+                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: $expenseAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbExpenseDescription->amount, amount_type: 'debit', cash_bank_account_id: 14);
+                }
+
+                // Add Credit Account Accounting voucher Description
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $addAccountingVoucher->total_amount, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $addAccountingVoucher->total_amount, amount_type: 'credit');
+
+                echo 'Expense Created-' . $expenseVoucherPrefix . '</br>';
+            }
+        }
+        echo 'All Expense is done Created' . '</br>';
 
         DB::commit();
     } catch (\Exception $e) {

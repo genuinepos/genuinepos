@@ -26,7 +26,7 @@ class BranchSettingService
         $branchPrefix = '';
         foreach ($exp as $ex) {
             $str = str_split($ex);
-            $branchPrefix .= $str[0];
+            $branchPrefix .= strtoupper($str[0]);
         }
 
         $generalSettings = [

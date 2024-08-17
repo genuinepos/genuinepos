@@ -43,7 +43,7 @@ class SalesReturnService
             'sale_returns.due',
             'sales.invoice_id',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'customers.name as customer_name',

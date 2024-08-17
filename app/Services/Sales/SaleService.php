@@ -199,19 +199,19 @@ class SaleService
             }
         });
 
-        $dataTables->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
+        $dataTables->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
 
-        $dataTables->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
+        $dataTables->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
 
-        $dataTables->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
+        $dataTables->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
 
-        $dataTables->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('total_invoice_amount', fn($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('received_amount', fn($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('sale_return_amount', fn($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('due', fn($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
 
         $dataTables->editColumn('payment_status', function ($row) {
 
@@ -386,17 +386,21 @@ class SaleService
 
         $totalReturn = DB::table('sale_returns')
             ->where('sale_returns.sale_id', $sale->id)
-            ->select(DB::raw('sum(total_return_amount) as total_returned_amount'))
+            ->select(
+                DB::raw('sum(total_return_amount) as total_returned_amount'),
+                DB::raw('IFNULL(sum(paid), 0) as total_refunded_amount'),
+            )
             ->groupBy('sale_returns.sale_id')
             ->get();
 
         $due = $sale->total_invoice_amount
             - $totalSaleReceived->sum('total_received')
-            - $totalReturn->sum('total_returned_amount');
+            - ($totalReturn->sum('total_returned_amount') - $totalReturn->sum('total_returned_amount'));
 
         $sale->paid = $totalSaleReceived->sum('total_received');
         $sale->due = $due;
         $sale->sale_return_amount = $totalReturn->sum('total_returned_amount');
+        $sale->sale_refund_amount = $totalReturn->sum('total_refunded_amount');
         $sale->is_return_available = $totalReturn->sum('total_returned_amount') > 0 ? BooleanType::True->value : BooleanType::False->value;
         $sale->save();
 

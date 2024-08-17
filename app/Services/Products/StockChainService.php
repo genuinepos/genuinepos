@@ -62,7 +62,6 @@ class StockChainService
 
                                 if ($soldQty > 0) {
 
-
                                     $this->stockChainInsert(branchId: $sale->branch_id, productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, purchaseProductId: $purchaseProduct->id, transColName: 'sale_product_id', transId: $saleProduct->id, outQty: $soldQty, createdAt: $sale->sale_date_ts);
 
                                     $soldQty = $soldQty - $soldQty;

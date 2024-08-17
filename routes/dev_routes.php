@@ -368,6 +368,7 @@ Route::get('my-test', function () {
         $receiptVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
         $dbSales = DB::connection('home_care')->table('sales')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
+            ->take(3000) //first 30000 row
             ->select(
                 'sales.*',
                 'customers.name',
@@ -388,7 +389,7 @@ Route::get('my-test', function () {
                 'customers.pay_term',
                 'customers.pay_term_number',
                 'customers.credit_limit',
-            )->get();
+            )->orderBy('sales.id', 'asc')->get();
 
         $customerType = ContactType::Customer->value;
         $customerAccountGroup = $accountGroupService->singleAccountGroupByAnyCondition()

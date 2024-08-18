@@ -135,6 +135,7 @@ Route::get('my-test', function () {
                 'units.code_name as unit_code',
             )->get();
 
+            dd($dbProducts);
         foreach ($dbProducts as $key => $dbProduct) {
 
             $exists = DB::table('products')->where('name', $dbProduct->name)->exists();
@@ -155,7 +156,7 @@ Route::get('my-test', function () {
                     $unitReq->as_a_multiplier_of_other_unit = 0;
 
                     $addUnit = $unitService->addUnit(request: $unitReq, codeGenerator: $codeGenerator);
-                    return $unitId = $addUnit->id;
+                    $unitId = $addUnit->id;
                 }
 
                 $addProduct = new \App\Models\Products\Product();

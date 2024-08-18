@@ -94,6 +94,8 @@
 
     calculateTotalAmount();
 
+    var controller;
+
     var delay = (function() {
         var timer = 0;
         return function(callback, ms) {
@@ -110,10 +112,14 @@
         var __keyWord = keyWord.replaceAll('/', '~');
         delay(function() {
             searchProduct(__keyWord);
-        }, 200); //sendAjaxical is the name of remote-command
+        }, 300); //sendAjaxical is the name of remote-command
     });
 
     function searchProduct(keyWord) {
+
+        if (controller) {
+            controller.abort();
+        }
 
         $('.variant_list_area').empty();
         $('.select_area').hide();
@@ -126,9 +132,13 @@
         route = route.replace(':isShowNotForSaleItem', isShowNotForSaleItem);
         route = route.replace(':branchId', branchId);
 
+        controller = new AbortController();
+        var signal = controller.signal;
+
         $.ajax({
             url: route,
             dataType: 'json',
+            signal: signal,
             success: function(product) {
 
                 if (!$.isEmptyObject(product.errorMsg)) {
@@ -301,6 +311,11 @@
                 } else {
 
                     $('#search_product').addClass('is-invalid');
+                }
+            },
+            error: function(xhr, status, error) {
+                if (status !== 'abort') {
+                    console.log('Search error:' + error);
                 }
             }
         });

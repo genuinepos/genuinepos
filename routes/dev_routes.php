@@ -155,7 +155,7 @@ Route::get('my-test', function () {
                     $unitReq->as_a_multiplier_of_other_unit = 0;
 
                     $addUnit = $unitService->addUnit(request: $unitReq, codeGenerator: $codeGenerator);
-                    $unitId = $addUnit->id;
+                    return $unitId = $addUnit->id;
                 }
 
                 $addProduct = new \App\Models\Products\Product();

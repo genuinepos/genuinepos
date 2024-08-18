@@ -399,8 +399,8 @@ Route::get('my-test', function () {
                 'customers.pay_term_number',
                 'customers.credit_limit',
             )
-            // ->skip(4000) // skip first 4000 rows
-            ->take(4000) //current 4000
+            ->skip(4000) // skip first 4000 rows
+            ->take(4000) //current 8000
             ->orderBy('sales.id', 'asc')->get();
 
         foreach ($dbSales as $dbSale) {

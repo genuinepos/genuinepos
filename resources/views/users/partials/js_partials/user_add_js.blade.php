@@ -151,7 +151,7 @@
 
     function currentUserAndEmployeeCount() {
 
-        var branchId = $('#branch_id').val();
+        var branchId = $('#branch_id').val() ? $('#branch_id').val(): "{{ auth()->user()->branch_id }}";
 
         var url = "{{ route('users.current.user.and.employee.count', [':branchId']) }}";
         var route = url.replace(':branchId', branchId);

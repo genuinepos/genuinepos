@@ -19,8 +19,7 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
         private UserService $userService,
         private RoleService $roleService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {
@@ -133,8 +132,8 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
         return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
     }
 
-    public function currentUserAndEmployeeCountMethodContainer(?int $branchId = null): array
+    public function currentUserAndEmployeeCountMethodContainer(mixed $branchId = null): array
     {
-        return $this->userService->currentUserAndEmployeeCount($branchId);
+        return $this->userService->currentUserAndEmployeeCount(branchId: $branchId);
     }
 }

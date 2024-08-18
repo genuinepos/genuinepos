@@ -26,5 +26,5 @@ interface UserControllerMethodContainersInterface
 
     public function branchUsersMethodContainer(int|string $isOnlyAuthenticatedUser, int|string $allowAll, mixed $branchId = null): ?object;
 
-    public function currentUserAndEmployeeCountMethodContainer(?int $branchId = null): array;
+    public function currentUserAndEmployeeCountMethodContainer(mixed $branchId = null): array;
 }

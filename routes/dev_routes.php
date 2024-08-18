@@ -135,7 +135,6 @@ Route::get('my-test', function () {
                 'units.code_name as unit_code',
             )->get();
 
-            dd($dbProducts);
         foreach ($dbProducts as $key => $dbProduct) {
 
             $exists = DB::table('products')->where('name', $dbProduct->name)->exists();
@@ -174,6 +173,8 @@ Route::get('my-test', function () {
                 $addProduct->profit = $dbProduct->profit;
                 $addProduct->product_price = $dbProduct->product_price;
                 $addProduct->save();
+
+                dd('OK');
 
                 $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
                 $addProductAccessBranch->product_id = $addProduct->id;

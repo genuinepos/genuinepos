@@ -145,7 +145,7 @@ Route::get('my-test', function () {
                 $brand = DB::table('brands')->where('name', $dbProduct->brand_name)->select('id')->first();
 
                 $unit = DB::table('units')->where('name', $dbProduct->unit_name)->select('id')->first();
-                $unitId = $unit?->id;
+                $unitId = isset($unit) ? $unit->id : null;
 
                 if (!isset($unit)) {
 
@@ -173,8 +173,6 @@ Route::get('my-test', function () {
                 $addProduct->profit = $dbProduct->profit;
                 $addProduct->product_price = $dbProduct->product_price;
                 $addProduct->save();
-
-                dd('OK');
 
                 $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
                 $addProductAccessBranch->product_id = $addProduct->id;

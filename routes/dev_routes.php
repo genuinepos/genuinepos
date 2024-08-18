@@ -10,6 +10,7 @@ use App\Models\Contacts\Contact;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
@@ -80,113 +81,113 @@ Route::get('my-test', function () {
             ]
         ]);
 
+        /////////// Add category section
+        $dbCategories = DB::connection('home_care')->table('categories')->get();
+        $categoryService = new \App\Services\Products\CategoryService();
+
+        foreach ($dbCategories as $key => $dbCategory) {
+
+            $exists = DB::table('categories')->where('name', $dbCategory->name)->exists();
+
+            if (!$exists) {
+
+                $categoryReq = new \stdClass();
+                $categoryReq->name = $dbCategory->name;
+                $categoryReq->description = null;
+                $categoryReq->photo = null;
+
+                $addCategory = $categoryService->addCategory(request: $categoryReq, codeGenerator: $codeGenerator);
+            }
+        }
+        // Add category section End
+
         // Add category section
-        // $dbCategories = DB::connection('home_care')->table('categories')->get();
-        // $categoryService = new \App\Services\Products\CategoryService();
+        $dbBrands = DB::connection('home_care')->table('brands')->get();
+        $brandService = new \App\Services\Products\BrandService();
 
-        // foreach ($dbCategories as $key => $dbCategory) {
+        foreach ($dbBrands as $key => $dbBrand) {
 
-        //     $exists = DB::table('categories')->where('name', $dbCategory->name)->exists();
+            $exists = DB::table('brands')->where('name', $dbBrand->name)->exists();
 
-        //     if (!$exists) {
+            if (!$exists) {
 
-        //         $categoryReq = new \stdClass();
-        //         $categoryReq->name = $dbCategory->name;
-        //         $categoryReq->description = null;
-        //         $categoryReq->photo = null;
+                $brandReq = new \stdClass();
+                $brandReq->name = $dbBrand->name;
+                $brandReq->photo = null;
 
-        //         $addCategory = $categoryService->addCategory(request: $categoryReq, codeGenerator: $codeGenerator);
-        //     }
-        // }
-        // // Add category section End
+                $addBrand = $brandService->addBrand(request: $brandReq, codeGenerator: $codeGenerator);
+            }
+        }
+        // Add category section End
 
-        // // Add category section
-        // $dbBrands = DB::connection('home_care')->table('brands')->get();
-        // $brandService = new \App\Services\Products\BrandService();
+        // Add product section
+        $unitService = new \App\Services\Products\UnitService();
+        $dbProducts = DB::connection('home_care')->table('products')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->leftJoin('brands', 'products.brand_id', 'brands.id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->select(
+                'products.*',
+                'categories.name as cate_name',
+                'brands.id as brand_id',
+                'brands.name as brand_name',
+                'units.name as unit_name',
+                'units.code_name as unit_code',
+            )->get();
 
-        // foreach ($dbBrands as $key => $dbBrand) {
+        foreach ($dbProducts as $key => $dbProduct) {
 
-        //     $exists = DB::table('brands')->where('name', $dbBrand->name)->exists();
+            $exists = DB::table('products')->where('name', $dbProduct->name)->exists();
 
-        //     if (!$exists) {
+            if (!$exists) {
 
-        //         $brandReq = new \stdClass();
-        //         $brandReq->name = $dbBrand->name;
-        //         $brandReq->photo = null;
+                $cate = DB::table('categories')->where('name', $dbProduct->cate_name)->select('id')->first();
+                $brand = DB::table('brands')->where('name', $dbProduct->brand_name)->select('id')->first();
 
-        //         $addBrand = $brandService->addBrand(request: $brandReq, codeGenerator: $codeGenerator);
-        //     }
-        // }
-        // // Add category section End
+                $unit = DB::table('units')->where('name', $dbProduct->unit_name)->select('id')->first();
+                $unitId = $unit?->id;
 
-        // // Add product section
-        // $unitService = new \App\Services\Products\UnitService();
-        // $dbProducts = DB::connection('home_care')->table('products')
-        //     ->leftJoin('categories', 'products.category_id', 'categories.id')
-        //     ->leftJoin('brands', 'products.brand_id', 'brands.id')
-        //     ->leftJoin('units', 'products.unit_id', 'units.id')
-        //     ->select(
-        //         'products.*',
-        //         'categories.name as cate_name',
-        //         'brands.id as brand_id',
-        //         'brands.name as brand_name',
-        //         'units.name as unit_name',
-        //         'units.code_name as unit_code',
-        //     )->get();
+                if (!isset($unit)) {
 
-        // foreach ($dbProducts as $key => $dbProduct) {
+                    $unitReq = new \stdClass();
+                    $unitReq->name = $dbProduct->unit_name;
+                    $unitReq->short_name = $dbProduct->unit_code;
+                    $unitReq->as_a_multiplier_of_other_unit = 0;
 
-        //     $exists = DB::table('products')->where('name', $dbProduct->name)->exists();
+                    $addUnit = $unitService->addUnit(request: $unitReq, codeGenerator: $codeGenerator);
+                    return $unitId = $addUnit->id;
+                }
 
-        //     if (!$exists) {
+                $addProduct = new \App\Models\Products\Product();
+                $addProduct->type = 1;
+                $addProduct->name = $dbProduct->name;
+                $addProduct->product_code = $dbProduct->product_code;
+                $addProduct->category_id = $cate?->id;
+                $addProduct->brand_id = $brand?->id;
+                $addProduct->unit_id = $unitId;
+                $addProduct->has_batch_no_expire_date = $dbProduct->has_batch_no_expire_date;
+                $addProduct->is_show_emi_on_pos = $dbProduct->is_show_emi_on_pos;
+                $addProduct->is_purchased = 1;
+                $addProduct->product_cost = $dbProduct->product_cost;
+                $addProduct->product_cost_with_tax = $dbProduct->product_cost_with_tax;
+                $addProduct->profit = $dbProduct->profit;
+                $addProduct->product_price = $dbProduct->product_price;
+                $addProduct->save();
 
-        //         $cate = DB::table('categories')->where('name', $dbProduct->cate_name)->select('id')->first();
-        //         $brand = DB::table('brands')->where('name', $dbProduct->brand_name)->select('id')->first();
+                $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
+                $addProductAccessBranch->product_id = $addProduct->id;
+                $addProductAccessBranch->save();
 
-        //         $unit = DB::table('units')->where('name', $dbProduct->unit_name)->select('id')->first();
-        //         $unitId = $unit?->id;
+                if (auth()->user()->branch_id) {
 
-        //         if (!isset($unit)) {
-
-        //             $unitReq = new \stdClass();
-        //             $unitReq->name = $dbProduct->unit_name;
-        //             $unitReq->short_name = $dbProduct->unit_code;
-        //             $unitReq->as_a_multiplier_of_other_unit = 0;
-
-        //             $addUnit = $unitService->addUnit(request: $unitReq, codeGenerator: $codeGenerator);
-        //             $unitId = $addUnit->id;
-        //         }
-
-        //         $addProduct = new \App\Models\Products\Product();
-        //         $addProduct->type = 1;
-        //         $addProduct->name = $dbProduct->name;
-        //         $addProduct->product_code = $dbProduct->product_code;
-        //         $addProduct->category_id = $cate?->id;
-        //         $addProduct->brand_id = $brand?->id;
-        //         $addProduct->unit_id = $unitId;
-        //         $addProduct->has_batch_no_expire_date = $dbProduct->has_batch_no_expire_date;
-        //         $addProduct->is_show_emi_on_pos = $dbProduct->is_show_emi_on_pos;
-        //         $addProduct->is_purchased = 1;
-        //         $addProduct->product_cost = $dbProduct->product_cost;
-        //         $addProduct->product_cost_with_tax = $dbProduct->product_cost_with_tax;
-        //         $addProduct->profit = $dbProduct->profit;
-        //         $addProduct->product_price = $dbProduct->product_price;
-        //         $addProduct->save();
-
-        //         $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
-        //         $addProductAccessBranch->product_id = $addProduct->id;
-        //         $addProductAccessBranch->save();
-
-        //         if (auth()->user()->branch_id) {
-
-        //             $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
-        //             $addProductAccessBranch->product_id = $addProduct->id;
-        //             $addProductAccessBranch->branch_id = auth()->user()->branch_id;
-        //             $addProductAccessBranch->save();
-        //         }
-        //     }
-        // }
-        // echo 'All product is done' . '</br>';
+                    $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
+                    $addProductAccessBranch->product_id = $addProduct->id;
+                    $addProductAccessBranch->branch_id = auth()->user()->branch_id;
+                    $addProductAccessBranch->save();
+                }
+            }
+        }
+        echo 'All product is done' . '</br>';
 
         /////Add Purchases
         // $dbPurchases = DB::connection('home_care')->table('purchases')
@@ -543,390 +544,390 @@ Route::get('my-test', function () {
         // echo 'All Sale is done' . '</br>';
 
         /////////Add Purchase Returns
-        $dbPurchaseReturns = DB::connection('home_care')->table('purchase_returns')
-            ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
-            ->select(
-                'purchase_returns.*',
-                'suppliers.name',
-                'suppliers.business_name',
-                'suppliers.phone',
-                'suppliers.alternative_phone',
-                'suppliers.landline',
-                'suppliers.date_of_birth',
-                'suppliers.opening_balance',
-                'suppliers.address',
-                'suppliers.email',
-                'suppliers.shipping_address',
-                'suppliers.city',
-                'suppliers.state',
-                'suppliers.country',
-                'suppliers.zip_code',
-                'suppliers.tax_number',
-                'suppliers.pay_term',
-                'suppliers.pay_term_number',
-            )->get();
-
-        foreach ($dbPurchaseReturns as $dbPurchaseReturn) {
-
-            $existsSupplier = DB::table('contacts')
-                ->where('contacts.type', $supplierType)
-                ->where('contacts.name', $dbPurchaseReturn->name)
-                ->where('contacts.phone', $dbPurchaseReturn->phone)
-                ->join('accounts', 'contacts.id', 'accounts.contact_id')
-                ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
-
-            $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
-
-            if (!isset($existsSupplier)) {
-
-                $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchaseReturn->name, phone: $dbPurchaseReturn->phone, businessName: $dbPurchaseReturn->business_name, email: $dbPurchaseReturn->email, alternativePhone: $dbPurchaseReturn->alternative_phone, landLine: $dbPurchaseReturn->landline, dateOfBirth: $dbPurchaseReturn->date_of_birth, taxNumber: $dbPurchaseReturn->tax_number, customerGroupId: null, address: $dbPurchaseReturn->address, city: $dbPurchaseReturn->city, state: $dbPurchaseReturn->state, country: $dbPurchaseReturn->country, zipCode: $dbPurchaseReturn->zip_code, shippingAddress: $dbPurchaseReturn->shipping_address, payTerm: $dbPurchaseReturn->pay_term, payTermNumber: $dbPurchaseReturn->pay_term_number, creditLimit: null, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr');
-
-                $addAccount = $accountService->addAccount(name: $dbPurchaseReturn->name, accountGroup: $supplierAccountGroup, phone: $dbPurchaseReturn->phone, address: $dbPurchaseReturn->address, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
-
-                $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
-                    branchId: auth()->user()->branch_id,
-                    accountId: $addAccount->id,
-                    openingBalanceType: 'cr',
-                    openingBalance: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
-                );
-
-                $accountLedgerService->addAccountLedgerEntry(
-                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-                    date: '01-01-2023',
-                    account_id: $addAccount->id,
-                    trans_id: $addAccount->id,
-                    amount: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
-                    amount_type: 'credit',
-                    branch_id: auth()->user()->branch_id,
-                );
-
-                $supplierAccountId = $addAccount?->id;
-            }
-
-            $existsPurchaseReturn = DB::table('purchase_returns')->where('date_ts', $dbPurchaseReturn->report_date)->first();
-
-            if (!isset($existsPurchaseReturn)) {
-
-                $voucherNo = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $purchaseReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
-
-                $addPurchaseReturn = new \App\Models\Purchases\PurchaseReturn();
-                $addPurchaseReturn->branch_id = auth()->user()->branch_id;
-                $addPurchaseReturn->voucher_no = $voucherNo;
-                $addPurchaseReturn->supplier_account_id = $supplierAccountId;
-                $addPurchaseReturn->purchase_account_id = $purchaseAccount->id;;
-                // $addPurchaseReturn->total_item = $dbPurchaseReturn->total_item;
-                // $addPurchaseReturn->total_qty = $dbPurchaseReturn->total_qty;
-                $addPurchaseReturn->net_total_amount = $dbPurchaseReturn->total_return_amount;
-                $addPurchaseReturn->return_discount_type = 1;
-                $addPurchaseReturn->total_return_amount = $dbPurchaseReturn->total_return_amount;
-                $addPurchaseReturn->due = $dbPurchaseReturn->total_return_amount;
-                $addPurchaseReturn->date = $dbPurchaseReturn->date;
-                $addPurchaseReturn->date_ts = $dbPurchaseReturn->report_date;;
-                // $addPurchaseReturn->note = $dbPurchaseReturn->note;
-                $addPurchaseReturn->created_by_id = auth()->user()->id;
-                $addPurchaseReturn->save();
-
-                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, accountId: $addPurchaseReturn->supplier_account_id, transId: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amountType: 'debit');
-
-                // Add Purchase A/c Ledger Entry
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, account_id: $addPurchaseReturn->purchase_account_id, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'credit');
-
-                // Add supplier A/c ledger Entry For Purchase
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
-
-                $dbPurchaseReturnProducts =  DB::connection('home_care')->table('purchase_return_products')
-                    ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
-                    ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
-                    ->select('purchase_return_products.*', 'products.name as product_name')
-                    ->get();
-
-                foreach ($dbPurchaseReturnProducts as $dbPurchaseReturnProduct) {
-
-                    $product = DB::table('products')
-                        ->where('name', $dbPurchaseReturnProduct->product_name)
-                        ->select('products.id', 'products.unit_id')
-                        ->first();
-
-                    $addPurchaseReturnProduct = new \App\Models\Purchases\PurchaseReturnProduct();
-                    $addPurchaseReturnProduct->purchase_return_id = $addPurchaseReturn->id;
-                    $addPurchaseReturnProduct->product_id = $product?->id;
-                    $addPurchaseReturnProduct->return_qty = $dbPurchaseReturnProduct->return_qty;
-                    $addPurchaseReturnProduct->purchased_qty = 0;
-                    $addPurchaseReturnProduct->unit_id = $product->unit_id;
-                    $addPurchaseReturnProduct->unit_cost_exc_tax = $dbPurchaseReturnProduct->unit_cost;
-                    $addPurchaseReturnProduct->unit_discount_type = 1;
-                    $addPurchaseReturnProduct->unit_cost_inc_tax = $dbPurchaseReturnProduct->unit_cost;
-                    $addPurchaseReturnProduct->return_subtotal = $dbPurchaseReturnProduct->return_subtotal;
-                    $addPurchaseReturnProduct->save();
-
-                    // Add Product Ledger Entry
-                    $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, productId: $product?->id, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: null, warehouseId: null);
-                }
-
-                echo 'Purchase Return Created-' . $voucherNo . '</br>';
-            }
-        }
-        echo 'All Purchase Returns is done-' . '</br>';
-
-        /// Add Sale Returns
-        $dbSaleReturns = DB::connection('home_care')->table('sale_returns')
-            ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
-            ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
-            ->select(
-                'sale_returns.*',
-                'sales.report_date as parent_sale_date',
-                'customers.name',
-                'customers.business_name',
-                'customers.phone',
-                'customers.alternative_phone',
-                'customers.landline',
-                'customers.date_of_birth',
-                'customers.opening_balance',
-                'customers.address',
-                'customers.email',
-                'customers.shipping_address',
-                'customers.city',
-                'customers.state',
-                'customers.country',
-                'customers.zip_code',
-                'customers.tax_number',
-                'customers.pay_term',
-                'customers.pay_term_number',
-            )->get();
-
-        foreach ($dbSaleReturns as $dbSaleReturn) {
-
-            $existsCustomer = DB::table('contacts')
-                ->where('contacts.type', $customerType)
-                ->where('contacts.name', $dbSaleReturn->name)
-                ->where('contacts.phone', $dbSaleReturn->phone)
-                ->join('accounts', 'contacts.id', 'accounts.contact_id')
-                ->select('contacts.id', 'accounts.id as customer_account_id')->first();
-
-            $customerAccountId = $existsCustomer?->customer_account_id;
-            $__customerAccountId = $dbSaleReturn?->customer_id == null ? 23 : $customerAccountId;
-
-            if (!isset($__customerAccountId)) {
-
-                $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbSaleReturn->name, phone: $dbSaleReturn->phone, businessName: $dbSaleReturn->business_name, email: $dbSale->email, alternativePhone: $dbSaleReturn->alternative_phone, landLine: $dbSaleReturn->landline, dateOfBirth: $dbSaleReturn->date_of_birth, taxNumber: $dbSaleReturn->tax_number, customerGroupId: null, address: $dbSaleReturn->address, city: $dbSaleReturn->city, state: $dbSaleReturn->state, country: $dbSaleReturn->country, zipCode: $dbSaleReturn->zip_code, shippingAddress: $dbSaleReturn->shipping_address, payTerm: $dbSaleReturn->pay_term, payTermNumber: $dbSaleReturn->pay_term_number, creditLimit: null, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'cr');
-
-                $addAccount = $accountService->addAccount(name: $dbSaleReturn->name, accountGroup: $customerAccountGroup, phone: $dbSale->phone, address: $dbSaleReturn->address, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
-
-                $accountLedgerService->addAccountLedgerEntry(
-                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-                    date: '01-01-2023',
-                    account_id: $addAccount->id,
-                    trans_id: $addAccount->id,
-                    amount: $dbSaleReturn->opening_balance ? $dbSaleReturn->opening_balance : 0,
-                    amount_type: 'debit',
-                    branch_id: auth()->user()->branch_id,
-                );
-
-                $__customerAccountId = $addAccount?->id;
-            }
-
-            $parentSaleId = null;
-            if ($dbSaleReturn->parent_sale_date) {
-
-                $parentSale = DB::table('sales')->where('sale_date_ts', $dbSaleReturn->parent_sale_date)->first();
-                $parentSaleId = $parentSale?->id;
-                echo 'Parent Sale Id' .$parentSaleId. '</br>';
-            }
-
-            $existsSaleReturn = DB::table('sale_returns')->where('date_ts', $dbSaleReturn->report_date)->first();
-
-            if (!isset($existsSaleReturn)) {
-
-                // generate invoice ID
-                $voucherNo = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
-
-                $addSalesReturn = new \App\Models\Sales\SaleReturn();
-                $addSalesReturn->branch_id = auth()->user()->branch_id;
-                $addSalesReturn->voucher_no = $voucherNo;
-                $addSalesReturn->sale_id = $parentSaleId;
-                $addSalesReturn->customer_account_id = $__customerAccountId;
-                $addSalesReturn->sale_account_id = $salesAccount?->id;
-                $addSalesReturn->total_item = $dbSaleReturn->total_item;
-                $addSalesReturn->total_qty = $dbSaleReturn->total_qty;
-                $addSalesReturn->net_total_amount = $dbSaleReturn->net_total_amount;
-                $addSalesReturn->return_discount = $dbSaleReturn->return_discount ? $dbSaleReturn->return_discount : 0;
-                $addSalesReturn->return_discount_type = $dbSaleReturn->return_discount_type;
-                $addSalesReturn->return_discount_amount = $dbSaleReturn->return_discount_amount ? $dbSaleReturn->return_discount_amount : 0;
-                $addSalesReturn->total_return_amount = $dbSaleReturn->total_return_amount;
-                $saleReturnPaid = $dbSaleReturn?->customer_id == null ? $dbSaleReturn->total_return_amount : $dbSaleReturn->total_return_due_pay;
-                $addSalesReturn->due = $dbSaleReturn->total_return_amount;
-                $addSalesReturn->date = $dbSaleReturn->date;
-                $addSalesReturn->date_ts = $dbSaleReturn->report_date;
-                // $addSalesReturn->note = $dbSaleReturn->note;
-                $addSalesReturn->created_by_id = auth()->user()->id;
-                $addSalesReturn->save();
-
-                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::SalesReturn->value, date: $addSalesReturn->date, accountId: $addSalesReturn->customer_account_id, transId: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amountType: 'credit');
-
-                // Add sales A/c Ledger Entry
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, account_id: $addSalesReturn->sale_account_id, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'debit');
-
-                // Add Customer A/c ledger Entry For Sales Return
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
-
-                $dbSaleReturnProducts =  DB::connection('home_care')->table('sale_return_products')
-                    ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
-                    ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
-                    ->select('sale_return_products.*', 'products.name as product_name')
-                    ->get();
-
-                foreach ($dbSaleReturnProducts as $dbSaleReturnProduct) {
-
-                    $product = DB::table('products')
-                        ->where('name', $dbSaleReturnProduct->product_name)
-                        ->select('products.id', 'products.unit_id')
-                        ->first();
-
-                    $saleProduct = DB::table('sale_products')->where('product_id', $product->id)->where('sale_id', $parentSaleId)->first();
-
-                    $addSaleReturnProduct = new \App\Models\Sales\SaleReturnProduct();
-                    $addSaleReturnProduct->sale_return_id = $addSalesReturn->id;
-                    $addSaleReturnProduct->sale_product_id = $saleProduct?->id;
-                    $addSaleReturnProduct->product_id = $product?->id;
-                    $addSaleReturnProduct->return_qty = $dbSaleReturnProduct->return_qty;
-                    $addSaleReturnProduct->sold_quantity = $dbSaleReturnProduct->sold_quantity;
-                    $addSaleReturnProduct->unit_id = $product->unit_id;
-                    $addSaleReturnProduct->unit_price_exc_tax = $dbSaleReturnProduct->unit_price_exc_tax;
-                    $addSaleReturnProduct->unit_discount = $dbSaleReturnProduct->unit_discount;
-                    $addSaleReturnProduct->unit_discount_type = $dbSaleReturnProduct->unit_discount_type;
-                    $addSaleReturnProduct->unit_discount_amount = $dbSaleReturnProduct->unit_discount_amount;
-                    $addSaleReturnProduct->unit_price_inc_tax = $dbSaleReturnProduct->unit_price_inc_tax;
-                    $addSaleReturnProduct->unit_cost_inc_tax = $dbSaleReturnProduct->unit_cost_inc_tax;
-                    $addSaleReturnProduct->return_subtotal = $dbSaleReturnProduct->return_subtotal;
-                    $addSaleReturnProduct->save();
-
-                    // Add Product Ledger Entry
-                    $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, productId: $addSaleReturnProduct->product_id, transId: $addSaleReturnProduct->id, rate: $addSaleReturnProduct->unit_price_inc_tax, quantityType: 'in', quantity: $addSaleReturnProduct->return_qty, subtotal: $addSaleReturnProduct->return_subtotal, variantId: null, warehouseId: null);
-
-                    if ($addSaleReturnProduct->return_qty > 0) {
-
-                        $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'sale_return_product_id', transId: $addSaleReturnProduct->id, branchId: auth()->user()->branch_id, productId: $addSaleReturnProduct->product_id, variantId: null, quantity: $addSaleReturnProduct->return_qty, unitCostIncTax: $addSaleReturnProduct->unit_cost_inc_tax, sellingPrice: $addSaleReturnProduct->unit_price_inc_tax, subTotal: $addSaleReturnProduct->return_subtotal, createdAt: $addSalesReturn->date_ts);
-                    }
-                }
-
-                if ($saleReturnPaid > 0) {
-
-                    $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $addSalesReturn->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $saleReturnPaid, creditTotal: $saleReturnPaid, totalAmount: $saleReturnPaid, saleReturnRefId: $addSalesReturn->id);
-
-                    // Add Debit Account Accounting voucher Description
-                    $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $addSalesReturn->customer_account_id, paymentMethodId: null, amountType: 'dr', amount: $saleReturnPaid);
-
-                    // Add Accounting VoucherDescription References
-                    $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $addSalesReturn->customer_account_id, amount: $saleReturnPaid, refIdColName: 'sale_return_id', refIds: [$addSalesReturn->id]);
-
-                    //Add Debit Ledger Entry
-                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: $addSalesReturn->customer_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $saleReturnPaid, amount_type: 'debit', cash_bank_account_id: 14);
-
-                    // Add Payment Description Credit Entry
-                    $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $saleReturnPaid, note: null);
-
-                    //Add Credit Ledger Entry
-                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $saleReturnPaid, amount_type: 'credit');
-                }
-
-                $return = $salesReturnService->singleSalesReturn(id: $addSalesReturn->id, with: [
-                    'sale',
-                    'branch',
-                    'branch.parentBranch',
-                    'customer',
-                    'saleReturnProducts',
-                    'saleReturnProducts.product',
-                    'saleReturnProducts.variant',
-                    'saleReturnProducts.unit',
-                ]);
-
-                if ($return?->sale) {
-
-                    $saleService->adjustSaleInvoiceAmounts($return->sale);
-                }
-
-                echo 'Sale Return Created-' . $voucherNo . '</br>';
-            }
-        }
-
-        echo 'All Sale Returns is done-' . '</br>';
-
-        $sales = \App\Models\Sales\Sale::with('saleProducts')->get();
-        foreach ($sales as $sale) {
-
-            $stockChainService->updateStockChain(sale: $sale);
-            echo 'stock Chain -' . $sale->invoice_id . '</br>';
-        }
-        echo 'All stock Chain is Done-'. '</br>';
-
-        $products = DB::table('products')->get();
-        foreach ($products as $product) {
-
-            $productStockService->adjustMainProductAndVariantStock(productId: $product->id, variantId: null);
-
-            $productStockService->adjustBranchAllStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
-
-            $productStockService->adjustBranchStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
-
-            echo 'adjust stock -' . $product->id . '-' . $product->name . '</br>';
-        }
-        echo 'adjust stock is done -' . '</br>';
-
-        ////Add Expenses
-        $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
-        $dbExpenses = DB::connection('home_care')->table('expanses')->get();
-        foreach ($dbExpenses as $dbExpense) {
-
-            $existsExpense = DB::table('accounting_vouchers')->where('voucher_type', AccountingVoucherType::Expense->value)->where('date_ts', $dbExpense->report_date)->first();
-
-            if (!isset($existsExpense)) {
-                // Add Accounting Voucher
-                $expenseVoucherPrefix = $generalSettings['prefix__expense_voucher_prefix'] ? $generalSettings['prefix__expense_voucher_prefix'] : 'EV';
-
-                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
-
-                $dbExpenseDescriptions = $dbExpenses = DB::connection('home_care')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
-                    ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
-                    ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
-                    ->get();
-
-                foreach ($dbExpenseDescriptions as $index => $dbExpenseDescription) {
-
-                    $existsExpenseAccount = DB::table('accounts')->where('accounts.name', $dbExpenseDescription->expense_category_name)->where('accounts.branch_id', auth()->user()->branch_id)->first();
-                    // 25
-                    $expenseAccountId = isset($existsExpenseAccount) ? $existsExpenseAccount->id : null;
-                    if (!isset($existsAccount)) {
-
-                        $addAccount = $accountService->addAccount(
-                            name: $dbExpenseDescription->expense_category_name,
-                            accountGroup: $directExpenseGroup,
-                        );
-
-                        $expenseAccountId = $addAccount->id;
-                    }
-
-                    // Add Expense Description Debit Entry
-                    $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $expenseAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbExpenseDescription->amount);
-
-                    if ($index == 0) {
-
-                        $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Expense->value, date: $addAccountingVoucher->date, accountId: $expenseAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $addAccountingVoucher->total_amount, amountType: 'debit');
-                    }
-
-                    //Add Debit Ledger Entry
-                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: $expenseAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbExpenseDescription->amount, amount_type: 'debit', cash_bank_account_id: 14);
-                }
-
-                // Add Credit Account Accounting voucher Description
-                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $addAccountingVoucher->total_amount, transactionNo: null, chequeNo: null, chequeSerialNo: null);
-
-                //Add Credit Ledger Entry
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $addAccountingVoucher->total_amount, amount_type: 'credit');
-
-                echo 'Expense Created-' . $expenseVoucherPrefix . '</br>';
-            }
-        }
-        echo 'All Expense is done Created' . '</br>';
+        // $dbPurchaseReturns = DB::connection('home_care')->table('purchase_returns')
+        //     ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
+        //     ->select(
+        //         'purchase_returns.*',
+        //         'suppliers.name',
+        //         'suppliers.business_name',
+        //         'suppliers.phone',
+        //         'suppliers.alternative_phone',
+        //         'suppliers.landline',
+        //         'suppliers.date_of_birth',
+        //         'suppliers.opening_balance',
+        //         'suppliers.address',
+        //         'suppliers.email',
+        //         'suppliers.shipping_address',
+        //         'suppliers.city',
+        //         'suppliers.state',
+        //         'suppliers.country',
+        //         'suppliers.zip_code',
+        //         'suppliers.tax_number',
+        //         'suppliers.pay_term',
+        //         'suppliers.pay_term_number',
+        //     )->get();
+
+        // foreach ($dbPurchaseReturns as $dbPurchaseReturn) {
+
+        //     $existsSupplier = DB::table('contacts')
+        //         ->where('contacts.type', $supplierType)
+        //         ->where('contacts.name', $dbPurchaseReturn->name)
+        //         ->where('contacts.phone', $dbPurchaseReturn->phone)
+        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
+        //         ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
+
+        //     $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
+
+        //     if (!isset($existsSupplier)) {
+
+        //         $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchaseReturn->name, phone: $dbPurchaseReturn->phone, businessName: $dbPurchaseReturn->business_name, email: $dbPurchaseReturn->email, alternativePhone: $dbPurchaseReturn->alternative_phone, landLine: $dbPurchaseReturn->landline, dateOfBirth: $dbPurchaseReturn->date_of_birth, taxNumber: $dbPurchaseReturn->tax_number, customerGroupId: null, address: $dbPurchaseReturn->address, city: $dbPurchaseReturn->city, state: $dbPurchaseReturn->state, country: $dbPurchaseReturn->country, zipCode: $dbPurchaseReturn->zip_code, shippingAddress: $dbPurchaseReturn->shipping_address, payTerm: $dbPurchaseReturn->pay_term, payTermNumber: $dbPurchaseReturn->pay_term_number, creditLimit: null, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr');
+
+        //         $addAccount = $accountService->addAccount(name: $dbPurchaseReturn->name, accountGroup: $supplierAccountGroup, phone: $dbPurchaseReturn->phone, address: $dbPurchaseReturn->address, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
+
+        //         $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
+        //             branchId: auth()->user()->branch_id,
+        //             accountId: $addAccount->id,
+        //             openingBalanceType: 'cr',
+        //             openingBalance: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
+        //         );
+
+        //         $accountLedgerService->addAccountLedgerEntry(
+        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+        //             date: '01-01-2023',
+        //             account_id: $addAccount->id,
+        //             trans_id: $addAccount->id,
+        //             amount: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
+        //             amount_type: 'credit',
+        //             branch_id: auth()->user()->branch_id,
+        //         );
+
+        //         $supplierAccountId = $addAccount?->id;
+        //     }
+
+        //     $existsPurchaseReturn = DB::table('purchase_returns')->where('date_ts', $dbPurchaseReturn->report_date)->first();
+
+        //     if (!isset($existsPurchaseReturn)) {
+
+        //         $voucherNo = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $purchaseReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        //         $addPurchaseReturn = new \App\Models\Purchases\PurchaseReturn();
+        //         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
+        //         $addPurchaseReturn->voucher_no = $voucherNo;
+        //         $addPurchaseReturn->supplier_account_id = $supplierAccountId;
+        //         $addPurchaseReturn->purchase_account_id = $purchaseAccount->id;;
+        //         // $addPurchaseReturn->total_item = $dbPurchaseReturn->total_item;
+        //         // $addPurchaseReturn->total_qty = $dbPurchaseReturn->total_qty;
+        //         $addPurchaseReturn->net_total_amount = $dbPurchaseReturn->total_return_amount;
+        //         $addPurchaseReturn->return_discount_type = 1;
+        //         $addPurchaseReturn->total_return_amount = $dbPurchaseReturn->total_return_amount;
+        //         $addPurchaseReturn->due = $dbPurchaseReturn->total_return_amount;
+        //         $addPurchaseReturn->date = $dbPurchaseReturn->date;
+        //         $addPurchaseReturn->date_ts = $dbPurchaseReturn->report_date;;
+        //         // $addPurchaseReturn->note = $dbPurchaseReturn->note;
+        //         $addPurchaseReturn->created_by_id = auth()->user()->id;
+        //         $addPurchaseReturn->save();
+
+        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, accountId: $addPurchaseReturn->supplier_account_id, transId: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amountType: 'debit');
+
+        //         // Add Purchase A/c Ledger Entry
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, account_id: $addPurchaseReturn->purchase_account_id, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'credit');
+
+        //         // Add supplier A/c ledger Entry For Purchase
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
+
+        //         $dbPurchaseReturnProducts =  DB::connection('home_care')->table('purchase_return_products')
+        //             ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
+        //             ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
+        //             ->select('purchase_return_products.*', 'products.name as product_name')
+        //             ->get();
+
+        //         foreach ($dbPurchaseReturnProducts as $dbPurchaseReturnProduct) {
+
+        //             $product = DB::table('products')
+        //                 ->where('name', $dbPurchaseReturnProduct->product_name)
+        //                 ->select('products.id', 'products.unit_id')
+        //                 ->first();
+
+        //             $addPurchaseReturnProduct = new \App\Models\Purchases\PurchaseReturnProduct();
+        //             $addPurchaseReturnProduct->purchase_return_id = $addPurchaseReturn->id;
+        //             $addPurchaseReturnProduct->product_id = $product?->id;
+        //             $addPurchaseReturnProduct->return_qty = $dbPurchaseReturnProduct->return_qty;
+        //             $addPurchaseReturnProduct->purchased_qty = 0;
+        //             $addPurchaseReturnProduct->unit_id = $product->unit_id;
+        //             $addPurchaseReturnProduct->unit_cost_exc_tax = $dbPurchaseReturnProduct->unit_cost;
+        //             $addPurchaseReturnProduct->unit_discount_type = 1;
+        //             $addPurchaseReturnProduct->unit_cost_inc_tax = $dbPurchaseReturnProduct->unit_cost;
+        //             $addPurchaseReturnProduct->return_subtotal = $dbPurchaseReturnProduct->return_subtotal;
+        //             $addPurchaseReturnProduct->save();
+
+        //             // Add Product Ledger Entry
+        //             $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, productId: $product?->id, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: null, warehouseId: null);
+        //         }
+
+        //         echo 'Purchase Return Created-' . $voucherNo . '</br>';
+        //     }
+        // }
+        // echo 'All Purchase Returns is done-' . '</br>';
+
+        // /// Add Sale Returns
+        // $dbSaleReturns = DB::connection('home_care')->table('sale_returns')
+        //     ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
+        //     ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
+        //     ->select(
+        //         'sale_returns.*',
+        //         'sales.report_date as parent_sale_date',
+        //         'customers.name',
+        //         'customers.business_name',
+        //         'customers.phone',
+        //         'customers.alternative_phone',
+        //         'customers.landline',
+        //         'customers.date_of_birth',
+        //         'customers.opening_balance',
+        //         'customers.address',
+        //         'customers.email',
+        //         'customers.shipping_address',
+        //         'customers.city',
+        //         'customers.state',
+        //         'customers.country',
+        //         'customers.zip_code',
+        //         'customers.tax_number',
+        //         'customers.pay_term',
+        //         'customers.pay_term_number',
+        //     )->get();
+
+        // foreach ($dbSaleReturns as $dbSaleReturn) {
+
+        //     $existsCustomer = DB::table('contacts')
+        //         ->where('contacts.type', $customerType)
+        //         ->where('contacts.name', $dbSaleReturn->name)
+        //         ->where('contacts.phone', $dbSaleReturn->phone)
+        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
+        //         ->select('contacts.id', 'accounts.id as customer_account_id')->first();
+
+        //     $customerAccountId = $existsCustomer?->customer_account_id;
+        //     $__customerAccountId = $dbSaleReturn?->customer_id == null ? 23 : $customerAccountId;
+
+        //     if (!isset($__customerAccountId)) {
+
+        //         $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbSaleReturn->name, phone: $dbSaleReturn->phone, businessName: $dbSaleReturn->business_name, email: $dbSale->email, alternativePhone: $dbSaleReturn->alternative_phone, landLine: $dbSaleReturn->landline, dateOfBirth: $dbSaleReturn->date_of_birth, taxNumber: $dbSaleReturn->tax_number, customerGroupId: null, address: $dbSaleReturn->address, city: $dbSaleReturn->city, state: $dbSaleReturn->state, country: $dbSaleReturn->country, zipCode: $dbSaleReturn->zip_code, shippingAddress: $dbSaleReturn->shipping_address, payTerm: $dbSaleReturn->pay_term, payTermNumber: $dbSaleReturn->pay_term_number, creditLimit: null, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'cr');
+
+        //         $addAccount = $accountService->addAccount(name: $dbSaleReturn->name, accountGroup: $customerAccountGroup, phone: $dbSale->phone, address: $dbSaleReturn->address, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
+
+        //         $accountLedgerService->addAccountLedgerEntry(
+        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+        //             date: '01-01-2023',
+        //             account_id: $addAccount->id,
+        //             trans_id: $addAccount->id,
+        //             amount: $dbSaleReturn->opening_balance ? $dbSaleReturn->opening_balance : 0,
+        //             amount_type: 'debit',
+        //             branch_id: auth()->user()->branch_id,
+        //         );
+
+        //         $__customerAccountId = $addAccount?->id;
+        //     }
+
+        //     $parentSaleId = null;
+        //     if ($dbSaleReturn->parent_sale_date) {
+
+        //         $parentSale = DB::table('sales')->where('sale_date_ts', $dbSaleReturn->parent_sale_date)->first();
+        //         $parentSaleId = $parentSale?->id;
+        //         echo 'Parent Sale Id' . $parentSaleId . '</br>';
+        //     }
+
+        //     $existsSaleReturn = DB::table('sale_returns')->where('date_ts', $dbSaleReturn->report_date)->first();
+
+        //     if (!isset($existsSaleReturn)) {
+
+        //         // generate invoice ID
+        //         $voucherNo = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        //         $addSalesReturn = new \App\Models\Sales\SaleReturn();
+        //         $addSalesReturn->branch_id = auth()->user()->branch_id;
+        //         $addSalesReturn->voucher_no = $voucherNo;
+        //         $addSalesReturn->sale_id = $parentSaleId;
+        //         $addSalesReturn->customer_account_id = $__customerAccountId;
+        //         $addSalesReturn->sale_account_id = $salesAccount?->id;
+        //         $addSalesReturn->total_item = $dbSaleReturn->total_item;
+        //         $addSalesReturn->total_qty = $dbSaleReturn->total_qty;
+        //         $addSalesReturn->net_total_amount = $dbSaleReturn->net_total_amount;
+        //         $addSalesReturn->return_discount = $dbSaleReturn->return_discount ? $dbSaleReturn->return_discount : 0;
+        //         $addSalesReturn->return_discount_type = $dbSaleReturn->return_discount_type;
+        //         $addSalesReturn->return_discount_amount = $dbSaleReturn->return_discount_amount ? $dbSaleReturn->return_discount_amount : 0;
+        //         $addSalesReturn->total_return_amount = $dbSaleReturn->total_return_amount;
+        //         $saleReturnPaid = $dbSaleReturn?->customer_id == null ? $dbSaleReturn->total_return_amount : $dbSaleReturn->total_return_due_pay;
+        //         $addSalesReturn->due = $dbSaleReturn->total_return_amount;
+        //         $addSalesReturn->date = $dbSaleReturn->date;
+        //         $addSalesReturn->date_ts = $dbSaleReturn->report_date;
+        //         // $addSalesReturn->note = $dbSaleReturn->note;
+        //         $addSalesReturn->created_by_id = auth()->user()->id;
+        //         $addSalesReturn->save();
+
+        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::SalesReturn->value, date: $addSalesReturn->date, accountId: $addSalesReturn->customer_account_id, transId: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amountType: 'credit');
+
+        //         // Add sales A/c Ledger Entry
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, account_id: $addSalesReturn->sale_account_id, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'debit');
+
+        //         // Add Customer A/c ledger Entry For Sales Return
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
+
+        //         $dbSaleReturnProducts =  DB::connection('home_care')->table('sale_return_products')
+        //             ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
+        //             ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
+        //             ->select('sale_return_products.*', 'products.name as product_name')
+        //             ->get();
+
+        //         foreach ($dbSaleReturnProducts as $dbSaleReturnProduct) {
+
+        //             $product = DB::table('products')
+        //                 ->where('name', $dbSaleReturnProduct->product_name)
+        //                 ->select('products.id', 'products.unit_id')
+        //                 ->first();
+
+        //             $saleProduct = DB::table('sale_products')->where('product_id', $product->id)->where('sale_id', $parentSaleId)->first();
+
+        //             $addSaleReturnProduct = new \App\Models\Sales\SaleReturnProduct();
+        //             $addSaleReturnProduct->sale_return_id = $addSalesReturn->id;
+        //             $addSaleReturnProduct->sale_product_id = $saleProduct?->id;
+        //             $addSaleReturnProduct->product_id = $product?->id;
+        //             $addSaleReturnProduct->return_qty = $dbSaleReturnProduct->return_qty;
+        //             $addSaleReturnProduct->sold_quantity = $dbSaleReturnProduct->sold_quantity;
+        //             $addSaleReturnProduct->unit_id = $product->unit_id;
+        //             $addSaleReturnProduct->unit_price_exc_tax = $dbSaleReturnProduct->unit_price_exc_tax;
+        //             $addSaleReturnProduct->unit_discount = $dbSaleReturnProduct->unit_discount;
+        //             $addSaleReturnProduct->unit_discount_type = $dbSaleReturnProduct->unit_discount_type;
+        //             $addSaleReturnProduct->unit_discount_amount = $dbSaleReturnProduct->unit_discount_amount;
+        //             $addSaleReturnProduct->unit_price_inc_tax = $dbSaleReturnProduct->unit_price_inc_tax;
+        //             $addSaleReturnProduct->unit_cost_inc_tax = $dbSaleReturnProduct->unit_cost_inc_tax;
+        //             $addSaleReturnProduct->return_subtotal = $dbSaleReturnProduct->return_subtotal;
+        //             $addSaleReturnProduct->save();
+
+        //             // Add Product Ledger Entry
+        //             $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, productId: $addSaleReturnProduct->product_id, transId: $addSaleReturnProduct->id, rate: $addSaleReturnProduct->unit_price_inc_tax, quantityType: 'in', quantity: $addSaleReturnProduct->return_qty, subtotal: $addSaleReturnProduct->return_subtotal, variantId: null, warehouseId: null);
+
+        //             if ($addSaleReturnProduct->return_qty > 0) {
+
+        //                 $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'sale_return_product_id', transId: $addSaleReturnProduct->id, branchId: auth()->user()->branch_id, productId: $addSaleReturnProduct->product_id, variantId: null, quantity: $addSaleReturnProduct->return_qty, unitCostIncTax: $addSaleReturnProduct->unit_cost_inc_tax, sellingPrice: $addSaleReturnProduct->unit_price_inc_tax, subTotal: $addSaleReturnProduct->return_subtotal, createdAt: $addSalesReturn->date_ts);
+        //             }
+        //         }
+
+        //         if ($saleReturnPaid > 0) {
+
+        //             $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $addSalesReturn->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $saleReturnPaid, creditTotal: $saleReturnPaid, totalAmount: $saleReturnPaid, saleReturnRefId: $addSalesReturn->id);
+
+        //             // Add Debit Account Accounting voucher Description
+        //             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $addSalesReturn->customer_account_id, paymentMethodId: null, amountType: 'dr', amount: $saleReturnPaid);
+
+        //             // Add Accounting VoucherDescription References
+        //             $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $addSalesReturn->customer_account_id, amount: $saleReturnPaid, refIdColName: 'sale_return_id', refIds: [$addSalesReturn->id]);
+
+        //             //Add Debit Ledger Entry
+        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: $addSalesReturn->customer_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $saleReturnPaid, amount_type: 'debit', cash_bank_account_id: 14);
+
+        //             // Add Payment Description Credit Entry
+        //             $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $saleReturnPaid, note: null);
+
+        //             //Add Credit Ledger Entry
+        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $saleReturnPaid, amount_type: 'credit');
+        //         }
+
+        //         $return = $salesReturnService->singleSalesReturn(id: $addSalesReturn->id, with: [
+        //             'sale',
+        //             'branch',
+        //             'branch.parentBranch',
+        //             'customer',
+        //             'saleReturnProducts',
+        //             'saleReturnProducts.product',
+        //             'saleReturnProducts.variant',
+        //             'saleReturnProducts.unit',
+        //         ]);
+
+        //         if ($return?->sale) {
+
+        //             $saleService->adjustSaleInvoiceAmounts($return->sale);
+        //         }
+
+        //         echo 'Sale Return Created-' . $voucherNo . '</br>';
+        //     }
+        // }
+
+        // echo 'All Sale Returns is done-' . '</br>';
+
+        // $sales = \App\Models\Sales\Sale::with('saleProducts')->get();
+        // foreach ($sales as $sale) {
+
+        //     $stockChainService->updateStockChain(sale: $sale);
+        //     echo 'stock Chain -' . $sale->invoice_id . '</br>';
+        // }
+        // echo 'All stock Chain is Done-' . '</br>';
+
+        // $products = DB::table('products')->get();
+        // foreach ($products as $product) {
+
+        //     $productStockService->adjustMainProductAndVariantStock(productId: $product->id, variantId: null);
+
+        //     $productStockService->adjustBranchAllStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
+
+        //     $productStockService->adjustBranchStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
+
+        //     echo 'adjust stock -' . $product->id . '-' . $product->name . '</br>';
+        // }
+        // echo 'adjust stock is done -' . '</br>';
+
+        // ////Add Expenses
+        // $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
+        // $dbExpenses = DB::connection('home_care')->table('expanses')->get();
+        // foreach ($dbExpenses as $dbExpense) {
+
+        //     $existsExpense = DB::table('accounting_vouchers')->where('voucher_type', AccountingVoucherType::Expense->value)->where('date_ts', $dbExpense->report_date)->first();
+
+        //     if (!isset($existsExpense)) {
+        //         // Add Accounting Voucher
+        //         $expenseVoucherPrefix = $generalSettings['prefix__expense_voucher_prefix'] ? $generalSettings['prefix__expense_voucher_prefix'] : 'EV';
+
+        //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
+
+        //         $dbExpenseDescriptions = $dbExpenses = DB::connection('home_care')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
+        //             ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
+        //             ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
+        //             ->get();
+
+        //         foreach ($dbExpenseDescriptions as $index => $dbExpenseDescription) {
+
+        //             $existsExpenseAccount = DB::table('accounts')->where('accounts.name', $dbExpenseDescription->expense_category_name)->where('accounts.branch_id', auth()->user()->branch_id)->first();
+        //             // 25
+        //             $expenseAccountId = isset($existsExpenseAccount) ? $existsExpenseAccount->id : null;
+        //             if (!isset($existsExpenseAccount)) {
+
+        //                 $addAccount = $accountService->addAccount(
+        //                     name: $dbExpenseDescription->expense_category_name,
+        //                     accountGroup: $directExpenseGroup,
+        //                 );
+
+        //                 $expenseAccountId = $addAccount->id;
+        //             }
+
+        //             // Add Expense Description Debit Entry
+        //             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $expenseAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbExpenseDescription->amount);
+
+        //             if ($index == 0) {
+
+        //                 $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Expense->value, date: $addAccountingVoucher->date, accountId: $expenseAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $addAccountingVoucher->total_amount, amountType: 'debit');
+        //             }
+
+        //             //Add Debit Ledger Entry
+        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: $expenseAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbExpenseDescription->amount, amount_type: 'debit', cash_bank_account_id: 14);
+        //         }
+
+        //         // Add Credit Account Accounting voucher Description
+        //         $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $addAccountingVoucher->total_amount, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+
+        //         //Add Credit Ledger Entry
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $addAccountingVoucher->total_amount, amount_type: 'credit');
+
+        //         echo 'Expense Created-' . $expenseVoucherPrefix . '</br>';
+        //     }
+        // }
+        // echo 'All Expense is done Created' . '</br>';
 
         DB::commit();
     } catch (\Exception $e) {
@@ -983,6 +984,11 @@ Route::get('my-test', function () {
     // $c = array_combine($translationKeys, $translatedArray);
 
     // return $c;
+});
+
+Route::get('password', function () {
+
+    return Hash::make(12345);
 });
 
 Route::get('t-id', function () {});

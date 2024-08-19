@@ -217,7 +217,7 @@
                     </div> --}}
 
                     <div class="date">
-                        <p><span class="fw-bold" style="color:white!important">{{ __('Inv. ID') }}:</span> <small id="invoice_id">{{ $voucherNo }}</small></p>
+                        <p><span class="fw-bold" style="color:white!important;">{{ __('ID') }}:</span> <small id="invoice_id" style="font-size:11px;">{{ $voucherNo }}</small></p>
                     </div>
 
                     <div class="date">

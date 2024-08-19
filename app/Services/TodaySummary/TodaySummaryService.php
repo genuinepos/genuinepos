@@ -32,7 +32,7 @@ class TodaySummaryService
         )->where('sales.status', SaleStatus::Final->value);
 
         $receiptQuery = DB::table('accounting_vouchers')
-            ->where('voucher_type', AccountingVoucherType::Payment->value)
+            ->where('voucher_type', AccountingVoucherType::Receipt->value)
             ->select(DB::raw('sum(total_amount) as total_received'));
 
         $saleReturnQuery = DB::table('sale_returns')

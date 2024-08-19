@@ -853,7 +853,7 @@ Route::get('my-test', function () {
 
         // echo 'All Sale Returns is done-' . '</br>';
 
-        // $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
+        $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
 
         foreach ($purchaseProducts as $purchaseProduct) {
             $purchaseProduct->left_qty = $purchaseProduct->quantity;
@@ -948,8 +948,6 @@ Route::get('my-test', function () {
         DB::rollBack();
         dd($e->getMessage());
     }
-
-
 
     // $dir = __DIR__ . '/../resources/views';
     // $translationKeys = [];

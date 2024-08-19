@@ -853,38 +853,38 @@ Route::get('my-test', function () {
 
         // echo 'All Sale Returns is done-' . '</br>';
 
-        $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
+        // $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
 
-        foreach ($purchaseProducts as $purchaseProduct) {
-            $purchaseProduct->left_qty = $purchaseProduct->quantity;
-            $purchaseProduct->save();
-        }
-
-        $stockChains = \App\Models\Products\StockChain::all();
-        foreach ($stockChains as $key => $stockChain) {
-            $stockChain->delete();
-        }
-
-        $sales = \App\Models\Sales\Sale::with('saleProducts')->get();
-        foreach ($sales as $sale) {
-
-            $stockChainService->addStockChain(sale: $sale);
-            echo 'stock Chain -' . $sale->invoice_id . '</br>';
-        }
-        echo 'All stock Chain is Done-' . '</br>';
-
-        // $products = DB::table('products')->get();
-        // foreach ($products as $product) {
-
-        //     $productStockService->adjustMainProductAndVariantStock(productId: $product->id, variantId: null);
-
-        //     $productStockService->adjustBranchAllStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
-
-        //     $productStockService->adjustBranchStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
-
-        //     echo 'adjust stock -' . $product->id . '-' . $product->name . '</br>';
+        // foreach ($purchaseProducts as $purchaseProduct) {
+        //     $purchaseProduct->left_qty = $purchaseProduct->quantity;
+        //     $purchaseProduct->save();
         // }
-        // echo 'adjust stock is done -' . '</br>';
+
+        // $stockChains = \App\Models\Products\StockChain::all();
+        // foreach ($stockChains as $key => $stockChain) {
+        //     $stockChain->delete();
+        // }
+
+        // $sales = \App\Models\Sales\Sale::with('saleProducts')->get();
+        // foreach ($sales as $sale) {
+
+        //     $stockChainService->addStockChain(sale: $sale);
+        //     echo 'stock Chain -' . $sale->invoice_id . '</br>';
+        // }
+        // echo 'All stock Chain is Done-' . '</br>';
+
+        $products = DB::table('products')->get();
+        foreach ($products as $product) {
+
+            $productStockService->adjustMainProductAndVariantStock(productId: $product->id, variantId: null);
+
+            $productStockService->adjustBranchAllStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
+
+            $productStockService->adjustBranchStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
+
+            echo 'adjust stock -' . $product->id . '-' . $product->name . '</br>';
+        }
+        echo 'adjust stock is done -' . '</br>';
 
         ////Add Expenses
         // $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();

@@ -74,8 +74,7 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
         private DeviceModelService $deviceModelService,
         private StatusService $statusService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {
@@ -568,8 +567,6 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 $this->productStockService->adjustBranchStock(productId: $productId, variantId: $variantId, branchId: $updatePosSale->branch_id);
             }
 
-            $this->stockChainService->updateStockChain(sale: $updatePosSale, stockAccountingMethod: $stockAccountingMethod);
-
             $this->cashRegisterTransactionService->addCashRegisterTransaction(request: $request, saleId: $updatePosSale->id, voucherDebitDescriptionId: $voucherDebitDescriptionId, saleRefId: $updatePosSale->id);
         }
 
@@ -610,6 +607,11 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 'saleProducts.product',
             ]
         );
+
+        if ($sale->status == SaleStatus::Final->value) {
+
+            $this->stockChainService->updateStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
+        }
 
         $adjustedSale = $this->saleService->adjustSaleInvoiceAmounts(sale: $sale);
 

@@ -865,7 +865,7 @@ Route::get('my-test', function () {
             $stockChain->delete();
         }
 
-        $sales = \App\Models\Sales\Sale::with('saleProducts')->get();
+        $sales = \App\Models\Sales\Sale::with('saleProducts', 'saleProducts.product')->where('status', 1)->get();
         foreach ($sales as $sale) {
 
             $stockChainService->addStockChain(sale: $sale);

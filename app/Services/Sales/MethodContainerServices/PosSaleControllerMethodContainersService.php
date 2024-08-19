@@ -321,10 +321,9 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
 
                 $this->productStockService->adjustBranchStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
-
-                $this->stockChainService->addStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
             }
 
+            $this->stockChainService->addStockChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
             $this->cashRegisterTransactionService->addCashRegisterTransaction(request: $request, saleId: $sale->id, voucherDebitDescriptionId: $voucherDebitDescriptionId, saleRefId: $sale->id);
         }
 

@@ -428,7 +428,7 @@ class GeneralProductSearchService
                 'units.name as unit_name',
             )
             ->distinct('product_access_branches.branch_id');
-            $main = $query->orderBy('products.name', 'asc')->limit(25)->cursor();
+        $main = $query->orderBy('products.name', 'asc')->limit(25)->cursor();
         // ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
 
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
@@ -447,6 +447,7 @@ class GeneralProductSearchService
         // ])->orderBy('products.name', 'asc')->limit(25)->cursor();
 
         $main->each(function ($product) use ($ordering) {
+
             $product->update_product_cost = DB::table('purchase_products')
                 ->where('product_id', $product->id)
                 ->where('left_qty', '>', 0)
@@ -455,12 +456,18 @@ class GeneralProductSearchService
                 ->orderBy('created_at', $ordering)
                 ->value('net_unit_cost');
 
-            $product->update_variant_cost = DB::table('purchase_products')
-                ->where('variant_id', $product->variant_id)
-                ->where('left_qty', '>', 0)
-                ->where('branch_id', auth()->user()->branch_id)
-                ->orderBy('created_at', $ordering)
-                ->value('net_unit_cost');
+            if (isset($product->variant_id)) {
+
+                $product->update_variant_cost = DB::table('purchase_products')
+                    ->where('variant_id', $product->variant_id)
+                    ->where('left_qty', '>', 0)
+                    ->where('branch_id', auth()->user()->branch_id)
+                    ->orderBy('created_at', $ordering)
+                    ->value('net_unit_cost');
+            } else {
+
+                $product->update_variant_cost = 0;
+            }
         });
 
         $namedProducts = $main;

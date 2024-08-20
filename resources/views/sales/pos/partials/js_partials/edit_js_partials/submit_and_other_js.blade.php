@@ -140,8 +140,23 @@
 
             $('#final').click();
             return false;
+        } else if (e.which == 27) { //Esc
+
+            $('.variant_list_area').empty();
+            $('.select_area').hide();
+            $('.modal').modal('hide');
+            return false;
         }
     }
+
+    $(document).on('click', function(e) {
+
+        if ($(e.target).closest(".select_area").length === 0) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+        }
+    });
 
     $(document).on('click enter', '#final_and_quick_cash_receive', function(e) {
 

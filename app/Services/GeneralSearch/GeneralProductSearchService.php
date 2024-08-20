@@ -428,7 +428,7 @@ class GeneralProductSearchService
                 'units.name as unit_name',
             )
             ->distinct('product_access_branches.branch_id');
-        $main = $query->orderBy('products.name', 'asc')->limit(25)->cursor();
+        $main = $query->orderBy('products.name', 'asc')->limit(25)->get();
         // ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
 
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];

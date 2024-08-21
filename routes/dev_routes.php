@@ -192,51 +192,51 @@ Route::get('my-test', function () {
         // echo 'All product is done' . '</br>';
 
         // //////////////Add Product Opening Stocks
-        $dbProductOpeningStocks = DB::connection('bondhon_missing')->table('product_opening_stocks')
-            ->leftJoin('products', 'product_opening_stocks.product_id', 'products.id')
-            ->select('product_opening_stocks.*', 'products.name as product_name', 'products.product_code')->get();
+        // $dbProductOpeningStocks = DB::connection('bondhon_missing')->table('product_opening_stocks')
+        //     ->leftJoin('products', 'product_opening_stocks.product_id', 'products.id')
+        //     ->select('product_opening_stocks.*', 'products.name as product_name', 'products.product_code')->get();
 
-        foreach ($dbProductOpeningStocks as $dbProductOpeningStock) {
+        // foreach ($dbProductOpeningStocks as $dbProductOpeningStock) {
 
-            $date = $accountStartDate;
+        //     $date = $accountStartDate;
 
-            $product = DB::table('products')
-                ->where('name', $dbProductOpeningStock->product_name)
-                ->where('product_code', $dbProductOpeningStock->product_code)->first();
+        //     $product = DB::table('products')
+        //         ->where('name', $dbProductOpeningStock->product_name)
+        //         ->where('product_code', $dbProductOpeningStock->product_code)->first();
 
-            if (isset($product)) {
+        //     if (isset($product)) {
 
-                $addOrEditOpeningStock = '';
-                $openingStock = \App\Models\Products\ProductOpeningStock::where('branch_id', auth()->user()->branch_id)
-                    ->where('product_id', $product->id)->first();
+        //         $addOrEditOpeningStock = '';
+        //         $openingStock = \App\Models\Products\ProductOpeningStock::where('branch_id', auth()->user()->branch_id)
+        //             ->where('product_id', $product->id)->first();
 
-                $warehouseId = null;
-                if ($openingStock) {
+        //         $warehouseId = null;
+        //         if ($openingStock) {
 
-                    $addOrEditOpeningStock = $openingStock;
-                    $date = $openingStock->date;
-                } else {
+        //             $addOrEditOpeningStock = $openingStock;
+        //             $date = $openingStock->date;
+        //         } else {
 
-                    $addOrEditOpeningStock = new \App\Models\Products\ProductOpeningStock();
-                }
+        //             $addOrEditOpeningStock = new \App\Models\Products\ProductOpeningStock();
+        //         }
 
-                $addOrEditOpeningStock->branch_id = auth()->user()->branch_id;
-                $addOrEditOpeningStock->warehouse_id = null;
-                $addOrEditOpeningStock->product_id = $product->id;
-                $addOrEditOpeningStock->variant_id = null;
-                $addOrEditOpeningStock->quantity = $dbProductOpeningStock->quantity;
-                $addOrEditOpeningStock->unit_cost_inc_tax = $dbProductOpeningStock->unit_cost_inc_tax;
-                $addOrEditOpeningStock->subtotal = $dbProductOpeningStock->subtotal;
-                $addOrEditOpeningStock->date = $date;
-                $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date . ' 01:00:00'));
-                $addOrEditOpeningStock->save();
+        //         $addOrEditOpeningStock->branch_id = auth()->user()->branch_id;
+        //         $addOrEditOpeningStock->warehouse_id = null;
+        //         $addOrEditOpeningStock->product_id = $product->id;
+        //         $addOrEditOpeningStock->variant_id = null;
+        //         $addOrEditOpeningStock->quantity = $dbProductOpeningStock->quantity;
+        //         $addOrEditOpeningStock->unit_cost_inc_tax = $dbProductOpeningStock->unit_cost_inc_tax;
+        //         $addOrEditOpeningStock->subtotal = $dbProductOpeningStock->subtotal;
+        //         $addOrEditOpeningStock->date = $date;
+        //         $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date . ' 01:00:00'));
+        //         $addOrEditOpeningStock->save();
 
-                $productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
+        //         $productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
 
-                $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'opening_stock_id', transId: $addOrEditOpeningStock->id, branchId: auth()->user()->branch_id, productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, quantity: $addOrEditOpeningStock->quantity, unitCostIncTax: $addOrEditOpeningStock->unit_cost_inc_tax, sellingPrice: 0, subTotal: $addOrEditOpeningStock->subtotal, createdAt: $addOrEditOpeningStock->date_ts);
-            }
-        }
-        echo 'Product opening stock is done' . '</br>';
+        //         $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'opening_stock_id', transId: $addOrEditOpeningStock->id, branchId: auth()->user()->branch_id, productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, quantity: $addOrEditOpeningStock->quantity, unitCostIncTax: $addOrEditOpeningStock->unit_cost_inc_tax, sellingPrice: 0, subTotal: $addOrEditOpeningStock->subtotal, createdAt: $addOrEditOpeningStock->date_ts);
+        //     }
+        // }
+        // echo 'Product opening stock is done' . '</br>';
 
         //////// //Add Purchases
         // $dbPurchases = DB::connection('bondhon_missing')->table('purchases')
@@ -431,176 +431,176 @@ Route::get('my-test', function () {
         // echo 'All Purchases is Created-' . '</br>';
 
         // /// Add Sales
-        // $dbSales = DB::connection('bondhon_missing')->table('sales')
-        //     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-        //     ->select(
-        //         'sales.*',
-        //         'customers.name',
-        //         'customers.business_name',
-        //         'customers.phone',
-        //         'customers.alternative_phone',
-        //         'customers.landline',
-        //         'customers.date_of_birth',
-        //         'customers.opening_balance',
-        //         'customers.address',
-        //         'customers.email',
-        //         'customers.shipping_address',
-        //         'customers.city',
-        //         'customers.state',
-        //         'customers.country',
-        //         'customers.zip_code',
-        //         'customers.tax_number',
-        //         'customers.pay_term',
-        //         'customers.pay_term_number',
-        //         'customers.credit_limit',
-        //     )
-        //     // ->skip(20000) // skip first 20000 rows
-        //     // ->take(4000) //current 24000
-        //     ->orderBy('sales.id', 'asc')->get();
+        $dbSales = DB::connection('bondhon_missing')->table('sales')
+            ->leftJoin('customers', 'sales.customer_id', 'customers.id')
+            ->select(
+                'sales.*',
+                'customers.name',
+                'customers.business_name',
+                'customers.phone',
+                'customers.alternative_phone',
+                'customers.landline',
+                'customers.date_of_birth',
+                'customers.opening_balance',
+                'customers.address',
+                'customers.email',
+                'customers.shipping_address',
+                'customers.city',
+                'customers.state',
+                'customers.country',
+                'customers.zip_code',
+                'customers.tax_number',
+                'customers.pay_term',
+                'customers.pay_term_number',
+                'customers.credit_limit',
+            )
+            // ->skip(20000) // skip first 20000 rows
+            // ->take(4000) //current 24000
+            ->orderBy('sales.id', 'asc')->get();
 
-        // foreach ($dbSales as $dbSale) {
+        foreach ($dbSales as $dbSale) {
 
-        //     $existsCustomer = DB::table('contacts')
-        //         ->where('contacts.type', $customerType)
-        //         ->where('contacts.name', $dbSale->name)
-        //         ->where('contacts.phone', $dbSale->phone)
-        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
-        //         ->select('contacts.id', 'accounts.id as customer_account_id')->first();
+            $existsCustomer = DB::table('contacts')
+                ->where('contacts.type', $customerType)
+                ->where('contacts.name', $dbSale->name)
+                ->where('contacts.phone', $dbSale->phone)
+                ->join('accounts', 'contacts.id', 'accounts.contact_id')
+                ->select('contacts.id', 'accounts.id as customer_account_id')->first();
 
-        //     $customerAccountId = $existsCustomer?->customer_account_id;
-        //     $__customerAccountId = $dbSale?->customer_id == null ? 23 : $customerAccountId;
+            $customerAccountId = $existsCustomer?->customer_account_id;
+            $__customerAccountId = $dbSale?->customer_id == null ? 23 : $customerAccountId;
 
-        //     if (!isset($__customerAccountId)) {
+            if (!isset($__customerAccountId)) {
 
-        //         $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $dbSale->name, phone: $dbSale->phone, businessName: $dbSale->business_name, email: $dbSale->email, alternativePhone: $dbSale->alternative_phone, landLine: $dbSale->landline, dateOfBirth: $dbSale->date_of_birth, taxNumber: $dbSale->tax_number, customerGroupId: null, address: $dbSale->address, city: $dbSale->city, state: $dbSale->state, country: $dbSale->country, zipCode: $dbSale->zip_code, shippingAddress: $dbSale->shipping_address, payTerm: $dbSale->pay_term, payTermNumber: $dbSale->pay_term_number, creditLimit: null, openingBalance: $dbSale->opening_balance, openingBalanceType: 'cr');
+                $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $dbSale->name, phone: $dbSale->phone, businessName: $dbSale->business_name, email: $dbSale->email, alternativePhone: $dbSale->alternative_phone, landLine: $dbSale->landline, dateOfBirth: $dbSale->date_of_birth, taxNumber: $dbSale->tax_number, customerGroupId: null, address: $dbSale->address, city: $dbSale->city, state: $dbSale->state, country: $dbSale->country, zipCode: $dbSale->zip_code, shippingAddress: $dbSale->shipping_address, payTerm: $dbSale->pay_term, payTermNumber: $dbSale->pay_term_number, creditLimit: null, openingBalance: $dbSale->opening_balance, openingBalanceType: 'cr');
 
-        //         $addAccount = $accountService->addAccount(name: $dbSale->name, accountGroup: $customerAccountGroup, phone: $dbSale->phone, address: $dbSale->address, openingBalance: $dbSale->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
+                $addAccount = $accountService->addAccount(name: $dbSale->name, accountGroup: $customerAccountGroup, phone: $dbSale->phone, address: $dbSale->address, openingBalance: $dbSale->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
 
-        //         $accountLedgerService->addAccountLedgerEntry(
-        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-        //             date: '01-01-2023',
-        //             account_id: $addAccount->id,
-        //             trans_id: $addAccount->id,
-        //             amount: $dbSale->opening_balance ? $dbSale->opening_balance : 0,
-        //             amount_type: 'debit',
-        //             branch_id: auth()->user()->branch_id,
-        //         );
+                $accountLedgerService->addAccountLedgerEntry(
+                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+                    date: '01-01-2023',
+                    account_id: $addAccount->id,
+                    trans_id: $addAccount->id,
+                    amount: $dbSale->opening_balance ? $dbSale->opening_balance : 0,
+                    amount_type: 'debit',
+                    branch_id: auth()->user()->branch_id,
+                );
 
-        //         $__customerAccountId = $addAccount?->id;
-        //     }
+                $__customerAccountId = $addAccount?->id;
+            }
 
-        //     $existsSale = DB::table('sales')
-        //         ->where('date', $dbSale->date)
-        //         ->where('total_item', $dbSale->total_item)
-        //         ->where('net_total_amount', $dbSale->net_total_amount)
-        //         ->where('total_invoice_amount', $dbSale->total_payable_amount)
-        //         ->where('order_discount_amount', $dbSale->order_discount_amount)
-        //         ->first();
+            $existsSale = DB::table('sales')
+                ->where('date', $dbSale->date)
+                ->where('total_item', $dbSale->total_item)
+                ->where('net_total_amount', $dbSale->net_total_amount)
+                ->where('total_invoice_amount', $dbSale->total_payable_amount)
+                ->where('order_discount_amount', $dbSale->order_discount_amount)
+                ->first();
 
-        //     if (!isset($existsSale)) {
+            if (!isset($existsSale)) {
 
-        //         $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $saleInvoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+                $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $saleInvoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
-        //         $addSale = new \App\Models\Sales\Sale();
-        //         $addSale->invoice_id = $transId;
-        //         $addSale->created_by_id = auth()->user()->id;
-        //         $addSale->sale_account_id = $salesAccount->id;
-        //         $addSale->branch_id = auth()->user()->branch_id;
-        //         $addSale->customer_account_id = $__customerAccountId;
-        //         $addSale->status = SaleStatus::Final->value;
-        //         $addSale->date = $dbSale->date;
-        //         $addSale->date_ts = $dbSale->report_date;
-        //         $addSale->sale_date_ts = $dbSale->report_date;
-        //         $addSale->total_item = $dbSale->total_item;
-        //         // $addSale->total_qty = $dbSale->total_qty;
-        //         // $addSale->total_sold_qty = $dbSale->total_qty;
-        //         $addSale->net_total_amount = $dbSale->net_total_amount;
-        //         $addSale->order_discount_type = $dbSale->order_discount_type;
-        //         $addSale->order_discount = $dbSale->order_discount;
-        //         $addSale->order_discount_amount = $dbSale->order_discount_amount;
-        //         $addSale->shipment_charge = $dbSale->shipment_charge;
-        //         $addSale->shipment_details = $dbSale->shipment_details;
-        //         $addSale->shipment_address = $dbSale->shipment_address;
-        //         $addSale->shipment_status = 0;
-        //         $addSale->delivered_to = $dbSale->delivered_to;
-        //         // $addSale->note = $dbSale->note;
-        //         $addSale->change_amount = 0;
-        //         $addSale->total_invoice_amount = $dbSale->total_payable_amount;
-        //         $salePaid = $dbSale->customer_id == null ? $dbSale->total_payable_amount : $dbSale->paid;
-        //         $addSale->due = $dbSale->total_payable_amount;
-        //         $addSale->sale_screen = $dbSale->created_by;
-        //         $addSale->save();
+                $addSale = new \App\Models\Sales\Sale();
+                $addSale->invoice_id = $transId;
+                $addSale->created_by_id = auth()->user()->id;
+                $addSale->sale_account_id = $salesAccount->id;
+                $addSale->branch_id = auth()->user()->branch_id;
+                $addSale->customer_account_id = $__customerAccountId;
+                $addSale->status = SaleStatus::Final->value;
+                $addSale->date = $dbSale->date;
+                $addSale->date_ts = $dbSale->report_date;
+                $addSale->sale_date_ts = $dbSale->report_date;
+                $addSale->total_item = $dbSale->total_item;
+                // $addSale->total_qty = $dbSale->total_qty;
+                // $addSale->total_sold_qty = $dbSale->total_qty;
+                $addSale->net_total_amount = $dbSale->net_total_amount;
+                $addSale->order_discount_type = $dbSale->order_discount_type;
+                $addSale->order_discount = $dbSale->order_discount;
+                $addSale->order_discount_amount = $dbSale->order_discount_amount;
+                $addSale->shipment_charge = $dbSale->shipment_charge;
+                $addSale->shipment_details = $dbSale->shipment_details;
+                $addSale->shipment_address = $dbSale->shipment_address;
+                $addSale->shipment_status = 0;
+                $addSale->delivered_to = $dbSale->delivered_to;
+                // $addSale->note = $dbSale->note;
+                $addSale->change_amount = 0;
+                $addSale->total_invoice_amount = $dbSale->total_payable_amount;
+                $salePaid = $dbSale->customer_id == null ? $dbSale->total_payable_amount : $dbSale->paid;
+                $addSale->due = $dbSale->total_payable_amount;
+                $addSale->sale_screen = $dbSale->created_by;
+                $addSale->save();
 
-        //         // Add Day Book entry for Final Sale or Sales Order
-        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: $addSale->date, accountId: $addSale->customer_account_id, transId: $addSale->id, amount: $addSale->total_invoice_amount, amountType: 'debit');
+                // Add Day Book entry for Final Sale or Sales Order
+                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: $addSale->date, accountId: $addSale->customer_account_id, transId: $addSale->id, amount: $addSale->total_invoice_amount, amountType: 'debit');
 
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $addSale->date, account_id: $addSale->sale_account_id, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'credit');
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $addSale->date, account_id: $addSale->sale_account_id, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'credit');
 
-        //         // Add supplier A/c ledger Entry For Sales
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $addSale->customer_account_id, date: $addSale->date, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'debit');
+                // Add supplier A/c ledger Entry For Sales
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $addSale->customer_account_id, date: $addSale->date, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'debit');
 
-        //         $dbSaleProducts =  DB::connection('bondhon_missing')->table('sale_products')
-        //             ->leftJoin('products', 'sale_products.product_id', 'products.id')
-        //             ->where('sale_id', $dbSale->id)
-        //             ->select('sale_products.*', 'products.name as product_name', 'products.product_code')
-        //             ->get();
+                $dbSaleProducts =  DB::connection('bondhon_missing')->table('sale_products')
+                    ->leftJoin('products', 'sale_products.product_id', 'products.id')
+                    ->where('sale_id', $dbSale->id)
+                    ->select('sale_products.*', 'products.name as product_name', 'products.product_code')
+                    ->get();
 
-        //         foreach ($dbSaleProducts as $dbSaleProduct) {
+                foreach ($dbSaleProducts as $dbSaleProduct) {
 
-        //             $product = DB::table('products')
-        //                 ->where('name', $dbSaleProduct->product_name)
-        //                 ->where('product_code', $dbSaleProduct->product_code)
-        //                 ->select('products.id', 'products.unit_id')
-        //                 ->first();
+                    $product = DB::table('products')
+                        ->where('name', $dbSaleProduct->product_name)
+                        ->where('product_code', $dbSaleProduct->product_code)
+                        ->select('products.id', 'products.unit_id')
+                        ->first();
 
-        //             $addSaleProduct = new \App\Models\Sales\SaleProduct();
-        //             $addSaleProduct->sale_id = $addSale->id;
-        //             $addSaleProduct->branch_id = $addSale->branch_id;
-        //             $addSaleProduct->product_id = $product?->id;
-        //             $addSaleProduct->quantity = $dbSaleProduct->quantity;
-        //             $addSaleProduct->unit_discount_type = $dbSaleProduct->unit_discount_type;
-        //             $addSaleProduct->unit_discount = $dbSaleProduct->unit_discount;
-        //             $addSaleProduct->unit_discount_amount = $dbSaleProduct->unit_discount_amount;
-        //             $addSaleProduct->tax_type = 1;
-        //             $addSaleProduct->unit_id = $product?->unit_id;
-        //             $addSaleProduct->unit_cost_inc_tax = $dbSaleProduct->unit_cost_inc_tax;
-        //             $addSaleProduct->unit_price_exc_tax = $dbSaleProduct->unit_price_exc_tax;
-        //             $addSaleProduct->unit_price_inc_tax = $dbSaleProduct->unit_price_inc_tax;
-        //             $addSaleProduct->subtotal = $dbSaleProduct->subtotal;
-        //             $addSaleProduct->description = $dbSaleProduct->description;
-        //             $addSaleProduct->save();
+                    $addSaleProduct = new \App\Models\Sales\SaleProduct();
+                    $addSaleProduct->sale_id = $addSale->id;
+                    $addSaleProduct->branch_id = $addSale->branch_id;
+                    $addSaleProduct->product_id = $product?->id;
+                    $addSaleProduct->quantity = $dbSaleProduct->quantity;
+                    $addSaleProduct->unit_discount_type = $dbSaleProduct->unit_discount_type;
+                    $addSaleProduct->unit_discount = $dbSaleProduct->unit_discount;
+                    $addSaleProduct->unit_discount_amount = $dbSaleProduct->unit_discount_amount;
+                    $addSaleProduct->tax_type = 1;
+                    $addSaleProduct->unit_id = $product?->unit_id;
+                    $addSaleProduct->unit_cost_inc_tax = $dbSaleProduct->unit_cost_inc_tax;
+                    $addSaleProduct->unit_price_exc_tax = $dbSaleProduct->unit_price_exc_tax;
+                    $addSaleProduct->unit_price_inc_tax = $dbSaleProduct->unit_price_inc_tax;
+                    $addSaleProduct->subtotal = $dbSaleProduct->subtotal;
+                    $addSaleProduct->description = $dbSaleProduct->description;
+                    $addSaleProduct->save();
 
-        //             // Add Product Ledger Entry
-        //             $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Sales->value, date: $addSale->date, productId: $addSaleProduct->product_id, transId: $addSaleProduct->id, rate: $addSaleProduct->unit_price_inc_tax, quantityType: 'out', quantity: $addSaleProduct->quantity, subtotal: $addSaleProduct->subtotal, warehouseId: null);
-        //         }
+                    // Add Product Ledger Entry
+                    $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Sales->value, date: $addSale->date, productId: $addSaleProduct->product_id, transId: $addSaleProduct->id, rate: $addSaleProduct->unit_price_inc_tax, quantityType: 'out', quantity: $addSaleProduct->quantity, subtotal: $addSaleProduct->subtotal, warehouseId: null);
+                }
 
-        //         if ($salePaid > 0) {
+                if ($salePaid > 0) {
 
-        //             $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $addSale->date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $salePaid, creditTotal: $salePaid, totalAmount: $salePaid, saleRefId: $addSale->id);
+                    $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $addSale->date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $salePaid, creditTotal: $salePaid, totalAmount: $salePaid, saleRefId: $addSale->id);
 
-        //             // Add Debit Account Accounting voucher Description
-        //             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $salePaid);
+                    // Add Debit Account Accounting voucher Description
+                    $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $salePaid);
 
-        //             //Add Debit Ledger Entry
-        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $addSale->date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $salePaid, amount_type: 'debit');
+                    //Add Debit Ledger Entry
+                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $addSale->date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $salePaid, amount_type: 'debit');
 
-        //             // Add Payment Description Credit Entry
-        //             $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $addSale->customer_account_id, paymentMethodId: null, amountType: 'cr', amount: $salePaid, note: null);
+                    // Add Payment Description Credit Entry
+                    $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $addSale->customer_account_id, paymentMethodId: null, amountType: 'cr', amount: $salePaid, note: null);
 
-        //             // Add Accounting VoucherDescription References
-        //             $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $addSale->customer_account_id, amount: $salePaid, refIdColName: 'sale_id', refIds: [$addSale->id]);
+                    // Add Accounting VoucherDescription References
+                    $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $addSale->customer_account_id, amount: $salePaid, refIdColName: 'sale_id', refIds: [$addSale->id]);
 
-        //             // Add Day Book entry for Receipt
-        //             $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $addSale->date, accountId: $addSale->customer_account_id, transId: $addAccountingVoucherCreditDescription->id, amount: $salePaid, amountType: 'credit');
+                    // Add Day Book entry for Receipt
+                    $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $addSale->date, accountId: $addSale->customer_account_id, transId: $addAccountingVoucherCreditDescription->id, amount: $salePaid, amountType: 'credit');
 
-        //             //Add Credit Ledger Entry
-        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $addSale->date, account_id: $addSale->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $salePaid, amount_type: 'credit', cash_bank_account_id: 14);
-        //         }
+                    //Add Credit Ledger Entry
+                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $addSale->date, account_id: $addSale->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $salePaid, amount_type: 'credit', cash_bank_account_id: 14);
+                }
 
-        //         echo 'Sales Created-' . $transId . '</br>';
-        //     }
-        // }
-        // echo 'All Sale is done' . '</br>';
+                echo 'Sales Created-' . $transId . '</br>';
+            }
+        }
+        echo 'All Sale is done' . '</br>';
 
         // ///Add Purchase Returns
         // $dbPurchaseReturns = DB::connection('bondhon_missing')->table('purchase_returns')

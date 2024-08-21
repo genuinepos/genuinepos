@@ -192,51 +192,51 @@ Route::get('my-test', function () {
         // echo 'All product is done' . '</br>';
 
         // //////////////Add Product Opening Stocks
-        // $dbProductOpeningStocks = DB::connection('bondhon')->table('product_opening_stocks')
-        //     ->leftJoin('products', 'product_opening_stocks.product_id', 'products.id')
-        //     ->select('product_opening_stocks.*', 'products.name as product_name', 'products.product_code')->get();
+        $dbProductOpeningStocks = DB::connection('bondhon')->table('product_opening_stocks')
+            ->leftJoin('products', 'product_opening_stocks.product_id', 'products.id')
+            ->select('product_opening_stocks.*', 'products.name as product_name', 'products.product_code')->get();
 
-        // foreach ($dbProductOpeningStocks as $dbProductOpeningStock) {
+        foreach ($dbProductOpeningStocks as $dbProductOpeningStock) {
 
-        //     $date = $accountStartDate;
+            $date = $accountStartDate;
 
-        //     $product = DB::table('products')
-        //         ->where('name', $dbProductOpeningStock->product_name)
-        //         ->where('product_code', $dbProductOpeningStock->product_code)->first();
+            $product = DB::table('products')
+                ->where('name', $dbProductOpeningStock->product_name)
+                ->where('product_code', $dbProductOpeningStock->product_code)->first();
 
-        //     if (isset($product)) {
+            if (isset($product)) {
 
-        //         $addOrEditOpeningStock = '';
-        //         $openingStock = \App\Models\Products\ProductOpeningStock::where('branch_id', auth()->user()->branch_id)
-        //             ->where('product_id', $product->id)->first();
+                $addOrEditOpeningStock = '';
+                $openingStock = \App\Models\Products\ProductOpeningStock::where('branch_id', auth()->user()->branch_id)
+                    ->where('product_id', $product->id)->first();
 
-        //         $warehouseId = null;
-        //         if ($openingStock) {
+                $warehouseId = null;
+                if ($openingStock) {
 
-        //             $addOrEditOpeningStock = $openingStock;
-        //             $date = $openingStock->date;
-        //         } else {
+                    $addOrEditOpeningStock = $openingStock;
+                    // $date = $openingStock->date;
+                } else {
 
-        //             $addOrEditOpeningStock = new \App\Models\Products\ProductOpeningStock();
-        //         }
+                    $addOrEditOpeningStock = new \App\Models\Products\ProductOpeningStock();
+                }
 
-        //         $addOrEditOpeningStock->branch_id = auth()->user()->branch_id;
-        //         $addOrEditOpeningStock->warehouse_id = null;
-        //         $addOrEditOpeningStock->product_id = $product->id;
-        //         $addOrEditOpeningStock->variant_id = null;
-        //         $addOrEditOpeningStock->quantity = $dbProductOpeningStock->quantity;
-        //         $addOrEditOpeningStock->unit_cost_inc_tax = $dbProductOpeningStock->unit_cost_inc_tax;
-        //         $addOrEditOpeningStock->subtotal = $dbProductOpeningStock->subtotal;
-        //         $addOrEditOpeningStock->date = $date;
-        //         $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date . ' 01:00:00'));
-        //         $addOrEditOpeningStock->save();
+                $addOrEditOpeningStock->branch_id = auth()->user()->branch_id;
+                $addOrEditOpeningStock->warehouse_id = null;
+                $addOrEditOpeningStock->product_id = $product->id;
+                $addOrEditOpeningStock->variant_id = null;
+                $addOrEditOpeningStock->quantity = $dbProductOpeningStock->quantity;
+                $addOrEditOpeningStock->unit_cost_inc_tax = $dbProductOpeningStock->unit_cost_inc_tax;
+                $addOrEditOpeningStock->subtotal = $dbProductOpeningStock->subtotal;
+                $addOrEditOpeningStock->date = $date;
+                $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date . ' 01:00:00'));
+                $addOrEditOpeningStock->save();
 
-        //         $productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
+                $productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
 
-        //         $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'opening_stock_id', transId: $addOrEditOpeningStock->id, branchId: auth()->user()->branch_id, productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, quantity: $addOrEditOpeningStock->quantity, unitCostIncTax: $addOrEditOpeningStock->unit_cost_inc_tax, sellingPrice: 0, subTotal: $addOrEditOpeningStock->subtotal, createdAt: $addOrEditOpeningStock->date_ts);
-        //     }
-        // }
-        // echo 'Product opening stock is done' . '</br>';
+                $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'opening_stock_id', transId: $addOrEditOpeningStock->id, branchId: auth()->user()->branch_id, productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, quantity: $addOrEditOpeningStock->quantity, unitCostIncTax: $addOrEditOpeningStock->unit_cost_inc_tax, sellingPrice: 0, subTotal: $addOrEditOpeningStock->subtotal, createdAt: $addOrEditOpeningStock->date_ts);
+            }
+        }
+        echo 'Product opening stock is done' . '</br>';
 
         //////// //Add Purchases
         // $dbPurchases = DB::connection('bondhon')->table('purchases')

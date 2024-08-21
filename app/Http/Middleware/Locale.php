@@ -10,14 +10,13 @@ class Locale
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
         $lang = session('lang');
         app()->setLocale($lang);
+
         return $next($request);
     }
 }

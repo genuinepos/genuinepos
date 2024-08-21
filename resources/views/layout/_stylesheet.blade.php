@@ -1,14 +1,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}">
-@if($rtl)
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="{{ asset('assets/fontawesome6/css/all.min.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}"> --}}
+@if ($rtl)
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
 @else
-{{-- <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}"> --}}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {{-- <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 @endif
 
 <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
@@ -25,8 +25,11 @@
 <link rel="stylesheet" href="{{ asset('backend/asset/css/layout.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/asset/css/theme.css') }}">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+<link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
 {{-- DataTable Global CSS --}}
 <style>
     .d-hide {
@@ -86,7 +89,9 @@
     }
 
     .sub-menu-width .switch_text {
-        font-size: 13px !important;
+        /* font-size: 13px !important; */
+        font-size: 11px !important;
+        line-height: 13px;
     }
 
     body {
@@ -162,6 +167,7 @@
         font-weight: 600
     }
 
+
     /* RTL */
     :root {
         --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
@@ -200,11 +206,6 @@
         --info-color-2: #15a1cd;
         --light-color-1: #f8f9fa;
         --light-color-2: #e0e0e0;
-    }
-
-    .orange-theme .top-icon {
-        border: #ffffff 1px solid;
-        background: #ff934b47;
     }
 
     .rtl .navigation {
@@ -275,7 +276,6 @@
     .rtl {
         font-family: Arial, 'Noto Naskh Arabic', serif;
     }
-
 </style>
 
 {{-- Harrison Bootstrap-Custom --}}
@@ -336,7 +336,7 @@
         }
     }
 
-    @media screen and (min-width: 768px) and (max-width: 991px){
+    @media screen and (min-width: 768px) and (max-width: 991px) {
         .col-60-modal {
             max-width: 700px !important;
         }
@@ -346,23 +346,15 @@
         margin-top: 33%;
     }
 
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #cbe4ee
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        /* background-color: #EBEDF3;*/
-        background-color: #cbe4ee;
-    }
-
     /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
 
 
     .widget_content .table-responsive {
-        min-height: 80vh !important;
+        min-height: 60vh !important;
     }
 
-    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:first-child {
+    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover,
+    .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:first-child {
         background: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
         background-image: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
         box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);

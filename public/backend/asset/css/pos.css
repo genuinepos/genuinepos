@@ -135,15 +135,15 @@ span.input-group-text.valus {
 
 .cat-button {
     width: 100%;
-    height: 35px;
-    line-height: 35px;
+    height: 27px;
+    line-height: 26px;
     background: linear-gradient(#00aebd, #273245);
     display: inline-block;
     border-left: 3px solid #474747;
     text-align: center;
     color: #fff;
     font-size: 11px;
-    margin-bottom: 3px;
+    margin-bottom: 0px;
 }
 
 .cat-button:hover {
@@ -513,14 +513,16 @@ a.head-tbl-icon::before {
 }
 
 .btn-pos {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
     border-radius: 3px;
     color: #fff;
     font-size: 11px;
     height: 53px;
-    line-height: 53px;
+    line-height: 20px;
 }
 
 .check-out-wraper {
@@ -598,8 +600,7 @@ a.resent-tn:hover {
 }
 
 .left-cat-pos {
-    height: 79.6vh;
-    height: 100%;
+    height: 80.2vh;
 }
 
 .all-cat::-webkit-scrollbar {
@@ -724,9 +725,15 @@ a.resent-tn:hover {
  /* amar code ------------ */
 
 .big_field {
-    font-size: 28px !important;
-    font-weight: 500 !important;
+    font-size: 36px !important;
+    font-weight: 600 !important;
+    padding: 27px 6px!important;
+    text-align: end;
 }
+
+/* .big_field:hover {
+    background: #fff!important;
+} */
 
 .big_label {
     font-size: 15px;
@@ -765,7 +772,7 @@ input[type="number"] {
 }
 
 .ac_item {
-    background: #50ffce !important;
+    background: #4bc9a5!important;
 }
 
 .ac_select_area {
@@ -816,6 +823,7 @@ label.col-form-label {
     position: absolute;
     padding: 20px;
     bottom: 0;
+    width: 100%;
 }
 
 div#calculatorModal {
@@ -846,8 +854,9 @@ textarea.form-control {
 }
 
 .description_input {
-    height: 20px;
+    height: 20px!important;
     margin-top: 2px;
+    font-weight: 600;
 }
 
 input#quantity {
@@ -858,13 +867,14 @@ input#quantity {
 @media only screen and (min-width: 1200px) and (max-width: 1429px) {
     .btn-pos {
         height: 30px;
-        line-height: 30px;
+        line-height: 13px;
     }
     .function-sec {
         padding: 10px;
     }
     .wrapper_input_btn {
-        padding: 10px;
+        /* padding: 10px; */
+         padding: 4px;
     }
     p.address-name {
         font-size: 10px;
@@ -1137,4 +1147,32 @@ input#quantity {
     .sub-total-input {
         padding-top: 10px;
     }
+}
+
+.recent_sale_table_area{
+    max-height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.set-height table tr td a {
+    font-size: 11px;
+}
+
+tbody#product_list td {
+    font-size: 11px;
+}
+
+.btn-check:focus+.btn, .btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.0rem rgba(13,110,253,.25);
+}
+
+.active_tr {
+    background: #a5abff !important;
+    color: black;
+}
+
+.print_page_size{
+    width: 63px!important;
 }

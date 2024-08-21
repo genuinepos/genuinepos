@@ -1,14 +1,15 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
- <!-- Details Modal -->
- <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-full-display">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    @lang('menu.production_details') (@lang('menu.reference_id') : <strong>{{ $production->reference_no }}</strong>)
+                    {{ __('Production Details') }} ({{ __('Voucher No') }} : <strong>{{ $production->voucher_no }}</strong>)
                 </h5>
                 <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
@@ -16,25 +17,42 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.stored_location') : </strong>
-                                @if ($production->warehouse_id)
-                                    {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
+                            <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong> {{ $production->voucher_no }}</li>
+
+                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>{{ date($dateFormat, strtotime($production->date)) }}</li>
+
+                            <li style="font-size:11px!important;"><strong>{{ __('Stored Location') }} : </strong>
+                                @if ($production->storeWarehouse)
+
+                                    {{ $production->storeWarehouse->warehouse_name . '/' . $production->storeWarehouse->warehouse_code }}<b>({{ __('WH') }})</b>
                                 @else
                                     @if ($production->branch_id)
-                                        {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
+
+                                        @if ($production?->branch?->parentBranch)
+                                            {{ $production?->branch?->parentBranch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
+                                        @else
+                                            {{ $production?->branch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
+                                        @endif
                                     @else
-                                        {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
+                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                     @endif
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.ingredients_stock_location') : </strong>
-                                @if ($production->stock_warehouse_id)
-                                    {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
+
+                            <li style="font-size:11px!important;"><strong>{{ __('Ingredients Stock Location') }} : </strong>
+                                @if ($production->stockWarehouse)
+
+                                    {{ $production->stockWarehouse->warehouse_name . '/' . $production->stockWarehouse->warehouse_code }}<b>({{ __('WH)') }})</b>
                                 @else
-                                    @if ($production->stock_branch_id)
-                                        {{ $production->stock_branch->name.'/'.$production->stock_branch->branch_code }}<b>(BL)</b>
+                                    @if ($production->branch_id)
+
+                                        @if ($production?->branch?->parentBranch)
+                                            {{ $production?->branch?->parentBranch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
+                                        @else
+                                            {{ $production?->branch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
+                                        @endif
                                     @else
-                                        {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
+                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                     @endif
                                 @endif
                             </li>
@@ -43,55 +61,73 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li>
-                                <strong>@lang('menu.production_item') : </strong>
+                            <li style="font-size:11px!important;">
+                                <strong>{{ __('Mfd. Product') }} : </strong>
                                 {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                             </li>
-                            <li>
-                                <strong>@lang('menu.production_status') : </strong>
-                                @if ($production->is_final == 1)
-                                    <span class="text-success">@lang('menu.final')</span>
-                                @else
-                                    <span class="text-hold">@lang('menu.hold')</span>
-                                @endif
+
+                            <li style="font-size:11px!important;">
+                                <strong>{{ __('Status') }} : </strong>
+                                {{ \App\Enums\ProductionStatus::tryFrom($production->status)->name }}
                             </li>
                         </ul>
                     </div>
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
-                            <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
+                                @if ($production->branch_id)
+
+                                    @if ($production?->branch?->parentBranch)
+                                        {{ $production?->branch?->parentBranch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
+                                    @else
+                                        {{ $production?->branch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
+                                    @endif
+                                @else
+                                    {{ $generalSettings['business_or_shop__business_name'] }}
+                                @endif
+                            </li>
+
+                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                                @if ($production->branch)
+                                    {{ $production->branch->phone }}
+                                @else
+                                    {{ $generalSettings['business_or_shop__phone'] }}
+                                @endif
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-md-12">
-                        <p><strong>{{ __('Ingredients List') }}</strong></p>
+                        <p style="font-size:11px!important;"><strong>{{ __('Ingredients List') }}</strong></p>
                         <div class="table-responsive">
                             <table class="table modal-table table-sm table-striped">
                                 <thead>
                                     <tr class="bg-secondary">
-                                        <th class="text-white text-start">@lang('menu.ingredient_name')</th>
-                                        <th class="text-white text-start">@lang('menu.input_qty')</th>
-                                        <th class="text-white text-start">@lang('menu.unit_cost_inc_tax')({{ $generalSettings['business__currency'] }})</th>
-                                        <th class="text-white text-start">@lang('menu.subtotal')({{ $generalSettings['business__currency'] }})</th>
+                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ingredient Name') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Input Qty') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost Exc. Tax') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost Inc. Tax') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="purchase_print_product_list">
                                     @foreach ($production->ingredients as $ingredient)
                                         <tr>
                                             @php
-                                                $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : '';
+                                                $variant = $ingredient->variant_id ? ' -' . $ingredient->variant->variant_name : '';
                                             @endphp
 
-                                            <td class="text-start">{{ Str::limit($ingredient->product->name, 40).' '.$variant }}</td>
-                                            <td class="text-start">{{ $ingredient->input_qty }}</td>
-                                            <td class="text-start">
-                                                {{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_inc_tax) }}
+                                            <td class="text-start" style="font-size:11px!important;">{{ Str::limit($ingredient->product->name, 40) . ' ' . $variant }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ $ingredient->final_qty . '/' . $ingredient?->unit?->code_name }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_exc_tax) }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ '(' . $ingredient->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($ingredient->unit_tax_tax_amount) }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_inc_tax) }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->subtotal) }}
                                             </td>
-                                            <td class="text-start">{{ App\Utils\Converter::format_in_bdt($ingredient->subtotal) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -102,41 +138,41 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>@lang('menu.production_quantity_and_total_cost')</strong></p>
+                        <p style="font-size:11px!important;"><strong>{{ __('Production Quantity And Net Cost') }}</strong></p>
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end">@lang('menu.output_quantity') : </th>
-                                    <td class="text-end">
-                                        {{ $production->quantity.'/'.$production->unit->code_name }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Output Qty') }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ $production->total_output_quantity . '/' . $production?->unit?->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.wasted_quantity') : </th>
-                                    <td class="text-end">
-                                        {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Wasted Qty') }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ $production->total_wasted_quantity . '/' . $production?->unit?->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.final_quantity') : </th>
-                                    <td class="text-end">
-                                        {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Final Output Qty') }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ $production->total_final_output_quantity . '/' . $production?->unit?->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.additional_cost') : {{ $generalSettings['business__currency'] }}</th>
-                                    <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($production->production_cost) }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.total_cost') : {{ $generalSettings['business__currency'] }}</th>
-                                    <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($production->total_cost) }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ App\Utils\Converter::format_in_bdt($production->net_cost) }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -144,334 +180,137 @@
                     </div>
 
                     <div class="col-md-6 text-end">
-                        <p><strong>{{ __('Production Items Costing And Pricing') }}</strong></p>
+                        <p style="font-size:11px!important;"><strong>{{ __('Product Costing And Pricing') }}</strong></p>
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end">@lang('menu.tax') : </th>
-                                    <td class="text-end">
-                                        {{ $production->tax ? $production->tax->tax_percent : 0 }}%
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.per_unit_cost_exc_tax') : {{ $generalSettings['business__currency'] }}</th>
-                                    <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($production->unit_cost_exc_tax) }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ '(' . $production->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($production->unit_tax_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.per_unit_cost_inc_tax') : {{ $generalSettings['business__currency'] }}</th>
-                                    <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($production->unit_cost_inc_tax) }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.x_margin')(%) </th>
-                                    <td class="text-end">
-                                        {{ $production->x_margin }}%
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Profit Margin') }}(%)</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ $production->profit_margin }}%
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.selling_price_exc_tax') : {{ $generalSettings['business__currency'] }}</th>
-                                    <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($production->price_exc_tax) }}
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                <hr class="m-0 mt-3">
+
+                <div class="row g-0 mt-1">
+                    <div class="col-md-6 offset-6">
+                        <div class="input-group p-0">
+                            <label class="col-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
+                                <select id="print_page_size" class="form-control">
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option @selected($generalSettings['print_page_size__bom_voucher_page_size'] == $item->value) value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
-               <div class="row">
-                   <div class="col-md-12 d-flex justify-content-end gap-2">
-                        <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
-                        <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
-                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                   </div>
-               </div>
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-end gap-2">
+                        @if (auth()->user()->can('production_edit'))
+                            <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                        @endif
+                        <a href="{{ route('manufacturing.productions.print', $production->id) }}" onclick="printProduction(this); return false;" class="btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print') }}</a>
+                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Details Modal End-->
-<style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+
+<script>
+    function printProduction(event) {
+
+        var url = event.getAttribute('href');
+        var print_page_size = $('#print_page_size').val();
+
+        var currentTitle = document.title;
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                print_page_size
+            },
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                    footer: null,
+                });
+
+                var tempElement = document.createElement('div');
+                tempElement.innerHTML = data;
+                var filename = tempElement.querySelector('#title');
+
+                document.title = filename.innerHTML;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connection Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
     }
-
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed;top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
-</style>
-<!-- Purchase print templete-->
-<div class="production_print_template">
-    <div class="details_area">
-        <div class="heading_area">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h6>
-                        @if ($production->branch_id)
-                            {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                        @else
-                            {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
-                        @endif
-                    </h6>
-                    <p style="width: 60%; margin:0 auto;">
-                        @if ($production->branch_id)
-                            {{ $production->branch->city.', '.$production->branch->state.', '.$production->branch->zip_code.', '.$production->branch->country }}<b>(BL)</b>
-                        @else
-                            {{ $generalSettings['business__address'] }}
-                        @endif
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="heading_area">
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-lg-4">
-                    @if ($production->branch_id)
-                        @if ($production->branch->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch->logo) }}">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch->name }}</span>
-                        @endif
-                    @else
-                        @if ($generalSettings['business__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
-                        @endif
-                    @endif
-                </div>
-                <div class="col-md-4 col-sm-4 col-lg-4">
-                    <div class="heading text-center">
-                        <p style="margin-top: 10px;" class="bill_name"><strong>@lang('menu.manufacturing_bill')</strong></p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4 col-lg-4">
-
-                </div>
-            </div>
-        </div>
-
-        <div class="purchase_and_deal_info pt-3">
-            <div class="row">
-                <div class="col-lg-4">
-                    <ul class="list-unstyled">
-                        <li><strong>@lang('menu.stored_location') : </strong>
-                            @if ($production->warehouse_id)
-                                {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
-                            @else
-                                @if ($production->branch_id)
-                                    {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                                @else
-                                    {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
-                                @endif
-                            @endif
-                        </li>
-                        <li><strong>@lang('menu.ingredients_stock_location') : </strong>
-                            @if ($production->stock_warehouse_id)
-                                {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
-                            @else
-                                @if ($production->stock_branch_id)
-                                    {{ $production->stock_branch->name.'/'.$production->stock_branch->branch_code }}<b>(BL)</b>
-                                @else
-                                    {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
-                                @endif
-                            @endif
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <ul class="list-unstyled">
-                        <li>
-                            <strong>@lang('menu.production_item') : </strong>
-                            {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
-                        </li>
-                        <li>
-                            <strong>@lang('menu.production_status')</strong>
-                            @if ($production->is_final == 1)
-                                <span class="text-success">@lang('menu.final')</span>
-                            @else
-                                <span class="text-hold">@lang('menu.hold')</span>
-                            @endif
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <ul class="list-unstyled">
-                        <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
-                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="purchase_product_table pt-3 pb-3">
-            <p><strong>{{ __('Ingredients List') }}</strong></p>
-            <table class="table modal-table table-sm table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">@lang('menu.ingredient_name')</th>
-                        <th scope="col">@lang('menu.input_qty')</th>
-                        <th scope="col">@lang('menu.unit_cost_inc_tax')({{ $generalSettings['business__currency'] }})</th>
-                        <th scope="col">@lang('menu.subtotal')({{ $generalSettings['business__currency'] }})</th>
-                    </tr>
-                </thead>
-                <tbody class="purchase_print_product_list">
-                    @foreach ($production->ingredients as $ingredient)
-                        <tr>
-                            @php
-                                $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : '';
-                            @endphp
-
-                            <td>{{ Str::limit($ingredient->product->name, 40).' '.$variant }}</td>
-                            <td>{{ $ingredient->input_qty }}</td>
-                            <td>
-                                {{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_inc_tax) }}
-                            </td>
-                            <td>{{ App\Utils\Converter::format_in_bdt($ingredient->subtotal) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>@lang('menu.production_quantity_and_total_cost')</strong></p>
-                <table class="table modal-table table-sm table-bordered">
-                    <tbody>
-                        <tr>
-                            <th class="text-end">@lang('menu.output_quantity') </th>
-                            <td class="text-end">
-                                {{ $production->quantity.'/'.$production->unit->code_name }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.wasted_quantity') </th>
-                            <td class="text-end">
-                                {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.final_quantity') </th>
-                            <td class="text-end">
-                                {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.additional_cost') : {{ $generalSettings['business__currency'] }}</th>
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($production->production_cost) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.total_cost') : {{ $generalSettings['business__currency'] }}</th>
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($production->total_cost) }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="col-md-6 text-end">
-                <p><strong>{{ __('Production Items Costing And Pricing') }}</strong></p>
-                <table class="table modal-table table-sm table-bordered">
-                    <tbody>
-                        <tr>
-                            <th class="text-end">@lang('menu.tax') </th>
-                            <td class="text-end">
-                                {{ $production->tax ? $production->tax->tax_percent : '' }}%
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.per_unit_cost_exc_tax') : {{ $generalSettings['business__currency'] }}</th>
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($production->unit_cost_exc_tax) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.per_unit_cost_inc_tax') : {{ $generalSettings['business__currency'] }}</th>
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($production->unit_cost_inc_tax) }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.x_margin')(%) </th>
-                            <td class="text-end">
-                                {{ $production->x_margin }}%
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-end">@lang('menu.selling_price_exc_tax') : {{ $generalSettings['business__currency'] }}</th>
-                            <td class="text-end">
-                                {{ App\Utils\Converter::format_in_bdt($production->price_exc_tax) }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <h6>@lang('menu.checked_by') </h6>
-            </div>
-
-            <div class="col-md-6 text-end">
-                <h6>@lang('menu.approved_by') </h6>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($production->reference_no, $generator::TYPE_CODE_128)) }}">
-                <p>{{$production->reference_no}}</p>
-            </div>
-        </div>
-
-        @if (env('PRINT_SD_PURCHASE') == true)
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
-                </div>
-            </div>
-        @endif
-
-        <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
-            <small style="font-size: 5px; float: right;" class="text-end">
-                @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
-            </small>
-        </div>
-    </div>
-</div>
-<!-- production print templete end-->
+</script>

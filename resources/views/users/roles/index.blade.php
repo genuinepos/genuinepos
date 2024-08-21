@@ -7,23 +7,23 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-user-tag"></span>
                     <h5>{{ __('User Roles') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('All User Roles') }}</h6>
+                        <h6>{{ __('List of User Roles') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                        @if (auth()->user()->can('role_add'))
+                            <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-success"><i class="fas fa-plus-square"></i> {{ __('Add Role') }}</a>
+                        @endif
                     </div>
                 </div>
 
@@ -32,11 +32,9 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">@lang('menu.sl')</th>
-                                    <th class="text-start">@lang('menu.bank_name')</th>
-                                    <th class="text-start">@lang('menu.branch_name')</th>
-                                    <th class="text-start">@lang('menu.address')</th>
-                                    <th class="text-start">@lang('menu.action')</th>
+                                    <th class="text-start">{{ __('Serial') }}</th>
+                                    <th class="text-start">{{ __('Name') }}</th>
+                                    <th class="text-start">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -53,62 +51,5 @@
     </div>
 @endsection
 @push('scripts')
-<script>
-    @if (Session::has('successMsg'))
-        toastr.success('{{ session('successMsg') }}');
-    @endif
-
-    function getAllRoles(){
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{ route('users.role.all.roles') }}",
-            type:'get',
-            success:function(data){
-                $('.table-responsive').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getAllRoles();
-
-    // Setup ajax for csrf token.
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-
-    // call jquery method
-    $(document).ready(function(){
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    getAllRoles();
-                    toastr.error(data);
-                    $('#deleted_form')[0].reset();
-                },
-                error: function(data){
-                    toastr.error(data.responseJSON.message);
-                }
-            });
-        });
-    });
-</script>
+    @include('users.roles.js_partials.index_js')
 @endpush

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -7,25 +7,18 @@ use Illuminate\Support\Facades\Cache;
 
 class CacheService implements CacheServiceInterface
 {
-    public function syncGeneralSettings() : void
+    public function forgetGeneralSettingsCache(?int $branchId = null): void
     {
-        $generalSettings = Cache::get('generalSettings');
-        if(isset($generalSettings) && !empty($generalSettings)) {
-            Cache::forget('generalSettings');
+        $__branchId = auth()?->user()?->branch_id ? auth()?->user()?->branch_id : null;
+        if (isset($branchId)) {
+            $__branchId = $branchId;
         }
-        if(!isset($generalSettings) || empty($generalSettings)) {
-            Cache::rememberForever('generalSettings', function () {
-               return GeneralSetting::first()->toArray();
-            });
-        }
-    }
-    
-    public function rememberGeneralSettings() : void
-    {
-
-    }
-    public function removeGeneralSettings() : void
-    {
-        Cache::forget('generalSettings');
+        $tenantId = tenant('id');  // Ensure this retrieves the current tenant's ID
+        $cacheKey = "{$tenantId}_generalSettings_{$__branchId}";
+        Cache::forget($cacheKey);
+        $cacheKey = "{$tenantId}_parentBranchGeneralSettings_{$__branchId}";
+        Cache::forget($cacheKey);
+        $cacheKey = "{$tenantId}_baseCurrency";
+        Cache::forget($cacheKey);
     }
 }

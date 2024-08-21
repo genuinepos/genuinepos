@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\CashCounter;
+use App\Models\Setups\CashCounter;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Schema;
 
 class CashCounterSeeder extends Seeder
@@ -17,10 +16,11 @@ class CashCounterSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        if(CashCounter::count() == 0) {
+        if (CashCounter::count() == 0) {
             CashCounter::truncate();
-            \DB::statement("ALTER TABLE cash_counters AUTO_INCREMENT=1");
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE cash_counters AUTO_INCREMENT=1');
         }
+        
         CashCounter::insert([
             'branch_id' => auth()->user()?->branch_id ?? null,
             'counter_name' => 'Cash Counter 1',

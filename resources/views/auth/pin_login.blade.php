@@ -2,9 +2,8 @@
 
 @section('title', 'Login - ')
 
-    @push('css')
-
-    @endpush
+@push('css')
+@endpush
 
 @section('content')
     {{-- <div class="form-wraper" style="background: #448aff"> --}}
@@ -17,10 +16,9 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
-                                            alt="POS" class="logo">
+                                        <img src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="POS" class="logo">
                                         <span class="head-text">
-                                            {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}
+                                            {{ __('GPOSS, Point of Sale software by SpeedDigit') }}
                                         </span>
                                     </div>
                                 </div>
@@ -33,9 +31,7 @@
                                         @csrf
                                         <div class="left-inner-addon input-container">
                                             <i class="fa fa-key"></i>
-                                            <input name="pin" type="Password"
-                                                class="form-control form-st rounded-bottom" placeholder="Pin Number"
-                                                required />
+                                            <input name="pin" type="Password" class="form-control form-st rounded-bottom" placeholder="Pin Number" required />
                                         </div>
                                         @if (Session::has('errorMsg'))
                                             <div class="bg-danger p-3 mt-4">
@@ -64,13 +60,9 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
                                     <div class="head addr-t pt-4">
-                                        {{-- <h2>
-                                            Genuine Point Of Sale
-                                        </h2> --}}
+
                                         <div class="px-2">
-                                            <p class="logo-main-sec"><img
-                                                    src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS"
-                                                    class="logo">
+                                            <p class="logo-main-sec"><img src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS" class="logo">
                                             </p>
                                             <p class="details"><span>@lang('menu.address')</span> Motijheel Arambagh, Dhaka</p>
                                             <p class="details"><span>@lang('menu.support')</span> support@speeddigit.com</p>
@@ -93,5 +85,4 @@
     </div>
 @endsection
 @push('js')
-
 @endpush

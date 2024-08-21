@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Report;
 
 use Carbon\Carbon;
-use App\Models\CashRegister;
+use App\Utils\Converter;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Utils\Converter;
 use Yajra\DataTables\Facades\DataTables;
 
 class CashRegisterReportController extends Controller
@@ -17,8 +17,6 @@ class CashRegisterReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-
-        
     }
 
     // Index view of cash register report
@@ -38,7 +36,7 @@ class CashRegisterReportController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('cash_registers.branch_id', NULL);
+                    $query->where('cash_registers.branch_id', null);
                 } else {
 
                     $query->where('cash_registers.branch_id', $request->branch_id);
@@ -69,6 +67,12 @@ class CashRegisterReportController extends Controller
                 $query->whereBetween('cash_registers.created_at', $date_range); // Final
             }
 
+            // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+                $query->where('cash_registers.branch_id', auth()->user()->branch_id);
+            }
+
             $query->select(
                 'cash_registers.*',
                 'branches.name as b_name',
@@ -76,16 +80,7 @@ class CashRegisterReportController extends Controller
                 'users.prefix as u_prefix',
                 'users.name as u_first_name',
                 'users.last_name as u_last_name',
-            );
-
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-                $cashRegisters = $query->orderBy('cash_registers.created_at', 'desc');
-            } else {
-
-                $cashRegisters = $query->orderBy('cash_registers.created_at', 'desc')
-                    ->where('cash_registers.branch_id', auth()->user()->branch_id);
-            }
+            )->orderBy('cash_registers.created_at', 'desc');
 
             return DataTables::of($cashRegisters)
                 ->addColumn('action', function ($row) {
@@ -103,25 +98,25 @@ class CashRegisterReportController extends Controller
                         return Carbon::createFromFormat('Y-m-d H:i:s', $row->closed_at)->format('jS M, Y h:i A');
                     }
                 })
-                ->editColumn('branch',  function ($row) use ($settings) {
+                ->editColumn('branch', function ($row) {
 
                     if ($row->b_name) {
 
                         return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })
-                ->editColumn('user',  function ($row) {
+                ->editColumn('user', function ($row) {
 
                     return $row->u_prefix . ' ' . $row->u_first_name . ' ' . $row->u_last_name;
                 })
-                ->editColumn('status',  function ($row) {
+                ->editColumn('status', function ($row) {
 
                     return $row->status == 1 ? '<span class="badge bg-success">Open</span>' : '<span class="badge bg-danger">Closed</span>';
                 })
-                ->editColumn('closed_amount',  function ($row) {
+                ->editColumn('closed_amount', function ($row) {
 
                     return '<span class="closed_amount" data-value="' . $row->closed_amount . '">' . $this->converter->format_in_bdt($row->closed_amount) . '</span>';
                 })
@@ -156,7 +151,7 @@ class CashRegisterReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('cash_registers.branch_id', NULL);
+                $query->where('cash_registers.branch_id', null);
             } else {
 
                 $query->where('cash_registers.branch_id', $request->branch_id);
@@ -193,7 +188,13 @@ class CashRegisterReportController extends Controller
             $toDate = $to_date;
         }
 
-        $query->select(
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+            // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $query->where('cash_registers.branch_id', auth()->user()->branch_id)->groupBy('cash_registers.id')->get();
+        }
+
+        $cashRegisters = $query->select(
             'cash_registers.id',
             'cash_registers.date',
             'cash_registers.closed_at',
@@ -201,24 +202,15 @@ class CashRegisterReportController extends Controller
             'cash_registers.status',
             'cash_registers.created_at',
             'cash_registers.closing_note',
-            DB::raw("SUM(sales.total_payable_amount) as total_sale"),
-            DB::raw("SUM(sales.paid) as total_paid"),
-            DB::raw("SUM(sales.due) as total_due"),
+            DB::raw('SUM(sales.total_payable_amount) as total_sale'),
+            DB::raw('SUM(sales.paid) as total_paid'),
+            DB::raw('SUM(sales.due) as total_due'),
             'branches.name as b_name',
             'branches.branch_code as b_code',
             'users.prefix as u_prefix',
             'users.name as u_first_name',
             'users.last_name as u_last_name',
-        );
-
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-            $cashRegisters = $query->orderBy('cash_registers.created_at', 'desc')->groupBy('cash_registers.id')->get();
-        } else {
-
-            $cashRegisters = $query->orderBy('cash_registers.created_at', 'desc')
-                ->where('cash_registers.branch_id', auth()->user()->branch_id)->groupBy('cash_registers.id')->get();
-        }
+        )->orderBy('cash_registers.created_at', 'desc')->groupBy('cash_registers.id')->get();
 
         return view(
             'reports.cash_register_report.ajax_view.print_report',

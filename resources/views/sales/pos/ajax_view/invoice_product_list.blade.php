@@ -11,8 +11,7 @@
             <input value="{{$product->product_id}}" type="hidden" class="productId-{{ $product->product_id }}" id="product_id" name="product_ids[]">
             <input input value="{{ $product->product_variant_id ? $product->product_variant_id : 'noid' }}" type="hidden" class="variantId-{{ $product->product_variant_id ? $product->product_variant_id : '' }}" id="variant_id" name="variant_ids[]">
             <input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="{{ $product->unit_tax_percent }}"> 
-            <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount"
-                value="{{ $product->unit_tax_amount }}">
+            <input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="{{ $product->unit_tax_amount }}">
             <input value="{{ $product->unit_discount_type }}" name="unit_discount_types[]" type="hidden" id="unit_discount_type">
             <input value="{{ $product->unit_discount }}" name="unit_discounts[]" type="hidden" id="unit_discount">
             <input value="{{ $product->unit_discount_amount }}" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">
@@ -23,8 +22,7 @@
         </td>
 
         <td>
-            <input value="{{ $product->quantity }}" required name="quantities[]" type="number" step="any"
-                    class="form-control text-center" id="quantity">
+            <input value="{{ $product->quantity }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
         </td>
         <td>
             <b><span class="span_unit">{{ $product->unit }}</span></b>

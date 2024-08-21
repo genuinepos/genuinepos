@@ -2,70 +2,73 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\UserType;
+use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Hrm\Department;
-use Illuminate\Support\Facades\Cache;
+use App\Services\Hrm\DepartmentService;
+use App\Http\Requests\HRM\DepartmentEditRequest;
+use App\Http\Requests\HRM\DepartmentIndexRequest;
+use App\Http\Requests\HRM\DepartmentStoreRequest;
+use App\Http\Requests\HRM\DepartmentCreateRequest;
+use App\Http\Requests\HRM\DepartmentDeleteRequest;
+use App\Http\Requests\HRM\DepartmentUpdateRequest;
 
 class DepartmentController extends Controller
 {
-    public function __construct()
+    public function __construct(private DepartmentService $departmentService, private UserService $userService)
     {
-        
     }
 
-    //department showing page method
-    public function index()
+    public function index(DepartmentIndexRequest $request)
     {
-        return view('hrm.department.index');
+        if ($request->ajax()) {
+
+            return $this->departmentService->departmentsTable();
+        }
+
+        return view('hrm.departments.index');
     }
 
-    //department ajax data show method
-    public function allDepartment()
+    public function create(DepartmentCreateRequest $request)
     {
-        $department = Department::orderBy('id', 'DESC')->get();
-        return view('hrm.department.ajax.department_list', compact('department'));
+        return view('hrm.departments.ajax_view.create');
     }
 
-    //store department method
-    public function storeDepartment(Request $request)
+    public function store(DepartmentStoreRequest $request)
     {
-        $this->validate($request, [
-            'department_name' => 'required',
-            'department_id' => 'required|unique:hrm_department',
-        ]);
-
-        Department::insert([
-            'department_name' => $request->department_name,
-            'department_id' => $request->department_id,
-            'description' => $request->description,
-        ]);
-
-        return response()->json('Successfully Department Added!');
+        return $this->departmentService->addDepartment(request: $request);
     }
 
-    //update departments method
-    public function updateDepartments(Request $request)
+    public function edit($id, DepartmentEditRequest $request)
     {
-        $this->validate($request, [
-            'department_name' => 'required',
-            'department_id' => 'required',
-        ]);
-        
-        $updateDepartment = Department::where('id', $request->id)->first();
-        $updateDepartment->update([
-            'department_name' => $request->department_name,
-            'department_id' => $request->department_id,
-            'description' => $request->description,
-        ]);
-        return response()->json('Successfully Department Updated!');
+        $department = $this->departmentService->singleDepartment(id: $id);
+
+        return view('hrm.departments.ajax_view.edit', compact('department'));
     }
 
-    //destroy single department
-    public function deleteDepartment($departmentId)
+    public function update($id, DepartmentUpdateRequest $request)
     {
-        $deleteDepartment = Department::find($departmentId);
-        $deleteDepartment->delete();
-        return response()->json('Successfully Department Deleted');
+        $this->departmentService->updateDepartment(request: $request, id: $id);
+        return response()->json(__('Department updated successfully'));
+    }
+
+    public function delete($id, DepartmentDeleteRequest $request)
+    {
+        $this->departmentService->deleteDepartment(id: $id);
+
+        return response()->json(__('Department deleted successfully'));
+    }
+
+    public function users($id)
+    {
+        $users = '';
+        $query = $this->userService->users()->where('branch_id', auth()->user()->branch_id);
+        if ($id != 'all') {
+
+            $query->where('department_id', $id);
+        }
+
+        $users = $query->whereIn('user_type', [UserType::Employee->value, UserType::Both->value])->select(['id', 'prefix', 'name', 'last_name', 'emp_id'])->get();
+        return $users;
     }
 }

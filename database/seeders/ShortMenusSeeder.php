@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use DB;
+use App\Models\ShortMenus\ShortMenu;
+use Illuminate\Support\Facades\Schema;
+use App\Models\ShortMenus\ShortMenuUser;
 
 class ShortMenusSeeder extends Seeder
 {
@@ -14,54 +16,73 @@ class ShortMenusSeeder extends Seeder
      */
     public function run()
     {
-        $short_menus = array(
-            array('id' => '1', 'url' => 'product.categories.index', 'name' => 'Categories', 'icon' => 'fas fa-th-large', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '2', 'url' => 'product.subcategories.index', 'name' => 'SubCategories', 'icon' => 'fas fa-code-branch', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '3', 'url' => 'product.brands.index', 'name' => 'Brands', 'icon' => 'fas fa-band-aid', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '4', 'url' => 'products.all.product', 'name' => 'Product List', 'icon' => 'fas fa-sitemap', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '5', 'url' => 'products.add.view', 'name' => 'Add Product', 'icon' => 'fas fa-plus-circle', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '6', 'url' => 'product.variants.index', 'name' => 'Variants', 'icon' => 'fas fa-align-center', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '7', 'url' => 'product.import.create', 'name' => 'Import Products', 'icon' => 'fas fa-file-import', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '8', 'url' => 'product.selling.price.groups.index', 'name' => 'Price Group', 'icon' => 'fas fa-layer-group', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '9', 'url' => 'barcode.index', 'name' => 'G.Barcode', 'icon' => 'fas fa-barcode', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '10', 'url' => 'product.warranties.index', 'name' => 'Warranties ', 'icon' => 'fas fa-shield-alt', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '11', 'url' => 'contacts.supplier.index', 'name' => 'Suppliers', 'icon' => 'fas fa-address-card', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '12', 'url' => 'contacts.suppliers.import.create', 'name' => 'Import Suppliers', 'icon' => 'fas fa-file-import', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '13', 'url' => 'contacts.customer.index', 'name' => 'Customers', 'icon' => 'far fa-address-card', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '14', 'url' => 'contacts.customers.import.create', 'name' => 'Import Customers', 'icon' => 'fas fa-file-upload', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '15', 'url' => 'purchases.create', 'name' => 'Add Purchase', 'icon' => 'fas fa-shopping-cart', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '16', 'url' => 'purchases.index_v2', 'name' => 'Purchase List', 'icon' => 'fas fa-list', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '17', 'url' => 'purchases.returns.index', 'name' => 'Purchase Return', 'icon' => 'fas fa-undo', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '18', 'url' => 'sales.store', 'name' => 'Add Sale', 'icon' => 'fas fa-cart-plus', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '19', 'url' => 'sales.index2', 'name' => 'Add Sale List', 'icon' => 'fas fa-tasks', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '20', 'url' => 'sales.pos.create', 'name' => 'POS', 'icon' => 'fas fa-cash-register', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '21', 'url' => 'sales.pos.list', 'name' => 'POS List', 'icon' => 'fas fa-tasks', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '22', 'url' => 'sales.drafts', 'name' => 'Draft List', 'icon' => 'fas fa-drafting-compass', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '23', 'url' => 'sales.quotations', 'name' => 'Quotation List', 'icon' => 'fas fa-quote-right', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '24', 'url' => 'sales.returns.index', 'name' => 'Sale Returns', 'icon' => 'fas fa-undo', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '25', 'url' => 'sales.shipments', 'name' => 'Shipments', 'icon' => 'fas fa-shipping-fast', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '26', 'url' => 'expanses.create', 'name' => 'Add Expense', 'icon' => 'fas fa-plus-square', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '27', 'url' => 'expanses.index', 'name' => 'Expense List', 'icon' => 'far fa-list-alt', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '28', 'url' => 'expanses.categories.index', 'name' => 'Ex. Categories', 'icon' => 'fas fa-cubes', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '29', 'url' => 'users.create', 'name' => 'Add User', 'icon' => 'fas fa-user-plus', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '30', 'url' => 'users.index', 'name' => 'User List', 'icon' => 'fas fa-list-ol', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '31', 'url' => 'users.role.create', 'name' => 'Add Role', 'icon' => 'fas fa-plus-circle', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '32', 'url' => 'users.role.index', 'name' => 'Role List', 'icon' => 'fas fa-th-list', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '33', 'url' => 'accounting.banks.index', 'name' => 'Bank', 'icon' => 'fas fa-university', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '34', 'url' => 'accounting.types.index', 'name' => 'Account Types', 'icon' => 'fas fa-th', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '35', 'url' => 'accounting.accounts.index', 'name' => 'Accounts', 'icon' => 'fas fa-th', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '36', 'url' => 'accounting.assets.index', 'name' => 'Assets', 'icon' => 'fas fa-luggage-cart', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '37', 'url' => 'accounting.balance.sheet', 'name' => 'Balance Sheet', 'icon' => 'fas fa-balance-scale', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '38', 'url' => 'accounting.trial.balance', 'name' => 'Trial Balance', 'icon' => 'fas fa-balance-scale-right', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '39', 'url' => 'accounting.cash.flow', 'name' => 'Cash Flow', 'icon' => 'fas fa-money-bill-wave', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '40', 'url' => 'settings.general.index', 'name' => 'General Settings', 'icon' => 'fas fa-cogs', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '41', 'url' => 'settings.taxes.index', 'name' => 'Taxes', 'icon' => 'fas fa-percentage', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '42', 'url' => 'invoices.schemas.index', 'name' => 'Inv. Schemas', 'icon' => 'fas fa-file-invoice-dollar', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '43', 'url' => 'invoices.layouts.index', 'name' => 'Inv. Layouts', 'icon' => 'fas fa-file-invoice', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '44', 'url' => 'settings.barcode.index', 'name' => 'Barcode Settings', 'icon' => 'fas fa-barcode', 'created_at' => NULL, 'updated_at' => NULL),
-            array('id' => '45', 'url' => 'settings.cash.counter.index', 'name' => 'Cash Counter', 'icon' => 'fas fa-store', 'created_at' => NULL, 'updated_at' => NULL)
+        Schema::disableForeignKeyConstraints();
+
+        ShortMenuUser::truncate();
+        if (ShortMenuUser::count() == 0) {
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE `short_menu_users` AUTO_INCREMENT = 1');
+        }
+
+        ShortMenu::truncate();
+        if (ShortMenu::count() == 0) {
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE `short_menus` AUTO_INCREMENT = 1');
+        }
+
+        Schema::enableForeignKeyConstraints();
+
+        $shortMenus = array(
+            array('id' => '1', 'url' => 'categories.index', 'name' => 'Categories', 'icon' => 'fas fa-list', 'permission' => 'product_category_index', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '3', 'url' => 'brands.index', 'name' => 'Brands', 'icon' => 'fas fa-list', 'permission' => 'product_brand_index', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '4', 'url' => 'products.index', 'name' => 'Product List', 'icon' => 'fas fa-list', 'permission' => 'product_all', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '5', 'url' => 'products.create', 'name' => 'Add Product', 'icon' => 'fas fa-plus-circle', 'permission' => 'product_add', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '6', 'url' => 'product.bulk.variants.index', 'name' => 'Variants', 'icon' => 'fas fa-list', 'permission' => 'product_variant_index', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '7', 'url' => 'product.import.create', 'name' => 'Import Products', 'icon' => 'fas fa-file-import', 'permission' => 'product_import', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '8', 'url' => 'selling.price.groups.index', 'name' => 'Price Group', 'icon' => 'fas fa-list', 'permission' => 'selling_price_group_index', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '9', 'url' => 'barcode.index', 'name' => 'Barcodes', 'icon' => 'fas fa-barcode', 'permission' => 'generate_barcode', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '10', 'url' => 'warranties.index', 'name' => 'Warranties ', 'icon' => 'fas fa-list', 'permission' => 'product_warranty_index', 'plan_feature' => 'inventory', 'enable_module' => null),
+            array('id' => '11', 'url' => 'contacts.manage.supplier.index,1', 'name' => 'Suppliers', 'icon' => 'fas fa-list', 'permission' => 'supplier_all', 'plan_feature' => 'contacts', 'enable_module' => 'modules__contacts'),
+            array('id' => '12', 'url' => 'contacts.suppliers.import.create', 'name' => 'Import Suppliers', 'icon' => 'fas fa-file-import', 'permission' => 'supplier_import', 'plan_feature' => 'contacts', 'enable_module' => 'modules__contacts'),
+            array('id' => '13', 'url' => 'contacts.manage.customer.index,1', 'name' => 'Customers', 'icon' => 'fas fa-list', 'permission' => 'customer_all', 'plan_feature' => 'contacts', 'enable_module' => 'modules__contacts'),
+            array('id' => '14', 'url' => 'contacts.customers.import.create', 'name' => 'Import Customers', 'icon' => 'fas fa-file-import', 'permission' => 'customer_import', 'plan_feature' => 'contacts', 'enable_module' => 'modules__contacts'),
+            array('id' => '15', 'url' => 'purchases.create', 'name' => 'Add Purchase', 'icon' => 'fas fa-plus-circle', 'permission' => 'purchase_add', 'plan_feature' => 'purchase', 'enable_module' => 'modules__purchases'),
+            array('id' => '16', 'url' => 'purchases.index', 'name' => 'Purchase List', 'icon' => 'fas fa-list', 'permission' => 'purchase_all', 'plan_feature' => 'purchase', 'enable_module' => 'modules__purchases'),
+            array('id' => '17', 'url' => 'purchase.orders.create', 'name' => 'Add Purchase Order', 'icon' => 'fas fa-plus-circle', 'permission' => 'purchase_order_add', 'plan_feature' => 'purchase', 'enable_module' => 'modules__purchases'),
+            array('id' => '18', 'url' => 'purchase.orders.index', 'name' => 'P/o List', 'icon' => 'fas fa-list', 'permission' => 'purchase_order_index', 'plan_feature' => 'purchase', 'enable_module' => 'modules__purchases'),
+            array('id' => '19', 'url' => 'purchase.returns.create', 'name' => 'Add Purchase Return', 'icon' => 'fas fa-plus-circle', 'permission' => 'purchase_return_add', 'plan_feature' => 'purchase', 'enable_module' => 'modules__purchases'),
+            array('id' => '20', 'url' => 'purchase.returns.index', 'name' => 'Purchase Return List', 'icon' => 'fas fa-list', 'permission' => 'purchase_return_index', 'plan_feature' => 'purchase', 'enable_module' => 'modules__purchases'),
+            array('id' => '21', 'url' => 'sales.create', 'name' => 'Add Sale', 'icon' => 'fas fa-plus-circle', 'permission' => 'create_add_sale', 'plan_feature' => 'sales', 'enable_module' => 'modules__add_sale'),
+            array('id' => '22', 'url' => 'sales.index', 'name' => 'Add Sale List', 'icon' => 'fas fa-list', 'permission' => 'view_add_sale', 'plan_feature' => 'sales', 'enable_module' => 'modules__add_sale'),
+            array('id' => '23', 'url' => 'sales.pos.create', 'name' => 'POS', 'icon' => 'fas fa-plus-circle', 'permission' => 'pos_add', 'plan_feature' => 'sales', 'enable_module' => 'modules__pos'),
+            array('id' => '24', 'url' => 'sales.pos.index', 'name' => 'POS List', 'icon' => 'fas fa-list', 'permission' => 'pos_all', 'plan_feature' => 'sales', 'enable_module' => 'modules__pos'),
+            array('id' => '25', 'url' => 'sale.products.index', 'name' => 'Sold Product List', 'icon' => 'fas fa-list', 'permission' => 'sold_product_list', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '26', 'url' => 'sale.orders.index', 'name' => 'Sales Order List', 'icon' => 'fas fa-list', 'permission' => 'sales_orders_index', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '29', 'url' => 'sale.quotations.index', 'name' => 'Quotation List', 'icon' => 'fas fa-list', 'permission' => 'sale_quotations_index', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '30', 'url' => 'sale.drafts.index', 'name' => 'Draft List', 'icon' => 'fas fa-list', 'permission' => 'sale_drafts_index', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '31', 'url' => 'sale.shipments.index', 'name' => 'Shipment List', 'icon' => 'fas fa-plus-circle', 'permission' => 'shipment_access', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '32', 'url' => 'sales.discounts.index', 'name' => 'Discounts', 'icon' => 'fas fa-list', 'permission' => 'discounts', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '33', 'url' => 'sales.returns.create', 'name' => 'Add Sales Return', 'icon' => 'fas fa-plus-circle', 'permission' => 'create_sales_return', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '35', 'url' => 'sales.returns.index', 'name' => 'Sales Return List', 'icon' => 'fas fa-list', 'permission' => 'sales_return_index', 'plan_feature' => 'sales', 'enable_module' => null),
+            array('id' => '46', 'url' => 'transfer.stocks.create', 'name' => 'Add Transfer Stock', 'icon' => 'fas fa-plus-circle ', 'permission' => 'transfer_stock_create', 'plan_feature' => 'transfer_stocks', 'enable_module' => 'modules__transfer_stock'),
+            array('id' => '47', 'url' => 'transfer.stocks.index', 'name' => 'Transfer Stock', 'icon' => 'fas fa-list', 'permission' => 'transfer_stock_index', 'plan_feature' => 'transfer_stocks', 'enable_module' => 'modules__transfer_stock'),
+            array('id' => '48', 'url' => 'receive.stock.from.branch.index', 'name' => 'Receive From Warehouse', 'icon' => 'fas fa-list', 'permission' => 'transfer_stock_receive_from_warehouse', 'plan_feature' => 'transfer_stocks', 'enable_module' => 'modules__transfer_stock'),
+            array('id' => '49', 'url' => 'receive.stock.from.warehouse.index', 'name' => 'Receive From Store/Company', 'icon' => 'fas fa-list', 'permission' => 'transfer_stock_receive_from_branch', 'plan_feature' => 'transfer_stocks', 'enable_module' => 'modules__transfer_stock'),
+            array('id' => '50', 'url' => 'stock.adjustments.create', 'name' => 'Add Stock Adjustment', 'icon' => 'fas fa-plus-circle', 'permission' => 'stock_adjustment_add', 'plan_feature' => 'stock_adjustments', 'enable_module' => 'modules__stock_adjustments'),
+            array('id' => '51', 'url' => 'stock.adjustments.index', 'name' => 'Stock Adjustment List', 'icon' => 'fas fa-list', 'permission' => 'stock_adjustment_all', 'plan_feature' => 'stock_adjustments', 'enable_module' => 'modules__stock_adjustments'),
+            array('id' => '52', 'url' => 'banks.index', 'name' => 'Banks', 'icon' => 'fas fa-list', 'permission' => 'banks_index', 'plan_feature' => 'accounting', 'enable_module' => 'modules__accounting'),
+            array('id' => '53', 'url' => 'accounts.index', 'name' => 'Accounts', 'icon' => 'fas fa-list', 'permission' => 'accounts_index', 'plan_feature' => 'accounting', 'enable_module' => 'modules__accounting'),
+            array('id' => '54', 'url' => 'receipts.index', 'name' => 'Receipts', 'icon' => 'fas fa-list', 'permission' => 'receipts_index', 'plan_feature' => 'accounting', 'enable_module' => 'modules__accounting'),
+            array('id' => '55', 'url' => 'payments.index', 'name' => 'Payments', 'icon' => 'fas fa-list', 'permission' => 'payments_index', 'plan_feature' => 'accounting', 'enable_module' => 'modules__accounting'),
+            array('id' => '56', 'url' => 'expenses.index', 'name' => 'Expenses', 'icon' => 'fas fa-list', 'permission' => 'expenses_index', 'plan_feature' => 'accounting', 'enable_module' => 'modules__accounting'),
+            array('id' => '57', 'url' => 'contras.index', 'name' => 'Contras', 'icon' => 'fas fa-list', 'permission' => 'contras_index', 'plan_feature' => 'accounting', 'enable_module' => 'modules__accounting'),
+            array('id' => '58', 'url' => 'users.create', 'name' => 'Add User', 'icon' => 'fas fa-plus-circle', 'permission' => 'user_add', 'plan_feature' => 'users', 'enable_module' => null),
+            array('id' => '59', 'url' => 'users.index', 'name' => 'User List', 'icon' => 'fas fa-list', 'permission' => 'user_view', 'plan_feature' => 'users', 'enable_module' => null),
+            array('id' => '60', 'url' => 'users.role.create', 'name' => 'Add Role', 'icon' => 'fas fa-plus-circle', 'permission' => 'role_add', 'plan_feature' => 'users', 'enable_module' => null),
+            array('id' => '61', 'url' => 'users.role.index', 'name' => 'Role List', 'icon' => 'fas fa-list', 'permission' => 'role_view', 'plan_feature' => 'users', 'enable_module' => null),
+            array('id' => '62', 'url' => 'settings.general.index', 'name' => 'General Settings', 'icon' => 'fas fa-cogs', 'permission' => 'general_settings', 'plan_feature' => 'setup', 'enable_module' => null),
+            array('id' => '63', 'url' => 'warehouses.index', 'name' => 'Warehouses', 'icon' => 'fas fa-list', 'permission' => 'warehouses_index', 'plan_feature' => 'setup', 'enable_module' => null),
+            array('id' => '64', 'url' => 'cash.counters.index', 'name' => 'Cash Counters', 'icon' => 'fas fa-list', 'permission' => 'cash_counters_index', 'plan_feature' => 'setup', 'enable_module' => null)
         );
 
-        \DB::table('short_menus')->insert($short_menus);
+        \Illuminate\Support\Facades\DB::table('short_menus')->insert($shortMenus);
     }
 }

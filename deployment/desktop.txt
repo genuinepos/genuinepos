@@ -1,4 +1,4 @@
-Genuine POS Desktop Version
+GPOSS Desktop Version
 ===============================================================================
 
 - Anyone can run the software offline using given .exe file

@@ -2,8 +2,8 @@
 
 namespace Modules\Communication\Sms\SmsTemplates;
 
-use DB;
-use Modules\Communication\Entities\User;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\SmsServiceInterface;
 
 class PriceUpdateTemplate
@@ -18,8 +18,6 @@ class PriceUpdateTemplate
         $numbersRaw = User::permission('price_update_notification')->pluck('phone')->toArray() ?? [];
         $numbersFiltered = array_filter($numbersRaw, fn ($item) => !is_null($item) && (strlen($item) >= 10));
         $numbers = array_unique($numbersFiltered);
-
-        \Log::info($numbers);
 
         $max = DB::table('recent_prices')->max('created_at');
         $recentPrices = DB::table('recent_prices')->leftJoin('products', 'recent_prices.product_id', 'products.id')

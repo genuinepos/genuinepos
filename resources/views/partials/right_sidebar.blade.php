@@ -1,77 +1,132 @@
+<style>
+    .branch_switcher {
+        flex: 1;
+    }
+
+    .branch_switcher .select-dropdown select {
+        width: 100%;
+        color: #fff !important;
+    }
+</style>
 <div id="rightSidebar">
     <div class="sidebar-container position-relative">
         <div class="d-flex align-items-center justify-content-between">
-            <h2 class="text-white">@lang('menu.user_profile') </h2>
+            <h2 class="text-white">{{ __('User Profile') }}</h2>
             <div id="closeRightSidebar"><a href="#" style="color: #fff;"><i class="far fa-times-circle fs-4"></i></a></div>
         </div>
-        <div class="py-3 ">
+
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="far fa-user fs-3"></i></span></li>
-                <li class="my-1 me-2 ms-1 text-white py-2" style="font-size: 12px">
+                @if (
+                    ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1) &&
+                    auth()->user()->can('has_access_to_all_area')
+                )
+                    @php
+                        $branchService = new App\Services\Setups\BranchService();
+                        $branches = $branchService->switchableBranches();
+                    @endphp
+                    <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
+                    <li class="my-1 me-2 ms-1 branch_switcher">
+                        <form id="change_branch_form" action="{{ route('users.change.branch') }}">
+                            @csrf
+                            <div class="select-dropdown">
+                                <select name="branch_id" id="switch_branch_id">
+
+                                    @if ($generalSettings['subscription']->has_business == 1)
+
+                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
+                                    @endif
+
+                                    @foreach ($branches as $branch)
+
+                                        <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
+                                            @php
+                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
+                                                $branchCode = '-' . $branch->branch_code;
+                                            @endphp
+                                            {{ $branchName . $areaName . $branchCode }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </li>
+                @endif
+            </ul>
+        </div>
+
+        <div class="py-1">
+            <ul class="d-flex flex-row justify-content-start">
+                <li class="icon text-white"><span class=""><i class="far fa-user"></i></span></li>
+                <li class="my-1 me-2 ms-1 text-white py-1" style="font-size: 12px">
                     {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
                     @if (auth()->user()->role_type == 1)
-                        (@lang('menu.super_admin'))
+                        ({{ __('Super-Admin') }})
                     @elseif(auth()->user()->role_type == 2)
-                    (@lang('menu.admin'))
+                        ({{ __('Admin') }})
                     @else
-                        {{ auth()->user()->roles()->first()->name }}
+                        {{ auth()->user()?->roles()?->first()?->name }}
                     @endif
                 </li>
             </ul>
         </div>
-        <div class="border-top py-3">
+
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="far fa-user-circle fs-3"></i></span></li>
+                <li class="icon text-white"><span class=""><i class="far fa-user-circle"></i></span></li>
                 <li class="my-1 me-2 ms-1">
                     <a href="{{ route('users.profile.view', auth()->user()->id) }}">
-                        <p class="title text-white">@lang('menu.my_profile')</p>
+                        <p class="title text-white">{{ __('My Profile') }}</p>
                         <small class="email text-white">{{ auth()->user()->email }}</small>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="border-top py-3">
+
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="fas fa-user fs-3"></i></span></li>
+                <li class="icon text-white"><span class=""><i class="fas fa-user"></i></span></li>
                 <li class="my-1 me-2 ms-1">
                     <a href="{{ route('users.profile.index') }}">
-                        <p class="title text-white">@lang('menu.change_profile')</p>
-                        <small class="email text-white">@lang('menu.update_or_change_password')</small>
+                        <p class="title text-white">{{ __('Change Profile') }}</p>
+                        <small class="email text-white">{{ __('Update or change password') }}</small>
                     </a>
                 </li>
             </ul>
         </div>
 
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><small class=""><i class="far fa-comment-alt fs-3"></i></small></li>
+                <li class="icon text-white"><small class=""><i class="far fa-comment-alt"></i></small></li>
                 <li class="my-2 me-2 ms-1">
                     <a href="{{ route('feedback.index') }}">
-                        <p class="title text-white">@lang('menu.feedback')</p>
+                        <p class="title text-white">{{ __('Feedback') }}</p>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><small class=""><i class="fas fa-book fs-3"></i></small></li>
+                <li class="icon text-white"><small class=""><i class="fas fa-book"></i></small></li>
                 <li class="my-2 me-2 ms-1">
                     <a href="#">
-                        <p class="title text-white">@lang('menu.documentation')</p>
+                        <p class="title text-white">{{ __('Documentation') }}</p>
                     </a>
                 </li>
             </ul>
         </div>
 
-        <div class=" position-absolute" style="bottom: 2px; left: 0; right: 0; padding: 20px 0px 28px 0px; border-top: 1px solid #fff;">
-            <ul class="d-flex justify-content-around">
-                <li><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog fa-2x"></i></span></a></li>
+        <div class="position-absolute bottom-btn-group" style="bottom: 0; left: 0; right: 0; border-top: 1px solid #fff;">
+            <ul class="d-flex">
+                <li><a href="#" class="text-white menu-theme"><span><i class="fas fa-sun"></i></span><span id="themeNameText">{{ __('Light Nav') }}</span></a></li>
+                <li class="d-lg-block d-none"><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog"></i></span><span>{{ __('Settings') }}</span></a></li>
 
                 <li>
-                    <a href="#" class="text-white" id="btnFullscreen"><i class="fas fa-expand fa-2x"></i></a>
+                    <a href="#" class="text-white" id="btnFullscreen"><span><i class="fas fa-expand"></i></span><span>{{ __('Fullscreen') }}</span></a>
                 </li>
 
-                <li><a href="#" class="text-white" id="logout_option"><span><i class="fas fa-power-off fa-2x"></i></span></a></li>
+                <li><a href="#" class="text-white bg-danger border-danger" id="logout_option"><span><i class="fas fa-power-off"></i></span><span>{{ __('Logout') }}</span></a></li>
             </ul>
         </div>
     </div>
@@ -91,7 +146,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="sidebarShortcutModalLabel">@lang('menu.add_shortcut_menus')</h6>
+                <h6 class="modal-title" id="sidebarShortcutModalLabel">{{ __('Add Shortcut Menus') }}</h6>
                 <a href="#" role="button" type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
                     <span class="fas fa-times"></span>
                 </a>
@@ -105,8 +160,8 @@
                         <input type="url" class="form-control" id="shortcutUrl" placeholder="Shortcut url" required>
                     </div>
                     <div class="form-group d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">@lang('menu.cancel')</button>
-                        <button type="reset" class="btn btn-sm btn-success save-shortcut" data-bs-dismiss="modal" disabled>@lang('menu.save')</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="reset" class="btn btn-sm btn-success save-shortcut" data-bs-dismiss="modal" disabled>{{ __('Save') }}</button>
                     </div>
                 </form>
             </div>
@@ -117,21 +172,22 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $("#openRightSidebar").on('click', function(){
+            $("#openRightSidebar").on('click', function() {
                 $("#rightSidebar").toggleClass("open");
             });
-            $("#closeRightSidebar").on('click', function(){
+
+            $("#closeRightSidebar").on('click', function() {
                 $("#rightSidebar").removeClass("open");
             });
 
             $("#shortcutUrl").on("change", function() {
-                if($("#shortcutUrl").is(":valid")) {
+                if ($("#shortcutUrl").is(":valid")) {
                     $(".save-shortcut").prop("disabled", false);
                 } else {
                     $(".save-shortcut").prop("disabled", true);
                 }
             })
-            
+
             $(".save-shortcut").on("click", function() {
                 $(".shortcut-bar").prepend(`
                 <div class='shorcut-box'>
@@ -173,7 +229,7 @@
                 $(".shortcut-bar .shorcut-box:first-child").find(".icon").attr('src', 'https://www.google.com/s2/favicons?domain=' + $("#shortcutUrl").val());
                 $(".shortcut-bar .shorcut-box:first-child").find("a").attr('href', $("#shortcutUrl").val());
                 $(".shortcut-bar .shorcut-box:first-child .shortcut-modal").find(".shortcut-url").val($("#shortcutUrl").val());
-                if($("#shortcutName").is(":valid")) {
+                if ($("#shortcutName").is(":valid")) {
                     var shortcutName = $("#shortcutName").val();
                     $(".shortcut-bar .shorcut-box:first-child").find("a").attr("title", shortcutName);
                     $(".shortcut-bar .shorcut-box:first-child .shortcut-modal").find(".shortcut-name").val(shortcutName);
@@ -184,25 +240,25 @@
                 }
                 $("#shortcutName").val('');
                 $("#shortcutUrl").val('');
-                $(".edit-shortcut").on("click", function(){
+                $(".edit-shortcut").on("click", function() {
                     $(this).parents(".shorcut-box").find(".shortcut-modal").addClass("show");
                 });
-                $(".close-shortcut-modal, .change-shortcut").on("click", function(){
+                $(".close-shortcut-modal, .change-shortcut").on("click", function() {
                     $(this).parents(".shorcut-box").find(".shortcut-modal").removeClass("show");
                 });
-                $(".delete-shortcut").on("click", function(){
+                $(".delete-shortcut").on("click", function() {
                     $(this).parents(".shorcut-box").remove();
                 });
 
-                $(".shortcut-modal").find(".shortcut-name").on("change", function(){
-                    if($(this).is(":valid")) {
+                $(".shortcut-modal").find(".shortcut-name").on("change", function() {
+                    if ($(this).is(":valid")) {
                         $(this).parents(".shorcut-box").find("a").attr('title', $(this).val());
                     } else {
                         $(this).parents(".shorcut-box").find("a").attr('title', $(this).parents(".shorcut-box").find(".shortcut-url").val());
                     }
                 });
-                $(".shortcut-modal").find(".shortcut-url").on("change", function(){
-                    if($(this).is(":valid")) {
+                $(".shortcut-modal").find(".shortcut-url").on("change", function() {
+                    if ($(this).is(":valid")) {
                         $(this).parents(".shorcut-box").find(".icon").attr('src', 'https://www.google.com/s2/favicons?domain=' + $(this).val());
                         $(this).parents(".shorcut-box").find("a").attr('href', $(this).val());
                     } else {
@@ -216,34 +272,85 @@
                 if (!document.fullscreenElement && !document.mozFullScreenElement &&
                     !document.webkitFullscreenElement && !document.msFullscreenElement) {
                     if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
+                        elem.requestFullscreen();
                     } else if (elem.msRequestFullscreen) {
-                    elem.msRequestFullscreen();
+                        elem.msRequestFullscreen();
                     } else if (elem.mozRequestFullScreen) {
-                    elem.mozRequestFullScreen();
+                        elem.mozRequestFullScreen();
                     } else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                        elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                     }
 
-                    } else {
-                        if (document.exitFullscreen) {
+                } else {
+                    if (document.exitFullscreen) {
                         document.exitFullscreen();
-                        } else if (document.msExitFullscreen) {
+                    } else if (document.msExitFullscreen) {
                         document.msExitFullscreen();
-                        } else if (document.mozCancelFullScreen) {
+                    } else if (document.mozCancelFullScreen) {
                         document.mozCancelFullScreen();
-                        } else if (document.webkitExitFullscreen) {
+                    } else if (document.webkitExitFullscreen) {
                         document.webkitExitFullscreen();
+                    }
+                }
+            }
+
+            document.getElementById('btnFullscreen').addEventListener('click', function() {
+                toggleFullscreen();
+            });
+
+            // document.getElementById('exampleImage').addEventListener('click', function() {
+            //     toggleFullscreen(this);
+            // });
+        });
+
+        var selectedBranchId = $('#switch_branch_id').val();
+        $(document).on('change', '#switch_branch_id', function(e) {
+
+            $.confirm({
+                'title': "{{ __('Confirmation') }}",
+                'content': "{{ __('Are you sure?') }}",
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#change_branch_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            $('#switch_branch_id').val(selectedBranchId);
                         }
                     }
                 }
-                document.getElementById('btnFullscreen').addEventListener('click', function() {
-                    toggleFullscreen();
-                });
+            });
+        });
 
-                // document.getElementById('exampleImage').addEventListener('click', function() {
-                //     toggleFullscreen(this);
-                // });
+        //data delete by ajax
+        $(document).on('submit', '#change_branch_form', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    toastr.success(data);
+                    window.location.reload();
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connection Error.') }}");
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
         });
     </script>
 @endpush

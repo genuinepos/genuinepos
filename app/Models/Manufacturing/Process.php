@@ -2,16 +2,22 @@
 
 namespace App\Models\Manufacturing;
 
-use App\Models\Product;
 use App\Models\BaseModel;
-use App\Models\Manufacturing\ProcessIngredient;
-use App\Models\ProductVariant;
-use App\Models\Unit;
+use App\Models\Products\Product;
+use App\Models\Products\ProductVariant;
+use App\Models\Products\Unit;
+use App\Models\Setups\Branch;
 
 class Process extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 
     public function ingredients()
     {

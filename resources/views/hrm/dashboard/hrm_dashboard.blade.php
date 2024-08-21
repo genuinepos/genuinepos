@@ -1,11 +1,24 @@
 @extends('layout.master')
 @section('title', 'HRM Dashboard - ')
     @push('stylesheets')
-        <style>
-            #small-badge {font-size: 12px !important;padding: 0px !important;}
-            .leave_application table.display thead th {padding: 0px 10px 0px 10px;border-top: none;border-bottom: none;}
-            .leave_application .dataTables_wrapper {border-bottom: none;border-top: none;-webkit-box-shadow: none;}
+    <style>
+        #small-badge {font-size: 12px !important;padding: 0px !important;}
+        .leave_application table.display thead th {padding: 0px 10px 0px 10px;border-top: none;border-bottom: none;}
+        .leave_application .dataTables_wrapper {border-bottom: none;border-top: none;-webkit-box-shadow: none;}
+        .card-counter .title, .card-counter .sub-title {
+                color: #727272 !important;
+            }
+        .card-counter .icon i {
+            color: #3b3d58;
+        }
+        .card-counter .icon {
+            font-size: 3.5em;
+            padding: 10px;
+            opacity: 1;
+            color: white !important;
+        }
         </style>
+        <link href="{{ asset('backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
     @endpush
 @section('content')
     <section>
@@ -34,13 +47,13 @@
 
                             @if(auth()->user()->can('shift'))
                                 <li>
-                                    <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                    <a href="{{ route('hrm.shifts.index') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                 </li>
                             @endif
 
                             @if(auth()->user()->can('attendance'))
                                 <li>
-                                    <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                    <a href="{{ route('hrm.attendances') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                 </li>
                             @endif
 
@@ -77,27 +90,97 @@
                     </div>
                 </div>
             </div> --}}
-
             <div class="p-3">
                 <div class="card">
                     <div class="card-title mt-4 ps-4">
                         <h1 class="text-start text-primary pl-5">
                             <i class="fas fa-tachometer-alt"></i>
-                            <span class="">HRM</span> @lang('menu.dashboard')
+                            <span class=""></span> {{ __("HRM Dashboard") }}
                         </h1>
                     </div>
+                    <div class="p-3 pt-2">
+                        <div class="row g-3">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('users.index') }}" >
+                                <div class="card-counter alert-primary d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-duotone fa-users"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Total Employees') }}</h3>
+                                        <h1 class="title text-center">
+                                            {{ $totalEmployee }}
+                                        </h1>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
 
-                    @if ($generalSettings['addons__branches'] == 1)
-                        <div class="card-title mt-2 ps-4">
-                            <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                                <option value="">{{ __('All Business Location') }}</option>
-                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
-                                @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                                @endforeach
-                            </select>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.departments') }}">
+                                <div class="card-counter alert-success d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-solid fa-user-check"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Total Departtments') }}</h3>
+                                        <h1 class="title text-center">
+                                            <strong>
+                                                {{ $totalDepartment }}
+                                            </strong>
+                                        </h1>
+                                    </div>
+                                </div>
+                                 </a>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.leaves.index') }}">
+                                <div class="card-counter alert-info d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-solid fa-puzzle-piece"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Today Leave') }}</h3>
+                                        <h1 class="title text-center">
+                                            <strong>
+                                                {{ $todayLeave }}
+                                            </strong>
+                                        </h1>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.attendances') }}">
+                                <div class="card-counter alert-danger d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-solid fa-paper-plane"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Todays Attendance')}}</h3>
+                                        <h1 class="title text-center">
+                                            <strong>
+                                                {{ $todayAttendance }}
+                                            </strong>
+                                        </h1>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
                         </div>
-                    @endif
+                    </div>
+
+                    <div class="card-title mt-2 ps-4">
+                        <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
+                            <option value="">{{ __('All Business Location') }}</option>
+                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} ({{ __("Company") }})</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="card-body">
                         <div class="row g-3">

@@ -2,125 +2,90 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Models\Branch;
-use App\Models\Hrm\Holiday;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
+use App\Services\Hrm\HolidayService;
+use App\Services\Setups\BranchService;
+use App\Services\Hrm\HolidayBranchService;
+use App\Http\Requests\HRM\HolidayEditRequest;
+use App\Http\Requests\HRM\HolidayIndexRequest;
+use App\Http\Requests\HRM\HolidayStoreRequest;
+use App\Http\Requests\HRM\HolidayCreateRequest;
+use App\Http\Requests\HRM\HolidayDeleteRequest;
+use App\Http\Requests\HRM\HolidayUpdateRequest;
 
 class HolidayController extends Controller
 {
-    public function __construct()
-    {
-        
+    public function __construct(
+        private HolidayService $holidayService,
+        private HolidayBranchService $holidayBranchService,
+        private BranchService $branchService,
+    ) {
     }
 
-    //holiday page show methods
-    public function index()
+    public function index(HolidayIndexRequest $request)
     {
-        $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
-        return view('hrm.holiday.index', compact('branches'));
-    }
+        if ($request->ajax()) {
 
-    //all holidays data get for holiday pages
-    public function allHolidays()
-    {
-        $holidays = '';
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $holidays = Holiday::with('branch')->orderBy('id', 'DESC')->get();
-        } else {
-            $holidays = Holiday::with('branch')
-                ->where('branch_id', auth()->user()->branch_id)
-                ->orWhere('is_all', 1)
-                ->orderBy('id', 'DESC')->get();
+            return $this->holidayService->holidaysTable(request: $request);
         }
 
-        return view('hrm.holiday.ajax.list', compact('holidays'));
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+
+        return view('hrm.holidays.index', compact('branches'));
     }
 
-    //store holidays methods
-    public function storeHolidays(Request $request)
+    public function create(HolidayCreateRequest $request)
     {
-        $this->validate($request, [
-            'holiday_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+        return view('hrm.holidays.ajax_view.create', compact('branches'));
+    }
 
-        $addHoliday = new Holiday();
-        $addHoliday->holiday_name = $request->holiday_name;
-        $addHoliday->start_date = $request->start_date;
-        $addHoliday->end_date = $request->end_date;
+    public function store(HolidayStoreRequest $request)
+    {
+        try {
+            DB::beginTransaction();
 
-        if (auth()->user()->role_type == 1) {
-            if ($request->branch_id == 'All') {
-                $addHoliday->is_all = 1;
-                $addHoliday->branch_id = NULL;
-            } elseif ($request->branch_id == '') {
-                $addHoliday->branch_id = NULL;
-            } else {
-                $addHoliday->branch_id = $request->branch_id;
-            }
-        } else {
-            $addHoliday->branch_id = auth()->user()->branch_id;
+            $addHoliday = $this->holidayService->addHoliday(request: $request);
+            $this->holidayBranchService->addHolidayBranches(request: $request, holidayId: $addHoliday->id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $addHoliday->notes = $request->notes;
-        $addHoliday->save();
-
-        return response()->json('Successfully Holiday Added!');
+        return response()->json(__('Holiday added successfully.'));
     }
 
-    //Edit holid
-    public function edit($id)
+    public function edit($id, HolidayEditRequest $request)
     {
-        $holiday = Holiday::with('branch')->where('id', $id)->first();
-        $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
-        return view('hrm.holiday.ajax.edit', compact('holiday', 'branches'));
+        $holiday = $this->holidayService->singleHoliday(id: $id, with: ['allowedBranches']);
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+
+        return view('hrm.holidays.ajax_view.edit', compact('holiday', 'branches'));
     }
 
-    //update holiday
-    public function updateHoliday(Request $request)
+    public function update($id, HolidayUpdateRequest $request)
     {
-        $this->validate($request, [
-            'holiday_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $updateHoliday = Holiday::where('id', $request->id)->first();
-        $updateHoliday->holiday_name = $request->holiday_name;
-        $updateHoliday->start_date = $request->start_date;
-        $updateHoliday->end_date = $request->end_date;
+            $updateHoliday = $this->holidayService->updateHoliday(request: $request, id: $id);
+            $this->holidayBranchService->updateHolidayBranches(request: $request, holiday: $updateHoliday);
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $updateHoliday->is_all = 0;
-            $updateHoliday->branch_id = NULL;
-            if ($request->branch_id == 'All') {
-                $updateHoliday->is_all = 1;
-                $updateHoliday->branch_id = NULL;
-            } elseif (!$request->branch_id) {
-                $updateHoliday->branch_id = NULL;
-            } elseif ($request->branch_id) {
-                $updateHoliday->branch_id = $request->branch_id;
-            }
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $updateHoliday->notes = $request->notes;
-        $updateHoliday->save();
-
-        return response()->json('Successfully Holidays Updated!');
+        return response()->json(__('Holiday updated successfully'));
     }
 
-    //destroy holidays
-    public function deleteHolidays(Request $request, $id)
+    public function delete(HolidayDeleteRequest $request, $id)
     {
-        $holiday = Holiday::find($id);
-        if (!is_null($holiday)) {
-            $holiday->delete();
-        }
-
-        return response()->json('Successfully Holiday Deleted');
+        $this->holidayService->deleteHoliday(id: $id);
+        return response()->json(__('Holiday deletes successfully'));
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Str;
 use Illuminate\Database\DBAL\TimestampType;
+use Illuminate\Support\Str;
 
 return [
 
@@ -96,7 +96,6 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-
     ],
 
     /*

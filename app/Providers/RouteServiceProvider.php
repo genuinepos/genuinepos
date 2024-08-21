@@ -2,14 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    // By default, no namespace is used to support the callable array syntax.
+    public static string $controllerNamespace = '';
+
     /**
      * The path to the "home" route for your application.
      *
@@ -17,7 +20,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/dashboard';
 
     /**
      * The controller namespace for the application.
@@ -36,33 +39,23 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
+        $this->mapWebRoutes();
+        $this->mapApiRoutes();
+    }
 
-        $this->routes(function () {
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+    protected function mapWebRoutes()
+    {
+        // Use "routes/web.php" file to register new web route files.
+        Route::namespace(static::$controllerNamespace)->group(base_path('routes/web.php'));
+    }
 
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/admin.php'));
-
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/hrms.php'));
-                
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/essential.php'));
-
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/manufacturing.php'));
-                
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
-        });
+    protected function mapApiRoutes()
+    {
+        // Use "routes/api.php" file to register new api route files.
+        Route::namespace(static::$controllerNamespace)
+            ->middleware('api')
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
     }
 
     /**

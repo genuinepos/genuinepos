@@ -1,40 +1,56 @@
 <?php
+
+use App\Http\Controllers\Manufacturing\ProcessController;
+use App\Http\Controllers\Manufacturing\ProcessIngredientController;
+use App\Http\Controllers\Manufacturing\ProductionController;
+use App\Http\Controllers\Manufacturing\Reports\IngredientReportController;
+use App\Http\Controllers\Manufacturing\Reports\ProductionReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\Manufacturing'], function ()
-{
-    Route::group(['prefix' => 'process'], function ()
-    {
-        Route::get('/', 'ProcessController@index')->name('manufacturing.process.index');
-        Route::get('show/{processId}', 'ProcessController@show')->name('manufacturing.process.show');
-        Route::get('create', 'ProcessController@create')->name('manufacturing.process.create');
-        Route::post('store', 'ProcessController@store')->name('manufacturing.process.store');
-        Route::get('edit/{processId}', 'ProcessController@edit')->name('manufacturing.process.edit');
-        Route::post('update/{processId}', 'ProcessController@update')->name('manufacturing.process.update');
-        Route::delete('delete/{processId}', 'ProcessController@delete')->name('manufacturing.process.delete');
+Route::group(['prefix' => 'manufacturing'], function () {
+
+    Route::controller(ProcessController::class)->prefix('process')->group(function () {
+
+        Route::get('/', 'index')->name('manufacturing.process.index');
+        Route::get('show/{id}', 'show')->name('manufacturing.process.show');
+        Route::get('print/{id}', 'print')->name('manufacturing.process.print');
+        Route::get('select/product/modal', 'selectProductModal')->name('manufacturing.process.select.product.modal');
+        Route::get('create', 'create')->name('manufacturing.process.create');
+        Route::post('store', 'store')->name('manufacturing.process.store');
+        Route::get('edit/{id}', 'edit')->name('manufacturing.process.edit');
+        Route::post('update/{id}', 'update')->name('manufacturing.process.update');
+        Route::delete('delete/{id}', 'delete')->name('manufacturing.process.delete');
+
+        Route::controller(ProcessIngredientController::class)->prefix('ingredients')->group(function () {
+
+            Route::get('ingredients/for/production/{processId}/{warehouseId?}', 'ingredientsForProduction')->name('manufacturing.process.ingredients.for.production');
+        });
     });
 
-    Route::group(['prefix' => 'productions'], function ()
-    {
-        Route::get('/', 'ProductionController@index')->name('manufacturing.productions.index');
-        Route::get('show/{productionId}', 'ProductionController@show')->name('manufacturing.productions.show');
-        Route::get('create', 'ProductionController@create')->name('manufacturing.productions.create');
-        Route::post('store', 'ProductionController@store')->name('manufacturing.productions.store');
-        Route::get('edit/{productionId}', 'ProductionController@edit')->name('manufacturing.productions.edit');
-        Route::post('update/{productionId}', 'ProductionController@update')->name('manufacturing.productions.update');
-        Route::delete('delete/{productionId}', 'ProductionController@delete')->name('manufacturing.productions.delete');
-        Route::get('get/process/{processId}', 'ProductionController@getProcess');
-        Route::get('get/ingredients/{processId}/{warehouseId}', 'ProductionController@getIngredients');
+    Route::controller(ProductionController::class)->prefix('productions')->group(function () {
+
+        Route::get('/', 'index')->name('manufacturing.productions.index');
+        Route::get('show/{id}', 'show')->name('manufacturing.productions.show');
+        Route::get('print/{id}', 'print')->name('manufacturing.productions.print');
+        Route::get('create', 'create')->name('manufacturing.productions.create');
+        Route::post('store', 'store')->name('manufacturing.productions.store');
+        Route::get('edit/{id}', 'edit')->name('manufacturing.productions.edit');
+        Route::post('update/{id}', 'update')->name('manufacturing.productions.update');
+        Route::delete('delete/{id}', 'delete')->name('manufacturing.productions.delete');
     });
 
-    Route::group(['prefix' => 'settings'], function ()
-    {
-        Route::get('/', 'SettingsController@index')->name('manufacturing.settings.index');
-        Route::post('store', 'SettingsController@store')->name('manufacturing.settings.store');
-    });
+    Route::group(['prefix' => 'reports'], function () {
 
-    Route::group(['prefix' => 'report'], function ()
-    {
-        Route::get('/', 'ReportController@index')->name('manufacturing.report.index');
+        Route::controller(ProductionReportController::class)->prefix('productions')->group(function () {
+
+            Route::get('/', 'index')->name('reports.production.report.index');
+            Route::get('print', 'print')->name('reports.production.report.print');
+        });
+
+        Route::controller(IngredientReportController::class)->prefix('ingredients')->group(function () {
+
+            Route::get('/', 'index')->name('reports.ingredients.report.index');
+            Route::get('print', 'print')->name('reports.ingredients.report.print');
+        });
     });
 });

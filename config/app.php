@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'domain' => (string) env('DOMAIN', 'pos.test'),
+    'app_domain' => (string) env('APP_DOMAIN', 'app.pos.test'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -27,9 +30,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-    'env' => env('PRINT_SD_SALE', true),
-    'env' => env('PRINT_SD_PURCHASE', true),
-    'env' => env('PRINT_SD_PAYMENT', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -69,7 +70,8 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'Asia/Dhaka'),
+    // 'timezone' => env('APP_TIMEZONE', 'Asia/Dhaka'),
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +171,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Ladumor\LaravelPwa\PWAServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -177,8 +180,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TenancyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        App\Providers\GeneralSettingProvider::class,
         App\Providers\EmailSettingServiceProvider::class,
     ],
 
@@ -234,5 +239,6 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
     ],
 ];

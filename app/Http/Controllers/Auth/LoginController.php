@@ -3,19 +3,25 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Enums\BooleanType;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
-use App\Utils\UserActivityLogUtil;
+use App\Services\Users\UserActivityLogService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-
-    protected $userActivityLogUtil;
+    public function __construct(private UserActivityLogService $userActivityLogService)
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -42,11 +48,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(UserActivityLogUtil $userActivityLogUtil)
-    {
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('guest')->except('logout');
-    }
+
 
     public function showLoginForm()
     {
@@ -54,59 +56,93 @@ class LoginController extends Controller
 
             return redirect()->back();
         }
-        
+
         return view('auth.login');
     }
 
     public function login(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required',
+            'username_or_email' => 'required',
             'password' => 'required',
         ]);
 
-        $admin = User::where('username', $request->username)->where('allow_login', 1)->first();
+        $subscription = DB::table('subscriptions')->first();
+        $firstBranch = DB::table('branches')->first();
 
-        if (isset($admin) && $admin->allow_login == 1) {
+        $user = User::with('branch', 'roles', 'roles.permissions')
+            ->where('username', $request->username_or_email)
+            ->orWhere('email', $request->username_or_email)->first();
 
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        $role = $user?->roles()?->first();
+        if (isset($role) && $role->hasPermissionTo('has_access_to_all_area') && ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)) {
 
-                if (! Session::has($admin->language)) {
+            $user->branch_id = null;
+            $user->is_belonging_an_area = BooleanType::False->value;
+            $user->save();
+        }
 
-                    session(['lang' => $admin->language]);
+        if (
+            $user?->branch &&
+            isset($user?->branch?->expire_date) &&
+            date('Y-m-d') > $user?->branch?->expire_date &&
+            !$role->hasPermissionTo('billing_renew_branch')
+        ) {
+
+            $msg = __('Login failed. Store ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
+            session()->flash('errorMsg', $msg);
+            return redirect()->back();
+        }
+
+        if (isset($user) && $user->allow_login == BooleanType::True->value) {
+
+            if (
+                Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
+                Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
+            ) {
+                if (!Session::has($user->language)) {
+
+                    session(['lang' => $user->language]);
                 }
 
-                $this->userActivityLogUtil->addLog(
-                    action: 4,
-                    subject_type: 18,
-                    data_obj: $admin,
-                    branch_id: $admin->branch_id,
-                    user_id: $admin->id,
-                );
+                if (isset($firstBranch) && $subscription->current_shop_count == 1 && $subscription->has_business == BooleanType::False->value) {
 
-                return redirect()->intended(route('dashboard.dashboard'));
+                    $user->branch_id = $firstBranch->id;
+                    $user->is_belonging_an_area = BooleanType::True->value;
+                    $user->save();
+                }
 
+                if ($user->branch_id) {
+
+                    $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
+                }
+
+                return redirect()->intended(route('dashboard.index'));
             } else {
 
-                session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
+                session()->flash('errorMsg', __('Sorry! Username/Email or Password not matched!'));
                 return redirect()->back();
             }
         } else {
-            session()->flash('errorMsg', 'Login failed. Please try with correct username and password');
+
+            session()->flash('errorMsg', __('Login failed. Please try with correct username/email and password'));
             return redirect()->back();
         }
     }
 
-
-
     public function logout(Request $request)
     {
-        $this->userActivityLogUtil->addLog(action: 5, subject_type: 19, data_obj: auth()->user());
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogout->value, subjectType: UserActivityLogSubjectType::UserLogout->value, dataObj: auth()->user());
+
+        if (auth()->user()->can('has_access_to_all_area')) {
+
+            auth()->user()->branch_id = null;
+            auth()->user()->is_belonging_an_area = BooleanType::False->value;
+            auth()->user()->save();
+        }
 
         $this->guard()->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         if ($response = $this->loggedOut($request)) {

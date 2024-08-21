@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Communication\Service;
 
 use Modules\Communication\Interface\EmailServiceInterface;

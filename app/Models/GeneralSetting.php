@@ -2,25 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Setups\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GeneralSetting extends BaseModel
 {
     use HasFactory;
+
     public $timestamps = false;
-
-    public static function boot()
-
-    {
-        parent::boot();
-        \Log::info("GeneralSetting Called");
-    }
 
     public function scopeSms($query)
     {
         return $this->sms_setting ?? [];
     }
+
     public function scopeEmail($query)
     {
         return $this->email_setting ?? [];
@@ -34,5 +30,10 @@ class GeneralSetting extends BaseModel
     public function scopeIsEmailActive($query)
     {
         return ($this->email_setting['MAIL_ACTIVE'] ?? false) ? true : false;
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 }

@@ -5,71 +5,106 @@
         .top-menu-area a {border: 1px solid lightgray; padding: 1px 5px; border-radius: 3px; font-size: 11px;}
     </style>
 @endpush
-@section('title', 'SMS Settings - ')
+@section('title', 'Email Settings - ')
 @section('content')
 <div class="body-woaper">
     <div class="main__content">
         <div class="sec-name">
             <div class="name-head">
-                <span class="fas fa-sliders-h"></span>
-                <h6>@lang('menu.sms_settings')</h6>
+                <h6>@lang('menu.email_settings')</h6>
             </div>
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                 <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
             </a>
         </div>
     </div>
-
     <div class="p-3">
-        <div class="card">
+        <div class="card ms-1">
 
-            <form id="sms_settings_form" class="setting_form p-3"
-                action="{{ route('communication.sms.settings.store') }}" method="post">
+            <form id="email_settings_form" class="setting_form p-3" action="{{ route('communication.email.settings.store') }}" method="post">
                 @csrf
-                <div class="form-group">
-                    <div class="setting_form_heading">
-                        <h6 class="text-primary">@lang('menu.sms_settings')</h6>
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL MAILER') }} </strong></label>
+                        <input type="text" name="MAIL_MAILER" class="form-control es_input"
+                            placeholder="{{ __('MAIL MAILER') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_MAILER'] }}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL HOST') }} </strong></label>
+                        <input type="text" name="MAIL_HOST" class="form-control es_input"
+                            placeholder="{{ __('MAIL HOST') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_HOST'] }}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL PORT') }} </strong></label>
+                        <input type="text" name="MAIL_PORT" class="form-control  es_input"
+                            placeholder="{{ __('MAIL PORT') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_PORT'] }}">
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <label><strong>{{ __('SMS URL') }} </strong></label>
-                        <input type="text" name="SMS_URL" class="form-control"
-                            placeholder="{{ __('SMS URL') }}" autocomplete="off"
-                            value="{{ $generalSettings['sms__SMS_URL'] }}">
+                <div class="form-group row mt-1">
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL USERNAME') }} </strong></label>
+                        <input type="text" name="MAIL_USERNAME" class="form-control es_input"
+                            placeholder="{{ __('MAIL USERNAME') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_USERNAME'] }}">
                     </div>
 
-                    <div class="col-md-3">
-                        <label><strong>{{ __('API KEY') }} </strong></label>
-                        <input type="text" name="API_KEY" class="form-control"
-                            placeholder="{{ __('API KEY') }}" autocomplete="off"
-                            value="{{ $generalSettings['sms__API_KEY'] }}">
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL PASSWORD ') }} </strong></label>
+                        <input type="text" name="MAIL_PASSWORD" class="form-control es_input"
+                            placeholder="{{ __('MAIL PASSWORD ') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_PASSWORD'] }}">
                     </div>
 
-                    <div class="col-md-3">
-                        <label><strong>{{ __('SENDER ID') }} </strong></label>
-                        <input type="text" name="SENDER_ID" class="form-control"
-                            placeholder="{{ __('SENDER ID') }}" autocomplete="off"
-                            value="{{ $generalSettings['sms__SENDER_ID'] }}">
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL ENCRYPTION') }} </strong></label>
+                        <input type="text" name="MAIL_ENCRYPTION" class="form-control  es_input"
+                            placeholder="{{ __('MAIL ENCRYPTION') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_ENCRYPTION'] }}">
+                    </div>
+                </div>
+
+                <div class="form-group row mt-1">
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL FROM ADDRESS ') }}</strong></label>
+                        <input type="text" name="MAIL_FROM_ADDRESS" class="form-control es_input"
+                            placeholder="{{ __('MAIL FROM ADDRESS') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_FROM_ADDRESS'] }}">
                     </div>
 
-                    <div class="col-md-3 mt-1">
+                    <div class="col-md-4">
+                        <label><strong>{{ __('MAIL FROM NAME') }} </strong></label>
+                        <input type="text" name="MAIL_FROM_NAME" class="form-control es_input"
+                            placeholder="{{ __('MAIL FROM NAME') }}" autocomplete="off"
+                            value="{{ $emailSetting['MAIL_FROM_NAME'] }}">
+                    </div>
+
+                    <div class="col-md-4 mt-1">
                         <div class="row mt-4">
                             <p class="checkbox_input_wrap">
                                 <input type="checkbox"
-                                    {{  $generalSettings['sms__SMS_ACTIVE'] == 'true' ? 'CHECKED' : '' }}
-                                    name="SMS_ACTIVE" autocomplete="off"> &nbsp; <b>@lang('menu.is_active')</b>
+                                    {{  $emailSetting['MAIL_ACTIVE'] ? 'checked' : '' }}
+                                    name="MAIL_ACTIVE" autocomplete="off"> &nbsp; <b>@lang('menu.is_active')</b>
                             </p>
                         </div>
                     </div>
+                </div>
+
+                <div class="form-group row mt-1">
+
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                            <button class="btn btn-success submit_button float-end">@lang('menu.save_change')</button>
+                            <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
                         </div>
                     </div>
                 </div>
@@ -81,7 +116,7 @@
 @endsection
 @push('scripts')
     <script>
-        $('#sms_settings_form').on('submit', function(e) {
+         $('#email_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');

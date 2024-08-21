@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
 class PaymentMethodSeeder extends Seeder
 {
-
     public function getDefaultPaymentMethod(): array
     {
         return [
@@ -19,6 +18,7 @@ class PaymentMethodSeeder extends Seeder
             'Bank-Transfer',
         ];
     }
+
     /**
      * Run the database seeds.
      *
@@ -29,11 +29,11 @@ class PaymentMethodSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         PaymentMethod::truncate();
         if (PaymentMethod::count() == 0) {
-            \DB::statement("ALTER TABLE payment_methods AUTO_INCREMENT=1");
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE payment_methods AUTO_INCREMENT=1');
         }
         $paymentMethods = $this->getDefaultPaymentMethod();
         foreach ($paymentMethods as $paymentMethod) {
-            PaymentMethod::create(['name' => $paymentMethod, 'is_fixed' => 1]);
+            PaymentMethod::insert(['name' => $paymentMethod, 'is_fixed' => 1]);
         }
     }
 }

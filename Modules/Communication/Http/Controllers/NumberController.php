@@ -3,24 +3,24 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Modules\Communication\Entities\CommunicationContact;
+use Modules\Communication\Entities\CommunicationContactGroup;
 use Yajra\DataTables\Facades\DataTables;
-use Modules\Communication\Entities\ContactGroup;
-use Modules\Communication\Entities\Contacts;
-use Modules\Communication\Http\Controllers\Controller;
 
 class NumberController extends Controller
 {
     public function index(Request $request)
     {
-        $numbers = Contacts::all();
+        $numbers = CommunicationContact::all();
         if ($request->ajax()) {
             return DataTables::of($numbers)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit_number" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('communication.contacts.number.destroy', $row->id) . '" class="action-btn c-delete" id="delete_number" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('communication.contacts.number.destroy', $row->id).'" class="action-btn c-delete" id="delete_number" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('group', function ($row) {
@@ -29,13 +29,14 @@ class NumberController extends Controller
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         return route('communication.contacts.number.edit', $row->id);
-                    }
+                    },
                 ])
                 ->rawColumns(['action', 'group'])
                 ->smart(true)
                 ->make(true);
         }
-        $groups = ContactGroup::all();
+        $groups = CommunicationContactGroup::all();
+
         return view('communication::contacts.list.index', [
             'groups' => $groups,
         ]);
@@ -49,10 +50,10 @@ class NumberController extends Controller
             'mailing_address' => 'required',
             'whatsapp_number' => 'required',
             'name' => 'required',
-            'group_name' => 'required'
+            'group_name' => 'required',
         ]);
 
-        $number = new Contacts();
+        $number = new CommunicationContact();
 
         $number->phone_number = $request->phone_number;
         $number->email = $request->email;
@@ -67,9 +68,10 @@ class NumberController extends Controller
 
     public function edit(Request $request)
     {
-        $groups = ContactGroup::all();
-        $number = Contacts::find($request->id);
-        return view('communication::contacts.list.ajax_view_unit.edit_modal_body', compact('number','groups'));
+        $groups = CommunicationContactGroup::all();
+        $number = CommunicationContact::find($request->id);
+
+        return view('communication::contacts.list.ajax_view_unit.edit_modal_body', compact('number', 'groups'));
     }
 
     public function update(Request $request)
@@ -80,10 +82,10 @@ class NumberController extends Controller
             'mailing_address' => 'required',
             'whatsapp_number' => 'required',
             'name' => 'required',
-            'group_name' => 'required'
+            'group_name' => 'required',
         ]);
 
-        $number = Contacts::find($request->id);
+        $number = CommunicationContact::find($request->id);
         $number->group_id = $request->group_name;
         $number->name = $request->name;
         $number->phone_number = $request->phone_number;
@@ -98,9 +100,9 @@ class NumberController extends Controller
     public function destroy(Request $request)
     {
 
-        $number = Contacts::find($request->id);
+        $number = CommunicationContact::find($request->id);
         $number->delete();
+
         return response()->json('Contacts delete successfully');
     }
-
 }

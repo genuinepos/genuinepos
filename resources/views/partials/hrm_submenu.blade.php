@@ -28,16 +28,16 @@
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.attendance.shift') }}" class="bar-link">
+            <a href="{{ route('hrm.shifts.index') }}" class="bar-link">
                 <span><i class="fas fa-network-wired"></i></span>
             </a>
         </div>
-        <p class="switch_text">@lang('menu.shift')</p>
+        <p class="switch_text">{{ __("Shift") }}</p>
     </div>
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.attendance') }}" class="bar-link">
+            <a href="{{ route('hrm.attendances.index') }}" class="bar-link">
                 <span><i class="fas fa-paste"></i></span>
             </a>
         </div>
@@ -73,7 +73,7 @@
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.departments') }}" class="bar-link">
+            <a href="{{ route('hrm.departments.index') }}" class="bar-link">
                 <span><i class="far fa-building"></i></span>
             </a>
         </div>
@@ -82,7 +82,7 @@
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.designations') }}" class="bar-link">
+            <a href="{{ route('hrm.designations.index') }}" class="bar-link">
                 <span><i class="fas fa-map-marker-alt"></i></span>
             </a>
         </div>
@@ -125,11 +125,11 @@
                     @endif
 
                     <li>
-                        <a href="{{ route('hrm.attendance.shift') }}" class="text-white "><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                        <a href="{{ route('hrm.shifts.index') }}" class="text-white "><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.attendance') }}" class="text-white "><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                        <a href="{{ route('hrm.attendance.index') }}" class="text-white "><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                     </li>
 
                     <li>
@@ -141,15 +141,15 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                        <a href="{{ route('hrm.holidays.index') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
+                        <a href="{{ route('hrm.departments.index') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
+                        <a href="{{ route('hrm.designations.index') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
                     </li>
                 </ul>
             </div>
@@ -167,7 +167,7 @@
         <div class="card-title mt-1 ps-4">
             <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
                 <option value="">{{ __('All Business Location') }}</option>
-                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                 {{-- @foreach ($branches as $branch)
                     <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                 @endforeach --}}

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
 {
@@ -33,29 +33,34 @@ class ResetPasswordController extends Controller
 
     public function resetCurrentPassword(Request $request)
     {
-        return response()->json('Feature is disabled in this demo');
-        $this->validate($request,
-        [
-            'current_password' => 'required',
-            'password' => 'required|confirmed',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'current_password' => 'required',
+                'password' => 'required|confirmed',
+            ]
+        );
 
-        $adminUserHashtedPassword = auth()->user()->password;
-        $checkHashtedPasswordWithOldPassword = Hash::check($request->current_password, $adminUserHashtedPassword);
-        if ($checkHashtedPasswordWithOldPassword) {
-            if (!Hash::check($request->password, $adminUserHashtedPassword)) {
+        $userHashedPassword = auth()->user()->password;
+        $checkHashedPasswordWithOldPassword = Hash::check($request->current_password, $userHashedPassword);
+
+        if ($checkHashedPasswordWithOldPassword) {
+
+            if (!Hash::check($request->password, $userHashedPassword)) {
+
                 $user = User::find(Auth::user()->id);
                 $user->password = Hash::make($request->password);
                 $user->save();
                 Auth::logout();
-                return response()->json(['successMsg' => 'Successfully password has been changed.']);
-            }else{
-                return response()->json(['errorMsg' => 'Current password and new password is same.
-                If you want to change your current password please enter a new password']);
+                return response()->json(['successMsg' => __('Successfully password has been changed.')]);
+            } else {
+
+                return response()->json(['errorMsg' => __('Current password and new password is same.
+                If you want to change your current password please enter a new password')]);
             }
         } else {
-            return response()->json(['errorMsg' => 'Current password does not matched']);
+
+            return response()->json(['errorMsg' => __('Current password does not matched')]);
         }
     }
 }
-

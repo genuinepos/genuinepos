@@ -1,242 +1,265 @@
-@if ($type == 1)
-    <div class="row mt-1">
-        <div class="col-md-6">
-            <div class="input-group">
-                <label class="col-5"><b>@lang('menu.unit_cost') </b></label>
-                <div class="col-7">
-                    <input type="number" step="any" name="product_cost" class="form-control"
-                    autocomplete="off" id="product_cost" placeholder="0.00">
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="input-group">
-                <label class="col-5"><b>@lang('menu.price_exc_tax') </b></label>
-                <div class="col-7">
-                    <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="0.00">
-                </div>
+<div class="row gx-2 mt-1">
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __('Unit Cost (Exc. Tax)') }}</b></label>
+            <div class="col-8">
+                <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="product_cost" placeholder="0.00" data-next="tax_ac_id" autocomplete="off">
             </div>
         </div>
     </div>
 
-    <div class="row mt-1">
-        <div class="col-md-6">
-            <div class="input-group">
-                <label class="col-5"><b>@lang('menu.unit_cost') (Inc.Tax)</b></label>
-                <div class="col-7">
-                    <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="0.00">
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="input-group">
-                <label class="col-5"><b>@lang('menu.profit_margin')(%) </b></label>
-                <div class="col-7">
-                    <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : '' }}">
-                </div>
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __('Unit Cost (Inc. Tax)') }}</b></label>
+            <div class="col-8">
+                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control fw-bold" id="product_cost_with_tax" placeholder="0.00" data-next="tax_ac_id" autocomplete="off">
             </div>
         </div>
     </div>
+</div>
 
+<div class="row gx-2 mt-1">
     @if ($generalSettings['product__is_enable_price_tax'] == '1')
-        <div class="row mt-1">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <label class="col-5"><b>@lang('menu.tax') </b> </label>
-                    <div class="col-7">
-                        <select class="form-control" name="tax_id" id="tax_id">
-                            <option value="">@lang('menu.no_tax')</option>
-                            @foreach ($taxes as $tax)
-                                <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <label class="col-4"><b> {{ __('Tax') }}</b></label>
+                <div class="col-8">
+                    <select class="form-control" name="tax_ac_id" id="tax_ac_id" data-next="tax_type">
+                        <option data-tax_percent="0" value="">
+                            @lang('menu.no_tax')</option>
+                        @foreach ($taxAccounts as $tax)
+                            <option data-tax_percent="{{ $tax->tax_percent }}" value="{{ $tax->id }}">{{ $tax->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="input-group">
-                    <label class="col-5"><b>@lang('menu.tax_type') </b> </label>
-                    <div class="col-7">
-                        <select name="tax_type" class="form-control" id="tax_type">
-                            <option value="1">@lang('menu.exclusive')</option>
-                            <option value="2">@lang('menu.exclusive')</option>
-                        </select>
-                    </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <label class="col-4"><b>{{ __('Tax Type') }}</b> </label>
+                <div class="col-8">
+                    <select name="tax_type" class="form-control" id="tax_type" data-next="profit">
+                        <option value="1">{{ __('Exclusive') }}</option>
+                        <option value="2">{{ __('Inclusive') }}</option>
+                    </select>
                 </div>
             </div>
         </div>
     @endif
+</div>
 
-    <div class="row mt-1">
-        <div class="col-md-6">
-            <div class="input-group">
-                <label class="col-5"><b>@lang('menu.thumbnail_photo') </b> </label>
-                <div class="col-7">
-                    <input type="file" name="photo" class="form-control" id="photo">
-                    <span class="error error_photo"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="input-group">
-                <div class="col-12">
-                    <div class="row">
-                        <p class="checkbox_input_wrap">
-                        <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>{{ __('This product has varient') }}.</b> </p>
-                    </div>
-                </div>
+<div class="row gx-2 mt-1">
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __('Profit Margin(%)') }}</b></label>
+            <div class="col-8">
+                <input type="number" step="any" name="profit" class="form-control fw-bold" id="profit" value="{{ $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0 }}" data-next="product_price" placeholder="0.00" autocomplete="off">
             </div>
         </div>
     </div>
 
-    <div class="row mt-1">
-        <div class="dynamic_variant_create_area d-hide">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="add_more_btn">
-                        <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
-                    </div>
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __('Unit Price(Exc. Tax)') }}</b></label>
+            <div class="col-8">
+                <input type="number" step="any" name="product_price" class="form-control fw-bold" id="product_price" data-next="is_variant" placeholder="0.00" autocomplete="off">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row gx-2 mt-1">
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __('Has Multiple Unit?') }}</b> </label>
+            <div class="col-8">
+                <select name="has_multiple_unit" class="form-control" id="has_multiple_unit" data-next="type">
+                    <option value="0">{{ __('No') }}</option>
+                    <option value="1">{{ __('Yes') }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __('Has Variant?') }}</b> </label>
+            <div class="col-8">
+                <select name="is_variant" class="form-control" id="is_variant" data-next="type">
+                    <option value="0">{{ __('No') }}</option>
+                    <option value="1">{{ __('Yes') }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-1">
+    <div class="multi_unit_create_area d-hide">
+        <hr class="p-0 m-0 my-1 mx-1">
+        <div class="row align-items-end">
+
+            <div class="col-md-6">
+                <p class="fw-bold" style=" background: #6ce0cf; display: inline; padding: 2px 7px;">{{ __('Set Multiple Unit') }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <div class="add_more_btn">
+                    <a href="#" id="add_more_unit_btn" class="btn btn-sm btn-success float-end">{{ __('Add More') }}</a>
                 </div>
-                <div class="col-md-12">
-                    <div class="table-responsive mt-1">
-                        <table class="table modal-table table-sm">
-                            <thead>
-                                <tr class="text-center bg-primary variant_header">
-                                    <th class="text-white text-start">@lang('menu.select_variant')</th>
-                                    <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
-                                    </th>
-                                    <th colspan="2" class="text-white text-start">@lang('menu.default_cost')</th>
-                                    <th class="text-white text-start">@lang('menu.profit')(%)</th>
-                                    <th class="text-white text-start">@lang('menu.default_price') (Exc.Tax)</th>
-                                    <th class="text-white text-start">@lang('menu.variant_image')</th>
-                                    <th><i class="fas fa-trash-alt text-white"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody class="dynamic_variant_body">
+            </div>
+
+            <div class="col-md-12">
+                <div class="table-responsive mt-1">
+                    <table class="table modal-table table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-start">{{ __('By') }}</th>
+                                <th class="text-start"></th>
+                                <th class="text-start">{{ __('Quantity') }}</th>
+                                <th class="text-start">{{ __('To') }}</th>
+                                <th class="text-start">{{ __('Unit Cost (Exc. Tax)') }}</th>
+                                <th class="text-start">{{ __('Unit Cost (Inc. Tax)') }}</th>
+                                <th class="text-start">{{ __('Price (Exc. Tax)') }}</th>
+                                <th><i class="fas fa-trash-alt text-white"></i></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="multiple_unit_body">
+                            @isset($defaultUnitId)
                                 <tr>
-                                    <td class="text-start">
-                                        <select class="form-control form-control" name="" id="variants">
-                                            <option value="">Create Variation</option>
-                                            @foreach ($variants as $variant)
-                                                <option value="{{ $variant->id }}">{{ $variant->bulk_variant_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination">
+                                    <td class="text-start" style="min-width: 100px;">
+                                        <span id="span_base_unit_name" class="fw-bold base_unit_name">{{ __('1') }} {{ $defaultUnitName }}</span>
+                                        <input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="{{ $defaultUnitId }}">
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="@lang('menu.variant_code')">
+                                        <p class="fw-bold">X</p>
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="number" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing">
+                                        <input type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">
+                                        <input type="hidden" name="base_unit_multiplier" id="base_unit_multiplier">
+                                    </td>
+
+                                    <td class="text-start" style="min-width: 127px;">
+                                        <div class="row align-items-end">
+                                            <div class="col-md-2">
+                                                <p class="fw-bold p-1">{{ __('1') }}</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <select name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes select2" id="assigned_unit_id" style="min-width: 110px !important;">
+                                                    <option data-assigned_unit_name="" value="">{{ __('Unit') }}</option>
+                                                    @foreach ($units as $unit)
+                                                        <option data-assigned_unit_name="{{ $unit->name }}" value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="number" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
+                                        <input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __('0.00') }}">
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="number" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
+                                        <input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __('0.00') }}">
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="text" name="variant_prices_exc_tax[]" class="form-control" placeholder="@lang('menu.price_inc_tax')" id="variant_price_exc_tax">
+                                        <input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __('0.00') }}">
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="file" name="variant_image[]" class="form-control" id="variant_image">
-                                    </td>
-
-                                    <td class="text-start">
-                                        <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
+                                        <a href="#" id="unit_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                            @endisset
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-@else
-    <div class="row mt-1">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-8 offset-2">
-                    <div class="add_combo_product_input">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                            </div>
-                            <input type="text" name="search_product" class="form-control form-control-sm"
-                                autocomplete="off" id="search_product"
-                                placeholder="Product search/scan by product code">
-                        </div>
+</div>
 
-                        <div class="select_area">
-                            <ul class="variant_list_area">
+<div class="row mt-1">
+    <div class="dynamic_variant_create_area d-hide">
+        <div class="row mt-1 align-items-end">
+            <div class="col-md-6">
+                <p class="fw-bold" style="background: #7dd9f8; display: inline; padding: 2px 7px;">{{ __('Create Variant') }}</p>
+            </div>
 
-                            </ul>
-                        </div>
-                    </div>
+            <div class="col-md-6">
+                <div class="add_more_btn">
+                    <a href="#" id="add_more_variant_btn" class="btn btn-sm btn-success float-end">{{ __('Add More') }}</a>
                 </div>
+            </div>
 
-                <div class="col-md-10 offset-1 mt-1">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form_table_heading">
-                                <p class="m-0 pb-1"><strong>@lang('menu.create_combo_product')</strong></p>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table modal-table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>@lang('menu.product')</th>
-                                            <th>@lang('menu.quantity')</th>
-                                            <th>@lang('menu.unit_price')</th>
-                                            <th>@lang('menu.sub_total')</th>
-                                            <th><i class="fas fa-trash-alt"></i></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="combo_products">
+            <div class="col-md-12">
+                <div class="table-responsive mt-1">
+                    <table class="table modal-table table-sm">
+                        <thead>
+                            <tr class="text-center bg-primary variant_header">
+                                <th class="text-white text-start">{{ __('Select Variant') }}</th>
+                                <th class="text-white text-start">{{ __('Variant Code') }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Also known as SKU. Variant code(SKU) must be unique.') }}" class="fas fa-info-circle tp"></i></th>
+                                <th colspan="2" class="text-white text-start">{{ __('Unit Cost (Exc. Tax) & (Inc. Tax)') }}</th>
+                                <th class="text-white text-start">{{ __('Profit(%)') }}</th>
+                                <th class="text-white text-start">{{ __('Price Exc. Tax)') }}</th>
+                                <th class="text-white text-start">{{ __('Variant Photo') }}</th>
+                                <th><i class="fas fa-trash-alt text-white"></i></th>
+                            </tr>
+                        </thead>
 
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="3" class="text-center">@lang('menu.net_total_amount') </th>
-                                            <th>
-                                                {{ $generalSettings['business__currency']}} <span class="span_total_combo_price">0.00</span>
+                        <tbody class="dynamic_variant_body">
+                            <tr>
+                                <td class="text-start">
+                                    <select class="form-control form-control" id="variants">
+                                        <option value="">{{ __('Create Combination') }}</option>
+                                        @foreach ($bulkVariants as $bulkVariant)
+                                            <option value="{{ $bulkVariant->id }}">{{ $bulkVariant->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="index_numbers[]" id="index_number" value="0">
+                                    <input type="text" name="variant_combinations[]" id="variant_combination" class="form-control reqireable fw-bold" placeholder="{{ __('Variant Combination') }}">
+                                </td>
 
-                                                <input type="hidden" name="total_combo_price"
-                                                    id="total_combo_price"/>
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                                <td class="text-start">
+                                    <input type="text" name="variant_codes[]" class="form-control reqireable fw-bold" id="variant_code" placeholder="{{ __('Variant Code') }}">
+                                </td>
+
+                                <td class="text-start">
+                                    <input type="number" name="variant_costs_exc_tax[]" step="any" class="form-control requireable fw-bold" id="variant_cost_exc_tax" placeholder="{{ __('Unit Cost Exc. Tax') }}">
+                                </td>
+
+                                <td class="text-start">
+                                    <input readonly type="number" step="any" name="variant_costs_inc_tax[]" class="form-control requireable fw-bold" id="variant_cost_inc_tax" placeholder="{{ __('Unit Cost Inc. tax') }}">
+                                </td>
+
+                                <td class="text-start">
+                                    <input type="number" step="any" name="variant_profits[]" class="form-control requireable fw-bold" id="variant_profit" value="0.00" placeholder="{{ __('Profit') }}">
+                                </td>
+
+                                <td class="text-start">
+                                    <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable fw-bold" id="variant_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}">
+                                </td>
+
+                                <td class="text-start">
+                                    <input type="file" name="variant_image[]" class="form-control" id="variant_image">
+                                </td>
+
+                                <td class="text-start">
+                                    <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
+                                </td>
+                            </tr>
+
+                            <tr id="set_variant_multiple_units" class="set_variant_multiple_units">
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-3 offset-3">
-            <label><b>@lang('menu.x_margin')</b></label>
-            <input type="text" name="profit" class="form-control form-control-sm" id="profit"
-                value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
-        </div>
-
-        <div class="col-md-3">
-            <label><b>@lang('menu.default_price') Exc.Tax </b></label>
-            <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
-        </div>
-    </div>
-@endif
+</div>

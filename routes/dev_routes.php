@@ -68,11 +68,11 @@ Route::get('my-test', function () {
         $port = env('DB_PORT');
 
         config([
-            'database.connections.bondhon_missing' => [
+            'database.connections.bondhon' => [
                 'driver' => 'mysql',
                 'host' => $host,
                 'port' => $port,
-                'database' => 'bondhon_missing',
+                'database' => 'bondhon',
                 'username' => 'root',
                 'password' => $password,
                 'charset' => 'utf8mb4',
@@ -84,115 +84,115 @@ Route::get('my-test', function () {
         ]);
 
         // ///////// Add category section
-        // $dbCategories = DB::connection('bondhon_missing')->table('categories')->get();
-        // $categoryService = new \App\Services\Products\CategoryService();
+        $dbCategories = DB::connection('bondhon')->table('categories')->get();
+        $categoryService = new \App\Services\Products\CategoryService();
 
-        // foreach ($dbCategories as $key => $dbCategory) {
+        foreach ($dbCategories as $key => $dbCategory) {
 
-        //     $exists = DB::table('categories')->where('name', $dbCategory->name)->exists();
+            $exists = DB::table('categories')->where('name', $dbCategory->name)->exists();
 
-        //     if (!$exists) {
+            if (!$exists) {
 
-        //         $categoryReq = new \stdClass();
-        //         $categoryReq->name = $dbCategory->name;
-        //         $categoryReq->description = null;
-        //         $categoryReq->photo = null;
+                $categoryReq = new \stdClass();
+                $categoryReq->name = $dbCategory->name;
+                $categoryReq->description = null;
+                $categoryReq->photo = null;
 
-        //         $addCategory = $categoryService->addCategory(request: $categoryReq, codeGenerator: $codeGenerator);
-        //     }
-        // }
-        // /// Add category section End
+                $addCategory = $categoryService->addCategory(request: $categoryReq, codeGenerator: $codeGenerator);
+            }
+        }
+        /// Add category section End
 
-        // ////////Add category section
-        // $dbBrands = DB::connection('bondhon_missing')->table('brands')->get();
-        // $brandService = new \App\Services\Products\BrandService();
+        ////////Add category section
+        $dbBrands = DB::connection('bondhon')->table('brands')->get();
+        $brandService = new \App\Services\Products\BrandService();
 
-        // foreach ($dbBrands as $key => $dbBrand) {
+        foreach ($dbBrands as $key => $dbBrand) {
 
-        //     $exists = DB::table('brands')->where('name', $dbBrand->name)->exists();
+            $exists = DB::table('brands')->where('name', $dbBrand->name)->exists();
 
-        //     if (!$exists) {
+            if (!$exists) {
 
-        //         $brandReq = new \stdClass();
-        //         $brandReq->name = $dbBrand->name;
-        //         $brandReq->photo = null;
+                $brandReq = new \stdClass();
+                $brandReq->name = $dbBrand->name;
+                $brandReq->photo = null;
 
-        //         $addBrand = $brandService->addBrand(request: $brandReq, codeGenerator: $codeGenerator);
-        //     }
-        // }
-        // //////////Add category section End
+                $addBrand = $brandService->addBrand(request: $brandReq, codeGenerator: $codeGenerator);
+            }
+        }
+        //////////Add category section End
 
-        // ////////Add product section
-        // $unitService = new \App\Services\Products\UnitService();
-        // $dbProducts = DB::connection('bondhon_missing')->table('products')
-        //     ->leftJoin('categories', 'products.category_id', 'categories.id')
-        //     ->leftJoin('brands', 'products.brand_id', 'brands.id')
-        //     ->leftJoin('units', 'products.unit_id', 'units.id')
-        //     ->select(
-        //         'products.*',
-        //         'categories.name as cate_name',
-        //         'brands.id as brand_id',
-        //         'brands.name as brand_name',
-        //         'units.name as unit_name',
-        //         'units.code_name as unit_code',
-        //     )->get();
+        ////////Add product section
+        $unitService = new \App\Services\Products\UnitService();
+        $dbProducts = DB::connection('bondhon')->table('products')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->leftJoin('brands', 'products.brand_id', 'brands.id')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->select(
+                'products.*',
+                'categories.name as cate_name',
+                'brands.id as brand_id',
+                'brands.name as brand_name',
+                'units.name as unit_name',
+                'units.code_name as unit_code',
+            )->get();
 
-        // foreach ($dbProducts as $key => $dbProduct) {
+        foreach ($dbProducts as $key => $dbProduct) {
 
-        //     $exists = DB::table('products')->where('name', $dbProduct->name)->where('product_code', $dbProduct->product_code)->exists();
+            $exists = DB::table('products')->where('name', $dbProduct->name)->where('product_code', $dbProduct->product_code)->exists();
 
-        //     if (!$exists) {
+            if (!$exists) {
 
-        //         $cate = DB::table('categories')->where('name', $dbProduct->cate_name)->select('id')->first();
-        //         $brand = DB::table('brands')->where('name', $dbProduct->brand_name)->select('id')->first();
+                $cate = DB::table('categories')->where('name', $dbProduct->cate_name)->select('id')->first();
+                $brand = DB::table('brands')->where('name', $dbProduct->brand_name)->select('id')->first();
 
-        //         $unit = DB::table('units')->where('name', $dbProduct->unit_name)->select('id')->first();
-        //         $unitId = isset($unit) ? $unit->id : null;
+                $unit = DB::table('units')->where('name', $dbProduct->unit_name)->select('id')->first();
+                $unitId = isset($unit) ? $unit->id : null;
 
-        //         if (!isset($unit)) {
+                if (!isset($unit)) {
 
-        //             $unitReq = new \stdClass();
-        //             $unitReq->name = $dbProduct->unit_name;
-        //             $unitReq->short_name = $dbProduct->unit_code;
-        //             $unitReq->as_a_multiplier_of_other_unit = 0;
+                    $unitReq = new \stdClass();
+                    $unitReq->name = $dbProduct->unit_name;
+                    $unitReq->short_name = $dbProduct->unit_code;
+                    $unitReq->as_a_multiplier_of_other_unit = 0;
 
-        //             $addUnit = $unitService->addUnit(request: $unitReq, codeGenerator: $codeGenerator);
-        //             $unitId = $addUnit->id;
-        //         }
+                    $addUnit = $unitService->addUnit(request: $unitReq, codeGenerator: $codeGenerator);
+                    $unitId = $addUnit->id;
+                }
 
-        //         $addProduct = new \App\Models\Products\Product();
-        //         $addProduct->type = 1;
-        //         $addProduct->name = $dbProduct->name;
-        //         $addProduct->product_code = $dbProduct->product_code;
-        //         $addProduct->category_id = $cate?->id;
-        //         $addProduct->brand_id = $brand?->id;
-        //         $addProduct->unit_id = $unitId;
-        //         // $addProduct->has_batch_no_expire_date = $dbProduct->has_batch_no_expire_date;
-        //         $addProduct->is_show_emi_on_pos = $dbProduct->is_show_emi_on_pos;
-        //         $addProduct->is_purchased = 1;
-        //         $addProduct->product_cost = $dbProduct->product_cost;
-        //         $addProduct->product_cost_with_tax = $dbProduct->product_cost_with_tax;
-        //         $addProduct->profit = $dbProduct->profit;
-        //         $addProduct->product_price = $dbProduct->product_price;
-        //         $addProduct->save();
+                $addProduct = new \App\Models\Products\Product();
+                $addProduct->type = 1;
+                $addProduct->name = $dbProduct->name;
+                $addProduct->product_code = $dbProduct->product_code;
+                $addProduct->category_id = $cate?->id;
+                $addProduct->brand_id = $brand?->id;
+                $addProduct->unit_id = $unitId;
+                // $addProduct->has_batch_no_expire_date = $dbProduct->has_batch_no_expire_date;
+                $addProduct->is_show_emi_on_pos = $dbProduct->is_show_emi_on_pos;
+                $addProduct->is_purchased = 1;
+                $addProduct->product_cost = $dbProduct->product_cost;
+                $addProduct->product_cost_with_tax = $dbProduct->product_cost_with_tax;
+                $addProduct->profit = $dbProduct->profit;
+                $addProduct->product_price = $dbProduct->product_price;
+                $addProduct->save();
 
-        //         $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
-        //         $addProductAccessBranch->product_id = $addProduct->id;
-        //         $addProductAccessBranch->save();
+                $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
+                $addProductAccessBranch->product_id = $addProduct->id;
+                $addProductAccessBranch->save();
 
-        //         if (auth()->user()->branch_id) {
+                if (auth()->user()->branch_id) {
 
-        //             $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
-        //             $addProductAccessBranch->product_id = $addProduct->id;
-        //             $addProductAccessBranch->branch_id = auth()->user()->branch_id;
-        //             $addProductAccessBranch->save();
-        //         }
-        //     }
-        // }
-        // echo 'All product is done' . '</br>';
+                    $addProductAccessBranch = new \App\Models\Products\ProductAccessBranch();
+                    $addProductAccessBranch->product_id = $addProduct->id;
+                    $addProductAccessBranch->branch_id = auth()->user()->branch_id;
+                    $addProductAccessBranch->save();
+                }
+            }
+        }
+        echo 'All product is done' . '</br>';
 
         ////Add Purchases
-        // $dbPurchases = DB::connection('bondhon_missing')->table('purchases')
+        // $dbPurchases = DB::connection('bondhon')->table('purchases')
         //     ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
         //     ->select(
         //         'purchases.*',
@@ -309,7 +309,7 @@ Route::get('my-test', function () {
         //         // Add supplier A/c ledger Entry For Purchase
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Purchase->value, account_id: $addPurchase->supplier_account_id, date: $addPurchase->date, trans_id: $addPurchase->id, amount: $addPurchase->total_purchase_amount, amount_type: 'credit');
 
-        //         $dbPurchaseProducts =  DB::connection('bondhon_missing')->table('purchase_products')
+        //         $dbPurchaseProducts =  DB::connection('bondhon')->table('purchase_products')
         //             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
         //             ->where('purchase_id', $dbPurchase->id)
         //             ->select('purchase_products.*', 'products.name as product_name', 'products.product_code')
@@ -384,7 +384,7 @@ Route::get('my-test', function () {
         // echo 'All Purchases is Created-' . '</br>';
 
         ///// Add Sales
-        // $dbSales = DB::connection('bondhon_missing')->table('sales')
+        // $dbSales = DB::connection('bondhon')->table('sales')
         //     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
         //     ->select(
         //         'sales.*',
@@ -492,7 +492,7 @@ Route::get('my-test', function () {
         //         // Add supplier A/c ledger Entry For Sales
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $addSale->customer_account_id, date: $addSale->date, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'debit');
 
-        //         $dbSaleProducts =  DB::connection('bondhon_missing')->table('sale_products')
+        //         $dbSaleProducts =  DB::connection('bondhon')->table('sale_products')
         //             ->leftJoin('products', 'sale_products.product_id', 'products.id')
         //             ->where('sale_id', $dbSale->id)
         //             ->select('sale_products.*', 'products.name as product_name')
@@ -555,7 +555,7 @@ Route::get('my-test', function () {
         // echo 'All Sale is done' . '</br>';
 
         /////Add Purchase Returns
-        // $dbPurchaseReturns = DB::connection('bondhon_missing')->table('purchase_returns')
+        // $dbPurchaseReturns = DB::connection('bondhon')->table('purchase_returns')
         //     ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
         //     ->select(
         //         'purchase_returns.*',
@@ -649,7 +649,7 @@ Route::get('my-test', function () {
         //         // Add supplier A/c ledger Entry For Purchase
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
 
-        //         $dbPurchaseReturnProducts =  DB::connection('bondhon_missing')->table('purchase_return_products')
+        //         $dbPurchaseReturnProducts =  DB::connection('bondhon')->table('purchase_return_products')
         //             ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
         //             ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
         //             ->select('purchase_return_products.*', 'products.name as product_name')
@@ -684,7 +684,7 @@ Route::get('my-test', function () {
         // echo 'All Purchase Returns is done-' . '</br>';
 
         // /// Add Sale Returns
-        $dbSaleReturns = DB::connection('bondhon_missing')->table('sale_returns')
+        $dbSaleReturns = DB::connection('bondhon')->table('sale_returns')
             ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
             ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
             ->select(
@@ -787,7 +787,7 @@ Route::get('my-test', function () {
                 // Add Customer A/c ledger Entry For Sales Return
                 $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
 
-                $dbSaleReturnProducts =  DB::connection('bondhon_missing')->table('sale_return_products')
+                $dbSaleReturnProducts =  DB::connection('bondhon')->table('sale_return_products')
                     ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
                     ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
                     ->select('sale_return_products.*', 'products.name as product_name')
@@ -904,7 +904,7 @@ Route::get('my-test', function () {
 
         //////Add Expenses
         $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
-        $dbExpenses = DB::connection('bondhon_missing')->table('expanses')->get();
+        $dbExpenses = DB::connection('bondhon')->table('expanses')->get();
         foreach ($dbExpenses as $dbExpense) {
 
             $existsExpense = DB::table('accounting_vouchers')
@@ -919,7 +919,7 @@ Route::get('my-test', function () {
 
                 $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
 
-                $dbExpenseDescriptions = $dbExpenses = DB::connection('bondhon_missing')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
+                $dbExpenseDescriptions = $dbExpenses = DB::connection('bondhon')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
                     ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
                     ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
                     ->get();

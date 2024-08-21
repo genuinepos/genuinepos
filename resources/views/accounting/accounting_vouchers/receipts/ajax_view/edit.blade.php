@@ -130,6 +130,7 @@
 
             <form id="edit_receipt_form" action="{{ route('receipts.update', $receipt->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" id="current_received_amount" value="{{ $receipt->total_amount }}">
                 <div class="form-group row">
                     <div class="col-md-4">
                         <div class="row" style="border-right:1px solid black;">

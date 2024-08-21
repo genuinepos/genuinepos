@@ -68,11 +68,11 @@ Route::get('my-test', function () {
         $port = env('DB_PORT');
 
         config([
-            'database.connections.bondhon_missing' => [
+            'database.connections.bondhon' => [
                 'driver' => 'mysql',
                 'host' => $host,
                 'port' => $port,
-                'database' => 'bondhon_missing',
+                'database' => 'bondhon',
                 'username' => 'root',
                 'password' => $password,
                 'charset' => 'utf8mb4',
@@ -84,7 +84,7 @@ Route::get('my-test', function () {
         ]);
 
         /////////// Add category section
-        $dbCategories = DB::connection('bondhon_missing')->table('categories')->get();
+        $dbCategories = DB::connection('bondhon')->table('categories')->get();
         $categoryService = new \App\Services\Products\CategoryService();
 
         foreach ($dbCategories as $key => $dbCategory) {
@@ -104,7 +104,7 @@ Route::get('my-test', function () {
         ///// Add category section End
 
         //////////Add category section
-        $dbBrands = DB::connection('bondhon_missing')->table('brands')->get();
+        $dbBrands = DB::connection('bondhon')->table('brands')->get();
         $brandService = new \App\Services\Products\BrandService();
 
         foreach ($dbBrands as $key => $dbBrand) {
@@ -124,7 +124,7 @@ Route::get('my-test', function () {
 
         ////////Add product section
         $unitService = new \App\Services\Products\UnitService();
-        $dbProducts = DB::connection('bondhon_missing')->table('products')
+        $dbProducts = DB::connection('bondhon')->table('products')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
@@ -192,7 +192,7 @@ Route::get('my-test', function () {
         echo 'All product is done' . '</br>';
 
         ////Add Purchases
-        $dbPurchases = DB::connection('bondhon_missing')->table('purchases')
+        $dbPurchases = DB::connection('bondhon')->table('purchases')
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->select(
                 'purchases.*',
@@ -309,7 +309,7 @@ Route::get('my-test', function () {
                 // Add supplier A/c ledger Entry For Purchase
                 $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Purchase->value, account_id: $addPurchase->supplier_account_id, date: $addPurchase->date, trans_id: $addPurchase->id, amount: $addPurchase->total_purchase_amount, amount_type: 'credit');
 
-                $dbPurchaseProducts =  DB::connection('bondhon_missing')->table('purchase_products')
+                $dbPurchaseProducts =  DB::connection('bondhon')->table('purchase_products')
                     ->leftJoin('products', 'purchase_products.product_id', 'products.id')
                     ->where('purchase_id', $dbPurchase->id)
                     ->select('purchase_products.*', 'products.name as product_name', 'products.product_code')
@@ -384,7 +384,7 @@ Route::get('my-test', function () {
         echo 'All Purchases is Created-' . '</br>';
 
         ///// Add Sales
-        $dbSales = DB::connection('bondhon_missing')->table('sales')
+        $dbSales = DB::connection('bondhon')->table('sales')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
             ->select(
                 'sales.*',
@@ -492,7 +492,7 @@ Route::get('my-test', function () {
                 // Add supplier A/c ledger Entry For Sales
                 $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $addSale->customer_account_id, date: $addSale->date, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'debit');
 
-                $dbSaleProducts =  DB::connection('bondhon_missing')->table('sale_products')
+                $dbSaleProducts =  DB::connection('bondhon')->table('sale_products')
                     ->leftJoin('products', 'sale_products.product_id', 'products.id')
                     ->where('sale_id', $dbSale->id)
                     ->select('sale_products.*', 'products.name as product_name')
@@ -555,7 +555,7 @@ Route::get('my-test', function () {
         echo 'All Sale is done' . '</br>';
 
         /////Add Purchase Returns
-        $dbPurchaseReturns = DB::connection('bondhon_missing')->table('purchase_returns')
+        $dbPurchaseReturns = DB::connection('bondhon')->table('purchase_returns')
             ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
             ->select(
                 'purchase_returns.*',
@@ -646,7 +646,7 @@ Route::get('my-test', function () {
                 // Add supplier A/c ledger Entry For Purchase
                 $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
 
-                $dbPurchaseReturnProducts =  DB::connection('bondhon_missing')->table('purchase_return_products')
+                $dbPurchaseReturnProducts =  DB::connection('bondhon')->table('purchase_return_products')
                     ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
                     ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
                     ->select('purchase_return_products.*', 'products.name as product_name')
@@ -681,7 +681,7 @@ Route::get('my-test', function () {
         echo 'All Purchase Returns is done-' . '</br>';
 
         /// Add Sale Returns
-        $dbSaleReturns = DB::connection('bondhon_missing')->table('sale_returns')
+        $dbSaleReturns = DB::connection('bondhon')->table('sale_returns')
             ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
             ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
             ->select(
@@ -781,7 +781,7 @@ Route::get('my-test', function () {
                 // Add Customer A/c ledger Entry For Sales Return
                 $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
 
-                $dbSaleReturnProducts =  DB::connection('bondhon_missing')->table('sale_return_products')
+                $dbSaleReturnProducts =  DB::connection('bondhon')->table('sale_return_products')
                     ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
                     ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
                     ->select('sale_return_products.*', 'products.name as product_name')
@@ -898,7 +898,7 @@ Route::get('my-test', function () {
 
         //////Add Expenses
         $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
-        $dbExpenses = DB::connection('bondhon_missing')->table('expanses')->get();
+        $dbExpenses = DB::connection('bondhon')->table('expanses')->get();
         foreach ($dbExpenses as $dbExpense) {
 
             $existsExpense = DB::table('accounting_vouchers')
@@ -913,7 +913,7 @@ Route::get('my-test', function () {
 
                 $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
 
-                $dbExpenseDescriptions = $dbExpenses = DB::connection('bondhon_missing')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
+                $dbExpenseDescriptions = $dbExpenses = DB::connection('bondhon')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
                     ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
                     ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
                     ->get();

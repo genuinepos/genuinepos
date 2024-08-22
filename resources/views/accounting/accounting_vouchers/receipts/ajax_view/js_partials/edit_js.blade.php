@@ -97,14 +97,15 @@
         var receivedAmount = $('#receipt_received_amount').val() ? $('#receipt_received_amount').val() : 0;
         var closingBalanceFlatAmount = $('#closing_balance_flat_amount').val() ? $('#closing_balance_flat_amount').val() : 0;
         var defaultBalanceType = $('#default_balance_type').val() ? $('#default_balance_type').val() : 0;
+        var currentReceivedAmount = $('#current_received_amount').val() ? $('#current_received_amount').val() : 0;
 
         var currentBalance = 0;
         if (defaultBalanceType == 'dr') {
 
-            currentBalance = parseFloat(closingBalanceFlatAmount) - parseFloat(receivedAmount);
+            currentBalance = parseFloat(closingBalanceFlatAmount) - parseFloat(receivedAmount) + parseFloat(currentReceivedAmount);
         }else {
 
-            currentBalance = parseFloat(closingBalanceFlatAmount) + parseFloat(receivedAmount);
+            currentBalance = parseFloat(closingBalanceFlatAmount) + parseFloat(receivedAmount) - parseFloat(currentReceivedAmount);
         }
 
         $('#closing_balance_string').val(bdFormat(currentBalance));

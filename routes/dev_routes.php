@@ -1018,7 +1018,7 @@ Route::get('my-test', function () {
         $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
 
 
-        $accountingVouchers = $accountingVoucherService->accountingVouchers()->whereIn('voucher_type', [1, 2])->orderBy('date_ts', 'asc')->get();
+        $accountingVouchers = $accountingVoucherService->accountingVouchers()->whereIn('voucher_type', [2])->orderBy('date_ts', 'asc')->cursor();
 
         foreach ($accountingVouchers as $accountingVoucher) {
             $accountingVoucher->voucher_no = null;

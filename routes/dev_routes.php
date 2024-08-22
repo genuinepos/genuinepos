@@ -1025,7 +1025,6 @@ Route::get('my-test', function () {
             $accountingVoucher->save();
         }
 
-        $accountingVouchers = $accountingVoucherService->accountingVouchers()->orderBy('date_ts', 'asc')->cursor();
         foreach ($accountingVouchers as $accountingVoucher) {
 
             $voucherPrefix = null;

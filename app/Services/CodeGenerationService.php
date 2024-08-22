@@ -86,49 +86,49 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthWise2(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', string $dateTimePrefix = null, $branchId = null): string
-    {
-        // Fetch the last entry for the given branch
+    // public function generateMonthWise2(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', string $dateTimePrefix = null, $branchId = null): string
+    // {
+    //     // Fetch the last entry for the given branch
 
-        $entryRaw = DB::table($table)
-            ->where('branch_id', $branchId)
-            ->whereNotNull($column)
-            ->orderByRaw("
-        CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC
-    ")
-            ->orderByRaw("
-        CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC
-    ")
-            ->first(["$column"]);
+    //     $entryRaw = DB::table($table)
+    //         ->where('branch_id', $branchId)
+    //         ->whereNotNull($column)
+    //         ->orderByRaw("
+    //     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC
+    // ")
+    //         ->orderByRaw("
+    //     CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC
+    // ")
+    //         ->first(["$column"]);
 
-        dd($entryRaw);
+    //     dd($entryRaw);
 
-        // Set default values for prefix and date prefix
-        $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
-        $dateTimeStrPrefix = $dateTimePrefix ? $dateTimePrefix : date('ym');
-        $lastDigitsNextValue = 1;
+    //     // Set default values for prefix and date prefix
+    //     $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
+    //     $dateTimeStrPrefix = $dateTimePrefix ? $dateTimePrefix : date('ym');
+    //     $lastDigitsNextValue = 1;
 
-        if (isset($entryRaw)) {
-            $entry = trim($entryRaw->$column);
-            $splitterSplittedArray = explode($splitter, $entry);
-            $serial = end($splitterSplittedArray); // Get the last part, which is the serial number
-            // dd($serial);
-            $previousMonthDigits = substr($splitterSplittedArray[1], -2);
-            $currentMonthDigit = date('m');
+    //     if (isset($entryRaw)) {
+    //         $entry = trim($entryRaw->$column);
+    //         $splitterSplittedArray = explode($splitter, $entry);
+    //         $serial = end($splitterSplittedArray); // Get the last part, which is the serial number
+    //         // dd($serial);
+    //         $previousMonthDigits = substr($splitterSplittedArray[1], -2);
+    //         $currentMonthDigit = date('m');
 
-            if (intval($currentMonthDigit) === intval($previousMonthDigits)) {
-                $lastDigitsNextValue = intval($serial) + 1;
-            }
-        }
+    //         if (intval($currentMonthDigit) === intval($previousMonthDigits)) {
+    //             $lastDigitsNextValue = intval($serial) + 1;
+    //         }
+    //     }
 
-        // Create the serial number with dynamic length
-        $lastDigitsFinal = str_pad($lastDigitsNextValue, $digits, '0', STR_PAD_LEFT);
+    //     // Create the serial number with dynamic length
+    //     $lastDigitsFinal = str_pad($lastDigitsNextValue, $digits, '0', STR_PAD_LEFT);
 
-        // Generate the final string
-        $finalStr = $prefix . $splitter . $dateTimeStrPrefix . $splitter . $lastDigitsFinal;
+    //     // Generate the final string
+    //     $finalStr = $prefix . $splitter . $dateTimeStrPrefix . $splitter . $lastDigitsFinal;
 
-        return $finalStr;
-    }
+    //     return $finalStr;
+    // }
 
     public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?int $branchId = null, ?string $dateTimePrefix = null, ?string $intVal = null): string
     {

@@ -324,21 +324,17 @@ class GeneralProductSearchService
                 $variantStock = DB::table('product_stocks')->where('product_id', $productId)
                     ->where('variant_id', $variantId)
                     ->where('warehouse_id', $warehouseId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->first();
 
-                $stock = $variantStock->sum('stock');
+                $stock = isset($variantStock) ? $variantStock->stock : 0;
             } else {
 
                 $productStock = DB::table('product_stocks')
                     ->where('product_id', $productId)
                     ->where('warehouse_id', $warehouseId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->first();
 
-                $stock = $productStock->sum('stock');
+                $stock = isset($productStock) ? $productStock->stock : 0;
             }
         } else {
 
@@ -347,21 +343,18 @@ class GeneralProductSearchService
                 $variantStock = DB::table('product_stocks')->where('product_id', $productId)
                     ->where('variant_id', $variantId)
                     ->where('branch_id', $branchId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->where('warehouse_id', null)
+                    ->first();
 
-                $stock = $variantStock->sum('stock');
+                $stock = isset($variantStock) ? $variantStock->stock : 0;
             } else {
 
                 $productStock = DB::table('product_stocks')
-                    ->where('product_id', $productId)
-                    ->where('branch_id', $branchId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->where('product_id', $productId)->where('branch_id', $branchId)
+                    ->where('warehouse_id', null)
+                    ->first();
 
-                $stock = $productStock->sum('stock');
+                $stock = isset($productStock) ? $productStock->stock : 0;
             }
         }
 

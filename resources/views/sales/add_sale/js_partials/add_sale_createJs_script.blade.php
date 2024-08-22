@@ -816,8 +816,6 @@
 
     $('#e_descriptions').on('input keypress', function(e) {
 
-        calculateEditOrAddAmount();
-
         if (e.which == 13) {
 
             var warehouse = $('#e_warehouse_id').val();
@@ -833,11 +831,54 @@
 
     $('#e_warehouse_id').on('change keypress click', function(e) {
 
-        calculateEditOrAddAmount();
-
         if (e.which == 0) {
 
             $('#add_item').focus();
+        }
+    });
+
+    $(document).on('change', '#e_warehouse_id', function(e) {
+
+        var warehouse_id = $(this).val();
+        var e_product_id = $('#e_product_id').val() ? $('#e_product_id').val() : null;
+        var e_variant_id = $('#e_variant_id').val();
+
+        if (e_product_id) {
+
+            var route = '';
+            if (e_variant_id != 'noid') {
+
+                var url = "{{ route('general.product.search.variant.product.stock', [':product_id', ':variant_id', ':warehouse_id']) }}";
+                route = url.replace(':product_id', e_product_id);
+                route = route.replace(':variant_id', e_variant_id);
+                route = route.replace(':warehouse_id', warehouse_id);
+            } else {
+
+                var url = "{{ route('general.product.search.single.product.stock', [':product_id', ':warehouse_id']) }}";
+                route = url.replace(':product_id', e_product_id);
+                route = route.replace(':warehouse_id', warehouse_id);
+            }
+
+            $.ajax({
+                url: route,
+                type: 'get',
+                dataType: 'json',
+                success: function(data) {
+
+                    var status = $('#status').val();
+
+                    if (status == 1 || status == '') {
+
+                        if ($.isEmptyObject(data.errorMsg)) {
+
+                            $('#stock_quantity').val(data.stock);
+                        } else {
+
+                            $('#stock_quantity').val(parseFloat(0).toFixed(2));
+                        }
+                    }
+                }
+            })
         }
     });
 

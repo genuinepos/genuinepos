@@ -151,7 +151,7 @@ $(document).on('submit', '#prepare_to_exchange', function (e) {
 
             //$('#previous_due').val(data.sale.due);
 
-            $('#customer_account_id').val(data.sale.customer_account_id);
+            $('#customer_account_id').val(data.sale.customer_account_id).trigger('change');
             calculateTotalAmount();
             var exchange_url = $('#exchange_url').val();
             $('#pos_submit_form').attr('action', exchange_url);

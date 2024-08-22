@@ -225,7 +225,7 @@ class SalesReturnService
     {
         if (isset($customerAccount) && $customerAccount->is_walk_in_customer == BooleanType::True->value && $request->current_balance != 0) {
 
-            return ['pass' => false, 'msg' => __('Walk-In-Customer is not credit customer.So Walk-In-Customer current balance must be 0.')];
+            return ['pass' => false, 'msg' => __('Walk-In-Customer is not credit customer. So Walk-In-Customer current balance must be 0.')];
         }
 
         if (!isset($request->product_ids)) {

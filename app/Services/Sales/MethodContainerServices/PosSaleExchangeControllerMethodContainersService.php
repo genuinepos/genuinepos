@@ -109,6 +109,8 @@ class PosSaleExchangeControllerMethodContainersService implements PosSaleExchang
 
         $updateExchangeableSale = $this->saleExchangeService->updateExchangeableSale(request: $request, sale: $sale);
 
+        $this->saleService->adjustSaleInvoiceAmounts(sale: $updateExchangeableSale);
+
         $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: $updateExchangeableSale->date, accountId: $updateExchangeableSale->customer_account_id, transId: $updateExchangeableSale->id, amount: $updateExchangeableSale->total_invoice_amount, amountType: 'debit');
 
         // Add Sale A/c Ledger Entry

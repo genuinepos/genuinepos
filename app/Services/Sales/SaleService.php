@@ -518,6 +518,9 @@ class SaleService
         if (($request->status == SaleStatus::Order->value || $request->status == SaleStatus::Quotation->value) && $customer->is_walk_in_customer == 1) {
 
             return ['pass' => false, 'msg' => __('Listed customer is required for sales order and quotation.')];
+        } else if ($request->status == SaleStatus::Final->value && $customer->is_walk_in_customer == 1 && $request->total_invoice_amount < 0) {
+
+            return ['pass' => false, 'msg' => __('Invoice amount must not be less than 0 for Walk-In-Customer.')];
         }
 
         if ($request->status == SaleStatus::Final->value && $request->current_balance > 0) {

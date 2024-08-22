@@ -49,12 +49,8 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             ->where('branch_id', $branchId)
             ->whereNotNull($column)
             // ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
-            ->orderByRaw("
-            CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC
-        ")
-            ->orderByRaw("
-            CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC
-        ")
+            ->orderByRaw("CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC")
+            ->orderByRaw(" CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 
@@ -140,8 +136,10 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             ->whereNotNull($column)
             ->where('branch_id', $branchId)
             ->where($typeColName, $typeValue)
-            ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+            // ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
+            ->orderByRaw("CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC")
+            ->orderByRaw(" CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC")
             ->first(["$column"]);
 
         // dd($entryRaw);
@@ -186,7 +184,9 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             $query->where('branch_id', $branchId);
         }
 
-        $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+        // $entryRaw = $query->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+        $entryRaw = $query->orderByRaw("CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC")
+            ->orderByRaw(" CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 
@@ -224,7 +224,9 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $entryRaw = DB::table($table)
             ->where('branch_id', $branchId)
             ->whereNotNull($column)
-            ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+            // ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+            ->orderByRaw("CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`$column`, '$splitter', 2), '$splitter', -1) AS UNSIGNED) DESC")
+            ->orderByRaw(" CAST(SUBSTRING_INDEX(`$column`, '$splitter', -1) AS UNSIGNED) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 

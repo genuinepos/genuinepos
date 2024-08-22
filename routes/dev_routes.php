@@ -21,34 +21,34 @@ Route::get('my-test', function () {
         DB::beginTransaction();
 
         // return 'ok';
-        // $generalSettings = config('generalSettings');
-        // $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
-        // $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
-        // $purchaseInvoicePrefix = $generalSettings['prefix__purchase_invoice_prefix'] ? $generalSettings['prefix__purchase_invoice_prefix'] : 'PI';
-        // $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
-        // $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
-        // $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
-        // $saleInvoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
-        // $receiptVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
-        // $purchaseReturnVoucherPrefix = $generalSettings['prefix__purchase_return_prefix'] ? $generalSettings['prefix__purchase_return_prefix'] : 'PR';
+        $generalSettings = config('generalSettings');
+        $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
+        $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
+        $purchaseInvoicePrefix = $generalSettings['prefix__purchase_invoice_prefix'] ? $generalSettings['prefix__purchase_invoice_prefix'] : 'PI';
+        $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
+        $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
+        $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
+        $saleInvoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
+        $receiptVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
+        $purchaseReturnVoucherPrefix = $generalSettings['prefix__purchase_return_prefix'] ? $generalSettings['prefix__purchase_return_prefix'] : 'PR';
 
-        // $accountGroupService = new \App\Services\Accounts\AccountGroupService();
-        // $accountService = new \App\Services\Accounts\AccountService();
-        // $accountOpeningBalanceService = new \App\Services\Accounts\AccountOpeningBalanceService();
-        // $contactService = new \App\Services\Contacts\ContactService();
-        // $accountLedgerService = new \App\Services\Accounts\AccountLedgerService();
-        // $purchaseService = new \App\Services\Purchases\PurchaseService();
-        // $dayBookService = new \App\Services\Accounts\DayBookService();
-        // $productLedgerService = new \App\Services\Products\ProductLedgerService();
-        // $accountingVoucherService = new \App\Services\Accounts\AccountingVoucherService();
-        // $accountingVoucherDescriptionService = new \App\Services\Accounts\AccountingVoucherDescriptionService();
-        // $accountingVoucherDescriptionReferenceService = new \App\Services\Accounts\AccountingVoucherDescriptionReferenceService();
-        // $stockChainService = new \App\Services\Products\StockChainService();
-        // $saleService = new \App\Services\Sales\SaleService();
-        // $purchaseProductService = new \App\Services\Purchases\PurchaseProductService();
-        // $salesReturnService = new \App\Services\Sales\SalesReturnService();
-        // $productStockService = new \App\Services\Products\ProductStockService();
-        // $codeGenerator = new \App\Services\CodeGenerationService();
+        $accountGroupService = new \App\Services\Accounts\AccountGroupService();
+        $accountService = new \App\Services\Accounts\AccountService();
+        $accountOpeningBalanceService = new \App\Services\Accounts\AccountOpeningBalanceService();
+        $contactService = new \App\Services\Contacts\ContactService();
+        $accountLedgerService = new \App\Services\Accounts\AccountLedgerService();
+        $purchaseService = new \App\Services\Purchases\PurchaseService();
+        $dayBookService = new \App\Services\Accounts\DayBookService();
+        $productLedgerService = new \App\Services\Products\ProductLedgerService();
+        $accountingVoucherService = new \App\Services\Accounts\AccountingVoucherService();
+        $accountingVoucherDescriptionService = new \App\Services\Accounts\AccountingVoucherDescriptionService();
+        $accountingVoucherDescriptionReferenceService = new \App\Services\Accounts\AccountingVoucherDescriptionReferenceService();
+        $stockChainService = new \App\Services\Products\StockChainService();
+        $saleService = new \App\Services\Sales\SaleService();
+        $purchaseProductService = new \App\Services\Purchases\PurchaseProductService();
+        $salesReturnService = new \App\Services\Sales\SalesReturnService();
+        $productStockService = new \App\Services\Products\ProductStockService();
+        $codeGenerator = new \App\Services\CodeGenerationService();
 
         // $supplierType = ContactType::Supplier->value;
         // $customerType = ContactType::Customer->value;
@@ -1012,6 +1012,35 @@ Route::get('my-test', function () {
         // }
         // echo 'All Expense is done Created' . '</br>';
 
+
+        $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
+
+        $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
+
+
+        $accountingVouchers = $accountingVoucherService->accountingVouchers()->whereIn('voucher_type', [1, 2])->orderBy('date_ts', 'asc')->get();
+
+        foreach ($accountingVouchers as $accountingVoucher) {
+            $accountingVoucher->voucher_no = null;
+            $accountingVoucher->save();
+        }
+
+        $accountingVouchers = $accountingVoucherService->accountingVouchers()->orderBy('date_ts', 'asc')->get();
+        foreach ($accountingVouchers as $accountingVoucher) {
+
+            $voucherPrefix = null;
+            if ($accountingVoucher->voucher_type == 1) {
+                $voucherPrefix = $receiptVoucherPrefix;
+            } else {
+                $voucherPrefix = $paymentVoucherPrefix;
+            }
+
+            $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $accountingVoucher->voucher_type, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+            $accountingVoucher->voucher_no = $voucherNo;
+            $accountingVoucher->save();
+            echo $voucherNo . '</br>';
+        }
 
         DB::commit();
     } catch (\Exception $e) {

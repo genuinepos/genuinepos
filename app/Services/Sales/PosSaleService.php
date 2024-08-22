@@ -212,8 +212,8 @@ class PosSaleService
         $addSale->total_quotation_qty = $request->status == SaleStatus::Quotation->value ? $request->total_qty : 0;
         $addSale->net_total_amount = $request->net_total_amount;
         $addSale->order_discount_type = $request->order_discount_type;
-        $addSale->order_discount = $request->order_discount;
-        $addSale->order_discount_amount = $request->order_discount_amount;
+        $addSale->order_discount = $request->order_discount ? $request->order_discount : 0;
+        $addSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0;
         $addSale->sale_tax_ac_id = $request->sale_tax_ac_id;
         $addSale->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
         $addSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;

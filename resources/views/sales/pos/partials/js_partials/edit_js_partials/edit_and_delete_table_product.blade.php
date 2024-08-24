@@ -46,7 +46,7 @@
         if (is_show_emi_on_pos == 1) {
 
             $('#description_field').show();
-        }else{
+        } else {
 
             $('#description_field').hide();
         }
@@ -55,6 +55,8 @@
 
             $('#e_quantity').focus().select();
         }, 500);
+
+        $('#display_unit_cost').html(bdFormat(unit_cost_inc_tax));
     }
 
     function calculateEditOrAddAmount() {
@@ -158,7 +160,7 @@
         var val = $(this).val();
         var e_is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val();
 
-         if (e.which == 0) {
+        if (e.which == 0) {
 
             if (val) {
 
@@ -168,7 +170,7 @@
                 if (e_is_show_emi_on_pos == 1) {
 
                     $('#e_description').focus().select();
-                }else {
+                } else {
 
                     $('#edit_product').focus();
                 }
@@ -187,7 +189,7 @@
             if (e_is_show_emi_on_pos == 1) {
 
                 $('#e_description').focus().select();
-            }else {
+            } else {
 
                 $('#edit_product').focus();
             }
@@ -296,5 +298,10 @@
         $(this).closest('tr').remove();
         calculateTotalAmount();
         activeSelectedItems();
+    });
+
+    $(document).on('click', '#display_unit_cost_toggle_btn', function(e) {
+
+        $('#display_unit_cost_section').toggleClass('d-inline-block');
     });
 </script>

@@ -586,7 +586,6 @@
     {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}
     <script src="{{ asset('') }}/backend/asset/js/sale.exchange.js"></script>
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
     <script>
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();

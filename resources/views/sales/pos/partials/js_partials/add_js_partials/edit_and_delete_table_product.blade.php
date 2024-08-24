@@ -1,5 +1,5 @@
 <script>
-      function editProduct(e) {
+    function editProduct(e) {
 
         var tr = $(e).closest('tr');
         var unique_id = tr.find('.unique_id').val();
@@ -30,7 +30,7 @@
         $('#e_product_id').val(product_id);
         $('#e_variant_id').val(variant_id);
         $('#e_unit_id').empty();
-        $('#e_unit_id').append('<option data-unit_name="'+unit_name+'" value="'+unit_id+'">'+unit_name+'</option>');
+        $('#e_unit_id').append('<option data-unit_name="' + unit_name + '" value="' + unit_id + '">' + unit_name + '</option>');
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
         $('#e_price_exc_tax').val(parseFloat(unit_price_exc_tax).toFixed(2));
         $('#e_price_inc_tax').val(parseFloat(unit_price_inc_tax).toFixed(2));
@@ -46,7 +46,7 @@
         if (is_show_emi_on_pos == 1) {
 
             $('#description_field').show();
-        }else{
+        } else {
 
             $('#description_field').hide();
         }
@@ -55,6 +55,9 @@
 
             $('#e_quantity').focus().select();
         }, 500);
+
+        $('#display_unit_cost_section').addClass('d-hide');
+        $('#display_unit_cost').html(bdFormat(unit_cost_inc_tax));
     }
 
     function calculateEditOrAddAmount() {
@@ -83,7 +86,7 @@
 
             var inclusiveTax = 100 + parseFloat(e_tax_percent);
             var calcTax = parseFloat(unitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
-            taxAmount =  parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
+            taxAmount = parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
             unitPriceIncTax = parseFloat(unitPriceWithDiscount) + parseFloat(taxAmount);
         }
 
@@ -168,7 +171,7 @@
                 if (e_is_show_emi_on_pos == 1) {
 
                     $('#e_description').focus().select();
-                }else {
+                } else {
 
                     $('#edit_product').focus();
                 }
@@ -187,7 +190,7 @@
             if (e_is_show_emi_on_pos == 1) {
 
                 $('#e_description').focus().select();
-            }else {
+            } else {
 
                 $('#edit_product').focus();
             }
@@ -288,11 +291,21 @@
     });
 
     // Remove product form purchase product list (Table)
-    $(document).on('click', '#remove_product_btn',function(e){
+    $(document).on('click', '#remove_product_btn', function(e) {
         e.preventDefault();
 
         $(this).closest('tr').remove();
         calculateTotalAmount();
         activeSelectedItems();
+    });
+
+    $(document).on('click', '#display_unit_cost_toggle_btn', function(e) {
+
+        $('#display_unit_cost_section').toggle(500);
+
+        setTimeout(function() {
+
+            $('#display_unit_cost_section').hide(500);
+        }, 1500);
     });
 </script>

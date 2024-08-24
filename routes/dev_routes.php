@@ -50,41 +50,41 @@ Route::get('my-test', function () {
         $productStockService = new \App\Services\Products\ProductStockService();
         $codeGenerator = new \App\Services\CodeGenerationService();
 
-        // $supplierType = ContactType::Supplier->value;
-        // $customerType = ContactType::Customer->value;
+        $supplierType = ContactType::Supplier->value;
+        $customerType = ContactType::Customer->value;
 
-        // $customerAccountGroup = $accountGroupService->singleAccountGroupByAnyCondition()
-        //     ->where('sub_sub_group_number', 6)->where('is_reserved', BooleanType::True->value)->first();
+        $customerAccountGroup = $accountGroupService->singleAccountGroupByAnyCondition()
+            ->where('sub_sub_group_number', 6)->where('is_reserved', BooleanType::True->value)->first();
 
-        // $salesAccount = DB::table('accounts')->where('id', 15)->first();
+        $salesAccount = DB::table('accounts')->where('id', 15)->first();
 
-        // $supplierAccountGroup = $accountGroupService->singleAccountGroupByAnyCondition()
-        //     ->where('sub_sub_group_number', 10)->where('is_reserved', BooleanType::True->value)->first();
+        $supplierAccountGroup = $accountGroupService->singleAccountGroupByAnyCondition()
+            ->where('sub_sub_group_number', 10)->where('is_reserved', BooleanType::True->value)->first();
 
-        // $purchaseAccount = DB::table('accounts')->where('id', 16)->first();
+        $purchaseAccount = DB::table('accounts')->where('id', 16)->first();
 
-        // $password = env('DB_PASSWORD');
-        // $host = env('DB_HOST');
-        // $port = env('DB_PORT');
+        $password = env('DB_PASSWORD');
+        $host = env('DB_HOST');
+        $port = env('DB_PORT');
 
-        // config([
-        //     'database.connections.bondhon' => [
-        //         'driver' => 'mysql',
-        //         'host' => $host,
-        //         'port' => $port,
-        //         'database' => 'bondhon',
-        //         'username' => 'root',
-        //         'password' => $password,
-        //         'charset' => 'utf8mb4',
-        //         'collation' => 'utf8mb4_unicode_ci',
-        //         'prefix' => '',
-        //         'strict' => true,
-        //         'engine' => null,
-        //     ]
-        // ]);
+        config([
+            'database.connections.ndss' => [
+                'driver' => 'mysql',
+                'host' => $host,
+                'port' => $port,
+                'database' => 'ndss',
+                'username' => 'root',
+                'password' => $password,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'prefix' => '',
+                'strict' => true,
+                'engine' => null,
+            ]
+        ]);
 
         // ///////// Add category section
-        // $dbCategories = DB::connection('bondhon')->table('categories')->get();
+        // $dbCategories = DB::connection('ndss')->table('categories')->get();
         // $categoryService = new \App\Services\Products\CategoryService();
 
         // foreach ($dbCategories as $key => $dbCategory) {
@@ -104,7 +104,7 @@ Route::get('my-test', function () {
         // /// Add category section End
 
         // ////////Add category section
-        // $dbBrands = DB::connection('bondhon')->table('brands')->get();
+        // $dbBrands = DB::connection('ndss')->table('brands')->get();
         // $brandService = new \App\Services\Products\BrandService();
 
         // foreach ($dbBrands as $key => $dbBrand) {
@@ -124,7 +124,7 @@ Route::get('my-test', function () {
 
         // ////////Add product section
         // $unitService = new \App\Services\Products\UnitService();
-        // $dbProducts = DB::connection('bondhon')->table('products')
+        // $dbProducts = DB::connection('ndss')->table('products')
         //     ->leftJoin('categories', 'products.category_id', 'categories.id')
         //     ->leftJoin('brands', 'products.brand_id', 'brands.id')
         //     ->leftJoin('units', 'products.unit_id', 'units.id')
@@ -192,7 +192,7 @@ Route::get('my-test', function () {
         // echo 'All product is done' . '</br>';
 
         // //////////////Add Product Opening Stocks
-        // $dbProductOpeningStocks = DB::connection('bondhon')->table('product_opening_stocks')
+        // $dbProductOpeningStocks = DB::connection('ndss')->table('product_opening_stocks')
         //     ->leftJoin('products', 'product_opening_stocks.product_id', 'products.id')
         //     ->select('product_opening_stocks.*', 'products.name as product_name', 'products.product_code')->get();
 
@@ -239,7 +239,7 @@ Route::get('my-test', function () {
         // echo 'Product opening stock is done' . '</br>';
 
         //////// //Add Purchases
-        // $dbPurchases = DB::connection('bondhon')->table('purchases')
+        // $dbPurchases = DB::connection('ndss')->table('purchases')
         //     ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
         //     ->select(
         //         'purchases.*',
@@ -356,7 +356,7 @@ Route::get('my-test', function () {
         //         // Add supplier A/c ledger Entry For Purchase
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Purchase->value, account_id: $addPurchase->supplier_account_id, date: $addPurchase->date, trans_id: $addPurchase->id, amount: $addPurchase->total_purchase_amount, amount_type: 'credit');
 
-        //         $dbPurchaseProducts =  DB::connection('bondhon')->table('purchase_products')
+        //         $dbPurchaseProducts =  DB::connection('ndss')->table('purchase_products')
         //             ->leftJoin('products', 'purchase_products.product_id', 'products.id')
         //             ->where('purchase_id', $dbPurchase->id)
         //             ->select('purchase_products.*', 'products.name as product_name', 'products.product_code')
@@ -431,7 +431,7 @@ Route::get('my-test', function () {
         // echo 'All Purchases is Created-' . '</br>';
 
         // /// Add Sales
-        // $dbSales = DB::connection('bondhon')->table('sales')
+        // $dbSales = DB::connection('ndss')->table('sales')
         //     ->leftJoin('customers', 'sales.customer_id', 'customers.id')
         //     ->select(
         //         'sales.*',
@@ -539,7 +539,7 @@ Route::get('my-test', function () {
         //         // Add supplier A/c ledger Entry For Sales
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $addSale->customer_account_id, date: $addSale->date, trans_id: $addSale->id, amount: $addSale->total_invoice_amount, amount_type: 'debit');
 
-        //         $dbSaleProducts =  DB::connection('bondhon')->table('sale_products')
+        //         $dbSaleProducts =  DB::connection('ndss')->table('sale_products')
         //             ->leftJoin('products', 'sale_products.product_id', 'products.id')
         //             ->where('sale_id', $dbSale->id)
         //             ->select('sale_products.*', 'products.name as product_name', 'products.product_code')
@@ -603,7 +603,7 @@ Route::get('my-test', function () {
         // echo 'All Sale is done' . '</br>';
 
         ///Add Purchase Returns
-        // $dbPurchaseReturns = DB::connection('bondhon')->table('purchase_returns')
+        // $dbPurchaseReturns = DB::connection('ndss')->table('purchase_returns')
         //     ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
         //     ->select(
         //         'purchase_returns.*',
@@ -697,7 +697,7 @@ Route::get('my-test', function () {
         //         // Add supplier A/c ledger Entry For Purchase
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
 
-        //         $dbPurchaseReturnProducts =  DB::connection('bondhon')->table('purchase_return_products')
+        //         $dbPurchaseReturnProducts =  DB::connection('ndss')->table('purchase_return_products')
         //             ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
         //             ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
         //             ->select('purchase_return_products.*', 'products.name as product_name', 'products.product_code')
@@ -733,7 +733,7 @@ Route::get('my-test', function () {
         // echo 'All Purchase Returns is done-' . '</br>';
 
         // /// Add Sale Returns
-        // $dbSaleReturns = DB::connection('bondhon')->table('sale_returns')
+        // $dbSaleReturns = DB::connection('ndss')->table('sale_returns')
         //     ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
         //     ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
         //     ->select(
@@ -836,7 +836,7 @@ Route::get('my-test', function () {
         //         // Add Customer A/c ledger Entry For Sales Return
         //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
 
-        //         $dbSaleReturnProducts =  DB::connection('bondhon')->table('sale_return_products')
+        //         $dbSaleReturnProducts =  DB::connection('ndss')->table('sale_return_products')
         //             ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
         //             ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
         //             ->select('sale_return_products.*', 'products.name as product_name', 'products.product_code')
@@ -919,6 +919,122 @@ Route::get('my-test', function () {
 
         // echo 'All Sale Returns is done-' . '</br>';
 
+        // Add Customer Payments
+        $dbCustomerPayments = DB::connection('ness')->table('customer_payments')
+            ->leftJoin('customers', 'customer_payments.customer_id', 'customers.id')
+            ->select(
+                'customer_payments.*',
+                'customers.name',
+                'customers.business_name',
+                'customers.phone',
+                'customers.alternative_phone',
+                'customers.landline',
+                'customers.date_of_birth',
+                'customers.opening_balance',
+                'customers.address',
+                'customers.email',
+                'customers.shipping_address',
+                'customers.city',
+                'customers.state',
+                'customers.country',
+                'customers.zip_code',
+                'customers.tax_number',
+                'customers.pay_term',
+                'customers.pay_term_number',
+                'customers.credit_limit',
+            )
+            // ->skip(20000) // skip first 20000 rows
+            // ->take(4000) //current 24000
+            ->orderBy('customer_payments.id', 'asc')->get();
+
+        foreach ($dbCustomerPayments as $dbCustomerPayment) {
+
+            $existsCustomer = DB::table('contacts')
+                ->where('contacts.type', $customerType)
+                ->where('contacts.name', $dbCustomerPayment->name)
+                ->where('contacts.phone', $dbCustomerPayment->phone)
+                ->join('accounts', 'contacts.id', 'accounts.contact_id')
+                ->select('contacts.id', 'accounts.id as customer_account_id')->first();
+
+            $customerAccountId = $existsCustomer?->customer_account_id;
+            $__customerAccountId = $dbCustomerPayment?->customer_id == null ? 23 : $customerAccountId;
+
+            if (!isset($__customerAccountId)) {
+
+                $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $dbCustomerPayment->name, phone: $dbCustomerPayment->phone, businessName: $dbCustomerPayment->business_name, email: $dbCustomerPayment->email, alternativePhone: $dbCustomerPayment->alternative_phone, landLine: $dbCustomerPayment->landline, dateOfBirth: $dbCustomerPayment->date_of_birth, taxNumber: $dbCustomerPayment->tax_number, customerGroupId: null, address: $dbCustomerPayment->address, city: $dbCustomerPayment->city, state: $dbCustomerPayment->state, country: $dbCustomerPayment->country, zipCode: $dbCustomerPayment->zip_code, shippingAddress: $dbCustomerPayment->shipping_address, payTerm: $dbCustomerPayment->pay_term, payTermNumber: $dbCustomerPayment->pay_term_number, creditLimit: null, openingBalance: $dbCustomerPayment->opening_balance, openingBalanceType: 'cr');
+
+                $addAccount = $accountService->addAccount(name: $dbCustomerPayment->name, accountGroup: $customerAccountGroup, phone: $dbCustomerPayment->phone, address: $dbCustomerPayment->address, openingBalance: $dbCustomerPayment->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
+
+                $accountLedgerService->addAccountLedgerEntry(
+                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+                    date: '01-01-2023',
+                    account_id: $addAccount->id,
+                    trans_id: $addAccount->id,
+                    amount: $dbCustomerPayment->opening_balance ? $dbCustomerPayment->opening_balance : 0,
+                    amount_type: 'debit',
+                    branch_id: auth()->user()->branch_id,
+                );
+
+                $__customerAccountId = $addAccount?->id;
+            }
+
+            $existsCustomerPayment = DB::table('accounting_vouchers')
+                ->where('voucher_type', AccountingVoucherType::Receipt->value)
+                ->where('total_amount', $dbSaleReturn->paid_amount)
+                ->where('date', $dbCustomerPayment->date)
+                ->first();
+
+            if (!isset($existsCustomerPayment)) {
+
+                // Add Accounting Voucher
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbCustomerPayment->date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $dbCustomerPayment->paid_amount, creditTotal: $dbCustomerPayment->paid_amount, totalAmount: $dbCustomerPayment->paid_amount);
+
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $dbCustomerPayment->paid_amount, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+
+                //Add Debit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $dbCustomerPayment->date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbCustomerPayment->paid_amount, amount_type: 'debit');
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $__customerAccountId, paymentMethodId: null, amountType: 'cr', amount: $dbCustomerPayment->paid_amount);
+
+                // Add Day Book entry for Receipt
+                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $dbCustomerPayment->date, accountId: $__customerAccountId, transId: $addAccountingVoucherCreditDescription->id, amount: $dbCustomerPayment->paid_amount, amountType: 'credit');
+
+                // Add Accounting VoucherDescription References
+                $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $__customerAccountId, amount: $dbCustomerPayment->paid_amount, refIdColName: 'sale_id', refIds: null);
+
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $dbCustomerPayment->date, account_id: $__customerAccountId, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbCustomerPayment->paid_amount, amount_type: 'credit', cash_bank_account_id: 14);
+            }
+        }
+        echo 'All Customer Payments is done-' . '</br>';
+
+        // Add Supplier Payments
+        $dbSupplierPayments = DB::connection('ness')->table('supplier_payments')
+            ->leftJoin('suppliers', 'supplier_payments.customer_id', 'suppliers.id')
+            ->select(
+                'customer_payments.*',
+                'suppliers.name',
+                'suppliers.business_name',
+                'suppliers.phone',
+                'suppliers.alternative_phone',
+                'suppliers.landline',
+                'suppliers.date_of_birth',
+                'suppliers.opening_balance',
+                'suppliers.address',
+                'suppliers.email',
+                'suppliers.shipping_address',
+                'suppliers.city',
+                'suppliers.state',
+                'suppliers.country',
+                'suppliers.zip_code',
+                'suppliers.tax_number',
+                'suppliers.pay_term',
+                'suppliers.pay_term_number',
+            )
+            ->orderBy('supplier_payments.id', 'asc')->get();
+
         // $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
 
         // foreach ($purchaseProducts as $purchaseProduct) {
@@ -954,7 +1070,7 @@ Route::get('my-test', function () {
 
         // ////Add Expenses
         // $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
-        // $dbExpenses = DB::connection('bondhon')->table('expanses')->get();
+        // $dbExpenses = DB::connection('ndss')->table('expanses')->get();
         // foreach ($dbExpenses as $dbExpense) {
 
         //     $existsExpense = DB::table('accounting_vouchers')
@@ -969,7 +1085,7 @@ Route::get('my-test', function () {
 
         //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
 
-        //         $dbExpenseDescriptions = $dbExpenses = DB::connection('bondhon')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
+        //         $dbExpenseDescriptions = $dbExpenses = DB::connection('ndss')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
         //             ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
         //             ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
         //             ->get();
@@ -1013,32 +1129,32 @@ Route::get('my-test', function () {
         // echo 'All Expense is done Created' . '</br>';
 
 
-        $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
+        // $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
 
-        $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
+        // $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'PV';
 
-        $accountingVouchers = $accountingVoucherService->accountingVouchers()->whereIn('voucher_type', [1])->orderBy('date_ts', 'asc')->cursor();
+        // $accountingVouchers = $accountingVoucherService->accountingVouchers()->whereIn('voucher_type', [1])->orderBy('date_ts', 'asc')->cursor();
 
-        foreach ($accountingVouchers as $accountingVoucher) {
-            $accountingVoucher->voucher_no = null;
-            $accountingVoucher->save();
-        }
+        // foreach ($accountingVouchers as $accountingVoucher) {
+        //     $accountingVoucher->voucher_no = null;
+        //     $accountingVoucher->save();
+        // }
 
-        foreach ($accountingVouchers as $accountingVoucher) {
+        // foreach ($accountingVouchers as $accountingVoucher) {
 
-            $voucherPrefix = null;
-            if ($accountingVoucher->voucher_type == 1) {
-                $voucherPrefix = $receiptVoucherPrefix;
-            } else {
-                $voucherPrefix = $paymentVoucherPrefix;
-            }
+        //     $voucherPrefix = null;
+        //     if ($accountingVoucher->voucher_type == 1) {
+        //         $voucherPrefix = $receiptVoucherPrefix;
+        //     } else {
+        //         $voucherPrefix = $paymentVoucherPrefix;
+        //     }
 
-            $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $accountingVoucher->voucher_type, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        //     $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $accountingVoucher->voucher_type, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
-            $accountingVoucher->voucher_no = $voucherNo;
-            $accountingVoucher->save();
-            echo $voucherNo . '</br>';
-        }
+        //     $accountingVoucher->voucher_no = $voucherNo;
+        //     $accountingVoucher->save();
+        //     echo $voucherNo . '</br>';
+        // }
 
         DB::commit();
     } catch (\Exception $e) {

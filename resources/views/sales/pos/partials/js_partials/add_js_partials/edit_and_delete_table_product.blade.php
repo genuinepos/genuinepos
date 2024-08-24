@@ -55,6 +55,8 @@
 
             $('#e_quantity').focus().select();
         }, 500);
+
+        $('#display_unit_cost').html(bdFormat(unit_cost_inc_tax));
     }
 
     function calculateEditOrAddAmount() {
@@ -294,5 +296,10 @@
         $(this).closest('tr').remove();
         calculateTotalAmount();
         activeSelectedItems();
+    });
+
+    $(document).on('click', '#display_unit_cost_toggle_btn',function(e){
+
+        $('#display_unit_cost_section').toggleClass('d-inline-block');
     });
 </script>

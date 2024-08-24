@@ -376,12 +376,12 @@
 
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
-                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
+                                <span class="btn btn-sm btn-primary d-hide" id="display_unit_cost_section">
                                     <span>{{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
-                                    <span id="unit_cost"></span>
+                                    <span id="display_unit_cost">1,000.00</span>
                                 </span>
 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __('Cost') }}</span>
+                                <span class="btn btn-sm btn-info text-white" id="display_unit_cost_toggle_btn">{{ __('Cost') }}</span>
                             </p>
                         @endif
 
@@ -560,8 +560,6 @@
     <!--Add shortcut menu modal-->
     <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
-
-
     <form id="deleted_form" action="" method="post">
         @method('DELETE')
         @csrf
@@ -588,6 +586,7 @@
     {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}
     <script src="{{ asset('') }}/backend/asset/js/sale.exchange.js"></script>
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
+    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
     <script>
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();

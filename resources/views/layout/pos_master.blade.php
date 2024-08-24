@@ -446,7 +446,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Edit') }}</a>
+                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Update') }}</a>
                             </div>
                         </div>
                     </form>

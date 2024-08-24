@@ -56,6 +56,7 @@
             $('#e_quantity').focus().select();
         }, 500);
 
+        $('#display_unit_cost_section').addClass('d-hide');
         $('#display_unit_cost').html(bdFormat(unit_cost_inc_tax));
     }
 
@@ -302,6 +303,11 @@
 
     $(document).on('click', '#display_unit_cost_toggle_btn', function(e) {
 
-        $('#display_unit_cost_section').toggleClass('d-inline-block');
+        $('#display_unit_cost_section').toggle(500);
+
+        setTimeout(function() {
+
+            $('#display_unit_cost_section').hide(500);
+        }, 1500);
     });
 </script>

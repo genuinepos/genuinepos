@@ -318,9 +318,9 @@
 
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
-                                <span class="btn btn-sm btn-primary d-hide" id="display_unit_cost_section">
+                                <span class="d-hide" id="display_unit_cost_section">
                                     <span>{{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
-                                    <span id="display_unit_cost">1,000.00</span>
+                                    <span class="text-muted" id="display_unit_cost"></span>
                                 </span>
 
                                 <span class="btn btn-sm btn-info text-white" id="display_unit_cost_toggle_btn">{{ __('Cost') }}</span>

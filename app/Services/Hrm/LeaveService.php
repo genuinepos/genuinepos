@@ -36,7 +36,7 @@ class LeaveService
             'users.prefix as user_prefix',
             'users.last_name as user_last_name',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
         )->orderBy('id', 'desc')->get();

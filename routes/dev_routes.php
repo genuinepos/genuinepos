@@ -20,7 +20,7 @@ Route::get('my-test', function () {
     try {
         DB::beginTransaction();
 
-        // return 'ok';
+        return 'ok';
         $generalSettings = config('generalSettings');
         $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
         $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
@@ -1374,98 +1374,98 @@ Route::get('my-test', function () {
         // echo 'All Supplier Purchase Return Payments is done-' . '</br>';
 
         // ////////Adjustments
-        $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
+        // $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();
 
-        foreach ($purchaseProducts as $purchaseProduct) {
-            $purchaseProduct->left_qty = $purchaseProduct->quantity;
-            $purchaseProduct->save();
-        }
+        // foreach ($purchaseProducts as $purchaseProduct) {
+        //     $purchaseProduct->left_qty = $purchaseProduct->quantity;
+        //     $purchaseProduct->save();
+        // }
 
-        $stockChains = \App\Models\Products\StockChain::all();
-        foreach ($stockChains as $key => $stockChain) {
-            $stockChain->delete();
-        }
+        // $stockChains = \App\Models\Products\StockChain::all();
+        // foreach ($stockChains as $key => $stockChain) {
+        //     $stockChain->delete();
+        // }
 
-        $sales = \App\Models\Sales\Sale::with('saleProducts', 'saleProducts.product')->where('status', 1)->get();
-        foreach ($sales as $sale) {
+        // $sales = \App\Models\Sales\Sale::with('saleProducts', 'saleProducts.product')->where('status', 1)->get();
+        // foreach ($sales as $sale) {
 
-            $stockChainService->addStockChain(sale: $sale);
-            echo 'stock Chain -' . $sale->invoice_id . '</br>';
-        }
-        echo 'All stock Chain is Done-' . '</br>';
+        //     $stockChainService->addStockChain(sale: $sale);
+        //     echo 'stock Chain -' . $sale->invoice_id . '</br>';
+        // }
+        // echo 'All stock Chain is Done-' . '</br>';
 
-        $products = DB::table('products')->get();
-        foreach ($products as $product) {
+        // $products = DB::table('products')->get();
+        // foreach ($products as $product) {
 
-            $productStockService->adjustMainProductAndVariantStock(productId: $product->id, variantId: null);
+        //     $productStockService->adjustMainProductAndVariantStock(productId: $product->id, variantId: null);
 
-            $productStockService->adjustBranchAllStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
+        //     $productStockService->adjustBranchAllStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
 
-            $productStockService->adjustBranchStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
+        //     $productStockService->adjustBranchStock(productId: $product->id, variantId: null, branchId: auth()->user()->branch_id);
 
-            echo 'adjust stock -' . $product->id . '-' . $product->name . '</br>';
-        }
-        echo 'adjust stock is done -' . '</br>';
+        //     echo 'adjust stock -' . $product->id . '-' . $product->name . '</br>';
+        // }
+        // echo 'adjust stock is done -' . '</br>';
 
-        ////Add Expenses
-        $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
-        $dbExpenses = DB::connection('ndss')->table('expanses')->get();
-        foreach ($dbExpenses as $dbExpense) {
+        // ////Add Expenses
+        // $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
+        // $dbExpenses = DB::connection('ndss')->table('expanses')->get();
+        // foreach ($dbExpenses as $dbExpense) {
 
-            $existsExpense = DB::table('accounting_vouchers')
-                ->where('voucher_type', AccountingVoucherType::Expense->value)
-                ->where('date', $dbExpense->date)
-                ->where('total_amount', $dbExpense->net_total_amount)
-                ->first();
+        //     $existsExpense = DB::table('accounting_vouchers')
+        //         ->where('voucher_type', AccountingVoucherType::Expense->value)
+        //         ->where('date', $dbExpense->date)
+        //         ->where('total_amount', $dbExpense->net_total_amount)
+        //         ->first();
 
-            if (!isset($existsExpense)) {
-                // Add Accounting Voucher
-                $expenseVoucherPrefix = $generalSettings['prefix__expense_voucher_prefix'] ? $generalSettings['prefix__expense_voucher_prefix'] : 'EV';
+        //     if (!isset($existsExpense)) {
+        //         // Add Accounting Voucher
+        //         $expenseVoucherPrefix = $generalSettings['prefix__expense_voucher_prefix'] ? $generalSettings['prefix__expense_voucher_prefix'] : 'EV';
 
-                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
+        //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbExpense->date, voucherType: AccountingVoucherType::Expense->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $expenseVoucherPrefix, debitTotal: $dbExpense->net_total_amount, creditTotal: $dbExpense->net_total_amount, totalAmount: $dbExpense->net_total_amount);
 
-                $dbExpenseDescriptions = $dbExpenses = DB::connection('ndss')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
-                    ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
-                    ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
-                    ->get();
+        //         $dbExpenseDescriptions = $dbExpenses = DB::connection('ndss')->table('expense_descriptions')->where('expense_id', $dbExpense->id)
+        //             ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
+        //             ->select('expense_descriptions.amount', 'expanse_categories.name as expense_category_name')
+        //             ->get();
 
-                foreach ($dbExpenseDescriptions as $index => $dbExpenseDescription) {
+        //         foreach ($dbExpenseDescriptions as $index => $dbExpenseDescription) {
 
-                    $existsExpenseAccount = DB::table('accounts')->where('accounts.name', $dbExpenseDescription->expense_category_name)->where('accounts.branch_id', auth()->user()->branch_id)->first();
-                    // 25
-                    $expenseAccountId = isset($existsExpenseAccount) ? $existsExpenseAccount->id : null;
-                    if (!isset($existsExpenseAccount)) {
+        //             $existsExpenseAccount = DB::table('accounts')->where('accounts.name', $dbExpenseDescription->expense_category_name)->where('accounts.branch_id', auth()->user()->branch_id)->first();
+        //             // 25
+        //             $expenseAccountId = isset($existsExpenseAccount) ? $existsExpenseAccount->id : null;
+        //             if (!isset($existsExpenseAccount)) {
 
-                        $addAccount = $accountService->addAccount(
-                            name: $dbExpenseDescription->expense_category_name,
-                            accountGroup: $directExpenseGroup,
-                        );
+        //                 $addAccount = $accountService->addAccount(
+        //                     name: $dbExpenseDescription->expense_category_name,
+        //                     accountGroup: $directExpenseGroup,
+        //                 );
 
-                        $expenseAccountId = $addAccount->id;
-                    }
+        //                 $expenseAccountId = $addAccount->id;
+        //             }
 
-                    // Add Expense Description Debit Entry
-                    $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $expenseAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbExpenseDescription->amount);
+        //             // Add Expense Description Debit Entry
+        //             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $expenseAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbExpenseDescription->amount);
 
-                    if ($index == 0) {
+        //             if ($index == 0) {
 
-                        $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Expense->value, date: $addAccountingVoucher->date, accountId: $expenseAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $addAccountingVoucher->total_amount, amountType: 'debit');
-                    }
+        //                 $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Expense->value, date: $addAccountingVoucher->date, accountId: $expenseAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $addAccountingVoucher->total_amount, amountType: 'debit');
+        //             }
 
-                    //Add Debit Ledger Entry
-                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: $expenseAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbExpenseDescription->amount, amount_type: 'debit', cash_bank_account_id: 14);
-                }
+        //             //Add Debit Ledger Entry
+        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: $expenseAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbExpenseDescription->amount, amount_type: 'debit', cash_bank_account_id: 14);
+        //         }
 
-                // Add Credit Account Accounting voucher Description
-                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $addAccountingVoucher->total_amount, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+        //         // Add Credit Account Accounting voucher Description
+        //         $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $addAccountingVoucher->total_amount, transactionNo: null, chequeNo: null, chequeSerialNo: null);
 
-                //Add Credit Ledger Entry
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $addAccountingVoucher->total_amount, amount_type: 'credit');
+        //         //Add Credit Ledger Entry
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $addAccountingVoucher->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $addAccountingVoucher->total_amount, amount_type: 'credit');
 
-                echo 'Expense Created-' . $expenseVoucherPrefix . '</br>';
-            }
-        }
-        echo 'All Expense is done Created' . '</br>';
+        //         echo 'Expense Created-' . $expenseVoucherPrefix . '</br>';
+        //     }
+        // }
+        // echo 'All Expense is done Created' . '</br>';
 
 
         // $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';

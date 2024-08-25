@@ -474,7 +474,7 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
 
         if (isset($deletePurchaseReturn['pass']) && $deletePurchaseReturn['pass'] == false) {
 
-            return ['pass' => false, 'msg' => $restrictions['msg']];
+            return ['pass' => false, 'msg' => $deletePurchaseReturn['msg']];
         }
 
         foreach ($deletePurchaseReturn->purchaseReturnProducts as $returnProduct) {

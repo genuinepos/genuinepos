@@ -616,163 +616,356 @@ Route::get('my-test', function () {
         // echo 'All Sale is done' . '</br>';
 
         ///Add Purchase Returns
-        $dbPurchaseReturns = DB::connection('ndss')->table('purchase_returns')
-            ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
-            ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
+        // $dbPurchaseReturns = DB::connection('ndss')->table('purchase_returns')
+        //     ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
+        //     ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
+        //     ->select(
+        //         'purchase_returns.*',
+        //         'purchases.date as parent_purchase_date',
+        //         'purchases.net_total_amount as parent_purchase_net_total_amount',
+        //         'purchases.total_purchase_amount as parent_purchase_total_purchase_amount',
+        //         'suppliers.name',
+        //         'suppliers.business_name',
+        //         'suppliers.phone',
+        //         'suppliers.alternative_phone',
+        //         'suppliers.landline',
+        //         'suppliers.date_of_birth',
+        //         'suppliers.opening_balance',
+        //         'suppliers.address',
+        //         'suppliers.email',
+        //         'suppliers.shipping_address',
+        //         'suppliers.city',
+        //         'suppliers.state',
+        //         'suppliers.country',
+        //         'suppliers.zip_code',
+        //         'suppliers.tax_number',
+        //         'suppliers.pay_term',
+        //         'suppliers.pay_term_number',
+        //     )->get();
+
+        // foreach ($dbPurchaseReturns as $dbPurchaseReturn) {
+
+        //     $existsSupplier = DB::table('contacts')
+        //         ->where('contacts.type', $supplierType)
+        //         ->where('contacts.name', $dbPurchaseReturn->name)
+        //         ->where('contacts.phone', $dbPurchaseReturn->phone)
+        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
+        //         ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
+
+        //     $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
+
+        //     if (!isset($existsSupplier)) {
+
+        //         $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchaseReturn->name, phone: $dbPurchaseReturn->phone, businessName: $dbPurchaseReturn->business_name, email: $dbPurchaseReturn->email, alternativePhone: $dbPurchaseReturn->alternative_phone, landLine: $dbPurchaseReturn->landline, dateOfBirth: $dbPurchaseReturn->date_of_birth, taxNumber: $dbPurchaseReturn->tax_number, customerGroupId: null, address: $dbPurchaseReturn->address, city: $dbPurchaseReturn->city, state: $dbPurchaseReturn->state, country: $dbPurchaseReturn->country, zipCode: $dbPurchaseReturn->zip_code, shippingAddress: $dbPurchaseReturn->shipping_address, payTerm: $dbPurchaseReturn->pay_term, payTermNumber: $dbPurchaseReturn->pay_term_number, creditLimit: null, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr');
+
+        //         $addAccount = $accountService->addAccount(name: $dbPurchaseReturn->name, accountGroup: $supplierAccountGroup, phone: $dbPurchaseReturn->phone, address: $dbPurchaseReturn->address, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
+
+        //         $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
+        //             branchId: auth()->user()->branch_id,
+        //             accountId: $addAccount->id,
+        //             openingBalanceType: 'cr',
+        //             openingBalance: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
+        //         );
+
+        //         $accountLedgerService->addAccountLedgerEntry(
+        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+        //             date: $accountStartDate,
+        //             account_id: $addAccount->id,
+        //             trans_id: $addAccount->id,
+        //             amount: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
+        //             amount_type: 'credit',
+        //             branch_id: auth()->user()->branch_id,
+        //         );
+
+        //         $supplierAccountId = $addAccount?->id;
+        //     }
+
+        //     $parentPurchaseId = null;
+        //     if ($dbPurchaseReturn->parent_purchase_date) {
+
+        //         $parentPurchase = DB::table('purchases')
+        //         ->where('date', $dbPurchaseReturn->parent_purchase_date)
+        //         ->where('net_total_amount', $dbPurchaseReturn->parent_purchase_net_total_amount)
+        //         ->where('total_purchase_amount', $dbPurchaseReturn->parent_purchase_total_purchase_amount)
+        //         ->first();
+        //         $parentPurchaseId = $parentPurchase?->id;
+        //         echo 'Parent Sale Id' . $parentPurchaseId . '</br>';
+        //     }
+
+        //  //   $existsPurchaseReturn = DB::table('purchase_returns')
+        //    //     ->where('total_return_amount', $dbPurchaseReturn->total_return_amount)
+        //      //   ->where('date_ts', $dbPurchaseReturn->report_date)
+        //      //   ->first();
+
+        //     $existsPurchaseReturn = DB::table('purchase_returns')
+        //         ->where('date_ts', $dbPurchaseReturn->report_date)
+        //         ->first();
+
+        //     if (!isset($existsPurchaseReturn)) {
+
+        //         $voucherNo = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $purchaseReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        //         $addPurchaseReturn = new \App\Models\Purchases\PurchaseReturn();
+        //         $addPurchaseReturn->branch_id = auth()->user()->branch_id;
+        //         $addPurchaseReturn->purchase_id = $parentPurchaseId;
+        //         $addPurchaseReturn->voucher_no = $voucherNo;
+        //         $addPurchaseReturn->supplier_account_id = $supplierAccountId;
+        //         $addPurchaseReturn->purchase_account_id = $purchaseAccount->id;
+        //         // $addPurchaseReturn->total_item = $dbPurchaseReturn->total_item;
+        //         // $addPurchaseReturn->total_qty = $dbPurchaseReturn->total_qty;
+        //         $addPurchaseReturn->net_total_amount = $dbPurchaseReturn->total_return_amount;
+        //         $addPurchaseReturn->return_discount_type = 1;
+        //         $addPurchaseReturn->total_return_amount = $dbPurchaseReturn->total_return_amount;
+        //         $addPurchaseReturn->due = $dbPurchaseReturn->total_return_amount;
+        //         $addPurchaseReturn->date = $dbPurchaseReturn->date;
+        //         $addPurchaseReturn->date_ts = $dbPurchaseReturn->report_date;
+        //         // $addPurchaseReturn->note = $dbPurchaseReturn->note;
+        //         $addPurchaseReturn->created_by_id = auth()->user()->id;
+        //         $addPurchaseReturn->save();
+
+        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, accountId: $addPurchaseReturn->supplier_account_id, transId: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amountType: 'debit');
+
+        //         // Add Purchase A/c Ledger Entry
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, account_id: $addPurchaseReturn->purchase_account_id, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'credit');
+
+        //         // Add supplier A/c ledger Entry For Purchase
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
+
+        //         $dbPurchaseReturnProducts =  DB::connection('ndss')->table('purchase_return_products')
+        //             ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
+        //             ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
+        //             ->select('purchase_return_products.*', 'products.name as product_name', 'products.product_code')
+        //             ->get();
+
+        //         foreach ($dbPurchaseReturnProducts as $dbPurchaseReturnProduct) {
+
+        //             $product = DB::table('products')
+        //                 ->where('name', $dbPurchaseReturnProduct->product_name)
+        //                 ->where('product_code', $dbPurchaseReturnProduct->product_code)
+        //                 ->select('products.id', 'products.unit_id')
+        //                 ->first();
+
+        //             $addPurchaseReturnProduct = new \App\Models\Purchases\PurchaseReturnProduct();
+        //             $addPurchaseReturnProduct->purchase_return_id = $addPurchaseReturn->id;
+        //             $addPurchaseReturnProduct->product_id = $product?->id;
+        //             $addPurchaseReturnProduct->return_qty = $dbPurchaseReturnProduct->return_qty;
+        //             $addPurchaseReturnProduct->purchased_qty = 0;
+        //             $addPurchaseReturnProduct->unit_id = $product->unit_id;
+        //             $addPurchaseReturnProduct->unit_cost_exc_tax = $dbPurchaseReturnProduct->unit_cost;
+        //             $addPurchaseReturnProduct->unit_discount_type = 1;
+        //             $addPurchaseReturnProduct->unit_cost_inc_tax = $dbPurchaseReturnProduct->unit_cost;
+        //             $addPurchaseReturnProduct->return_subtotal = $dbPurchaseReturnProduct->return_subtotal;
+        //             $addPurchaseReturnProduct->save();
+
+        //             // Add Product Ledger Entry
+        //             $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, productId: $product?->id, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: null, warehouseId: null);
+        //         }
+
+        //         echo 'Purchase Return Created-' . $voucherNo . '</br>';
+        //     }
+        // }
+        // echo 'All Purchase Returns is done-' . '</br>';
+
+        // /// Add Sale Returns
+        // $dbSaleReturns = DB::connection('ndss')->table('sale_returns')
+        //     ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
+        //     ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
+        //     ->select(
+        //         'sale_returns.*',
+        //         'sales.report_date as parent_sale_date',
+        //         'customers.name',
+        //         'customers.business_name',
+        //         'customers.phone',
+        //         'customers.alternative_phone',
+        //         'customers.landline',
+        //         'customers.date_of_birth',
+        //         'customers.opening_balance',
+        //         'customers.address',
+        //         'customers.email',
+        //         'customers.shipping_address',
+        //         'customers.city',
+        //         'customers.state',
+        //         'customers.country',
+        //         'customers.zip_code',
+        //         'customers.tax_number',
+        //         'customers.pay_term',
+        //         'customers.pay_term_number',
+        //     )->get();
+
+        // foreach ($dbSaleReturns as $dbSaleReturn) {
+
+        //     $existsCustomer = DB::table('contacts')
+        //         ->where('contacts.type', $customerType)
+        //         ->where('contacts.name', $dbSaleReturn->name)
+        //         ->where('contacts.phone', $dbSaleReturn->phone)
+        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
+        //         ->select('contacts.id', 'accounts.id as customer_account_id')->first();
+
+        //     $customerAccountId = $existsCustomer?->customer_account_id;
+        //     $__customerAccountId = $dbSaleReturn?->customer_id == null ? 23 : $customerAccountId;
+
+        //     if (!isset($__customerAccountId)) {
+
+        //         $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbSaleReturn->name, phone: $dbSaleReturn->phone, businessName: $dbSaleReturn->business_name, email: $dbSaleReturn->email, alternativePhone: $dbSaleReturn->alternative_phone, landLine: $dbSaleReturn->landline, dateOfBirth: $dbSaleReturn->date_of_birth, taxNumber: $dbSaleReturn->tax_number, customerGroupId: null, address: $dbSaleReturn->address, city: $dbSaleReturn->city, state: $dbSaleReturn->state, country: $dbSaleReturn->country, zipCode: $dbSaleReturn->zip_code, shippingAddress: $dbSaleReturn->shipping_address, payTerm: $dbSaleReturn->pay_term, payTermNumber: $dbSaleReturn->pay_term_number, creditLimit: null, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'cr');
+
+        //         $addAccount = $accountService->addAccount(name: $dbSaleReturn->name, accountGroup: $customerAccountGroup, phone: $dbSale->phone, address: $dbSaleReturn->address, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
+
+        //         $accountLedgerService->addAccountLedgerEntry(
+        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+        //             date: $accountStartDate,
+        //             account_id: $addAccount->id,
+        //             trans_id: $addAccount->id,
+        //             amount: $dbSaleReturn->opening_balance ? $dbSaleReturn->opening_balance : 0,
+        //             amount_type: 'debit',
+        //             branch_id: auth()->user()->branch_id,
+        //         );
+
+        //         $__customerAccountId = $addAccount?->id;
+        //     }
+
+        //     $parentSaleId = null;
+        //     if ($dbSaleReturn->parent_sale_date) {
+
+        //         $parentSale = DB::table('sales')->where('sale_date_ts', $dbSaleReturn->parent_sale_date)->first();
+        //         $parentSaleId = $parentSale?->id;
+        //         echo 'Parent Sale Id' . $parentSaleId . '</br>';
+        //     }
+
+        //   //  $existsSaleReturn = DB::table('sale_returns')
+        //     //    ->where('total_return_amount', $dbSaleReturn->total_return_amount)
+        //      //   ->where('date', $dbSaleReturn->date)
+        //      //   ->first();
+
+        //     $existsSaleReturn = DB::table('sale_returns')
+        //         ->where('date_ts', $dbSaleReturn->report_date)
+        //         ->first();
+
+        //     if (!isset($existsSaleReturn)) {
+
+        //         // generate invoice ID
+        //         $voucherNo = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+
+        //         $addSalesReturn = new \App\Models\Sales\SaleReturn();
+        //         $addSalesReturn->branch_id = auth()->user()->branch_id;
+        //         $addSalesReturn->voucher_no = $voucherNo;
+        //         $addSalesReturn->sale_id = $parentSaleId;
+        //         $addSalesReturn->customer_account_id = $__customerAccountId;
+        //         $addSalesReturn->sale_account_id = $salesAccount?->id;
+        //         $addSalesReturn->total_item = $dbSaleReturn->total_item;
+        //         $addSalesReturn->total_qty = $dbSaleReturn->total_qty;
+        //         $addSalesReturn->net_total_amount = $dbSaleReturn->net_total_amount;
+        //         $addSalesReturn->return_discount = $dbSaleReturn->return_discount ? $dbSaleReturn->return_discount : 0;
+        //         $addSalesReturn->return_discount_type = $dbSaleReturn->return_discount_type;
+        //         $addSalesReturn->return_discount_amount = $dbSaleReturn->return_discount_amount ? $dbSaleReturn->return_discount_amount : 0;
+        //         $addSalesReturn->total_return_amount = $dbSaleReturn->total_return_amount;
+        //         $saleReturnPaid = $dbSaleReturn?->customer_id == null ? $dbSaleReturn->total_return_amount : $dbSaleReturn->total_return_due_pay;
+        //         $addSalesReturn->due = $dbSaleReturn->total_return_amount;
+        //         $addSalesReturn->date = $dbSaleReturn->date;
+        //         $addSalesReturn->date_ts = $dbSaleReturn->report_date;
+        //         // $addSalesReturn->note = $dbSaleReturn->note;
+        //         $addSalesReturn->created_by_id = auth()->user()->id;
+        //         $addSalesReturn->save();
+
+        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::SalesReturn->value, date: $addSalesReturn->date, accountId: $addSalesReturn->customer_account_id, transId: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amountType: 'credit');
+
+        //         // Add sales A/c Ledger Entry
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, account_id: $addSalesReturn->sale_account_id, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'debit');
+
+        //         // Add Customer A/c ledger Entry For Sales Return
+        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
+
+        //         $dbSaleReturnProducts =  DB::connection('ndss')->table('sale_return_products')
+        //             ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
+        //             ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
+        //             ->select('sale_return_products.*', 'products.name as product_name', 'products.product_code')
+        //             ->get();
+
+        //         foreach ($dbSaleReturnProducts as $dbSaleReturnProduct) {
+
+        //             $product = DB::table('products')
+        //                 ->where('name', $dbSaleReturnProduct->product_name)
+        //                 ->where('product_code', $dbSaleReturnProduct->product_code)
+        //                 ->select('products.id', 'products.unit_id')
+        //                 ->first();
+
+        //             $saleProduct = DB::table('sale_products')->where('product_id', $product->id)->where('sale_id', $parentSaleId)->first();
+
+        //             $addSaleReturnProduct = new \App\Models\Sales\SaleReturnProduct();
+        //             $addSaleReturnProduct->sale_return_id = $addSalesReturn->id;
+        //             $addSaleReturnProduct->sale_product_id = $saleProduct?->id;
+        //             $addSaleReturnProduct->product_id = $product?->id;
+        //             $addSaleReturnProduct->return_qty = $dbSaleReturnProduct->return_qty;
+        //             $addSaleReturnProduct->sold_quantity = $dbSaleReturnProduct->sold_quantity;
+        //             $addSaleReturnProduct->unit_id = $product->unit_id;
+        //             $addSaleReturnProduct->unit_price_exc_tax = $dbSaleReturnProduct->unit_price_exc_tax;
+        //             $addSaleReturnProduct->unit_discount = $dbSaleReturnProduct->unit_discount;
+        //             $addSaleReturnProduct->unit_discount_type = $dbSaleReturnProduct->unit_discount_type;
+        //             $addSaleReturnProduct->unit_discount_amount = $dbSaleReturnProduct->unit_discount_amount;
+        //             $addSaleReturnProduct->unit_price_inc_tax = $dbSaleReturnProduct->unit_price_inc_tax;
+        //             $addSaleReturnProduct->unit_cost_inc_tax = $dbSaleReturnProduct->unit_cost_inc_tax;
+        //             $addSaleReturnProduct->return_subtotal = $dbSaleReturnProduct->return_subtotal;
+        //             $addSaleReturnProduct->save();
+
+        //             // Add Product Ledger Entry
+        //             $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, productId: $addSaleReturnProduct->product_id, transId: $addSaleReturnProduct->id, rate: $addSaleReturnProduct->unit_price_inc_tax, quantityType: 'in', quantity: $addSaleReturnProduct->return_qty, subtotal: $addSaleReturnProduct->return_subtotal, variantId: null, warehouseId: null);
+
+        //             if ($addSaleReturnProduct->return_qty > 0) {
+
+        //                 $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'sale_return_product_id', transId: $addSaleReturnProduct->id, branchId: auth()->user()->branch_id, productId: $addSaleReturnProduct->product_id, variantId: null, quantity: $addSaleReturnProduct->return_qty, unitCostIncTax: $addSaleReturnProduct->unit_cost_inc_tax, sellingPrice: $addSaleReturnProduct->unit_price_inc_tax, subTotal: $addSaleReturnProduct->return_subtotal, createdAt: $addSalesReturn->date_ts);
+        //             }
+        //         }
+
+        //         if ($dbSaleReturn?->customer_id == null && $saleReturnPaid > 0) {
+
+        //             $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $addSalesReturn->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $saleReturnPaid, creditTotal: $saleReturnPaid, totalAmount: $saleReturnPaid, saleReturnRefId: $addSalesReturn->id);
+
+        //             // Add Debit Account Accounting voucher Description
+        //             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $addSalesReturn->customer_account_id, paymentMethodId: null, amountType: 'dr', amount: $saleReturnPaid);
+
+        //             // Add Accounting VoucherDescription References
+        //             $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $addSalesReturn->customer_account_id, amount: $saleReturnPaid, refIdColName: 'sale_return_id', refIds: [$addSalesReturn->id]);
+
+        //             //Add Debit Ledger Entry
+        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: $addSalesReturn->customer_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $saleReturnPaid, amount_type: 'debit', cash_bank_account_id: 14);
+
+        //             // Add Payment Description Credit Entry
+        //             $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $saleReturnPaid, note: null);
+
+        //             //Add Credit Ledger Entry
+        //             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $saleReturnPaid, amount_type: 'credit');
+        //         }
+
+        //         $return = $salesReturnService->singleSalesReturn(id: $addSalesReturn->id, with: [
+        //             'sale',
+        //             'branch',
+        //             'branch.parentBranch',
+        //             'customer',
+        //             'saleReturnProducts',
+        //             'saleReturnProducts.product',
+        //             'saleReturnProducts.variant',
+        //             'saleReturnProducts.unit',
+        //         ]);
+
+        //         if ($return?->sale) {
+
+        //             $saleService->adjustSaleInvoiceAmounts($return->sale);
+        //         }
+
+        //         echo 'Sale Return Created-' . $voucherNo . '</br>';
+        //     }
+        // }
+
+        // echo 'All Sale Returns is done-' . '</br>';
+
+        ///////// Add Customer Sale Payments
+        $dbSalePayments = DB::connection('ndss')->table('customer_ledgers')
+            ->whereIn('customer_ledgers.voucher_type', [3, 5])
+            ->leftJoin('customers', 'customer_ledgers.customer_id', 'customers.id')
+            ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+            ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
             ->select(
-                'purchase_returns.*',
-                'purchases.date as parent_purchase_date',
-                'purchases.net_total_amount as parent_purchase_net_total_amount',
-                'purchases.total_purchase_amount as parent_purchase_total_purchase_amount',
-                'suppliers.name',
-                'suppliers.business_name',
-                'suppliers.phone',
-                'suppliers.alternative_phone',
-                'suppliers.landline',
-                'suppliers.date_of_birth',
-                'suppliers.opening_balance',
-                'suppliers.address',
-                'suppliers.email',
-                'suppliers.shipping_address',
-                'suppliers.city',
-                'suppliers.state',
-                'suppliers.country',
-                'suppliers.zip_code',
-                'suppliers.tax_number',
-                'suppliers.pay_term',
-                'suppliers.pay_term_number',
-            )->get();
-
-        foreach ($dbPurchaseReturns as $dbPurchaseReturn) {
-
-            $existsSupplier = DB::table('contacts')
-                ->where('contacts.type', $supplierType)
-                ->where('contacts.name', $dbPurchaseReturn->name)
-                ->where('contacts.phone', $dbPurchaseReturn->phone)
-                ->join('accounts', 'contacts.id', 'accounts.contact_id')
-                ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
-
-            $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
-
-            if (!isset($existsSupplier)) {
-
-                $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchaseReturn->name, phone: $dbPurchaseReturn->phone, businessName: $dbPurchaseReturn->business_name, email: $dbPurchaseReturn->email, alternativePhone: $dbPurchaseReturn->alternative_phone, landLine: $dbPurchaseReturn->landline, dateOfBirth: $dbPurchaseReturn->date_of_birth, taxNumber: $dbPurchaseReturn->tax_number, customerGroupId: null, address: $dbPurchaseReturn->address, city: $dbPurchaseReturn->city, state: $dbPurchaseReturn->state, country: $dbPurchaseReturn->country, zipCode: $dbPurchaseReturn->zip_code, shippingAddress: $dbPurchaseReturn->shipping_address, payTerm: $dbPurchaseReturn->pay_term, payTermNumber: $dbPurchaseReturn->pay_term_number, creditLimit: null, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr');
-
-                $addAccount = $accountService->addAccount(name: $dbPurchaseReturn->name, accountGroup: $supplierAccountGroup, phone: $dbPurchaseReturn->phone, address: $dbPurchaseReturn->address, openingBalance: $dbPurchaseReturn->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
-
-                $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
-                    branchId: auth()->user()->branch_id,
-                    accountId: $addAccount->id,
-                    openingBalanceType: 'cr',
-                    openingBalance: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
-                );
-
-                $accountLedgerService->addAccountLedgerEntry(
-                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-                    date: $accountStartDate,
-                    account_id: $addAccount->id,
-                    trans_id: $addAccount->id,
-                    amount: $dbPurchaseReturn->opening_balance ? $dbPurchaseReturn->opening_balance : 0,
-                    amount_type: 'credit',
-                    branch_id: auth()->user()->branch_id,
-                );
-
-                $supplierAccountId = $addAccount?->id;
-            }
-
-            $parentPurchaseId = null;
-            if ($dbPurchaseReturn->parent_purchase_date) {
-
-                $parentPurchase = DB::table('purchases')
-                ->where('date', $dbPurchaseReturn->parent_purchase_date)
-                ->where('net_total_amount', $dbPurchaseReturn->parent_purchase_net_total_amount)
-                ->where('total_purchase_amount', $dbPurchaseReturn->parent_purchase_total_purchase_amount)
-                ->first();
-                $parentPurchaseId = $parentPurchase?->id;
-                echo 'Parent Sale Id' . $parentPurchaseId . '</br>';
-            }
-
-         //   $existsPurchaseReturn = DB::table('purchase_returns')
-           //     ->where('total_return_amount', $dbPurchaseReturn->total_return_amount)
-             //   ->where('date_ts', $dbPurchaseReturn->report_date)
-             //   ->first();
-
-            $existsPurchaseReturn = DB::table('purchase_returns')
-                ->where('date_ts', $dbPurchaseReturn->report_date)
-                ->first();
-
-            if (!isset($existsPurchaseReturn)) {
-
-                $voucherNo = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $purchaseReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
-
-                $addPurchaseReturn = new \App\Models\Purchases\PurchaseReturn();
-                $addPurchaseReturn->branch_id = auth()->user()->branch_id;
-                $addPurchaseReturn->purchase_id = $parentPurchaseId;
-                $addPurchaseReturn->voucher_no = $voucherNo;
-                $addPurchaseReturn->supplier_account_id = $supplierAccountId;
-                $addPurchaseReturn->purchase_account_id = $purchaseAccount->id;
-                // $addPurchaseReturn->total_item = $dbPurchaseReturn->total_item;
-                // $addPurchaseReturn->total_qty = $dbPurchaseReturn->total_qty;
-                $addPurchaseReturn->net_total_amount = $dbPurchaseReturn->total_return_amount;
-                $addPurchaseReturn->return_discount_type = 1;
-                $addPurchaseReturn->total_return_amount = $dbPurchaseReturn->total_return_amount;
-                $addPurchaseReturn->due = $dbPurchaseReturn->total_return_amount;
-                $addPurchaseReturn->date = $dbPurchaseReturn->date;
-                $addPurchaseReturn->date_ts = $dbPurchaseReturn->report_date;
-                // $addPurchaseReturn->note = $dbPurchaseReturn->note;
-                $addPurchaseReturn->created_by_id = auth()->user()->id;
-                $addPurchaseReturn->save();
-
-                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, accountId: $addPurchaseReturn->supplier_account_id, transId: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amountType: 'debit');
-
-                // Add Purchase A/c Ledger Entry
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, account_id: $addPurchaseReturn->purchase_account_id, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'credit');
-
-                // Add supplier A/c ledger Entry For Purchase
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $addPurchaseReturn->supplier_account_id, date: $addPurchaseReturn->date, trans_id: $addPurchaseReturn->id, amount: $addPurchaseReturn->total_return_amount, amount_type: 'debit');
-
-                $dbPurchaseReturnProducts =  DB::connection('ndss')->table('purchase_return_products')
-                    ->leftJoin('products', 'purchase_return_products.product_id', 'products.id')
-                    ->where('purchase_return_products.purchase_return_id', $dbPurchaseReturn->id)
-                    ->select('purchase_return_products.*', 'products.name as product_name', 'products.product_code')
-                    ->get();
-
-                foreach ($dbPurchaseReturnProducts as $dbPurchaseReturnProduct) {
-
-                    $product = DB::table('products')
-                        ->where('name', $dbPurchaseReturnProduct->product_name)
-                        ->where('product_code', $dbPurchaseReturnProduct->product_code)
-                        ->select('products.id', 'products.unit_id')
-                        ->first();
-
-                    $addPurchaseReturnProduct = new \App\Models\Purchases\PurchaseReturnProduct();
-                    $addPurchaseReturnProduct->purchase_return_id = $addPurchaseReturn->id;
-                    $addPurchaseReturnProduct->product_id = $product?->id;
-                    $addPurchaseReturnProduct->return_qty = $dbPurchaseReturnProduct->return_qty;
-                    $addPurchaseReturnProduct->purchased_qty = 0;
-                    $addPurchaseReturnProduct->unit_id = $product->unit_id;
-                    $addPurchaseReturnProduct->unit_cost_exc_tax = $dbPurchaseReturnProduct->unit_cost;
-                    $addPurchaseReturnProduct->unit_discount_type = 1;
-                    $addPurchaseReturnProduct->unit_cost_inc_tax = $dbPurchaseReturnProduct->unit_cost;
-                    $addPurchaseReturnProduct->return_subtotal = $dbPurchaseReturnProduct->return_subtotal;
-                    $addPurchaseReturnProduct->save();
-
-                    // Add Product Ledger Entry
-                    $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::PurchaseReturn->value, date: $addPurchaseReturn->date, productId: $product?->id, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: null, warehouseId: null);
-                }
-
-                echo 'Purchase Return Created-' . $voucherNo . '</br>';
-            }
-        }
-        echo 'All Purchase Returns is done-' . '</br>';
-
-        /// Add Sale Returns
-        $dbSaleReturns = DB::connection('ndss')->table('sale_returns')
-            ->leftJoin('customers', 'sale_returns.customer_id', 'customers.id')
-            ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
-            ->select(
-                'sale_returns.*',
-                'sales.report_date as parent_sale_date',
+                'customer_ledgers.*',
+                'sales.report_date as sale_report_date',
                 'customers.name',
                 'customers.business_name',
                 'customers.phone',
@@ -790,32 +983,33 @@ Route::get('my-test', function () {
                 'customers.tax_number',
                 'customers.pay_term',
                 'customers.pay_term_number',
-            )->get();
+                'customers.credit_limit',
+            )->orderBy('customer_ledgers.id', 'asc')->get();
 
-        foreach ($dbSaleReturns as $dbSaleReturn) {
+        foreach ($dbSalePayments as $dbSalePayment) {
 
             $existsCustomer = DB::table('contacts')
                 ->where('contacts.type', $customerType)
-                ->where('contacts.name', $dbSaleReturn->name)
-                ->where('contacts.phone', $dbSaleReturn->phone)
+                ->where('contacts.name', $dbSalePayment->name)
+                ->where('contacts.phone', $dbSalePayment->phone)
                 ->join('accounts', 'contacts.id', 'accounts.contact_id')
                 ->select('contacts.id', 'accounts.id as customer_account_id')->first();
 
             $customerAccountId = $existsCustomer?->customer_account_id;
-            $__customerAccountId = $dbSaleReturn?->customer_id == null ? 23 : $customerAccountId;
+            $__customerAccountId = $dbSalePayment?->customer_id == null ? 23 : $customerAccountId;
 
             if (!isset($__customerAccountId)) {
 
-                $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbSaleReturn->name, phone: $dbSaleReturn->phone, businessName: $dbSaleReturn->business_name, email: $dbSaleReturn->email, alternativePhone: $dbSaleReturn->alternative_phone, landLine: $dbSaleReturn->landline, dateOfBirth: $dbSaleReturn->date_of_birth, taxNumber: $dbSaleReturn->tax_number, customerGroupId: null, address: $dbSaleReturn->address, city: $dbSaleReturn->city, state: $dbSaleReturn->state, country: $dbSaleReturn->country, zipCode: $dbSaleReturn->zip_code, shippingAddress: $dbSaleReturn->shipping_address, payTerm: $dbSaleReturn->pay_term, payTermNumber: $dbSaleReturn->pay_term_number, creditLimit: null, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'cr');
+                $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $dbSalePayment->name, phone: $dbSalePayment->phone, businessName: $dbSalePayment->business_name, email: $dbSalePayment->email, alternativePhone: $dbSalePayment->alternative_phone, landLine: $dbSalePayment->landline, dateOfBirth: $dbSalePayment->date_of_birth, taxNumber: $dbSalePayment->tax_number, customerGroupId: null, address: $dbSalePayment->address, city: $dbSalePayment->city, state: $dbSalePayment->state, country: $dbSalePayment->country, zipCode: $dbSalePayment->zip_code, shippingAddress: $dbSalePayment->shipping_address, payTerm: $dbSalePayment->pay_term, payTermNumber: $dbSalePayment->pay_term_number, creditLimit: null, openingBalance: $dbSalePayment->opening_balance, openingBalanceType: 'cr');
 
-                $addAccount = $accountService->addAccount(name: $dbSaleReturn->name, accountGroup: $customerAccountGroup, phone: $dbSale->phone, address: $dbSaleReturn->address, openingBalance: $dbSaleReturn->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
+                $addAccount = $accountService->addAccount(name: $dbSalePayment->name, accountGroup: $customerAccountGroup, phone: $dbSalePayment->phone, address: $dbSalePayment->address, openingBalance: $dbSalePayment->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
 
                 $accountLedgerService->addAccountLedgerEntry(
                     voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
                     date: $accountStartDate,
                     account_id: $addAccount->id,
                     trans_id: $addAccount->id,
-                    amount: $dbSaleReturn->opening_balance ? $dbSaleReturn->opening_balance : 0,
+                    amount: $dbSalePayment->opening_balance ? $dbSalePayment->opening_balance : 0,
                     amount_type: 'debit',
                     branch_id: auth()->user()->branch_id,
                 );
@@ -823,555 +1017,361 @@ Route::get('my-test', function () {
                 $__customerAccountId = $addAccount?->id;
             }
 
-            $parentSaleId = null;
-            if ($dbSaleReturn->parent_sale_date) {
+            // $existsCustomerPayment = DB::table('accounting_vouchers')
+            //  ->where('voucher_type', AccountingVoucherType::Receipt->value)
+            //  ->where('total_amount', $dbSalePayment->paid_amount)
+            //  ->where('date', $dbSalePayment->date)
+            //  ->first();
 
-                $parentSale = DB::table('sales')->where('sale_date_ts', $dbSaleReturn->parent_sale_date)->first();
-                $parentSaleId = $parentSale?->id;
-                echo 'Parent Sale Id' . $parentSaleId . '</br>';
-            }
-
-          //  $existsSaleReturn = DB::table('sale_returns')
-            //    ->where('total_return_amount', $dbSaleReturn->total_return_amount)
-             //   ->where('date', $dbSaleReturn->date)
-             //   ->first();
-
-            $existsSaleReturn = DB::table('sale_returns')
-                ->where('date_ts', $dbSaleReturn->report_date)
+            $existsSalePayment = DB::table('accounting_vouchers')
+                ->where('voucher_type', AccountingVoucherType::Receipt->value)
+                ->where('date_ts', $dbSalePayment->report_date)
                 ->first();
 
-            if (!isset($existsSaleReturn)) {
+            if (!isset($existsSalePayment)) {
 
-                // generate invoice ID
-                $voucherNo = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $salesReturnVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+                $sale = DB::table('sales')->where('sale_date_ts', $dbSalePayment->sale_report_date)->first();
 
-                $addSalesReturn = new \App\Models\Sales\SaleReturn();
-                $addSalesReturn->branch_id = auth()->user()->branch_id;
-                $addSalesReturn->voucher_no = $voucherNo;
-                $addSalesReturn->sale_id = $parentSaleId;
-                $addSalesReturn->customer_account_id = $__customerAccountId;
-                $addSalesReturn->sale_account_id = $salesAccount?->id;
-                $addSalesReturn->total_item = $dbSaleReturn->total_item;
-                $addSalesReturn->total_qty = $dbSaleReturn->total_qty;
-                $addSalesReturn->net_total_amount = $dbSaleReturn->net_total_amount;
-                $addSalesReturn->return_discount = $dbSaleReturn->return_discount ? $dbSaleReturn->return_discount : 0;
-                $addSalesReturn->return_discount_type = $dbSaleReturn->return_discount_type;
-                $addSalesReturn->return_discount_amount = $dbSaleReturn->return_discount_amount ? $dbSaleReturn->return_discount_amount : 0;
-                $addSalesReturn->total_return_amount = $dbSaleReturn->total_return_amount;
-                $saleReturnPaid = $dbSaleReturn?->customer_id == null ? $dbSaleReturn->total_return_amount : $dbSaleReturn->total_return_due_pay;
-                $addSalesReturn->due = $dbSaleReturn->total_return_amount;
-                $addSalesReturn->date = $dbSaleReturn->date;
-                $addSalesReturn->date_ts = $dbSaleReturn->report_date;
-                // $addSalesReturn->note = $dbSaleReturn->note;
-                $addSalesReturn->created_by_id = auth()->user()->id;
-                $addSalesReturn->save();
+                // Add Accounting Voucher
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbSalePayment->date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $dbSalePayment->credit, creditTotal: $dbSalePayment->credit, totalAmount: $dbSalePayment->credit);
 
-                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::SalesReturn->value, date: $addSalesReturn->date, accountId: $addSalesReturn->customer_account_id, transId: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amountType: 'credit');
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $dbSalePayment->credit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
 
-                // Add sales A/c Ledger Entry
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, account_id: $addSalesReturn->sale_account_id, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'debit');
+                //Add Debit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $dbSalePayment->date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbSalePayment->credit, amount_type: 'debit');
 
-                // Add Customer A/c ledger Entry For Sales Return
-                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SalesReturn->value, account_id: $addSalesReturn->customer_account_id, date: $addSalesReturn->date, trans_id: $addSalesReturn->id, amount: $addSalesReturn->total_return_amount, amount_type: 'credit');
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $__customerAccountId, paymentMethodId: null, amountType: 'cr', amount: $dbSalePayment->credit);
 
-                $dbSaleReturnProducts =  DB::connection('ndss')->table('sale_return_products')
-                    ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
-                    ->where('sale_return_products.sale_return_id', $dbSaleReturn->id)
-                    ->select('sale_return_products.*', 'products.name as product_name', 'products.product_code')
-                    ->get();
+                // Add Day Book entry for Receipt
+                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $dbSalePayment->date, accountId: $__customerAccountId, transId: $addAccountingVoucherCreditDescription->id, amount: $dbSalePayment->credit, amountType: 'credit');
 
-                foreach ($dbSaleReturnProducts as $dbSaleReturnProduct) {
+                // Add Accounting VoucherDescription References
+                $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $__customerAccountId, amount: $dbSalePayment->credit, refIdColName: 'sale_id', refIds: isset($sale) ? [$sale->id] : null);
 
-                    $product = DB::table('products')
-                        ->where('name', $dbSaleReturnProduct->product_name)
-                        ->where('product_code', $dbSaleReturnProduct->product_code)
-                        ->select('products.id', 'products.unit_id')
-                        ->first();
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $dbSalePayment->date, account_id: $__customerAccountId, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbSalePayment->credit, amount_type: 'credit', cash_bank_account_id: 14);
 
-                    $saleProduct = DB::table('sale_products')->where('product_id', $product->id)->where('sale_id', $parentSaleId)->first();
-
-                    $addSaleReturnProduct = new \App\Models\Sales\SaleReturnProduct();
-                    $addSaleReturnProduct->sale_return_id = $addSalesReturn->id;
-                    $addSaleReturnProduct->sale_product_id = $saleProduct?->id;
-                    $addSaleReturnProduct->product_id = $product?->id;
-                    $addSaleReturnProduct->return_qty = $dbSaleReturnProduct->return_qty;
-                    $addSaleReturnProduct->sold_quantity = $dbSaleReturnProduct->sold_quantity;
-                    $addSaleReturnProduct->unit_id = $product->unit_id;
-                    $addSaleReturnProduct->unit_price_exc_tax = $dbSaleReturnProduct->unit_price_exc_tax;
-                    $addSaleReturnProduct->unit_discount = $dbSaleReturnProduct->unit_discount;
-                    $addSaleReturnProduct->unit_discount_type = $dbSaleReturnProduct->unit_discount_type;
-                    $addSaleReturnProduct->unit_discount_amount = $dbSaleReturnProduct->unit_discount_amount;
-                    $addSaleReturnProduct->unit_price_inc_tax = $dbSaleReturnProduct->unit_price_inc_tax;
-                    $addSaleReturnProduct->unit_cost_inc_tax = $dbSaleReturnProduct->unit_cost_inc_tax;
-                    $addSaleReturnProduct->return_subtotal = $dbSaleReturnProduct->return_subtotal;
-                    $addSaleReturnProduct->save();
-
-                    // Add Product Ledger Entry
-                    $productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::SalesReturn->value, date: $addSalesReturn->date, productId: $addSaleReturnProduct->product_id, transId: $addSaleReturnProduct->id, rate: $addSaleReturnProduct->unit_price_inc_tax, quantityType: 'in', quantity: $addSaleReturnProduct->return_qty, subtotal: $addSaleReturnProduct->return_subtotal, variantId: null, warehouseId: null);
-
-                    if ($addSaleReturnProduct->return_qty > 0) {
-
-                        $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'sale_return_product_id', transId: $addSaleReturnProduct->id, branchId: auth()->user()->branch_id, productId: $addSaleReturnProduct->product_id, variantId: null, quantity: $addSaleReturnProduct->return_qty, unitCostIncTax: $addSaleReturnProduct->unit_cost_inc_tax, sellingPrice: $addSaleReturnProduct->unit_price_inc_tax, subTotal: $addSaleReturnProduct->return_subtotal, createdAt: $addSalesReturn->date_ts);
-                    }
-                }
-
-                if ($dbSaleReturn?->customer_id == null && $saleReturnPaid > 0) {
-
-                    $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $addSalesReturn->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $saleReturnPaid, creditTotal: $saleReturnPaid, totalAmount: $saleReturnPaid, saleReturnRefId: $addSalesReturn->id);
-
-                    // Add Debit Account Accounting voucher Description
-                    $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $addSalesReturn->customer_account_id, paymentMethodId: null, amountType: 'dr', amount: $saleReturnPaid);
-
-                    // Add Accounting VoucherDescription References
-                    $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $addSalesReturn->customer_account_id, amount: $saleReturnPaid, refIdColName: 'sale_return_id', refIds: [$addSalesReturn->id]);
-
-                    //Add Debit Ledger Entry
-                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: $addSalesReturn->customer_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $saleReturnPaid, amount_type: 'debit', cash_bank_account_id: 14);
-
-                    // Add Payment Description Credit Entry
-                    $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $saleReturnPaid, note: null);
-
-                    //Add Credit Ledger Entry
-                    $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $addSalesReturn->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $saleReturnPaid, amount_type: 'credit');
-                }
-
-                $return = $salesReturnService->singleSalesReturn(id: $addSalesReturn->id, with: [
-                    'sale',
-                    'branch',
-                    'branch.parentBranch',
-                    'customer',
-                    'saleReturnProducts',
-                    'saleReturnProducts.product',
-                    'saleReturnProducts.variant',
-                    'saleReturnProducts.unit',
-                ]);
-
-                if ($return?->sale) {
-
-                    $saleService->adjustSaleInvoiceAmounts($return->sale);
-                }
-
-                echo 'Sale Return Created-' . $voucherNo . '</br>';
+                echo 'Customer Sale Payment-' . $addAccountingVoucher->voucher_no . '</br>';
             }
         }
-
-        echo 'All Sale Returns is done-' . '</br>';
-
-        ///////// Add Customer Sale Payments
-        // $dbSalePayments = DB::connection('ndss')->table('customer_ledgers')
-        //     ->whereIn('customer_ledgers.voucher_type', [3, 5])
-        //     ->leftJoin('customers', 'customer_ledgers.customer_id', 'customers.id')
-        //     ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
-        //     ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-        //     ->select(
-        //         'customer_ledgers.*',
-        //         'sales.report_date as sale_report_date',
-        //         'customers.name',
-        //         'customers.business_name',
-        //         'customers.phone',
-        //         'customers.alternative_phone',
-        //         'customers.landline',
-        //         'customers.date_of_birth',
-        //         'customers.opening_balance',
-        //         'customers.address',
-        //         'customers.email',
-        //         'customers.shipping_address',
-        //         'customers.city',
-        //         'customers.state',
-        //         'customers.country',
-        //         'customers.zip_code',
-        //         'customers.tax_number',
-        //         'customers.pay_term',
-        //         'customers.pay_term_number',
-        //         'customers.credit_limit',
-        //     )->orderBy('customer_ledgers.id', 'asc')->get();
-
-        // foreach ($dbSalePayments as $dbSalePayment) {
-
-        //     $existsCustomer = DB::table('contacts')
-        //         ->where('contacts.type', $customerType)
-        //         ->where('contacts.name', $dbSalePayment->name)
-        //         ->where('contacts.phone', $dbSalePayment->phone)
-        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
-        //         ->select('contacts.id', 'accounts.id as customer_account_id')->first();
-
-        //     $customerAccountId = $existsCustomer?->customer_account_id;
-        //     $__customerAccountId = $dbSalePayment?->customer_id == null ? 23 : $customerAccountId;
-
-        //     if (!isset($__customerAccountId)) {
-
-        //         $addContact = $contactService->addContact(type: $customerType, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $dbSalePayment->name, phone: $dbSalePayment->phone, businessName: $dbSalePayment->business_name, email: $dbSalePayment->email, alternativePhone: $dbSalePayment->alternative_phone, landLine: $dbSalePayment->landline, dateOfBirth: $dbSalePayment->date_of_birth, taxNumber: $dbSalePayment->tax_number, customerGroupId: null, address: $dbSalePayment->address, city: $dbSalePayment->city, state: $dbSalePayment->state, country: $dbSalePayment->country, zipCode: $dbSalePayment->zip_code, shippingAddress: $dbSalePayment->shipping_address, payTerm: $dbSalePayment->pay_term, payTermNumber: $dbSalePayment->pay_term_number, creditLimit: null, openingBalance: $dbSalePayment->opening_balance, openingBalanceType: 'cr');
-
-        //         $addAccount = $accountService->addAccount(name: $dbSalePayment->name, accountGroup: $customerAccountGroup, phone: $dbSalePayment->phone, address: $dbSalePayment->address, openingBalance: $dbSalePayment->opening_balance, openingBalanceType: 'dr', contactId: $addContact->id);
-
-        //         $accountLedgerService->addAccountLedgerEntry(
-        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-        //             date: $accountStartDate,
-        //             account_id: $addAccount->id,
-        //             trans_id: $addAccount->id,
-        //             amount: $dbSalePayment->opening_balance ? $dbSalePayment->opening_balance : 0,
-        //             amount_type: 'debit',
-        //             branch_id: auth()->user()->branch_id,
-        //         );
-
-        //         $__customerAccountId = $addAccount?->id;
-        //     }
-
-        //     // $existsCustomerPayment = DB::table('accounting_vouchers')
-        //     //  ->where('voucher_type', AccountingVoucherType::Receipt->value)
-        //     //  ->where('total_amount', $dbSalePayment->paid_amount)
-        //     //  ->where('date', $dbSalePayment->date)
-        //     //  ->first();
-
-        //     $existsSalePayment = DB::table('accounting_vouchers')
-        //         ->where('voucher_type', AccountingVoucherType::Receipt->value)
-        //         ->where('date_ts', $dbSalePayment->report_date)
-        //         ->first();
-
-        //     if (!isset($existsSalePayment)) {
-
-        //         $sale = DB::table('sales')->where('sale_date_ts', $dbSalePayment->sale_report_date)->first();
-
-        //         // Add Accounting Voucher
-        //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbSalePayment->date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $dbSalePayment->credit, creditTotal: $dbSalePayment->credit, totalAmount: $dbSalePayment->credit);
-
-        //         // Add Debit Account Accounting voucher Description
-        //         $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $dbSalePayment->credit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
-
-        //         //Add Debit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $dbSalePayment->date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbSalePayment->credit, amount_type: 'debit');
-
-        //         // Add Payment Description Credit Entry
-        //         $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $__customerAccountId, paymentMethodId: null, amountType: 'cr', amount: $dbSalePayment->credit);
-
-        //         // Add Day Book entry for Receipt
-        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $dbSalePayment->date, accountId: $__customerAccountId, transId: $addAccountingVoucherCreditDescription->id, amount: $dbSalePayment->credit, amountType: 'credit');
-
-        //         // Add Accounting VoucherDescription References
-        //         $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $__customerAccountId, amount: $dbSalePayment->credit, refIdColName: 'sale_id', refIds: isset($sale) ? [$sale->id] : null);
-
-        //         //Add Credit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $dbSalePayment->date, account_id: $__customerAccountId, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbSalePayment->credit, amount_type: 'credit', cash_bank_account_id: 14);
-
-        //         echo 'Customer Sale Payment-' . $addAccountingVoucher->voucher_no . '</br>';
-        //     }
-        // }
-        // echo 'All Customer Sale Payments is done-' . '</br>';
-
-        // /////////// Add Customer Sales Return Payments
-        // $dbSaleReturnPayments = DB::connection('ndss')->table('customer_ledgers')
-        //     ->whereIn('customer_ledgers.voucher_type', [4, 6])
-        //     ->leftJoin('customers', 'customer_ledgers.customer_id', 'customers.id')
-        //     ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
-        //     ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
-        //     ->select(
-        //         'customer_ledgers.*',
-        //         'sale_returns.report_date as sale_return_report_date',
-        //         'customers.name',
-        //         'customers.business_name',
-        //         'customers.phone',
-        //         'customers.alternative_phone',
-        //         'customers.landline',
-        //         'customers.date_of_birth',
-        //         'customers.opening_balance',
-        //         'customers.address',
-        //         'customers.email',
-        //         'customers.shipping_address',
-        //         'customers.city',
-        //         'customers.state',
-        //         'customers.country',
-        //         'customers.zip_code',
-        //         'customers.tax_number',
-        //         'customers.pay_term',
-        //         'customers.pay_term_number',
-        //         'customers.credit_limit',
-        //     )->orderBy('customer_ledgers.id', 'asc')->get();
-
-        // foreach ($dbSaleReturnPayments as $dbSaleReturnPayment) {
-
-        //     $existsCustomer = DB::table('contacts')
-        //         ->where('contacts.type', $customerType)
-        //         ->where('contacts.name', $dbSaleReturnPayment->name)
-        //         ->where('contacts.phone', $dbSaleReturnPayment->phone)
-        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
-        //         ->select('contacts.id', 'accounts.id as customer_account_id')->first();
-
-        //     $customerAccountId = isset($existsCustomer) ? $existsCustomer->customer_account_id : null;
-
-        //     if (!isset($existsCustomer)) {
-
-        //         $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbSaleReturnPayment->name, phone: $dbSaleReturnPayment->phone, businessName: $dbSaleReturnPayment->business_name, email: $dbSaleReturnPayment->email, alternativePhone: $dbSaleReturnPayment->alternative_phone, landLine: $dbSaleReturnPayment->landline, dateOfBirth: $dbSaleReturnPayment->date_of_birth, taxNumber: $dbSaleReturnPayment->tax_number, customerGroupId: null, address: $dbSaleReturnPayment->address, city: $dbSaleReturnPayment->city, state: $dbSaleReturnPayment->state, country: $dbSaleReturnPayment->country, zipCode: $dbSaleReturnPayment->zip_code, shippingAddress: $dbSaleReturnPayment->shipping_address, payTerm: $dbSaleReturnPayment->pay_term, payTermNumber: $dbSaleReturnPayment->pay_term_number, creditLimit: null, openingBalance: $dbSaleReturnPayment->opening_balance, openingBalanceType: 'cr');
-
-        //         $addAccount = $accountService->addAccount(name: $dbSaleReturnPayment->name, accountGroup: $supplierAccountGroup, phone: $dbSaleReturnPayment->phone, address: $dbSaleReturnPayment->address, openingBalance: $dbSaleReturnPayment->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
-
-        //         $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
-        //             branchId: auth()->user()->branch_id,
-        //             accountId: $addAccount->id,
-        //             openingBalanceType: 'cr',
-        //             openingBalance: $dbSaleReturnPayment->opening_balance ? $dbSaleReturnPayment->opening_balance : 0,
-        //         );
-
-        //         $accountLedgerService->addAccountLedgerEntry(
-        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-        //             date: $accountStartDate,
-        //             account_id: $addAccount->id,
-        //             trans_id: $addAccount->id,
-        //             amount: $dbSaleReturnPayment->opening_balance ? $dbSaleReturnPayment->opening_balance : 0,
-        //             amount_type: 'credit',
-        //             branch_id: auth()->user()->branch_id,
-        //         );
-
-        //         $customerAccountId = $addAccount?->id;
-        //     }
-
-        //     //$existsSaleReturnPayment = DB::table('accounting_vouchers')
-        //     //  ->where('voucher_type', AccountingVoucherType::Payment->value)
-        //     //  ->where('total_amount', $dbSaleReturnPayment->paid_amount)
-        //     //  ->where('date', $dbSaleReturnPayment->date)
-        //     //  ->first();
-
-        //     $existsSaleReturnPayment = DB::table('accounting_vouchers')
-        //         ->where('voucher_type', AccountingVoucherType::Payment->value)
-        //         ->where('date_ts', $dbSaleReturnPayment->report_date)
-        //         ->first();
-
-        //     if (!isset($existsSaleReturnPayment)) {
-
-        //         $saleReturn = DB::table('sale_returns')->where('date_ts', $dbSaleReturnPayment->sale_return_report_date)->first();
-
-        //         // Add Accounting Voucher
-        //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbSaleReturnPayment->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $dbSaleReturnPayment->debit, creditTotal: $dbSaleReturnPayment->debit, totalAmount: $dbSaleReturnPayment->debit);
-
-        //         // Add Payment Description Debit Entry
-        //         $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $customerAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbSaleReturnPayment->debit);
-
-        //         // Add Day Book entry for Payment
-        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $dbSaleReturnPayment->date, accountId: $customerAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $dbSaleReturnPayment->debit, amountType: 'debit');
-
-        //         // Add Accounting VoucherDescription References
-        //         $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $customerAccountId, amount: $dbSaleReturnPayment->debit, refIdColName: 'sale_return_id', refIds: isset($saleReturn) ? [$saleReturn->id] : null);
-
-        //         //Add Debit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $dbSaleReturnPayment->date, account_id: $customerAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbSaleReturnPayment->debit, amount_type: 'debit', cash_bank_account_id: 14);
-
-        //         // Add Credit Account Accounting voucher Description
-        //         $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $dbSaleReturnPayment->debit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
-
-        //         //Add Credit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $dbSaleReturnPayment->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbSaleReturnPayment->debit, amount_type: 'credit');
-
-        //         echo 'Customer Return Payment-' . $addAccountingVoucher->voucher_no . '</br>';
-        //     }
-        // }
-        // echo 'All Customer Return Payments is done-' . '</br>';
-
-        // //////////// Add Purchase Payments
-        // $dbPurchasePayments = DB::connection('ndss')->table('supplier_ledgers')
-        //     ->whereIn('supplier_ledgers.voucher_type', [3, 5])
-        //     ->leftJoin('suppliers', 'supplier_ledgers.supplier_id', 'suppliers.id')
-        //     ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
-        //     ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
-        //     ->select(
-        //         'supplier_ledgers.*',
-        //         'purchases.report_date as purchase_report_date',
-        //         'suppliers.name',
-        //         'suppliers.business_name',
-        //         'suppliers.phone',
-        //         'suppliers.alternative_phone',
-        //         'suppliers.landline',
-        //         'suppliers.date_of_birth',
-        //         'suppliers.opening_balance',
-        //         'suppliers.address',
-        //         'suppliers.email',
-        //         'suppliers.shipping_address',
-        //         'suppliers.city',
-        //         'suppliers.state',
-        //         'suppliers.country',
-        //         'suppliers.zip_code',
-        //         'suppliers.tax_number',
-        //         'suppliers.pay_term',
-        //         'suppliers.pay_term_number',
-        //     )->orderBy('supplier_ledgers.id', 'asc')->get();
-
-        // foreach ($dbPurchasePayments as $dbPurchasePayment) {
-
-        //     $existsSupplier = DB::table('contacts')
-        //         ->where('contacts.type', $supplierType)
-        //         ->where('contacts.name', $dbPurchasePayment->name)
-        //         ->where('contacts.phone', $dbPurchasePayment->phone)
-        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
-        //         ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
-
-        //     $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
-
-        //     if (!isset($existsSupplier)) {
-
-        //         $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchasePayment->name, phone: $dbPurchasePayment->phone, businessName: $dbPurchasePayment->business_name, email: $dbPurchasePayment->email, alternativePhone: $dbPurchasePayment->alternative_phone, landLine: $dbPurchasePayment->landline, dateOfBirth: $dbPurchasePayment->date_of_birth, taxNumber: $dbPurchasePayment->tax_number, customerGroupId: null, address: $dbPurchasePayment->address, city: $dbPurchasePayment->city, state: $dbSupplierPayment->state, country: $dbPurchasePayment->country, zipCode: $dbPurchasePayment->zip_code, shippingAddress: $dbPurchasePayment->shipping_address, payTerm: $dbPurchasePayment->pay_term, payTermNumber: $dbPurchasePayment->pay_term_number, creditLimit: null, openingBalance: $dbPurchasePayment->opening_balance, openingBalanceType: 'cr');
-
-        //         $addAccount = $accountService->addAccount(name: $dbPurchasePayment->name, accountGroup: $supplierAccountGroup, phone: $dbPurchasePayment->phone, address: $dbPurchasePayment->address, openingBalance: $dbPurchasePayment->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
-
-        //         $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
-        //             branchId: auth()->user()->branch_id,
-        //             accountId: $addAccount->id,
-        //             openingBalanceType: 'cr',
-        //             openingBalance: $dbPurchasePayment->opening_balance ? $dbPurchasePayment->opening_balance : 0,
-        //         );
-
-        //         $accountLedgerService->addAccountLedgerEntry(
-        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-        //             date: $accountStartDate,
-        //             account_id: $addAccount->id,
-        //             trans_id: $addAccount->id,
-        //             amount: $dbPurchasePayment->opening_balance ? $dbPurchasePayment->opening_balance : 0,
-        //             amount_type: 'credit',
-        //             branch_id: auth()->user()->branch_id,
-        //         );
-
-        //         $supplierAccountId = $addAccount?->id;
-        //     }
-
-        //     //$existsSupplierPayment = DB::table('accounting_vouchers')
-        //     //  ->where('voucher_type', AccountingVoucherType::Payment->value)
-        //     //  ->where('total_amount', $dbPurchasePayment->paid_amount)
-        //     //  ->where('date', $dbPurchasePayment->date)
-        //     //  ->first();
-
-        //     $existsPurchasePayment = DB::table('accounting_vouchers')
-        //         ->where('voucher_type', AccountingVoucherType::Payment->value)
-        //         ->where('date_ts', $dbPurchasePayment->report_date)
-        //         ->first();
-
-        //     if (!isset($existsPurchasePayment)) {
-
-        //         $purchase = DB::table('purchases')->where('report_date', $dbPurchasePayment->purchase_report_date)->first();
-        //         // Add Accounting Voucher
-        //         if (!isset($dbPurchasePayment->date)) {
-
-        //             dd('date not found');
-        //         }
-
-        //         $date = date('d-m-Y', strtotime($dbPurchasePayment->date));
-        //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $date, voucherType: AccountingVoucherType::Payment->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $dbPurchasePayment->debit, creditTotal: $dbPurchasePayment->debit, totalAmount: $dbPurchasePayment->debit);
-
-        //         // Add Payment Description Debit Entry
-        //         $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $supplierAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbPurchasePayment->debit);
-
-        //         // Add Day Book entry for Payment
-        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $date, accountId: $supplierAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $dbPurchasePayment->debit, amountType: 'debit');
-
-        //         // Add Accounting VoucherDescription References
-        //         $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $supplierAccountId, amount: $dbPurchasePayment->debit, refIdColName: 'purchase_id', refIds: isset($purchase) ? [$purchase->id] : null);
-
-        //         //Add Debit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $date, account_id: $supplierAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbPurchasePayment->debit, amount_type: 'debit', cash_bank_account_id: 14);
-
-        //         // Add Credit Account Accounting voucher Description
-        //         $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $dbPurchasePayment->debit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
-
-        //         //Add Credit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbPurchasePayment->debit, amount_type: 'credit');
-
-        //         echo 'Purchase Payments-' . $addAccountingVoucher->voucher_no . '</br>';
-        //     }
-        // }
-        // echo 'All Supplier Purchase Payments is done-' . '</br>';
-
-        // ////////// Purchase Return Payment
-        // $dbPurchaseReturnPayments = DB::connection('ndss')->table('supplier_ledgers')
-        //     ->whereIn('supplier_ledgers.voucher_type', [4, 6])
-        //     ->leftJoin('suppliers', 'supplier_ledgers.supplier_id', 'suppliers.id')
-        //     ->select(
-        //         'supplier_ledgers.*',
-        //         'suppliers.name',
-        //         'suppliers.business_name',
-        //         'suppliers.phone',
-        //         'suppliers.alternative_phone',
-        //         'suppliers.landline',
-        //         'suppliers.date_of_birth',
-        //         'suppliers.opening_balance',
-        //         'suppliers.address',
-        //         'suppliers.email',
-        //         'suppliers.shipping_address',
-        //         'suppliers.city',
-        //         'suppliers.state',
-        //         'suppliers.country',
-        //         'suppliers.zip_code',
-        //         'suppliers.tax_number',
-        //         'suppliers.pay_term',
-        //         'suppliers.pay_term_number',
-        //     )
-        //     ->orderBy('supplier_ledgers.id', 'asc')->get();
-
-        // foreach ($dbPurchaseReturnPayments as $dbPurchaseReturnPayment) {
-
-        //     $existsSupplier = DB::table('contacts')
-        //         ->where('contacts.type', $supplierType)
-        //         ->where('contacts.name', $dbPurchaseReturnPayment->name)
-        //         ->where('contacts.phone', $dbPurchaseReturnPayment->phone)
-        //         ->join('accounts', 'contacts.id', 'accounts.contact_id')
-        //         ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
-
-        //     $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
-
-        //     if (!isset($existsSupplier)) {
-
-        //         $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchaseReturnPayment->name, phone: $dbPurchaseReturnPayment->phone, businessName: $dbPurchaseReturnPayment->business_name, email: $dbPurchaseReturnPayment->email, alternativePhone: $dbPurchaseReturnPayment->alternative_phone, landLine: $dbPurchaseReturnPayment->landline, dateOfBirth: $dbPurchaseReturnPayment->date_of_birth, taxNumber: $dbPurchaseReturnPayment->tax_number, customerGroupId: null, address: $dbPurchaseReturnPayment->address, city: $dbPurchaseReturnPayment->city, state: $dbPurchaseReturnPayment->state, country: $dbPurchaseReturnPayment->country, zipCode: $dbPurchaseReturnPayment->zip_code, shippingAddress: $dbPurchaseReturnPayment->shipping_address, payTerm: $dbPurchaseReturnPayment->pay_term, payTermNumber: $dbPurchaseReturnPayment->pay_term_number, creditLimit: null, openingBalance: $dbPurchaseReturnPayment->opening_balance, openingBalanceType: 'cr');
-
-        //         $addAccount = $accountService->addAccount(name: $dbPurchaseReturnPayment->name, accountGroup: $supplierAccountGroup, phone: $dbPurchaseReturnPayment->phone, address: $dbPurchaseReturnPayment->address, openingBalance: $dbPurchaseReturnPayment->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
-
-        //         $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
-        //             branchId: auth()->user()->branch_id,
-        //             accountId: $addAccount->id,
-        //             openingBalanceType: 'cr',
-        //             openingBalance: $dbPurchaseReturnPayment->opening_balance ? $dbPurchaseReturnPayment->opening_balance : 0,
-        //         );
-
-        //         $accountLedgerService->addAccountLedgerEntry(
-        //             voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
-        //             date: $accountStartDate,
-        //             account_id: $addAccount->id,
-        //             trans_id: $addAccount->id,
-        //             amount: $dbPurchaseReturnPayment->opening_balance ? $dbPurchaseReturnPayment->opening_balance : 0,
-        //             amount_type: 'credit',
-        //             branch_id: auth()->user()->branch_id,
-        //         );
-
-        //         $supplierAccountId = $addAccount?->id;
-        //     }
-
-        //     $existsPurchaseReturnPayment = DB::table('accounting_vouchers')
-        //         ->where('voucher_type', AccountingVoucherType::Receipt->value)
-        //         ->where('date_ts', $dbPurchaseReturnPayment->report_date)
-        //         ->first();
-
-        //     if (!isset($existsPurchaseReturnPayment)) {
-
-        //         $date = date('d-m-Y', strtotime($dbPurchaseReturnPayment->date));
-        //         // Add Accounting Voucher
-        //         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $dbPurchaseReturnPayment->credit, creditTotal: $dbPurchaseReturnPayment->credit, totalAmount: $dbPurchaseReturnPayment->credit);
-
-        //         // Add Debit Account Accounting voucher Description
-        //         $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $dbPurchaseReturnPayment->credit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
-
-        //         //Add Debit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbPurchaseReturnPayment->credit, amount_type: 'debit');
-
-        //         // Add Payment Description Credit Entry
-        //         $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $supplierAccountId, paymentMethodId: null, amountType: 'cr', amount: $dbPurchaseReturnPayment->credit);
-
-        //         // Add Day Book entry for Receipt
-        //         $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $date, accountId: $supplierAccountId, transId: $addAccountingVoucherCreditDescription->id, amount: $dbPurchaseReturnPayment->credit, amountType: 'credit');
-
-        //         // Add Accounting VoucherDescription References
-        //         $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $supplierAccountId, amount: $dbPurchaseReturnPayment->credit, refIdColName: 'purchase_return_id', refIds: null);
-
-        //         //Add Credit Ledger Entry
-        //         $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $date, account_id: $supplierAccountId, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbPurchaseReturnPayment->credit, amount_type: 'credit', cash_bank_account_id: 14);
-
-        //         echo 'Purchase Return Payment-' . $addAccountingVoucher->voucher_no . '</br>';
-        //     }
-        // }
-        // echo 'All Supplier Purchase Return Payments is done-' . '</br>';
+        echo 'All Customer Sale Payments is done-' . '</br>';
+
+        /////////// Add Customer Sales Return Payments
+        $dbSaleReturnPayments = DB::connection('ndss')->table('customer_ledgers')
+            ->whereIn('customer_ledgers.voucher_type', [4, 6])
+            ->leftJoin('customers', 'customer_ledgers.customer_id', 'customers.id')
+            ->leftJoin('sale_payments', 'customer_ledgers.sale_payment_id', 'sale_payments.id')
+            ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
+            ->select(
+                'customer_ledgers.*',
+                'sale_returns.report_date as sale_return_report_date',
+                'customers.name',
+                'customers.business_name',
+                'customers.phone',
+                'customers.alternative_phone',
+                'customers.landline',
+                'customers.date_of_birth',
+                'customers.opening_balance',
+                'customers.address',
+                'customers.email',
+                'customers.shipping_address',
+                'customers.city',
+                'customers.state',
+                'customers.country',
+                'customers.zip_code',
+                'customers.tax_number',
+                'customers.pay_term',
+                'customers.pay_term_number',
+                'customers.credit_limit',
+            )->orderBy('customer_ledgers.id', 'asc')->get();
+
+        foreach ($dbSaleReturnPayments as $dbSaleReturnPayment) {
+
+            $existsCustomer = DB::table('contacts')
+                ->where('contacts.type', $customerType)
+                ->where('contacts.name', $dbSaleReturnPayment->name)
+                ->where('contacts.phone', $dbSaleReturnPayment->phone)
+                ->join('accounts', 'contacts.id', 'accounts.contact_id')
+                ->select('contacts.id', 'accounts.id as customer_account_id')->first();
+
+            $customerAccountId = isset($existsCustomer) ? $existsCustomer->customer_account_id : null;
+
+            if (!isset($existsCustomer)) {
+
+                $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbSaleReturnPayment->name, phone: $dbSaleReturnPayment->phone, businessName: $dbSaleReturnPayment->business_name, email: $dbSaleReturnPayment->email, alternativePhone: $dbSaleReturnPayment->alternative_phone, landLine: $dbSaleReturnPayment->landline, dateOfBirth: $dbSaleReturnPayment->date_of_birth, taxNumber: $dbSaleReturnPayment->tax_number, customerGroupId: null, address: $dbSaleReturnPayment->address, city: $dbSaleReturnPayment->city, state: $dbSaleReturnPayment->state, country: $dbSaleReturnPayment->country, zipCode: $dbSaleReturnPayment->zip_code, shippingAddress: $dbSaleReturnPayment->shipping_address, payTerm: $dbSaleReturnPayment->pay_term, payTermNumber: $dbSaleReturnPayment->pay_term_number, creditLimit: null, openingBalance: $dbSaleReturnPayment->opening_balance, openingBalanceType: 'cr');
+
+                $addAccount = $accountService->addAccount(name: $dbSaleReturnPayment->name, accountGroup: $supplierAccountGroup, phone: $dbSaleReturnPayment->phone, address: $dbSaleReturnPayment->address, openingBalance: $dbSaleReturnPayment->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
+
+                $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
+                    branchId: auth()->user()->branch_id,
+                    accountId: $addAccount->id,
+                    openingBalanceType: 'cr',
+                    openingBalance: $dbSaleReturnPayment->opening_balance ? $dbSaleReturnPayment->opening_balance : 0,
+                );
+
+                $accountLedgerService->addAccountLedgerEntry(
+                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+                    date: $accountStartDate,
+                    account_id: $addAccount->id,
+                    trans_id: $addAccount->id,
+                    amount: $dbSaleReturnPayment->opening_balance ? $dbSaleReturnPayment->opening_balance : 0,
+                    amount_type: 'credit',
+                    branch_id: auth()->user()->branch_id,
+                );
+
+                $customerAccountId = $addAccount?->id;
+            }
+
+            //$existsSaleReturnPayment = DB::table('accounting_vouchers')
+            //  ->where('voucher_type', AccountingVoucherType::Payment->value)
+            //  ->where('total_amount', $dbSaleReturnPayment->paid_amount)
+            //  ->where('date', $dbSaleReturnPayment->date)
+            //  ->first();
+
+            $existsSaleReturnPayment = DB::table('accounting_vouchers')
+                ->where('voucher_type', AccountingVoucherType::Payment->value)
+                ->where('date_ts', $dbSaleReturnPayment->report_date)
+                ->first();
+
+            if (!isset($existsSaleReturnPayment)) {
+
+                $saleReturn = DB::table('sale_returns')->where('date_ts', $dbSaleReturnPayment->sale_return_report_date)->first();
+
+                // Add Accounting Voucher
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $dbSaleReturnPayment->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $dbSaleReturnPayment->debit, creditTotal: $dbSaleReturnPayment->debit, totalAmount: $dbSaleReturnPayment->debit);
+
+                // Add Payment Description Debit Entry
+                $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $customerAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbSaleReturnPayment->debit);
+
+                // Add Day Book entry for Payment
+                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $dbSaleReturnPayment->date, accountId: $customerAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $dbSaleReturnPayment->debit, amountType: 'debit');
+
+                // Add Accounting VoucherDescription References
+                $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $customerAccountId, amount: $dbSaleReturnPayment->debit, refIdColName: 'sale_return_id', refIds: isset($saleReturn) ? [$saleReturn->id] : null);
+
+                //Add Debit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $dbSaleReturnPayment->date, account_id: $customerAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbSaleReturnPayment->debit, amount_type: 'debit', cash_bank_account_id: 14);
+
+                // Add Credit Account Accounting voucher Description
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $dbSaleReturnPayment->debit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $dbSaleReturnPayment->date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbSaleReturnPayment->debit, amount_type: 'credit');
+
+                echo 'Customer Return Payment-' . $addAccountingVoucher->voucher_no . '</br>';
+            }
+        }
+        echo 'All Customer Return Payments is done-' . '</br>';
+
+        //////////// Add Purchase Payments
+        $dbPurchasePayments = DB::connection('ndss')->table('supplier_ledgers')
+            ->whereIn('supplier_ledgers.voucher_type', [3, 5])
+            ->leftJoin('suppliers', 'supplier_ledgers.supplier_id', 'suppliers.id')
+            ->leftJoin('purchase_payments', 'supplier_ledgers.purchase_payment_id', 'purchase_payments.id')
+            ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')
+            ->select(
+                'supplier_ledgers.*',
+                'purchases.report_date as purchase_report_date',
+                'suppliers.name',
+                'suppliers.business_name',
+                'suppliers.phone',
+                'suppliers.alternative_phone',
+                'suppliers.landline',
+                'suppliers.date_of_birth',
+                'suppliers.opening_balance',
+                'suppliers.address',
+                'suppliers.email',
+                'suppliers.shipping_address',
+                'suppliers.city',
+                'suppliers.state',
+                'suppliers.country',
+                'suppliers.zip_code',
+                'suppliers.tax_number',
+                'suppliers.pay_term',
+                'suppliers.pay_term_number',
+            )->orderBy('supplier_ledgers.id', 'asc')->get();
+
+        foreach ($dbPurchasePayments as $dbPurchasePayment) {
+
+            $existsSupplier = DB::table('contacts')
+                ->where('contacts.type', $supplierType)
+                ->where('contacts.name', $dbPurchasePayment->name)
+                ->where('contacts.phone', $dbPurchasePayment->phone)
+                ->join('accounts', 'contacts.id', 'accounts.contact_id')
+                ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
+
+            $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
+
+            if (!isset($existsSupplier)) {
+
+                $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchasePayment->name, phone: $dbPurchasePayment->phone, businessName: $dbPurchasePayment->business_name, email: $dbPurchasePayment->email, alternativePhone: $dbPurchasePayment->alternative_phone, landLine: $dbPurchasePayment->landline, dateOfBirth: $dbPurchasePayment->date_of_birth, taxNumber: $dbPurchasePayment->tax_number, customerGroupId: null, address: $dbPurchasePayment->address, city: $dbPurchasePayment->city, state: $dbSupplierPayment->state, country: $dbPurchasePayment->country, zipCode: $dbPurchasePayment->zip_code, shippingAddress: $dbPurchasePayment->shipping_address, payTerm: $dbPurchasePayment->pay_term, payTermNumber: $dbPurchasePayment->pay_term_number, creditLimit: null, openingBalance: $dbPurchasePayment->opening_balance, openingBalanceType: 'cr');
+
+                $addAccount = $accountService->addAccount(name: $dbPurchasePayment->name, accountGroup: $supplierAccountGroup, phone: $dbPurchasePayment->phone, address: $dbPurchasePayment->address, openingBalance: $dbPurchasePayment->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
+
+                $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
+                    branchId: auth()->user()->branch_id,
+                    accountId: $addAccount->id,
+                    openingBalanceType: 'cr',
+                    openingBalance: $dbPurchasePayment->opening_balance ? $dbPurchasePayment->opening_balance : 0,
+                );
+
+                $accountLedgerService->addAccountLedgerEntry(
+                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+                    date: $accountStartDate,
+                    account_id: $addAccount->id,
+                    trans_id: $addAccount->id,
+                    amount: $dbPurchasePayment->opening_balance ? $dbPurchasePayment->opening_balance : 0,
+                    amount_type: 'credit',
+                    branch_id: auth()->user()->branch_id,
+                );
+
+                $supplierAccountId = $addAccount?->id;
+            }
+
+            //$existsSupplierPayment = DB::table('accounting_vouchers')
+            //  ->where('voucher_type', AccountingVoucherType::Payment->value)
+            //  ->where('total_amount', $dbPurchasePayment->paid_amount)
+            //  ->where('date', $dbPurchasePayment->date)
+            //  ->first();
+
+            $existsPurchasePayment = DB::table('accounting_vouchers')
+                ->where('voucher_type', AccountingVoucherType::Payment->value)
+                ->where('date_ts', $dbPurchasePayment->report_date)
+                ->first();
+
+            if (!isset($existsPurchasePayment)) {
+
+                $purchase = DB::table('purchases')->where('report_date', $dbPurchasePayment->purchase_report_date)->first();
+                // Add Accounting Voucher
+                if (!isset($dbPurchasePayment->date)) {
+
+                    dd('date not found');
+                }
+
+                $date = date('d-m-Y', strtotime($dbPurchasePayment->date));
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $date, voucherType: AccountingVoucherType::Payment->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $dbPurchasePayment->debit, creditTotal: $dbPurchasePayment->debit, totalAmount: $dbPurchasePayment->debit);
+
+                // Add Payment Description Debit Entry
+                $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $supplierAccountId, paymentMethodId: null, amountType: 'dr', amount: $dbPurchasePayment->debit);
+
+                // Add Day Book entry for Payment
+                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $date, accountId: $supplierAccountId, transId: $addAccountingVoucherDebitDescription->id, amount: $dbPurchasePayment->debit, amountType: 'debit');
+
+                // Add Accounting VoucherDescription References
+                $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $supplierAccountId, amount: $dbPurchasePayment->debit, refIdColName: 'purchase_id', refIds: isset($purchase) ? [$purchase->id] : null);
+
+                //Add Debit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $date, account_id: $supplierAccountId, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbPurchasePayment->debit, amount_type: 'debit', cash_bank_account_id: 14);
+
+                // Add Credit Account Accounting voucher Description
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'cr', amount: $dbPurchasePayment->debit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $date, account_id: 14, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbPurchasePayment->debit, amount_type: 'credit');
+
+                echo 'Purchase Payments-' . $addAccountingVoucher->voucher_no . '</br>';
+            }
+        }
+        echo 'All Supplier Purchase Payments is done-' . '</br>';
+
+        ////////// Purchase Return Payment
+        $dbPurchaseReturnPayments = DB::connection('ndss')->table('supplier_ledgers')
+            ->whereIn('supplier_ledgers.voucher_type', [4, 6])
+            ->leftJoin('suppliers', 'supplier_ledgers.supplier_id', 'suppliers.id')
+            ->select(
+                'supplier_ledgers.*',
+                'suppliers.name',
+                'suppliers.business_name',
+                'suppliers.phone',
+                'suppliers.alternative_phone',
+                'suppliers.landline',
+                'suppliers.date_of_birth',
+                'suppliers.opening_balance',
+                'suppliers.address',
+                'suppliers.email',
+                'suppliers.shipping_address',
+                'suppliers.city',
+                'suppliers.state',
+                'suppliers.country',
+                'suppliers.zip_code',
+                'suppliers.tax_number',
+                'suppliers.pay_term',
+                'suppliers.pay_term_number',
+            )
+            ->orderBy('supplier_ledgers.id', 'asc')->get();
+
+        foreach ($dbPurchaseReturnPayments as $dbPurchaseReturnPayment) {
+
+            $existsSupplier = DB::table('contacts')
+                ->where('contacts.type', $supplierType)
+                ->where('contacts.name', $dbPurchaseReturnPayment->name)
+                ->where('contacts.phone', $dbPurchaseReturnPayment->phone)
+                ->join('accounts', 'contacts.id', 'accounts.contact_id')
+                ->select('contacts.id', 'accounts.id as supplier_account_id')->first();
+
+            $supplierAccountId = isset($existsSupplier) ? $existsSupplier->supplier_account_id : null;
+
+            if (!isset($existsSupplier)) {
+
+                $addContact = $contactService->addContact(type: $supplierType, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $dbPurchaseReturnPayment->name, phone: $dbPurchaseReturnPayment->phone, businessName: $dbPurchaseReturnPayment->business_name, email: $dbPurchaseReturnPayment->email, alternativePhone: $dbPurchaseReturnPayment->alternative_phone, landLine: $dbPurchaseReturnPayment->landline, dateOfBirth: $dbPurchaseReturnPayment->date_of_birth, taxNumber: $dbPurchaseReturnPayment->tax_number, customerGroupId: null, address: $dbPurchaseReturnPayment->address, city: $dbPurchaseReturnPayment->city, state: $dbPurchaseReturnPayment->state, country: $dbPurchaseReturnPayment->country, zipCode: $dbPurchaseReturnPayment->zip_code, shippingAddress: $dbPurchaseReturnPayment->shipping_address, payTerm: $dbPurchaseReturnPayment->pay_term, payTermNumber: $dbPurchaseReturnPayment->pay_term_number, creditLimit: null, openingBalance: $dbPurchaseReturnPayment->opening_balance, openingBalanceType: 'cr');
+
+                $addAccount = $accountService->addAccount(name: $dbPurchaseReturnPayment->name, accountGroup: $supplierAccountGroup, phone: $dbPurchaseReturnPayment->phone, address: $dbPurchaseReturnPayment->address, openingBalance: $dbPurchaseReturnPayment->opening_balance, openingBalanceType: 'cr', contactId: $addContact->id);
+
+                $accountOpeningBalanceService->addOrUpdateAccountOpeningBalance(
+                    branchId: auth()->user()->branch_id,
+                    accountId: $addAccount->id,
+                    openingBalanceType: 'cr',
+                    openingBalance: $dbPurchaseReturnPayment->opening_balance ? $dbPurchaseReturnPayment->opening_balance : 0,
+                );
+
+                $accountLedgerService->addAccountLedgerEntry(
+                    voucher_type_id: AccountLedgerVoucherType::OpeningBalance->value,
+                    date: $accountStartDate,
+                    account_id: $addAccount->id,
+                    trans_id: $addAccount->id,
+                    amount: $dbPurchaseReturnPayment->opening_balance ? $dbPurchaseReturnPayment->opening_balance : 0,
+                    amount_type: 'credit',
+                    branch_id: auth()->user()->branch_id,
+                );
+
+                $supplierAccountId = $addAccount?->id;
+            }
+
+            $existsPurchaseReturnPayment = DB::table('accounting_vouchers')
+                ->where('voucher_type', AccountingVoucherType::Receipt->value)
+                ->where('date_ts', $dbPurchaseReturnPayment->report_date)
+                ->first();
+
+            if (!isset($existsPurchaseReturnPayment)) {
+
+                $date = date('d-m-Y', strtotime($dbPurchaseReturnPayment->date));
+                // Add Accounting Voucher
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $date, voucherType: AccountingVoucherType::Receipt->value, remarks: null, reference: null, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $dbPurchaseReturnPayment->credit, creditTotal: $dbPurchaseReturnPayment->credit, totalAmount: $dbPurchaseReturnPayment->credit);
+
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: 14, paymentMethodId: 1, amountType: 'dr', amount: $dbPurchaseReturnPayment->credit, transactionNo: null, chequeNo: null, chequeSerialNo: null);
+
+                //Add Debit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $date, account_id: 14, trans_id: $addAccountingVoucherDebitDescription->id, amount: $dbPurchaseReturnPayment->credit, amount_type: 'debit');
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $supplierAccountId, paymentMethodId: null, amountType: 'cr', amount: $dbPurchaseReturnPayment->credit);
+
+                // Add Day Book entry for Receipt
+                $dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Receipt->value, date: $date, accountId: $supplierAccountId, transId: $addAccountingVoucherCreditDescription->id, amount: $dbPurchaseReturnPayment->credit, amountType: 'credit');
+
+                // Add Accounting VoucherDescription References
+                $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $supplierAccountId, amount: $dbPurchaseReturnPayment->credit, refIdColName: 'purchase_return_id', refIds: null);
+
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $date, account_id: $supplierAccountId, trans_id: $addAccountingVoucherCreditDescription->id, amount: $dbPurchaseReturnPayment->credit, amount_type: 'credit', cash_bank_account_id: 14);
+
+                echo 'Purchase Return Payment-' . $addAccountingVoucher->voucher_no . '</br>';
+            }
+        }
+        echo 'All Supplier Purchase Return Payments is done-' . '</br>';
 
         // ////////Adjustments
         // $purchaseProducts = \App\Models\Purchases\PurchaseProduct::all();

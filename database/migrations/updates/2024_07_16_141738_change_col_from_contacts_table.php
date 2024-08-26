@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -12,6 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('contacts', function (Blueprint $table) {
+
+            DB::getDoctrineSchemaManager()->getDatabasePlatform()->markDoctrineTypeCommented(Type::getType('string'));
 
             if (Schema::hasColumn('contacts', 'pay_term_number')) {
 

@@ -324,21 +324,17 @@ class GeneralProductSearchService
                 $variantStock = DB::table('product_stocks')->where('product_id', $productId)
                     ->where('variant_id', $variantId)
                     ->where('warehouse_id', $warehouseId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->first();
 
-                $stock = $variantStock->sum('stock');
+                $stock = isset($variantStock) ? $variantStock->stock : 0;
             } else {
 
                 $productStock = DB::table('product_stocks')
                     ->where('product_id', $productId)
                     ->where('warehouse_id', $warehouseId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->first();
 
-                $stock = $productStock->sum('stock');
+                $stock = isset($productStock) ? $productStock->stock : 0;
             }
         } else {
 
@@ -347,21 +343,18 @@ class GeneralProductSearchService
                 $variantStock = DB::table('product_stocks')->where('product_id', $productId)
                     ->where('variant_id', $variantId)
                     ->where('branch_id', $branchId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->where('warehouse_id', null)
+                    ->first();
 
-                $stock = $variantStock->sum('stock');
+                $stock = isset($variantStock) ? $variantStock->stock : 0;
             } else {
 
                 $productStock = DB::table('product_stocks')
-                    ->where('product_id', $productId)
-                    ->where('branch_id', $branchId)
-                    ->select(DB::raw('SUM(stock) as stock'))
-                    ->groupBy('branch_id', 'product_id', 'variant_id')
-                    ->get();
+                    ->where('product_id', $productId)->where('branch_id', $branchId)
+                    ->where('warehouse_id', null)
+                    ->first();
 
-                $stock = $productStock->sum('stock');
+                $stock = isset($productStock) ? $productStock->stock : 0;
             }
         }
 
@@ -379,19 +372,25 @@ class GeneralProductSearchService
         $query = DB::table('products')
             ->where('products.status', BooleanType::True->value)
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
-            ->where('products.name', 'LIKE', '%' . $keyword . '%');
+            ->where(function ($q) use ($keyword) {
+                $q->where('products.name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('product_variants.variant_name', 'LIKE', '%' . $keyword . '%');
+            });
+        // ->where('products.status', BooleanType::True->value)
+        // ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
+        // ->where('products.name', 'LIKE', '%' . $keyword . '%');
 
         if ($isShowNotForSaleItem == BooleanType::False->value) {
 
             $query->where('is_for_sale', BooleanType::True->value);
         }
 
-        $query->orWhere('product_variants.variant_name', 'LIKE', '%' . $keyword . '%');
+        // $query->orWhere('product_variants.variant_name', 'LIKE', '%' . $keyword . '%');
 
         $query->leftJoin('accounts as taxes', 'products.tax_ac_id', 'taxes.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
-            ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+            ->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
+            ->leftJoin('product_access_branches', 'products.id', '=', 'product_access_branches.product_id')
             ->select(
                 'products.id',
                 'products.name',
@@ -420,7 +419,9 @@ class GeneralProductSearchService
                 'product_variants.variant_profit',
                 'product_variants.variant_price',
                 'units.name as unit_name',
-            )->distinct('product_access_branches.branch_id');
+            )
+            ->distinct('product_access_branches.branch_id');
+        $main = $query->orderBy('products.name', 'asc')->limit(25)->get();
         // ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
 
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
@@ -433,10 +434,36 @@ class GeneralProductSearchService
             $ordering = 'desc';
         }
 
-        $namedProducts = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
-        ])->orderBy('products.name', 'asc')->limit(25)->get();
+        // $namedProducts = $query->addSelect([
+        //     DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+        //     DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
+        // ])->orderBy('products.name', 'asc')->limit(25)->cursor();
+
+        $main->each(function ($product) use ($ordering) {
+
+            $product->update_product_cost = DB::table('purchase_products')
+                ->where('product_id', $product->id)
+                ->where('left_qty', '>', 0)
+                ->where('variant_id', null)
+                ->where('branch_id', auth()->user()->branch_id)
+                ->orderBy('created_at', $ordering)
+                ->value('net_unit_cost');
+
+            if (isset($product->variant_id)) {
+
+                $product->update_variant_cost = DB::table('purchase_products')
+                    ->where('variant_id', $product->variant_id)
+                    ->where('left_qty', '>', 0)
+                    ->where('branch_id', auth()->user()->branch_id)
+                    ->orderBy('created_at', $ordering)
+                    ->value('net_unit_cost');
+            } else {
+
+                $product->update_variant_cost = 0;
+            }
+        });
+
+        $namedProducts = $main;
 
         if ($namedProducts && count($namedProducts) > 0) {
 

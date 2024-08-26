@@ -26,7 +26,7 @@ class BranchSettingService
         $branchPrefix = '';
         foreach ($exp as $ex) {
             $str = str_split($ex);
-            $branchPrefix .= $str[0];
+            $branchPrefix .= strtoupper($str[0]);
         }
 
         $generalSettings = [
@@ -42,14 +42,14 @@ class BranchSettingService
 
             ['key' => 'system__theme_color', 'value' => 'dark-theme', 'branch_id' => $branchId],
             ['key' => 'system__datatables_page_entry', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_multiple_pay', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_draft', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_quotation', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_suspend', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_discount', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_order_tax', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_credit_full_sale', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'pos__is_enabled_hold_invoice', 'value' => null, 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_multiple_pay', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_draft', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_quotation', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_suspend', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_discount', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_order_tax', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_credit_full_sale', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_enabled_hold_invoice', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'email_settings__send_inv_via_email', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'email_settings__send_notice_via_sms', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'email_settings__customer_due_reminder_via_email', 'value' => null, 'branch_id' => $branchId],

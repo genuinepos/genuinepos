@@ -216,9 +216,9 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [
-                [0, 'asc']
-            ],
+            // aaSorting: [
+            //     [0, 'asc']
+            // ],
             "language": {
                 "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',
             },

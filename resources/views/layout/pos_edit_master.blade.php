@@ -318,12 +318,12 @@
 
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
-                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
+                                <span class="d-hide" id="display_unit_cost_section">
                                     <span>{{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
-                                    <span id="unit_cost"></span>
+                                    <span class="text-muted" id="display_unit_cost"></span>
                                 </span>
 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __('Cost') }}</span>
+                                <span class="btn btn-sm btn-info text-white" id="display_unit_cost_toggle_btn">{{ __('Cost') }}</span>
                             </p>
                         @endif
 
@@ -388,7 +388,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Edit') }}</a>
+                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Update') }}</a>
                             </div>
                         </div>
                     </form>

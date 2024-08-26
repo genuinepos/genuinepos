@@ -228,7 +228,7 @@ class ManageSupplierService
                         WHEN account_ledgers.voucher_type = 0 AND ' . ($authUserBranchId == null ? 1 : 0) . ' = 1
                             AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                         THEN account_ledgers.debit * COALESCE(NULLIF(currencies.currency_rate, 0), 1)
-                        WHEN account_ledgers.voucher_type = 0 AND
+                        WHEN account_ledgers.voucher_type = 0
                             AND ' . ($__branchId !== null ? 'account_ledgers.branch_id = ' . $__branchId : 'account_ledgers.branch_id IS NULL') . '
                         THEN account_ledgers.debit
                         ELSE 0

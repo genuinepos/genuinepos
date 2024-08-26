@@ -75,8 +75,8 @@
         }
 
         /*.select2-selection:focus {
-                                                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                                                } */
+                                                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                                                    } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -109,8 +109,8 @@
         }
 
         /* .select2-container--open .select2-dropdown--below {
-                        width: 298px !important;
-                    } */
+                            width: 298px !important;
+                        } */
 
         .btn-sale {
             width: calc(50% - 4px);
@@ -178,7 +178,7 @@
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
                                                                     @php
-                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' .__('Supplier').')';
+                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
                                                                     @endphp
                                                                     <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                                 @endforeach

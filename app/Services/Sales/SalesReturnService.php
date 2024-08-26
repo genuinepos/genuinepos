@@ -43,7 +43,7 @@ class SalesReturnService
             'sale_returns.due',
             'sales.invoice_id',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'customers.name as customer_name',
@@ -225,7 +225,7 @@ class SalesReturnService
     {
         if (isset($customerAccount) && $customerAccount->is_walk_in_customer == BooleanType::True->value && $request->current_balance != 0) {
 
-            return ['pass' => false, 'msg' => __('Walk-In-Customer is not credit customer.So Walk-In-Customer current balance must be 0.')];
+            return ['pass' => false, 'msg' => __('Walk-In-Customer is not credit customer. So Walk-In-Customer current balance must be 0.')];
         }
 
         if (!isset($request->product_ids)) {

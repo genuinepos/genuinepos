@@ -131,7 +131,7 @@
         var __keyWord = keyWord.replaceAll('/', '~');
         delay(function() {
             searchProduct(__keyWord);
-        }, 200); //sendAjaxical is the name of remote-command
+        }, 300); //sendAjaxical is the name of remote-command
     });
 
     function searchProduct(keyWord) {

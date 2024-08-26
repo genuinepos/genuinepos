@@ -64,6 +64,7 @@ class SalesHelperService
                 'sales.total_qty',
                 'sales.total_invoice_amount',
                 'sales.sale_return_amount',
+                'sales.sale_refund_amount',
                 'sales.paid as received_amount',
                 'sales.due',
                 'sales.is_return_available',
@@ -193,19 +194,29 @@ class SalesHelperService
             }
         });
 
-        $dataTables->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
+        $dataTables->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
 
-        $dataTables->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
+        $dataTables->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
 
-        $dataTables->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
+        $dataTables->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
 
-        $dataTables->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('total_invoice_amount', fn($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('received_amount', fn($row) => '<span class="paid received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('sale_return_amount', function ($row) {
 
-        $dataTables->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
+            $html = '';
+            $html .= '<p class="sale_return_amount p-0 m-0" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</p>';
+
+            if ($row->sale_refund_amount > 0) {
+                $html .= '<p class="sale_return_amount p-0 m-0 text-danger" data-value="' . curr_cnv($row->sale_refund_amount, $row->c_rate, $row->branch_id) . '">' . __("R/F") . ':' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_refund_amount, $row->c_rate, $row->branch_id)) . '</p>';
+            }
+
+            return $html;
+        });
+
+        $dataTables->editColumn('due', fn($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
 
         $dataTables->editColumn('payment_status', function ($row) {
 
@@ -240,7 +251,7 @@ class SalesHelperService
         $generalSettings = config('generalSettings');
 
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
-        $products = '';
+        // $products = '';
 
         $query = DB::table('products')
             ->where('products.is_for_sale', BooleanType::True->value)
@@ -340,20 +351,43 @@ class SalesHelperService
             $ordering = 'desc';
         }
 
-        $products = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
-        ]);
+        // $products = $query->addSelect([
+        //     DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+        //     DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
+        // ]);
 
+        $main = null;
         if (!$request->category_id && !$request->brand_id) {
 
-            $query->orderBy('products.id', 'desc')->limit(90);
+            $main = $query->orderBy('products.id', 'desc')->limit(100)->get();
         } else {
 
-            $query->orderBy('products.id', 'desc');
+            $main = $query->orderBy('products.id', 'desc')->get();
         }
 
-        return $products->get();
+        return $main->each(function ($product) use ($ordering) {
+
+            $product->update_product_cost = DB::table('purchase_products')
+                ->where('product_id', $product->product_id)
+                ->where('left_qty', '>', 0)
+                ->where('variant_id', null)
+                ->where('branch_id', auth()->user()->branch_id)
+                ->orderBy('created_at', $ordering)
+                ->value('net_unit_cost');
+
+            if (isset($product->variant_id)) {
+
+                $product->update_variant_cost = DB::table('purchase_products')
+                    ->where('variant_id', $product->variant_id)
+                    ->where('left_qty', '>', 0)
+                    ->where('branch_id', auth()->user()->branch_id)
+                    ->orderBy('created_at', $ordering)
+                    ->value('net_unit_cost');
+            } else {
+
+                $product->update_variant_cost = 0;
+            }
+        });
     }
 
     public function recentSales(int $status, int $saleScreenType, int $limit = null): ?object

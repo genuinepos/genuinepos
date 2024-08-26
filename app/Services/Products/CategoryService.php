@@ -60,7 +60,8 @@ class CategoryService
         $addCategory->name = $request->name;
         $addCategory->description = $request->description;
 
-        if ($request->file('photo')) {
+        // if ($request->hasFile('photo')) {
+        if (isset($request->photo) && $request->hasFile('photo')) {
 
             $addCategory->photo = FileUploader::uploadWithResize(fileType: 'category', uploadableFile: $request->file('photo'), height: 250, width: 250);
         }

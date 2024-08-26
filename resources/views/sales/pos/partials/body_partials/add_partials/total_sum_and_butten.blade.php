@@ -201,7 +201,7 @@
                     </div>
 
                     <div class="row">
-                        <label class="col-sm-5 col-form-label text-white text-end">{{ __("Receivable") }}</label>
+                        <label class="col-sm-5 col-form-label text-success text-end" style="font-weight: 600!important;">{{ __("Receivable") }}</label>
                         <div class="col-sm-7">
                             <input readonly type="number" step="any" name="total_receivable_amount" class="form-control pos-amounts fw-bold" id="total_receivable_amount" value="0.00" tabindex="-1">
                         </div>

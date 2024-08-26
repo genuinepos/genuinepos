@@ -19,8 +19,7 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
         private UserService $userService,
         private RoleService $roleService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {

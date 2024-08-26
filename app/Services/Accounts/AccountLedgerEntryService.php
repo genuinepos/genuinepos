@@ -7,6 +7,7 @@ use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountLedger;
+use Illuminate\Support\LazyCollection;
 use Yajra\DataTables\Facades\DataTables;
 
 class AccountLedgerEntryService
@@ -31,12 +32,14 @@ class AccountLedgerEntryService
 
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
 
-            $this->generateOpeningBalance(accountId: $id, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
+            $this->generateOpeningBalance(accountId: $id, account: $account, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
         }
 
+        $arr = [];
         $runningDebit = 0;
         $runningCredit = 0;
-        foreach ($ledgers as $ledger) {
+        $collection = new LazyCollection($ledgers);
+        foreach ($collection as $ledger) {
 
             $runningDebit += curr_cnv($ledger->debit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
             $runningCredit += curr_cnv($ledger->credit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
@@ -50,9 +53,11 @@ class AccountLedgerEntryService
                 $ledger->running_balance = $runningCredit - $runningDebit;
                 $ledger->balance_type = ' Cr.';
             }
+
+            $arr[] = $ledger;
         }
 
-        return DataTables::of($ledgers)
+        return DataTables::of($arr)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $dateFormat = $generalSettings['business_or_shop__date_format'];
@@ -86,8 +91,8 @@ class AccountLedgerEntryService
 
                 return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
-            ->editColumn('debit', fn ($row) => '<span class="debit fw-bold" data-value="' . curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id) . '">' . ($row->debit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '') . '</span>')
-            ->editColumn('credit', fn ($row) => '<span class="credit fw-bold" data-value="' . curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id) . '">' . ($row->credit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '') . '</span>')
+            ->editColumn('debit', fn($row) => '<span class="debit fw-bold" data-value="' . curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id) . '">' . ($row->debit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->debit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '') . '</span>')
+            ->editColumn('credit', fn($row) => '<span class="credit fw-bold" data-value="' . curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id) . '">' . ($row->credit > 0 ? \App\Utils\Converter::format_in_bdt(curr_cnv($row->credit, $row?->branch?->branchCurrency?->currency_rate, $row?->branch_id)) : '') . '</span>')
             ->editColumn('running_balance', function ($row) {
 
                 return $row->running_balance > 0 ? '<span class="running_balance fw-bold">' . \App\Utils\Converter::format_in_bdt(abs($row->running_balance)) . $row->balance_type . '</span>' : '';
@@ -116,7 +121,7 @@ class AccountLedgerEntryService
 
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
 
-            $this->generateOpeningBalance(accountId: $id, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
+            $this->generateOpeningBalance(accountId: $id, account: $account, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
         }
 
         $runningDebit = 0;
@@ -328,7 +333,7 @@ class AccountLedgerEntryService
         return $query->orderBy('account_ledgers.date', 'asc')->orderBy('account_ledgers.id', 'asc')->get();
     }
 
-    private function generateOpeningBalance(int $accountId, object $ledgers, string $fromDateYmd, object $request, array $generalSettings): void
+    private function generateOpeningBalance(int $accountId, object $account, object $ledgers, string $fromDateYmd, object $request, array $generalSettings): void
     {
         $accountOpeningBalance = '';
         $accountOpeningBalanceQ = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId);
@@ -402,7 +407,12 @@ class AccountLedgerEntryService
             'id' => 0,
             'branch_id' => $request->branch_id ? $request->branch_id : null,
             'branch' => (object) [
-                'id' => null, 'name' => $branchName, 'area_name' => null, 'branch_code' => null, 'parentBranch' => null, 'branchCurrency' => (object)[
+                'id' => null,
+                'name' => $branchName,
+                'area_name' => null,
+                'branch_code' => null,
+                'parentBranch' => null,
+                'branchCurrency' => (object)[
                     'currency_rate' => $currencyRate
                 ]
             ],
@@ -418,7 +428,6 @@ class AccountLedgerEntryService
         ];
 
         $stdArr = (object) $arr;
-
         $ledgers->prepend($stdArr);
     }
 }

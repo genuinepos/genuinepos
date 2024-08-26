@@ -128,8 +128,7 @@ class ExpenseService
                 $html = '';
                 foreach ($row->voucherDebitDescriptions as $index => $description) {
 
-                    $amount = \App\Utils\Converter::format_in_bdt($description->amount);
-                    $html .= '<p class="p-0 m-0" style="line-height:1.3!important;font-size:11px;">' . ($index + 1) . ' - ' . $description->account->name . ' : <strong>' . \App\Utils\Converter::format_in_bdt(curr_cnv($amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</strong></p>';
+                    $html .= '<p class="p-0 m-0" style="line-height:1.3!important;font-size:11px;">' . ($index + 1) . ' - ' . $description->account->name . ' : <strong>' . \App\Utils\Converter::format_in_bdt(curr_cnv($description->amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</strong></p>';
                 }
 
                 return $html;

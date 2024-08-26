@@ -142,7 +142,10 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">{{ __('Total Sales After Return') }}</th>
+                                    <th class="text-start fw-bold">
+                                        <p class="m-0 p-0" style="line-height: 1!important;">{{ __('Total Sales After Return') }}</p>
+                                        <small style="font-size: 8px!important;">(Today Total Sale - Today Total Return)</small>
+                                    </th>
                                     <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalSalesAfterReturn']) }}</td>
                                 </tr>
 
@@ -158,7 +161,14 @@
 
                                 <tr>
                                     <th class="text-start"><strong>{{ __('Today Profit/Loss') }}</strong></th>
-                                    <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['netProfit']) }}</td>
+                                    <td class="text-start">:
+                                        @if ($todaySummaries['netProfit'] < 0)
+                                            (<span class="text-danger">{{ $currency }} {{ App\Utils\Converter::format_in_bdt(abs($todaySummaries['netProfit'])) }}</span>)
+                                        @else
+                                            <span class="text-success">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['netProfit']) }}</span>
+                                        @endif
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

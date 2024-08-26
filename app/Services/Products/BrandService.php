@@ -53,7 +53,8 @@ class BrandService
         $addBrand->code = $code;
         $addBrand->name = $request->name;
 
-        if ($request->file('photo')) {
+        // if ($request->file('photo')) {
+        if (isset($request->photo) && $request->file('photo')) {
 
             $addBrand->photo = FileUploader::uploadWithResize(fileType: 'brand', uploadableFile: $request->file('photo'), height: 250, width: 250);
         }

@@ -65,9 +65,10 @@ class ProductStockService
                     DB::raw('SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_purchased_cost'),
                 )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
+            $stockIn = $productLedger->sum('stock_in') == null ? 0 : $productLedger->sum('stock_in');
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
 
-            $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $currentStock : $product->product_cost;
+            $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $stockIn : $product->product_cost;
             $stockValue = $avgUnitCost * $currentStock;
 
             $productStock = ProductStock::where('product_id', $productId)
@@ -134,9 +135,10 @@ class ProductStockService
                     DB::raw('SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_purchased_cost'),
                 )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
+            $inStock = $productLedger->sum('stock_in') == null ? 0 : $productLedger->sum('stock_in');
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
 
-            $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $currentStock : $product->product_cost;
+            $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $inStock : $product->product_cost;
             $stockValue = $avgUnitCost * $currentStock;
 
             $productStock = ProductStock::where('product_id', $productId)

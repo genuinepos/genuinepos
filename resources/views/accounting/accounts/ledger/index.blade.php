@@ -99,17 +99,17 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="from_date" class="form-control" value="{{ $fromDate }}" autocomplete="off">
+                                                        <input type="text" name="from_date" id="from_date" class="form-control" value="{{ $fromDate ? $fromDate : $generalSettings['business_or_shop__financial_year_start_date'] }}" autocomplete="off">
                                                     </div>
                                                 </div>
-
+ 
                                                 <div class="col-md-3">
                                                     <label><strong>{{ __('To Date') }} :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="to_date" id="to_date" class="form-control" value="{{ $toDate }}" autocomplete="off">
+                                                        <input type="text" name="to_date" id="to_date" class="form-control" value="{{ $fromDate ? $fromDate : $generalSettings['business_or_shop__financial_year_end_date'] }}" autocomplete="off">
                                                     </div>
                                                 </div>
 

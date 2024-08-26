@@ -15,11 +15,11 @@ return new class extends Migration
 
             Schema::disableForeignKeyConstraints();
             // $table->foreign('tax_ac_id')->references('id')->on('accounts')->onDelete('set null');
-            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign('sub_category_id')->references('id')->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign('unit_id')->references('id')->on('units')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign('warranty_id')->references('id')->on('warranties')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            // $table->foreign('category_id')->references('id')->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            // $table->foreign('sub_category_id')->references('id')->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            // $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            // $table->foreign('unit_id')->references('id')->on('units')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            // $table->foreign('warranty_id')->references('id')->on('warranties')->onUpdate('NO ACTION')->onDelete('SET NULL');
             Schema::enableForeignKeyConstraints();
         });
     }

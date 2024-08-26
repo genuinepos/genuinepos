@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
 
             // $table->foreign('tax_ac_id')->references('id')->on('accounts')->onDelete('set null');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
-            $table->foreign('sub_category_id')->references('id')->on('categories')->onDelete('set null');
-            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('set null');
-            $table->foreign('unit_id')->references('id')->on('units')->onDelete('set null');
-            $table->foreign('warranty_id')->references('id')->on('warranties')->onDelete('set null');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign('sub_category_id')->references('id')->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign('unit_id')->references('id')->on('units')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign('warranty_id')->references('id')->on('warranties')->onUpdate('NO ACTION')->onDelete('SET NULL');
         });
     }
 

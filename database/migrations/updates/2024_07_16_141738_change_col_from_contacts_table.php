@@ -19,7 +19,7 @@ return new class extends Migration
 
             if (Schema::hasColumn('contacts', 'pay_term_number')) {
 
-                $table->bigInteger('pay_term_number')->change()->nullable()->default(null);
+                DB::statement('ALTER TABLE `contacts` MODIFY `pay_term_number` BIGINT NULL DEFAULT NULL');
             }
         });
     }

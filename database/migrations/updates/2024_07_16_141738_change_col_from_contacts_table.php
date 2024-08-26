@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::table('contacts', function (Blueprint $table) {
 
-            DB::getDoctrineSchemaManager()->getDatabasePlatform()->markDoctrineTypeCommented(Type::getType('string'));
-
             if (Schema::hasColumn('contacts', 'pay_term_number')) {
 
                 DB::statement('ALTER TABLE `contacts` MODIFY `pay_term_number` BIGINT NULL DEFAULT NULL');

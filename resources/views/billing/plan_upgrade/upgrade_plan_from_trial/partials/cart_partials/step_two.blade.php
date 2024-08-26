@@ -25,7 +25,7 @@
                                         </span>
                                     </li>
                                     <li class="total-price-wrap">{{ __('Total Payable') }}
-                                        <span class="price-txt">{{ $planPriceCurrency }} 
+                                        <span class="price-txt">{{ $planPriceCurrency }}
                                             <span class="span_total_payable">{{ $plan->price }}</span>
                                         </span>
                                     </li>
@@ -74,13 +74,13 @@
                 </div>
             </div>
             <input type="hidden" id="plan-id" value="{{ $plan->id }}" />
-            <button type="submit" class="def-btn palce-order tab-next-btn btn-success text-center" id="submit_button">
+            {{-- <button type="submit" class="def-btn palce-order tab-next-btn btn-success text-center" id="submit_button">
                 {{ __("Confirm") }}
             </button>
 
             <button type="button" class="def-btn palce-order tab-next-btn btn-success d-none" id="loading_button">
                 {{ __("Loading...") }}
-            </button>
+            </button> --}}
         </div>
     </div>
 </div>

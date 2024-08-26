@@ -137,7 +137,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <button class="def-btn palce-order tab-next-btn btn-success" id="palceOrder">Payment</button>
+                                                        {{-- <button class="def-btn palce-order tab-next-btn btn-success" id="palceOrder">Payment</button> --}}
                                                     </div>
                                                 </div>
                                             </div>

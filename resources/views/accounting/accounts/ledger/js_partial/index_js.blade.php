@@ -2,7 +2,7 @@
 <script>
     var accountLedgerTable = $('.data_tbl').DataTable({
         "processing": true,
-        "serverSide": true,
+        "serverSide": false,
         "searching": false,
         dom: "lBfrtip",
         buttons: [{

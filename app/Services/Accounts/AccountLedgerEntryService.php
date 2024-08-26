@@ -7,6 +7,7 @@ use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountLedger;
+use Illuminate\Support\LazyCollection;
 use Yajra\DataTables\Facades\DataTables;
 
 class AccountLedgerEntryService
@@ -34,9 +35,11 @@ class AccountLedgerEntryService
             $this->generateOpeningBalance(accountId: $id, account: $account, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
         }
 
+        $arr = [];
         $runningDebit = 0;
         $runningCredit = 0;
-        foreach ($ledgers as $ledger) {
+        $collection = new LazyCollection($ledgers);
+        foreach ($collection as $ledger) {
 
             $runningDebit += curr_cnv($ledger->debit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
             $runningCredit += curr_cnv($ledger->credit, $ledger?->branch?->branchCurrency?->currency_rate, $ledger?->branch_id);
@@ -50,9 +53,11 @@ class AccountLedgerEntryService
                 $ledger->running_balance = $runningCredit - $runningDebit;
                 $ledger->balance_type = ' Cr.';
             }
+
+            $arr[] = $ledger;
         }
 
-        return DataTables::of($ledgers)
+        return DataTables::of($arr)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $dateFormat = $generalSettings['business_or_shop__date_format'];
@@ -423,7 +428,6 @@ class AccountLedgerEntryService
         ];
 
         $stdArr = (object) $arr;
-
         $ledgers->prepend($stdArr);
     }
 }

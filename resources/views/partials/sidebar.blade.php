@@ -10,7 +10,7 @@
                 </li>
 
                 @if (auth()->user()->can('branches_index') && $generalSettings['subscription']->current_shop_count > 1)
-                    <li data-menu="store" class="{{ request()->is('branches*') ? 'menu_active' : '' }}">
+                    <li data-menu="store" class="{{ request()->is('branches*') && !request()->is('branches/settings*') ? 'menu_active' : '' }}">
                         <a href="{{ route('branches.index') }}" class=""><img src="{{ asset('backend/asset/img/icon/shop.svg') }}">
                             <p class="title">{{ __('Store') }}</p>
                         </a>
@@ -183,7 +183,7 @@
 
                 @if ($generalSettings['subscription']->features['setup'] == 1)
                     @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings') || auth()->user()->can('warehouses_index') || auth()->user()->can('payment_methods_index') || auth()->user()->can('invoice_layouts_index') || auth()->user()->can('cash_counters_index') || auth()->user()->can('billing_index'))
-                        <li data-menu="setups" class="{{ request()->is('setups*') ? 'menu_active' : '' }}">
+                        <li data-menu="setups" class="{{ request()->is('setups*') || request()->is('branches/settings*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/settings.svg') }}">
                                 <p class="title">{{ __('Set-up') }}</p>

@@ -43,8 +43,7 @@ class TenantService implements TenantServiceInterface
         private SubscriptionService $subscriptionService,
         private SubscriptionTransactionService $subscriptionTransactionService,
         private ShopExpireDateHistoryService $shopExpireDateHistoryService,
-    ) {
-    }
+    ) {}
 
     public function addTenant(object $request): ?Tenant
     {

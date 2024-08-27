@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/daterangepicker.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('modules/saas/css/tab.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('modules/saas/css/tab.min.css') }}"> --}}
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/asset/css/plan-cart.css') }}">

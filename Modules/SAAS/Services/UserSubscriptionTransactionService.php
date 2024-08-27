@@ -17,14 +17,36 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
     {
         $transactions = null;
         $query = DB::table('user_subscription_transactions')
-            ->leftJoin('user_subscriptions', 'user_subscription_transactions.user_subscription_id', 'user_subscriptions.id')
+            ->select(
+                'user_subscription_transactions.id',
+                'user_subscription_transactions.transaction_type',
+                'user_subscription_transactions.user_subscription_id',
+                'user_subscription_transactions.plan_id',
+                'user_subscription_transactions.payment_method_provider_name',
+                'user_subscription_transactions.payment_method_name',
+                'user_subscription_transactions.payment_trans_id',
+                'user_subscription_transactions.net_total',
+                'user_subscription_transactions.discount',
+                'user_subscription_transactions.total_payable_amount',
+                'user_subscription_transactions.paid',
+                'user_subscription_transactions.due',
+                'user_subscription_transactions.payment_status',
+                'user_subscription_transactions.payment_date',
+                'user_subscription_transactions.details',
+                'user_subscription_transactions.created_at',
+                'users.name as user_name',
+                'tenants.id as tenant_id',
+            );
+
+        if (isset($userId)) {
+
+            $query->where('users.id', $userId);
+        }
+
+        $query->leftJoin('user_subscriptions', 'user_subscription_transactions.user_subscription_id', 'user_subscriptions.id')
             ->leftJoin('plans', 'user_subscription_transactions.plan_id', 'plans.id')
             ->leftJoin('users', 'user_subscriptions.user_id', 'users.id')
             ->leftJoin('tenants', 'users.tenant_id', 'tenants.id');
-
-        if (isset($userId)) {
-            $query->where('users.id', $userId);
-        }
 
         if ($request->user_id) {
 
@@ -38,27 +60,6 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('user_subscriptions.created_at', $date_range); // Final
         }
-
-        $query->select(
-            'user_subscription_transactions.id',
-            'user_subscription_transactions.transaction_type',
-            'user_subscription_transactions.user_subscription_id',
-            'user_subscription_transactions.plan_id',
-            'user_subscription_transactions.payment_method_provider_name',
-            'user_subscription_transactions.payment_method_name',
-            'user_subscription_transactions.payment_trans_id',
-            'user_subscription_transactions.net_total',
-            'user_subscription_transactions.discount',
-            'user_subscription_transactions.total_payable_amount',
-            'user_subscription_transactions.paid',
-            'user_subscription_transactions.due',
-            'user_subscription_transactions.payment_status',
-            'user_subscription_transactions.payment_date',
-            'user_subscription_transactions.details',
-            'user_subscription_transactions.created_at',
-            'users.name as user_name',
-            'tenants.id as tenant_id',
-        );
 
         $transactions = $query;
 

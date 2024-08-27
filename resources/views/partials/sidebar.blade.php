@@ -1904,19 +1904,6 @@
                                             </div>
                                         @endif
 
-                                        {{-- @if (auth()->user()->can('branches_index') && $generalSettings['subscription']->current_shop_count > 1)
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('branches.index') }}" class="switch-bar-wrap">
-                            <div class="switch_bar">
-                                <div class="bar-link">
-                                    <span><i class="fas fa-project-diagram"></i></span>
-                                </div>
-                            </div>
-                            <p class="switch_text">{{ __('Stores') }}</p>
-                            </a>
-                        </div>
-                        @endif --}}
-
                                         @if (auth()->user()->can('warehouses_index') & ($generalSettings['subscription']->features['warehouse_count'] > 0))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('warehouses.index') }}" class="switch-bar-wrap">

@@ -63,8 +63,6 @@ class BranchController extends Controller
 
     public function edit($id, BranchEditRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
-        abort_if(!auth()->user()->can('branches_edit'), 403);
-
         $editMethodContainer = $branchControllerMethodContainersInterface->editMethodContainer(id: $id);
 
         extract($editMethodContainer);

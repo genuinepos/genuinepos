@@ -9,7 +9,28 @@
     <input type="hidden" name="branch_type" value="{{ $branch->branch_type }}">
     <div class="row">
         <div class="col-md-9">
-            <div class="row">
+            @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-6">
+                        <label class="fw-bold">{{ __('Category') }} <span class="text-danger">*</span></label>
+                        <select required name="category" class="form-control" id="branch_category" data-next="branch_name">
+                            <option value="">{{ __('Select Store Category') }}</option>
+                            @foreach (\App\Enums\BranchCategory::cases() as $category)
+                                <option @selected($category->value == $branch->category) value="{{ $category->value }}">{{ str($category->name)->headline() }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            @else
+                <div class="form-group row">
+                    <div class="col-lg-4 col-md-6">
+                        <label class="fw-bold">{{ __('Category') }} <span class="text-danger">*</span></label>
+                        <input readonly type="text" name="category" class="form-control fw-bold" id="branch_category" value="{{ str(\App\Enums\BranchCategory::tryFrom($branch?->parentBranch?->category)->name)->headline() }}" />
+                    </div>
+                </div>
+            @endif
+
+            <div class="row mt-1">
                 <div class="col-lg-4 col-md-6">
                     <label class="fw-bold">{{ __('Store Name') }} <span class="text-danger">*</span></label>
                     <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" value="{{ $branch?->name ? $branch->name : $branch?->parentBranch?->name }}" placeholder="{{ __('Store Name') }}" />

@@ -1,7 +1,7 @@
 <x-saas::admin-layout title="Customer Details">
     @push('css')
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
         <style>
             .main-content .digi-dataTable thead th {
                 font-weight: 400;
@@ -17,28 +17,29 @@
                 font-size: 11px;
             }
 
-            table.dataTable tfoot th, table.dataTable tfoot td {
+            table.dataTable tfoot th,
+            table.dataTable tfoot td {
                 padding: 4px 17px 4px 4px;
                 border-top: 1px solid #111;
                 font-size: 11px;
             }
 
             table td .btn-sm {
-                padding: 1px 6px!important;
-                font-size: 11px!important;
+                padding: 1px 6px !important;
+                font-size: 11px !important;
             }
 
             span.selection {
                 width: 100%;
             }
 
-            .details_table th{
-                font-size: 11px!important;
+            .details_table th {
+                font-size: 11px !important;
                 font-weight: 600;
             }
 
-            .details_table td{
-                font-size: 11px!important;
+            .details_table td {
+                font-size: 11px !important;
             }
         </style>
     @endpush
@@ -108,9 +109,9 @@
                             <th>{{ __('Has Company') }}</th>
                             <td class="text-start">:
                                 @if ($tenant?->user?->userSubscription?->has_business == 1)
-                                    <span class="text-success fw-bold">{{ __("Yes") }}</span>
+                                    <span class="text-success fw-bold">{{ __('Yes') }}</span>
                                 @else
-                                    <span class="text-danger fw-bold">{{ __("No") }}</span>
+                                    <span class="text-danger fw-bold">{{ __('No') }}</span>
                                 @endif
                             </td>
                         </tr>
@@ -120,61 +121,95 @@
         </div>
 
         <div class="panel-header">
-            <h5>{{ __('Transactions') }}</h5>
-        </div>
+            <div class="tab_list_area">
+                <div class="btn-group">
+                    <a id="tab_btn" data-show="branches" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
+                        <i class="fas fa-scroll"></i> {{ __('Stores') }}
+                    </a>
 
-        <form id="filter_form" action="" class="px-4 mt-3">
-            <div class="row align-items-end">
-                <div class="col-md-3">
-                    <label>{{ __('From Date') }}</label>
-                    <input type="text" name="from_date" class="form-control form-control-sm" id="from_date" autocomplete="off">
-                </div>
-
-                <div class="col-md-3">
-                    <label>{{ __('To Date') }}</label>
-                    <input type="text" name="to_date" class="form-control form-control-sm" id="to_date" autocomplete="off">
-                </div>
-
-                <div class="col-md-3">
-                    <button class="btn btn-sm btn-info text-white">Filter</button>
+                    <a id="tab_btn" data-show="transactions" class="btn btn-sm btn-primary tab_btn" href="#">
+                        <i class="fas fa-scroll"></i> {{ __('Transactions') }}
+                    </a>
                 </div>
             </div>
-        </form>
+        </div>
 
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="transactionsTable">
-                            <thead>
-                                <tr>
-                                    <th class="text-start">{{ __('Action') }}</th>
-                                    <th class="text-start">{{ __('Date') }}</th>
-                                    <th class="text-start">{{ __('Customer') }}</th>
-                                    <th class="text-start">{{ __('Transaction Type') }}</th>
-                                    <th class="text-start">{{ __('Payment Status') }}</th>
-                                    <th class="text-start">{{ __('Payment Date') }}</th>
-                                    <th class="text-start">{{ __('Gateway') }}</th>
-                                    <th class="text-start">{{ __('Trans. ID') }}</th>
-                                    <th class="text-start">{{ __('Net Total') }}</th>
-                                    <th class="text-start">{{ __('Discount') }}</th>
-                                    <th class="text-start">{{ __('Total Payable') }}</th>
-                                    <th class="text-start">{{ __('Paid') }}</th>
-                                    <th class="text-start">{{ __('Due') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr class="bg-secondary">
-                                    <th colspan="8" class="text-white text-end">{{ __('Total') }} : </th>
-                                    <th class="text-white text-start" id="net_total"></th>
-                                    <th class="text-white text-start" id="discount"></th>
-                                    <th class="text-white text-start" id="total_payable_amount"></th>
-                                    <th class="text-white text-start" id="paid"></th>
-                                    <th class="text-white text-start" id="due"></th>
-                                </tr>
-                            </tfoot>
-                        </table>
+        <div class="tab_contant branches">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="branchesTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">{{ __('Store Name') }}</th>
+                                        <th class="text-start">{{ __('Type') }}</th>
+                                        <th class="text-start">{{ __('Expire Date') }}</th>
+                                        <th class="text-start">{{ __('Category') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab_contant transactions">
+            <form id="filter_form" action="" class="px-4 mt-3">
+                <div class="row align-items-end">
+                    <div class="col-md-3">
+                        <label>{{ __('From Date') }}</label>
+                        <input type="text" name="from_date" class="form-control form-control-sm" id="from_date" autocomplete="off">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>{{ __('To Date') }}</label>
+                        <input type="text" name="to_date" class="form-control form-control-sm" id="to_date" autocomplete="off">
+                    </div>
+
+                    <div class="col-md-3">
+                        <button class="btn btn-sm btn-info text-white">Filter</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="transactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">{{ __('Action') }}</th>
+                                        <th class="text-start">{{ __('Date') }}</th>
+                                        <th class="text-start">{{ __('Customer') }}</th>
+                                        <th class="text-start">{{ __('Transaction Type') }}</th>
+                                        <th class="text-start">{{ __('Payment Status') }}</th>
+                                        <th class="text-start">{{ __('Payment Date') }}</th>
+                                        <th class="text-start">{{ __('Gateway') }}</th>
+                                        <th class="text-start">{{ __('Trans. ID') }}</th>
+                                        <th class="text-start">{{ __('Net Total') }}</th>
+                                        <th class="text-start">{{ __('Discount') }}</th>
+                                        <th class="text-start">{{ __('Total Payable') }}</th>
+                                        <th class="text-start">{{ __('Paid') }}</th>
+                                        <th class="text-start">{{ __('Due') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr class="bg-secondary">
+                                        <th colspan="8" class="text-white text-end">{{ __('Total') }} : </th>
+                                        <th class="text-white text-start" id="net_total"></th>
+                                        <th class="text-white text-start" id="discount"></th>
+                                        <th class="text-white text-start" id="total_payable_amount"></th>
+                                        <th class="text-white text-start" id="paid"></th>
+                                        <th class="text-white text-start" id="due"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -213,20 +248,70 @@
                         d.to_date = $('#to_date').val();
                     }
                 },
-                columns: [
-                    { data: 'action', className: 'text-start' },
-                    { data: 'created_at', name: 'user_subscription_transactions.created_at', className: 'text-start' },
-                    { data: 'user', name: 'users.name', className: 'text-start' },
-                    { data: 'transaction_type', name: 'tenants.id', className: 'text-start fw-bold' },
-                    { data: 'payment_status', name: 'user_subscription_transactions.payment_status', className: 'text-start' },
-                    { data: 'payment_date', name: 'user_subscription_transactions.payment_date', className: 'text-start' },
-                    { data: 'payment_method_name', name: 'user_subscription_transactions.payment_method_name', className: 'text-start' },
-                    { data: 'payment_trans_id', name: 'user_subscription_transactions.payment_trans_id', className: 'text-start' },
-                    { data: 'net_total', name: 'user_subscription_transactions.net_total', className: 'text-start fw-bold' },
-                    { data: 'discount', name: 'user_subscription_transactions.discount', className: 'text-start fw-bold' },
-                    { data: 'total_payable_amount', name: 'user_subscription_transactions.total_payable_amount', className: 'text-start fw-bold' },
-                    { data: 'paid', name: 'user_subscription_transactions.paid', className: 'text-start text-success fw-bold' },
-                    { data: 'due', name: 'user_subscription_transactions.due', className: 'text-start text-danger fw-bold' }
+                columns: [{
+                        data: 'action',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'user_subscription_transactions.created_at',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'user',
+                        name: 'users.name',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'transaction_type',
+                        name: 'tenants.id',
+                        className: 'text-start fw-bold'
+                    },
+                    {
+                        data: 'payment_status',
+                        name: 'user_subscription_transactions.payment_status',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'payment_date',
+                        name: 'user_subscription_transactions.payment_date',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'payment_method_name',
+                        name: 'user_subscription_transactions.payment_method_name',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'payment_trans_id',
+                        name: 'user_subscription_transactions.payment_trans_id',
+                        className: 'text-start'
+                    },
+                    {
+                        data: 'net_total',
+                        name: 'user_subscription_transactions.net_total',
+                        className: 'text-start fw-bold'
+                    },
+                    {
+                        data: 'discount',
+                        name: 'user_subscription_transactions.discount',
+                        className: 'text-start fw-bold'
+                    },
+                    {
+                        data: 'total_payable_amount',
+                        name: 'user_subscription_transactions.total_payable_amount',
+                        className: 'text-start fw-bold'
+                    },
+                    {
+                        data: 'paid',
+                        name: 'user_subscription_transactions.paid',
+                        className: 'text-start text-success fw-bold'
+                    },
+                    {
+                        data: 'due',
+                        name: 'user_subscription_transactions.due',
+                        className: 'text-start text-danger fw-bold'
+                    }
                 ],
                 fnDrawCallback: function() {
 
@@ -263,6 +348,16 @@
             $(document).on('submit', '#filter_form', function(e) {
                 e.preventDefault();
                 transactionsTable.ajax.reload();
+            });
+
+            $(document).on('click', '#tab_btn', function(e) {
+                e.preventDefault();
+
+                $('.tab_btn').removeClass('tab_active');
+                $('.tab_contant').hide();
+                var show_content = $(this).data('show');
+                $('.' + show_content).show();
+                $(this).addClass('tab_active');
             });
         </script>
     @endpush

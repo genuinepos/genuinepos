@@ -17,6 +17,11 @@
                                     <label><b>{{ __('Parent Store') }}</b> </label>
                                     <input readonly type="text" name="name" class="form-control fw-bold" value="{{ $branch?->parentBranch?->name . '/' . $branch?->parentBranch?->branch_code }}" />
                                 </div>
+
+                                <div class="col-lg-3 col-md-6">
+                                    <label><b>{{ __('Category') }}</b> </label>
+                                    <input readonly type="text" name="category" class="form-control fw-bold" id="branch_category" value="{{ str(\App\Enums\BranchCategory::tryFrom($branch?->parentBranch?->category)->name)->headline() }}" />
+                                </div>
                             </div>
 
                             {{-- <div class="row">
@@ -41,8 +46,21 @@
                             </div> --}}
                         @endif
 
-                        <div class="form-group row mt-1">
+                        @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
+                            <div class="form-group row">
+                                <div class="col-lg-3 col-md-6">
+                                    <label class="fw-bold">{{ __('Category') }} <span class="text-danger">*</span></label>
+                                    <select required name="category" class="form-control" id="branch_category" data-next="branch_name">
+                                        <option value="">{{ __('Select Store Category') }}</option>
+                                        @foreach (\App\Enums\BranchCategory::cases() as $category)
+                                            <option @selected($category->value == $branch->category) value="{{ $category->value }}">{{ str($category->name)->headline() }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
 
+                        <div class="form-group row mt-1">
                             @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                                 <div class="col-lg-3 col-md-6 branch_name_field">
                                     <label><b>{{ __('Store Name') }}</b> <span class="text-danger">*</span></label>

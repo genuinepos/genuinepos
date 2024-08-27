@@ -40,6 +40,7 @@ class PosSaleService
             'sales.total_qty',
             'sales.total_invoice_amount',
             'sales.sale_return_amount',
+            'sales.sale_refund_amount',
             'sales.paid as received_amount',
             'sales.due',
             'sales.is_return_available',
@@ -128,19 +129,31 @@ class PosSaleService
             }
         });
 
-        $dataTables->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
+        $dataTables->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer');
 
-        $dataTables->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
+        $dataTables->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>');
 
-        $dataTables->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
+        $dataTables->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>');
 
-        $dataTables->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('total_invoice_amount', fn($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('received_amount', fn($row) => '<span class="paid received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>');
+        // $dataTables->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>');
 
-        $dataTables->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('sale_return_amount', function ($row) {
+
+            $html = '';
+            $html .= '<p class="sale_return_amount p-0 m-0" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</p>';
+
+            if ($row->sale_refund_amount > 0) {
+                $html .= '<p class="sale_return_amount p-0 m-0 text-danger" data-value="' . curr_cnv($row->sale_refund_amount, $row->c_rate, $row->branch_id) . '">' . __("R/F") . ':' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_refund_amount, $row->c_rate, $row->branch_id)) . '</p>';
+            }
+
+            return $html;
+        });
+
+        $dataTables->editColumn('due', fn($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
 
         $dataTables->editColumn('payment_status', function ($row) {
 

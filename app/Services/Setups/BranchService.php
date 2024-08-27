@@ -26,6 +26,7 @@ class BranchService
         $branches = $query->select(
             'branches.id',
             'branches.branch_type',
+            'branches.category',
             'branches.area_name',
             'branches.name as branch_name',
             'branches.branch_code',
@@ -39,6 +40,7 @@ class BranchService
             'branches.expire_date',
             'parentBranch.name as parent_branch_name',
             'parentBranch.logo as parent_branch_logo',
+            'parentBranch.category as parent_category',
         )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id');
 
         return DataTables::of($branches)
@@ -63,6 +65,17 @@ class BranchService
                 } else {
 
                     return '<span class="fas fa-long-arrow-alt-right text-success" style="font-size:15px;"></span> <span class="fw-bold">' . $row->parent_branch_name . ' (' . $row->area_name . ')' . '</span>';
+                }
+            })
+
+            ->editColumn('category', function ($row) {
+
+                if (isset($row->parent_category)) {
+
+                    return str(\App\Enums\BranchCategory::tryFrom($row->parent_category)->name)->headline();
+                } else {
+
+                    return str(\App\Enums\BranchCategory::tryFrom($row->category)->name)->headline();
                 }
             })
 
@@ -115,7 +128,7 @@ class BranchService
                 }
             })
 
-            ->rawColumns(['branchName', 'expire_date', 'logo', 'address', 'action'])
+            ->rawColumns(['branchName', 'category', 'expire_date', 'logo', 'address', 'action'])
             ->make(true);
     }
 
@@ -129,6 +142,7 @@ class BranchService
         $addBranch = new Branch();
         $addBranch->currency_id = $request->currency_id;
         $addBranch->branch_type = $request->branch_type;
+        $addBranch->category = $request->branch_type == BranchType::DifferentShop->value ? $request->category : null;
         $addBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $addBranch->area_name = $request->area_name;
         $addBranch->parent_branch_id = $request->branch_type == BranchType::ChainShop->value ? $request->parent_branch_id : null;
@@ -181,8 +195,9 @@ class BranchService
         $updateBranch = $this->singleBranch($id);
 
         $updateBranch->currency_id = $request->currency_id;
-        $updateBranch->name = $request->branch_type;
+        $updateBranch->branch_type = $request->branch_type;
         $updateBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
+        $updateBranch->category = $request->branch_type == BranchType::DifferentShop->value ? $request->category : null;
         $updateBranch->area_name = $request->area_name;
         $updateBranch->parent_branch_id = $request->branch_type == BranchType::ChainShop->value ? $request->parent_branch_id : null;
         $updateBranch->branch_code = $request->branch_code;
@@ -298,7 +313,30 @@ class BranchService
         if (!isset($parentBranchId)) {
 
             $accounts[] = [
-                'account_group_id' => $accountReceivablesAccountGroup->id, 'is_walk_in_customer' => 1, 'name' => 'Walk-In-Customer', 'phone' => 0, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:13:13', 'updated_at' => '2023-08-08 18:13:13', 'branch_id' => $branchId
+                'account_group_id' => $accountReceivablesAccountGroup->id,
+                'is_walk_in_customer' => 1,
+                'name' => 'Walk-In-Customer',
+                'phone' => 0,
+                'contact_id' => null,
+                'address' => null,
+                'account_number' => null,
+                'bank_id' => null,
+                'bank_branch' => null,
+                'bank_address' => null,
+                'tax_percent' => '0.00',
+                'bank_code' => null,
+                'swift_code' => null,
+                'opening_balance' => '0.00',
+                'opening_balance_type' => 'dr',
+                'remark' => null,
+                'status' => '1',
+                'created_by_id' => '1',
+                'is_fixed' => null,
+                'is_main_capital_account' => null,
+                'is_main_pl_account' => null,
+                'created_at' => '2023-08-08 18:13:13',
+                'updated_at' => '2023-08-08 18:13:13',
+                'branch_id' => $branchId
             ];
         }
 

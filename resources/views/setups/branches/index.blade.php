@@ -57,6 +57,7 @@
                                     <th>{{ __('Store Name') }}</th>
                                     <th>{{ __('Store Id') }}</th>
                                     <th>{{ __('Parent Store') }}</th>
+                                    <th>{{ __('Category') }}</th>
                                     <th>{{ __('Phone') }}</th>
                                     <th>{{ __('Address') }}</th>
                                     <th>{{ __('Store Logo') }}</th>

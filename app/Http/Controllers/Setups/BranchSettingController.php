@@ -34,21 +34,21 @@ class BranchSettingController extends Controller
     public function index($id)
     {
         abort_if(!$this->generalSettingService->generalSettingsPermission(), 403);
-        
+
         $generalSettings = config('generalSettings');
         $currencies = $this->currencyService->currencies();
         $units = $this->unitService->units()->where('base_unit_id', null)->get();
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $timezones = $this->timezoneService->all();
 
-        $invoiceLayouts = $this->invoiceLayoutService->invoiceLayouts(branchId: $id);
+        $invoiceLayouts = $this->invoiceLayoutService->invoiceLayouts(branchId: auth()->user()->branch_id);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $branch = $this->branchService->singleBranch(id: $id, with: ['parentBranch']);
+        $branch = $this->branchService->singleBranch(id: auth()->user()->branch_id, with: ['parentBranch']);
 
         if (!auth()->user()->branch_id) {
 

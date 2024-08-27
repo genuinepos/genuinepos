@@ -100,7 +100,7 @@
         var branchType = $('#branch_type').val();
 
         if (nextId == 'branch_stock_accounting_method' && branchType == 2) {
-            console.log(branchType);
+
             setTimeout(function() {
 
                 $('#branch_currency_id').focus();
@@ -108,10 +108,6 @@
 
             return;
         }
-
-        console.log({
-            nextId
-        });
 
         setTimeout(function() {
 
@@ -173,7 +169,6 @@
 
         $('.parent_branches_field').hide();
         $('#branch_parent_branch_id').val('');
-        console.log($('#branch_parent_branch_id'));
         getBranchCode($('#branch_parent_branch_id'));
 
         if ($(e).val() == 2) {
@@ -182,7 +177,9 @@
             $('#branch_parent_branch_id').prop('required', true);
             $('.branch_name_field').hide();
             $('.branch_log_field').hide();
+            $('.branch_category_field').hide();
             $('#branch_name').prop('required', false);
+            $('#branch_category').prop('required', false);
 
             $('#stock_accounting_method_field').hide();
             $('#account_start_date_field').hide();
@@ -194,7 +191,9 @@
             $('#branch_parent_branch_id').prop('required', false);
             $('.branch_name_field').show();
             $('.branch_log_field').show();
+            $('.branch_category_field').show();
             $('#branch_name').prop('required', true);
+            $('#branch_category').prop('required', true);
 
             $('#stock_accounting_method_field').show();
             $('#account_start_date_field').show();

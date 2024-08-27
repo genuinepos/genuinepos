@@ -53,6 +53,10 @@
                 className: 'fw-bold'
             },
             {
+                data: 'category',
+                name: 'parentBranch.name',
+            },
+            {
                 data: 'phone',
                 name: 'branches.phone'
             },

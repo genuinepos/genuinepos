@@ -27,6 +27,7 @@ class BranchStoreRequest extends FormRequest
     {
         return [
             'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
+            'category' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
             'area_name' => 'required',
             'branch_code' => 'required',
             'phone' => 'required',

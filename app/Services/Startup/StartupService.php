@@ -9,6 +9,7 @@ class StartupService
         $requestData = $request->all();
 
         $keyMappings = [
+            'branch_category' => 'category',
             'branch_name' => 'name',
             'branch_area_name' => 'area_name',
             'branch_phone' => 'phone',

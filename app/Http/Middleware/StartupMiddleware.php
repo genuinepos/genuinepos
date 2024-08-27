@@ -53,7 +53,10 @@ class StartupMiddleware
         } else if (
             $subscription->has_business == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::True->value)
+            (
+                $subscription->is_completed_business_startup == BooleanType::False->value &&
+                $subscription->is_completed_branch_startup == BooleanType::True->value
+            )
         ) {
 
             Session::put('startupType', 'business');
@@ -62,7 +65,8 @@ class StartupMiddleware
             $subscription->has_business == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
             (
-                $subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::True->value
+                $subscription->is_completed_business_startup == BooleanType::False->value &&
+                $subscription->is_completed_branch_startup == BooleanType::True->value
             )
         ) {
 

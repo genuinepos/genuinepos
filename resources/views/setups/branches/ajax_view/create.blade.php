@@ -12,15 +12,25 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Store Type') }}</label>
-                                <select onchange="changeBranchType(this);" name="branch_type" class="form-control" id="branch_type" data-next="branch_name">
+                                <select onchange="changeBranchType(this);" name="branch_type" class="form-control" id="branch_type" data-next="branch_category">
                                     @foreach (\App\Enums\BranchType::cases() as $branchType)
                                         <option value="{{ $branchType->value }}">{{ preg_replace('/[A-Z]/', ' ' . "$0", $branchType->name) }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
+                            <div class="col-lg-3 col-md-6 branch_category_field">
+                                <label class="fw-bold">{{ __('Category') }} <span class="text-danger">*</span></label>
+                                <select required name="category" class="form-control" id="branch_category" data-next="branch_name">
+                                    <option value="">{{ __('Select Store Category') }}</option>
+                                    @foreach (\App\Enums\BranchCategory::cases() as $category)
+                                        <option value="{{ $category->value }}">{{ str($category->name)->headline() }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="col-lg-3 col-md-6 parent_branches_field d-hide">
-                                <label class="fw-bold">{{ __('Parent Store') }}<span class="text-danger">*</span></label>
+                                <label class="fw-bold">{{ __('Parent Store') }} <span class="text-danger">*</span></label>
                                 <select onchange="getBranchCode(this);" name="parent_branch_id" class="form-control" id="branch_parent_branch_id" data-next="area_name">
                                     <option value="">{{ __('Select Parent Store') }}</option>
                                     @foreach ($branches as $branch)

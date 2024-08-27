@@ -6,7 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Products\BrandService;
 use App\Services\Sales\QuotationService;
 use App\Services\Services\DeviceService;
@@ -42,8 +42,7 @@ class JobCardController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
         private QuotationService $quotationService
-    ) {
-    }
+    ) {}
 
     public function index(JobCardIndexRequest $request)
     {

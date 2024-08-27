@@ -10,7 +10,7 @@ use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
 use App\Services\Products\UnitService;
 use App\Services\Sales\PosSaleService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\Products\BrandService;

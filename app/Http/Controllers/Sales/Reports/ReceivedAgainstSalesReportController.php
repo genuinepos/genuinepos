@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sales\Reports;
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 use App\Http\Requests\Sales\Reports\ReceivedAgainstSalesReportIndexRequest;
@@ -17,8 +17,7 @@ class ReceivedAgainstSalesReportController extends Controller
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
-    ) {
-    }
+    ) {}
 
     public function index(ReceivedAgainstSalesReportIndexRequest $request)
     {

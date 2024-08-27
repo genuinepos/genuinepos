@@ -2,7 +2,7 @@
 
 namespace App\Models\Products;
 
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

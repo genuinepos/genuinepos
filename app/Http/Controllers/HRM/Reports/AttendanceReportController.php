@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Hrm\DepartmentService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\HRM\Reports\AttendanceReportIndexRequest;

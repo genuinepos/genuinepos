@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\Hrm\ShiftService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Hrm\AttendanceService;
 use App\Http\Requests\HRM\AttendanceEditRequest;
 use App\Http\Requests\HRM\AttendanceIndexRequest;

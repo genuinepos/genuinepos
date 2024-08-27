@@ -3,7 +3,7 @@
 namespace App\Models\Accounts;
 
 use App\Models\Sales\Sale;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Accounts\Account;
 use App\Models\Products\Product;
 use App\Models\Sales\SaleReturn;

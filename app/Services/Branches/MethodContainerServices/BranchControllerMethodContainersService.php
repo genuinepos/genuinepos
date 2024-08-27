@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Services\Setups\MethodContainerServices;
+namespace App\Services\Branches\MethodContainerServices;
 
 use App\Enums\BranchType;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\CacheServiceInterface;
 use App\Services\GeneralSettingService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use App\Services\Setups\CashCounterService;
-use App\Services\Setups\BranchSettingService;
+use App\Services\Branches\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Interfaces\CodeGenerationServiceInterface;
-use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
+use App\Interfaces\Branches\BranchControllerMethodContainersInterface;
 
 class BranchControllerMethodContainersService implements BranchControllerMethodContainersInterface
 {

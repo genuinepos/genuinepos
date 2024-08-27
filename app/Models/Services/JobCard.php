@@ -4,7 +4,7 @@ namespace App\Models\Services;
 
 use App\Models\User;
 use App\Models\Sales\Sale;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Products\Brand;
 use App\Models\Services\Device;
 use App\Models\Services\Status;

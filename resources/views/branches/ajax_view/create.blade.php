@@ -306,4 +306,4 @@
     </div>
 </div>
 
-@include('setups.branches.ajax_view.js_partials.create_js')
+@include('branches.ajax_view.js_partials.create_js')

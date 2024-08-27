@@ -5,13 +5,13 @@ namespace App\Services\Startup\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Utils\FileUploader;
 use App\Services\Users\RoleService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use Illuminate\Support\Facades\Session;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use App\Services\Startup\StartupService;
 use App\Services\Setups\CashCounterService;
-use App\Services\Setups\BranchSettingService;
+use App\Services\Branches\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
 use App\Services\Subscriptions\SubscriptionService;
@@ -30,8 +30,7 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
         private InvoiceLayoutService $invoiceLayoutService,
         private BranchSettingService $branchSettingService,
         private SubscriptionService $subscriptionService,
-    ) {
-    }
+    ) {}
 
     public function startupFromContainer(): array
     {

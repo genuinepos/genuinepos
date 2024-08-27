@@ -5,7 +5,7 @@ namespace App\Services\Manufacturing\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Enums\ProductionStatus;
 use App\Enums\DayBookVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
@@ -33,8 +33,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         private DayBookService $dayBookService,
         private BranchService $branchService,
         private WarehouseService $warehouseService
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {

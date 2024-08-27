@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Branches;
 
 use App\Enums\PrintPageSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\PriceGroupService;
-use App\Services\Setups\BranchSettingService;
+use App\Services\Branches\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
 
@@ -55,7 +55,7 @@ class BranchSettingController extends Controller
             return redirect()->route('settings.general.index');
         }
 
-        return view('setups.branches.settings.index', compact('generalSettings', 'currencies', 'units', 'priceGroups', 'timezones', 'branch', 'taxAccounts', 'invoiceLayouts'));
+        return view('branches.settings.index', compact('generalSettings', 'currencies', 'units', 'priceGroups', 'timezones', 'branch', 'taxAccounts', 'invoiceLayouts'));
     }
 
     public function dashboardSettings($id, Request $request)

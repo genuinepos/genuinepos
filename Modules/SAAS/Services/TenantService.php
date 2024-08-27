@@ -25,7 +25,7 @@ use Modules\SAAS\Interfaces\UserServiceInterface;
 use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
-use App\Services\Setups\ShopExpireDateHistoryService;
+use App\Services\Subscriptions\ShopExpireDateHistoryService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use App\Services\Subscriptions\SubscriptionTransactionService;
 use Modules\SAAS\Interfaces\UserSubscriptionTransactionServiceInterface;

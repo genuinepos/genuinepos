@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Setups;
+namespace App\Http\Requests\Branches;
 
 use App\Enums\BranchType;
 use App\Enums\BooleanType;

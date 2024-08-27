@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Manufacturing\Reports;
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Manufacturing\Reports\IngredientReportService;
 use App\Http\Requests\Manufacturing\Reports\IngredientReportIndexRequest;
 use App\Http\Requests\Manufacturing\Reports\IngredientReportPrintRequest;

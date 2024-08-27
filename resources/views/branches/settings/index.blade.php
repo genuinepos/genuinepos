@@ -179,72 +179,72 @@
 
                             <div class="col-md-10">
                                 @if (auth()->user()->can('business_or_shop_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.branch_settings')
+                                    @include('branches.settings.partials.view_partials.branch_settings')
                                 @endif
 
                                 @if (auth()->user()->can('dashboard_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.dashboard_settings')
+                                    @include('branches.settings.partials.view_partials.dashboard_settings')
                                 @endif
 
                                 @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
                                     @if (auth()->user()->can('product_settings'))
-                                        @include('setups.branches.settings.partials.view_partials.product_settings')
+                                        @include('branches.settings.partials.view_partials.product_settings')
                                     @endif
                                 @endif
 
                                 @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
-                                    @include('setups.branches.settings.partials.view_partials.purchase_settings')
+                                    @include('branches.settings.partials.view_partials.purchase_settings')
                                 @endif
 
                                 @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
-                                    @include('setups.branches.settings.partials.view_partials.manufacturing_settings')
+                                    @include('branches.settings.partials.view_partials.manufacturing_settings')
                                 @endif
 
                                 @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
                                     @if (auth()->user()->can('add_sale_settings'))
-                                        @include('setups.branches.settings.partials.view_partials.add_sale_settings')
+                                        @include('branches.settings.partials.view_partials.add_sale_settings')
                                     @endif
 
                                     @if (auth()->user()->can('pos_sale_settings'))
-                                        @include('setups.branches.settings.partials.view_partials.pos_sale_settings')
+                                        @include('branches.settings.partials.view_partials.pos_sale_settings')
                                     @endif
                                 @endif
 
                                 @if (auth()->user()->can('prefix_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.prefix_settings')
+                                    @include('branches.settings.partials.view_partials.prefix_settings')
                                 @endif
 
                                 @if (auth()->user()->can('invoice_layout_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.invoice_layout_settings')
+                                    @include('branches.settings.partials.view_partials.invoice_layout_settings')
                                 @endif
 
                                 @if (auth()->user()->can('print_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.print_settings')
+                                    @include('branches.settings.partials.view_partials.print_settings')
                                 @endif
 
                                 @if (auth()->user()->can('system_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.system_settings')
+                                    @include('branches.settings.partials.view_partials.system_settings')
                                 @endif
 
                                 @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                                     @if (auth()->user()->can('reward_point_settings'))
-                                        @include('setups.branches.settings.partials.view_partials.reward_point_settings')
+                                        @include('branches.settings.partials.view_partials.reward_point_settings')
                                     @endif
                                 @endif
 
                                 @if (auth()->user()->can('module_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.module_settings')
+                                    @include('branches.settings.partials.view_partials.module_settings')
                                 @endif
 
                                 @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                                     @if (auth()->user()->can('send_email_settings'))
-                                        @include('setups.branches.settings.partials.view_partials.send_email_settings')
+                                        @include('branches.settings.partials.view_partials.send_email_settings')
                                     @endif
                                 @endif
 
                                 @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                                     @if (auth()->user()->can('send_sms_settings'))
-                                        @include('setups.branches.settings.partials.view_partials.send_sms_settings')
+                                        @include('branches.settings.partials.view_partials.send_sms_settings')
                                     @endif
                                 @endif
                             </div>
@@ -258,41 +258,41 @@
 @push('scripts')
     <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
     @if (auth()->user()->can('business_or_shop_settings'))
-        @include('setups.branches.settings.partials.js_partials.branch_settings_js')
+        @include('branches.settings.partials.js_partials.branch_settings_js')
     @endif
 
-    @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
+    @include('branches.settings.partials.js_partials.dashboard_settings_js')
 
     @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
         @if (auth()->user()->can('product_settings'))
-            @include('setups.branches.settings.partials.js_partials.product_settings_js')
+            @include('branches.settings.partials.js_partials.product_settings_js')
         @endif
     @endif
 
     @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['purchase'] == \App\Enums\BooleanType::True->value)
-        @include('setups.branches.settings.partials.js_partials.purchase_settings_js')
+        @include('branches.settings.partials.js_partials.purchase_settings_js')
     @endif
 
     @if (auth()->user()->can('manufacturing_settings') && $generalSettings['subscription']->features['manufacturing'] == \App\Enums\BooleanType::True->value)
-        @include('setups.branches.settings.partials.js_partials.manufacturing_settings_js')
+        @include('branches.settings.partials.js_partials.manufacturing_settings_js')
     @endif
 
     @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        @include('setups.branches.settings.partials.js_partials.add_sale_settings_js')
-        @include('setups.branches.settings.partials.js_partials.pos_sale_settings_js')
+        @include('branches.settings.partials.js_partials.add_sale_settings_js')
+        @include('branches.settings.partials.js_partials.pos_sale_settings_js')
     @endif
 
     @if (auth()->user()->can('prefix_settings'))
-        @include('setups.branches.settings.partials.js_partials.prefix_settings_js')
+        @include('branches.settings.partials.js_partials.prefix_settings_js')
     @endif
 
-    @include('setups.branches.settings.partials.js_partials.invoice_layout_settings_js')
-    @include('setups.branches.settings.partials.js_partials.print_settings_js')
-    @include('setups.branches.settings.partials.js_partials.system_settings_js')
-    @include('setups.branches.settings.partials.js_partials.reward_point_settings_js')
-    @include('setups.branches.settings.partials.js_partials.module_settings_js')
-    @include('setups.branches.settings.partials.js_partials.send_email_settings_js')
-    @include('setups.branches.settings.partials.js_partials.send_sms_settings_js')
+    @include('branches.settings.partials.js_partials.invoice_layout_settings_js')
+    @include('branches.settings.partials.js_partials.print_settings_js')
+    @include('branches.settings.partials.js_partials.system_settings_js')
+    @include('branches.settings.partials.js_partials.reward_point_settings_js')
+    @include('branches.settings.partials.js_partials.module_settings_js')
+    @include('branches.settings.partials.js_partials.send_email_settings_js')
+    @include('branches.settings.partials.js_partials.send_sms_settings_js')
 
     <script>
         $('#logo').dropify({

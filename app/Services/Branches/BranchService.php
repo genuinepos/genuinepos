@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Setups;
+namespace App\Services\Branches;
 
 use App\Models\Role;
 use App\Models\User;
 use App\Enums\BranchType;
 use App\Enums\BooleanType;
 use App\Utils\FileUploader;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -137,7 +137,7 @@ class BranchService
         $generalSettings = config('generalSettings');
         $subscription = $generalSettings['subscription'];
 
-        $shopHistory = (new \App\Services\Setups\ShopExpireDateHistoryService)->shopExpireDateHistoryByAnyCondition()->where('is_created', BooleanType::False->value)->first();
+        $shopHistory = (new \App\Services\Subscriptions\ShopExpireDateHistoryService)->shopExpireDateHistoryByAnyCondition()->where('is_created', BooleanType::False->value)->first();
 
         $addBranch = new Branch();
         $addBranch->currency_id = $request->currency_id;
@@ -182,7 +182,7 @@ class BranchService
 
         if ($subscription->is_trial_plan == BooleanType::False->value) {
 
-            (new \App\Services\Setups\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $shopHistory->id, isCreated: BooleanType::True->value);
+            (new \App\Services\Subscriptions\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $shopHistory->id, isCreated: BooleanType::True->value);
         }
 
         $this->forgetCache();
@@ -259,7 +259,7 @@ class BranchService
 
         if ($deleteBranch?->shopExpireDateHistory) {
 
-            (new \App\Services\Setups\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $deleteBranch?->shopExpireDateHistory?->id, isCreated: BooleanType::False->value);
+            (new \App\Services\Subscriptions\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $deleteBranch?->shopExpireDateHistory?->id, isCreated: BooleanType::False->value);
         }
 
         $deleteBranch->delete();

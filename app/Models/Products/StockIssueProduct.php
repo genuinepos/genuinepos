@@ -3,7 +3,7 @@
 namespace App\Models\Products;
 
 use App\Models\Products\Unit;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
 use App\Models\Products\StockChain;

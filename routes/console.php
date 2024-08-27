@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\GeneralSetting;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;

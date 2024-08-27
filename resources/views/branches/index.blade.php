@@ -86,5 +86,5 @@
     <div class="modal fade" id="branchAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
-    @include('setups.branches.js_partials.index_js')
+    @include('branches.js_partials.index_js')
 @endpush

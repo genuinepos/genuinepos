@@ -6,7 +6,7 @@ use App\Models\BaseModel;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
 use App\Models\Products\Unit;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 
 class Process extends BaseModel
 {

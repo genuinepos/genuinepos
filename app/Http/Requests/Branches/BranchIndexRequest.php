@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Setups;
+namespace App\Http\Requests\Branches;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BranchDeleteRequest extends FormRequest
+class BranchIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('branches_delete') && config('generalSettings')['subscription']->current_shop_count > 1;
+        return auth()->user()->can('branches_index') && config('generalSettings')['subscription']->current_shop_count > 1;
     }
 
     /**

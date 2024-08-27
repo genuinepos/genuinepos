@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Tenant;
 use App\Models\Hrm\Leave;
 use App\Models\Hrm\Shift;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use Laravel\Cashier\Billable;
 use App\Models\Hrm\Attendance;
 use App\Models\Hrm\Department;

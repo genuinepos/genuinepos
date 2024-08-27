@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\StockAdjustments\Reports;
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\StockAdjustments\Reports\StockAdjustmentReportService;
 use App\Http\Requests\StockAdjustments\Reports\StockAdjustmentReportIndexRequest;
 use App\Http\Requests\StockAdjustments\Reports\StockAdjustmentReportPrintRequest;
@@ -11,9 +11,7 @@ use App\Http\Requests\StockAdjustments\Reports\StockAdjustmentReportAllAmountReq
 
 class StockAdjustmentReportController extends Controller
 {
-    public function __construct(private StockAdjustmentReportService $stockAdjustmentReportService, private BranchService $branchService)
-    {
-    }
+    public function __construct(private StockAdjustmentReportService $stockAdjustmentReportService, private BranchService $branchService) {}
 
     public function index(StockAdjustmentReportIndexRequest $request)
     {

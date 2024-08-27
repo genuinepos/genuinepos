@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Setups;
+namespace App\Models\Branches;
 
 use App\Models\BaseModel;
 use App\Models\Sales\Sale;

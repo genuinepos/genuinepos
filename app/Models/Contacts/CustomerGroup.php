@@ -4,7 +4,7 @@ namespace App\Models\Contacts;
 
 use App\Models\BaseModel;
 use App\Models\Products\PriceGroup;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 
 class CustomerGroup extends BaseModel
 {

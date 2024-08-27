@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Contacts\CustomerGroupService;
 use App\Http\Requests\Contacts\CustomerGroupEditRequest;

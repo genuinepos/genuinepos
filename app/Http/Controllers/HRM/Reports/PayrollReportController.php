@@ -4,7 +4,7 @@ namespace App\Http\Controllers\HRM\Reports;
 
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Hrm\DepartmentService;
 use App\Services\Hrm\Reports\PayrollReportService;
 use App\Http\Requests\HRM\Reports\PayrollReportIndexRequest;

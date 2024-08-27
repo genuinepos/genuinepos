@@ -2,7 +2,7 @@
 
 namespace App\Models\Accounts;
 
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Accounts\Account;
 use Illuminate\Database\Eloquent\Model;
 

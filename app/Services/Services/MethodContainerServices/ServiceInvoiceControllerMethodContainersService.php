@@ -3,7 +3,7 @@
 namespace App\Services\Services\MethodContainerServices;
 
 use App\Services\Sales\SaleService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\StockChainService;
 use App\Services\Products\ProductStockService;
@@ -21,8 +21,7 @@ class ServiceInvoiceControllerMethodContainersService implements ServiceInvoiceC
         private ProductStockService $productStockService,
         private StockChainService $stockChainService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {

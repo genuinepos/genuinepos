@@ -283,4 +283,4 @@
     </div>
 </div>
 
-@include('setups.branches.ajax_view.js_partials.edit_js')
+@include('branches.ajax_view.js_partials.edit_js')

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Manufacturing;
 
 use App\Http\Controllers\Controller;
 use App\Services\Manufacturing\ProcessIngredientService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Setups\WarehouseService;
 
 class ProcessIngredientController extends Controller

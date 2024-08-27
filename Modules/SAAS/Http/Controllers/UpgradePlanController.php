@@ -20,7 +20,7 @@ use Modules\SAAS\Jobs\SendUpgradePlanMailJobQueue;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
 use App\Services\Setups\DeleteTrialPeriodDataService;
-use App\Services\Setups\ShopExpireDateHistoryService;
+use App\Services\Subscriptions\ShopExpireDateHistoryService;
 use Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob;
 use Modules\SAAS\Http\Requests\UpgradePlanConfirmRequest;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;

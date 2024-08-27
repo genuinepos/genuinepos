@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Setups;
+namespace App\Services\Branches;
 
 use App\Enums\BooleanType;
 use App\Models\GeneralSetting;

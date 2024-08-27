@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Products;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Hrm\DepartmentService;
 use App\Services\Products\StockIssueProductService;
 use App\Http\Requests\Products\StockIssueProductIndexRequest;

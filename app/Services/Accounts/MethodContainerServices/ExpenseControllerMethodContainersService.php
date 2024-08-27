@@ -4,7 +4,7 @@ namespace App\Services\Accounts\MethodContainerServices;
 
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
@@ -28,8 +28,7 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         private DayBookService $dayBookService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): object|array
     {

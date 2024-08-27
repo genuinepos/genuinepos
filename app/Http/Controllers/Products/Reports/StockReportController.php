@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Products\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Products\BrandService;
 use App\Services\Products\CategoryService;
 use App\Services\Products\Reports\StockReportService;

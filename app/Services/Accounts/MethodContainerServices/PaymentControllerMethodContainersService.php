@@ -5,7 +5,7 @@ namespace App\Services\Accounts\MethodContainerServices;
 use App\Enums\DayBookVoucherType;
 use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
@@ -40,8 +40,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request, ?int $debitAccountId = null): object|array
     {
@@ -57,7 +56,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         $data['debitAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
-        
+
         return $data;
     }
 

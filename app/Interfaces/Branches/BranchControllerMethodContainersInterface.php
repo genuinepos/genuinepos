@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Interfaces\Setups;
+namespace App\Interfaces\Branches;
 
 interface BranchControllerMethodContainersInterface
 {
     /**
-     * @return \App\Services\Setups\MethodContainerServices\BranchControllerMethodContainersService
+     * @return \App\Services\Branches\MethodContainerServices\BranchControllerMethodContainersService
      */
 
     public function indexMethodContainer(object $request): array|object;

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Branches;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Setups\BranchEditRequest;
-use App\Http\Requests\Setups\BranchIndexRequest;
-use App\Http\Requests\Setups\BranchStoreRequest;
-use App\Http\Requests\Setups\BranchCreateRequest;
-use App\Http\Requests\Setups\BranchDeleteRequest;
-use App\Http\Requests\Setups\BranchUpdateRequest;
-use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
+use App\Http\Requests\Branches\BranchEditRequest;
+use App\Http\Requests\Branches\BranchIndexRequest;
+use App\Http\Requests\Branches\BranchStoreRequest;
+use App\Http\Requests\Branches\BranchCreateRequest;
+use App\Http\Requests\Branches\BranchDeleteRequest;
+use App\Http\Requests\Branches\BranchUpdateRequest;
+use App\Interfaces\Branches\BranchControllerMethodContainersInterface;
 
 class BranchController extends Controller
 {
@@ -28,7 +28,7 @@ class BranchController extends Controller
 
         extract($indexMethodContainer);
 
-        return view('setups.branches.index', compact('currentCreatedBranchCount'));
+        return view('branches.index', compact('currentCreatedBranchCount'));
     }
 
     public function create(BranchCreateRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
@@ -37,7 +37,7 @@ class BranchController extends Controller
 
         extract($createMethodContainer);
 
-        return view('setups.branches.ajax_view.create', compact('branches', 'roles', 'currencies', 'timezones', 'branchCode'));
+        return view('branches.ajax_view.create', compact('branches', 'roles', 'currencies', 'timezones', 'branchCode'));
     }
 
     public function store(BranchStoreRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
@@ -69,7 +69,7 @@ class BranchController extends Controller
 
         extract($editMethodContainer);
 
-        return view('setups.branches.ajax_view.edit', compact('branches', 'branch', 'currencies', 'timezones', 'branchSettings'));
+        return view('branches.ajax_view.edit', compact('branches', 'branch', 'currencies', 'timezones', 'branchSettings'));
     }
 
     public function update($id, BranchUpdateRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)

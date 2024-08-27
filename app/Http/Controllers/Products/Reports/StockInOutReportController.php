@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Products\Reports;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Products\Reports\StockInOutReportService;

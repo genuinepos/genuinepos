@@ -6,7 +6,7 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use Illuminate\Support\Facades\Session;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;

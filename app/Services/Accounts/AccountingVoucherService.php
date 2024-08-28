@@ -38,6 +38,8 @@ class AccountingVoucherService
     {
         $updateAccountingVoucher = $this->singleAccountingVoucher(id: $id, with: [
             'payrollRef',
+            'voucherDebitDescriptions',
+            'voucherDebitDescriptions.account',
             'voucherDescriptions',
             'voucherDebitDescription',
             'voucherDebitDescription.account',

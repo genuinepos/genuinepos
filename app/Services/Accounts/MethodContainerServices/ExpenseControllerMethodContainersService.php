@@ -4,12 +4,15 @@ namespace App\Services\Accounts\MethodContainerServices;
 
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
-use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\UserActivityLogActionType;
+use App\Services\Branches\BranchService;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Accounts\ExpenseService;
 use App\Services\Setups\PaymentMethodService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountingVoucherService;
@@ -28,6 +31,7 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         private DayBookService $dayBookService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private UserActivityLogService $userActivityLogService,
     ) {}
 
     public function indexMethodContainer(object $request): object|array
@@ -156,6 +160,19 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
             ],
         );
 
+        $debitDescriptions = $expense?->voucherDescriptions()?->where('amount_type', 'dr')?->get();
+        $creditAccountName = $expense?->voucherDescriptions()?->where('amount_type', 'cr')?->first()?->account?->name;
+        $debitAccounts = '';
+        $totalAmount = 0;
+        foreach ($debitDescriptions as $debitDescription) {
+            $totalAmount += $debitDescription->amount;
+            $debitAccounts .= $debitDescription?->account?->name . ' : ' . $debitDescription->amount . ', ';
+        }
+
+        $remarks = $debitAccounts . 'Cr-' . $creditAccountName . ' : ' . $totalAmount;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Expense->value, dataObj: $expense, remarks: $remarks);
+
         $printPageSize = $request->print_page_size;
         return ['expense' => $expense, 'printPageSize' => $printPageSize];
     }
@@ -228,11 +245,38 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         //Add Credit Ledger Entry
         $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Expense->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->total_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
 
+        $debitDescriptions = $updateAccountingVoucher?->fresh('voucherDebitDescriptions')?->voucherDebitDescriptions;
+
+        $creditAccountName = $updateAccountingVoucher?->fresh('voucherCreditDescription.account')?->voucherCreditDescription?->account?->name;
+        $debitAccounts = '';
+        $totalAmount = 0;
+        foreach ($debitDescriptions as $debitDescription) {
+            $totalAmount += $debitDescription->amount;
+            $debitAccounts .= $debitDescription?->account?->name . ' : ' . $debitDescription->amount . ', ';
+        }
+
+        $remarks = $debitAccounts . 'Cr-' . $creditAccountName . ' : ' . $totalAmount;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Expense->value, dataObj: $updateAccountingVoucher, remarks: $remarks);
+
         return null;
     }
 
     public function deleteMethodContainer(int $id): void
     {
-        $this->expenseService->deleteExpense(id: $id);
+        $deleteExpense = $this->expenseService->deleteExpense(id: $id);
+
+        $debitDescriptions = $deleteExpense?->voucherDebitDescriptions;
+        $creditAccountName = $deleteExpense?->voucherCreditDescription?->account?->name;
+        $debitAccounts = '';
+        $totalAmount = 0;
+        foreach ($debitDescriptions as $debitDescription) {
+            $totalAmount += $debitDescription->amount;
+            $debitAccounts .= $debitDescription?->account?->name . ' : ' . $debitDescription->amount . ', ';
+        }
+
+        $remarks = $debitAccounts . 'Cr-' . $creditAccountName . ' : ' . $totalAmount;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Expense->value, dataObj: $deleteExpense, remarks: $remarks);
     }
 }

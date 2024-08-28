@@ -176,7 +176,10 @@ class ReceiptService
     public function deleteReceipt(int $id): ?object
     {
         $deleteReceipt = $this->singleReceipt(id: $id, with: [
+            'voucherCreditDescription',
+            'voucherCreditDescription.account',
             'voucherDescriptions',
+            'voucherDescriptions.account',
             'voucherDescriptions.references',
             'voucherDescriptions.references.sale',
             'voucherDescriptions.references.purchase',

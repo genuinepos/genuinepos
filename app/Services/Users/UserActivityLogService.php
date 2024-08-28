@@ -123,13 +123,13 @@ class UserActivityLogService
             ],
             27 => [ // Receipt Voucher
                 'fields' => ['date', 'voucher_no', 'total_amount'],
-                'texts' => ['Date : ', 'VoucherNo : ', 'Received Amount'],
+                'texts' => ['Date : ', 'VoucherNo : ', 'Received Amount : '],
             ],
-            28 => [ // Payment
+            28 => [ // Payment Voucher
                 'fields' => ['date', 'voucher_no',  'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Paid Amount : '],
             ],
-            31 => [ // Contra
+            31 => [ // Contra Voucher
                 'fields' => ['date', 'voucher_no', 'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
             ],
@@ -156,7 +156,7 @@ class UserActivityLogService
         ];
     }
 
-    public function addLog($action, $subjectType, $dataObj, $branchId = null, $userId = null)
+    public function addLog(int $action, int $subjectType, object $dataObj, ?int $branchId = null, ?int $userId = null, string $remarks = null)
     {
         $generalSettings = config('generalSettings');
         $dateFormat = $generalSettings['business_or_shop__date_format'];
@@ -181,7 +181,7 @@ class UserActivityLogService
             $index++;
         }
 
-        $addLog->descriptions = $description;
+        $addLog->descriptions = $description . (isset($remarks) ? '(' . $remarks . ')' : null);
         $addLog->save();
     }
 }

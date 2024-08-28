@@ -21,7 +21,6 @@ class AccountingVoucherDescriptionReferenceService
         array $refIds = null,
         int $branchId = null,
     ) {
-
         if ($refIdColName == 'stock_adjustment_id' && count($refIds) > 0) {
 
             $addPaymentDescriptionRef = new AccountingVoucherDescriptionReference();

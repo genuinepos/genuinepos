@@ -235,7 +235,7 @@ class ContraControllerMethodContainersService implements ContraControllerMethodC
         $senderAccountName = $deleteContra?->voucherCreditDescription?->account?->name;
         $receiverAccountName = $deleteContra?->voucherDebitDescription?->account?->name;
 
-        $remarks = 'Sender:' . $senderAccountName . ' - ' . $deleteContra->total_amount . ', Receiver: ' . $receiverAccountName . ' - ' . $deleteContra->total_amount;
+        $remarks = 'Sender: ' . $senderAccountName . ' - ' . $deleteContra->total_amount . ', Receiver: ' . $receiverAccountName . ' - ' . $deleteContra->total_amount;
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Contra->value, dataObj: $deleteContra, remarks: $remarks);
     }

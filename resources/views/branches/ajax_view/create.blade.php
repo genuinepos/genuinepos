@@ -138,24 +138,21 @@
                     <div class="col-md-3">
                         <div class="row mt-1">
                             <div class="col-md-12">
-                                <label class="fw-bold">{{ __('Date Format') }}</label>
-                                <select name="date_format" class="form-control" id="branch_date_format" data-next="branch_time_format">
-                                    <option value="d-m-Y" {{ $generalSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }} | {{ __('DD-MM-YYYY') }}</option>
-                                    <option value="m-d-Y" {{ $generalSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }} | {{ __('MM-DD-YYYY') }}</option>
-                                    <option value="Y-m-d" {{ $generalSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }} | {{ __('YYYY-MM-DD') }}</option>
-                                </select>
-                                <span class="error error_date_format"></span>
-                            </div>
-                        </div>
+                                <label class="fw-bold">{{ __('Date & Time Format') }}</label>
+                                <div class="input-group">
+                                    <select name="date_format" class="form-control w-75" id="branch_date_format" data-next="branch_time_format">
+                                        <option value="d-m-Y" {{ $generalSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }} | {{ __('DD-MM-YYYY') }}</option>
+                                        <option value="m-d-Y" {{ $generalSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }} | {{ __('MM-DD-YYYY') }}</option>
+                                        <option value="Y-m-d" {{ $generalSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }} | {{ __('YYYY-MM-DD') }}</option>
+                                    </select>
 
-                        <div class="row mt-1">
-                            <div class="col-md-12">
-                                <label class="fw-bold">{{ __('Time Format') }}</label>
-                                <select name="time_format" class="form-control" id="branch_time_format" data-next="branch_timezone">
-                                    <option value="12">{{ __('12 Hour') }}</option>
-                                    <option value="24">{{ __('24 Hour') }}</option>
-                                </select>
-                                <span class="error error_time_format"></span>
+                                    <select required name="time_format" class="form-control w-25" id="branch_time_format" data-next="branch_timezone">
+                                        <option value="12">{{ __('12 Hour') }}</option>
+                                        <option value="24">{{ __('24 Hour') }}</option>
+                                    </select>
+                                </div>
+
+                                <span class="error error_date_format"></span>
                             </div>
                         </div>
 
@@ -213,7 +210,7 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Currency') }}</label>
                                 <div class="input-group">
-                                    <select required name="currency_id" class="form-control select2" id="branch_currency_id" data-next="add_initial_user_btn">
+                                    <select required name="currency_id" class="form-control select2" id="branch_currency_id" data-next="branch_auto_repayment_sales_and_purchase_return">
                                         @foreach ($currencies as $currency)
                                             <option data-currency_symbol="{{ $currency->symbol }}" {{ $generalSettings['business_or_shop__currency_id'] == $currency->id ? 'SELECTED' : '' }} value="{{ $currency->id }}">
                                                 {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
@@ -225,10 +222,34 @@
                                 <span class="error error_currency_id"></span>
                             </div>
                         </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label class="fw-bold">{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+                                <div class="input-group">
+                                    <select required name="auto_repayment_sales_and_purchase_return" class="form-control" id="branch_auto_repayment_sales_and_purchase_return" data-next="branch_auto_repayment_purchase_and_sales_return">
+                                        <option value="0">{{ __("No") }}</option>
+                                        <option value="1">{{ __("Yes") }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label class="fw-bold">{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+                                <div class="input-group">
+                                    <select required name="auto_repayment_purchase_and_sales_return" class="form-control" id="branch_auto_repayment_purchase_and_sales_return" data-next="add_initial_user_btn">
+                                        <option value="0">{{ __("No") }}</option>
+                                        <option value="1">{{ __("Yes") }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row mt-2">
+                <div class="row">
                     <div class="col-md-12 text-center">
                         <button type="button" value="1" class="btn text-white btn-sm btn-success float-center" id="add_initial_user_btn">
                             <i class="fas fa-user text-white"></i> {{ __('Add Initial User') }}

@@ -91,7 +91,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     {
         $query = GeneralSetting::where('branch_id', $branchId);
 
-        if (isset($key)) {
+        if (isset($keys)) {
 
             $query->whereIn('key', $keys);
         }

@@ -97,13 +97,15 @@ class BranchControllerMethodContainersService implements BranchControllerMethodC
 
         $data['branchSettings'] = $this->generalSettingService->generalSettings(branchId: $id, keys: [
             'business_or_shop__date_format',
-            'business_or_shop__time_forma',
+            'business_or_shop__time_format',
             'business_or_shop__timezone',
             'business_or_shop__currency_id',
             'business_or_shop__currency_symbol',
             'business_or_shop__account_start_date',
             'business_or_shop__financial_year_start_month',
             'business_or_shop__stock_accounting_method',
+            'business_or_shop__auto_repayment_sales_and_purchase_return',
+            'business_or_shop__auto_repayment_purchase_and_sales_return',
         ]);
 
         return $data;

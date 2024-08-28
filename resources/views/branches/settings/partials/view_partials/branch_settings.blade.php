@@ -8,7 +8,7 @@
 
     <input type="hidden" name="branch_type" value="{{ $branch->branch_type }}">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
             @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                 <div class="form-group row">
                     <div class="col-lg-4 col-md-6">
@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <div class="col-md-3" style="border-left: 1px solid #000;">
+        <div class="col-md-4" style="border-left: 1px solid #000;">
             <div class="row mt-1">
                 <div class="col-md-12">
                     <label class="fw-bold">{{ __('Date Format') }}</label>

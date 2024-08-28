@@ -172,24 +172,21 @@
                     <div class="col-md-3">
                         <div class="row mt-1">
                             <div class="col-md-12">
-                                <label class="fw-bold">{{ __('Date Format') }}</label>
-                                <select name="date_format" class="form-control" id="branch_date_format" data-next="branch_time_format">
-                                    <option value="d-m-Y" {{ $branchSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
-                                    <option value="m-d-Y" {{ $branchSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
-                                    <option value="Y-m-d" {{ $branchSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
-                                </select>
-                                <span class="error error_date_format"></span>
-                            </div>
-                        </div>
+                                <label class="fw-bold">{{ __('Date & Time Format') }}</label>
+                                <div class="input-group">
+                                    <select name="date_format" class="form-control w-75" id="branch_date_format" data-next="branch_time_format">
+                                        <option value="d-m-Y" {{ $branchSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
+                                        <option value="m-d-Y" {{ $branchSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
+                                        <option value="Y-m-d" {{ $branchSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
+                                    </select>
 
-                        <div class="row mt-1">
-                            <div class="col-md-12">
-                                <label class="fw-bold">{{ __('Time Format') }}</label>
-                                <select name="time_format" class="form-control" id="branch_time_format" data-next="branch_timezone">
-                                    <option {{ $branchSettings['business_or_shop__time_format'] == '12' ? 'SELECTED' : '' }} value="12">{{ __('12 Hour') }}</option>
-                                    <option {{ $branchSettings['business_or_shop__time_format'] == '24' ? 'SELECTED' : '' }} value="24">{{ __('24 Hour') }}</option>
-                                </select>
-                                <span class="error error_time_format"></span>
+                                    <select name="time_format" class="form-control w-25" id="branch_time_format" data-next="branch_timezone">
+                                        <option {{ $branchSettings['business_or_shop__time_format'] == '12' ? 'SELECTED' : '' }} value="12">{{ __('12 Hour') }}</option>
+                                        <option {{ $branchSettings['business_or_shop__time_format'] == '24' ? 'SELECTED' : '' }} value="24">{{ __('24 Hour') }}</option>
+                                    </select>
+                                </div>
+
+                                <span class="error error_date_format"></span>
                             </div>
                         </div>
 
@@ -266,6 +263,30 @@
                                     <input type="hidden" name="currency_symbol" id="branch_currency_symbol" value="{{ $branchSettings['business_or_shop__currency_symbol'] }}">
                                 </div>
                                 <span class="error error_currency_id"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label class="fw-bold">{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+                                <div class="input-group">
+                                    <select required name="auto_repayment_sales_and_purchase_return" class="form-control" id="branch_auto_repayment_sales_and_purchase_return" data-next="branch_auto_repayment_purchase_and_sales_return">
+                                        <option value="0">{{ __("No") }}</option>
+                                        <option @selected(isset($branchSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) && $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] == '1') value="1">{{ __("Yes") }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-1">
+                            <div class="col-md-12">
+                                <label class="fw-bold">{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+                                <div class="input-group">
+                                    <select required name="auto_repayment_purchase_and_sales_return" class="form-control" id="branch_auto_repayment_purchase_and_sales_return" data-next="add_initial_user_btn">
+                                        <option value="0">{{ __("No") }}</option>
+                                        <option @selected(isset($branchSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) && $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] == '1') value="1">{{ __("Yes") }}</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>

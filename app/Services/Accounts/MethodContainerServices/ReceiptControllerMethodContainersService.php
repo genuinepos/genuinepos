@@ -5,14 +5,17 @@ namespace App\Services\Accounts\MethodContainerServices;
 use App\Enums\DayBookVoucherType;
 use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\UserActivityLogActionType;
+use App\Services\Branches\BranchService;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Accounts\ReceiptService;
 use App\Services\Sales\SalesReturnService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\PaymentMethodService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\DayBookVoucherService;
@@ -40,8 +43,8 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-    ) {
-    }
+        private UserActivityLogService $userActivityLogService,
+    ) {}
 
     public function indexMethodContainer(object $request, $creditAccountId = null): object|array
     {
@@ -185,6 +188,7 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
                 'branch',
                 'branch.parentBranch',
                 'voucherDescriptions',
+                'voucherDescriptions.account',
                 'voucherDescriptions.references',
                 'voucherDescriptions.references.sale',
                 'voucherDescriptions.references.purchaseReturn',
@@ -195,6 +199,10 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
             ],
         );
 
+        $creditAccountName = $receipt?->voucherDescriptions()?->where('amount_type', 'cr')?->first()?->account?->name;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Receipt->value, dataObj: $receipt, remarks: $creditAccountName);
+
         $printPageSize = $request->print_page_size;
 
         return ['receipt' => $receipt, 'printPageSize' => $printPageSize];
@@ -202,7 +210,6 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
 
     public function editMethodContainer(int $id, int $creditAccountId = null): ?array
     {
-
         $data = [];
         $receipt = $this->accountingVoucherService->singleAccountingVoucher(
             id: $id,
@@ -302,6 +309,10 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
         //Add Credit Ledger Entry
         $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id, cash_bank_account_id: $request->debit_account_id);
 
+        $creditAccountName = $updateAccountingVoucher?->fresh('voucherCreditDescription.account')?->voucherCreditDescription?->account?->name;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Receipt->value, dataObj: $updateAccountingVoucher, remarks: $creditAccountName);
+
         return null;
     }
 
@@ -331,6 +342,10 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
                 }
             }
         }
+
+        $creditAccountName = $deleteReceipt?->voucherCreditDescription?->account?->name;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Receipt->value, dataObj: $deleteReceipt, remarks: $creditAccountName);
 
         return $deleteReceipt;
     }

@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-xl-8 col-lg-7 col-md-6">
         <div class="billing-details business-setup">
-            <h3 class="title">{{ __('Company Setup') }}</h3>
+            <h3 class="title">{{ __('Busienss Setup') }}</h3>
             <div class="form-row">
                 <div class="form-col-5">
                     <div class="position-relative">
-                        <label for="business">{{ __('Company Name') }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Company Name') }}" autocomplete="off">
+                        <label for="business">{{ __('Business Name') }} <span class="text-danger">*</span></label>
+                        <input required type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter Business Name') }}" autocomplete="off">
                         <span class="text-danger error error_name"></span>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                     <div class="domain-field" class="position-relative">
                         <label for="domain">{{ __('Store URL') }} <span class="text-danger">*</span></label>
                         <div class="position-relative">
-                            <input required type="text" name="domain" id="domain" class="form-control" placeholder="my-business" autocomplete="off">
+                            <input required type="text" name="domain" id="domain" class="form-control" placeholder="Store URL" autocomplete="off">
                             <span class="txt">{{ __('.gposs.com') }}</span>
                         </div>
                         <p class="mt-2 mb-0">

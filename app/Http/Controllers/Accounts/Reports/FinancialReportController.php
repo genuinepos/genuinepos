@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Accounts\Reports;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\Reports\FinancialReport\AssetAmountsService;
 use App\Services\Accounts\Reports\FinancialReport\ExpenseAmountsService;
 use App\Services\Accounts\Reports\FinancialReport\IncomeAmountsService;
@@ -46,7 +46,7 @@ class FinancialReportController extends Controller
     public function print(Request $request)
     {
         abort_if(!auth()->user()->can('financial_report'), 403);
-        
+
         $generalSettings = config('generalSettings');
         $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
 

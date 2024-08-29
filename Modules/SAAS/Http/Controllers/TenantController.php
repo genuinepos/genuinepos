@@ -21,8 +21,7 @@ class TenantController extends Controller
         private TenantServiceInterface $tenantService,
         private CurrencyServiceInterface $tenantServiceInterface,
         private PlanServiceInterface $planServiceInterface,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request)
     {
@@ -38,8 +37,30 @@ class TenantController extends Controller
 
     public function show($id)
     {
-        $tenant = $this->tenantService->singleTenant(id: $id, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
-        return view('saas::tenants.show', compact('tenant'));
+        $tenant = $this->tenantService->singleTenant(id: $id, with: [
+            'user',
+            'user.userSubscription',
+            'user.userSubscription.plan:id,name,is_trial_plan,trial_days'
+        ]);
+
+        DB::statement('use ' . $tenant->tenancy_db_name);
+        $business = DB::table('general_settings')->where('key', 'business_or_shop__business_name')->select('value')->first();
+        $branches = DB::table('branches')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->select(
+                'branches.branch_type',
+                'branches.category',
+                'branches.area_name',
+                'branches.name as branch_name',
+                'branches.branch_code',
+                'branches.expire_date',
+                'parentBranch.name as parent_branch_name',
+                'parentBranch.logo as parent_branch_logo',
+                'parentBranch.category as parent_category',
+            )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        DB::reconnect();
+
+        return view('saas::tenants.show', compact('tenant', 'branches', 'business'));
     }
 
     public function create()

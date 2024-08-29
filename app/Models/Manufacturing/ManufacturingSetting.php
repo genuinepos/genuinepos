@@ -2,7 +2,7 @@
 
 namespace App\Models\Manufacturing;
 
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use Illuminate\Database\Eloquent\Model;
 
 class ManufacturingSetting extends Model

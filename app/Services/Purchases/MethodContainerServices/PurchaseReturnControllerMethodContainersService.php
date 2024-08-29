@@ -5,7 +5,7 @@ namespace App\Services\Purchases\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Enums\UserActivityLogActionType;

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Services\UpdateExpireDateService;
 use App\Services\Subscriptions\SubscriptionService;
-use App\Services\Setups\ShopExpireDateHistoryService;
+use App\Services\Subscriptions\ShopExpireDateHistoryService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use Modules\SAAS\Http\Requests\UpdateExpireDateConfirmRequest;
 

@@ -51,8 +51,8 @@
                                     <th class="text-start">{{ __('Customer Name') }}</th>
                                     <th class="text-start">{{ __('Email') }}</th>
                                     <th class="text-start">{{ __('Phone') }}</th>
-                                    <th class="text-start">{{ __('Company Name') }}</th>
-                                    <th class="text-start">{{ __('Domain') }}</th>
+                                    <th class="text-start">{{ __('Business Name') }}</th>
+                                    <th class="text-start">{{ __('Store Url') }}</th>
                                     <th class="text-start text-dark">{{ __('Plan') }}</th>
                                     <th class="text-start"> {{ __('Store Count') }}</th>
                                     <th class="text-start">{{ __('Has Company') }}</th>

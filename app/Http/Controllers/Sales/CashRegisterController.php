@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Sales;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\CashRegisterService;
 use App\Services\Setups\CashCounterService;
@@ -19,8 +19,7 @@ class CashRegisterController extends Controller
         private CashCounterService $cashCounterService,
         private AccountService $accountService,
         private BranchService $branchService,
-    ) {
-    }
+    ) {}
 
     public function create($saleId = null, $jobCardId = null, $saleScreenType = null)
     {

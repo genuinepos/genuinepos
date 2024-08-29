@@ -32,6 +32,7 @@ Route::middleware([
         // Route::middleware(['plan_check'])->group(function() {
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/dev_routes.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/admin.php'));
+        Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/branches.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/hrms.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/task_management.php'));
         Route::middleware(['auth', 'startup', 'subscriptionRestrictions', 'changeLocation'])->group(base_path('routes/manufacturing.php'));

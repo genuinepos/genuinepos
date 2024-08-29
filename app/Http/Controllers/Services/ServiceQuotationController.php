@@ -9,7 +9,7 @@ use App\Enums\SaleScreenType;
 use Illuminate\Support\Facades\DB;
 use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\UserActivityLogActionType;
 use App\Services\Sales\QuotationService;
 use App\Enums\UserActivityLogSubjectType;
@@ -45,8 +45,7 @@ class ServiceQuotationController extends Controller
         private BranchService $branchService,
         private ProductStockService $productStockService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function index(ServiceQuotationIndexRequest $request)
     {

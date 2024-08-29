@@ -3,7 +3,7 @@
 namespace App\Models\Accounts;
 
 use App\Models\BaseModel;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Contacts\Contact;
 use App\Models\Accounts\AccountLedger;
 use App\Models\Accounts\AccountOpeningBalance;

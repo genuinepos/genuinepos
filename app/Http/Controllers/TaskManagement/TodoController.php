@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\TodoService;
 use App\Services\TaskManagement\TodoUserService;
@@ -26,8 +26,7 @@ class TodoController extends Controller
         private TodoUserService $todoUserService,
         private UserService $userService,
         private BranchService $branchService,
-    ) {
-    }
+    ) {}
 
     public function index(TodoIndexRequest $request)
     {

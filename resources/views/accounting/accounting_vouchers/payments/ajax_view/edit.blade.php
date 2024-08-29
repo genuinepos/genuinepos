@@ -218,7 +218,7 @@
                             @else
                                 <div class="col-md-12">
                                     <label class="fw-bold">{{ __('Debit A/c') }} <span class="text-danger">*</span></label>
-                                    <select required name="debit_account_id" class="form-control select2" id="payment_debit_account_id" data-next="payment_paying_amount">
+                                    <select required name="debit_account_id" onchange="changeAccount(this); return false;" class="form-control select2" id="payment_debit_account_id" data-next="payment_paying_amount">
                                         <option value="">{{ __('Select Credit A/c') }}</option>
                                         @foreach ($payableAccounts as $payableAccount)
                                             @php

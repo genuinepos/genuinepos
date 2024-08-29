@@ -6,7 +6,7 @@ use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\RoleService;
 use App\Services\Users\UserService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;

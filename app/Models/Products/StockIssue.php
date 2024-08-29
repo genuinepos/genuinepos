@@ -3,7 +3,7 @@
 namespace App\Models\Products;
 
 use App\Models\User;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Hrm\Department;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Products\StockIssueProduct;

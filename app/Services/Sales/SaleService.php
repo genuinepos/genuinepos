@@ -481,9 +481,9 @@ class SaleService
             return ['pass' => false, 'msg' => __('Products table must not be empty.')];
         }
 
-        if ($request->status == SaleStatus::Final->value && $customer->is_walk_in_customer == 1 && $request->current_balance > 0) {
+        if ($request->status == SaleStatus::Final->value && $customer->is_walk_in_customer == 1 && ($request->current_balance > 0 || $request->current_balance < 0)) {
 
-            return ['pass' => false, 'msg' => __('Due or partial sale is not allowed for walk-in-customer . Please select a listed customer.')];
+            return ['pass' => false, 'msg' => __('Due/Partial sale or advance receive is not allowed for walk-in-customer . Please select a listed customer.')];
         }
 
         if (

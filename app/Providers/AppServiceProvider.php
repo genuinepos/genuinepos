@@ -15,7 +15,7 @@ use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\PosSaleControllerMethodContainersInterface;
-use App\Interfaces\Setups\BranchControllerMethodContainersInterface;
+use App\Interfaces\Branches\BranchControllerMethodContainersInterface;
 use App\Interfaces\Sales\DiscountControllerMethodContainersInterface;
 use App\Interfaces\Startup\StartupControllerMethodContainerInterface;
 use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
@@ -47,7 +47,7 @@ use App\Interfaces\Purchases\PurchaseOrderToInvoiceControllerMethodContainersInt
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\PosSaleControllerMethodContainersService;
-use App\Services\Setups\MethodContainerServices\BranchControllerMethodContainersService;
+use App\Services\Branches\MethodContainerServices\BranchControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\DiscountControllerMethodContainersService;
 use App\Services\Startup\MethodContainerServices\StartupControllerMethodContainerService;
 use App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService;

@@ -10,8 +10,8 @@ use App\Enums\PurchaseStatus;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Accounts\AccountingVoucher;
-use App\Models\Accounts\AccountingVoucherDescription;
+use App\Models\Accounts\AccountingVoucher as Payment;
+use App\Models\Accounts\AccountingVoucherDescription as PaymentDescription;
 
 class PaymentService
 {
@@ -22,7 +22,7 @@ class PaymentService
 
         $generalSettings = config('generalSettings');
         $payments = '';
-        $query = AccountingVoucherDescription::query()
+        $query = PaymentDescription::query()
             ->with([
                 'account:id,name,phone,address',
                 'accountingVoucher:id,branch_id,voucher_no,date,date_ts,voucher_type,purchase_ref_id,sale_return_ref_id,total_amount,remarks,created_by_id',
@@ -176,6 +176,8 @@ class PaymentService
     public function deletePayment(int $id): ?object
     {
         $deletePayment = $this->singlePayment(id: $id, with: [
+            'voucherDebitDescription',
+            'voucherDebitDescription.account',
             'voucherDescriptions',
             'voucherDescriptions.references',
             'voucherDescriptions.references.sale',
@@ -195,7 +197,7 @@ class PaymentService
 
     public function singlePayment(int $id, array $with = null): ?object
     {
-        $query = AccountingVoucher::query();
+        $query = Payment::query();
 
         if (isset($with)) {
 

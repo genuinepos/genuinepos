@@ -5,7 +5,7 @@ namespace App\Http\Controllers\TaskManagement;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\TaskManagement\WorkspaceService;
 use App\Services\TaskManagement\WorkspaceUserService;
@@ -25,8 +25,7 @@ class WorkSpaceController extends Controller
         private WorkspaceAttachmentService $workspaceAttachmentService,
         private BranchService $branchService,
         private UserService $userService,
-    ) {
-    }
+    ) {}
 
     public function index(WorkspaceIndexRequest $request)
     {

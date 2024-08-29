@@ -3,7 +3,7 @@
 namespace App\Models\Sales;
 
 use App\Models\BaseModel;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 
 class Discount extends BaseModel
 {

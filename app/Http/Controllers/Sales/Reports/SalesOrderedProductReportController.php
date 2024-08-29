@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sales\Reports;
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Sales\Reports\SalesOrderedProductReportService;
@@ -17,8 +17,7 @@ class SalesOrderedProductReportController extends Controller
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
-    ) {
-    }
+    ) {}
 
     public function index(SalesOrderedProductIndexReport $request)
     {

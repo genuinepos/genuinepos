@@ -7,7 +7,7 @@ use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use App\Enums\AccountingVoucherType;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Accounts\AccountingVoucher;
+use App\Models\Accounts\AccountingVoucher as Expense;
 
 class ExpenseService
 {
@@ -15,7 +15,7 @@ class ExpenseService
     {
         $generalSettings = config('generalSettings');
         $expenses = '';
-        $query = AccountingVoucher::query()
+        $query = Expense::query()
             ->with([
                 'branch:id,currency_id,name,area_name,branch_code,parent_branch_id',
                 'branch.parentBranch:id,name',
@@ -115,13 +115,13 @@ class ExpenseService
                 }
             })
 
-            ->editColumn('remarks', fn ($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 25, '') . '</span>')
+            ->editColumn('remarks', fn($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 25, '') . '</span>')
 
-            ->editColumn('paid_from', fn ($row) => $row?->voucherCreditDescription?->account?->name . ($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
-            ->editColumn('payment_method', fn ($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
-            ->editColumn('transaction_no', fn ($row) => $row?->voucherCreditDescription?->transaction_no)
-            ->editColumn('cheque_no', fn ($row) => $row?->voucherCreditDescription?->cheque_no)
-            ->editColumn('cheque_serial_no', fn ($row) => $row?->voucherCreditDescription?->cheque_serial_no)
+            ->editColumn('paid_from', fn($row) => $row?->voucherCreditDescription?->account?->name . ($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
+            ->editColumn('payment_method', fn($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
+            ->editColumn('transaction_no', fn($row) => $row?->voucherCreditDescription?->transaction_no)
+            ->editColumn('cheque_no', fn($row) => $row?->voucherCreditDescription?->cheque_no)
+            ->editColumn('cheque_serial_no', fn($row) => $row?->voucherCreditDescription?->cheque_serial_no)
 
             ->editColumn('expense_descriptions', function ($row) {
 
@@ -134,7 +134,7 @@ class ExpenseService
                 return $html;
             })
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</span>')
+            ->editColumn('total_amount', fn($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
@@ -147,7 +147,14 @@ class ExpenseService
 
     public function deleteExpense(int $id): ?object
     {
-        $deleteExpense = $this->singleExpense(id: $id);
+        $deleteExpense = $this->singleExpense(id: $id, with: [
+            'voucherDebitDescriptions',
+            'voucherDebitDescriptions.account',
+            'voucherDebitDescription',
+            'voucherDebitDescription.account',
+            'voucherCreditDescription',
+            'voucherCreditDescription.account'
+        ]);
 
         if (!is_null($deleteExpense)) {
 
@@ -159,7 +166,7 @@ class ExpenseService
 
     public function singleExpense(int $id, array $with = null): ?object
     {
-        $query = AccountingVoucher::query();
+        $query = Expense::query();
 
         if (isset($with)) {
 

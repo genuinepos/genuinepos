@@ -2,7 +2,7 @@
 
 namespace App\Models\Subscriptions;
 
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

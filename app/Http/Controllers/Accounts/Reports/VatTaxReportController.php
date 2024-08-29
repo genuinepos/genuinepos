@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Accounts\Reports;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\Reports\VatTax\VatTaxReportService;
 

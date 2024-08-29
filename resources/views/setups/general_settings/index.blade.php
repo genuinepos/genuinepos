@@ -6,7 +6,7 @@
         }
 
         label {
-            font-size: 12px !important;
+            font-size: 11px !important;
         }
 
         ul.menus_unorder_list {

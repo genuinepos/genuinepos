@@ -31,6 +31,8 @@ class GeneralSettingsSeeder extends Seeder
             array('key' => 'business_or_shop__time_format', 'value' => '12', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'business_or_shop__business_logo', 'value' => NULL, 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'business_or_shop__timezone', 'value' => 'Asia/Dhaka', 'branch_id' => NULL, 'parent_branch_id' => NULL),
+            array('key' => 'business_or_shop__auto_repayment_sales_and_purchase_return', 'value' => '0', 'branch_id' => NULL, 'parent_branch_id' => NULL),
+            array('key' => 'business_or_shop__auto_repayment_purchase_and_sales_return', 'value' => '0', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'system__theme_color', 'value' => 'dark-theme', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'system__datatables_page_entry', 'value' => '50', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'pos__is_enabled_multiple_pay', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),

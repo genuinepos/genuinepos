@@ -6,7 +6,7 @@ use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\UserActivityLogActionType;
 use App\Services\Sales\QuotationService;
@@ -49,8 +49,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         private ProductStockService $productStockService,
         private StockChainService $stockChainService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request, ?int $saleScreenType = null): object|array
     {

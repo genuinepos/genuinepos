@@ -5,7 +5,7 @@ namespace App\Services\StockAdjustments\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Enums\UserActivityLogActionType;
@@ -46,8 +46,7 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
         private StockChainService $stockChainService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {
@@ -127,7 +126,8 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
         return $data;
     }
 
-    public function storeMethodContainer(object $request, object $codeGenerator): ?array {
+    public function storeMethodContainer(object $request, object $codeGenerator): ?array
+    {
 
         $restrictions = $this->stockAdjustmentService->restrictions(request: $request);
 
@@ -199,7 +199,8 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
         return null;
     }
 
-    public function deleteMethodContainer(int $id): ?array {
+    public function deleteMethodContainer(int $id): ?array
+    {
 
         $deleteAdjustment = $this->stockAdjustmentService->deleteStockAdjustment(id: $id);
 

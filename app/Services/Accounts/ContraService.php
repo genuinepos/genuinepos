@@ -4,7 +4,7 @@ namespace App\Services\Accounts;
 
 use App\Enums\AccountingVoucherType;
 use App\Enums\BooleanType;
-use App\Models\Accounts\AccountingVoucher;
+use App\Models\Accounts\AccountingVoucher as Contra;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -15,7 +15,7 @@ class ContraService
     {
         $generalSettings = config('generalSettings');
         $contras = '';
-        $query = AccountingVoucher::query()
+        $query = Contra::query()
             ->with([
                 'branch:id,currency_id,name,branch_code,parent_branch_id,area_name',
                 'branch.parentBranch:id,name',
@@ -116,15 +116,15 @@ class ContraService
                 }
             })
 
-            ->editColumn('remarks', fn ($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 10, '') . '</span>')
-            ->editColumn('credit_account', fn ($row) => $row?->voucherCreditDescription?->account?->name . ($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
-            ->editColumn('payment_method', fn ($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
-            ->editColumn('transaction_no', fn ($row) => $row?->voucherCreditDescription?->transaction_no)
-            ->editColumn('cheque_no', fn ($row) => $row?->voucherCreditDescription?->cheque_no)
-            ->editColumn('cheque_serial_no', fn ($row) => $row?->voucherCreditDescription?->cheque_serial_no)
-            ->editColumn('debit_account', fn ($row) => $row?->voucherDebitDescription?->account?->name . ($row?->voucherDebitDescription?->account?->account_number ? ' / ' . $row?->voucherDebitDescription?->account?->account_number : ''))
+            ->editColumn('remarks', fn($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 10, '') . '</span>')
+            ->editColumn('credit_account', fn($row) => $row?->voucherCreditDescription?->account?->name . ($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
+            ->editColumn('payment_method', fn($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
+            ->editColumn('transaction_no', fn($row) => $row?->voucherCreditDescription?->transaction_no)
+            ->editColumn('cheque_no', fn($row) => $row?->voucherCreditDescription?->cheque_no)
+            ->editColumn('cheque_serial_no', fn($row) => $row?->voucherCreditDescription?->cheque_serial_no)
+            ->editColumn('debit_account', fn($row) => $row?->voucherDebitDescription?->account?->name . ($row?->voucherDebitDescription?->account?->account_number ? ' / ' . $row?->voucherDebitDescription?->account?->account_number : ''))
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</span>')
+            ->editColumn('total_amount', fn($row) => '<span class="total_amount" data-value="' . curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row?->total_amount, $row?->branch?->branchCurrency?->currency_rate, $row?->branch?->id)) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
@@ -137,7 +137,13 @@ class ContraService
 
     public function deleteContra(int $id)
     {
-        $deleteContra = $this->singleContra(id: $id);
+        $deleteContra = $this->singleContra(id: $id, with: [
+            'voucherDebitDescription',
+            'voucherDebitDescription.account:id,name,account_number,bank_id',
+            'voucherDebitDescription.account.bank:id,name',
+            'voucherCreditDescription',
+            'voucherCreditDescription.account:id,name,account_number',
+        ]);
 
         if (!is_null($deleteContra)) {
 
@@ -149,7 +155,7 @@ class ContraService
 
     public function singleContra(int $id, array $with = null): ?object
     {
-        $query = AccountingVoucher::query();
+        $query = Contra::query();
 
         if (isset($with)) {
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Enums\AccountingVoucherType;
 use App\Services\Hrm\PayrollService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\Hrm\DepartmentService;
 use App\Enums\AllowanceAndDeductionType;
@@ -31,8 +31,7 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         private BranchService $branchService,
         private AccountService $accountService,
         private DayBookService $dayBookService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): object|array
     {

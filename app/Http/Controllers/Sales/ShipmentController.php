@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Sales\ShipmentService;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
@@ -24,8 +24,7 @@ class ShipmentController extends Controller
         private BranchService $branchService,
         private AccountService $accountService,
         private UserActivityLogService $userActivityLogService,
-    ) {
-    }
+    ) {}
 
     public function index(ShipmentIndexRequest $request)
     {

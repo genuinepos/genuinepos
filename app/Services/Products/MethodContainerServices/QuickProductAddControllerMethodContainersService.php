@@ -4,7 +4,7 @@ namespace App\Services\Products\MethodContainerServices;
 
 use App\Enums\BooleanType;
 use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\Products\BrandService;
 use App\Enums\UserActivityLogActionType;
@@ -45,8 +45,7 @@ class QuickProductAddControllerMethodContainersService implements QuickProductAd
         private ProductStockService $productStockService,
         private PurchaseProductService $purchaseProductService,
         private UserActivityLogService $userActivityLogService
-    ) {
-    }
+    ) {}
 
     public function createMethodContainer(): array
     {

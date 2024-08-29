@@ -5,14 +5,17 @@ namespace App\Services\Accounts\MethodContainerServices;
 use App\Enums\DayBookVoucherType;
 use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\UserActivityLogActionType;
+use App\Services\Branches\BranchService;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Accounts\PaymentService;
 use App\Services\Sales\SalesReturnService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\PaymentMethodService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\DayBookVoucherService;
@@ -40,8 +43,8 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-    ) {
-    }
+        private UserActivityLogService $userActivityLogService,
+    ) {}
 
     public function indexMethodContainer(object $request, ?int $debitAccountId = null): object|array
     {
@@ -57,7 +60,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         $data['debitAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
-        
+
         return $data;
     }
 
@@ -194,6 +197,10 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
             ],
         );
 
+        $debitAccountName = $payment?->voucherDescriptions()?->where('amount_type', 'dr')?->first()?->account?->name;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Payment->value, dataObj: $payment, remarks: $debitAccountName);
+
         $printPageSize = $request->print_page_size;
 
         return ['payment' => $payment, 'printPageSize' => $printPageSize];
@@ -299,6 +306,10 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         //Add credit Ledger Entry
         $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
 
+        $debitAccountName = $updateAccountingVoucher?->fresh('voucherDebitDescription.account')?->voucherDebitDescription?->account?->name;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Payment->value, dataObj: $updateAccountingVoucher, remarks: $debitAccountName);
+
         return null;
     }
 
@@ -328,6 +339,10 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
                 }
             }
         }
+
+        $debitAccountName = $deletePayment?->voucherDebitDescription?->account?->name;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Payment->value, dataObj: $deletePayment, remarks: $debitAccountName);
 
         return $deletePayment;
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Contacts\Reports;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\Accounts\AccountService;
 use App\Services\Contacts\Reports\CustomerReportService;

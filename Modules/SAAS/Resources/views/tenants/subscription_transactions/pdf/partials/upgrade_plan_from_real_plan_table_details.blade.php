@@ -39,7 +39,7 @@
             <td style="font-size:11px!important;">
                 @if ($transaction?->details?->country != 'bangladesh')
                     @php
-                        $$subtotalInBdt = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($subtotal);
+                        $subtotalInBdt = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($subtotal);
                     @endphp
                     {{ App\Utils\Converter::format_in_bdt($subtotalInBdt) }}
                 @else

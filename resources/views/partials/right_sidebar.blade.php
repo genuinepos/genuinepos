@@ -17,12 +17,9 @@
 
         <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                @if (
-                    ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1) &&
-                    auth()->user()->can('has_access_to_all_area')
-                )
+                @if (($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1) && auth()->user()->can('has_access_to_all_area'))
                     @php
-                        $branchService = new App\Services\Setups\BranchService();
+                        $branchService = new App\Services\Branches\BranchService();
                         $branches = $branchService->switchableBranches();
                     @endphp
                     <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
@@ -33,12 +30,10 @@
                                 <select name="branch_id" id="switch_branch_id">
 
                                     @if ($generalSettings['subscription']->has_business == 1)
-
                                         <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                     @endif
 
                                     @foreach ($branches as $branch)
-
                                         <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                             @php
                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;

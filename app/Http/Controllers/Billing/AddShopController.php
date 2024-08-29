@@ -13,7 +13,7 @@ use Modules\SAAS\Services\TenantServiceInterface;
 use App\Http\Requests\Billing\AddShopConfirmRequest;
 use App\Services\Subscriptions\SubscriptionService;
 use Modules\SAAS\Interfaces\CouponServiceInterface;
-use App\Services\Setups\ShopExpireDateHistoryService;
+use App\Services\Subscriptions\ShopExpireDateHistoryService;
 use App\Services\Subscriptions\SubscriptionMailService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use App\Services\Subscriptions\SubscriptionTransactionService;

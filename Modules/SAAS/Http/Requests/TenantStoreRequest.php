@@ -20,7 +20,7 @@ class TenantStoreRequest extends FormRequest
             'plan_id' => 'required|numeric',
             'shop_count' => 'required|numeric',
             'name' => 'required|string|max:70',
-            'domain' => ['required', 'string', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
+            'domain' => ['required', 'string', 'min:2', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
             'fullname' => 'required|string|max:191',
             'email' => 'required|unique:users,email',
             'currency_id' => 'required',

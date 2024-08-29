@@ -32,6 +32,8 @@ class StartupService
             'branch_financial_year_start_month' => 'financial_year_start_month',
             'branch_currency_id' => 'currency_id',
             'branch_currency_symbol' => 'currency_symbol',
+            'branch_auto_repayment_sales_and_purchase_return' => 'auto_repayment_sales_and_purchase_return',
+            'branch_auto_repayment_purchase_and_sales_return' => 'branch_auto_repayment_purchase_and_sales_return',
             'branch_user_first_name' => 'user_first_name',
             'branch_user_last_name' => 'user_last_name',
             'branch_user_phone' => 'user_phone',

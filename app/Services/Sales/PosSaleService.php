@@ -153,7 +153,16 @@ class PosSaleService
             return $html;
         });
 
-        $dataTables->editColumn('due', fn($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>');
+        $dataTables->editColumn('due', function ($row) {
+
+            if ($row->due < 0) {
+
+                return '(<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(abs(curr_cnv($row->due, $row->c_rate, $row->branch_id))) . '</span>)';
+            } else {
+
+                return '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>';
+            }
+        });
 
         $dataTables->editColumn('payment_status', function ($row) {
 

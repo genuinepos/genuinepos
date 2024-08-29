@@ -5,13 +5,13 @@
         toastr.success('{{ session('successMsg') }}');
     @endif
 
-    var salesTable = $('.data_tbl').DataTable({
+    var table = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
         buttons: [{
                 extend: 'excel',
-                text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
+                text: '<i class="fas fa-file-excel"></i> Excel',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:first-child)'
@@ -19,7 +19,7 @@
             },
             {
                 extend: 'pdf',
-                text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:first-child)'
@@ -27,7 +27,7 @@
             },
             {
                 extend: 'print',
-                text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
+                text: '<i class="fas fa-print"></i> Print',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:first-child)'
@@ -43,8 +43,7 @@
             [10, 25, 50, 100, 500, 1000, "All"]
         ],
         "ajax": {
-            // "url": "{{ route('sales.index', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::AddSale->value]) }}",
-            "url": "{{ route('sales.helper.sales.list.table', ['customerAccountId' => 'null', 'saleScreen' => App\Enums\SaleScreenType::AddSale->value]) }}",
+            "url": "{{ route('sale.orders.index') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.customer_account_id = $('#customer_account_id').val();
@@ -62,8 +61,8 @@
                 name: 'date'
             },
             {
-                data: 'invoice_id',
-                name: 'sales.invoice_id',
+                data: 'order_id',
+                name: 'sales.order_id',
                 className: 'fw-bold'
             },
             {
@@ -80,14 +79,29 @@
                 className: 'text-start'
             },
             {
+                data: 'delivery_status',
+                name: 'created_by.name',
+                className: 'text-start'
+            },
+            {
                 data: 'total_item',
-                name: 'salesOrder.order_id',
+                name: 'sales.quotation_id',
                 className: 'text-end fw-bold'
             },
             {
-                data: 'total_qty',
-                name: 'total_qty',
+                data: 'total_ordered_qty',
+                name: 'total_ordered_qty',
                 className: 'text-end fw-bold'
+            },
+            {
+                data: 'total_delivered_qty',
+                name: 'total_delivered_qty',
+                className: 'text-end text-success fw-bold'
+            },
+            {
+                data: 'total_left_qty',
+                name: 'total_left_qty',
+                className: 'text-end text-danger fw-bold'
             },
             {
                 data: 'total_invoice_amount',
@@ -100,11 +114,6 @@
                 className: 'text-end fw-bold'
             },
             {
-                data: 'sale_return_amount',
-                name: 'sale_return_amount',
-                className: 'text-end fw-bold'
-            },
-            {
                 data: 'due',
                 name: 'due',
                 className: 'text-end fw-bold'
@@ -114,13 +123,20 @@
                 name: 'created_by.name',
                 className: 'text-end fw-bold'
             },
+
         ],
         fnDrawCallback: function() {
             var total_item = sum_table_col($('.data_tbl'), 'total_item');
             $('#total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-            $('#total_qty').text(bdFormat(total_qty));
+            var total_ordered_qty = sum_table_col($('.data_tbl'), 'total_ordered_qty');
+            $('#total_ordered_qty').text(bdFormat(total_ordered_qty));
+
+            var total_delivered_qty = sum_table_col($('.data_tbl'), 'total_delivered_qty');
+            $('#total_delivered_qty').text(bdFormat(total_delivered_qty));
+
+            var total_left_qty = sum_table_col($('.data_tbl'), 'total_left_qty');
+            $('#total_left_qty').text(bdFormat(total_left_qty));
 
             var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
             $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
@@ -128,18 +144,14 @@
             var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
             $('#received_amount').text(bdFormat(received_amount));
 
-            var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
-            $('#sale_return_amount').text(bdFormat(sale_return_amount));
-
             var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(due < 0 ? '('+bdFormat(Math.abs(due))+')' : bdFormat(Math.abs(due)));
+            $('#due').text(due < 0 ? '(' + bdFormat(Math.abs(due)) + ')' : bdFormat(Math.abs(due)));
 
             $('.data_preloader').hide();
         }
     });
 
     function sum_table_col(table, class_name) {
-
         var sum = 0;
 
         table.find('tbody').find('tr').each(function() {
@@ -159,7 +171,7 @@
     $(document).on('submit', '#filter_form', function(e) {
         e.preventDefault();
         $('.data_preloader').show();
-        salesTable.ajax.reload();
+        table.ajax.reload();
     });
 
     $(document).on('click', '#editShipmentDetails', function(e) {
@@ -266,8 +278,8 @@
                     return;
                 }
 
+                table.ajax.reload(null, false);
                 toastr.error(data);
-                salesTable.ajax.reload(null, false);
             },
             error: function(err) {
 

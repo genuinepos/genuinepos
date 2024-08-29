@@ -37,7 +37,6 @@ class TenantController extends Controller
 
     public function show($id)
     {
-
         $tenant = $this->tenantService->singleTenant(id: $id, with: [
             'user',
             'user.userSubscription',

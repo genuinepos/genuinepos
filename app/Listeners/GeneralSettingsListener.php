@@ -87,6 +87,7 @@ class GeneralSettingsListener
             }
 
             $branch = $event?->user?->branch;
+
             if (isset($branch) && isset($branch->parent_branch_id)) {
 
                 $prefixes = [
@@ -102,26 +103,102 @@ class GeneralSettingsListener
 
                 $parentBranchGeneralSettings = Cache::rememberForever($cacheKey, function () use ($branch, $prefixes) {
 
+                    // $query = GeneralSetting::query()->where('branch_id', $branch->parent_branch_id)
+                    //     ->whereNotIn(
+                    //         'key',
+                    //         [
+                    //             'business_or_shop__business_name',
+                    //             'business_or_shop__currency_id',
+                    //             'business_or_shop__currency_symbol',
+                    //             'business_or_shop__date_format',
+                    //             'business_or_shop__time_format',
+                    //             'business_or_shop__timezone',
+                    //         ]
+                    //     );
+
+                    // Test Query
                     $query = GeneralSetting::query()->where('branch_id', $branch->parent_branch_id)
-                        ->whereNotIn(
+                        ->whereIn(
                             'key',
                             [
-                                'business_or_shop__business_name',
-                                'business_or_shop__currency_id',
-                                'business_or_shop__currency_symbol',
-                                'business_or_shop__date_format',
-                                'business_or_shop__time_format',
-                                'business_or_shop__timezone',
+                                'business_or_shop__financial_year_start_month',
+                                'business_or_shop__default_profit',
+                                'business_or_shop__stock_accounting_method',
+                                'business_or_shop__account_start_date',
+
+                                'reward_point_settings__enable_cus_point',
+                                'reward_point_settings__point_display_name',
+                                'reward_point_settings__amount_for_unit_rp',
+                                'reward_point_settings__min_order_total_for_rp',
+                                'reward_point_settings__max_rp_per_order',
+                                'reward_point_settings__redeem_amount_per_unit_rp',
+                                'reward_point_settings__min_order_total_for_redeem',
+                                'reward_point_settings__min_redeem_point',
+                                'reward_point_settings__max_redeem_point',
+
+                                'send_email__send_invoice_via_email',
+                                'send_email__send_notification_via_email',
+                                'send_email__customer_due_reminder_via_email',
+                                'send_email__user_forget_password_via_email',
+                                'send_email__coupon_offer_via_email',
+
+                                'send_sms__send_invoice_via_sms',
+                                'send_sms__send_notification_via_sms',
+                                'send_sms__customer_due_reminder_via_sms',
+
+                                'service_settings__default_status_id',
+                                'service_settings__default_checklist',
+                                'service_settings__product_configuration',
+                                'service_settings__default_problems_report',
+                                'service_settings__product_condition',
+                                'service_settings__terms_and_condition',
+                                'service_settings__custom_field_1_label',
+                                'service_settings__custom_field_2_label',
+                                'service_settings__custom_field_3_label',
+                                'service_settings__custom_field_4_label',
+                                'service_settings__custom_field_5_label',
+
+                                'service_settings_pdf_label__show_customer_info',
+                                'service_settings_pdf_label__customer_label_name',
+                                'service_settings_pdf_label__show_contact_id',
+                                'service_settings_pdf_label__customer_id_label_name',
+                                'service_settings_pdf_label__show_customer_tax_no',
+                                'service_settings_pdf_label__customer_tax_no_label_name',
+                                'service_settings_pdf_label__show_custom_field_1',
+                                'service_settings_pdf_label__show_custom_field_2',
+                                'service_settings_pdf_label__show_custom_field_3',
+                                'service_settings_pdf_label__show_custom_field_4',
+                                'service_settings_pdf_label__show_custom_field_5',
+                                'service_settings_pdf_label__label_width',
+                                'service_settings_pdf_label__label_height',
+                                'service_settings_pdf_label__customer_name_in_label',
+                                'service_settings_pdf_label__customer_address_in_label',
+                                'service_settings_pdf_label__customer_phone_in_label',
+                                'service_settings_pdf_label__customer_alt_phone_in_label',
+                                'service_settings_pdf_label__customer_email_in_label',
+                                'service_settings_pdf_label__sales_person_in_label',
+                                'service_settings_pdf_label__barcode_in_label',
+                                'service_settings_pdf_label__status_in_label',
+                                'service_settings_pdf_label__due_date_in_label',
+                                'service_settings_pdf_label__technician_in_label',
+                                'service_settings_pdf_label__problems_in_label_in_label',
+                                'service_settings_pdf_label__job_card_no_in_label',
+                                'service_settings_pdf_label__serial_in_label',
+                                'service_settings_pdf_label__model_in_label',
+                                'service_settings_pdf_label__location_in_label',
+                                'service_settings_pdf_label__password_in_label',
+                                'service_settings_pdf_label__problems_in_label',
                             ]
-                        );
+                        )->select('key', 'value');
+                    // Test End
 
-                    $query->where(function ($query) use ($prefixes) {
+                    // $query->where(function ($query) use ($prefixes) {
 
-                        foreach ($prefixes as $prefix) {
+                    //     foreach ($prefixes as $prefix) {
 
-                            $query->orWhere('key', 'LIKE', $prefix . '%');
-                        }
-                    });
+                    //         $query->orWhere('key', 'LIKE', $prefix . '%');
+                    //     }
+                    // });
 
                     $parentBranchGeneralSettings = $query->get();
 

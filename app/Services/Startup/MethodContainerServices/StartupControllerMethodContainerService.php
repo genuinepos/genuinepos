@@ -99,6 +99,8 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
                 'business_or_shop__time_format' => $request->business_time_format,
                 'business_or_shop__business_logo' => $business_logo,
                 'business_or_shop__timezone' => $request->business_timezone,
+                'business_or_shop__auto_repayment_sales_and_purchase_return' => $request->business_auto_repayment_sales_and_purchase_return,
+                'business_or_shop__auto_repayment_purchase_and_sales_return' => $request->business_auto_repayment_purchase_and_sales_return,
             ];
 
             $this->generalSettingService->updateAndSync($settings);

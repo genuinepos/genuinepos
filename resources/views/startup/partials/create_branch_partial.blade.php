@@ -191,6 +191,22 @@
                     <input type="hidden" name="branch_currency_symbol" id="branch_currency_symbol" value="{{ auth()?->user()?->currency?->symbol }}">
                     <span class="error error_branch_currency_id"></span>
                 </div>
+
+                <div class="col-md-4">
+                    <label for="branch_auto_repayment_sales_and_purchase_return">{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+                    <select required name="branch_auto_repayment_sales_and_purchase_return" class="form-control" id="branch_auto_repayment_sales_and_purchase_return">
+                        <option value="0">{{ __("No") }}</option>
+                        <option value="1">{{ __("Yes") }}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="branch_auto_repayment_purchase_and_sales_return">{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+                    <select required name="branch_auto_repayment_purchase_and_sales_return" class="form-control" id="branch_auto_repayment_purchase_and_sales_return">
+                        <option value="0">{{ __("No") }}</option>
+                        <option value="1">{{ __("Yes") }}</option>
+                    </select>
+                </div>
             </div>
 
             <div class="row">

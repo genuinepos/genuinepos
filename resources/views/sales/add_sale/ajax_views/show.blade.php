@@ -346,14 +346,22 @@
                                 <tr>
                                     <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Invoice)') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                     <td class="text-end" style="font-size:11px!important;">
-                                        {{ App\Utils\Converter::format_in_bdt($sale->due) }}
+                                        @if ($sale->due < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($sale->due)) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($sale->due) }}
+                                        @endif
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                     <td class="text-end" style="font-size:11px!important;">
-                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
                                     </td>
                                 </tr>
                             </table>
@@ -395,7 +403,6 @@
 
             <div class="modal-footer">
                 <div class="btn-box">
-
                     @if (auth()->user()->can('edit_add_sale') && $sale->branch_id == auth()->user()->branch_id)
                         @if ($sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                             @if (auth()->user()->can('edit_add_sale'))

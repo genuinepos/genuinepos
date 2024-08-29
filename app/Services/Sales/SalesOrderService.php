@@ -43,7 +43,7 @@ class SalesOrderService
             'sales.paid as received_amount',
             'sales.due',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'customers.name as customer_name',
@@ -121,21 +121,30 @@ class SalesOrderService
                     return $generalSettings['business_or_shop__business_name'];
                 }
             })
-            ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
+            ->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+            ->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_ordered_qty', fn ($row) => '<span class="total_ordered_qty" data-value="' . $row->total_ordered_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_ordered_qty) . '</span>')
+            ->editColumn('total_ordered_qty', fn($row) => '<span class="total_ordered_qty" data-value="' . $row->total_ordered_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_ordered_qty) . '</span>')
 
-            ->editColumn('total_delivered_qty', fn ($row) => '<span class="total_delivered_qty" data-value="' . $row->total_delivered_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_delivered_qty) . '</span>')
+            ->editColumn('total_delivered_qty', fn($row) => '<span class="total_delivered_qty" data-value="' . $row->total_delivered_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_delivered_qty) . '</span>')
 
-            ->editColumn('total_left_qty', fn ($row) => '<span class="total_left_qty" data-value="' . $row->total_left_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_left_qty) . '</span>')
+            ->editColumn('total_left_qty', fn($row) => '<span class="total_left_qty" data-value="' . $row->total_left_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_left_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('total_invoice_amount', fn($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('received_amount', fn($row) => '<span class="received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('due', function ($row) {
+
+                if ($row->due < 0) {
+
+                    return '(<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(abs(curr_cnv($row->due, $row->c_rate, $row->branch_id))) . '</span>)';
+                } else {
+
+                    return '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>';
+                }
+            })
 
             ->editColumn('payment_status', function ($row) {
 
@@ -160,7 +169,7 @@ class SalesOrderService
                 if ($row->order_delivery_status == OrderDeliveryStatus::Pending->value) {
 
                     return '<span class="text-danger"><b>' . __('Pending') . '</span>';
-                } elseif ($row->order_delivery_status == OrderDeliveryStatus::Partial->value){
+                } elseif ($row->order_delivery_status == OrderDeliveryStatus::Partial->value) {
 
                     return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
                 } elseif ($row->order_delivery_status == OrderDeliveryStatus::Completed->value) {

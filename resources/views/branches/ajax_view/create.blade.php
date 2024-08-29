@@ -14,7 +14,13 @@
                                 <label class="fw-bold">{{ __('Store Type') }}</label>
                                 <select onchange="changeBranchType(this);" name="branch_type" class="form-control" id="branch_type" data-next="branch_category">
                                     @foreach (\App\Enums\BranchType::cases() as $branchType)
-                                        <option value="{{ $branchType->value }}">{{ preg_replace('/[A-Z]/', ' ' . "$0", $branchType->name) }}</option>
+                                        <option value="{{ $branchType->value }}">
+                                            @if ($branchType->name == 'ChainShop')
+                                                {{ __('Chain Store') }}
+                                            @else
+                                                {{ __('Different Store') }}
+                                            @endif
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>

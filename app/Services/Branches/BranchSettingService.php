@@ -39,6 +39,8 @@ class BranchSettingService
             ['key' => 'business_or_shop__date_format', 'value' => $request->date_format, 'branch_id' => $branchId],
             ['key' => 'business_or_shop__time_format', 'value' => $request->time_format, 'branch_id' => $branchId],
             ['key' => 'business_or_shop__timezone', 'value' => $request->timezone, 'branch_id' => $branchId],
+            ['key' => 'business_or_shop__auto_repayment_sales_and_purchase_return', 'value' => $request->auto_repayment_sales_and_purchase_return, 'branch_id' => $branchId],
+            ['key' => 'business_or_shop__auto_repayment_purchase_and_sales_return', 'value' => $request->auto_repayment_purchase_and_sales_return, 'branch_id' => $branchId],
 
             ['key' => 'system__theme_color', 'value' => 'dark-theme', 'branch_id' => $branchId],
             ['key' => 'system__datatables_page_entry', 'value' => null, 'branch_id' => $branchId],

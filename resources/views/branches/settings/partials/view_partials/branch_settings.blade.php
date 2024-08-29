@@ -7,6 +7,7 @@
     </div>
 
     <input type="hidden" name="branch_type" value="{{ $branch->branch_type }}">
+    <input type="hidden" name="parent_branch_id" id="parent_branch_id" value="{{ $branch->parent_branch_id }}">
     <div class="row">
         <div class="col-md-8">
             @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
@@ -224,6 +225,30 @@
                     </div>
                 </div>
             @endif
+
+            <div class="form-group row mt-1">
+                <div class="col-md-12">
+                    <label class="fw-bold">{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+                    <div class="input-group">
+                        <select required name="auto_repayment_sales_and_purchase_return" class="form-control" id="branch_auto_repayment_sales_and_purchase_return" data-next="branch_auto_repayment_purchase_and_sales_return">
+                            <option value="0">{{ __("No") }}</option>
+                            <option @selected(isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) && $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] == '1') value="1">{{ __("Yes") }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mt-1">
+                <div class="col-md-12">
+                    <label class="fw-bold">{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+                    <div class="input-group">
+                        <select required name="auto_repayment_purchase_and_sales_return" class="form-control" id="branch_auto_repayment_purchase_and_sales_return" data-next="add_initial_user_btn">
+                            <option value="0">{{ __("No") }}</option>
+                            <option @selected(isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) && $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] == '1') value="1">{{ __("Yes") }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

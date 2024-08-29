@@ -28,8 +28,7 @@ class BranchControllerMethodContainersService implements BranchControllerMethodC
         private GeneralSettingService $generalSettingService,
         private CodeGenerationServiceInterface $codeGenerator,
         private CacheServiceInterface $cacheService
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {
@@ -121,6 +120,8 @@ class BranchControllerMethodContainersService implements BranchControllerMethodC
             'business_or_shop__timezone' => $request->timezone,
             'business_or_shop__currency_id' => $request->currency_id,
             'business_or_shop__currency_symbol' => $request->currency_symbol,
+            'business_or_shop__auto_repayment_sales_and_purchase_return' => $request->auto_repayment_sales_and_purchase_return,
+            'business_or_shop__auto_repayment_purchase_and_sales_return' => $request->auto_repayment_purchase_and_sales_return,
         ];
 
         if ($request->branch_type == BranchType::DifferentShop->value) {

@@ -33,6 +33,6 @@ class PlanStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('plans_store');
+        return auth()->user()->can('plans_create');
     }
 }

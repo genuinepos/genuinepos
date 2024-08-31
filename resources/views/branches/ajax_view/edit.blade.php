@@ -272,7 +272,7 @@
                                 <div class="input-group">
                                     <select required name="auto_repayment_sales_and_purchase_return" class="form-control" id="branch_auto_repayment_sales_and_purchase_return" data-next="branch_auto_repayment_purchase_and_sales_return">
                                         <option value="0">{{ __("No") }}</option>
-                                        <option @selected(isset($branchSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) && $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] == '1') value="1">{{ __("Yes") }}</option>
+                                        <option @selected(isset($branchSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) && $branchSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] == '1') value="1">{{ __("Yes") }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -284,7 +284,7 @@
                                 <div class="input-group">
                                     <select required name="auto_repayment_purchase_and_sales_return" class="form-control" id="branch_auto_repayment_purchase_and_sales_return" data-next="add_initial_user_btn">
                                         <option value="0">{{ __("No") }}</option>
-                                        <option @selected(isset($branchSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) && $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] == '1') value="1">{{ __("Yes") }}</option>
+                                        <option @selected(isset($branchSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) && $branchSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] == '1') value="1">{{ __("Yes") }}</option>
                                     </select>
                                 </div>
                             </div>

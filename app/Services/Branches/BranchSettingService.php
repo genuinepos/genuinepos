@@ -8,10 +8,7 @@ use App\Services\CacheServiceInterface;
 
 class BranchSettingService
 {
-    public function __construct(
-        private CacheServiceInterface $cacheService
-    ) {
-    }
+    public function __construct(private CacheServiceInterface $cacheService) {}
 
     public function addBranchSettings(int $branchId, ?int $parentBranchId = null, int $defaultInvoiceLayoutId, object $branchService, object $request): void
     {
@@ -291,7 +288,7 @@ class BranchSettingService
             }
         }
 
-        $this->cacheService->forgetGeneralSettingsCache();
+        $this->cacheService->forgetGeneralSettingsCache(branchId: $branchId);
     }
 
     public function deleteUnusedBranchSettings(?int $branchId, array $keys = []): void

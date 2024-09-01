@@ -158,8 +158,8 @@
                                                                 @if ($production->stockWarehouse)
                                                                     {{ $production->stockWarehouse->warehouse_name . '-(' . $production->stockWarehouse->warehouse_code . ')-WH' }}
                                                                 @else
-                                                                    @if ($prodution?->branch)
-                                                                        @if ($prodution?->branch?->parentBranch)
+                                                                    @if ($production?->branch)
+                                                                        @if ($production?->branch?->parentBranch)
                                                                             {{ $production?->branch?->parentBranch?->name . '-(' . $production?->branch?->area_name . ')-' . $production?->branch?->branch_code }}
                                                                         @else
                                                                             {{ $production?->branch?->name . '-(' . $production?->branch?->area_name . ')-' . $production?->branch?->branch_code }}

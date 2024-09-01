@@ -289,7 +289,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
     {
         $deleteAccount = $this->accountService->deleteAccount(id: $id);
 
-        if ($deleteAccount['pass'] == false) {
+        if (isset($deleteAccount['pass']) && $deleteAccount['pass'] == false) {
 
             return ['pass' => false, 'msg' => $deleteAccount['msg']];
         }

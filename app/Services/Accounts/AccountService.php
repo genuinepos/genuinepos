@@ -343,7 +343,7 @@ class AccountService
         return $updateAccount;
     }
 
-    public function deleteAccount(int $id): array
+    public function deleteAccount(int $id): array|object
     {
         $deleteAccount = $this->singleAccountById(id: $id, with: ['accountLedgersWithOutOpeningBalances', 'contact']);
 
@@ -363,7 +363,7 @@ class AccountService
             $deleteAccount?->contact?->delete();
         }
 
-        return ['pass' => true];
+        return $deleteAccount;
     }
 
     public function singleAccountById(int $id, array $with = null)

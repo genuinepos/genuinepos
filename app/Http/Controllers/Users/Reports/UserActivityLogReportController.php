@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Users\Reports;
 use App\Enums\BooleanType;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Users\Reports\UserActivityLogReportService;
 use App\Http\Requests\Users\Reports\UserActivityLogReportIndexRequest;
 
@@ -15,8 +15,7 @@ class UserActivityLogReportController extends Controller
         private UserActivityLogReportService $userActivityLogReportService,
         private BranchService $branchService,
         private UserService $userService
-    ) {
-    }
+    ) {}
 
     public function index(UserActivityLogReportIndexRequest $request)
     {

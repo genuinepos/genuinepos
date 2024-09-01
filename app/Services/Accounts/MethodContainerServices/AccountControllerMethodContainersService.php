@@ -5,7 +5,7 @@ namespace App\Services\Accounts\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use App\Services\Accounts\BankService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountCreateAndEditType;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\UserActivityLogActionType;
@@ -31,8 +31,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
         private AccountLedgerService $accountLedgerService,
         private BankAccessBranchService $bankAccessBranchService,
         private UserActivityLogService $userActivityLogService
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): array|object
     {
@@ -290,7 +289,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
     {
         $deleteAccount = $this->accountService->deleteAccount(id: $id);
 
-        if ($deleteAccount['pass'] == false) {
+        if (isset($deleteAccount['pass']) && $deleteAccount['pass'] == false) {
 
             return ['pass' => false, 'msg' => $deleteAccount['msg']];
         }

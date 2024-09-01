@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Accounts\Reports;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\Reports\DayBook\DayBookReportService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 
 class DayBookReportController extends Controller
 {

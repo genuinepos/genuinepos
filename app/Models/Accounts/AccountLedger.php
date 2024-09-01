@@ -11,7 +11,7 @@ use App\Models\Sales\Sale;
 use App\Models\Sales\SaleProduct;
 use App\Models\Sales\SaleReturn;
 use App\Models\Sales\SaleReturnProduct;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\StockAdjustments\StockAdjustment;
 
 class AccountLedger extends BaseModel

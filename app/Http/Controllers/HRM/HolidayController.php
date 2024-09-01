@@ -5,7 +5,7 @@ namespace App\Http\Controllers\HRM;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\HolidayService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Hrm\HolidayBranchService;
 use App\Http\Requests\HRM\HolidayEditRequest;
 use App\Http\Requests\HRM\HolidayIndexRequest;

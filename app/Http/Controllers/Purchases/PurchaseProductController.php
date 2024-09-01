@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Purchases;
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\CategoryService;
 use App\Services\Purchases\PurchaseProductService;

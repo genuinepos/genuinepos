@@ -654,5 +654,5 @@
     @endif
 @endsection
 @push('scripts')
-    @include('sales.add_sale.orders.js_partials.sales_order_edit_js_script')
+    @include('sales.add_sale.orders.js_partials.edit_js')
 @endpush

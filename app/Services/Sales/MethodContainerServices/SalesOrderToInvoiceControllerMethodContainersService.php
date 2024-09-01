@@ -8,7 +8,7 @@ use App\Enums\SaleScreenType;
 use App\Enums\DayBookVoucherType;
 use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Enums\UserActivityLogActionType;
@@ -53,8 +53,7 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogService $userActivityLogService
-    ) {
-    }
+    ) {}
 
     public function createMethodContainer(object $codeGenerator, ?int $id = null): ?array
     {

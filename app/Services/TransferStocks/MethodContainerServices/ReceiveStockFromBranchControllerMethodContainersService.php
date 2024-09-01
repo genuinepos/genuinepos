@@ -3,7 +3,7 @@
 namespace App\Services\TransferStocks\MethodContainerServices;
 
 use App\Enums\DayBookVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\Accounts\DayBookService;
 use App\Services\Products\ProductStockService;
@@ -27,8 +27,7 @@ class ReceiveStockFromBranchControllerMethodContainersService implements Receive
         private ProductLedgerService $productLedgerService,
         private PurchaseProductService $purchaseProductService,
         private ProductAccessBranchService $productAccessBranchService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request): ?object
     {

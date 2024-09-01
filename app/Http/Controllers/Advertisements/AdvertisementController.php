@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Advertisements;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AdvertisementContentType;
 use App\Services\Advertisements\AdvertisementService;
 use App\Http\Requests\Advertisements\AdvertisementEditRequest;

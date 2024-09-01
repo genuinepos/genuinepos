@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Manufacturing;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;

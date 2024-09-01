@@ -7,7 +7,7 @@ use App\Models\Purchases\Purchase;
 use App\Models\Purchases\PurchaseReturn;
 use App\Models\Sales\Sale;
 use App\Models\Sales\SaleReturn;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\StockAdjustments\StockAdjustment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

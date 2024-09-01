@@ -285,7 +285,6 @@
                     name: 'created_by.name',
                     className: 'text-end fw-bold'
                 },
-
             ],
             fnDrawCallback: function() {
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
@@ -304,7 +303,7 @@
                 $('#sale_return_amount').text(bdFormat(sale_return_amount));
 
                 var due = sum_table_col($('.data_tbl'), 'due');
-                $('#due').text(bdFormat(due));
+                $('#due').text(due < 0 ? '('+bdFormat(Math.abs(due))+')' : bdFormat(Math.abs(due)));
 
                 $('.data_preloader').hide();
             }

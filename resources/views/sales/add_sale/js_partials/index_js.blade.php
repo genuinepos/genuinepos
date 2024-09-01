@@ -132,7 +132,7 @@
             $('#sale_return_amount').text(bdFormat(sale_return_amount));
 
             var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
+            $('#due').text(due < 0 ? '('+bdFormat(Math.abs(due))+')' : bdFormat(Math.abs(due)));
 
             $('.data_preloader').hide();
         }

@@ -7,7 +7,7 @@ use App\Enums\PurchaseStatus;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Enums\UserActivityLogActionType;
@@ -48,8 +48,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-    ) {
-    }
+    ) {}
 
     public function indexMethodContainer(object $request, ?int $supplierAccountId = null): array|object
     {

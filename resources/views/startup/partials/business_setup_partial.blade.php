@@ -117,6 +117,26 @@
 
             <div class="form-row">
                 <div class="col-md-4">
+                    <label>{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+                    <div class="input-group">
+                        <select required name="business_auto_repayment_sales_and_purchase_return" class="form-control" id="business_auto_repayment_sales_and_purchase_return">
+                            <option value="0">{{ __('No') }}</option>
+                            <option value="1">{{ __('Yes') }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+                    <div class="input-group">
+                        <select required name="business_auto_repayment_purchase_and_sales_return" class="form-control" id="business_auto_repayment_purchase_and_sales_return">
+                            <option value="0">{{ __('No') }}</option>
+                            <option value="1">{{ __('Yes') }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
                     <label>{{ __('Company Logo') }} <small class="text-danger">{{ __('Recommended Size : H : 60px; W: 200px;') }}</small></label>
                     <input type="file" name="business_logo" id="business_logo" data-allowed-file-extensions="png jpeg jpg gif">
                     <span class="error error_business_logo"></span>

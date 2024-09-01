@@ -96,6 +96,8 @@ class GeneralSettingController extends Controller
             'business_or_shop__time_format' => $request->time_format,
             'business_or_shop__business_logo' => $businessLogo,
             'business_or_shop__timezone' => $request->timezone,
+            'business_or_shop__auto_repayment_sales_and_purchase_return' => $request->auto_repayment_sales_and_purchase_return,
+            'business_or_shop__auto_repayment_purchase_and_sales_return' => $request->auto_repayment_purchase_and_sales_return,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

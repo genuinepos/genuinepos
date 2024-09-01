@@ -79,7 +79,7 @@ class ContactControllerMethodContainersService implements ContactControllerMetho
 
         $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: $type == ContactType::Customer->value ? UserActivityLogSubjectType::Customers->value : UserActivityLogSubjectType::Suppliers->value, dataObj: $addContact);
 
-        return ['id' => $addAccount->id, 'name' => $addAccount->name, 'phone' => $addAccount->phone, 'balance' => $request->opening_balance, 'balanceType' => $request->opening_balance_type, 'payTerm' => $addContact->pay_term, 'payTermNumber' => $addContact->pay_term_number];
+        return ['id' => $addAccount->id, 'name' => $addAccount->name, 'type' => $addContact->type, 'phone' => $addAccount->phone, 'balance' => $request->opening_balance, 'balanceType' => $request->opening_balance_type, 'payTerm' => $addContact->pay_term, 'payTermNumber' => $addContact->pay_term_number];
     }
 
     public function editMethodContainer(int $id, int $type): array

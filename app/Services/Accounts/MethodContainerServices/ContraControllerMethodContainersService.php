@@ -4,12 +4,15 @@ namespace App\Services\Accounts\MethodContainerServices;
 
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\UserActivityLogActionType;
 use App\Services\Accounts\ContraService;
+use App\Services\Branches\BranchService;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Setups\PaymentMethodService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountingVoucherService;
@@ -28,8 +31,8 @@ class ContraControllerMethodContainersService implements ContraControllerMethodC
         private DayBookService $dayBookService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-    ) {
-    }
+        private UserActivityLogService $userActivityLogService,
+    ) {}
 
     public function indexMethodContainer(object $request): object|array
     {
@@ -82,7 +85,7 @@ class ContraControllerMethodContainersService implements ContraControllerMethodC
         );
 
         $data['printPageSize'] = $request->print_page_size;
-        
+
         return $data;
     }
 
@@ -151,6 +154,13 @@ class ContraControllerMethodContainersService implements ContraControllerMethodC
             ],
         );
 
+        $senderAccountName = $contra?->voucherCreditDescription?->account?->name;
+        $receiverAccountName = $contra?->voucherDebitDescription?->account?->name;
+
+        $remarks = 'Sender:' . $senderAccountName . ' - ' . $contra->total_amount . ', Receiver: ' . $receiverAccountName . ' - ' . $contra->total_amount;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Contra->value, dataObj: $contra, remarks: $remarks);
+
         $printPageSize = $request->print_page_size;
 
         return ['contra' => $contra, 'printPageSize' => $printPageSize];
@@ -208,11 +218,25 @@ class ContraControllerMethodContainersService implements ContraControllerMethodC
         //Add Credit Ledger Entry
         $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Contra->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
 
+        $senderAccountName = $updateAccountingVoucher?->fresh('voucherCreditDescription.account')?->voucherCreditDescription?->account?->name;
+        $receiverAccountName = $updateAccountingVoucher?->fresh('voucherDebitDescription.account')?->voucherDebitDescription?->account?->name;
+
+        $remarks = 'Sender: ' . $senderAccountName . ' - ' . $updateAccountingVoucher->total_amount . ', Receiver: ' . $receiverAccountName . ' - ' . $updateAccountingVoucher->total_amount;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Contra->value, dataObj: $updateAccountingVoucher, remarks: $remarks);
+
         return null;
     }
 
     public function deleteMethodContainer(int $id): void
     {
-        $this->contraService->deleteContra(id: $id);
+        $deleteContra = $this->contraService->deleteContra(id: $id);
+
+        $senderAccountName = $deleteContra?->voucherCreditDescription?->account?->name;
+        $receiverAccountName = $deleteContra?->voucherDebitDescription?->account?->name;
+
+        $remarks = 'Sender: ' . $senderAccountName . ' - ' . $deleteContra->total_amount . ', Receiver: ' . $receiverAccountName . ' - ' . $deleteContra->total_amount;
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Contra->value, dataObj: $deleteContra, remarks: $remarks);
     }
 }

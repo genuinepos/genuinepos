@@ -220,7 +220,14 @@
                 $('.error').html('');
                 $('.contact_loading_button').hide();
 
-                toastr.success("{{ __('Customer added successfully.') }}");
+                if (data.type == 1) {
+
+                    toastr.success("{{ __('Customer added successfully.') }}");
+                }else {
+
+                    toastr.success("{{ __('Supplier added successfully.') }}");
+                }
+
                 $('#addOrEditContactModal').modal('hide');
                 var customer_account_id = $('#customer_account_id').val();
                 var supplier_account_id = $('#supplier_account_id').val();

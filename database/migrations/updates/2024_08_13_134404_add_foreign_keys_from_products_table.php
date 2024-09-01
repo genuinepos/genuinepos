@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('unit_id')->references('id')->on('units')->onUpdate('NO ACTION')->onDelete('SET NULL');
             $table->foreign('warranty_id')->references('id')->on('warranties')->onUpdate('NO ACTION')->onDelete('SET NULL');
             // Schema::enableForeignKeyConstraints();
+
         });
     }
 

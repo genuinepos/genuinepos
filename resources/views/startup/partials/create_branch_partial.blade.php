@@ -6,8 +6,18 @@
             <input type="hidden" name="parent_branch_id">
             <div class="form-row">
                 <div class="col-md-4">
+                    <label for="phone">{{ __('Store Category') }} <span class="text-danger">*</span></label>
+                    <select required name="branch_category" class="form-control select2" id="branch_category" data-next="branch_name">
+                        <option value="">{{ __('Select Store Category') }}</option>
+                        @foreach (\App\Enums\BranchCategory::cases() as $category)
+                            <option value="{{ $category->value }}">{{ str($category->name)->headline() }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
                     <label for="phone">{{ __('Store ID') }} <span class="text-danger">*</span></label>
-                    <input required readonly type="text" name="branch_code" class="form-control" id="branch_code" value="01">
+                    <input required readonly type="text" name="branch_code" class="form-control fw-bold" id="branch_code" value="01">
                     <span class="error error_branch_id"></span>
                 </div>
             </div>
@@ -180,6 +190,22 @@
                     </select>
                     <input type="hidden" name="branch_currency_symbol" id="branch_currency_symbol" value="{{ auth()?->user()?->currency?->symbol }}">
                     <span class="error error_branch_currency_id"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="branch_auto_repayment_sales_and_purchase_return">{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+                    <select required name="branch_auto_repayment_sales_and_purchase_return" class="form-control" id="branch_auto_repayment_sales_and_purchase_return">
+                        <option value="0">{{ __("No") }}</option>
+                        <option value="1">{{ __("Yes") }}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="branch_auto_repayment_purchase_and_sales_return">{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+                    <select required name="branch_auto_repayment_purchase_and_sales_return" class="form-control" id="branch_auto_repayment_purchase_and_sales_return">
+                        <option value="0">{{ __("No") }}</option>
+                        <option value="1">{{ __("Yes") }}</option>
+                    </select>
                 </div>
             </div>
 

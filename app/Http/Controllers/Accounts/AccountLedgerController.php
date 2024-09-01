@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountLedgerEntryService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use Illuminate\Http\Request;
 
 class AccountLedgerController extends Controller

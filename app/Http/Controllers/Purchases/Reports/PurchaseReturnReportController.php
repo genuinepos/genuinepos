@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Purchases\Reports;
 
 
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Purchases\Reports\PurchaseReturnReportService;
@@ -18,8 +18,7 @@ class PurchaseReturnReportController extends Controller
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
-    ) {
-    }
+    ) {}
 
     public function index(PurchaseReturnReportIndexRequest $request)
     {

@@ -21,6 +21,9 @@ class AccountingVoucherDescriptionReferenceService
         array $refIds = null,
         int $branchId = null,
     ) {
+        $generalSettings = config('generalSettings');
+        $autoRepaySaleAndPurchaseReturn = isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) ? $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] : 0;
+        $autoRepayPurchaseAndSalesReturn = isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) ? $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] : 0;
 
         if ($refIdColName == 'stock_adjustment_id' && count($refIds) > 0) {
 
@@ -49,6 +52,14 @@ class AccountingVoucherDescriptionReferenceService
             $this->specificAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, refIds: $refIds, branchId: $branchId);
         } else {
 
+            if (($refIdColName == 'sale_id' || $refIdColName == 'purchase_return_id') && $autoRepaySaleAndPurchaseReturn == 0) {
+                return;
+            }
+
+            if (($refIdColName == 'purchase_id' || $refIdColName == 'sale_return_id') && $autoRepayPurchaseAndSalesReturn == 0) {
+                return;
+            }
+
             $this->randomAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, branchId: $branchId);
         }
     }
@@ -60,8 +71,7 @@ class AccountingVoucherDescriptionReferenceService
         string $refIdColName,
         array $refIds,
         int $branchId = null
-    ) {
-
+    ): void {
         $saleService = new \App\Services\Sales\SaleService();
         $purchaseService = new \App\Services\Purchases\PurchaseService();
         $purchaseReturnService = new \App\Services\Purchases\PurchaseReturnService();
@@ -74,6 +84,54 @@ class AccountingVoucherDescriptionReferenceService
         //     ->whereIn('id', $saleIds)
         //     ->orderBy('report_date', 'asc')
         //     ->get();
+
+        $generalSettings = config('generalSettings');
+        $autoRepaySaleAndPurchaseReturn = isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) ? $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] : 0;
+        $autoRepayPurchaseAndSalesReturn = isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) ? $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] : 0;
+
+        if (
+            ($refIdColName == 'sale_id' || $refIdColName == 'purchase_return_id') &&
+            count($dueSpecificInvoices) == 1 &&
+            $autoRepaySaleAndPurchaseReturn == 0
+        ) {
+
+            $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+            $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+            $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueSpecificInvoices->first()->id;
+            $addAccountingVoucherDescriptionRef->amount = $receivedOrPaidAmount;
+            $addAccountingVoucherDescriptionRef->save();
+
+            if ($refIdColName == 'sale_id') {
+
+                $saleService->adjustSaleInvoiceAmounts($dueSpecificInvoices->first());
+            } elseif ($refIdColName == 'purchase_return_id') {
+
+                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueSpecificInvoices->first());
+            }
+            return;
+        }
+
+        if (
+            ($refIdColName == 'purchase_id' || $refIdColName == 'sale_return_id') &&
+            count($dueSpecificInvoices) == 1 &&
+            $autoRepayPurchaseAndSalesReturn == 0
+        ) {
+
+            $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+            $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+            $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueSpecificInvoices->first()->id;
+            $addAccountingVoucherDescriptionRef->amount = $receivedOrPaidAmount;
+            $addAccountingVoucherDescriptionRef->save();
+
+            if ($refIdColName == 'purchase_id') {
+
+                $purchaseService->adjustPurchaseInvoiceAmounts($dueSpecificInvoices->first());
+            } elseif ($refIdColName == 'sale_return_id') {
+
+                $salesReturnService->adjustSalesReturnVoucherAmounts($dueSpecificInvoices->first());
+            }
+            return;
+        }
 
         if (count($dueSpecificInvoices) > 0) {
 
@@ -189,6 +247,14 @@ class AccountingVoucherDescriptionReferenceService
 
                 $index++;
             }
+        }
+
+        if (($refIdColName == 'sale_id' || $refIdColName == 'purchase_return_id') && $autoRepaySaleAndPurchaseReturn == 0) {
+            return;
+        }
+
+        if (($refIdColName == 'purchase_id' || $refIdColName == 'sale_return_id') && $autoRepayPurchaseAndSalesReturn == 0) {
+            return;
         }
 
         if ($receivedOrPaidAmount > 0) {

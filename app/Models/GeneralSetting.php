@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use App\Models\Setups\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

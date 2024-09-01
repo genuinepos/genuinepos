@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Enums\BooleanType;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\ManageCustomerService;
 use App\Http\Requests\Contacts\ManageCustomerRequest;

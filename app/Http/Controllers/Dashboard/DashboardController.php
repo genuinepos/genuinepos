@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Dashboard\DashboardService;
 
 // define('TODAY_DATE', Carbon::today());

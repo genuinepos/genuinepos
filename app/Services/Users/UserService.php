@@ -136,7 +136,8 @@ class UserService
         if (
             auth()->user()->can('has_access_to_all_area') &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value &&
-            $request->branch_count
+            config('generalSettings')['subscription__has_business'] == BooleanType::True->value &&
+            isset($request->branch_count)
         ) {
 
             $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
@@ -216,7 +217,8 @@ class UserService
         if (
             auth()->user()->can('has_access_to_all_area') &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value &&
-            $request->branch_count
+            config('generalSettings')['subscription__has_business'] == BooleanType::True->value &&
+            isset($request->branch_count)
         ) {
 
             $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
@@ -230,13 +232,14 @@ class UserService
 
             if ($request->allow_login == BooleanType::True->value) {
 
+
                 $updateUser->allow_login = BooleanType::True->value;
                 $updateUser->username = $request->username;
                 $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
                 $roleName = $role->name;
 
                 if ($role?->hasPermissionTo('has_access_to_all_area')) {
-
+                    dd('has_access_to_all_area');
                     $updateUser->is_belonging_an_area = BooleanType::False->value;
                 } else {
 

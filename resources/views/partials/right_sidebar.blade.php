@@ -19,7 +19,7 @@
             <ul class="d-flex flex-row justify-content-start">
                 @if (($generalSettings['subscription__has_business'] == 1 || $generalSettings['subscription__branch_count'] > 1) && auth()->user()->can('has_access_to_all_area'))
                     @php
-                        $branchService = new App\Services\Setups\BranchService();
+                        $branchService = new App\Services\Branches\BranchService();
                         $branches = $branchService->switchableBranches();
                     @endphp
                     <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>

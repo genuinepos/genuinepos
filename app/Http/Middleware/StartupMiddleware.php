@@ -66,7 +66,6 @@ class StartupMiddleware
             (
                 $generalSettings['subscription__is_completed_business_setup'] == BooleanType::False->value &&
                 $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::True->value
-
             )
         ) {
 

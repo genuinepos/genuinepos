@@ -21,10 +21,15 @@
                         <p class="text-uppercase">
                             @if (auth()?->user()?->branch?->parent_branch_id)
 
-                                {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
+                                {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }} <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("Chain Store") }})</small>
                             @else
                                 @if (auth()?->user()?->branch)
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
+                                    @if (count(auth()?->user()?->branch?->childBranches) > 0)
+                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("Main Store") }})</small>
+                                    @else
+                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("DIFFERENT Store") }})</small>
+                                    @endif
                                 @else
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif

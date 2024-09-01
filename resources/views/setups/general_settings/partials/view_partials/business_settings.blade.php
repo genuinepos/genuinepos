@@ -21,25 +21,23 @@
 
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Phone') }} <span class="text-danger">*</span></label>
-            <input required type="text" name="phone" class="form-control" placeholder="{{ __('Company phone number') }}" value="{{ $generalSettings['business_or_shop__phone'] }}">
+            <input required type="text" name="phone" class="form-control" placeholder="{{ __('Company phone number') }}" value="{{ $generalSettings['business_or_shop__phone'] }}" autocomplete="off">
             <span class="error error_phone"></span>
         </div>
     </div>
 
-    <div class="form-group row mt-1">
+    <div class="form-group row mt-2">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Email') }} <span class="text-danger">*</span></label>
-            <input required type="text" name="email" class="form-control" placeholder="Company email address" value="{{ $generalSettings['business_or_shop__email'] }}">
+            <input required type="text" name="email" class="form-control" placeholder="Company email address" value="{{ $generalSettings['business_or_shop__email'] }}" autocomplete="off">
             <span class="error error_email"></span>
         </div>
 
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Default Profit') }}(%)</label>
-            <input type="number" name="default_profit" class="form-control" autocomplete="off" data-name="Default profit" id="default_profit" value="{{ $generalSettings['business_or_shop__default_profit'] }}">
+            <input type="number" name="default_profit" class="form-control" id="default_profit" value="{{ $generalSettings['business_or_shop__default_profit'] }}" autocomplete="off">
         </div>
-    </div>
 
-    <div class="form-group row mt-1">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Currency') }} <span class="text-danger">*</span></label>
             <select required name="currency_id" class="form-control select2" id="currency_id">
@@ -52,10 +50,12 @@
             <input type="hidden" name="currency_symbol" id="currency_symbol" value="{{ $generalSettings['business_or_shop__currency_symbol'] }}">
             <span class="error error_currency_id"></span>
         </div>
+    </div>
 
+    <div class="form-group row mt-2">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Stock Accounting Method') }} <span class="text-danger">*</span></label>
-            <select name="stock_accounting_method" class="form-control" data-name="Stock Accounting Method" id="stock_accounting_method">
+            <select name="stock_accounting_method" class="form-control" id="stock_accounting_method">
                 @php
                     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                 @endphp
@@ -65,12 +65,10 @@
                 @endforeach
             </select>
         </div>
-    </div>
 
-    <div class="form-group row mt-1">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Date Format') }} <span class="text-danger">*</span></label>
-            <select required name="date_format" class="form-control" data-name="Date format" id="date_format">
+            <select required name="date_format" class="form-control" id="date_format">
                 <option @selected($generalSettings['business_or_shop__date_format'] == 'd-m-Y') value="d-m-Y">{{ __('DD-MM-YYYY') }} | {{ date('d-m-Y') }} </option>
                 <option @selected($generalSettings['business_or_shop__date_format'] == 'm-d-Y') value="m-d-Y">{{ __('MM-DD-YYYY') }} | {{ date('m-d-Y') }}</option>
                 <option @selected($generalSettings['business_or_shop__date_format'] == 'Y-m-d') value="Y-m-d">{{ __('YYYY-MM-DD') }} | {{ date('Y-m-d') }}</option>
@@ -79,29 +77,47 @@
 
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Time Format') }} <span class="text-danger">*</span></label>
-            <select required name="time_format" class="form-control" data-name="Time format" id="time_format">
+            <select required name="time_format" class="form-control" id="time_format">
                 <option value="12">{{ __('12 Hour') }}</option>
                 <option @selected($generalSettings['business_or_shop__time_format'] == '24') value="24">{{ __('24 Hour') }}</option>
             </select>
             <span class="error error_time_format"></span>
         </div>
+    </div>
 
+    <div class="form-group row mt-2">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-            <select required name="timezone" class="form-control select2" data-name="Time format" id="time_format">
+            <select required name="timezone" class="form-control select2" id="time_format">
                 <option value="">{{ __('Time Zone') }}</option>
                 @foreach ($timezones as $key => $timezone)
                     <option @selected(($generalSettings['business_or_shop__timezone'] ?? 'Asia/Dhaka') == $key) value="{{ $key }}">{{ $timezone }}</option>
                 @endforeach
             </select>
         </div>
+
+        <div class="col-md-4">
+            <label class="fw-bold">{{ __('Auto Repay: Due Sales/P.Returns (Receipt)') }}</label>
+            <select required name="auto_repayment_sales_and_purchase_return" class="form-control" id="auto_repayment_sales_and_purchase_return">
+                <option value="0">{{ __('No') }}</option>
+                <option @selected(isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) && $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] == '1') value="1">{{ __('Yes') }}</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="fw-bold">{{ __('Auto Repay: Purchases/S.Returns (Payment)') }}</label>
+            <select required name="auto_repayment_purchase_and_sales_return" class="form-control" id="auto_repayment_purchase_and_sales_return">
+                <option value="0">{{ __('No') }}</option>
+                <option @selected(isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) && $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] == '1') value="1">{{ __('Yes') }}</option>
+            </select>
+        </div>
     </div>
 
-    <div class="form-group row mt-1">
+    <div class="form-group row mt-2">
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
             <div class="input-group">
-                <input required type="text" name="account_start_date" class="form-control" id="account_start_date" autocomplete="off" value="{{ $generalSettings['business_or_shop__account_start_date'] }}">
+                <input required type="text" name="account_start_date" class="form-control" id="account_start_date" autocomplete="off" value="{{ $generalSettings['business_or_shop__account_start_date'] }}" autocomplete="off">
             </div>
             <span class="error error_account_start_date"></span>
         </div>
@@ -124,12 +140,12 @@
         <div class="col-md-4">
             <label class="fw-bold">{{ __('Current Financial Year') }} <span class="text-danger">*</span></label>
             <div class="input-group">
-                <input readonly type="text" class="form-control fw-bold" id="current_financial_year" autocomplete="off" value="{{ $generalSettings['business_or_shop__financial_year'] }}">
+                <input readonly type="text" class="form-control fw-bold" id="current_financial_year" value="{{ $generalSettings['business_or_shop__financial_year'] }}" autocomplete="off">
             </div>
         </div>
     </div>
 
-    <div class="form-group row mt-1">
+    <div class="form-group row mt-2">
         <div class="col-md-8">
             <label class="fw-bold">{{ __('Company Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 40px; W: 100px;') }}</small></label>
             <input type="file" class="form-control" name="business_logo" id="business_logo" @if ($generalSettings['business_or_shop__business_logo']) data-default-file="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" @endif>

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enums\CategoryType;
-use App\Models\Setups\Branch;
+use App\Models\Branches\Branch;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\CodeGenerationServiceInterface;
 

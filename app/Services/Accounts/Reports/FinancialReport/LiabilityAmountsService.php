@@ -1188,6 +1188,9 @@ class LiabilityAmountsService
         $totalDebit += $dutiesAndTaxesAccount->closing_balance_side == 'dr' ? $dutiesAndTaxesAccount->closing_balance : 0;
         $totalCredit += $dutiesAndTaxesAccount->closing_balance_side == 'cr' ? $dutiesAndTaxesAccount->closing_balance : 0;
 
+        $totalDebit += $accountPayable->closing_balance_side == 'dr' ? $accountPayable->closing_balance : 0;
+        $totalCredit += $accountPayable->closing_balance_side == 'cr' ? $accountPayable->closing_balance : 0;
+
         $externalClosingBalance = 0;
         $externalClosingBalanceSide = 'cr';
         if ($totalDebit > $totalCredit) {

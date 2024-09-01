@@ -6,14 +6,12 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Branches\BranchService;
 use App\Services\Setups\WarehouseService;
 
 class WarehouseController extends Controller
 {
-    public function __construct(private WarehouseService $warehouseService, private BranchService $branchService)
-    {
-    }
+    public function __construct(private WarehouseService $warehouseService, private BranchService $branchService) {}
 
     public function index(Request $request)
     {

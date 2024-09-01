@@ -228,6 +228,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
     public function updateMethodContainer(int $id, object $request): ?array
     {
+        $generalSettings = config('generalSettings');
         $isUpdateProductCostAndPrice = $generalSettings['manufacturing__is_update_product_cost_and_price_in_production'];
 
         $restrictions = $this->productionService->restrictions($request);

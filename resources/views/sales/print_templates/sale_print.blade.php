@@ -145,6 +145,19 @@
                 <div class="row mt-2">
                     <div class="col-12 text-center">
                         <h5 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h5>
+                        @php
+                            $paymentStatus = '';
+                            $receivable = $sale->total_invoice_amount - $sale->sale_return_amount;
+
+                            if ($sale->due <= 0) {
+                                $paymentStatus = __('Paid');
+                            } elseif ($sale->due > 0 && $sale->due < $receivable) {
+                                $paymentStatus = __('Partial');
+                            } elseif ($receivable == $sale->due) {
+                                $paymentStatus = __('Due');
+                            }
+                        @endphp
+                        <p class="fw-bold" style="text-transform: uppercase;">{{ $paymentStatus }}</p>
                     </div>
                 </div>
             @endif
@@ -155,7 +168,7 @@
                 @endfor
             @endif
 
-            <div class="row mt-2">
+            <div class="row mt-1">
                 <div class="col-4">
                     <ul class="list-unstyled">
                         @if ($invoiceLayout->customer_name)
@@ -185,11 +198,11 @@
                 <div class="col-lg-4 text-center">
                     @if ($invoiceLayout->is_header_less == 1)
                         <div class="middle_header_text text-center">
-                            <h5 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h5>
+                            <h6 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h6>
                         </div>
                     @endif
 
-                    <img style="width: 170px; height:35px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    <img style="width: 170px; height:25px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                 </div>
 
                 <div class="col-lg-4">
@@ -655,6 +668,19 @@
                 <div class="row mt-2">
                     <div class="col-12 text-center">
                         <h6 style="text-transform: uppercase;" class="fw-bold">{{ $invoiceLayout->invoice_heading }}</h6>
+                        @php
+                            $paymentStatus = '';
+                            $receivable = $sale->total_invoice_amount - $sale->sale_return_amount;
+
+                            if ($sale->due <= 0) {
+                                $paymentStatus = __('Paid');
+                            } elseif ($sale->due > 0 && $sale->due < $receivable) {
+                                $paymentStatus = __('Partial');
+                            } elseif ($receivable == $sale->due) {
+                                $paymentStatus = __('Due');
+                            }
+                        @endphp
+                        <p class="fw-bold" style="text-transform: uppercase;">{{ $paymentStatus }}</p>
                     </div>
                 </div>
             @endif
@@ -665,7 +691,7 @@
                 @endfor
             @endif
 
-            <div class="row mt-2">
+            <div class="row mt-1">
                 <div class="col-4">
                     <ul class="list-unstyled">
                         @if ($invoiceLayout->customer_name)
@@ -693,7 +719,7 @@
                         </div>
                     @endif
 
-                    <img style="width: 170px; height:35px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    <img style="width: 170px; height:25px; margin-top:2px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                 </div>
 
                 <div class="col-lg-4">
@@ -997,17 +1023,17 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
+                        <small style="font-size: 8px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                     </div>
 
                     <div class="col-4 text-center">
                         @if (config('speeddigit.show_app_info_in_print') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
+                            <small style="font-size: 8px!important;" class="d-block">{{ config('speeddigit.app_name_label_name') }} <span class="fw-bold">{{ config('speeddigit.name') }}</span> | {{ __('M:') }} {{ config('speeddigit.phone') }}</small>
                         @endif
                     </div>
 
                     <div class="col-4 text-end">
-                        <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
+                        <small style="font-size: 8px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
                     </div>
                 </div>
             </div>

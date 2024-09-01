@@ -20,7 +20,7 @@ class DbBackup extends Command
      *
      * @var string
      */
-    protected $description = 'Backup all tenants db.';
+    protected $description = 'Backup db.';
 
     /**
      * Execute the console command.

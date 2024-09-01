@@ -49,6 +49,10 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
                 ->namespace($this->namespace)
+                ->group(base_path('routes/branches.php'));
+
+            Route::middleware(['web', 'auth', 'startup', 'changeLocation'])
+                ->namespace($this->namespace)
                 ->group(base_path('routes/hrms.php'));
 
             Route::middleware(['web', 'auth', 'startup', 'changeLocation'])

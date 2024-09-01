@@ -14,7 +14,7 @@ class SubCategoryService
     public function subcategoriesTable()
     {
         $subCategories = DB::table('categories')
-            ->leftJoin('categories as parentCategory', 'categories.id', 'parentCategory.id')
+            ->leftJoin('categories as parentCategory', 'categories.parent_category_id', 'parentCategory.id')
             ->whereNotNull('categories.parent_category_id')
             ->select(
                 'categories.id',

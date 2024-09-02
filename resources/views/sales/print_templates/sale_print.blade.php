@@ -202,7 +202,7 @@
                         </div>
                     @endif
 
-                    <img style="width: 170px; height:25px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                 </div>
 
                 <div class="col-lg-4">
@@ -247,7 +247,6 @@
 
                             <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Quantity') }}</th>
                             <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
-
 
                             @if ($invoiceLayout->product_discount)
                                 <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
@@ -338,7 +337,7 @@
             <div class="row">
                 <div class="col-6">
                     @if ($invoiceLayout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;" style="font-size:10px!important;"><span class="fw-bold">{{ __('Inword') }} : </span> <span id="inword"></span> {{ __('Only') }}.</p>
+                        <p style="text-transform: uppercase;" style="font-size:9px!important;"><span class="fw-bold">{{ __('Inword') }} : </span> <span id="inword"></span> {{ __('Only') }}.</p>
                     @endif
 
                     @if ($invoiceLayout->account_name || $invoiceLayout->account_no || $invoiceLayout->bank_name || $invoiceLayout->bank_branch)

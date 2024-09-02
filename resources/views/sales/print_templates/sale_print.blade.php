@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="col-8 text-end">
-                        <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                        <p style="text-transform: uppercase;font-size:12px;" class="p-0 m-0 fw-bold">
                             @if ($sale?->branch)
                                 @if ($sale?->branch?->parent_branch_id)
                                     {{ $sale?->branch?->parentBranch?->name }}
@@ -111,7 +111,7 @@
                             @endif
                         </p>
 
-                        <p>
+                        <p style="font-size:11px;">
                             @if ($sale?->branch)
                                 {{ $sale->branch->address . ', ' }}
                                 {{ $invoiceLayout->branch_city == 1 ? $sale->branch->city . ', ' : '' }}
@@ -123,7 +123,7 @@
                             @endif
                         </p>
 
-                        <p>
+                        <p style="font-size:11px;">
                             @php
                                 $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
                                 $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -941,21 +941,21 @@
 
                             <tr>
                                 <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Shipment Charge') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important; height:10px; line-height:10px;">
+                                <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Total Invoice Amount') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important; height:10px; line-height:10px;">
+                                <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Received Amount') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important; height:10px; line-height:10px;">
+                                <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                 </td>
                             </tr>

@@ -121,7 +121,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
 
         if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 11) {
 
-            if (isset($request->branch_count) && count($request->branch_ids) > 0) {
+            if (isset($request->branch_count) && isset($request->branch_ids) && count($request->branch_ids) > 0) {
 
                 $this->bankAccessBranchService->addBankAccessBranch(bankAccountId: $addAccount->id, branchIds: $request->branch_ids);
             } else if (auth()?->user()?->branch_id) {

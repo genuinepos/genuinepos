@@ -33,7 +33,7 @@ class ContactService
         $addContact->pay_term = $payTerm;
         $addContact->pay_term_number = $payTermNumber;
         $addContact->credit_limit = $creditLimit ? $creditLimit : 0;
-        $addContact->opening_balance = $openingBalance ? $openingBalance : 0;
+        $addContact->opening_balance = $type == ContactType::Customer->value ? ($openingBalance ? $openingBalance : 0) : 0;
         $addContact->opening_balance_type = $openingBalanceType;
 
         if ($type == ContactType::Customer->value) {
@@ -68,7 +68,7 @@ class ContactService
         $updateContact->pay_term = $payTerm;
         $updateContact->pay_term_number = $payTermNumber;
         $updateContact->credit_limit = $creditLimit ? $creditLimit : 0;
-        $updateContact->opening_balance = $openingBalance ? $openingBalance : 0;
+        $updateContact->opening_balance = $type == ContactType::Customer->value ? ($openingBalance ? $openingBalance : 0) : 0;
         $updateContact->opening_balance_type = $openingBalanceType;
 
         if ($type == ContactType::Customer->value) {

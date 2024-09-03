@@ -124,7 +124,7 @@ class ContactControllerMethodContainersService implements ContactControllerMetho
             phone: $request->phone,
             address: $request->address,
             accountGroup: $accountGroup,
-            openingBalance: $request->opening_balance,
+            openingBalance: $request->opening_balance ? $request->opening_balance : 0,
             openingBalanceType: $request->opening_balance_type,
         );
 

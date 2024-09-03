@@ -163,9 +163,9 @@ class AccountService
 
                 return $html;
             })
-            ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'N/A')
-            ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'N/A')
-            ->editColumn('group', fn ($row) => '<b>' . $row->group_name . '</b>')
+            ->editColumn('ac_number', fn($row) => $row->account_number ? $row->account_number : 'N/A')
+            ->editColumn('bank', fn($row) => $row->b_name ? $row->b_name : 'N/A')
+            ->editColumn('group', fn($row) => '<b>' . $row->group_name . '</b>')
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->is_global == 0) {
@@ -294,6 +294,8 @@ class AccountService
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $branchId = $accountGroup->sub_sub_group_number == 6 ? $ownBranchIdOrParentBranchId : auth()->user()->branch_id;
+
+        $branchId = $accountGroup->sub_sub_group_number == 1 ? null : $branchId;
 
         $addAccount = new Account();
         $addAccount->name = $name;

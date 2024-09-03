@@ -11,14 +11,17 @@ class BankAccessBranchService
     {
         foreach ($branchIds as $branchId) {
 
-            $addBankAccessBranch = new BankAccessBranch();
-            $addBankAccessBranch->bank_account_id = $bankAccountId;
-            $addBankAccessBranch->branch_id = $branchId;
-            $addBankAccessBranch->save();
+            if (isset($branchId)) {
+
+                $addBankAccessBranch = new BankAccessBranch();
+                $addBankAccessBranch->bank_account_id = $bankAccountId;
+                $addBankAccessBranch->branch_id = $branchId;
+                $addBankAccessBranch->save();
+            }
         }
     }
 
-    public function updateBankAccessBranch(object $bankAccount, array $branchIds = []): void
+    public function updateBankAccessBranch(object $bankAccount, ?array $branchIds = []): void
     {
         foreach ($bankAccount->bankAccessBranches as $bankAccessBranch) {
 

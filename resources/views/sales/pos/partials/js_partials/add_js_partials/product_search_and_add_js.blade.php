@@ -25,7 +25,6 @@
     function searchProduct(keyWord, priceGroupId) {
 
         $('#search_product').focus();
-        var price_group_id = $('#price_group_id').val();
 
         var isShowNotForSaleItem = 0;
         var url = "{{ route('general.product.search.common', [':keyWord', ':isShowNotForSaleItem', ':priceGroupId']) }}";
@@ -396,7 +395,7 @@
     var keyName = 1;
     function selectProduct(e) {
 
-        var price_group_id = price_group_id ? price_group_id : 'no_id';
+        var price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
 
         $('.select_area').hide();
         $('#search_product').val('');

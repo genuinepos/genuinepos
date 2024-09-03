@@ -197,7 +197,7 @@
                                         <select name="price_group_id" class="form-control" id="price_group_id">
                                             <option value="">{{ __('Default Price Group') }}</option>
                                             @foreach ($priceGroups as $pg)
-                                                <option value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                <option {{ isset($generalSettings['pos__default_price_group_id']) && $generalSettings['pos__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

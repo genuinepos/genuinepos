@@ -166,6 +166,7 @@ class BranchSettingController extends Controller
             'pos__is_enabled_credit_full_sale' => $request->is_enabled_credit_full_sale,
             'pos__is_enabled_hold_invoice' => $request->is_enabled_hold_invoice,
             'pos__default_tax_ac_id' => $request->default_tax_ac_id,
+            'pos__default_price_group_id' => $request->default_price_group_id,
         ];
 
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);

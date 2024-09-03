@@ -6,10 +6,11 @@ use App\Models\Accounts\AccountOpeningBalance;
 
 class AccountOpeningBalanceService
 {
-    public function addOrUpdateAccountOpeningBalance(?int $branchId, int $accountId, string $openingBalanceType, float $openingBalance): void
+    public function addOrUpdateAccountOpeningBalance(?int $branchId = null, int $accountId, string $openingBalanceType, float $openingBalance): void
     {
         $addOrUpdateAccountOpeningBalance = null;
         $accountOpeningBalance = $this->accountOpeningBalance(branchId: $branchId, accountId: $accountId);
+
         if (isset($accountOpeningBalance)) {
 
             $addOrUpdateAccountOpeningBalance = $accountOpeningBalance;
@@ -25,7 +26,7 @@ class AccountOpeningBalanceService
         $addOrUpdateAccountOpeningBalance->save();
     }
 
-    public function accountOpeningBalance(?int $branchId, int $accountId): ?object
+    public function accountOpeningBalance(?int $branchId = null, int $accountId): ?object
     {
         $query = AccountOpeningBalance::query();
 
@@ -34,6 +35,6 @@ class AccountOpeningBalanceService
             $query->with($with);
         }
 
-        return $query->where('branch_id', $branchId)->where('id', $accountId)->first();
+        return $query->where('branch_id', $branchId)->where('account_id', $accountId)->first();
     }
 }

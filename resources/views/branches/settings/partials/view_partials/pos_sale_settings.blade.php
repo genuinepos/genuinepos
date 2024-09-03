@@ -76,14 +76,22 @@
                 <option {{ $generalSettings['pos__is_enabled_credit_full_sale'] == '0' ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
             </select>
         </div>
-    </div>
 
-    <div class="form-group row mt-1">
         <div class="col-md-3">
             <label class="fw-bold">{{ __('Enable Hold Invoice') }}</label>
             <select class="form-control" name="is_enabled_hold_invoice" id="is_enabled_hold_invoice">
                 <option value="1">{{ __('Yes') }}</option>
                 <option {{ $generalSettings['pos__is_enabled_hold_invoice'] == '0' ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="fw-bold">{{ __('Default Selling Price Group') }}</label>
+            <select name="default_price_group_id" class="form-control" id="default_price_group_id" data-next="save_changes">
+                <option value="">{{ __('None') }}</option>
+                @foreach ($priceGroups as $priceGroup)
+                    <option @selected(isset($generalSettings['pos__default_price_group_id']) && $generalSettings['pos__default_price_group_id'] == $priceGroup->id) value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                @endforeach
             </select>
         </div>
     </div>

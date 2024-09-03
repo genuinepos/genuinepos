@@ -84,6 +84,16 @@
                 <option @selected($generalSettings['pos__is_enabled_hold_invoice'] == '0') value="0">{{ __('No') }}</option>
             </select>
         </div>
+
+        <div class="col-md-3">
+            <label class="fw-bold">{{ __('Default Selling Price Group') }}</label>
+            <select name="default_price_group_id" class="form-control" id="default_price_group_id" data-next="save_changes">
+                <option value="null">{{ __('None') }}</option>
+                @foreach ($priceGroups as $priceGroup)
+                    <option @selected(isset($generalSettings['pos__default_price_group_id']) && $generalSettings['pos__default_price_group_id'] == $priceGroup->id) value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 
     <div class="row mt-2">

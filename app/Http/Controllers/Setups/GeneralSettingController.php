@@ -164,6 +164,7 @@ class GeneralSettingController extends Controller
             'add_sale__default_sale_discount' => $request->default_sale_discount,
             'add_sale__sales_commission' => $request->sales_commission,
             'add_sale__default_tax_ac_id' => $request->default_tax_ac_id,
+            'add_sale__default_price_group_id' => $request->default_price_group_id,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -184,6 +185,7 @@ class GeneralSettingController extends Controller
             'pos__is_enabled_credit_full_sale' => $request->is_enabled_credit_full_sale,
             'pos__is_enabled_hold_invoice' => $request->is_enabled_hold_invoice,
             'pos__default_tax_ac_id' => $request->default_tax_ac_id,
+            'pos__default_price_group_id' => $request->default_price_group_id,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

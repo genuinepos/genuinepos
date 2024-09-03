@@ -25,7 +25,6 @@
     function searchProduct(keyWord, priceGroupId) {
 
         $('#search_product').focus();
-        var priceGroupId = $('#price_group_id').val();
 
         var isShowNotForSaleItem = 0;
         var url = "{{ route('general.product.search.common', [':keyWord', ':isShowNotForSaleItem', ':priceGroupId']) }}";

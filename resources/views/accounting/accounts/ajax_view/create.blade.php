@@ -147,7 +147,7 @@
                 </div>
 
                 {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
-                @if (auth()->user()->can('has_access_to_all_area') == 1 && $generalSettings['subscription']->current_shop_count > 1)
+                @if (auth()->user()->can('has_access_to_all_area') == 1)
                     <div class="form-group mt-1 d-hide" id="access_branches">
                         <label><strong>{{ __('Store Access') }}</strong></label>
                         <input type="hidden" name="branch_count" id="branch_count" value="yes">

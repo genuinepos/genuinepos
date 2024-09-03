@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('account_opening_balances', function (Blueprint $table) {
-            $table->dropForeign(['branch_id']);
+            // $table->dropForeign(['branch_id']);
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
             $table->foreign(['account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
         });

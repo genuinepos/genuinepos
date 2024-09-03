@@ -184,23 +184,23 @@
                                 @endif
 
                                 @if (auth()->user()->can('product_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.product_settings')
+                                    @include('branches.settings.partials.view_partials.product_settings')
                                 @endif
 
                                 @if (auth()->user()->can('purchase_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.purchase_settings')
+                                    @include('branches.settings.partials.view_partials.purchase_settings')
                                 @endif
 
                                 @if (auth()->user()->can('manufacturing_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.manufacturing_settings')
+                                    @include('branches.settings.partials.view_partials.manufacturing_settings')
                                 @endif
 
                                 @if (auth()->user()->can('add_sale_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.add_sale_settings')
+                                    @include('branches.settings.partials.view_partials.add_sale_settings')
                                 @endif
 
                                 @if (auth()->user()->can('pos_sale_settings'))
-                                    @include('setups.branches.settings.partials.view_partials.pos_sale_settings')
+                                    @include('branches.settings.partials.view_partials.pos_sale_settings')
                                 @endif
 
                                 @if (auth()->user()->can('prefix_settings'))
@@ -257,28 +257,28 @@
     @include('branches.settings.partials.js_partials.dashboard_settings_js')
 
     @if (auth()->user()->can('dashboard_settings'))
-        @include('setups.branches.settings.partials.js_partials.dashboard_settings_js')
+        @include('branches.settings.partials.js_partials.dashboard_settings_js')
     @endif
 
     @if (auth()->user()->can('product_settings'))
-        @include('setups.branches.settings.partials.js_partials.product_settings_js')
+        @include('branches.settings.partials.js_partials.product_settings_js')
     @endif
 
     @if (auth()->user()->can('purchase_settings'))
-        @include('setups.branches.settings.partials.js_partials.purchase_settings_js')
+        @include('branches.settings.partials.js_partials.purchase_settings_js')
     @endif
 
     @if (auth()->user()->can('manufacturing_settings'))
 
-        @include('setups.branches.settings.partials.js_partials.manufacturing_settings_js')
+        @include('branches.settings.partials.js_partials.manufacturing_settings_js')
     @endif
 
     @if (auth()->user()->can('add_sale_settings'))
-        @include('setups.branches.settings.partials.js_partials.add_sale_settings_js')
+        @include('branches.settings.partials.js_partials.add_sale_settings_js')
     @endif
 
     @if (auth()->user()->can('pos_sale_settings'))
-        @include('setups.branches.settings.partials.js_partials.pos_sale_settings_js')
+        @include('branches.settings.partials.js_partials.pos_sale_settings_js')
     @endif
 
     @if (auth()->user()->can('prefix_settings'))
@@ -286,36 +286,36 @@
     @endif
 
     @if (auth()->user()->can('invoice_layout_settings'))
-        @include('setups.branches.settings.partials.js_partials.invoice_layout_settings_js')
+        @include('branches.settings.partials.js_partials.invoice_layout_settings_js')
     @endif
 
     @if (auth()->user()->can('print_settings'))
-        @include('setups.branches.settings.partials.js_partials.print_settings_js')
+        @include('branches.settings.partials.js_partials.print_settings_js')
     @endif
 
     @if (auth()->user()->can('system_settings'))
-        @include('setups.branches.settings.partials.js_partials.system_settings_js')
+        @include('branches.settings.partials.js_partials.system_settings_js')
     @endif
 
     @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
         @if (auth()->user()->can('reward_point_settings'))
-            @include('setups.branches.settings.partials.js_partials.reward_point_settings_js')
+            @include('branches.settings.partials.js_partials.reward_point_settings_js')
         @endif
     @endif
 
     @if (auth()->user()->can('module_settings'))
-        @include('setups.branches.settings.partials.js_partials.module_settings_js')
+        @include('branches.settings.partials.js_partials.module_settings_js')
     @endif
 
     @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
         @if (auth()->user()->can('send_email_settings'))
-            @include('setups.branches.settings.partials.js_partials.send_email_settings_js')
+            @include('branches.settings.partials.js_partials.send_email_settings_js')
         @endif
     @endif
 
     @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
         @if (auth()->user()->can('send_sms_settings'))
-            @include('setups.branches.settings.partials.js_partials.send_sms_settings_js')
+            @include('branches.settings.partials.js_partials.send_sms_settings_js')
         @endif
     @endif
 

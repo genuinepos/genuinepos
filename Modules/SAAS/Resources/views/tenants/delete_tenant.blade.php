@@ -42,7 +42,7 @@
                 <div class="col-md-6">
                     <table class="table table-sm details_table">
                         <tr>
-                            <th>{{ __('Company Name') }}</th>
+                            <th>{{ __('Business') }}</th>
                             <td class="text-start">: {{ $tenant->name }}</td>
                         </tr>
 
@@ -52,7 +52,7 @@
                         </tr>
 
                         <tr>
-                            <th>{{ __('App Url') }}</th>
+                            <th>{{ __('Store Url') }}</th>
                             <td class="text-start">: {{ \Modules\SAAS\Utils\UrlGenerator::generateFullUrlFromDomain($tenant->id) }}</td>
                         </tr>
                     </table>

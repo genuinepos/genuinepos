@@ -16,7 +16,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start" style="font-size: 12px;">{{ __('Company') }}</th>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Business') }}</th>
                             <td class="text-start" style="font-size: 12px;">: {{ $tenant?->name }}</td>
                         </tr>
 
@@ -40,7 +40,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start" style="font-size: 12px;">{{ __('App Url') }}</th>
+                            <th class="text-start" style="font-size: 12px;">{{ __('Store Url') }}</th>
                             <td class="text-start" style="font-size: 12px;">: {{ \Modules\SAAS\Utils\UrlGenerator::generateFullUrlFromDomain($tenant->id) }}</td>
                         </tr>
                     </table>
@@ -53,13 +53,35 @@
                 <form id="update_payment_status_form" action="{{ route('saas.tenants.update.payment.status.update', $tenant->id) }}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="border-right:1px solid!important">
                             <div class="row">
                                 <div class="col-xxl-12 col-lg-12 col-sm-12">
-                                    <label for="start_date">{{ __('Due Amount') }}</label>
-                                    <input readonly type="text" value="{{ \App\Utils\Converter::format_in_bdt($dueTransaction->due) }}" autocomplete="off" class="form-control form-control-sm fw-bold">
+                                    <label for="start_date">{{ __('Net Total Amount') }}</label>
+                                    <input name="net_total" type="number" id="net_total" class="form-control form-control-sm fw-bold" value="{{ $dueTransaction->net_total }}">
                                 </div>
 
+                                <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                    <label for="discount">{{ __('Discount Amount') }} (<span id="show_discount_percent">{{ $dueTransaction->discount_percent }}%</span>)</label>
+                                    <div class="input-group">
+                                        <input readonly name="discount_percent" type="hidden" id="discount_percent" class="form-control form-control-sm w-50 d-inline" value="{{ $dueTransaction->discount_percent }}">
+                                        <input name="discount" type="number" id="discount" class="form-control form-control-sm fw-bold" value="{{ $dueTransaction->discount }}" placeholder="{{ __('0.00') }}" autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                    <label for="start_date">{{ __('Total Payable Amount') }}</label>
+                                    <input readonly name="total_payable_amount" type="number" class="form-control form-control-sm fw-bold" id="total_payable_amount" value="{{ $dueTransaction->total_payable_amount }}" autocomplete="off">
+                                </div>
+
+                                <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                    <label for="start_date">{{ __('Due Amount') }}</label>
+                                    <input readonly name="due" type="number" class="form-control form-control-sm fw-bold text-danger" id="due" value="{{ $dueTransaction->due }}" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="row">
                                 <div class="col-xxl-12 col-lg-12 col-sm-12">
                                     <label for="payment_status">{{ __('Payment Status') }}</label>
                                     <select required name="payment_status" id="payment_status" class="form-control form-control-sm">
@@ -69,8 +91,8 @@
                                 </div>
 
                                 <div class="col-xxl-12 col-lg-12 col-sm-12 repayment_field">
-                                    <label for="repayment_date">{{ __('Repayment') }}</label>
-                                    <input name="repayment_date" id="repayment_date" class="form-control form-control-sm" value="{{ $tenant?->user?->userSubscription?->due_repayment_date }}">
+                                    <label for="repayment_date">{{ __('Repayment / Expired Date') }}</label>
+                                    <input name="repayment_date" id="repayment_date" class="form-control form-control-sm" value="{{ $tenant?->user?->userSubscription?->due_repayment_date }}" autocomplete="off">
                                 </div>
 
                                 <div class="col-xxl-12 col-lg-12 col-sm-12 payment_details_field d-none">
@@ -87,14 +109,14 @@
 
                                 <div class="col-xxl-12 col-lg-12 col-sm-12 payment_details_field d-none">
                                     <label for="payment_method_name">{{ __('Payment Transaction ID') }}</label>
-                                    <input name="payment_trans_id" id="payment_trans_id" class="form-control form-control-sm">
+                                    <input name="payment_trans_id" class="form-control form-control-sm" id="payment_trans_id" placeholder="{{ __('Payment Transaction ID') }}">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row mt-2">
-                        <div class="col-md-4 d-flex justify-content-end">
+                    <div class="row mt-1">
+                        <div class="col-md-8 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn btn-sm btn-success update_payment_status_loading_btn" style="display: none;">{{ __('Loading') }}...</span></button>
                                 <button type="submit" id="update_payment_status_date_save" class="btn btn-sm btn-success update_payment_status_submit_button">{{ __('Update') }}</button>
@@ -183,8 +205,31 @@
                     $('#repayment_date').prop('required', true);
                     $('.payment_details_field').addClass('d-none');
                 }
-
             });
+
+            $(document).on('input', '#discount', function() {
+
+                calculateDiscount();
+            });
+
+            function calculateDiscount() {
+
+                var netTotal = $('#net_total').val() ? $('#net_total').val() : 0;
+                var discount = $('#discount').val() ? $('#discount').val() : 0;
+
+                var totalPayableAmount = parseFloat(netTotal) - parseFloat(discount);
+
+                $('#total_payable_amount').val(parseFloat(totalPayableAmount).toFixed(2));
+
+                $('#due').val(parseFloat(totalPayableAmount).toFixed(2));
+
+                var discountPercent = (parseFloat(discount) / parseFloat(netTotal)) * 100;
+
+                var __discountPercent = discountPercent ? parseFloat(discountPercent) : 0;
+
+                $('#discount_percent').val(parseFloat(__discountPercent).toFixed(2));
+                $('#show_discount_percent').html(parseFloat(__discountPercent).toFixed(2)+'%');
+            }
         </script>
     @endpush
 </x-saas::admin-layout>

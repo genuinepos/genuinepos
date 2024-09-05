@@ -92,6 +92,10 @@
             .plan-select {
                 max-width: 172px;
             }
+
+            .table-responsive{
+                min-height: 250px;
+            }
         </style>
     @endpush
 

@@ -32,6 +32,7 @@ class ImportDatabase implements ShouldQueue
         $params = [
             'file' => database_path('db/tenant.sql'),
             'dbname' => 'pos_' . $this->tenant->id,
+            '--force' => true
         ];
 
         Artisan::call('import:sql', $params);

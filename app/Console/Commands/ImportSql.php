@@ -15,7 +15,7 @@ class ImportSql extends Command
      *
      * @var string
      */
-    protected $signature = 'import:sql {file} {dbname} {--username=} {--password=} {--host=} {--port=}';
+    protected $signature = 'import:sql {file} {dbname} {--username=} {--password=} {--host=} {--port=} {--force=}';
     // protected $signature = 'import:sql';
     protected $description = 'Import database for tenant creation.';
 

@@ -644,7 +644,7 @@
                 toastr.error(err.responseJSON.message);
                 var domain = $('#domain').val();
                 $('#delete_domain').val(domain);
-                $('#deleteFailedTenant').submit();
+                // $('#deleteFailedTenant').submit();
             }
         });
     });

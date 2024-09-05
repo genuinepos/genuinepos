@@ -337,15 +337,25 @@
         $('#net_total').val(parseFloat(netTotal));
         $('.span_net_total').html(bdFormat(parseFloat(netTotal).toFixed(0)));
 
-        var discount = ((parseFloat(netTotal) / 100) * parseFloat(discount_percent));
-        $('#discount').val(parseFloat(discount));
-        $('.span_discount').html('(' + discount_percent + '%=' + bdFormat(discount) + ')');
+        // var discount = ((parseFloat(netTotal) / 100) * parseFloat(discount_percent));
+        // $('#discount').val(parseFloat(discount));
+        // $('.span_discount').html('(' + discount_percent + '%=' + bdFormat(discount) + ')');
+
+        var discount = $('#discount').val() ? $('#discount').val() : 0;
+        var discountPercent = (parseFloat(discount) / parseFloat(netTotal)) * 100;
+        var __discountPercent = discountPercent ? discountPercent : 0;
+        $('#discount_percent').val(parseFloat(__discountPercent).toFixed(2));
+        $('.span_discount').html(parseFloat(__discountPercent).toFixed(2) + '%=' + bdFormat(parseFloat(discount).toFixed(0)));
 
         var totalPayableAmount = parseFloat(shop_subtotal) + parseFloat(businessSubtotal) - parseFloat(discount)
         $('.span_total_shop_count').html(parseInt(shop_count));
         $('#total_payable').val(parseFloat(totalPayableAmount));
         $('.span_total_payable').html(bdFormat(parseFloat(totalPayableAmount).toFixed(0)));
     }
+
+    $(document).on('input', '#discount', function() {
+        calculateCartAmount();
+    });
 
     $(document).on('change', '#has_business', function() {
 
@@ -379,7 +389,7 @@
 
             var html = '';
             html += '<tr id="add_business_tr">';
-            html += '<td style="width: 30%;">Multi Store Management System</td>';
+            html += '<td style="width: 30%;">' + "{{ __('Back Office') }}" + '</td>';
             html += '<td>';
             html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(initialBusinessPrice).toFixed(0) + '">';
             html += '<span class="price-txt">' + "{{ $planPriceCurrency }}" + ' <span id="span_business_price">' + bdFormat(parseFloat(initialBusinessPrice).toFixed(0)) + '</span></span>';

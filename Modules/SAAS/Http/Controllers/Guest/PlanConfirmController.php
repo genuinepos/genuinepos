@@ -22,8 +22,7 @@ class PlanConfirmController extends Controller
         private PlanServiceInterface $planServiceInterface,
         private EmailVerificationServiceInterface $emailVerificationServiceInterface,
         private TenantServiceInterface $tenantService,
-    ) {
-    }
+    ) {}
     /**
      * Display a listing of the resource.
      */
@@ -50,10 +49,10 @@ class PlanConfirmController extends Controller
             throw new Exception('Something went wrong, Company creation failed. Please try again!', 500);
         }
 
-        $tenant = $this->tenantService->addTenant($request);
+        $tenant = $this->tenantService->addTenant(request: $request);
         if (isset($tenant)) {
 
-            $domain = $tenant->domains()->where('domain', $request->domain)->first();
+            $domain = $tenant->domains()->where('domain', strtolower($request->domain))->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
 
             return response()->json($returningUrl, 201);

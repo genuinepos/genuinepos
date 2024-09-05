@@ -23,11 +23,11 @@ class GuestTenantStoreRequest extends FormRequest
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
             'fullname' => 'required|string|max:191',
-            'email' => 'required|email',
-            'phone' => 'required|max:60',
+            'email' => 'required|max:50|unique:users,email',
+            'phone' => 'required|max:50|unique:users,phone',
             'currency_id' => 'required',
             'username' => 'required|min:5|max:25',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|min:6|confirmed',
             // 'password' => ['required', Password::default()],
         ];
 

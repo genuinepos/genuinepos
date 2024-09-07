@@ -21,6 +21,10 @@
                 padding: 8px 30px;
             }
 
+            .revel-table {
+                margin-bottom: 11px;
+            }
+
             .revel-table .table-responsive tr:last-child td {
                 padding-bottom: 20px;
             }
@@ -92,6 +96,30 @@
             .plan-select {
                 max-width: 172px;
             }
+
+            .table-responsive {
+                min-height: 200px !important;
+            }
+
+            .tab-section .tab-contents .btn-box {
+                margin-top: 5px;
+                margin-bottom: 6px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel .title {
+                font-size: 14px;
+                height: 29px;
+                line-height: 29px;
+                padding: 0 18px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel .panel-body {
+                padding: 14px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel {
+                margin-bottom: 18px;
+            }
         </style>
         <link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
     @endpush
@@ -103,7 +131,9 @@
         <div class="col-12">
             <div class="panel">
                 <div class="panel-header">
-                    <h5>{{ __('Upgrade Plan') }}</h5>
+                    <h5>{{ __('Upgrade Plan') }} |
+                        <span class="fw-bold">{{ __("Customer") }} :</span> {{ $tenant?->user->name }} | <span class="fw-bold">{{ __("Business") }} :</span> {{ $tenant->name }} | <span class="fw-bold">{{ __("Current Plan") }} :</span> <span class="fw-bold text-danger">Trial</span>
+                    </h5>
                 </div>
                 <div class="panel-body">
                     <div class="tab-section py-120">

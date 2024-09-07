@@ -190,7 +190,10 @@ class SubscriptionTransactionService
 
             $dueSubscriptionTransaction->payment_status = $request->payment_status;
             $dueSubscriptionTransaction->payment_date = Carbon::now();
-            $dueSubscriptionTransaction->paid = $dueSubscriptionTransaction->total_payable_amount;
+            $dueSubscriptionTransaction->discount_percent = $request->discount_percent;
+            $dueSubscriptionTransaction->discount = $request->discount;
+            $dueSubscriptionTransaction->total_payable_amount = $request->total_payable_amount;
+            $dueSubscriptionTransaction->paid = $request->total_payable_amount;
             $dueSubscriptionTransaction->due = 0;
             $dueSubscriptionTransaction->payment_method_name = $request->payment_method_name;
             $dueSubscriptionTransaction->payment_trans_id = $request->payment_trans_id;

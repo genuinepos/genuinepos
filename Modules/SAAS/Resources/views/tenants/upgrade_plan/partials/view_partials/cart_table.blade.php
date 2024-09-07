@@ -25,7 +25,7 @@
 
         <label class="btn btn-danger float-end" id="has_business_btn">
             <input type="checkbox" name="has_business" id="has_business" value="1" autocomplete="off">
-            {{ __('Need Multi Store Management System?') }}
+            {{ __('Back Office?') }}
         </label>
     </div>
 
@@ -108,7 +108,7 @@
         </table>
     </div>
 
-    <div class="btn-box" id="coupon_success_msg" style="display:none;">
+    {{-- <div class="btn-box" id="coupon_success_msg" style="display:none;">
         <p class="bg-success d-block p-1 m-0"><span class="text-white">{{ __('Applied Coupon is') }} : <span id="applied_coupon_code" class="fw-bold"></span></span> <a href="#" class="btn btn-sm btn-danger" id="remove_applied_coupon">X</a></p>
     </div>
 
@@ -118,6 +118,14 @@
             <input type="hidden" name="coupon_id" id="coupon_id" value="">
             <button type="button" class="def-btn coupon-apply-btn" id="applyCouponBtn">{{ __('Apply Coupon') }}</button>
             <button type="button" style="display: none;" class="def-btn coupon-apply-btn" id="applyCouponLodingBtn">{{ __('Loading...') }}</button>
+        </div>
+    </div> --}}
+
+    <div class="btn-box">
+        <div>
+            <label for="discount">{{ __("Discount Amount") }}</label>
+            <input type="hidden" name="discount_percent" id="discount_percent" value="0">
+            <input type="text" name="discount" class="form-control form-control-sm fw-bold" id="discount" placeholder="{{ __('0.00') }}" autocomplete="off">
         </div>
     </div>
 </div>
@@ -143,17 +151,15 @@
                         </li>
 
                         <li>{{ __('Discount') }}
-                            <input type="hidden" name="discount_percent" id="discount_percent" value="0">
-                            <input type="hidden" name="discount" id="discount" value="0">
                             <span class="price-txt">
-                                {{ $planPriceCurrency }} <span class="span_discount">0.00</span>
+                                {{ $planPriceCurrency }} (<span class="span_discount text-danger">0.00</span>)
                             </span>
                         </li>
 
                         <li class="total-price-wrap">{{ __('Total Payable') }}
                             <input type="hidden" name="total_payable" id="total_payable" value="">
                             <span class="price-txt">
-                                {{ $planPriceCurrency }} <span class="span_total_payable"></span>
+                                {{ $planPriceCurrency }} <span class="span_total_payable text-success"></span>
                             </span>
                         </li>
                     </ul>
@@ -167,7 +173,7 @@
                             <div class="col-12">
                                 <div class="form-col-5">
                                     <label for="payment_status">{{ __('Payment Status') }} <span class="text-danger">*</span></label>
-                                    <select required name="payment_status" id="payment_status" class="form-control select wide">
+                                    <select required name="payment_status" id="payment_status" class="form-control form-control-sm select wide">
                                         <option value="">{{ __('Select Payment Status') }}</option>
                                         <option value="0">{{ __('Pending') }}</option>
                                         <option value="1">{{ __('Paid') }}</option>
@@ -177,12 +183,12 @@
 
                                 <div class="form-col-5 mt-2 repayment_field d-none">
                                     <label for="payment_method_name">{{ __('Repayment/Expire Date') }}</label>
-                                    <input name="repayment_date" id="repayment_date" class="form-control">
+                                    <input name="repayment_date" id="repayment_date" class="form-control form-control-sm">
                                 </div>
 
                                 <div class="form-col-5 mt-2 payment_details_field d-none">
                                     <label for="payment_method_name">{{ __('Payment Method') }}</label>
-                                    <select name="payment_method_name" id="payment_method_name" class="form-control select wide">
+                                    <select name="payment_method_name" id="payment_method_name" class="form-control form-control-sm select wide">
                                         <option value="">{{ __('Select Payment Method') }}</option>
                                         <option value="Cash">{{ __('Cash') }}</option>
                                         <option value="Card">{{ __('Card') }}</option>
@@ -194,7 +200,7 @@
 
                                 <div class="form-col-5 mt-2 payment_details_field d-none">
                                     <label for="payment_method_name">{{ __('Payment Transaction ID') }}</label>
-                                    <input name="payment_trans_id" id="payment_trans_id" class="form-control select wide">
+                                    <input name="payment_trans_id" id="payment_trans_id" class="form-control form-control-sm select wide">
                                 </div>
                             </div>
                         </div>

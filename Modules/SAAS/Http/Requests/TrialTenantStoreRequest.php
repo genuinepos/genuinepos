@@ -16,11 +16,11 @@ class TrialTenantStoreRequest extends FormRequest
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
             'fullname' => 'required|string|max:255',
-            'email' => 'required|string|max:60|unique:users,email',
+            'email' => 'required|string|max:50|unique:users,email',
             'currency_id' => 'required',
-            'phone' => 'required|max:60',
+            'phone' => 'required|max:50|unique:users,phone',
             'username' => 'required|min:5|max:25',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|min:6|confirmed',
         ];
     }
 

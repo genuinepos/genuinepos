@@ -15,7 +15,7 @@
                     <div class="domain-field" class="position-relative">
                         <label for="domain">{{ __('Store URL') }} <span class="text-danger">*</span></label>
                         <div class="position-relative">
-                            <input required type="text" name="domain" id="domain" class="form-control" placeholder="Store URL" autocomplete="off">
+                            <input required type="text" name="domain" id="domain" class="form-control" style="text-transform: lowercase;" placeholder="{{ __("Store URL") }}" autocomplete="off">
                             <span class="txt">{{ __('.gposs.com') }}</span>
                         </div>
                         <p class="mt-2 mb-0">
@@ -122,12 +122,12 @@
                                     </li>
                                     <li>{{ __('Discount') }}
                                         <span class="price-txt">
-                                            {{ $planPriceCurrency }} <span class="span_discount">0.00</span>
+                                            {{ $planPriceCurrency }} (<span class="span_discount text-danger">0.00</span>)
                                         </span>
                                     </li>
                                     <li class="total-price-wrap">{{ __('Total Payable') }}
                                         <span class="price-txt">
-                                            {{ $planPriceCurrency }} <span class="span_total_payable"></span>
+                                            {{ $planPriceCurrency }} <span class="span_total_payable text-success"></span>
                                         </span>
                                     </li>
                                 </ul>

@@ -48,18 +48,21 @@ class TenantService implements TenantServiceInterface
     public function addTenant(object $request): ?Tenant
     {
         try {
+            $gioInfo = \Modules\SAAS\Utils\GioInfo::getInfo();
+
             $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
 
             $tenant = Tenant::create([
-                'id' => $request->domain,
+                'id' => strtolower($request->domain),
                 'name' => $request->name,
                 'impersonate_user' => 1,
                 'user_id' => 1,
+                'country' => $gioInfo['country'],
             ]);
 
             if (isset($tenant)) {
 
-                $domain = $tenant->domains()->create(['domain' => $request->domain]);
+                $domain = $tenant->domains()->create(['domain' => strtolower($request->domain)]);
 
                 if ($domain) {
 

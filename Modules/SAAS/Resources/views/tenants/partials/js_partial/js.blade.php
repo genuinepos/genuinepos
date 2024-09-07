@@ -28,6 +28,12 @@
     function doneTyping() {
         $('#domainPreview').html(`<span class="">🔍Checking availability...<span>`);
         var domain = $('#domain').val();
+        if (domain == '') {
+
+            $('#domainPreview').html('');
+            return;
+        }
+
         $.ajax({
             url: "{{ route('saas.domain.checkAvailability') }}",
             type: 'GET',
@@ -168,6 +174,9 @@
                     $('#shop_fixed_price_period_text').html(plan.trial_days + ' days');
                     $('#payment_status').prop('required', false);
                     $('.payment-section').addClass('d-none');
+                    $('#discount_percent').val(0);
+                    $('#discount').val(0);
+                    $('.span_discount ').html('0%=0.00');
                 } else {
 
                     $('.shop_price_period_count').removeClass('d-none');
@@ -455,9 +464,15 @@
             $('#net_total').val(parseFloat(netTotal));
             $('.span_net_total').html(bdFormat(parseFloat(netTotal).toFixed(0)));
 
-            var discount = ((parseFloat(netTotal) / 100) * parseFloat(discount_percent));
-            $('#discount').val(parseFloat(discount));
-            $('.span_discount').html('(' + discount_percent + '%=' + bdFormat(parseFloat(discount).toFixed(0)) + ')');
+            // var discount = ((parseFloat(netTotal) / 100) * parseFloat(discount_percent));
+            // $('#discount').val(parseFloat(discount));
+            // $('.span_discount').html('(' + discount_percent + '%=' + bdFormat(parseFloat(discount).toFixed(0)) + ')');
+
+            var discount = $('#discount').val() ? $('#discount').val() : 0;
+            var discountPercent = (parseFloat(discount) / parseFloat(netTotal)) * 100;
+            var __discountPercent = discountPercent ? discountPercent : 0;
+            $('#discount_percent').val(parseFloat(__discountPercent).toFixed(2));
+            $('.span_discount').html( parseFloat(__discountPercent).toFixed(2) + '%=' + bdFormat(parseFloat(discount).toFixed(0)));
 
             var totalPayableAmount = parseFloat(shop_subtotal) + parseFloat(businessSubtotal) - parseFloat(discount)
             $('.span_total_shop_count').html(parseInt(shop_count));
@@ -465,6 +480,10 @@
             $('.span_total_payable').html(bdFormat(parseFloat(totalPayableAmount).toFixed(0)));
         }
     }
+
+    $(document).on('input', '#discount', function() {
+        calculateCartAmount();
+    });
 
     /*---------------------------
     Payment Method Dropdown
@@ -509,7 +528,7 @@
 
             var html = '';
             html += '<tr id="add_business_tr">';
-            html += '<td style="width: 30%;">Multi Store Management System</td>';
+            html += '<td style="width: 30%;">' + "{{ __('Back Office') }}" + '</td>';
             html += '<td>';
             html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(initialBusinessPrice).toFixed(0) + '">';
             html += '<span class="price-txt">' + "{{ $planPriceCurrency }}" + ' <span id="span_business_price">' + bdFormat(parseFloat(initialBusinessPrice).toFixed(0)) + '</span></span>';
@@ -580,75 +599,75 @@
 </script>
 
 <script>
-    $(document).on('click', '#remove_applied_coupon', function(e) {
-        e.preventDefault();
+    // $(document).on('click', '#remove_applied_coupon', function(e) {
+    //     e.preventDefault();
 
-        $('#coupon_code').val('');
-        $('#coupon_id').val('');
-        $('#coupon_success_msg').hide();
-        $('#coupon_code_applying_area').show();
+    //     $('#coupon_code').val('');
+    //     $('#coupon_id').val('');
+    //     $('#coupon_success_msg').hide();
+    //     $('#coupon_code_applying_area').show();
 
-        $('#discount').val(0);
-        $('#discount_percent').val(0);
-        $('.span_discount').html(parseFloat(0).toFixed(2));
-        calculateCartAmount();
-    });
+    //     $('#discount').val(0);
+    //     $('#discount_percent').val(0);
+    //     $('.span_discount').html(parseFloat(0).toFixed(2));
+    //     calculateCartAmount();
+    // });
 
-    $(document).on('click', '#applyCouponBtn', function(e) {
-        e.preventDefault();
+    // $(document).on('click', '#applyCouponBtn', function(e) {
+    //     e.preventDefault();
 
-        var coupon_code = $('#coupon_code').val();
-        var total_payable = $('#total_payable').val();
-        if (coupon_code == '') {
+    //     var coupon_code = $('#coupon_code').val();
+    //     var total_payable = $('#total_payable').val();
+    //     if (coupon_code == '') {
 
-            toastr.error("{{ __('Please enter a valid coupon code.') }}");
-            return;
-        }
+    //         toastr.error("{{ __('Please enter a valid coupon code.') }}");
+    //         return;
+    //     }
 
-        $('#applyCouponBtn').hide();
-        $('#applyCouponLodingBtn').show();
-        var url = "{{ route('saas.coupons.code.check') }}";
+    //     $('#applyCouponBtn').hide();
+    //     $('#applyCouponLodingBtn').show();
+    //     var url = "{{ route('saas.coupons.code.check') }}";
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            data: {
-                coupon_code,
-                total_payable
-            },
-            success: function(data) {
+    //     $.ajax({
+    //         url: url,
+    //         type: 'get',
+    //         data: {
+    //             coupon_code,
+    //             total_payable
+    //         },
+    //         success: function(data) {
 
-                $('#applyCouponBtn').show();
-                $('#applyCouponLodingBtn').hide();
-                if (!$.isEmptyObject(data.errorMsg)) {
+    //             $('#applyCouponBtn').show();
+    //             $('#applyCouponLodingBtn').hide();
+    //             if (!$.isEmptyObject(data.errorMsg)) {
 
-                    toastr.error(data.errorMsg);
-                    return;
-                }
+    //                 toastr.error(data.errorMsg);
+    //                 return;
+    //             }
 
-                $('#applied_coupon_code').html(data.code);
-                $('#coupon_id').val(data.id);
-                $('#discount_percent').val(data.percent);
-                $('#coupon_success_msg').show();
-                $('#coupon_code_applying_area').hide();
-                calculateCartAmount();
+    //             $('#applied_coupon_code').html(data.code);
+    //             $('#coupon_id').val(data.id);
+    //             $('#discount_percent').val(data.percent);
+    //             $('#coupon_success_msg').show();
+    //             $('#coupon_code_applying_area').hide();
+    //             calculateCartAmount();
 
-                toastr.success("{{ __('Coupon is applied successfully.') }}");
-            },
-            error: function(err) {
+    //             toastr.success("{{ __('Coupon is applied successfully.') }}");
+    //         },
+    //         error: function(err) {
 
-                $('#applyCouponBtn').show();
-                $('#applyCouponLodingBtn').hide();
-                if (err.status == 0) {
+    //             $('#applyCouponBtn').show();
+    //             $('#applyCouponLodingBtn').hide();
+    //             if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connection Error.') }}");
-                    return;
-                } else if (err.status == 500) {
+    //                 toastr.error("{{ __('Net Connection Error.') }}");
+    //                 return;
+    //             } else if (err.status == 500) {
 
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    return;
-                }
-            }
-        });
-    });
+    //                 toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+    //                 return;
+    //             }
+    //         }
+    //     });
+    // });
 </script>

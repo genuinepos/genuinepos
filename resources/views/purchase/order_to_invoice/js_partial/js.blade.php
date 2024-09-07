@@ -81,7 +81,7 @@
 
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
-        var accountDefaultBalanceType = $('default_balance_type').val();
+        var accountDefaultBalanceType = $('#default_balance_type').val();
         var currentBalance = 0;
         if (accountDefaultBalanceType == 'dr') {
 

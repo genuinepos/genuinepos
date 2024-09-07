@@ -34,6 +34,7 @@ class UpdateMigrate implements ShouldQueue
         Artisan::call('tenants:migrate', [
             '--path' => database_path('migrations/updates'),
             '--tenants' => [$this->tenant->getTenantKey()],
+            '--force' => true
         ]);
     }
 }

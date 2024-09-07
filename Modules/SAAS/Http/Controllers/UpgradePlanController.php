@@ -46,10 +46,15 @@ class UpgradePlanController extends Controller
     {
         abort_if(!auth()->user()->can('tenants_upgrade_plan'), 403);
 
+        $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: [
+            'user:id,tenant_id,name',
+            'user.userSubscription.plan:id,name,is_trial_plan,trial_days'
+        ]);
+
         $plans = $this->planServiceInterface->plans()->where('is_trial_plan', BooleanType::False->value)
             ->where('status', BooleanType::True->value)->get();
 
-        return view('saas::tenants.upgrade_plan.cart', compact('plans', 'tenantId'));
+        return view('saas::tenants.upgrade_plan.cart', compact('plans', 'tenant', 'tenantId'));
     }
 
     public function confirm($tenantId, UpgradePlanConfirmRequest $request)

@@ -181,10 +181,12 @@
                                                     @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
                                                         </span> <span class="fw-bold">{{ $branch->branch_name . ' (' . $branch->area_name . ')' }}</span>
                                                     @else
-                                                        <span class="fas fa-long-arrow-alt-right text-success" style="font-size:12px;padding-left:15px;"></span> <span class="fw-bold">{{ $branch->parent_branch_name . ' (' . $branch->area_name . ')' }}</span>
+                                                        <span style="font-size:12px;padding-left:15px;">---</span> <span class="fw-bold">{{ $branch->parent_branch_name . ' (' . $branch->area_name . ')' }}</span>
                                                     @endif
                                                 </td>
-                                                <td class="text-start fw-bold">{{ str(\App\Enums\BranchType::tryFrom($branch->branch_type)->name)->headline() }}</td>
+                                                <td class="text-start fw-bold">
+                                                    {{ str(\App\Enums\BranchType::tryFrom($branch->branch_type)->name)->headline() }}
+                                                </td>
                                                 <td class="text-start fw-bold">
                                                     @if (isset($branch->parent_category))
                                                         {{ str(\App\Enums\BranchCategory::tryFrom($branch->parent_category)->name)->headline() }}
@@ -208,7 +210,6 @@
                                                             $startDate = new \DateTime($planStartDate);
                                                             $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
                                                             $expireDate = $lastDate->format('Y-m-d');
-
                                                         @endphp
                                                         {{ date('d-m-Y', strtotime($expireDate)) }}
                                                     @endif

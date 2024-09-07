@@ -664,7 +664,7 @@ INSERT INTO `currencies` (`id`, `country`, `currency`, `code`, `symbol`, `thousa
 (13, 'Bermuda', 'Dollars', 'BMD', '$', ',', '.', NULL, NULL, NULL, NULL),
 (14, 'Bolivia', 'Bolivianos', 'BOB', '$b', ',', '.', NULL, NULL, NULL, NULL),
 (15, 'Bosnia and Herzegovina', 'Convertible Marka', 'BAM', 'KM', ',', '.', NULL, NULL, NULL, NULL),
-(16, 'Botswana', 'Pula\'s', 'BWP', 'P', ',', '.', NULL, NULL, NULL, NULL),
+(16, 'Botswana', 'Pula''s', 'BWP', 'P', ',', '.', NULL, NULL, NULL, NULL),
 (17, 'Bulgaria', 'Leva', 'BG', 'лв', ',', '.', NULL, NULL, NULL, NULL),
 (18, 'Brazil', 'Reais', 'BRL', 'R$', ',', '.', NULL, NULL, NULL, NULL),
 (19, 'Britain [United Kingdom]', 'Pounds', 'GBP', '£', ',', '.', NULL, NULL, NULL, NULL),

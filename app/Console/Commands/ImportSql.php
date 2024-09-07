@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 class ImportSql extends Command
@@ -15,7 +14,7 @@ class ImportSql extends Command
      *
      * @var string
      */
-    protected $signature = 'import:sql {file} {dbname} {--username=} {--password=} {--host=} {--port=}';
+    protected $signature = 'import:sql {file} {dbname} {--username=} {--password=} {--host=} {--port=} {--force=}';
     // protected $signature = 'import:sql';
     protected $description = 'Import database for tenant creation.';
 
@@ -33,10 +32,10 @@ class ImportSql extends Command
         // Log::info("DB Import Start");
         $file = $this->argument('file');
         $dbname = $this->argument('dbname');
-        $username = $this->option('username') ?? env('DB_USERNAME');
-        $password = $this->option('password') ?? env('DB_PASSWORD');
-        $host = $this->option('host') ?? env('DB_HOST');
-        $port = $this->option('port') ?? env('DB_PORT');
+        $username = $this->option('username') ?? config('database.connections.mysql.username');
+        $password = $this->option('password') ?? config('database.connections.mysql.password');
+        $host = $this->option('host') ?? config('database.connections.mysql.host');
+        $port = $this->option('port') ?? config('database.connections.mysql.port');
 
         if (!File::exists($file)) {
             $this->error("The file {$file} does not exist.");

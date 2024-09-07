@@ -19,7 +19,7 @@ class TenantController extends Controller
 {
     public function __construct(
         private TenantServiceInterface $tenantService,
-        private CurrencyServiceInterface $tenantServiceInterface,
+        private CurrencyServiceInterface $currencyServiceInterface,
         private PlanServiceInterface $planServiceInterface,
     ) {}
 
@@ -67,7 +67,7 @@ class TenantController extends Controller
     {
         abort_unless(auth()->user()->can('tenants_create'), 403);
         $plans = $this->planServiceInterface->plans()->where('status', BooleanType::True->value)->get();
-        $currencies = $this->tenantServiceInterface->currencies()->get(['id', 'country']);
+        $currencies = $this->currencyServiceInterface->currencies()->get(['id', 'country']);
         return view('saas::tenants.create', compact('plans', 'currencies'));
     }
 

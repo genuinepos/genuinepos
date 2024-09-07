@@ -195,6 +195,18 @@ class SubscriptionService
 
             $repaymentDate = isset($request->repayment_date) ? date('Y-m-d', strtotime($request->repayment_date)) : null;
             $updateSubscription->due_repayment_date = $paymentStatus == BooleanType::False->value ? $repaymentDate : null;
+
+            if ($updateSubscription?->dueSubscriptionTransaction?->discount_percent != $request->discount_percent) {
+
+                $businessPrice = $shopPrice = $updateSubscription?->dueSubscriptionTransaction?->details?->business_price ? $updateSubscription?->dueSubscriptionTransaction?->details?->business_price : 0;
+
+                $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
+                $businessPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($businessPrice);
+                $discountAmount = ($businessPriceInUsd / 100) * $discountPercent;
+                $adjustablePrice = round($businessPriceInUsd - $discountAmount, 0);
+
+                $updateSubscription->business_adjustable_price = $adjustablePrice;
+            }
         }
 
         $updateSubscription->save();
@@ -222,6 +234,6 @@ class SubscriptionService
 
         $cacheKey = "{$__tenantId}_GeneralSettings_subscription";
 
-       Cache::forget($cacheKey);
+        Cache::forget($cacheKey);
     }
 }

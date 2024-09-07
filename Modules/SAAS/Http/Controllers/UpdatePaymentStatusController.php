@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
 use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
 use App\Services\Subscriptions\SubscriptionService;
+use App\Services\Subscriptions\ShopExpireDateHistoryService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use App\Services\Subscriptions\SubscriptionTransactionService;
 use Modules\SAAS\Interfaces\UserSubscriptionTransactionServiceInterface;
@@ -22,8 +24,8 @@ class UpdatePaymentStatusController extends Controller
         private UserSubscriptionTransactionServiceInterface $userSubscriptionTransactionServiceInterface,
         private SubscriptionService $subscriptionService,
         private SubscriptionTransactionService $subscriptionTransactionService,
-    ) {
-    }
+        private ShopExpireDateHistoryService $shopExpireDateHistoryService,
+    ) {}
 
     public function index($tenantId)
     {
@@ -53,6 +55,23 @@ class UpdatePaymentStatusController extends Controller
         $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::UpdatePaymentStatus->value);
 
         if ($request->payment_status == BooleanType::True->value && $updateSubscription?->dueSubscriptionTransaction) {
+
+            if ($request->discount_percent != $updateSubscription?->dueSubscriptionTransaction?->discount_percent) {
+
+                $shopExpireDateHistories = $this->shopExpireDateHistoryService->shopExpireDateHistories()->get();
+
+                $shopPrice = $updateSubscription?->dueSubscriptionTransaction?->details?->shop_price ? $updateSubscription?->dueSubscriptionTransaction?->details?->shop_price : 0;
+
+                $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
+                $shopPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($shopPrice);
+                $discountAmount = ($shopPriceInUsd / 100) * $discountPercent;
+                $adjustablePrice = round($shopPriceInUsd - $discountAmount, 0);
+
+                foreach ($shopExpireDateHistories as $shopExpireDateHistory) {
+
+                    $this->shopExpireDateHistoryService->updateShopExpireDateHistory(id: $shopExpireDateHistory->id, adjustablePrice: $adjustablePrice);
+                }
+            }
 
             $this->subscriptionTransactionService->updateDueTransactionStatus(request: $request, dueSubscriptionTransaction: $updateSubscription?->dueSubscriptionTransaction);
         }

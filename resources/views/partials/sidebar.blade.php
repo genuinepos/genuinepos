@@ -1995,17 +1995,6 @@
                                         @endif
 
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('settings.release.note.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-arrow-alt-circle-up"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Version Release Notes') }}</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
                                             <a href="{{ route('barcode.settings.design.pages') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
@@ -2013,6 +2002,17 @@
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __('Barcode Settings Design Pages') }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('settings.release.note.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="far fa-arrow-alt-circle-up"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Version Release Notes') }}</p>
                                             </a>
                                         </div>
                                     </div>

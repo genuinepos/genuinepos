@@ -111,7 +111,7 @@
             [type="checkbox"],
             [type="radio"] {
                 -webkit-box-sizing: border-box;
-                        box-sizing: border-box;
+                box-sizing: border-box;
                 padding: 0;
             }
 

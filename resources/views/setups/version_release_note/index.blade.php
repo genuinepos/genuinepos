@@ -44,6 +44,7 @@
                             <li> - {{ __('Supplier Opening Balance Update issue is fixed') }}</li>
                             <li> - {{ __('Create/Update Bank Account error is fixed') }}</li>
                             <li> - {{ __('POS Screen selling price group bug is fixed') }}</li>
+                            <li> - {{ __('Purchase order to invoice supplier current balance issue is fixed') }}</li>
                             <ol class="fw-bold">{{ __('Feature Update') }}</ol>
                             <li> - {{ __('Add New settings to Company/Store setting [1.Auto Repay: Due Sales/P.Returns (Receipt), 2. Auto Repay: Purchases/S.Returns (Payment)]') }}</li>
                         </ul>

@@ -4,21 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\TenantService;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Stancl\Tenancy\Events\CreatingDatabase;
-use Stancl\Tenancy\Database\DatabaseManager;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 
-class ImportDatabase implements ShouldQueue
+class ImportDatabase
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /** @var TenantWithDatabase|Model */
     protected $tenant;
 
@@ -35,6 +26,14 @@ class ImportDatabase implements ShouldQueue
             '--force' => true
         ];
 
-        Artisan::call('import:sql', $params);
+        // Artisan::call('import:sql', $params);
+
+        try {
+
+            Artisan::call('import:sql', $params);
+        } catch (\Exception $e) {
+
+            Log::error('Error during SQL import for tenant: ' . $this->tenant->id . '. Error: ' . $e->getMessage());
+        }
     }
 }

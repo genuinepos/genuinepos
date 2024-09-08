@@ -24,6 +24,7 @@
         <div class="modal-body">
             <form id="close_cash_register_form" action="{{ route('cash.register.closed', $openedCashRegister->id) }}" method="post">
                 @csrf
+                <input type="hidden" name="user_id" value="{{ auth()?->user()?->id }}">
                 <div class="row">
                     <div class="col-md-6" style="border-right: 1px solid black;">
                         <div class="row">

@@ -1182,7 +1182,7 @@
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('register_view') ? 'CHECKED' : '' }} name="register_view" id="register_view" class="cash_register cash_register_all">
-                                                        <label for="register_view">{{ __('View Cash Register') }}</label>
+                                                        <label for="register_view">{{ __('View Cash Registers List') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('register_close') ? 'CHECKED' : '' }} name="register_close" id="register_close" class="cash_register cash_register_all">

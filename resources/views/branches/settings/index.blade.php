@@ -114,7 +114,6 @@
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('POS Sale Settings') }}</a>
                                             </li>
-
                                         @endif
 
                                         @if (auth()->user()->can('prefix_settings'))

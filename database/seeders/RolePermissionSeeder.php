@@ -267,7 +267,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '38', 'name' => 'purchase_add'],
             ['id' => '39', 'name' => 'purchase_edit'],
             ['id' => '40', 'name' => 'purchase_delete'],
-            ['id' => '45', 'name' => 'purchase_statements'],
             ['id' => '46', 'name' => 'purchase_sale_report'],
             ['id' => '47', 'name' => 'product_purchase_report'],
             ['id' => '48', 'name' => 'purchase_payment_report'],

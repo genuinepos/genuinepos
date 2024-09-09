@@ -100,7 +100,7 @@ class PurchaseOrderToInvoiceControllerMethodContainersService implements Purchas
             // ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['accountBalance'] = $this->accountBalanceService->accountBalance(accountId: $order?->customer_account_id);
+        $data['accountBalance'] = $this->accountBalanceService->accountBalance(accountId: $order?->supplier_account_id);
 
         $data['order'] = $order;
 

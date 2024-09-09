@@ -5,7 +5,7 @@ namespace App\Http\Requests\Sales;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CashRegisterCloseRequest extends FormRequest
+class CashRegisterClosedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,7 +37,7 @@ class CashRegisterCloseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'closing_cash' => 'required'
         ];
     }
 }

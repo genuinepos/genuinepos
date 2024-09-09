@@ -1,9 +1,18 @@
 <script>
+    @if (Session::has('errorMsg'))
+        toastr.error('{{ session('errorMsg') }}');
+    @endif
+
     $(document).on('change', '#cash_account_id', function() {
+
+        getOpeningCash();
+    });
+
+    function getOpeningCash() {
 
         $('#opening_cash').val(parseFloat(0).toFixed(2));
 
-        var accountId = $(this).val();
+        var accountId = $('#cash_account_id').val();
         if (accountId == '') {
 
             return;
@@ -39,5 +48,7 @@
                 }
             }
         });
-    });
+    }
+
+    getOpeningCash();
 </script>

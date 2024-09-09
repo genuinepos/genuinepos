@@ -15,9 +15,6 @@
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
     @include('layout._stylesheet')
     @stack('stylesheets')
-
-    <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
-    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/scripts/main.ts']) --}}
 </head>
 
 <body id="dashboard-8" class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
@@ -48,7 +45,7 @@
                 @endif
             </div>
 
-            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>
+            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small><a href="{{ route('settings.release.note.index') }}" class="text-deep-green fw-bold">V - 2.0.5</a></small></span>
         </footer>
     </div>
 
@@ -56,15 +53,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="appInstallModalLabel">{{ __('Welcome to GPOS!') }}</h1>
+                    <h1 class="modal-title fs-5" id="appInstallModalLabel">Welcome to GPOS!</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ __('If you want to add a shortcut on your desktop, click the OK button.') }}
+                    {{ __("If you want to add a shortcut on your desktop, click the OK button.") }}
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}
-                    <button type="button" id="installPwa" class="btn btn-primary">{{ __('OK') }}</button>
+                    <button type="button" id="installPwa" class="btn btn-primary">OK</button>
                 </div>
             </div>
         </div>

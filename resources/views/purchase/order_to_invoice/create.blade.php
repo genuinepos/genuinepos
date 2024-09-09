@@ -158,7 +158,11 @@
                                         <label class="col-4"><b>{{ __('Supplier') }}</b></label>
                                         <input readonly type="text" id="supplier_name" class="form-control fw-bold" value="{{ $order?->supplier?->name . ($order?->supplier ? '/' . $order?->supplier?->phone : '') }}" placeholder="{{ __('Supplier Name') }}">
                                         <input type="hidden" name="supplier_account_id" class="hidden" id="supplier_account_id" value="{{ $order?->supplier_account_id }}">
-                                        <input type="hidden" id="closing_balance" class="hidden" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>{{ __('Closing Balance') }}</b></label>
+                                        <input type="text" readonly class="form-control fw-bold text-danger" id="closing_balance" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
                                         <input type="hidden" id="default_balance_type" class="hidden" value="{{ $order?->supplier?->group?->default_balance_type }}">
                                     </div>
                                 </div>

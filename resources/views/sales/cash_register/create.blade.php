@@ -53,7 +53,7 @@
                                             <div class="input-group">
                                                 <label class="col-4 text-end pe-2"> <b>{{ __('Cash A/c') }} </b> <span class="text-danger">*</span> </label>
                                                 <div class="col-8">
-                                                    <select name="cash_account_id" id="cash_account_id" class="form-control">
+                                                    <select required name="cash_account_id" id="cash_account_id" class="form-control">
                                                         <option value="">{{ __('Select Cash A/c') }}</option>
                                                         @foreach ($cashAccounts as $cashAccount)
                                                             <option {{ old('cash_account_id') == $cashAccount->id ? 'SELECTED' : '' }} value="{{ $cashAccount->id }}">{{ $cashAccount->name }}</option>

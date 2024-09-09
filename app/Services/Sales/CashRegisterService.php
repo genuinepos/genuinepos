@@ -2,14 +2,151 @@
 
 namespace App\Services\Sales;
 
-use App\Models\Sales\CashRegister;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
+use App\Models\Sales\CashRegister;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class CashRegisterService
 {
-    public function addCashRegister(object $request)
+    function cashRegistersTable(object $request): object
     {
+        $generalSettings = config('generalSettings');
+
+        $cashRegisters = null;
+        $query = DB::table('cash_registers')
+            ->leftJoin('cash_counters', 'cash_registers.cash_counter_id', 'cash_counters.id')
+            ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
+            ->leftJoin('users', 'cash_registers.user_id', 'users.id');
+
+        $this->filteredQuery(request: $request, query: $query);
+
+        $cashRegisters = $query->select(
+            'cash_registers.id',
+            'cash_registers.branch_id',
+            'cash_registers.opening_cash',
+            'cash_registers.date',
+            'cash_registers.closed_at',
+            'cash_registers.closing_cash',
+            'cash_registers.status',
+            'cash_registers.closing_note',
+            'cash_counters.counter_name as cash_counter_name',
+            'cash_counters.short_name as cash_counter_short_name',
+            'branches.name as branch_name',
+            'branches.area_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
+            'users.prefix as user_prefix',
+            'users.name as user_name',
+            'users.last_name as user_last_name',
+            'currencies.currency_rate as c_rate'
+        )->orderBy('cash_registers.date', 'desc');
+
+        $dataTables = DataTables::of($cashRegisters);
+
+        $dataTables->addColumn('action', function ($row) {
+
+            $html = '<div class="dropdown table-dropdown">';
+
+            $html .= '<a href="' . route('cash.register.show', [$row->id]) . '" class="btn btn-sm btn-info" id="cashRegisterDetailsBtn" title="' . __('Cash Register Details') . '"><span class="far fa-eye"></span></a>';
+
+            if ($row->status == BooleanType::True->value) {
+
+                if (auth()->user()->can('register_close') && auth()->user()->can('another_register_close')) {
+
+                    $html .= '<a href="' . route('cash.register.close', [$row->id]) . '" class="btn btn-sm btn-danger ms-1 px-1" id="closeCashRegisterBtn" title="' . __('Close Cash Register') . '"><span class="fas fa-times"></span></a>';
+                } else if (auth()->user()->can('register_close') && !auth()->user()->can('another_register_close')) {
+
+                    if (auth()->user()->id == $row->user_id) {
+
+                        $html .= '<a href="' . route('cash.register.close', [$row->id]) . '" class="btn btn-sm btn-danger ms-1 px-1" id="closeCashRegisterBtn" title="' . __('Close Cash Register') . '"><span class="fas fa-times"></span></a>';
+                    }
+                } else if (!auth()->user()->can('register_close') && auth()->user()->can('another_register_close')) {
+
+                    $html .= '<a href="' . route('cash.register.close', [$row->id]) . '" class="btn btn-sm btn-danger ms-1 px-1" id="closeCashRegisterBtn" title="' . __('Close Cash Register') . '"><span class="fas fa-times"></span></a>';
+                }
+            }
+            $html .= '</div>';
+
+            return $html;
+        });
+
+        $dataTables->editColumn('cash_counter', function ($row) {
+
+            return $row->cash_counter_name . ' (' . $row->cash_counter_short_name . ')';
+        });
+
+        $dataTables->editColumn('opened_at', function ($row) use ($generalSettings) {
+
+            $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
+
+            return date($__date_format, strtotime($row->date));
+        });
+
+        $dataTables->editColumn('closed_at', function ($row) use ($generalSettings) {
+
+            if ($row->closed_at) {
+
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
+
+                return date($__date_format, strtotime($row->closed_at));
+            }
+        });
+
+        $dataTables->editColumn('branch', function ($row) use ($generalSettings) {
+
+            if ($row->branch_id) {
+
+                if ($row->parent_branch_name) {
+
+                    return $row->parent_branch_name . '(' . $row->area_name . ')';
+                } else {
+
+                    return $row->branch_name . '(' . $row->area_name . ')';
+                }
+            } else {
+
+                return $generalSettings['business_or_shop__business_name'];
+            }
+        });
+
+        $dataTables->editColumn('opening_cash', fn($row) => '<span class="opening_cash" data-value="' . curr_cnv($row->opening_cash, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->opening_cash, $row->c_rate, $row->branch_id)) . '</span>');
+
+        $dataTables->editColumn('closing_cash', fn($row) => '<span class="closing_cash" data-value="' . curr_cnv($row->closing_cash, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->closing_cash, $row->c_rate, $row->branch_id)) . '</span>');
+
+        $dataTables->editColumn('status', function ($row) {
+
+            if ($row->status == BooleanType::False->value) {
+
+                return '<span class="text-danger"><b>' . __('Closed') . '</span>';
+            } elseif ($row->status == BooleanType::True->value) {
+
+                return '<span class="text-success"><b>' . __('Opened') . '</b></span>';
+            }
+        });
+
+        $dataTables->editColumn('user', function ($row) {
+
+            return $row->user_prefix . ' ' . $row->user_name . ' ' . $row->user_last_name;
+        });
+
+        $dataTables->rawColumns(['action', 'cash_counter', 'opened_at', 'closed_at', 'branch', 'opening_cash', 'closing_cash', 'status', 'user']);
+
+        return $dataTables->make(true);
+    }
+
+    public function addCashRegister(object $request): ?array
+    {
+        $restrictions = $this->restrictions(cashCounterId: $request->cash_counter_id);
+
+        if ($restrictions['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $restrictions['msg']];
+        }
+
         $generalSettings = config('generalSettings');
         $dateFormat = $generalSettings['business_or_shop__date_format'];
         $timeFormat = $generalSettings['business_or_shop__time_format'];
@@ -32,6 +169,8 @@ class CashRegisterService
         $addCashRegister->opening_cash = $request->opening_cash;
         $addCashRegister->branch_id = auth()->user()->branch_id;
         $addCashRegister->save();
+
+        return null;
     }
 
     public function closeCashRegister(int $id, object $request): void
@@ -105,6 +244,61 @@ class CashRegisterService
         if (isset($with)) {
 
             $query->with($with);
+        }
+
+        return $query;
+    }
+
+    private function restrictions($cashCounterId)
+    {
+        $activeCashCounter = $this->singleCashRegister()
+            ->where('cash_counter_id', $cashCounterId)
+            ->where('status', BooleanType::True->value)->first();
+
+        if (isset($activeCashCounter)) {
+
+            return ['pass' => false, 'msg' => __('Selected cash counter has already been registered by another user.')];
+        }
+
+        return ['pass' => true];
+    }
+
+    private function filteredQuery(object $request, object $query): object
+    {
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('cash_registers.branch_id', null);
+            } else {
+
+                $query->where('cash_registers.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->user_id) {
+
+            $query->where('cash_registers.user_id', $request->user_id);
+        }
+
+        if ($request->status) {
+
+            $query->where('cash_registers.status', $request->status);
+        }
+
+        if ($request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('cash_registers.date', $date_range); // Final
+        }
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('cash_registers.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

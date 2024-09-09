@@ -320,9 +320,7 @@
                             </div>
                         </div>
 
-                        @if (auth()->user()->can('register_view'))
-                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __('Cash Register Details') }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
-                        @endif
+                        <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __('Cash Register Details') }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
 
                         @if (auth()->user()->can('register_close'))
                             <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __('Close Register') }}" tabindex="-1"> <span class="fas fa-times"></span></a>

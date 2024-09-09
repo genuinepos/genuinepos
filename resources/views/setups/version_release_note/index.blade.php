@@ -1,62 +1,52 @@
 @extends('layout.master')
 @push('stylesheets')
-    <style>.list-styled{list-style: inside!important;}</style>
+    <style>
+        .list-styled {
+            list-style: inside !important;
+        }
+    </style>
 @endpush
-@section('title', 'All Sale - ')
+@section('title', 'Version Release Notes - ')
 @section('content')
-    <div class="body-woaper">
+    <div class="body-woaper" style="font-family:Arial, Helvetica, sans-serif!important;">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>@lang('menu.version_release_notes')</h5>
+                    <h5>{{ __('Version Release Notes') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
         <div class="p-1">
             <div class="card">
-                <div class="section-header">
-                    <div class="col-md-10"><h6>@lang('menu.all_release_note')</h6></div>
-                </div>
-
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">{{ __('Release') }}: 1.5.1</h5>
+                            <h5 class="text-blue">{{ __('Release') }}: 2.0.5</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">
-                                <li>{{ __('Stylized links created for Ashlar are now available in the Lite template. A demo is available at') }}</li>
-                                <li>{{ __('Stylized links created for Ashlar are now available in the Lite template. A demo is available at') }}</li>
+                                <ol class="fw-bold">{{ __('About This Update') }}</ol>
+                                <li>{{ __('Upgrade to the new version of Gposs System preformance is optimized, fixed some bugs, added new settings to Company/Store settings and stability is enhenced, bring your butter experience.') }}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="changes-log-area p-2 mt-5">
+                <div class="changes-log-area p-2 mt-3">
                     <div class="release-version">
-                        <h5 class="text-blue">@lang('menu.change_log')</h5>
+                        <h5 class="text-blue">{{ __('Update Log') }}</h5>
                     </div>
                     <div class="changes-log mt-1">
                         <ul class="list-styled">
-                            <li>Date-26/08/2021 (Refactor SaleController, PosController code. Modify util class.)</li>
-                            <li>Date-26/08/2021 (Add yajra table in customer table, Fixed customer view page design.)</li>
-                            <li>Date-26/08/2021 (Fixed quick add product form design.)</li>
-                            <li>Date-28/08/2021 (Manufacturing settings is complated.)</li>
-                            <li>Date-28/08/2021 (Manufacturing process(recipe) section is going...)</li>
-                            <li>Date-31/08/2021 (Manufacturing product section- properly calculate ingredients input qty by output qty...)</li>
-                            <li>Date-31/08/2021 (changes add product form desing...)</li>
-                            <li>Date-31/08/2021 (Fixed some major problems...)</li>
-                            <li>Date-31/08/2021 (select table row...)</li>
-                            <li>Date-31/08/2021 (focus first field when user click edit button...)</li>
-                            <li>Date-31/08/2021 (added a colums in addons table --column=e_commerce...)</li>
-                            <li>Date-1/08/2021 (Categories and SubCategories in one index page...)</li>
-                            <li>Date-1/08/2021 (Now product code (SKU) is not required, generate automatically...)</li>
-                            <li>Date-1/08/2021 (Datatable default row length is 25 (previous was 10)...)</li>
-                            <li>Date-1/08/2021 (Refactor ProductController Code...)</li>
-                            <li>Date-6/09/2021 (Formatted datepicker has been added in everywhere (Accouding to purpas)...)</li>
-                            <li>Date-6/09/2021 (Add Printing system to profit/loss, sala purchase report)...</li>
+                            <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
+                            <li> - {{ __('Supplier Opening Balance Update issue is fixed') }}</li>
+                            <li> - {{ __('Create/Update Bank Account error is fixed') }}</li>
+                            <li> - {{ __('POS Screen selling price group bug is fixed') }}</li>
+                            <li> - {{ __('Purchase order to invoice supplier current balance issue is fixed') }}</li>
+                            <ol class="fw-bold">{{ __('Feature Update') }}</ol>
+                            <li> - {{ __('Add New settings to Company/Store setting [1.Auto Repay: Due Sales/P.Returns (Receipt), 2. Auto Repay: Purchases/S.Returns (Payment)]') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -64,4 +54,5 @@
         </div>
     </div>
 @endsection
-@push('scripts') @endpush
+@push('scripts')
+@endpush

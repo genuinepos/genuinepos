@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
+use App\Models\Sales\CashRegister;
 
 Route::get('my-test', function () {
+
     // $dir = __DIR__ . '/../resources/views';
     // $translationKeys = [];
 

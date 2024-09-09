@@ -181,6 +181,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Product Management') }}</p>
@@ -1226,7 +1227,6 @@
                 @endif
             @endif
 
-
             @if ($generalSettings['modules__stock_adjustments'] == '1')
                 @if (auth()->user()->can('stock_adjustment_add') || auth()->user()->can('stock_adjustment_list') || auth()->user()->can('stock_adjustment_report') || auth()->user()->can('stock_adjustment_product_report'))
                     <div class="sub-menu_t" id="adjustment">
@@ -1484,32 +1484,6 @@
                                                     </a>
                                                 </div>
                                             @endif
-
-                                            {{-- @if (auth()->user()->can('profit_loss_account'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('accounting.profit.loss.account') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-chart-line"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">{{ __('Profit Loss Account') }}</p>
-                                                    </a>
-                                                </div>
-                                            @endif --}}
-
-                                            {{-- @if (auth()->user()->can('balance_sheet'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('accounting.balance.sheet') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-balance-scale"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">{{ __('Balance Sheet') }}</p>
-                                                    </a>
-                                                </div>
-                                            @endif --}}
 
                                             @if (auth()->user()->can('trial_balance'))
                                                 <div class="sub-menu-col">
@@ -1807,7 +1781,6 @@
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('HRM Reports') }}</p>
                                         <div class="sub-menu-row">
-
                                             @if (auth()->user()->can('payroll_report'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('payroll.reports.index') }}" class="switch-bar-wrap">
@@ -2448,3 +2421,5 @@
                 </div>
             @endif
         </div>
+    </div>
+</div>

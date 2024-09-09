@@ -15,6 +15,9 @@
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
     @include('layout._stylesheet')
     @stack('stylesheets')
+
+    <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/scripts/main.ts']) --}}
 </head>
 
 <body id="dashboard-8" class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
@@ -53,6 +56,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
+
                     <h1 class="modal-title fs-5" id="appInstallModalLabel">Welcome to GPOS!</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>

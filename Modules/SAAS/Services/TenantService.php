@@ -222,7 +222,7 @@ class TenantService implements TenantServiceInterface
                     $startDate = new \DateTime($row->trial_start_date);
                     $endDate = clone $startDate;
                     // Add 7 days to today's date
-                    $lastDate = $endDate->modify('+1 ' . $row->is_trial_plan . ' days');
+                    $lastDate = $endDate->modify('+1 ' . $row->trial_days . ' days');
                     // $lastDate = $lastDate->modify('+1 days');
 
                     $expireOn = $lastDate->format('d-m-Y');
@@ -238,10 +238,10 @@ class TenantService implements TenantServiceInterface
 
                 if ($row->has_business == 1) {
 
-                    return '<span class="text-success">Yes</span>';
+                    return '<span class="text-success">' . __('Yes') . '</span>';
                 } else {
 
-                    return '<span class="text-danger">No</span>';
+                    return '<span class="text-danger">' . __('No') . '</span>';
                 }
             })
 

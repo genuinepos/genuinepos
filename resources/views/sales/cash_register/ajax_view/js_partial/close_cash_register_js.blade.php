@@ -59,6 +59,13 @@
                 }
 
                 $('#cashRegisterDetailsAndCloseModal').modal('hide');
+
+                if (typeof cashRegistersTable !== 'undefined') {
+
+                    cashRegistersTable.ajax.reload(null, false);
+                    return;
+                }
+
                 location.reload(true);
             },
             error: function(err) {
@@ -81,6 +88,8 @@
                     toastr.error("{{ __('Access Denied') }}");
                     return;
                 }
+
+                toastr.error(err.responseJSON.message);
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

@@ -4,14 +4,14 @@ namespace App\Http\Requests\Sales;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CashRegisterStoreRequest extends FormRequest
+class CashRegisterIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('register_view');
     }
 
     /**
@@ -22,17 +22,7 @@ class CashRegisterStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cash_counter_id' => 'required',
-            'sale_account_id' => 'required',
-            'cash_account_id' => 'required',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'sale_account_id.required' => __('Sale A/c is required'),
-            'cash_account_id.required' => __('Cash A/c is required'),
+            //
         ];
     }
 }

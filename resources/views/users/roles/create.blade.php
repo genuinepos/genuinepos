@@ -1693,7 +1693,7 @@
                                             </p>
                                             <p class="checkbox_input_wrap mt-1">
                                                 <input type="checkbox" name="receipts_index" id="receipts_index" class="accounting receipts">
-                                                <label for="account_groups_index">{{ __('Receipt List') }}</label>
+                                                <label for="receipts_index">{{ __('Receipt List') }}</label>
                                             </p>
                                             <p class="checkbox_input_wrap mt-1">
                                                 <input type="checkbox" name="receipts_create" id="receipts_create" class="accounting receipts">

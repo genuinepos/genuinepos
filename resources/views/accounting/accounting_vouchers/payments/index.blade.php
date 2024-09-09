@@ -100,7 +100,7 @@
                                     <h6>{{ __('List of Payments') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('purchase_add'))
+                                @if (auth()->user()->can('payments_create'))
                                     <div class="col-2 d-flex justify-content-end">
                                         <a href="{{ route('payments.create') }}" class="btn btn-sm btn-success" id="addPayment"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>

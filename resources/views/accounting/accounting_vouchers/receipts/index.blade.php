@@ -100,7 +100,7 @@
                                     <h6>{{ __('List of Receipts') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('purchase_add'))
+                                @if (auth()->user()->can('receipts_create'))
                                     <div class="col-2 d-flex justify-content-end">
                                         <a href="{{ route('receipts.create') }}" class="btn btn-sm btn-success" id="addReceipt"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>

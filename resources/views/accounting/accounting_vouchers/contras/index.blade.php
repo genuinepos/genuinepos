@@ -90,7 +90,7 @@
                                     <h6>{{ __('List of Contras') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('purchase_add'))
+                                @if (auth()->user()->can('contras_create'))
                                     <div class="col-2 d-flex justify-content-end">
                                         <a href="{{ route('contras.create') }}" class="btn btn-sm btn-success" id="addContra"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>

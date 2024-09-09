@@ -53,7 +53,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    If you want to add a shortcut on your desktop, click the OK button.
+                    {{ __("If you want to add a shortcut on your desktop, click the OK button.") }}
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}

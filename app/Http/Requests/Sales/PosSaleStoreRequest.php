@@ -19,7 +19,7 @@ class PosSaleStoreRequest extends FormRequest
             return auth()->user()->can('service_invoices_create') && (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value);
         } else {
 
-            return auth()->user()->can('pos_add') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+            return auth()->user()->can('sales_create_by_pos') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
         }
     }
 

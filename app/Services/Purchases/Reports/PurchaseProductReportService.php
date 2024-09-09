@@ -49,17 +49,17 @@ class PurchaseProductReportService
 
                 return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
             })
-            ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
+            ->editColumn('invoice_id', fn($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
-            ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_cost_exc_tax, $row->c_rate, $row->branch_id)))
-            
-            ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_cost_exc_tax', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_cost_exc_tax, $row->c_rate, $row->branch_id)))
 
-            ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_discount_amount', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)))
 
-            ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_unit_cost, $row->c_rate, $row->branch_id)))
+            ->editColumn('unit_tax_amount', fn($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)))
 
-            ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="' . curr_cnv($row->line_total, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->line_total, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('net_unit_cost', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_unit_cost, $row->c_rate, $row->branch_id)))
+
+            ->editColumn('line_total', fn($row) => '<span class="line_total" data-value="' . curr_cnv($row->line_total, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->line_total, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'branch', 'quantity', 'invoice_id', 'unit_cost_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'net_unit_cost', 'line_total'])
             ->make(true);
@@ -160,6 +160,11 @@ class PurchaseProductReportService
             //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
+
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('purchases.admin_id', auth()->user()->id);
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

@@ -81,7 +81,7 @@
                         <ul class="head__cn">
                             @if (
                                 (auth()->user()->can('product_add') && $generalSettings['subscription']->features['inventory'] == 1) ||
-                                    (auth()->user()->can('create_add_sale') && $generalSettings['subscription']->features['sales'] == 1) ||
+                                    (auth()->user()->can('sales_create_by_add_sale') && $generalSettings['subscription']->features['sales'] == 1) ||
                                     (auth()->user()->can('create_sales_return') && $generalSettings['subscription']->features['sales'] == 1) ||
                                     (auth()->user()->can('purchase_add') && $generalSettings['subscription']->features['purchase'] == 1) ||
                                     (auth()->user()->can('purchase_return_add') && $generalSettings['subscription']->features['purchase'] == 1) ||
@@ -105,7 +105,7 @@
                                             <li><a href="{{ route('products.create') }}" class="dropdown-item text-dark">{{ __('Add Product') }}</a></li>
                                         @endif
                                         {{-- <li><a href="#" class="dropdown-item text-dark">{{ __('Product Pricing/Costing') }}</a></li> --}}
-                                        @if (auth()->user()->can('create_add_sale') && $generalSettings['subscription']->features['sales'] == 1)
+                                        @if (auth()->user()->can('sales_create_by_add_sale') && $generalSettings['subscription']->features['sales'] == 1)
                                             <li><a href="{{ route('sales.create') }}" class="dropdown-item text-dark">{{ __('Add Sale') }}</a></li>
                                         @endif
 
@@ -191,7 +191,7 @@
                             </li>
 
                             @if ($generalSettings['subscription']->features['sales'] == 1 && $generalSettings['modules__pos'] == '1')
-                                @if (auth()->user()->can('pos_add'))
+                                @if (auth()->user()->can('sales_create_by_pos'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                                 @endif
                             @endif

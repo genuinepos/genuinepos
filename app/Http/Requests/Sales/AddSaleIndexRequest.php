@@ -12,7 +12,7 @@ class AddSaleIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('view_add_sale') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_index') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

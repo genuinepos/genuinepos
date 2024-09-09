@@ -12,7 +12,7 @@ class AddSaleDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('delete_add_sale') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_delete') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

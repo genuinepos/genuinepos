@@ -147,49 +147,16 @@ class SalesReportService
             }
         }
 
-        $saleScreenTypes = [
-            auth()->user()->can('view_add_sale') ? SaleScreenType::AddSale->value : null,
-            auth()->user()->can('pos_all') ? SaleScreenType::PosSale->value : null,
-            auth()->user()->can('service_invoices_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value ? SaleScreenType::ServicePosSale->value : null,
-        ];
+        if ($request->sale_screen) {
 
-        $query->whereIn('sales.sale_screen', $saleScreenTypes);
-
-        // if (auth()->user()->can('service_invoices_only_own')) {
-
-        //     $query->where(function ($query) {
-
-        //         if ($query->sale_screen == SaleScreenType::ServicePosSale->value) {
-        //             $query->where('sales.created_by_id', auth()->user()->id);
-        //         }
-        //     });
-        // }
-
-        // if (auth()->user()->can('view_own_sale')) {
-
-        //     $query->where(function ($query) {
-
-        //         if ($query->sale_screen == SaleScreenType::PosSale->value) {
-        //             $query->where('sales.created_by_id', auth()->user()->id);
-        //         }
-        //     });
-        // }
-
-        if ($generalSettings['subscription']->features['sales'] == BooleanType::True->value) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-        } else if ($generalSettings['subscription']->features['sales'] == BooleanType::False->value && auth()->user()->can('service_invoices_index') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == BooleanType::True->value) {
-
-            if (auth()->user()->can('service_invoices_only_own')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
+            $query->where('sales.sale_screen', $request->sale_screen);
         }
 
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
+
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);

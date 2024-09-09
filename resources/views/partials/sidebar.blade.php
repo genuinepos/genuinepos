@@ -52,7 +52,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['sales'] == 1)
-                    @if (auth()->user()->can('pos_all') || auth()->user()->can('pos_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('view_add_sale') || auth()->user()->can('sale_drafts_index') || auth()->user()->can('sale_quotations_index') || auth()->user()->can('shipment_access') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('discounts') || auth()->user()->can('sales_order_to_invoice') || auth()->user()->can('sales_report') || auth()->user()->can('sales_return_report') || auth()->user()->can('sold_product_report') || auth()->user()->can('sales_order_report') || auth()->user()->can('sales_ordered_products_report') || auth()->user()->can('received_against_sales_report') || auth()->user()->can('sales_returned_products_report') || auth()->user()->can('cash_register_report'))
+                    @if (auth()->user()->can('sales_index') || auth()->user()->can('sales_create_by_pos') || auth()->user()->can('sales_create_by_add_sale') || auth()->user()->can('sales_index') || auth()->user()->can('sale_drafts_index') || auth()->user()->can('sale_quotations_index') || auth()->user()->can('shipment_access') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('discounts') || auth()->user()->can('sales_order_to_invoice') || auth()->user()->can('sales_report') || auth()->user()->can('sales_return_report') || auth()->user()->can('sold_product_report') || auth()->user()->can('sales_order_report') || auth()->user()->can('sales_ordered_products_report') || auth()->user()->can('received_against_sales_report') || auth()->user()->can('sales_returned_products_report') || auth()->user()->can('cash_register_report'))
                         <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/shopping-bag.svg') }}">
@@ -847,7 +847,7 @@
                                 <p class="sub-menu-group-title">{{ __('Sales Management') }}</p>
                                 <div class="sub-menu-row">
                                     @if ($generalSettings['modules__add_sale'] == '1')
-                                        @if (auth()->user()->can('create_add_sale'))
+                                        @if (auth()->user()->can('sales_create_by_add_sale'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('sales.create') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -859,25 +859,10 @@
                                                 </a>
                                             </div>
                                         @endif
-
-                                        @if (auth()->user()->can('view_add_sale'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('sales.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Manage Add Sales') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
                                     @endif
-                                </div>
 
-                                <div class="sub-menu-row">
                                     @if ($generalSettings['modules__pos'] == '1')
-                                        @if (auth()->user()->can('pos_add'))
+                                        @if (auth()->user()->can('sales_create_by_pos'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('sales.pos.create') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -889,32 +874,32 @@
                                                 </a>
                                             </div>
                                         @endif
+                                    @endif
 
-                                        @if (auth()->user()->can('pos_all'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('sales.pos.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
+                                    @if (auth()->user()->can('sales_index'))
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('sales.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
-                                                    <p class="switch_text">{{ __('Manage POS Sales') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                </div>
+                                                <p class="switch_text">{{ __('Manage Sales') }}</p>
+                                            </a>
+                                        </div>
+                                    @endif
 
-                                        @if (auth()->user()->can('pos_all'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('cash.register.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
+                                    @if (auth()->user()->can('register_view'))
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('cash.register.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
-                                                    <p class="switch_text">{{ __('Cash Register List') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                </div>
+                                                <p class="switch_text">{{ __('Cash Register List') }}</p>
+                                            </a>
+                                        </div>
                                     @endif
                                 </div>
 
@@ -1961,18 +1946,6 @@
                                                 </a>
                                             </div>
                                         @endif
-                                        {{-- @if (auth()->user()->can('barcode_settings'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('barcode.settings.index') }}" class="switch-bar-wrap">
-                        <div class="switch_bar">
-                            <div class="bar-link">
-                                <span><i class="fas fa-barcode"></i></span>
-                            </div>
-                        </div>
-                        <p class="switch_text">{{ __("Barcode Settings") }}</p>
-                        </a>
-                    </div>
-                    @endif --}}
 
                                         @if (auth()->user()->can('cash_counters_index') && $generalSettings['subscription']->features['cash_counter_count'] > 0)
                                             <div class="sub-menu-col">
@@ -2120,88 +2093,110 @@
                             </div>
 
                             <div class="container-fluid">
-                                <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">{{ __('Service') }}</p>
-                                    <div class="sub-menu-row">
-                                        @if (auth()->user()->can('job_cards_create'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('services.job.cards.create') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                @if (auth()->user()->can('job_cards_create') || th()->user()->can('job_cards_index'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Job Cards') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('job_cards_create'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('services.job.cards.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-plus-circle"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Add Job Card') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Add Job Card') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('job_cards_index'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('services.job.cards.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
+                                            @if (auth()->user()->can('job_cards_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('services.job.cards.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Job Card List') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Job Card List') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
 
-                                        @if (auth()->user()->can('service_invoices_create'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('sales.pos.create', ['no_id', \App\Enums\SaleScreenType::ServicePosSale->value]) }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                @if (auth()->user()->can('service_invoices_create') || th()->user()->can('service_invoices_index'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Invoices') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('service_invoices_create'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('sales.pos.create', ['no_id', \App\Enums\SaleScreenType::ServicePosSale->value]) }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-plus-circle"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Add Invoice') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Add Invoice') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('service_invoices_index'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('services.invoices.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
+                                            @if (auth()->user()->can('service_invoices_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('services.invoices.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Invoice List') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Invoice List') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
 
-                                        @if (auth()->user()->can('service_quotations_create'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('services.quotations.create') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                @if (auth()->user()->can('service_quotations_create') || th()->user()->can('service_quotations_index'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Quotations') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('service_quotations_create'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('services.quotations.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-plus-circle"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Add Quotation') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Add Quotation') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('service_quotations_index'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('services.quotations.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
+                                            @if (auth()->user()->can('service_quotations_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('services.quotations.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Quotation List') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Quotation List') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
 
-                                        @if (auth()->user()->can('status_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                                @if (auth()->user()->can('status_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Service Settings') }}</p>
+                                        <div class="sub-menu-row">
+
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('services.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -2212,9 +2207,9 @@
                                                     <p class="switch_text">{{ __('Settings') }}</p>
                                                 </a>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>

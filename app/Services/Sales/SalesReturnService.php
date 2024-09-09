@@ -352,7 +352,7 @@ class SalesReturnService
             $query->whereBetween('sale_returns.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->can('sale_drafts_only_own')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
             $query->where('sale_returns.created_by_id', auth()->user()->id);
         }

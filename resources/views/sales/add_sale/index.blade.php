@@ -104,7 +104,7 @@
                                     <h6>{{ __('List of Add Sales') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale'))
+                                @if (auth()->user()->can('sales_create'))
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-success" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
@@ -124,7 +124,7 @@
                                                 <th>{{ __('Invoice ID') }}</th>
                                                 <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
-                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Pmt. Status') }}</th>
                                                 <th>{{ __('Total Item') }}</th>
                                                 <th>{{ __('Total Qty') }}</th>
                                                 <th>{{ __('Total Invoice Amt') }}</th>

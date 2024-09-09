@@ -3,6 +3,7 @@
 namespace App\Services\Manufacturing;
 
 use Carbon\Carbon;
+use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductionStatus;
@@ -305,7 +306,12 @@ class ProductionService
             $query->whereBetween('productions.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->can('view_only_won_transactions')) {
+
+        //     $query->where('productions.created_by_id', auth()->user()->id);
+        // }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('productions.branch_id', auth()->user()->branch_id);
         }

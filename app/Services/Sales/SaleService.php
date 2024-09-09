@@ -97,19 +97,19 @@ class SaleService
 
                 if ($row->sale_screen == SaleScreenType::AddSale->value) {
 
-                    if (auth()->user()->can('edit_add_sale')) {
+                    if (auth()->user()->can('sales_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
                 } elseif ($row->sale_screen == SaleScreenType::PosSale->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
 
-                    if (auth()->user()->can('pos_edit')) {
+                    if (auth()->user()->can('sales_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
                     }
                 }
 
-                if (auth()->user()->can('delete_add_sale')) {
+                if (auth()->user()->can('sales_delete')) {
 
                     $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                 }
@@ -608,7 +608,7 @@ class SaleService
             $query->where('sales.sale_screen', $saleScreen);
         }
 
-        if (auth()->user()->can('sales_orders_only_own')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
             $query->where('sales.created_by_id', auth()->user()->id);
         }

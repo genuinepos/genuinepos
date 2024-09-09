@@ -12,7 +12,7 @@ class AddSaleUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('edit_add_sale') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('sales_edit') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
     }
 
     /**

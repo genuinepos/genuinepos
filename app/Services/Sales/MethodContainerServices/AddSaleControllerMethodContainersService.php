@@ -60,12 +60,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     public function indexMethodContainer(object $request): array|object
     {
         $data = [];
-        // if ($request->ajax()) {
-
-        //     $customerAccountId = $customerAccountId == 'null' ? null : $customerAccountId;
-        //     return $this->saleService->salesListTable(request: $request, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
-        // }
-
+        
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])

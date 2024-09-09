@@ -877,8 +877,8 @@
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-list"></i></span>
                                                     </div>
-
-                                                    <p class="switch_text">{{ __('Manage POS Sales') }}</p>
+                                                </div>
+                                                <p class="switch_text">{{ __('Manage POS Sales') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -895,7 +895,6 @@
                                             </a>
                                         </div>
                                     @endif
-                                @endif
                                 @endif
                             </div>
 
@@ -1950,7 +1949,7 @@
                                             </a>
                                         </div>
                                     @endif
-                                   
+
                                     <div class="sub-menu-col">
                                         <a href="{{ route('barcode.settings.design.pages') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">

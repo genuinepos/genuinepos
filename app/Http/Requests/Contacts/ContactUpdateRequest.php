@@ -19,7 +19,7 @@ class ContactUpdateRequest extends FormRequest
             return auth()->user()->can('customer_edit') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
         } elseif ($type == ContactType::Supplier->value) {
 
-            return auth()->user()->can('customer_edit') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+            return auth()->user()->can('supplier_edit') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
         }
     }
 

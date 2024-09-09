@@ -1666,7 +1666,7 @@
                                                         <label for="banks_edit">{{ __('Bank Edit') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('banks_delete') ? 'CHECKED' : '' }} name="banks_edit" id="banks_delete" class="accounting banks">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('banks_delete') ? 'CHECKED' : '' }} name="banks_delete" id="banks_delete" class="accounting banks">
                                                         <label for="banks_delete">{{ __('Bank Delete') }}</label>
                                                     </p>
                                                 </div>

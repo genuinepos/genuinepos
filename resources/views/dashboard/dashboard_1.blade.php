@@ -61,7 +61,7 @@
                         <div class="row mt-3">
                             <div class="d-flex justify-content-end align-items-center gap-3">
                                 <input type="hidden" id="date_range" value="{{ $toDay }}">
-                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                     <div class="select-dropdown">
                                         <select name="branch_id" id="branch_id" autofocus>
                                             <option value="">{{ __('All Store/Company') }}</option>

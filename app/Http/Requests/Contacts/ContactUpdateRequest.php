@@ -18,7 +18,7 @@ class ContactUpdateRequest extends FormRequest
             return auth()->user()->can('customer_edit');
         } elseif ($type == ContactType::Supplier->value) {
 
-            return auth()->user()->can('customer_edit');
+            return auth()->user()->can('supplier_edit');
         }
     }
 

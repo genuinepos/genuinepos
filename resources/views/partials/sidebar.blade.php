@@ -2097,27 +2097,31 @@
                                             </div>
                                         @endif
 
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('services.quotations.create') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-circle"></i></span>
+                                        @if (auth()->user()->can('service_quotations_create'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('services.quotations.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Add Quotation') }}</p>
-                                            </a>
-                                        </div>
+                                                    <p class="switch_text">{{ __('Add Quotation') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('services.quotations.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
+                                        @if (auth()->user()->can('service_quotations_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('services.quotations.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Quotation List') }}</p>
-                                            </a>
-                                        </div>
+                                                    <p class="switch_text">{{ __('Quotation List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
                                         @if (auth()->user()->can('status_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
                                             <div class="sub-menu-col">

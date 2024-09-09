@@ -1609,8 +1609,6 @@
                                                         <label for="billing_pay_due_payment">{{ __('Pay Due Payment') }}</label>
                                                     </p>
                                                 </div>
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -1683,7 +1681,7 @@
                                                         <label for="banks_edit">{{ __('Bank Edit') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="banks_edit" id="banks_delete" class="accounting banks">
+                                                        <input type="checkbox" name="banks_delete" id="banks_delete" class="accounting banks">
                                                         <label for="banks_delete">{{ __('Bank Delete') }}</label>
                                                     </p>
                                                 </div>

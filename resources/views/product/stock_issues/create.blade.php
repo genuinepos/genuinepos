@@ -136,29 +136,27 @@
                                     </div>
                                 </div>
 
-                                @if ($generalSettings['subscription']->features['hrm'] == 1)
-                                    <div class="col-lg-3 col-md-6">
-                                        <div class="input-group">
-                                            <label class="col-4"><b>{{ __('Department') }}</b></label>
-                                            <div class="col-8">
-                                                <div class="input-group">
-                                                    <div class="input-group flex-nowrap">
-                                                        <select name="department_id" class="form-control select2" id="department_id" data-next="reported_by_id">
-                                                            <option value="">{{ __('None') }}</option>
-                                                            @foreach ($departments as $department)
-                                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>{{ __('Department') }}</b></label>
+                                        <div class="col-8">
+                                            <div class="input-group">
+                                                <div class="input-group flex-nowrap">
+                                                    <select name="department_id" class="form-control select2" id="department_id" data-next="reported_by_id">
+                                                        <option value="">{{ __('None') }}</option>
+                                                        @foreach ($departments as $department)
+                                                            <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                        @endforeach
+                                                    </select>
 
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                @endif
+                                </div>
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
@@ -223,14 +221,12 @@
                                         <label class="fw-bold">{{ __('Stock Location') }}</label>
                                         <select class="form-control" id="e_warehouse_id">
                                             <option value="">{{ $branchName }}</option>
-                                            @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                                @foreach ($warehouses as $w)
-                                                    @php
-                                                        $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                    @endphp
-                                                    <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                @endforeach
-                                            @endif
+                                            @foreach ($warehouses as $w)
+                                                @php
+                                                    $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                @endphp
+                                                <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 

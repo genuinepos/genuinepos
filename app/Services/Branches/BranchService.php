@@ -37,7 +37,6 @@ class BranchService
             'branches.zip_code',
             'branches.country',
             'branches.address',
-            'branches.expire_date',
             'parentBranch.name as parent_branch_name',
             'parentBranch.logo as parent_branch_logo',
             'parentBranch.category as parent_category',
@@ -105,40 +104,13 @@ class BranchService
                 }
             })
 
-            ->editColumn('expire_date', function ($row) use ($generalSettings) {
+            ->rawColumns(['branchName', 'logo', 'address', 'action'])
 
-                if (isset($row->expire_date)) {
-
-                    $__date_format = $generalSettings['business_or_shop__date_format'];
-
-                    $expireDate = date($__date_format, strtotime($row->expire_date));
-
-                    $expireDateText = date('Y-m-d') > date('Y-m-d', strtotime($expireDate)) ? ' | <span class="text-danger fw-bold">' . __('Expired') . '</span>' : ' | <span class="text-success fw-bold">' . __('Active') . '</span>';
-
-                    return '<span class="text-danger">' . $expireDate . '</span>' . $expireDateText;
-                } else if ($generalSettings['subscription']->is_trial_plan) {
-
-                    $planStartDate = $generalSettings['subscription']->trial_start_date;
-                    $trialDays = $generalSettings['subscription']->trial_days;
-                    $startDate = new \DateTime($planStartDate);
-                    $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
-                    $expireDate = $lastDate->format('Y-m-d');
-                    $dateFormat = $generalSettings['business_or_shop__date_format'];
-                    return date($dateFormat, strtotime($expireDate));
-                }
-            })
-
-            ->rawColumns(['branchName', 'category', 'expire_date', 'logo', 'address', 'action'])
             ->make(true);
     }
 
     public function addBranch($request): object
     {
-        $generalSettings = config('generalSettings');
-        $subscription = $generalSettings['subscription'];
-
-        $shopHistory = (new \App\Services\Subscriptions\ShopExpireDateHistoryService)->shopExpireDateHistoryByAnyCondition()->where('is_created', BooleanType::False->value)->first();
-
         $addBranch = new Branch();
         $addBranch->currency_id = $request->currency_id;
         $addBranch->branch_type = $request->branch_type;
@@ -158,8 +130,6 @@ class BranchService
         $addBranch->tin = $request->tin;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        $addBranch->expire_date = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->expire_date : null;
-        $addBranch->shop_expire_date_history_id = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->id : null;
 
         $branchLogoName = '';
         if ($request->hasFile('logo') || $request->hasFile('branch_logo')) {
@@ -179,11 +149,6 @@ class BranchService
         }
 
         $addBranch->save();
-
-        if ($subscription->is_trial_plan == BooleanType::False->value) {
-
-            (new \App\Services\Subscriptions\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $shopHistory->id, isCreated: BooleanType::True->value);
-        }
 
         $this->forgetCache();
 
@@ -233,7 +198,14 @@ class BranchService
 
     public function deleteBranch(int $id): array
     {
-        $deleteBranch = $this->singleBranch(id: $id, with: ['sales', 'purchases', 'childBranches', 'shopExpireDateHistory']);
+        $deleteBranch = $this->singleBranch(id: $id, with: ['sales', 'purchases', 'childBranches']);
+
+        $branchCount = DB::table('branches')->count();
+
+        if ($branchCount == 1) {
+
+            return ['pass' => false, 'msg' => __('Shop can not be deleted. At least shop a is required.')];
+        }
 
         if (count($deleteBranch->childBranches) > 0) {
 
@@ -256,11 +228,6 @@ class BranchService
         }
 
         FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $deleteBranch->logo);
-
-        if ($deleteBranch?->shopExpireDateHistory) {
-
-            (new \App\Services\Subscriptions\ShopExpireDateHistoryService)->updateShopExpireDateHistory(id: $deleteBranch?->shopExpireDateHistory?->id, isCreated: BooleanType::False->value);
-        }
 
         $deleteBranch->delete();
 
@@ -358,8 +325,7 @@ class BranchService
     public function switchableBranches()
     {
         $branchesMethod = $this->branches(with: ['parentBranch']);
-        $tenantId = tenant('id');
-        $cacheKey = "{$tenantId}_switchableBranches";
+        $cacheKey = "switchableBranches";
         return Cache::rememberForever($cacheKey, function () use ($branchesMethod) {
 
             return $branchesMethod->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
@@ -441,7 +407,7 @@ class BranchService
     public function restrictions(): array
     {
         $generalSettings = config('generalSettings');
-        $branchLimit = $generalSettings['subscription']->current_shop_count;
+        $branchLimit = $generalSettings['subscription__branch_count'];
 
         $branchCount = DB::table('branches')->count();
 
@@ -456,7 +422,7 @@ class BranchService
     public function updateRestrictions(): array
     {
         $generalSettings = config('generalSettings');
-        $branchLimit = $generalSettings['subscription']->current_shop_count;
+        $branchLimit = $generalSettings['subscription__branch_count'];
 
         $branchCount = DB::table('branches')->count();
 
@@ -470,8 +436,7 @@ class BranchService
 
     private function forgetCache(): void
     {
-        $tenantId = tenant('id');
-        $cacheKey = "{$tenantId}_switchableBranches";
+        $cacheKey = "switchableBranches";
         Cache::forget($cacheKey);
     }
 }

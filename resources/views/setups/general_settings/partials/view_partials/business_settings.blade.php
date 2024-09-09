@@ -59,6 +59,7 @@
                 @php
                     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                 @endphp
+
                 @foreach (\App\Enums\StockAccountingMethod::cases() as $item)
                     <option @selected($stockAccountingMethod == $item->value) value="{{ $item->value }}">{{ $item->name }}</option>
                 @endforeach
@@ -148,6 +149,7 @@
         <div class="col-md-8">
             <label class="fw-bold">{{ __('Company Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 40px; W: 100px;') }}</small></label>
             <input type="file" class="form-control" name="business_logo" id="business_logo" @if ($generalSettings['business_or_shop__business_logo']) data-default-file="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" @endif>
+
             <span class="error error_business_logo"></span>
             <a href="#" class="btn btn-sm btn-danger mt-1" id="deleteBusinessLogo">{{ __('Remove Company Logo') }}</a>
         </div>

@@ -68,12 +68,13 @@
                                             <div class="form-group row g-2 align-items-end">
                                                 @if ($account?->group?->is_global == 1)
                                                     {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
-                                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->current_shop_count > 1)
+                                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                         <div class="col-md-3">
                                                             <label><strong>{{ location_label() }} </strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                                 <option value="">{{ __('All') }}</option>
-                                                                @if ($generalSettings['subscription']->has_business == 1)
+
+                                                                @if ($generalSettings['subscription__has_business']== 1)
                                                                     <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})" currency_rate="" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                                 @endif
 
@@ -83,7 +84,7 @@
                                                                         $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                         $branchCode = '-' . $branch->branch_code;
                                                                     @endphp
-                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}"  currency_rate="{{ $branch?->branchCurrency?->currency_rate }}" value="{{ $branch->id }}">
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" currency_rate="{{ $branch?->branchCurrency?->currency_rate }}" value="{{ $branch->id }}">
                                                                         {{ $branchName . $areaName . $branchCode }}
                                                                     </option>
                                                                 @endforeach

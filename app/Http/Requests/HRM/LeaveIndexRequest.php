@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\HRM;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LeaveIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class LeaveIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('leaves_index') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('leaves_index');
     }
 
     /**

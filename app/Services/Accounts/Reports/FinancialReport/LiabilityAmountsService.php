@@ -1819,13 +1819,13 @@ class LiabilityAmountsService
                 'accountGroup.id',
                 'accounts.name',
             )
-            ->groupBy('parentGroup.id')
-            ->groupBy('account_groups.id')
-            // ->groupBy('account_groups.name')
-            ->groupBy('account_groups.sub_group_number')
-            ->groupBy('account_groups.sub_sub_group_number')
-            ->groupBy('accounts.id')
-            // ->groupBy('accounts.name')
+            // ->groupBy('parentGroup.id')
+            // ->groupBy('account_groups.id')
+            // // ->groupBy('account_groups.name')
+            // ->groupBy('account_groups.sub_group_number')
+            // ->groupBy('account_groups.sub_sub_group_number')
+            // ->groupBy('accounts.id')
+            // // ->groupBy('accounts.name')
             ->orderBy('account_groups.sub_group_number')
             ->orderBy('account_groups.id')
             ->get();

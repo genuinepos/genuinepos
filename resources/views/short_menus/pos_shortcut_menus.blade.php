@@ -1,11 +1,9 @@
 @foreach ($shortMenuUsers as $shortMenuUser)
     @php
-        $planFeature = isset($shortMenuUser->shortMenu->plan_feature) && isset($generalSettings['subscription']->features[$shortMenuUser->shortMenu->plan_feature]) ? ($generalSettings['subscription']->features[$shortMenuUser->shortMenu->plan_feature] == 1 ? true : false) : true;
-
         $isModuleEnabled = isset($shortMenuUser->shortMenu->enable_module) && isset($generalSettings[$shortMenuUser->shortMenu->enable_module]) ? ($generalSettings[$shortMenuUser->shortMenu->enable_module] == 1 ? true : false) : true;
     @endphp
     @if (isset($shortMenuUser->shortMenu))
-        @if ($planFeature && $isModuleEnabled)
+        @if ($isModuleEnabled)
             @can($shortMenuUser->shortMenu->permission)
                 @php
                     $split = explode(',', $shortMenuUser?->shortMenu?->url);

@@ -16,13 +16,13 @@ class DefaultUsersSeeder extends Seeder
      */
     public function run()
     {
-        ['superAdmin' => $superAdmin, 'admin' => $admin] = $this->getDefaultUsers();
+        ['superAdmin' => $superAdmin] = $this->getDefaultUsers();
+
         if (User::count() == 0) {
+
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE `users` AUTO_INCREMENT=1');
             $superadminRole = Role::where('name', 'superadmin')->first();
-            User::create($superAdmin)->assignRole($superadminRole);
-            $adminRole = Role::where('name', 'admin')->first();
-            User::create($admin)->assignRole($adminRole);
+            User::create($superAdmin)->assignRole($superadminRole->name);
         }
     }
 
@@ -48,29 +48,8 @@ class DefaultUsersSeeder extends Seeder
             'updated_at' => null,
         ];
 
-        $admin = [
-            'id' => 2,
-            'prefix' => 'Mr.',
-            'name' => 'Admin',
-            'last_name' => null,
-            'emp_id' => null,
-            'username' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('12345'),
-            'is_belonging_an_area' => 0,
-            'role_type' => 1,
-            'allow_login' => 1,
-            'status' => 1,
-            'phone' => 'XXXXXXXXX',
-            'date_of_birth' => null,
-            'salary_type' => 'Yearly',
-            'created_at' => Carbon::now(),
-            'updated_at' => null,
-        ];
-
         return [
             'superAdmin' => $superAdmin,
-            'admin' => $admin,
         ];
     }
 }

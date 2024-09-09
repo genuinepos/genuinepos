@@ -3,9 +3,17 @@
         <div class="panel__nav">
             <div class=" top-menu">
                 <div class="logo__sec">
-                    <a href="{{ route('dashboard.index') }}" class="logo">
-                        <img style="height: height; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
-                    </a>
+                    @if (config('speeddigit.dynamic_app_logo') == true)
+                        <a href="{{ route('dashboard.index') }}" class="logo">
+                            @if ($generalSettings['business_or_shop__business_logo'])
+                                <img style="height: height; width:auto;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo__img">
+                            @else
+                                <h6 class="text-white fw-bold text-uppercase">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+                            @endif
+                        </a>
+                    @else
+                        <img style="height: height; width:auto;" src="{{ asset(config('speeddigit.app_logo')) }}" alt="System Logo" class="logo__img">
+                    @endif
                 </div>
                 <div id="left_bar_toggle"><span class="fa-light fa-bars"></span></div>
                 <div class="notify-menu">
@@ -30,66 +38,10 @@
                         <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
 
-                    @if ($generalSettings['subscription']->is_trial_plan == 1 || ($generalSettings['subscription']->has_due_amount == 1 && $generalSettings['subscription']->due_repayment_date))
-                        @if ($generalSettings['subscription']->is_trial_plan == 1)
-                            @php
-                                $planStartDate = $generalSettings['subscription']->trial_start_date;
-                                $trialDays = $generalSettings['subscription']->trial_days;
-                                $startDate = new DateTime($planStartDate);
-                                $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
-                                $expireDate = $lastDate->format('Y-m-d');
-                                $dateFormat = $generalSettings['business_or_shop__date_format'];
-                            @endphp
-
-                            <p class="text-white mt-1">{{ __('Trial | Expire on') }} :
-                                <span class="text-danger">{{ date($dateFormat, strtotime($expireDate)) }}</span>
-                                <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
-                            </p>
-                        @elseif ($generalSettings['subscription']->has_due_amount == 1 && $generalSettings['subscription']->due_repayment_date)
-                            @php
-                                $dateFormat = $generalSettings['business_or_shop__date_format'];
-                            @endphp
-
-                            <p class="text-white mt-1">
-                                {{ __('Due Repayment Date') }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->due_repayment_date)) }}</span>
-                                <a href="{{ route('software.service.billing.due.repayment.index') }}" class="btn btn-sm btn-danger">{{ __('Payment') }}</a>
-                            </p>
-                        @endif
-                    @else
-                        @if (auth()?->user()?->branch)
-                            @php
-                                $dateFormat = $generalSettings['business_or_shop__date_format'];
-                                $branchExpireDate = auth()?->user()?->branch?->expire_date;
-                                $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
-                            @endphp
-                            <p class="text-white mt-1">
-                                <span class="text-warning fw-bold">{{ __("Store") }}</span> | <span class="text-white">{{ __('Expire On') }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
-                            </p>
-                        @else
-                            @php
-                                $dateFormat = $generalSettings['business_or_shop__date_format'];
-                                $businessExpireDate = $generalSettings['subscription']->business_expire_date;
-                                $__businessExpireDate = date($dateFormat, strtotime($businessExpireDate));
-                            @endphp
-                            <p class="text-white mt-1">
-                                <span class="text-info fw-bold">{{ __("Company") }}</span> | <span class="text-white">{{ __('Expire On') }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
-                            </p>
-                        @endif
-                    @endif
-
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            @if (
-                                (auth()->user()->can('product_add') && $generalSettings['subscription']->features['inventory'] == 1) ||
-                                    (auth()->user()->can('create_add_sale') && $generalSettings['subscription']->features['sales'] == 1) ||
-                                    (auth()->user()->can('create_sales_return') && $generalSettings['subscription']->features['sales'] == 1) ||
-                                    (auth()->user()->can('purchase_add') && $generalSettings['subscription']->features['purchase'] == 1) ||
-                                    (auth()->user()->can('purchase_return_add') && $generalSettings['subscription']->features['purchase'] == 1) ||
-                                    (auth()->user()->can('transfer_stock_create') && $generalSettings['subscription']->features['transfer_stocks'] == 1 && ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->features['warehouse_count'] > 0)) ||
-                                    (auth()->user()->can('stock_adjustment_add') && $generalSettings['subscription']->features['stock_adjustments'] == 1) ||
-                                    (auth()->user()->can('production_add') && $generalSettings['subscription']->features['manufacturing'] == 1) ||
-                                    (auth()->user()->can('user_add') && $generalSettings['subscription']->features['users'] == 1) ||
-                                    (auth()->user()->can('role_add') && $generalSettings['subscription']->features['users'] == 1))
+                            @if (auth()->user()->can('product_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('create_sales_return') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_return_add') || auth()->user()->can('transfer_stock_create') || auth()->user()->can('stock_adjustment_add') || auth()->user()->can('production_add') || auth()->user()->can('user_add') || auth()->user()->can('role_add'))
+
                                 <li class="top-icon d-hide d-md-block">
                                     <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
                                         <span>
@@ -101,45 +53,44 @@
                                     <ul class="dropdown-menu short_create_btn_list">
                                         <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __('Quick Add') }}</span></li>
                                         <hr class="m-0">
-                                        @if (auth()->user()->can('product_add') && $generalSettings['subscription']->features['inventory'] == 1)
+
+                                        @if (auth()->user()->can('product_add'))
                                             <li><a href="{{ route('products.create') }}" class="dropdown-item text-dark">{{ __('Add Product') }}</a></li>
                                         @endif
                                         {{-- <li><a href="#" class="dropdown-item text-dark">{{ __('Product Pricing/Costing') }}</a></li> --}}
-                                        @if (auth()->user()->can('create_add_sale') && $generalSettings['subscription']->features['sales'] == 1)
+                                        @if (auth()->user()->can('create_add_sale'))
                                             <li><a href="{{ route('sales.create') }}" class="dropdown-item text-dark">{{ __('Add Sale') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('create_sales_return') && $generalSettings['subscription']->features['sales'] == 1)
+                                        @if (auth()->user()->can('create_sales_return'))
                                             <li><a href="{{ route('sales.returns.create') }}" class="dropdown-item text-dark">{{ __('Add Sales Return') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_add') && $generalSettings['subscription']->features['purchase'] == 1)
+                                        @if (auth()->user()->can('purchase_add'))
                                             <li><a href="{{ route('purchases.create') }}" class="dropdown-item text-dark">{{ __('Add Purchase') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_return_add') && $generalSettings['subscription']->features['purchase'] == 1)
+                                        @if (auth()->user()->can('purchase_return_add'))
                                             <li><a href="{{ route('purchase.returns.create') }}" class="dropdown-item text-dark">{{ __('Add Purchase Return') }}</a></li>
                                         @endif
 
-                                        @if ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->features['warehouse_count'] > 0)
-                                            @if (auth()->user()->can('transfer_stock_create') && $generalSettings['subscription']->features['transfer_stocks'] == 1)
-                                                <li><a href="{{ route('transfer.stocks.create') }}" class="dropdown-item text-dark">{{ __('Add Transfer Stock') }}</a></li>
-                                            @endif
+                                        @if (auth()->user()->can('transfer_stock_create'))
+                                            <li><a href="{{ route('transfer.stocks.create') }}" class="dropdown-item text-dark">{{ __('Add Transfer Stock') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('stock_adjustment_add') && $generalSettings['subscription']->features['stock_adjustments'] == 1)
+                                        @if (auth()->user()->can('stock_adjustment_add'))
                                             <li><a href="{{ route('stock.adjustments.create') }}" class="dropdown-item text-dark">{{ __('Add Stock Adjustment') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('production_add') && $generalSettings['subscription']->features['manufacturing'] == 1)
+                                        @if (auth()->user()->can('production_add'))
                                             <li><a href="{{ route('manufacturing.productions.create') }}" class="dropdown-item text-dark">{{ __('Add Production') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('user_add') && $generalSettings['subscription']->features['users'] == 1)
+                                        @if (auth()->user()->can('user_add'))
                                             <li><a href="{{ route('users.create') }}" class="dropdown-item text-dark">{{ __('Add User') }}</a></li>
                                         @endif
 
-                                        @if (auth()->user()->can('role_add') && $generalSettings['subscription']->features['users'] == 1)
+                                        @if (auth()->user()->can('user_add'))
                                             <li><a href="{{ route('users.role.create') }}" class="dropdown-item text-dark">{{ __('Add Role') }}</a></li>
                                         @endif
                                     </ul>
@@ -149,9 +100,8 @@
                             <li class="top-icon d-hide d-md-block" id="hard_reload">
                                 <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __('Reload') }}</span></a>
                             </li>
-                            {{-- @if ($generalSettings['subscription']->features['manufacturing'] == 1)
-                                <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
-                            @endif --}}
+
+                            {{-- <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li> --}}
 
                             {{-- @if (auth()->user()->can('communication'))
                                 <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i class="fas fa-th-large"></i></b></a>
@@ -190,7 +140,7 @@
                                 </ul>
                             </li>
 
-                            @if ($generalSettings['subscription']->features['sales'] == 1 && $generalSettings['modules__pos'] == '1')
+                            @if ($generalSettings['modules__pos'] == '1')
                                 @if (auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                                 @endif

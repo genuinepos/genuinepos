@@ -63,8 +63,7 @@ class ProductAccessBranchService
         // ) {
         if (
             isset($request->access_branch_count) &&
-            auth()->user()->can('has_access_to_all_area') &&
-            (config('generalSettings')['subscription']->current_shop_count > 1 || config('generalSettings')['subscription']->has_business == 1)
+            auth()->user()->can('has_access_to_all_area')
         ) {
 
             foreach ($product->productAccessBranches as $productAccessBranch) {

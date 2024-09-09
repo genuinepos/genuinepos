@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Manufacturing;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductionEditRequest extends FormRequest
@@ -12,7 +11,7 @@ class ProductionEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('production_edit') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
+        return auth()->user()->can('production_edit');
     }
 
     /**

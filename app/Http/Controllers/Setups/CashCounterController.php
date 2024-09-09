@@ -17,7 +17,7 @@ class CashCounterController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('cash_counters_index') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
+        abort_if(!auth()->user()->can('cash_counters_index'), 403);
 
         if ($request->ajax()) {
 
@@ -33,7 +33,7 @@ class CashCounterController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('cash_counters_add') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
+        abort_if(!auth()->user()->can('cash_counters_add'), 403);
 
         return view('setups.cash_counter.ajax_view.create');
     }
@@ -42,15 +42,6 @@ class CashCounterController extends Controller
     {
         try {
             DB::beginTransaction();
-
-            $generalSettings = config('generalSettings');
-
-            $restriction = $this->cashCounterService->restriction($generalSettings);
-
-            if ($restriction['pass'] == false) {
-
-                return response()->json(['errorMsg' => $restriction['msg']]);
-            }
 
             $addCashCounter = $this->cashCounterService->addCashCounter(branchId: auth()->user()->branch_id, cashCounterName: $request->counter_name, shortName: $request->short_name);
 
@@ -65,7 +56,7 @@ class CashCounterController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('cash_counters_edit') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
+        abort_if(!auth()->user()->can('cash_counters_edit'), 403);
 
         $cashCounter = $this->cashCounterService->singleCashCounter(id: $id);
 

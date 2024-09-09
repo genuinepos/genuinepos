@@ -224,12 +224,10 @@
                         <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalExpense']) }}</td>
                     </tr>
 
-                    @if ($generalSettings['subscription']->features['hrm'] == 1)
-                        <tr>
-                            <th class="text-start">{{ __('Total Expense By Payroll') }}</th>
-                            <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPayrollPayment']) }}</td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <th class="text-start">{{ __('Total Expense By Payroll') }}</th>
+                        <td class="text-start">: {{ $currency }} {{ App\Utils\Converter::format_in_bdt($todaySummaries['totalPayrollPayment']) }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

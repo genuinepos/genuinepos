@@ -14,7 +14,6 @@ use App\Services\Setups\CashCounterService;
 use App\Services\Branches\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
-use App\Services\Subscriptions\SubscriptionService;
 use App\Interfaces\Startup\StartupControllerMethodContainerInterface;
 
 class StartupControllerMethodContainerService implements StartupControllerMethodContainerInterface
@@ -28,8 +27,7 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
         private BranchService $branchService,
         private CashCounterService $cashCounterService,
         private InvoiceLayoutService $invoiceLayoutService,
-        private BranchSettingService $branchSettingService,
-        private SubscriptionService $subscriptionService,
+        private BranchSettingService $branchSettingService
     ) {}
 
     public function startupFromContainer(): array
@@ -85,6 +83,7 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
             }
 
             $settings = [
+                'subscription__is_completed_business_setup' => 1,
                 'business_or_shop__business_name' => $request->business_name,
                 'business_or_shop__address' => $request->business_address,
                 'business_or_shop__phone' => $request->business_phone,
@@ -104,7 +103,6 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
             ];
 
             $this->generalSettingService->updateAndSync($settings);
-            $this->subscriptionService->updateBusinessStartUpCompletingStatus();
         }
 
         if (Session::get('startupType') == 'business_and_branch' || Session::get('startupType') == 'branch') {
@@ -128,17 +126,21 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
                 $this->branchService->addBranchInitialUser($preparedAddBranchRequest, $addBranch->id);
             }
 
-            $this->subscriptionService->updateBranchStartUpCompletingStatus();
-
-            if ($generalSettings['subscription']->current_shop_count == 1 && $generalSettings['subscription']->has_business == BooleanType::False->value) {
+            if ($generalSettings['subscription__branch_count'] == 1 && $generalSettings['subscription__has_business'] == BooleanType::False->value) {
 
                 auth()->user()->branch_id = $addBranch->id;
                 auth()->user()->is_belonging_an_area = BooleanType::True->value;
                 auth()->user()->save();
             }
+
+            $settings = [
+                'subscription__is_completed_branch_startup' => 1,
+            ];
+
+            $this->generalSettingService->updateAndSync($settings);
         }
 
         Session::forget('chooseBusinessOrShop');
-        Session::forget('startupType');
+        Session::forget('startupType');;
     }
 }

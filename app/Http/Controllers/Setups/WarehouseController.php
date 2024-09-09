@@ -15,8 +15,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        $generalSettings = config('generalSettings');
-        abort_if(!auth()->user()->can('warehouses_index') && $generalSettings['subscription']->features['warehouse_count'] == 0, 403);
+        abort_if(!auth()->user()->can('warehouses_index'), 403);
 
         if ($request->ajax()) {
 
@@ -44,12 +43,6 @@ class WarehouseController extends Controller
 
         try {
             DB::beginTransaction();
-
-            $restriction = $this->warehouseService->restriction();
-            if ($restriction['pass'] == false) {
-
-                return response()->json(['errorMsg' => $restriction['msg']]);
-            }
 
             $addWarehouse = $this->warehouseService->addWarehouse($request);
 

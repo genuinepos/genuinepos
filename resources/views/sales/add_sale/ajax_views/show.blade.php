@@ -413,9 +413,7 @@
                                 <a href="{{ route('sales.pos.edit', [$sale->id, $sale->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
                         @elseif($sale->sale_screen == \App\Enums\SaleScreenType::ServicePosSale->value)
-                            @if (auth()->user()->can('service_invoices_edit') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value)
-                                <a href="{{ route('sales.pos.edit', [$sale->id, $sale->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-                            @endif
+                            <a href="{{ route('sales.pos.edit', [$sale->id, $sale->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @endif
 

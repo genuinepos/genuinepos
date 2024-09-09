@@ -32,7 +32,7 @@
                 </div>
 
                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
-                @if (auth()->user()->can('has_access_to_all_area') && ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1))
+                @if (auth()->user()->can('has_access_to_all_area'))
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
                             <label class="fw-bold">{{ __('Allowed Store/Company') }} <span class="text-danger">*</span></label>

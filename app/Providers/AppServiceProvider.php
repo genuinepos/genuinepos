@@ -88,9 +88,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GeneralSetting::class, function () {
-            return new GeneralSetting();
-        });
+        // $this->app->singleton(GeneralSetting::class, function () {
+        //     return new GeneralSetting();
+        // });
 
         $this->app->bind(ProductControllerMethodContainersInterface::class, ProductControllerMethodContainersService::class);
         $this->app->bind(QuickProductAddControllerMethodContainersInterface::class, QuickProductAddControllerMethodContainersService::class);

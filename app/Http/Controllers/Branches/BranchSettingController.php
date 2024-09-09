@@ -232,28 +232,18 @@ class BranchSettingController extends Controller
 
     public function moduleSettings($id, Request $request)
     {
-        $generalSettings = config('generalSettings');
-        $subscription = $generalSettings['subscription'];
-        $hrm = $subscription->features['hrm'] == 1 ? (isset($request->hrms) ? 1 : 0) : 1;
-        $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
-        $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
-        $services = isset($subscription->features['services']) && $subscription->features['services'] == 1 ? (isset($request->service) ? 1 : 0) : 1;
-        $addSale = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->add_sale) ? 1 : 0) : 1;
-        $pos = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->pos) ? 1 : 0) : 1;
-        $purchase = isset($subscription->features['purchase']) && $subscription->features['purchase'] == 1 ? (isset($request->purchases) ? 1 : 0) : 1;
-
         $settings = [
-            'modules__purchases' => $purchase,
-            'modules__add_sale' => $addSale,
-            'modules__pos' => $pos,
-            'modules__service' =>  $services,
+            'modules__purchases' => isset($request->purchases) ? 1 : 0,
+            'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
+            'modules__pos' => isset($request->pos) ? 1 : 0,
+            'modules__service' =>  isset($request->service) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
-            'modules__hrms' => $hrm,
-            'modules__manage_task' => $task_management,
-            'modules__manufacturing' => $manufacturing,
+            'modules__hrms' => isset($request->hrms) ? 1 : 0,
+            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
+            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
         ];
 
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);

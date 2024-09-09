@@ -40,7 +40,7 @@
                                             <th>{{ __('Currency Name') }}</th>
                                             <th>{{ __('Currency Code') }}</th>
                                             <th>{{ __('Currency Symbol') }}</th>
-                                            @if ($generalSettings['subscription']->has_business == \App\Enums\BooleanType::True->value)
+                                            @if ($generalSettings['subscription__has_business'] == \App\Enums\BooleanType::True->value)
                                                 <th>{{ __('Current Rate(As Per Base Currency)') }}</th>
                                             @endif
                                             <th>{{ __('Action') }}</th>

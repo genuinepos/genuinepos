@@ -14,7 +14,7 @@ class ProductionUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('production_edit') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
+        return auth()->user()->can('production_edit');
     }
 
     /**

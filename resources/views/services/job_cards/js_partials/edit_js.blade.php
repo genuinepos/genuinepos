@@ -1169,7 +1169,7 @@
 </script>
 
 <script>
-    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_brand_add'))
+    @if (auth()->user()->can('product_brand_add'))
         $(document).on('click', '#addBrand', function(e) {
             e.preventDefault();
 
@@ -1514,7 +1514,7 @@
     });
 </script>
 
-@if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
+@if (auth()->user()->can('customer_add'))
     <script>
         $('#addContact').on('click', function(e) {
 
@@ -1553,7 +1553,7 @@
     </script>
 @endif
 
-@if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
+@if (auth()->user()->can('product_add'))
     <script>
         $('#addProduct').on('click', function() {
 

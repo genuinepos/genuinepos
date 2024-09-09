@@ -94,7 +94,7 @@ class ServiceInvoiceService
                 }
             }
 
-            if (auth()->user()->can('shipment_access') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value) {
+            if (auth()->user()->can('shipment_access')) {
 
                 $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
             }

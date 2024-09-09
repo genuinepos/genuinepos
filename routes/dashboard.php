@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
 
-Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
+Route::controller(DashboardController::class)->prefix('/')->group(function () {
 
     Route::get('/', 'index')->name('dashboard.index');
     Route::get('card/amount', 'cardData')->name('dashboard.card.data');

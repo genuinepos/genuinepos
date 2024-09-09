@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Services;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeviceModelTableRequest extends FormRequest
@@ -12,7 +11,7 @@ class DeviceModelTableRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('device_models_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
+        return auth()->user()->can('device_models_index');
     }
 
     /**

@@ -25,7 +25,7 @@
                                         <form id="filter_form">
                                             <div class="form-group row">
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
-                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-3">
                                                         <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
@@ -164,9 +164,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->can('shipment_access') && $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
-    @endif
+    <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     <div id="details"></div>
     <div id="extra_details"></div>

@@ -12,7 +12,7 @@ class DiscountIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('discounts') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+        return auth()->user()->can('discounts');
     }
 
     /**

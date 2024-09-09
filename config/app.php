@@ -15,9 +15,6 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'domain' => (string) env('DOMAIN', 'pos.test'),
-    'app_domain' => (string) env('APP_DOMAIN', 'app.pos.test'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -180,7 +177,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\TenancyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         App\Providers\GeneralSettingProvider::class,

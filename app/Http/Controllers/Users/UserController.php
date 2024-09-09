@@ -131,9 +131,4 @@ class UserController extends Controller
     {
         return $userControllerMethodContainersInterface->branchUsersMethodContainer(isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser, allowAll: $allowAll, branchId: $branchId);
     }
-
-    function currentUserAndEmployeeCount(UserControllerMethodContainersInterface $userControllerMethodContainersInterface, $branchId = null)
-    {
-        return $userControllerMethodContainersInterface->currentUserAndEmployeeCountMethodContainer(branchId: $branchId);
-    }
 }

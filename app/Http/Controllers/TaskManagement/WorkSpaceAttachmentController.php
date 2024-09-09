@@ -9,7 +9,8 @@ use App\Http\Requests\TaskManagement\WorkSpaceAttachmentDeleteRequest;
 
 class WorkSpaceAttachmentController extends Controller
 {
-    public function __construct(private WorkspaceAttachmentService $workspaceAttachmentService) {
+    public function __construct(private WorkspaceAttachmentService $workspaceAttachmentService)
+    {
     }
 
     public function index($workspaceId, WorkspaceAttachmentIndexRequest $request)
@@ -26,7 +27,6 @@ class WorkSpaceAttachmentController extends Controller
     public function delete($id)
     {
         $this->workspaceAttachmentService->deleteWorkspaceAttachment(id: $id);
-
         return response()->json(__('Document deleted successfully.'));
     }
 }

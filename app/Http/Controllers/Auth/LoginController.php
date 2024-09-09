@@ -8,6 +8,7 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,6 @@ class LoginController extends Controller
      * @return void
      */
 
-
     public function showLoginForm()
     {
         if (Auth::check('web')) {
@@ -57,7 +57,11 @@ class LoginController extends Controller
             return redirect()->back();
         }
 
-        return view('auth.login');
+        $businessInfo = DB::table('general_settings')
+            ->whereIn('key', ['business_or_shop__business_name', 'business_or_shop__business_logo'])
+            ->where('branch_id', null)->get()->pluck('value', 'key');
+
+        return view('auth.login', compact('businessInfo'));
     }
 
     public function login(Request $request)
@@ -67,31 +71,20 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $subscription = DB::table('subscriptions')->first();
-        $firstBranch = DB::table('branches')->first();
-
         $user = User::with('branch', 'roles', 'roles.permissions')
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
 
+        $generalSettings = DB::table('general_settings')->whereIn('key', ['subscription__has_business', 'subscription__branch_count'])->where('branch_id', null)->pluck('value', 'key')->toArray();
+
+        $firstBranch = DB::table('branches')->first();
+
         $role = $user?->roles()?->first();
-        if (isset($role) && $role->hasPermissionTo('has_access_to_all_area') && ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)) {
+        if (isset($role) && $role->hasPermissionTo('has_access_to_all_area') && ($generalSettings['subscription__has_business'] == BooleanType::True->value || $generalSettings['subscription__branch_count'] > 1)) {
 
             $user->branch_id = null;
             $user->is_belonging_an_area = BooleanType::False->value;
             $user->save();
-        }
-
-        if (
-            $user?->branch &&
-            isset($user?->branch?->expire_date) &&
-            date('Y-m-d') > $user?->branch?->expire_date &&
-            !$role->hasPermissionTo('billing_renew_branch')
-        ) {
-
-            $msg = __('Login failed. Store ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Authority.');
-            session()->flash('errorMsg', $msg);
-            return redirect()->back();
         }
 
         if (isset($user) && $user->allow_login == BooleanType::True->value) {
@@ -105,7 +98,7 @@ class LoginController extends Controller
                     session(['lang' => $user->language]);
                 }
 
-                if (isset($firstBranch) && $subscription->current_shop_count == 1 && $subscription->has_business == BooleanType::False->value) {
+                if (isset($firstBranch) && $generalSettings['subscription__has_business'] == BooleanType::False->value && $generalSettings['subscription__branch_count'] == 1) {
 
                     $user->branch_id = $firstBranch->id;
                     $user->is_belonging_an_area = BooleanType::True->value;

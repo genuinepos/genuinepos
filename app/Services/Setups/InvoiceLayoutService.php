@@ -294,10 +294,8 @@ class InvoiceLayoutService
 
     private function forgetCache(int $id): void
     {
-        $tenantId = tenant('id');
-        $cacheKey = "{$tenantId}_invoiceAddSaleLayout_{$id}";
         Cache::forget($cacheKey);
-        $cacheKey = "{$tenantId}_invoicePosSaleLayout_{$id}";
+        $cacheKey = "invoicePosSaleLayout_{$id}";
         Cache::forget($cacheKey);
     }
 }

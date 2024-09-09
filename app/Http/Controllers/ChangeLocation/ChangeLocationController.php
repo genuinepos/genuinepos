@@ -12,7 +12,6 @@ use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
 use App\Http\Requests\ChangeLocation\ChangeLocationConfirmRequest;
-use App\Http\Requests\ChangeBusinessOrBranchLocation\RedirectLocationRequest;
 
 class ChangeLocationController extends Controller
 {
@@ -27,8 +26,8 @@ class ChangeLocationController extends Controller
             auth()->user()->can('has_access_to_all_area') &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value &&
             (
-                config('generalSettings')['subscription']->has_business == BooleanType::True->value ||
-                config('generalSettings')['subscription']->current_shop_count > 1
+                config('generalSettings')['subscription__has_business'] == BooleanType::True->value ||
+                config('generalSettings')['subscription__branch_count'] > 1
             )
         ) {
 

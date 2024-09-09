@@ -11,7 +11,7 @@ class StatusDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('status_delete') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
+        return auth()->user()->can('status_delete');
     }
 
     /**

@@ -69,10 +69,6 @@
                 name: 'branches.state'
             },
             {
-                data: 'expire_date',
-                name: 'branches.name'
-            },
-            {
                 data: 'action'
             },
         ],

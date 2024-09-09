@@ -170,7 +170,7 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && count($warehouses) > 0)
+                                    @if (count($warehouses) > 0)
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">

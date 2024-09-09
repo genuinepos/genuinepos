@@ -18,7 +18,7 @@ class BranchController extends Controller
     public function index(BranchIndexRequest $request, BranchControllerMethodContainersInterface $branchControllerMethodContainersInterface)
     {
         $generalSettings = config('generalSettings');
-
+        
         $indexMethodContainer = $branchControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
         if ($request->ajax()) {

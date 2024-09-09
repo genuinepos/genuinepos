@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Contacts;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ManageCustomerRequest extends FormRequest
@@ -12,7 +11,7 @@ class ManageCustomerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('customer_manage') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('customer_manage');
     }
 
     /**

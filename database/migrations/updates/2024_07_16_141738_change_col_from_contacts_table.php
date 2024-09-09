@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -15,7 +17,7 @@ return new class extends Migration
 
             if (Schema::hasColumn('contacts', 'pay_term_number')) {
 
-                $table->bigInteger('pay_term_number')->change()->nullable()->default(null);
+                DB::statement('ALTER TABLE `contacts` MODIFY `pay_term_number` BIGINT NULL DEFAULT NULL');
             }
         });
     }

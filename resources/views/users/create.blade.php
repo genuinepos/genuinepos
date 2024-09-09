@@ -35,14 +35,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-6">
-                    <h6>{{ __('Add User') }}
-                        <span style="font-size: 12px;">({{ __('User Limit') }}
-                            : <span class="text-danger" id="current_user_count"> --- </span>/{{ $generalSettings['subscription']->features['user_count'] }})
-                        </span> |
-                        <span style="font-size: 12px;">({{ __('Employee Limit') }}
-                            : <span class="text-danger" id="current_employee_count"> --- </span>/{{ $generalSettings['subscription']->features['employee_count'] }})
-                        </span>
-                    </h6>
+                    <h6>{{ __('Add User') }}</h6>
                 </div>
 
                 <div class="col-md-6">
@@ -119,7 +112,7 @@
                                         </div>
 
                                         {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
-                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ location_label() }}</b> <span class="text-danger">*</span></label>
@@ -145,22 +138,20 @@
                                         @endif
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['hrm'] == 1)
-                                        <div class="row mt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Type') }}</b></label>
-                                                    <div class="col-8">
-                                                        <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
-                                                            @foreach (\App\Enums\UserType::cases() as $userType)
-                                                                <option value="{{ $userType->value }}">{{ $userType->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Type') }}</b></label>
+                                                <div class="col-8">
+                                                    <select name="user_type" class="form-control" id="user_type" data-next="allow_login">
+                                                        @foreach (\App\Enums\UserType::cases() as $userType)
+                                                            <option value="{{ $userType->value }}">{{ $userType->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    </div>
                                 </div>
                             </div>
 
@@ -484,114 +475,112 @@
                                 </div>
                             </div>
 
-                            @if ($generalSettings['subscription']->features['hrm'] == 1)
-                                <div class="form_element rounded mt-0 mb-1">
-                                    <div class="heading_area">
-                                        <p class="px-1 pt-1 pb-0 text-primary"><strong>{{ __('Human Resource Details') }}</strong> </p>
+                            <div class="form_element rounded mt-0 mb-1">
+                                <div class="heading_area">
+                                    <p class="px-1 pt-1 pb-0 text-primary"><strong>{{ __('Human Resource Details') }}</strong> </p>
+                                </div>
+
+                                <div class="element-body">
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Employee ID') }}</b></label>
+                                                <div class="col-8">
+                                                    <input type="text" class="form-control" name="emp_id" id="emp_id" data-next="shift_id" placeholder="{{ __('Employee ID') }}">
+                                                    <span class="error error_emp_id"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Shift') }}</b></label>
+                                                <div class="col-8">
+                                                    <div class="input-group flex-nowrap">
+                                                        <select name="shift_id" class="form-control" id="shift_id" data-next="department_id">
+                                                            @foreach ($shifts as $shift)
+                                                                <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text {{ !auth()->user()->can('shifts_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('shifts_create') ? 'addShift' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="element-body">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Employee ID') }}</b></label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="emp_id" id="emp_id" data-next="shift_id" placeholder="{{ __('Employee ID') }}">
-                                                        <span class="error error_emp_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Shift') }}</b></label>
-                                                    <div class="col-8">
-                                                        <div class="input-group flex-nowrap">
-                                                            <select name="shift_id" class="form-control" id="shift_id" data-next="department_id">
-                                                                @foreach ($shifts as $shift)
-                                                                    <option value="{{ $shift->id }}">{{ $shift->name }}</option>
-                                                                @endforeach
-                                                            </select>
-
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('shifts_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('shifts_create') ? 'addShift' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-2 pt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Department') }}</b></label>
-                                                    <div class="col-8">
-                                                        <div class="input-group flex-nowrap">
-                                                            <select name="department_id" class="form-control select2" id="department_id" data-next="designation_id">
-                                                                <option value="">{{ __('Select Department') }}</option>
-                                                                @foreach ($departments as $department)
-                                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                                @endforeach
-                                                            </select>
-
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Designation') }}</b></label>
-                                                    <div class="col-8">
-                                                        <div class="input-group flex-nowrap">
-                                                            <select name="designation_id" class="form-control select2" id="designation_id" data-next="salary">
-                                                                <option value="">{{ __('Select Designation') }}</option>
-                                                                @foreach ($designations as $designation)
-                                                                    <option value="{{ $designation->id }}">{{ $designation->name }}</option>
-                                                                @endforeach
-                                                            </select>
-
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('designations_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('designations_create') ? 'addDesignation' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-2 pt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"> <b>{{ __('Salary') }}</b></label>
-                                                    <div class="col-8">
-                                                        <input type="number" step="any" name="salary" id="salary" class="form-control" data-next="pay_type" placeholder="{{ __('Salary Amount') }}" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"> <b>{{ __('Pay Type') }}</b></label>
-                                                    <div class="col-8">
-                                                        <select name="pay_type" class="form-control" id="pay_type" data-next="save_btn">
-                                                            <option value="">{{ __('Select Pay type') }}</option>
-                                                            <option value="Monthly">{{ __('Monthly') }}</option>
-                                                            <option value="Yearly">{{ __('Yearly') }}</option>
-                                                            <option value="Daliy">{{ __('Daily') }}</option>
-                                                            <option value="Hourly">{{ __('Hourly') }}</option>
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Department') }}</b></label>
+                                                <div class="col-8">
+                                                    <div class="input-group flex-nowrap">
+                                                        <select name="department_id" class="form-control select2" id="department_id" data-next="designation_id">
+                                                            <option value="">{{ __('Select Department') }}</option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                            @endforeach
                                                         </select>
+
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text {{ !auth()->user()->can('departments_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('departments_create') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                        </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Designation') }}</b></label>
+                                                <div class="col-8">
+                                                    <div class="input-group flex-nowrap">
+                                                        <select name="designation_id" class="form-control select2" id="designation_id" data-next="salary">
+                                                            <option value="">{{ __('Select Designation') }}</option>
+                                                            @foreach ($designations as $designation)
+                                                                <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text {{ !auth()->user()->can('designations_create') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('designations_create') ? 'addDesignation' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"> <b>{{ __('Salary') }}</b></label>
+                                                <div class="col-8">
+                                                    <input type="number" step="any" name="salary" id="salary" class="form-control" data-next="pay_type" placeholder="{{ __('Salary Amount') }}" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-4"> <b>{{ __('Pay Type') }}</b></label>
+                                                <div class="col-8">
+                                                    <select name="pay_type" class="form-control" id="pay_type" data-next="save_btn">
+                                                        <option value="">{{ __('Select Pay type') }}</option>
+                                                        <option value="Monthly">{{ __('Monthly') }}</option>
+                                                        <option value="Yearly">{{ __('Yearly') }}</option>
+                                                        <option value="Daliy">{{ __('Daily') }}</option>
+                                                        <option value="Hourly">{{ __('Hourly') }}</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
 
                             <div class="submit-area d-flex justify-content-end">
                                 <div class="btn-loading">

@@ -12,7 +12,7 @@ class TodoDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('todo_delete') && config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value;
+        return auth()->user()->can('todo_delete');
     }
 
     /**

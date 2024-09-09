@@ -40,6 +40,7 @@ class ShiftController extends Controller
     public function edit($id, ShiftEditRequest $request)
     {
         $shift = $this->shiftService->singleShift(id: $id);
+
         return view('hrm.shifts.ajax.edit', compact('shift'));
     }
 

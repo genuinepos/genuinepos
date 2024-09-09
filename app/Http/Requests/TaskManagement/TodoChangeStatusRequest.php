@@ -12,7 +12,7 @@ class TodoChangeStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('todo_change_status') && config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value;
+        return auth()->user()->can('todo_change_status');
     }
 
     /**

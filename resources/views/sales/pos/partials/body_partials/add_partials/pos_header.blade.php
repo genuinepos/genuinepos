@@ -151,7 +151,7 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                     </div>
                                 </div>
 
@@ -162,7 +162,7 @@
                                         </div>
                                         <input type="text" name="search_product" class="form-control" id="search_product" placeholder="{{ __('Search Product by Name/Barcode') }}" autofocus autocomplete="off">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text {{ $generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::False->value || !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
+                                            <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                         </div>
                                     </div>
 

@@ -26,22 +26,7 @@ class GeneralSettingsListener
      */
     public function handle(Authenticated $event)
     {
-        // $branchId = auth()?->user()?->branch_id ? auth()->user()->branch_id : null;
-        //     $tenantId = tenant('id');
-        //     $generalSettingsCacheKey = "{$tenantId}_generalSettings_{$branchId}";
-
-        //     $generalSettings = Cache::get($generalSettingsCacheKey);
-        // $generalSettings = Cache::get('generalSettings');
-        // dd($generalSettings);
         try {
-            // return dd($permissionCacheKey);
-
-            // Session::put('tenantId', tenant('id'));
-            // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
-            // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
-
-            // if (!isset($generalSettings)) {
-
             // $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
             //     ->orWhereIn('key', [
             //         'business_or_shop__business_name',
@@ -52,13 +37,16 @@ class GeneralSettingsListener
             //     ])->pluck('value', 'key')->toArray();
 
             $branchId = $event?->user?->branch_id ? $event?->user?->branch_id : null;
-            $tenantId = tenant('id');  // Ensure this retrieves the current tenant's ID
-            $cacheKey = "{$tenantId}_generalSettings_{$branchId}";
+            $cacheKey = "generalSettings_{$branchId}";
 
             $generalSettings = Cache::rememberForever($cacheKey, function () use ($branchId, $cacheKey) {
 
                 return GeneralSetting::where('branch_id', $branchId)
                     ->orWhereIn('key', [
+                        'subscription__has_business',
+                        'subscription__branch_count',
+                        'subscription__is_completed_business_setup',
+                        'subscription__is_completed_branch_startup',
                         'business_or_shop__business_name',
                         'business_or_shop__business_logo',
                         'business_or_shop__address',
@@ -67,7 +55,7 @@ class GeneralSettingsListener
                     ])->pluck('value', 'key')->toArray();
             });
 
-            $cacheKey = "{$tenantId}_baseCurrency";
+            $cacheKey = "baseCurrency";
             $baseCurrency = Cache::rememberForever($cacheKey, function () use ($cacheKey) {
 
                 return DB::table('general_settings')
@@ -99,7 +87,7 @@ class GeneralSettingsListener
                     'service_settings_pdf_label__',
                 ];
 
-                $cacheKey = "{$tenantId}_parentBranchGeneralSettings_{$branch->parent_branch_id}";
+                $cacheKey = "parentBranchGeneralSettings_{$branch->parent_branch_id}";
 
                 $parentBranchGeneralSettings = Cache::rememberForever($cacheKey, function () use ($branch, $prefixes) {
 
@@ -244,13 +232,6 @@ class GeneralSettingsListener
             $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
             $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
 
-            // Cache::rememberForever('generalSettings', function () use ($generalSettings) {
-            //     return $generalSettings;
-            // });
-
-            // }
-
-            // request()->merge(['generalSettings' => $generalSettings]);
             if (isset($generalSettings['invoice_layout__add_sale_invoice_layout_id'])) {
 
                 $columns = Cache::rememberForever('invoice_layouts_table_columns', function () {
@@ -266,7 +247,7 @@ class GeneralSettingsListener
                 //     ->select($selectedColumns)
                 //     ->first();
 
-                $cacheKey = "{$tenantId}_invoiceAddSaleLayout_{$generalSettings['invoice_layout__add_sale_invoice_layout_id']}";
+                $cacheKey = "invoiceAddSaleLayout_{$generalSettings['invoice_layout__add_sale_invoice_layout_id']}";
 
                 $invoiceAddSaleLayout = Cache::rememberForever($cacheKey, function () use ($generalSettings, $selectedColumns) {
 
@@ -286,7 +267,7 @@ class GeneralSettingsListener
                 //     ->select($selectedColumns)
                 //     ->first();
 
-                $cacheKey = "{$tenantId}_invoicePosSaleLayout_{$generalSettings['invoice_layout__pos_sale_invoice_layout_id']}";
+                $cacheKey = "invoicePosSaleLayout_{$generalSettings['invoice_layout__pos_sale_invoice_layout_id']}";
 
                 $invoicePosSaleLayout = Cache::rememberForever($cacheKey, function () use ($generalSettings, $selectedColumns) {
 
@@ -302,69 +283,8 @@ class GeneralSettingsListener
                 }
             }
 
-            $cacheKey = "{$tenantId}_GeneralSettings_subscription";
-            $subscription = Cache::rememberForever($cacheKey, function () {
-
-                $centralDb = config('database.connections.mysql.database');
-                return DB::table('subscriptions')
-                    ->leftJoin($centralDb . '.plans', 'subscriptions.plan_id', $centralDb . '.plans.id')
-                    ->select(
-                        [
-                            'subscriptions.id',
-                            'subscriptions.plan_id',
-                            'subscriptions.has_due_amount',
-                            'subscriptions.initial_plan_start_date',
-                            'subscriptions.due_repayment_date',
-                            'subscriptions.has_business',
-                            'subscriptions.is_completed_business_startup',
-                            'subscriptions.is_completed_branch_startup',
-                            'subscriptions.business_expire_date',
-                            'plans.plan_type',
-                            'plans.name as plan_name',
-                            'plans.is_trial_plan',
-                            'plans.trial_days',
-                            'plans.features',
-                            'subscriptions.current_shop_count',
-                            'subscriptions.trial_start_date',
-                            'subscriptions.has_business',
-                            'subscriptions.business_expire_date',
-                        ]
-                    )->first();
-            });
-
-            // $subscription = DB::table('subscriptions')
-            //     ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
-            //     ->select(
-            //         [
-            //             'subscriptions.id',
-            //             'subscriptions.plan_id',
-            //             'subscriptions.has_due_amount',
-            //             'subscriptions.initial_plan_start_date',
-            //             'subscriptions.due_repayment_date',
-            //             'subscriptions.has_business',
-            //             'subscriptions.is_completed_business_startup',
-            //             'subscriptions.is_completed_branch_startup',
-            //             'subscriptions.business_expire_date',
-            //             'pos.plans.plan_type',
-            //             'pos.plans.name as plan_name',
-            //             'pos.plans.is_trial_plan',
-            //             'pos.plans.trial_days',
-            //             'pos.plans.features',
-            //             'subscriptions.current_shop_count',
-            //             'subscriptions.trial_start_date',
-            //             'subscriptions.has_business',
-            //             'subscriptions.business_expire_date',
-            //         ]
-            //     )->first();
-
-            $generalSettings['subscription'] = $subscription;
-            $generalSettings['subscription']->features = json_decode($generalSettings['subscription']->features, true);
-
-            // dd($generalSettings);
-
             config([
                 'generalSettings' => $generalSettings,
-                // Tenant separated email config start
                 // 'mail.mailers.smtp.transport' => $generalSettings['email_config__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
                 // 'mail.mailers.smtp.host' => $generalSettings['email_config__MAIL_HOST'] ?? config('mail.mailers.smtp.host'),
                 // 'mail.mailers.smtp.port' => $generalSettings['email_config__MAIL_PORT'] ?? config('mail.mailers.smtp.port'),
@@ -373,7 +293,6 @@ class GeneralSettingsListener
                 // 'mail.mailers.smtp.password' => $generalSettings['email_config__MAIL_PASSWORD'] ?? config('mail.mailers.smtp.password'),
                 // 'mail.mailers.smtp.timeout' => $generalSettings['email_config__MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
                 // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
-                // Tenant separated email config ends
             ]);
 
             $dateFormat = $generalSettings['business_or_shop__date_format'];

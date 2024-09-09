@@ -380,22 +380,31 @@
                         @if ($payment?->branch?->parent_branch_id)
 
                             @if ($payment->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payment->branch?->parentBranch?->logo) }}">
-                            @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->parentBranch?->name }}</span>
+                                <<<<<<< HEAD <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->parentBranch?->logo) }}">
+                                    =======
+                                    <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payment->branch?->parentBranch?->logo) }}">
+                                    >>>>>>> 33c4b51038c7895e589fba506cf38390ca325d5c
+                                @else
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($payment->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payment->branch?->logo) }}">
-                            @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->name }}</span>
+                                <<<<<<< HEAD <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->logo) }}">
+                                    =======
+                                    <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payment->branch?->logo) }}">
+                                    >>>>>>> 33c4b51038c7895e589fba506cf38390ca325d5c
+                                @else
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $payment->branch?->name }}</span>
                             @endif
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                            <<<<<<< HEAD <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                =======
+                                <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                                >>>>>>> 33c4b51038c7895e589fba506cf38390ca325d5c
+                            @else
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>

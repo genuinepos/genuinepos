@@ -4,7 +4,6 @@ namespace App\Services\Products;
 
 use App\Utils\FileUploader;
 use App\Enums\IsDeleteInUpdate;
-use Intervention\Image\Facades\Image;
 use App\Models\Products\ProductVariant;
 
 class ProductVariantService
@@ -23,6 +22,7 @@ class ProductVariantService
         if (isset($request->variant_image[$index])) {
 
             $variantImage = $request->variant_image[$index];
+
             $addVariant->variant_image = FileUploader::uploadWithResize(
                 fileType: 'productVariant',
                 uploadableFile: $request->variant_image[$index],

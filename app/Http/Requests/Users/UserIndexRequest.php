@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Users;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class UserIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('user_view') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
+        return auth()->user()->can('user_view');
     }
 
     /**

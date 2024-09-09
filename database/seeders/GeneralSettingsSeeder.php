@@ -17,6 +17,10 @@ class GeneralSettingsSeeder extends Seeder
     public function run(CacheServiceInterface $cacheService)
     {
         $generalSettings = array(
+            array('key' => 'subscription__has_business', 'value' => 1, 'branch_id' => null, 'parent_branch_id' => NULL),
+            array('key' => 'subscription__branch_count', 'value' => 1, 'branch_id' => null, 'parent_branch_id' => NULL),
+            array('key' => 'subscription__is_completed_business_setup', 'value' => 0, 'branch_id' => null, 'parent_branch_id' => NULL),
+            array('key' => 'subscription__is_completed_branch_startup', 'value' => 0, 'branch_id' => null, 'parent_branch_id' => NULL),
             array('key' => 'business_or_shop__business_name', 'value' => 'Company Name', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'business_or_shop__address', 'value' => 'Dhaka, Bangladesh', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'business_or_shop__phone', 'value' => 'XXXXXXXXXX', 'branch_id' => NULL, 'parent_branch_id' => NULL),

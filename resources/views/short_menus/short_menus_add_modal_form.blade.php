@@ -14,12 +14,10 @@
                                 @php
                                     $userMenu = $screenType == \App\Enums\ShortMenuScreenType::DashboardScreen->value ? $shortMenu?->userMenuForDashboard : $shortMenu?->userMenuForPos;
 
-                                    $planFeature = isset($shortMenu->plan_feature) && isset($generalSettings['subscription']->features[$shortMenu->plan_feature]) ? ($generalSettings['subscription']->features[$shortMenu->plan_feature] == 1 ? true : false) : true;
-
                                     $isModuleEnabled = isset($shortMenu->enable_module) && isset($generalSettings["$shortMenu->enable_module"]) ? ($generalSettings["$shortMenu->enable_module"] == 1 ? true : false) : true;
                                 @endphp
 
-                                @if ($planFeature && $isModuleEnabled)
+                                @if ($isModuleEnabled)
                                     @can($shortMenu->permission)
                                         <li>
                                             <p><input name="menu_ids[]" @checked(isset($userMenu)) type="checkbox" value="{{ $shortMenu->id }}" id="check_menu">

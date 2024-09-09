@@ -58,7 +58,6 @@
                     @if ($payroll->branch)
 
                         @if ($payroll?->branch?->parent_branch_id)
-
                             @if ($payroll->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $payroll->branch?->parentBranch?->logo) }}">
                             @else

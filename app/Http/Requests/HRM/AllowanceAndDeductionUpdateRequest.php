@@ -12,7 +12,7 @@ class AllowanceAndDeductionUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('allowances_and_deductions_edit') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('allowances_and_deductions_edit');
     }
 
     /**

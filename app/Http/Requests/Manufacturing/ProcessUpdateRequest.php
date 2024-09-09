@@ -12,7 +12,7 @@ class ProcessUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('process_edit') && config('generalSettings')['subscription']->features['manufacturing'] == BooleanType::True->value;
+        return auth()->user()->can('process_edit');
     }
 
     /**

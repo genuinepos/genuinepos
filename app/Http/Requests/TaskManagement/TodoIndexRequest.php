@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TaskManagement;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TodoIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class TodoIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('todo_index') && config('generalSettings')['subscription']->features['task_management'] == BooleanType::True->value;
+        return auth()->user()->can('todo_index');
     }
 
     /**

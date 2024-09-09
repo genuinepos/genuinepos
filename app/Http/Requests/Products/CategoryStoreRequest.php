@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Products;
 
-use App\Enums\BooleanType;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,7 +12,7 @@ class CategoryStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_category_add') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('product_category_add');
     }
 
     /**

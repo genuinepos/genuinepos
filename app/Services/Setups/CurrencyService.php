@@ -22,12 +22,12 @@ class CurrencyService
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                if (auth()->user()->can('currencies_index') && config('generalSettings')['subscription']->has_business == BooleanType::True->value) {
+                if (auth()->user()->can('currencies_index')) {
 
                     $html .= '<a href="' . route('currencies.rates.index', $row->id) . '" class="dropdown-item">' . __('Manage Rate') . '</a>';
                 }
 
-                if (auth()->user()->can('currencies_create') && config('generalSettings')['subscription']->has_business == BooleanType::True->value) {
+                if (auth()->user()->can('currencies_create')) {
 
                     $html .= '<a href="' . route('currencies.rates.create', $row->id) . '" class="dropdown-item" id="addCurrencyRate">' . __('Add Rate') . '</a>';
                 }

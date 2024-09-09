@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Contacts;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MoneyReceiptDeleteRequest extends FormRequest
@@ -12,7 +11,7 @@ class MoneyReceiptDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('money_receipt_delete') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+        return auth()->user()->can('money_receipt_delete');
     }
 
     /**

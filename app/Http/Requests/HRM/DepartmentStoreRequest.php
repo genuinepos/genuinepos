@@ -12,7 +12,7 @@ class DepartmentStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('departments_create') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('departments_create');
     }
 
     /**

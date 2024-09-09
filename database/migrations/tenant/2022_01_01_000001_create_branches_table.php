@@ -33,13 +33,9 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('logo', 191)->nullable();
             $table->boolean('purchase_permission')->default(1);
-            $table->date('expire_date')->nullable();
-            $table->unsignedBigInteger('shop_expire_date_history_id')->nullable();
-            $table->string('current_price_period', 20)->nullable();
             $table->timestamps();
 
             $table->foreign('parent_branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('shop_expire_date_history_id')->references('id')->on('shop_expire_date_histories')->onDelete('cascade');
         });
     }
 

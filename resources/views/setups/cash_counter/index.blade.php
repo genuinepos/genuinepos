@@ -7,9 +7,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="col-md-4">
-                    <h5>{{ __('Cash Counters') }}
-                        <span>({{ __('Limit') }} -<span class="text-danger">{{ $count }}</span>/{{ $generalSettings['subscription']->features['cash_counter_count'] }})</span>
-                    </h5>
+                    <h5>{{ __('Cash Counters') }}</h5>
                 </div>
                 <div class="col-md-4 text-start">
                     <p class="fw-bold"></p>
@@ -24,7 +22,7 @@
 
         <div class="p-1">
             {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
-            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">

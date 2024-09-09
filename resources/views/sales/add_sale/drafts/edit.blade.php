@@ -78,8 +78,8 @@
         }
 
         /*.select2-selection:focus {
-                                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                                    } */
+                                                 box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                                            } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -153,13 +153,13 @@
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
                                                                     @php
-                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' .__('Supplier').')';
+                                                                        $accountType = $customerAccount->sub_sub_group_number == 6 ? '' : ' -(' . __('Supplier') . ')';
                                                                     @endphp
                                                                     <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $draft->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone . $accountType }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -703,7 +703,7 @@
         </div>
     </div>
 
-    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
+    @if (auth()->user()->can('customer_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

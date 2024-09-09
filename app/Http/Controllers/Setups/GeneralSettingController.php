@@ -196,10 +196,10 @@ class GeneralSettingController extends Controller
     public function prefixSettings(Request $request)
     {
         $settings = [
-            'prefix__sales_invoice_prefix' => $request->sales_invoice_prefix ? $request->sales_invoice_prefix : 'SI',
-            'prefix__quotation_prefix' => $request->quotation_prefix ? $request->quotation_prefix : 'Q',
-            'prefix__sales_order_prefix' => $request->sales_order_prefix ? $request->sales_order_prefix : 'SO',
-            'prefix__sales_return_prefix' => $request->sales_return_prefix ?  $request->sales_return_prefix : 'SR',
+            'prefix__sales_invoice_prefix' => $request->sales_invoice_prefix,
+            'prefix__quotation_prefix' => $request->quotation_prefix,
+            'prefix__sales_order_prefix' => $request->sales_order_prefix,
+            'prefix__sales_return_prefix' => $request->sales_return_prefix,
             'prefix__payment_voucher_prefix' => $request->payment_voucher_prefix,
             'prefix__receipt_voucher_prefix' => $request->receipt_voucher_prefix,
             'prefix__expense_voucher_prefix' => $request->expense_voucher_prefix,
@@ -276,28 +276,18 @@ class GeneralSettingController extends Controller
 
     public function moduleSettings(Request $request)
     {
-        $generalSettings = config('generalSettings');
-        $subscription = $generalSettings['subscription'];
-        $hrm = $subscription->features['hrm'] == 1 ? (isset($request->hrms) ? 1 : 0) : 1;
-        $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
-        $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
-        $services = isset($subscription->features['services']) && $subscription->features['services'] == 1 ? (isset($request->service) ? 1 : 0) : 1;
-        $addSale = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->add_sale) ? 1 : 0) : 1;
-        $pos = isset($subscription->features['sales']) && $subscription->features['sales'] == 1 ? (isset($request->pos) ? 1 : 0) : 1;
-        $purchase = isset($subscription->features['purchase']) && $subscription->features['purchase'] == 1 ? (isset($request->purchases) ? 1 : 0) : 1;
-
         $settings = [
-            'modules__purchases' => $purchase,
-            'modules__add_sale' => $addSale,
-            'modules__pos' => $pos,
-            'modules__service' => $services,
+            'modules__purchases' => isset($request->purchases) ? 1 : 0,
+            'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
+            'modules__pos' => isset($request->pos) ? 1 : 0,
+            'modules__service' => isset($request->service) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
-            'modules__hrms' => $hrm,
-            'modules__manage_task' => $task_management,
-            'modules__manufacturing' => $manufacturing,
+            'modules__hrms' => isset($request->hrms) ? 1 : 0,
+            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
+            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

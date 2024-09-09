@@ -18,64 +18,63 @@ class StartupMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $generalSettings = config('generalSettings');
-        $subscription = $generalSettings['subscription'];
 
         if (
-            $subscription->has_business == BooleanType::True->value &&
+            $generalSettings['subscription__has_business'] == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
             (
-                $subscription->is_completed_business_startup == BooleanType::False->value &&
-                $subscription->is_completed_branch_startup == BooleanType::False->value
+                $generalSettings['subscription__is_completed_business_setup'] == BooleanType::False->value &&
+                $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::False->value
             )
         ) {
 
             Session::put('startupType', 'business_and_branch');
             return redirect()->route('startup.form');
         } else if (
-            $subscription->has_business == BooleanType::False->value &&
+            $generalSettings['subscription__has_business'] == BooleanType::False->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            $subscription->is_completed_branch_startup == BooleanType::False->value
+            $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::False->value
         ) {
 
             Session::put('startupType', 'branch');
             return redirect()->route('startup.form');
         } else if (
-            $subscription->has_business == BooleanType::True->value &&
+            $generalSettings['subscription__has_business'] == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
             (
-                $subscription->is_completed_business_startup == BooleanType::False->value &&
-                $subscription->is_completed_branch_startup == BooleanType::True->value
+                $generalSettings['subscription__is_completed_business_setup'] == BooleanType::False->value &&
+                $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::True->value
             )
         ) {
 
             Session::put('startupType', 'business');
             return redirect()->route('startup.form');
         } else if (
-            $subscription->has_business == BooleanType::True->value &&
+            $generalSettings['subscription__has_business'] == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
             (
-                $subscription->is_completed_business_startup == BooleanType::False->value &&
-                $subscription->is_completed_branch_startup == BooleanType::True->value
+                $generalSettings['subscription__is_completed_business_setup'] == BooleanType::False->value &&
+                $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::True->value
             )
         ) {
 
             Session::put('startupType', 'business');
             return redirect()->route('startup.form');
         } else if (
-            $subscription->has_business == BooleanType::True->value &&
+            $generalSettings['subscription__has_business'] == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
             (
-                $subscription->is_completed_business_startup == BooleanType::False->value &&
-                $subscription->is_completed_branch_startup == BooleanType::True->value
+                $generalSettings['subscription__is_completed_business_setup'] == BooleanType::False->value &&
+                $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::True->value
             )
         ) {
 
             Session::put('startupType', 'business');
             return redirect()->route('startup.form');
         } else if (
-            $subscription->has_business == BooleanType::False->value &&
+            $generalSettings['subscription__has_business'] == BooleanType::False->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            $subscription->is_completed_branch_startup == BooleanType::False->value
+            $generalSettings['subscription__is_completed_branch_startup'] == BooleanType::False->value
         ) {
 
             Session::put('startupType', 'branch');

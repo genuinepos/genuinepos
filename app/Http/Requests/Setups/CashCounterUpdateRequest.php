@@ -13,7 +13,7 @@ class CashCounterUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('cash_counters_edit') && config('generalSettings')['subscription']->features['cash_counter_count'] > 0;
+        return auth()->user()->can('cash_counters_edit');
     }
 
     /**

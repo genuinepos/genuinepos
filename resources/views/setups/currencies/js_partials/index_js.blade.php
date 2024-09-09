@@ -58,7 +58,7 @@
                 data: 'symbol',
                 name: 'symbol'
             },
-            @if ($generalSettings['subscription']->has_business == \App\Enums\BooleanType::True->value)
+            @if ($generalSettings['subscription__has_business'] == \App\Enums\BooleanType::True->value)
                 {
                     data: 'currency_rate',
                     name: 'currency_rate'

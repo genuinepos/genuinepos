@@ -16,7 +16,7 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('user_add') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
+        return auth()->user()->can('user_add');
     }
 
     /**
@@ -37,7 +37,6 @@ class UserStoreRequest extends FormRequest
                 auth()->user()->can('has_access_to_all_area') &&
                     !$role?->hasPermissionTo('has_access_to_all_area') &&
                     auth()->user()->is_belonging_an_area == BooleanType::False->value &&
-                    config('generalSettings')['subscription']->has_business == BooleanType::True->value &&
                     $request->branch_count,
                 'required'
             ),

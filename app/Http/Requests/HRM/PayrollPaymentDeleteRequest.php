@@ -12,7 +12,7 @@ class PayrollPaymentDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('payroll_payments_delete') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('payroll_payments_delete');
     }
 
     /**

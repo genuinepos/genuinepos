@@ -241,7 +241,7 @@
                                         <a href="{{ route('sales.pos.edit', [$quotation->id, $quotation->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                                     @endif
                                 @elseif($quotation->sale_screen == \App\Enums\SaleScreenType::ServiceQuotation->value)
-                                    @if (auth()->user()->can('service_quotations_edit') && isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value)
+                                    @if (auth()->user()->can('service_quotations_edit'))
                                         <a href="{{ route('services.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                                     @endif
                                 @endif

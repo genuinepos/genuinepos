@@ -12,7 +12,7 @@ class WarrantyStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_warranty_add') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('product_warranty_add');
     }
 
     /**

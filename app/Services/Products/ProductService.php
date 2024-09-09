@@ -261,7 +261,7 @@ class ProductService
                 $text = '';
                 foreach ($productAccessBranches as $productAccessBranch) {
 
-                    if ($productAccessBranch?->branch_id == null && $generalSettings['subscription']->has_business == 0) {
+                    if ($productAccessBranch?->branch_id == null) {
 
                         continue;
                     }
@@ -440,7 +440,6 @@ class ProductService
 
         if ($request->file('photo')) {
 
-            // $dir = tenant('id') . '/' . 'products/thumbnails/';
             $addProduct->thumbnail_photo = FileUploader::uploadWithResize(
                 fileType: 'productThumbnail',
                 uploadableFile: $request->file('photo'),

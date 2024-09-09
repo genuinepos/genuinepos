@@ -17,7 +17,6 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::get('show/{id}', 'show')->name('users.show');
     Route::post('change/branch', 'changeBranch')->name('users.change.branch');
     Route::get('branch/users/{isOnlyAuthenticatedUser}/{allowAll}/{branchId?}', 'branchUsers')->name('users.branch.users');
-    Route::get('current/user/and/employee/count/{branchId?}', 'currentUserAndEmployeeCount')->name('users.current.user.and.employee.count');
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {
 

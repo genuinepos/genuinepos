@@ -119,7 +119,7 @@
                                                 </select>
 
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('supplier_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('supplier_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_account_id"></span>
@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && $purchase->warehouse_id)
+                                    @if ($purchase->warehouse_id)
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b><span class="text-danger">*</span></label>
@@ -232,7 +232,7 @@
                                                 <div class="input-group">
                                                     <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Search Product') }}">
 
-                                                    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
+                                                    @if (auth()->user()->can('product_add'))
                                                         <div class="input-group-prepend">
                                                             <span id="addProduct" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                         </div>
@@ -678,12 +678,12 @@
         </div>
     </div>
 
-    @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('supplier_add'))
+    @if (auth()->user()->can('supplier_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif
 
-    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add'))
+    @if (auth()->user()->can('product_add'))
         <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
         <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>

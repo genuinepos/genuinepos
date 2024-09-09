@@ -28,7 +28,6 @@ class UserActivityLogReportController extends Controller
         $users = null;
         if (
             auth()->user()->can('has_access_to_all_area') &&
-            config('generalSettings')['subscription']->has_business == BooleanType::True->value &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value &&
             !auth()->user()->can('user_activities_log_only_own_log')
         ) {

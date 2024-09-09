@@ -57,20 +57,17 @@
                                 <i class="fas fa-info-circle"></i> {{ __('Contract Info') }}
                             </a>
 
-                            @if ((isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value) || $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                                @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
-                                    <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
-                                        <i class="fas fa-shopping-bag"></i> {{ __('Sales') }}
-                                    </a>
-                                @endif
+                            @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+                                <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fas fa-shopping-bag"></i> {{ __('Sales') }}
+                                </a>
                             @endif
 
-                            @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                                @if (auth()->user()->can('sales_orders_index'))
-                                    <a id="tab_btn" data-show="sales_order" class="btn btn-sm btn-primary tab_btn" href="#">
-                                        <i class="fas fa-shopping-bag"></i> {{ __('Sales Orders') }}
-                                    </a>
-                                @endif
+                            @if (auth()->user()->can('sales_orders_index'))
+                                <a id="tab_btn" data-show="sales_order" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fas fa-shopping-bag"></i> {{ __('Sales Orders') }}
+                                </a>
+
                             @endif
 
                             @if (auth()->user()->can('purchase_all'))
@@ -105,16 +102,14 @@
 
                     @include('contacts.manage_customers.partials.tab_content_partials.contact_info')
 
-                    @if ((isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value) || $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                        @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
-                            @include('contacts.manage_customers.partials.tab_content_partials.sales')
-                        @endif
+
+                    @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+                        @include('contacts.manage_customers.partials.tab_content_partials.sales')
                     @endif
 
-                    @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                        @if (auth()->user()->can('sales_orders_index'))
-                            @include('contacts.manage_customers.partials.tab_content_partials.sales_order')
-                        @endif
+                    @if (auth()->user()->can('sales_orders_index'))
+                        @include('contacts.manage_customers.partials.tab_content_partials.sales_order')
+
                     @endif
 
                     @if (auth()->user()->can('purchase_all'))
@@ -142,7 +137,7 @@
         @csrf
     </form>
 
-    @if (auth()->user()->can('shipment_access') && $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
+    @if (auth()->user()->can('shipment_access'))
         <!-- Edit Shipping modal -->
         <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
@@ -163,16 +158,12 @@
         @include('contacts.manage_customers.js_partials.tab_content_js_partials.ledger_js')
     @endif
 
-    @if ((isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value) || $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
-            @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_js')
-        @endif
+    @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+        @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_js')
     @endif
 
-    @if ($generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        @if (auth()->user()->can('sales_orders_index'))
-            @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_order_js')
-        @endif
+    @if (auth()->user()->can('sales_orders_index'))
+        @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_order_js')
     @endif
 
     @if (auth()->user()->can('purchase_all'))

@@ -29,13 +29,13 @@ class StartupFinishRequest extends FormRequest
         $checkBranchValidation = Session::get('startupType') == 'business_and_branch' || Session::get('startupType') == 'branch';
 
         return [
-            'business_name' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == BooleanType::True->value, 'required'),
-            'business_address' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == BooleanType::True->value, 'required'),
-            'business_phone' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == BooleanType::True->value, 'required'),
-            'business_email' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == BooleanType::True->value, 'required'),
-            'business_currency_id' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == BooleanType::True->value, 'required'),
-            'business_account_start_date' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == BooleanType::True->value, 'required'),
-            'business_logo' => Rule::when($checkBusinessValidation && $generalSettings['subscription']->has_business == 1, 'sometimes|image|max:1024'),
+            'business_name' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == BooleanType::True->value, 'required'),
+            'business_address' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == BooleanType::True->value, 'required'),
+            'business_phone' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == BooleanType::True->value, 'required'),
+            'business_email' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == BooleanType::True->value, 'required'),
+            'business_currency_id' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == BooleanType::True->value, 'required'),
+            'business_account_start_date' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == BooleanType::True->value, 'required'),
+            'business_logo' => Rule::when($checkBusinessValidation && $generalSettings['subscription__has_business'] == 1, 'sometimes|image|max:1024'),
             'branch_code' => Rule::when($checkBranchValidation, 'required'),
             'branch_name' => Rule::when($checkBranchValidation, 'required'),
             'branch_area_name' => Rule::when($checkBranchValidation, 'required'),

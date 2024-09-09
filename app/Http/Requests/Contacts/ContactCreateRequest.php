@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Contacts;
 
-use App\Enums\BooleanType;
 use App\Enums\ContactType;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,10 +15,10 @@ class ContactCreateRequest extends FormRequest
         $type = $this->route('type');
         if ($type == ContactType::Customer->value) {
 
-            return auth()->user()->can('customer_add') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+            return auth()->user()->can('customer_add');
         } elseif ($type == ContactType::Supplier->value) {
 
-            return auth()->user()->can('supplier_add') && config('generalSettings')['subscription']->features['contacts'] == BooleanType::True->value;
+            return auth()->user()->can('supplier_add');
         }
     }
 

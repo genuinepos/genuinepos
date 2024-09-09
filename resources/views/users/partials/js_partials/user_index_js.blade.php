@@ -128,7 +128,6 @@
 
                 table.ajax.reload(null, false);
                 toastr.error(data);
-                currentUserAndEmployeeCount();
             },
             error: function(err) {
 
@@ -146,25 +145,4 @@
             }
         });
     });
-
-    function currentUserAndEmployeeCount() {
-        $.ajax({
-            url: "{{ route('users.current.user.and.employee.count') }}",
-            type: 'get',
-            success: function(data) {
-
-                $('#current_user_count').html(data.current_user_count);
-                $('#current_employee_count').html(data.current_employee_count);
-            },
-            error: function(err) {
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connection Error.') }}");
-                    return;
-                }
-            }
-        });
-    }
-    currentUserAndEmployeeCount();
 </script>

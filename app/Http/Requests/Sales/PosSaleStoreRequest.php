@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Sales;
 
-use App\Enums\BooleanType;
 use App\Enums\SaleScreenType;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,10 +15,10 @@ class PosSaleStoreRequest extends FormRequest
         $saleScreenType = $this->route('saleScreenType');
         if ($saleScreenType == SaleScreenType::ServicePosSale->value) {
 
-            return auth()->user()->can('service_invoices_create') && (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value);
+            return auth()->user()->can('service_invoices_create');
         } else {
 
-            return auth()->user()->can('pos_add') && config('generalSettings')['subscription']->features['sales'] == BooleanType::True->value;
+            return auth()->user()->can('pos_add');
         }
     }
 

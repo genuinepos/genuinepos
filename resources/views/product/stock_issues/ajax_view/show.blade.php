@@ -194,7 +194,7 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            @if (auth()->user()->can('purchase_edit') && $stockIssue->branch_id == auth()->user()->branch_id)
+                            @if (auth()->user()->can('stock_issues_edit') && $stockIssue->branch_id == auth()->user()->branch_id)
                                 <a href="{{ route('stock.issues.edit', [$stockIssue->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
                             <a href="{{ route('stock.issues.print', $stockIssue->id) }}" onclick="printStockIssue(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPurchaseBtn">{{ __('Print') }}</a>

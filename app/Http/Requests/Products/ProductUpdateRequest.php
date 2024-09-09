@@ -14,7 +14,7 @@ class ProductUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('product_edit');
     }
 
     /**

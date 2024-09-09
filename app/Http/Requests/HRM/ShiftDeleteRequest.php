@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\HRM;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShiftDeleteRequest extends FormRequest
@@ -12,7 +11,7 @@ class ShiftDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('shifts_delete') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('shifts_delete');
     }
 
     /**

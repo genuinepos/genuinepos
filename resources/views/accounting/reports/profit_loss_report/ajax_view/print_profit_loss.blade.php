@@ -82,7 +82,6 @@
         <div class="col-4 mb-1">
             @if (auth()->user()?->branch)
                 @if (auth()->user()?->branch?->parent_branch_id)
-
                     @if (auth()->user()?->branch?->parentBranch?->logo)
                         <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                     @else

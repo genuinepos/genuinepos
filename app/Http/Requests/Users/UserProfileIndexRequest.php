@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Users;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserProfileIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class UserProfileIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
+        return true;
     }
 
     /**

@@ -12,4 +12,3 @@ Developed with ❤ by SpeedDigit
 
 - [ ] Run `php artisan rp:sync` to sync between role,permission and super-admin user
 - [ ] Run `php artisan migrate:fresh --seed` to refresh the application databases and related files.
-- [ ] Run `backup:tenants` to get all tenant (user) databases.

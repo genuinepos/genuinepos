@@ -31,46 +31,45 @@
                     <span class="error error_currency_symbol"></span>
                 </div>
 
-                @if ($generalSettings['subscription']->has_business == \App\Enums\BooleanType::True->value)
-                    <div id="currency_rate_fields">
-                        <div class="form-group mt-2">
-                            <p><b>{{ __('Add Current Currency Rete') }}</b></p>
-                            <hr class="p-0 m-0">
-                        </div>
+                <div id="currency_rate_fields">
+                    <div class="form-group mt-2">
+                        <p><b>{{ __('Add Current Currency Rete') }}</b></p>
+                        <hr class="p-0 m-0">
+                    </div>
 
-                        <div class="form-group mt-2">
-                            <div class="col-md-3">
-                                <select name="type" id="currency_type">
-                                    <option value="1">{{ __('Greater Then Base Currency') }}</option>
-                                    <option value="2">{{ __('Less Then Base Currency') }}</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="form-group mt-1 row g-2">
-                            <div class="col-md-3" id="currency_name_position_one">
-                                <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ __('Currency') }}</span></p>
-                            </div>
-
-                            <div class="col-md-1">
-                                <p class="fw-bold"> = </p>
-                            </div>
-
-                            <div class="col-md-3">
-                                <input type="text" name="currency_rate" class="form-control fw-bold" id="currency_rate" data-next="currency_rate_date" placeholder="{{ __('0.00') }}" />
-                                <span class="error error_currency_rate"></span>
-                            </div>
-
-                            <div class="col-md-2" id="currency_name_position_two">
-                                <p class="fw-bold"><span id="base_currency_name">{{ $generalSettings['base_currency_name'] }}</span></p>
-                            </div>
-
-                            <div class="col-md-3">
-                                <input type="text" name="currency_rate_date" class="form-control fw-bold " id="currency_rate_date" data-next="currency_save" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('As Per Date') }}" />
-                            </div>
+                    <div class="form-group mt-2">
+                        <div class="col-md-3">
+                            <select name="type" id="currency_type">
+                                <option value="1">{{ __('Greater Then Base Currency') }}</option>
+                                <option value="2">{{ __('Less Then Base Currency') }}</option>
+                            </select>
                         </div>
                     </div>
-                @endif
+
+                    <div class="form-group mt-1 row g-2">
+                        <div class="col-md-3" id="currency_name_position_one">
+                            <p class="fw-bold">{{ __('1') }} <span id="currency_name">{{ __('Currency') }}</span></p>
+                        </div>
+
+                        <div class="col-md-1">
+                            <p class="fw-bold"> = </p>
+                        </div>
+
+                        <div class="col-md-3">
+                            <input type="text" name="currency_rate" class="form-control fw-bold" id="currency_rate" data-next="currency_rate_date" placeholder="{{ __('0.00') }}" />
+                            <span class="error error_currency_rate"></span>
+                        </div>
+
+                        <div class="col-md-2" id="currency_name_position_two">
+                            <p class="fw-bold"><span id="base_currency_name">{{ $generalSettings['base_currency_name'] }}</span></p>
+                        </div>
+
+                        <div class="col-md-3">
+                            <input type="text" name="currency_rate_date" class="form-control fw-bold " id="currency_rate_date" data-next="currency_save" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('As Per Date') }}" />
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
@@ -205,7 +204,7 @@
 
             $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="currency_name">' + currencyName + '</span></p>');
             $('#currency_name_position_two').html('<p class="fw-bold"><span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>');
-        }else {
+        } else {
 
             $('#currency_name_position_one').html('<p class="fw-bold">' + "{{ __('1') }}" + ' ' + '<span id="base_currency_name">' + "{{ $generalSettings['base_currency_name'] }}" + '</span></p>');
             $('#currency_name_position_two').html('<p class="fw-bold"><span id="currency_name">' + currencyName + '</span></p>');

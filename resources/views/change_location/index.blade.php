@@ -170,7 +170,7 @@
                                     <p class="text-danger m-0 p-0">{{ $error }}</p>
                                 @endforeach
 
-                                @if ($generalSettings['subscription']->has_business == 1)
+                                @if ($generalSettings['subscription__has_business'] == 1)
                                     <div class="form-check border-primary">
                                         <input required checked class="form-check-input" type="radio" name="select_type" id="personalAccountType" value="business">
                                         <label class="form-check-label" for="personalAccountType">

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;

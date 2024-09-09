@@ -751,44 +751,44 @@
             $('#receiver_currency_code').html('');
         }
 
-        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-            var branchId = $(this).val() ? $(this).val() : 'noid';
+        // if (branchId == '') {
+        //     return;
+        // }
 
-            // if (branchId == '') {
-            //     return;
-            // }
+        var route = '';
+        var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
+        route = url.replace(':branchId', branchId);
 
-            var route = '';
-            var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
-            route = url.replace(':branchId', branchId);
+        $.ajax({
+            url: route,
+            type: 'get',
+            success: function(warehouses) {
 
-            $.ajax({
-                url: route,
-                type: 'get',
-                success: function(warehouses) {
+                $('#receiver_warehouse_id').empty();
+                $('#receiver_warehouse_id').append('<option value="">Select Warehouse</option>');
 
-                    $('#receiver_warehouse_id').empty();
-                    $('#receiver_warehouse_id').append('<option value="">Select Warehouse</option>');
+                $.each(warehouses, function(key, warehouse) {
 
-                    $.each(warehouses, function(key, warehouse) {
+                    $('#receiver_warehouse_id').append('<option value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                });
+            },
+            error: function(err) {
 
-                        $('#receiver_warehouse_id').append('<option value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
-                    });
-                },
-                error: function(err) {
+                if (err.status == 0) {
 
-                    if (err.status == 0) {
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
 
-                        toastr.error("{{ __('Net Connection Error.') }}");
-                        return;
-                    } else if (err.status == 500) {
+                    toastr.error("{{ __('Net Connection Error.') }}");
+                    return;
+                } else if (err.status == 500) {
 
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
                 }
-            });
-        @endif
+            }
+        });
     });
 
     var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";

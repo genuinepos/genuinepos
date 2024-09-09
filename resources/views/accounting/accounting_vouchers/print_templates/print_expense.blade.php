@@ -71,6 +71,7 @@
                         @if ($expense?->branch?->parent_branch_id)
 
                             @if ($expense->branch?->parentBranch?->logo)
+
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $expense?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $expense?->branch?->parentBranch?->name }}</span>
@@ -378,6 +379,7 @@
                         @if ($expense?->branch?->parent_branch_id)
 
                             @if ($expense->branch?->parentBranch?->logo)
+
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $expense?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $expense?->branch?->parentBranch?->name }}</span>

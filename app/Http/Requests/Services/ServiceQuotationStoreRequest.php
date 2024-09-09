@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Services;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ServiceQuotationStoreRequest extends FormRequest
@@ -12,7 +11,7 @@ class ServiceQuotationStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('service_quotations_create') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value;
+        return auth()->user()->can('service_quotations_create');
     }
 
     public function rules(): array

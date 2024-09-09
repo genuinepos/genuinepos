@@ -71,12 +71,14 @@
                         @if ($contra?->branch?->parent_branch_id)
 
                             @if ($contra->branch?->parentBranch?->logo)
+
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($contra->branch?->logo)
+
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->name }}</span>
@@ -84,6 +86,7 @@
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
+
                             <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
@@ -385,12 +388,14 @@
                         @if ($contra?->branch?->parent_branch_id)
 
                             @if ($contra->branch?->parentBranch?->logo)
+
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($contra->branch?->logo)
+
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $contra->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $contra->branch?->name }}</span>
@@ -398,6 +403,7 @@
                         @endif
                     @else
                         @if ($generalSettings['business_or_shop__business_logo'] != null)
+
                             <img style="height: 40px; width:100px;" src="{{ file_link('businessLogo', $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $generalSettings['business_or_shop__business_name'] }}</span>

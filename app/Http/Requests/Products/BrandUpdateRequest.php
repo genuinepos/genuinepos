@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Products;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BrandUpdateRequest extends FormRequest
@@ -12,7 +11,7 @@ class BrandUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('product_brand_edit') && config('generalSettings')['subscription']->features['inventory'] == BooleanType::True->value;
+        return auth()->user()->can('product_brand_edit');
     }
 
     /**

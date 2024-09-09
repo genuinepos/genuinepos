@@ -36,6 +36,7 @@ class PayrollPaymentController extends Controller
         return view('hrm.print_templates.print_payroll_payment', compact('payment', 'printPageSize'));
     }
 
+
     public function create(
         $payrollId,
         PayrollPaymentCreateRequest $request,
@@ -79,6 +80,7 @@ class PayrollPaymentController extends Controller
             return response()->json(['successMsg' => __('Payroll payment added successfully.')]);
         }
     }
+
 
     public function edit(
         $id,

@@ -212,11 +212,9 @@
             <p><strong>{{ location_label() }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
-        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-            <div class="col-4">
-                <p><strong>{{ __('Warehouse') }} : </strong> {{ $filteredWarehouseName }} </p>
-            </div>
-        @endif
+        <div class="col-4">
+            <p><strong>{{ __('Warehouse') }} : </strong> {{ $filteredWarehouseName }} </p>
+        </div>
 
         @if ($product->is_variant == 1)
             <div class="col-4">

@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Tenant;
 use App\Models\Hrm\Leave;
 use App\Models\Hrm\Shift;
 use App\Models\Branches\Branch;
-use Laravel\Cashier\Billable;
 use App\Models\Hrm\Attendance;
 use App\Models\Hrm\Department;
 use App\Models\Hrm\Designation;
@@ -20,7 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     protected $guarded = [];
 
@@ -83,10 +81,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_id');
-    }
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 }

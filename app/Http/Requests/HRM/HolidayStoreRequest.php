@@ -14,7 +14,7 @@ class HolidayStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('holidays_create') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('holidays_create');
     }
 
     /**

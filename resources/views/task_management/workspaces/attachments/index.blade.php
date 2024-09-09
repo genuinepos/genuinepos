@@ -37,8 +37,10 @@
                                                 @endif
                                             </td>
                                             <td class="text-start">
+
                                                 <a data-magnify="gallery" data-caption="ddd" data-group="" href="{{ file_link('workspaceAttachment', $attachment->attachment) }}" class="btn btn-sm btn-info text-white">{{ __('View') }}</a>
                                                 <a href="{{ file_link('workspaceAttachment', $attachment->attachment) }}" class="btn btn-sm btn-secondary" download="File">{{ __('Download') }}</a>
+
                                                 <a href="{{ route('workspaces.attachments.delete', $attachment->id) }}" id="attachmentDelete" class="btn btn-sm btn-danger">{{ __('Delete') }}</a>
                                             </td>
                                         </tr>

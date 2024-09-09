@@ -228,48 +228,6 @@ class BranchSettingService
                 // if (isset($key) && isset($value)) {
                 if (isset($key)) {
 
-                    if (
-                        ($key == 'prefix__payroll_voucher_prefix' || $key == 'prefix__payroll_payment_voucher_prefix') &&
-                        config('generalSettings')['subscription']->features['hrm'] == BooleanType::False->value
-                    ) {
-                        continue;
-                    }
-
-                    if (
-                        $key == 'prefix__job_card_no_prefix' &&
-                        (isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::False->value)
-                    ) {
-                        continue;
-                    }
-
-                    if (
-                        ($key == 'prefix__sales_invoice_prefix' || $key == 'prefix__quotation_prefix' || $key == 'prefix__sales_order_prefix' || $key == 'prefix__sales_return_prefix') &&
-                        config('generalSettings')['subscription']->features['sales'] == BooleanType::False->value
-                    ) {
-                        continue;
-                    }
-
-                    if (
-                        ($key == 'prefix__purchase_invoice_prefix' || $key == 'prefix__purchase_order_prefix' || $key == 'prefix__purchase_return_prefix') &&
-                        config('generalSettings')['subscription']->features['purchase'] == BooleanType::False->value
-                    ) {
-                        continue;
-                    }
-
-                    if (
-                        ($key == 'prefix__supplier_id' || $key == 'prefix__customer_id') &&
-                        config('generalSettings')['subscription']->features['contacts'] == BooleanType::False->value
-                    ) {
-                        continue;
-                    }
-
-                    if (
-                        $key == 'prefix__stock_adjustment_prefix' &&
-                        config('generalSettings')['subscription']->features['stock_adjustments'] == BooleanType::False->value
-                    ) {
-                        continue;
-                    }
-
                     $branchSetting = GeneralSetting::where('branch_id', $branchId)->where('key', $key)->first();
                     if ($branchSetting) {
 

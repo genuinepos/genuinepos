@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\HRM;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PayrollCreateRequest extends FormRequest
@@ -12,7 +11,7 @@ class PayrollCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('payrolls_create') && config('generalSettings')['subscription']->features['hrm'] == BooleanType::True->value;
+        return auth()->user()->can('payrolls_create');
     }
 
     /**

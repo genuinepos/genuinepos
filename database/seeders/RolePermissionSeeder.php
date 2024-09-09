@@ -108,12 +108,6 @@ class RolePermissionSeeder extends Seeder
                 $hasShopCreatePermission = $role->hasPermissionTo('branches_create');
                 $hasShopEditPermission = $role->hasPermissionTo('branches_edit');
                 $hasShopDeletePermission = $role->hasPermissionTo('branches_delete');
-                $hasBillingIndexPermission = $role->hasPermissionTo('billing_index');
-                $hasBillingUpgradePlanPermission = $role->hasPermissionTo('billing_upgrade_plan');
-                $hasBillingShopAddPermission = $role->hasPermissionTo('billing_branch_add');
-                $hasBillingRenewShopPermission = $role->hasPermissionTo('billing_renew_branch');
-                $hasBillingBusinessAddPermission = $role->hasPermissionTo('billing_business_add');
-                $hasBillingPayDuePaymentPermission = $role->hasPermissionTo('billing_pay_due_payment');
 
                 $permissions = $this->getPermissionsArray();
                 $rolePermissions = $role->getPermissionNames();
@@ -195,36 +189,6 @@ class RolePermissionSeeder extends Seeder
 
                             $role->revokePermissionTo('branches_delete');
                         }
-
-                        if (!$hasBillingIndexPermission) {
-
-                            $role->revokePermissionTo('billing_index');
-                        }
-
-                        if (!$hasBillingUpgradePlanPermission) {
-
-                            $role->revokePermissionTo('billing_upgrade_plan');
-                        }
-
-                        if (!$hasBillingShopAddPermission) {
-
-                            $role->revokePermissionTo('billing_branch_add');
-                        }
-
-                        if (!$hasBillingRenewShopPermission) {
-
-                            $role->revokePermissionTo('billing_renew_branch');
-                        }
-
-                        if (!$hasBillingBusinessAddPermission) {
-
-                            $role->revokePermissionTo('billing_business_add');
-                        }
-
-                        if (!$hasBillingPayDuePaymentPermission) {
-
-                            $role->revokePermissionTo('billing_pay_due_payment');
-                        }
                     }
                 } elseif (!$role->id == 1 && !$role->id == 2 && $countRolePermissions == 0) {
 
@@ -241,13 +205,6 @@ class RolePermissionSeeder extends Seeder
                     $role->revokePermissionTo('branches_create');
                     $role->revokePermissionTo('branches_edit');
                     $role->revokePermissionTo('branches_delete');
-
-                    $role->revokePermissionTo('billing_index');
-                    $role->revokePermissionTo('billing_upgrade_plan');
-                    $role->revokePermissionTo('billing_branch_add');
-                    $role->revokePermissionTo('billing_renew_branch');
-                    $role->revokePermissionTo('billing_business_add');
-                    $role->revokePermissionTo('billing_pay_due_payment');
                 }
 
                 // echo 'Role has been synced to ' . $role->name . ' successfully' . PHP_EOL;
@@ -603,15 +560,8 @@ class RolePermissionSeeder extends Seeder
             ['id' => '362', 'name' => 'cash_counters_edit'],
             ['id' => '363', 'name' => 'cash_counters_delete'],
 
-            ['id' => '364', 'name' => 'billing_index'],
-            ['id' => '365', 'name' => 'billing_upgrade_plan'],
-            ['id' => '366', 'name' => 'billing_branch_add'],
-            ['id' => '367', 'name' => 'billing_renew_branch'],
-
             ['id' => '368', 'name' => 'module_settings'],
             ['id' => '369', 'name' => 'has_access_to_all_area'],
-            ['id' => '370', 'name' => 'billing_business_add'],
-            ['id' => '371', 'name' => 'billing_pay_due_payment'],
 
             ['id' => '372', 'name' => 'branches_index'],
             ['id' => '373', 'name' => 'branches_create'],

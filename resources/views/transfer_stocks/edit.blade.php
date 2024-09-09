@@ -114,19 +114,17 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                        <div class="input-group mt-1">
-                                            <label class="col-5"><b>{{ __('Send At') }}</b></label>
-                                            <div class="col-7">
-                                                <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
-                                                    <option value="">{{ __('Select Warehouse') }}</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-5"><b>{{ __('Send At') }}</b></label>
+                                        <div class="col-7">
+                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
+                                                <option value="">{{ __('Select Warehouse') }}</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                    @endif
+                                    </div>
                                 </div>
 
                                 @if ($transferStock->total_received_qty == 0)
@@ -137,7 +135,7 @@
                                             <div class="col-7">
                                                 <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
                                                     <option value="" class="fw-bold">{{ __('Select Receiver Store/Company') }}</option>
-                                                    @if ($generalSettings['subscription']->has_business == 1 || $transferStock->receiver_branch_id == null)
+                                                    @if ($generalSettings['subscription__has_business'] == 1 || $transferStock->receiver_branch_id == null)
                                                         <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} data-receiver_currency="---" data-receiver_is_base_currency="1" data-receiver_currency_rate="0" data-receiver_currency_type="1" data-receiver_currency_code="{{ $generalSettings['base_currency_code'] }}" data-receiver_currency_symbol="{{ $generalSettings['base_currency_symbol'] }}" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                     @endif
 
@@ -157,19 +155,17 @@
                                             </div>
                                         </div>
 
-                                        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                            <div class="input-group mt-1">
-                                                <label class="col-5"><b>{{ __('Receive At') }}</b></label>
-                                                <div class="col-7">
-                                                    <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
-                                                        <option value="">{{ __('Select Warehouse') }}</option>
-                                                        @foreach ($selectedBranchWarehouses as $warehouse)
-                                                            <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                        <div class="input-group mt-1">
+                                            <label class="col-5"><b>{{ __('Receive At') }}</b></label>
+                                            <div class="col-7">
+                                                <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
+                                                    <option value="">{{ __('Select Warehouse') }}</option>
+                                                    @foreach ($selectedBranchWarehouses as $warehouse)
+                                                        <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
                                 @else
                                     @php
@@ -194,7 +190,7 @@
                                             </div>
                                         </div>
 
-                                        @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && $transferStock->receiver_warehouse_id)
+                                        @if ($transferStock->receiver_warehouse_id)
                                             <div class="input-group mt-1">
                                                 <label class="col-5"><b>{{ __('Receive At') }}</b></label>
                                                 <div class="col-7">

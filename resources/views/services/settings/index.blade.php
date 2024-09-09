@@ -36,12 +36,10 @@
                                 </a>
                             @endif
 
-                            @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
-                                @if (auth()->user()->can('product_brand_index'))
-                                    <a id="tab_btn" data-show="brands" class="btn btn-sm btn-primary tab_btn" href="#">
-                                        <i class="fa-solid fa-bandage"></i> {{ __('Brands') }}
-                                    </a>
-                                @endif
+                            @if (auth()->user()->can('product_brand_index'))
+                                <a id="tab_btn" data-show="brands" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fa-solid fa-bandage"></i> {{ __('Brands') }}
+                                </a>
                             @endif
 
                             @if (auth()->user()->can('devices_index'))
@@ -74,10 +72,8 @@
                         @include('services.settings.partials.body_partials.status')
                     @endif
 
-                    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
-                        @if (auth()->user()->can('product_brand_index'))
-                            @include('services.settings.partials.body_partials.brands')
-                        @endif
+                    @if (auth()->user()->can('product_brand_index'))
+                        @include('services.settings.partials.body_partials.brands')
                     @endif
 
                     @if (auth()->user()->can('devices_index'))
@@ -100,10 +96,8 @@
         </div>
     </div>
 
-    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
-        @if (auth()->user()->can('product_brand_add') || auth()->user()->can('product_brand_edit'))
-            <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
-        @endif
+    @if (auth()->user()->can('product_brand_add') || auth()->user()->can('product_brand_edit'))
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 
     @if (auth()->user()->can('status_create') || auth()->user()->can('status_edit'))
@@ -126,10 +120,8 @@
         @include('services.settings.partials.js_partials.status_js')
     @endif
 
-    @if ($generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value)
-        @if (auth()->user()->can('product_brand_index'))
-            @include('services.settings.partials.js_partials.brand_js')
-        @endif
+    @if (auth()->user()->can('product_brand_index'))
+        @include('services.settings.partials.js_partials.brand_js')
     @endif
 
     @if (auth()->user()->can('devices_index'))

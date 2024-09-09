@@ -569,7 +569,7 @@ class SalesHelperService
             $saleScreenTypes = [
                 auth()->user()->can('view_add_sale') ? SaleScreenType::AddSale->value : null,
                 auth()->user()->can('pos_all') ? SaleScreenType::PosSale->value : null,
-                auth()->user()->can('service_invoices_index') && isset(config('generalSettings')['subscription']->features['services']) && config('generalSettings')['subscription']->features['services'] == BooleanType::True->value ? SaleScreenType::ServicePosSale->value : null,
+                auth()->user()->can('service_invoices_index') ? SaleScreenType::ServicePosSale->value : null,
             ];
 
             $query->whereIn('sales.sale_screen', $saleScreenTypes);

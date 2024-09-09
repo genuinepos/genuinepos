@@ -33,7 +33,6 @@ class LeaveTypeController extends Controller
     public function store(LeaveTypeStoreRequest $request)
     {
         $this->leaveTypeService->addLeaveType(request: $request);
-
         return response()->json(__('Leave type created successfully'));
     }
 

@@ -13,12 +13,8 @@
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <title>@yield('title') {{ config('app.name') }}</title>
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
     @include('layout._stylesheet')
     @stack('stylesheets')
-
-    <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/scripts/main.ts'])
 </head>
 
 <body id="dashboard-8" class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
@@ -38,7 +34,15 @@
 
         <footer>
             <div class="logo_wrapper">
-                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
+                @if (config('speeddigit.dynamic_app_logo') == true)
+                    @if ($generalSettings['business_or_shop__business_logo'])
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo">
+                    @else
+                        <h6 class="text-white fw-bold text-uppercase logo text-center">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+                    @endif
+                @else
+                    <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
+                @endif
             </div>
 
             <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small><a href="{{ route('settings.release.note.index') }}" class="text-deep-green fw-bold">V - 2.0.5</a></small></span>

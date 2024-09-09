@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Users\Reports;
 
-use App\Enums\BooleanType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserActivityLogReportIndexRequest extends FormRequest
@@ -12,7 +11,7 @@ class UserActivityLogReportIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('user_activities_log_index') && config('generalSettings')['subscription']->features['users'] == BooleanType::True->value;
+        return auth()->user()->can('user_activities_log_index');
     }
 
     /**

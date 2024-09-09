@@ -42,7 +42,6 @@ class DepartmentController extends Controller
     public function edit($id, DepartmentEditRequest $request)
     {
         $department = $this->departmentService->singleDepartment(id: $id);
-
         return view('hrm.departments.ajax_view.edit', compact('department'));
     }
 
@@ -55,7 +54,6 @@ class DepartmentController extends Controller
     public function delete($id, DepartmentDeleteRequest $request)
     {
         $this->departmentService->deleteDepartment(id: $id);
-
         return response()->json(__('Department deleted successfully'));
     }
 

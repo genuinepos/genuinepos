@@ -85,7 +85,6 @@
                             <div class="pos-logo d-flex justify-content-center">
                                 @if (auth()->user()?->branch)
                                     @if (auth()->user()?->branch?->parent_branch_id)
-
                                         @if (auth()->user()?->branch?->parentBranch?->logo)
                                             <img style="height: 45px; width:200px;" src="{{ file_link('branchLogo', auth()->user()?->branch?->parentBranch?->logo) }}">
                                         @else
@@ -165,7 +164,7 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ $generalSettings['subscription']->features['contacts'] == 0 || !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('customer_add') ? 'addContact' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                     </div>
                                 </div>
 
@@ -176,7 +175,7 @@
                                         </div>
                                         <input type="text" name="search_product" class="form-control" id="search_product" placeholder="{{ __('Scan/Search Items by SKU/Barcode') }}" autofocus autocomplete="off">
                                         <div class="input-group-append add_button">
-                                            <span class="input-group-text {{ $generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::False->value || !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ $generalSettings['subscription']->features['inventory'] == \App\Enums\BooleanType::True->value && auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
+                                            <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct' : '' }}"><i class="fas fa-plus-square text-dark input_i"></i></span>
                                         </div>
                                     </div>
 

@@ -882,50 +882,6 @@
                                         </a>
                                     </div>
                                 @endif
-                                @endif
-                            </div>
-
-                            <div class="sub-menu-row">
-                                @if ($generalSettings['modules__pos'] == '1')
-                                    @if (auth()->user()->can('pos_add'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('sales.pos.create') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-circle"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('POS') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('pos_all'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('sales.pos.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Manage POS Sales') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('pos_all'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('cash.register.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Cash Register List') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-                                @endif
                             </div>
 
                             <div class="sub-menu-row">

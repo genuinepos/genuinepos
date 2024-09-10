@@ -23,6 +23,37 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
+                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.6</h5>
+                        </div>
+                        <div class="release-list p-1">
+                            <ul class="list-styled">
+                                <ol class="fw-bold">{{ __('About This Update') }}</ol>
+                                <li>{{ __('Upgrade to the new version of Gposs System preformance is optimized, fixed some bugs, added and stability is enhenced, bring your butter experience.') }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="changes-log-area p-2 mt-3">
+                    <div class="release-version">
+                        <h5 class="text-blue">{{ __('Update Log') }}</h5>
+                    </div>
+                    <div class="changes-log mt-1">
+                        <ul class="list-styled">
+                            <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
+                            <li> - {{ __('Role permission mismatch issue is fixed') }}</li>
+                            <ol class="fw-bold">{{ __('Feature Update') }}</ol>
+                            <li> - {{ __('Add Sales , POS Sales and Service sales in one list (Manage Sales)') }}</li>
+                            <li> - {{ __('Added new role permission called [View Only Own Created Transactions/Data]') }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="all-release-note-area p-2">
+                    <div class="version-release-note mt-1">
+                        <div class="release-version">
                             <h5 class="text-blue">{{ __('Release') }}: 2.0.5</h5>
                         </div>
                         <div class="release-list p-1">

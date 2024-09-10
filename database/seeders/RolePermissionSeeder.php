@@ -357,7 +357,7 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '152', 'name' => 'today_summery'],
             ['id' => '153', 'name' => 'communication'],
-   
+
             // TODO:: These permission are required for app, but need to add on Create+Update permissions page
             ['id' => '155', 'name' => 'email_setting_index'],
             ['id' => '156', 'name' => 'email_setting_create'],

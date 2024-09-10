@@ -1,7 +1,7 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Device Model') }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit') }} {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -9,9 +9,14 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-12">
-                        <label><b>{{ __('Model Name') }}</b> <span class="text-danger">*</span></label>
+                        <label>
+                            <b>
+                                {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] . ' ' .__('Name') : __('Model Name') }}
+                            </b>
+                            <span class="text-danger">*</span>
+                        </label>
                         <input required type="text" name="name" class="form-control" id="device_model_name" data-next="device_model_brand_id" value="{{ $deviceModel->name }}" placeholder="{{ __('Model Name') }}" />
-                        <span class="error error_status_name"></span>
+                        <span class="error error_device_model_name"></span>
                     </div>
                 </div>
 
@@ -27,9 +32,9 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <label><b>{{ __('Device') }}</b></label>
+                        <label><b>{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}</b></label>
                         <select name="device_id" class="form-control" id="device_model_device_id" data-next="device_model_service_checklist">
-                            <option value="">{{ __('Select Device') }}</option>
+                            <option value="">{{ __('Select') }} {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}</option>
                             @foreach ($devices as $device)
                                 <option @selected($device->id == $deviceModel->device_id) value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach

@@ -49,14 +49,14 @@ class PurchaseReturnReportService
                     return $generalSettings['business_or_shop__business_name'];
                 }
             })
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
-            ->editColumn('return_discount', fn ($row) => '<span class="return_discount" data-value="' . curr_cnv($row->return_discount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount, $row->c_rate, $row->branch_id)) . '</span>')
-            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
-            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
-            ->editColumn('due', fn ($row) => '<span class="due" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+            ->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('net_total_amount', fn($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('return_discount', fn($row) => '<span class="return_discount" data-value="' . curr_cnv($row->return_discount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('return_tax_amount', fn($row) => '<span class="return_tax_amount" data-value="' . curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('total_return_amount', fn($row) => '<span class="total_return_amount" data-value="' . curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('received_amount', fn($row) => '<span class="received_amount" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('due', fn($row) => '<span class="due" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
             ->editColumn('createdBy', function ($row) {
 
                 return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
@@ -117,6 +117,11 @@ class PurchaseReturnReportService
             //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('purchase_returns.date_ts', $date_range); // Final
+        }
+
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('purchase_returns.created_by_id', auth()->user()->id);
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

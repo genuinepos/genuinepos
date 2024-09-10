@@ -58,7 +58,7 @@
                             </a>
 
                             @if ((isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value) || $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                                @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+                                @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
                                     <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
                                         <i class="fas fa-shopping-bag"></i> {{ __('Sales') }}
                                     </a>
@@ -106,7 +106,7 @@
                     @include('contacts.manage_customers.partials.tab_content_partials.contact_info')
 
                     @if ((isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value) || $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-                        @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+                        @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
                             @include('contacts.manage_customers.partials.tab_content_partials.sales')
                         @endif
                     @endif
@@ -164,7 +164,7 @@
     @endif
 
     @if ((isset($generalSettings['subscription']->features['services']) && $generalSettings['subscription']->features['services'] == \App\Enums\BooleanType::True->value) || $generalSettings['subscription']->features['sales'] == \App\Enums\BooleanType::True->value)
-        @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+        @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
             @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_js')
         @endif
     @endif

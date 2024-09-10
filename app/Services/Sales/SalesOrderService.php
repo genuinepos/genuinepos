@@ -326,7 +326,7 @@ class SalesOrderService
             $query->where('sales.customer_account_id', $customerAccountId);
         }
 
-        if (auth()->user()->can('sales_orders_only_own')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
             $query->where('sales.created_by_id', auth()->user()->id);
         }

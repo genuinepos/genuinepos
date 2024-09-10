@@ -259,7 +259,7 @@ class ServiceInvoiceService
 
         $query->where('sales.sale_screen', $saleScreen);
 
-        if (auth()->user()->can('service_invoices_only_own')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
             $query->where('sales.created_by_id', auth()->user()->id);
         }

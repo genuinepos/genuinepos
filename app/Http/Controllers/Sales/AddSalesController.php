@@ -20,11 +20,6 @@ class AddSalesController extends Controller
     {
         $indexMethodContainer = $addSaleControllerMethodContainersInterface->indexMethodContainer(request: $request);
 
-        // if ($request->ajax()) {
-
-        //     return $indexMethodContainer;
-        // }
-
         extract($indexMethodContainer);
 
         return view('sales.add_sale.index', compact('branches', 'customerAccounts'));

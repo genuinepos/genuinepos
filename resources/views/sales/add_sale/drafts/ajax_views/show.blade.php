@@ -202,7 +202,7 @@
                                 $filename = $draft->draft_id . '__' . $draft->date . '__' . $branchName;
                             @endphp
 
-                            @if (auth()->user()->can('edit_add_sale') && $draft->branch_id == auth()->user()->branch_id)
+                            @if (auth()->user()->can('sales_edit') && $draft->branch_id == auth()->user()->branch_id)
                                 <a href="{{ route('sale.drafts.edit', [$draft->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
 

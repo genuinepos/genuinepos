@@ -42,6 +42,7 @@
                         <ul class="list-styled">
                             <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
                             <li> - {{ __('Role permission mismatch issue is fixed') }}</li>
+                            <li> - {{ __('Service invoice/Sale delete issue is fixed') }}</li>
                             <ol class="fw-bold">{{ __('Feature Update') }}</ol>
                             <li> - {{ __('Add Sales , POS Sales and Service sales in one list (Manage Sales)') }}</li>
                             <li> - {{ __('Added new role permission called [View Only Own Created Transactions/Data]') }}</li>

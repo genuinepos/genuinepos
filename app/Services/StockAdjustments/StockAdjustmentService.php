@@ -192,6 +192,11 @@ class StockAdjustmentService
             $query->whereBetween('stock_adjustments.date_ts', $date_range); // Final
         }
 
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('stock_adjustments.created_by_id', auth()->user()->id);
+        }
+
          // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 

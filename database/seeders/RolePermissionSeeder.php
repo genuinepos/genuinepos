@@ -97,13 +97,13 @@ class RolePermissionSeeder extends Seeder
                 // echo 'Role sync to ' . $role->name . PHP_EOL;
 
                 $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
-                $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
-                $hasServiceInvoicesOnlyOwnPermission = $role->hasPermissionTo('service_invoices_only_own');
-                $hasServiceQuotationsOnlyOwnPermission = $role->hasPermissionTo('service_quotations_only_own');
-                $hasSaleQuotationsOnlyOwnPermission = $role->hasPermissionTo('sale_quotations_only_own');
-                $hasSaleDraftsOnlyOwnPermission = $role->hasPermissionTo('sale_drafts_only_own');
-                $hasSalesOrdersOnlyOwnPermission = $role->hasPermissionTo('sales_orders_only_own');
-                $hasSalesReturnOnlyOwnPermission = $role->hasPermissionTo('sales_return_only_own');
+                $hasViewOnlyOonTransactionsPermission = $role->hasPermissionTo('view_only_won_transactions');
+                // $hasServiceInvoicesOnlyOwnPermission = $role->hasPermissionTo('service_invoices_only_own');
+                // $hasServiceQuotationsOnlyOwnPermission = $role->hasPermissionTo('service_quotations_only_own');
+                // $hasSaleQuotationsOnlyOwnPermission = $role->hasPermissionTo('sale_quotations_only_own');
+                // $hasSaleDraftsOnlyOwnPermission = $role->hasPermissionTo('sale_drafts_only_own');
+                // $hasSalesOrdersOnlyOwnPermission = $role->hasPermissionTo('sales_orders_only_own');
+                // $hasSalesReturnOnlyOwnPermission = $role->hasPermissionTo('sales_return_only_own');
                 $hasShopIndexPermission = $role->hasPermissionTo('branches_index');
                 $hasShopCreatePermission = $role->hasPermissionTo('branches_create');
                 $hasShopEditPermission = $role->hasPermissionTo('branches_edit');
@@ -119,13 +119,13 @@ class RolePermissionSeeder extends Seeder
                     if ($role->id == 1) {
 
                         $role->revokePermissionTo('user_activities_log_only_own_log');
-                        $role->revokePermissionTo('view_own_sale');
-                        $role->revokePermissionTo('service_invoices_only_own');
-                        $role->revokePermissionTo('service_quotations_only_own');
-                        $role->revokePermissionTo('sale_quotations_only_own');
-                        $role->revokePermissionTo('sale_drafts_only_own');
-                        $role->revokePermissionTo('sales_orders_only_own');
-                        $role->revokePermissionTo('sales_return_only_own');
+                        $role->revokePermissionTo('view_only_won_transactions');
+                        // $role->revokePermissionTo('service_invoices_only_own');
+                        // $role->revokePermissionTo('service_quotations_only_own');
+                        // $role->revokePermissionTo('sale_quotations_only_own');
+                        // $role->revokePermissionTo('sale_drafts_only_own');
+                        // $role->revokePermissionTo('sales_orders_only_own');
+                        // $role->revokePermissionTo('sales_return_only_own');
                     }
 
                     if ($role->id == 2) {
@@ -135,45 +135,45 @@ class RolePermissionSeeder extends Seeder
                             $role->revokePermissionTo('has_access_to_all_area');
                         }
 
-                        if (!$hasViewOwnSalePermission) {
+                        if (!$hasViewOnlyOonTransactionsPermission) {
 
-                            $role->revokePermissionTo('view_own_sale');
+                            $role->revokePermissionTo('view_only_won_transactions');
                         }
 
-                        if (!$hasServiceInvoicesOnlyOwnPermission) {
+                        // if (!$hasServiceInvoicesOnlyOwnPermission) {
 
-                            $role->revokePermissionTo('service_invoices_only_own');
-                        }
+                        //     $role->revokePermissionTo('service_invoices_only_own');
+                        // }
 
-                        if (!$hasSaleQuotationsOnlyOwnPermission) {
+                        // if (!$hasSaleQuotationsOnlyOwnPermission) {
 
-                            $role->revokePermissionTo('sale_quotations_only_own');
-                        }
+                        //     $role->revokePermissionTo('sale_quotations_only_own');
+                        // }
 
-                        if (!$hasSaleDraftsOnlyOwnPermission) {
+                        // if (!$hasSaleDraftsOnlyOwnPermission) {
 
-                            $role->revokePermissionTo('sale_drafts_only_own');
-                        }
+                        //     $role->revokePermissionTo('sale_drafts_only_own');
+                        // }
 
-                        if (!$hasSalesOrdersOnlyOwnPermission) {
+                        // if (!$hasSalesOrdersOnlyOwnPermission) {
 
-                            $role->revokePermissionTo('sales_orders_only_own');
-                        }
+                        //     $role->revokePermissionTo('sales_orders_only_own');
+                        // }
 
-                        if (!$hasServiceQuotationsOnlyOwnPermission) {
+                        // if (!$hasServiceQuotationsOnlyOwnPermission) {
 
-                            $role->revokePermissionTo('service_quotations_only_own');
-                        }
+                        //     $role->revokePermissionTo('service_quotations_only_own');
+                        // }
 
-                        if (!$hasSalesReturnOnlyOwnPermission) {
+                        // if (!$hasSalesReturnOnlyOwnPermission) {
 
-                            $role->revokePermissionTo('sales_return_only_own');
-                        }
+                        //     $role->revokePermissionTo('sales_return_only_own');
+                        // }
 
-                        if (!$hasShopIndexPermission) {
+                        // if (!$hasShopIndexPermission) {
 
-                            $role->revokePermissionTo('branches_index');
-                        }
+                        //     $role->revokePermissionTo('branches_index');
+                        // }
 
                         if (!$hasShopCreatePermission) {
 
@@ -194,13 +194,13 @@ class RolePermissionSeeder extends Seeder
 
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('has_access_to_all_area');
-                    $role->revokePermissionTo('view_own_sale');
-                    $role->revokePermissionTo('service_invoices_only_own');
-                    $role->revokePermissionTo('service_quotations_only_own');
-                    $role->revokePermissionTo('sale_quotations_only_own');
-                    $role->revokePermissionTo('sale_drafts_only_own');
-                    $role->revokePermissionTo('sales_orders_only_own');
-                    $role->revokePermissionTo('sales_return_only_own');
+                    $role->revokePermissionTo('view_only_won_transactions');
+                    // $role->revokePermissionTo('service_invoices_only_own');
+                    // $role->revokePermissionTo('service_quotations_only_own');
+                    // $role->revokePermissionTo('sale_quotations_only_own');
+                    // $role->revokePermissionTo('sale_drafts_only_own');
+                    // $role->revokePermissionTo('sales_orders_only_own');
+                    // $role->revokePermissionTo('sales_return_only_own');
                     $role->revokePermissionTo('branches_index');
                     $role->revokePermissionTo('branches_create');
                     $role->revokePermissionTo('branches_edit');
@@ -274,24 +274,21 @@ class RolePermissionSeeder extends Seeder
             ['id' => '50', 'name' => 'stock_adjustment_add'],
             ['id' => '51', 'name' => 'stock_adjustment_delete'],
             ['id' => '53', 'name' => 'stock_adjustment_report'],
-            ['id' => '61', 'name' => 'pos_all'],
-            ['id' => '62', 'name' => 'pos_add'],
-            ['id' => '63', 'name' => 'pos_edit'],
-            ['id' => '64', 'name' => 'pos_delete'],
-            ['id' => '66', 'name' => 'create_add_sale'],
-            ['id' => '67', 'name' => 'view_add_sale'],
-            ['id' => '68', 'name' => 'edit_add_sale'],
-            ['id' => '69', 'name' => 'delete_add_sale'],
-            // ['id' => '71', 'name' => 'sale_draft'],
-            // ['id' => '72', 'name' => 'sale_quotation'],
-            ['id' => '73', 'name' => 'sale_payment'],
+            // ['id' => '61', 'name' => 'pos_all'],
+            // ['id' => '62', 'name' => 'pos_add'],
+            // ['id' => '63', 'name' => 'pos_edit'],
+            // ['id' => '64', 'name' => 'pos_delete'],
+            // ['id' => '66', 'name' => 'create_add_sale'],
+            // ['id' => '67', 'name' => 'view_add_sale'],
+            // ['id' => '68', 'name' => 'edit_add_sale'],
+            // ['id' => '69', 'name' => 'delete_add_sale'],
             ['id' => '74', 'name' => 'edit_price_sale_screen'],
-            ['id' => '75', 'name' => 'edit_price_pos_screen'],
+            // ['id' => '75', 'name' => 'edit_price_pos_screen'],
             ['id' => '76', 'name' => 'edit_discount_sale_screen'],
-            ['id' => '77', 'name' => 'edit_discount_pos_screen'],
+            // ['id' => '77', 'name' => 'edit_discount_pos_screen'],
             ['id' => '78', 'name' => 'shipment_access'],
             ['id' => '79', 'name' => 'view_product_cost_is_sale_screed'],
-            ['id' => '80', 'name' => 'view_own_sale'],
+            // ['id' => '80', 'name' => 'view_own_sale'],
             ['id' => '82', 'name' => 'discounts'],
             ['id' => '83', 'name' => 'sales_report'],
             ['id' => '84', 'name' => 'sales_return_report'],
@@ -300,22 +297,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '88', 'name' => 'register_view'],
             ['id' => '89', 'name' => 'register_close'],
             ['id' => '90', 'name' => 'another_register_close'],
-            // ['id' => '91', 'name' => 'tax_report'],
-            // ['id' => '92', 'name' => 'production_report'],
-            // ['id' => '93', 'name' => 'tax'],
-            // ['id' => '94', 'name' => 'branch'],
-            // ['id' => '95', 'name' => 'warehouse'],
             ['id' => '96', 'name' => 'general_settings'],
             ['id' => '97', 'name' => 'payment_settings'],
-            // ['id' => '98', 'name' => 'invoice_schema'],
-            // ['id' => '99', 'name' => 'invoice_layout'],
             ['id' => '100', 'name' => 'barcode_settings'],
-            // ['id' => '101', 'name' => 'cash_counters'],
             ['id' => '102', 'name' => 'view_dashboard_data'],
-            // ['id' => '117', 'name' => 'assign_todo'],
-            // ['id' => '118', 'name' => 'work_space'],
-            // ['id' => '119', 'name' => 'memo'],
-            // ['id' => '120', 'name' => 'msg'],
+
             ['id' => '121', 'name' => 'process_view'],
             ['id' => '122', 'name' => 'process_add'],
             ['id' => '123', 'name' => 'process_edit'],
@@ -325,13 +311,9 @@ class RolePermissionSeeder extends Seeder
             ['id' => '127', 'name' => 'production_edit'],
             ['id' => '128', 'name' => 'production_delete'],
             ['id' => '130', 'name' => 'manufacturing_report'],
-            // ['id' => '131', 'name' => 'project_view'],
-            // ['id' => '132', 'name' => 'project_create'],
-            // ['id' => '133', 'name' => 'project_edit'],
-            // ['id' => '134', 'name' => 'project_delete'],
+
             ['id' => '152', 'name' => 'today_summery'],
             ['id' => '153', 'name' => 'communication'],
-            // ['id' => '154', 'name' => 'receive_payment_index'],
 
             // TODO:: These permission are required for app, but need to add on Create+Update permissions page
             ['id' => '155', 'name' => 'email_setting_index'],
@@ -355,7 +337,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '187', 'name' => 'delete_sales_return'],
             ['id' => '188', 'name' => 'sales_return_index'],
             ['id' => '189', 'name' => 'sold_product_list'],
-            // ['id' => '190', 'name' => 'sales_order_list'],
             ['id' => '191', 'name' => 'sales_order_to_invoice'],
             ['id' => '192', 'name' => 'product_import'],
             ['id' => '193', 'name' => 'expired_product_list'],
@@ -450,8 +431,6 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '271', 'name' => 'profit_loss'],
             ['id' => '272', 'name' => 'financial_report'],
-            // ['id' => '273', 'name' => 'profit_loss_account'],
-            // ['id' => '274', 'name' => 'balance_sheet'],
             ['id' => '275', 'name' => 'trial_balance'],
             ['id' => '276', 'name' => 'cash_flow'],
 
@@ -482,16 +461,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '297', 'name' => 'attendances_create'],
             ['id' => '298', 'name' => 'attendances_edit'],
             ['id' => '299', 'name' => 'attendances_delete'],
-
-            // ['id' => '300', 'name' => 'allowances_index'],
-            // ['id' => '301', 'name' => 'allowances_create'],
-            // ['id' => '302', 'name' => 'allowances_edit'],
-            // ['id' => '303', 'name' => 'allowances_delete'],
-
-            // ['id' => '304', 'name' => 'deductions_index'],
-            // ['id' => '305', 'name' => 'deductions_create'],
-            // ['id' => '306', 'name' => 'deductions_edit'],
-            // ['id' => '307', 'name' => 'deductions_delete'],
 
             ['id' => '308', 'name' => 'holidays_index'],
             ['id' => '309', 'name' => 'holidays_create'],
@@ -641,31 +610,31 @@ class RolePermissionSeeder extends Seeder
             ['id' => '437', 'name' => 'supplier_ledger'],
             ['id' => '438', 'name' => 'customer_ledger'],
 
-            ['id' => '439', 'name' => 'service_invoices_only_own'],
+            // ['id' => '439', 'name' => 'service_invoices_only_own'],
 
             ['id' => '440', 'name' => 'service_quotations_index'],
-            ['id' => '441', 'name' => 'service_quotations_only_own'],
+            // ['id' => '441', 'name' => 'service_quotations_only_own'],
             ['id' => '443', 'name' => 'service_quotations_create'],
             ['id' => '444', 'name' => 'service_quotations_edit'],
             ['id' => '445', 'name' => 'service_quotations_delete'],
 
             ['id' => '446', 'name' => 'sale_quotations_index'],
-            ['id' => '447', 'name' => 'sale_quotations_only_own'],
+            // ['id' => '447', 'name' => 'sale_quotations_only_own'],
             ['id' => '448', 'name' => 'sale_quotations_edit'],
             ['id' => '449', 'name' => 'sale_quotations_change_status'],
             ['id' => '450', 'name' => 'sale_quotations_delete'],
 
             ['id' => '451', 'name' => 'sale_drafts_index'],
-            ['id' => '452', 'name' => 'sale_drafts_only_own'],
+            // ['id' => '452', 'name' => 'sale_drafts_only_own'],
             ['id' => '453', 'name' => 'sale_drafts_edit'],
             ['id' => '454', 'name' => 'sale_drafts_delete'],
 
             ['id' => '455', 'name' => 'sales_orders_index'],
-            ['id' => '456', 'name' => 'sales_orders_only_own'],
+            // ['id' => '456', 'name' => 'sales_orders_only_own'],
             ['id' => '457', 'name' => 'sales_orders_edit'],
             ['id' => '458', 'name' => 'sales_orders_delete'],
 
-            ['id' => '459', 'name' => 'sales_return_only_own'],
+            // ['id' => '459', 'name' => 'sales_return_only_own'],
 
             ['id' => '460', 'name' => 'advertisements_index'],
             ['id' => '461', 'name' => 'advertisements_create'],
@@ -676,6 +645,14 @@ class RolePermissionSeeder extends Seeder
             ['id' => '465', 'name' => 'currencies_create'],
             ['id' => '466', 'name' => 'currencies_edit'],
             ['id' => '467', 'name' => 'currencies_delete'],
+
+            ['id' => '468', 'name' => 'sales_create_by_add_sale'],
+            ['id' => '469', 'name' => 'sales_create_by_pos'],
+            ['id' => '470', 'name' => 'sales_index'],
+            ['id' => '471', 'name' => 'sales_edit'],
+            ['id' => '472', 'name' => 'sales_delete'],
+
+            ['id' => '473', 'name' => 'view_only_won_transactions'],
         ];
 
         return $permissions;

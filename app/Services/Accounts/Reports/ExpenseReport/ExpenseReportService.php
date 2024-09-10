@@ -55,7 +55,7 @@ class ExpenseReportService
                 return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
 
-            ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . curr_cnv($row->amount, $row->c_rate, $row->ledger_branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->amount, $row->c_rate, $row->ledger_branch_id)) . '</span>')
+            ->editColumn('amount', fn($row) => '<span class="amount" data-value="' . curr_cnv($row->amount, $row->c_rate, $row->ledger_branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->amount, $row->c_rate, $row->ledger_branch_id)) . '</span>')
             ->rawColumns(['date', 'branch', 'voucher_type', 'voucher_no', 'amount'])
             ->make(true);
     }
@@ -119,17 +119,22 @@ class ExpenseReportService
             $query->where('accounts.branch_id', '=', $filteredChildBranchId);
         }
 
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-            $query->where('accounts.branch_id', auth()->user()->branch_id);
-        }
-
         if ($request->from_date) {
 
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $query->whereBetween('account_ledgers.date', $date_range); // Final
+        }
+
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('accounting_vouchers.created_by_id', auth()->user()->id);
+        }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+            $query->where('accounts.branch_id', auth()->user()->branch_id);
         }
 
         return $query->select(

@@ -11,7 +11,7 @@ class AddSaleDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('delete_add_sale');
+        return auth()->user()->can('sales_delete');
     }
 
     /**

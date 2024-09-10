@@ -403,13 +403,13 @@
 
             <div class="modal-footer">
                 <div class="btn-box">
-                    @if (auth()->user()->can('edit_add_sale') && $sale->branch_id == auth()->user()->branch_id)
+                    @if ($sale->branch_id == auth()->user()->branch_id)
                         @if ($sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
-                            @if (auth()->user()->can('edit_add_sale'))
+                            @if (auth()->user()->can('sales_edit'))
                                 <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
                         @elseif($sale->sale_screen == \App\Enums\SaleScreenType::PosSale->value)
-                            @if (auth()->user()->can('pos_edit'))
+                            @if (auth()->user()->can('sales_edit'))
                                 <a href="{{ route('sales.pos.edit', [$sale->id, $sale->sale_screen]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
                         @elseif($sale->sale_screen == \App\Enums\SaleScreenType::ServicePosSale->value)

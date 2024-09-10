@@ -2,12 +2,13 @@
 
 namespace App\Services\TransferStocks;
 
-use App\Enums\IsDeleteInUpdate;
-use App\Enums\TransferStockReceiveStatus;
-use App\Models\TransferStocks\TransferStock;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
+use App\Enums\IsDeleteInUpdate;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use App\Enums\TransferStockReceiveStatus;
+use App\Models\TransferStocks\TransferStock;
 
 class TransferStockService
 {
@@ -165,9 +166,9 @@ class TransferStockService
                 return '<p class="m-0 p-0">' . $receiverBranch . '</p><p class="m-0 p-0">' . $receiverWarehouse . '</p>';
             })
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+            ->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
             ->editColumn('total_stock_value', function ($row) use ($generalSettings) {
 
@@ -180,11 +181,11 @@ class TransferStockService
                 return '<span class="total_stock_value" data-value="' . curr_cnv($row->total_stock_value, $row->c_rate, $row->receiver_branch_id) . '">' . $currency . '' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_stock_value, $row->c_rate, $row->receiver_branch_id)) . '</span>';
             })
 
-            ->editColumn('total_send_qty', fn ($row) => '<span class="total_send_qty" data-value="' . $row->total_send_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_send_qty) . '</span>')
+            ->editColumn('total_send_qty', fn($row) => '<span class="total_send_qty" data-value="' . $row->total_send_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_send_qty) . '</span>')
 
-            ->editColumn('total_received_qty', fn ($row) => '<span class="total_received_qty text-success" data-value="' . $row->total_received_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_received_qty) . '</span>')
+            ->editColumn('total_received_qty', fn($row) => '<span class="total_received_qty text-success" data-value="' . $row->total_received_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_received_qty) . '</span>')
 
-            ->editColumn('total_pending_qty', fn ($row) => '<span class="total_pending_qty text-danger" data-value="' . $row->total_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_pending_qty) . '</span>')
+            ->editColumn('total_pending_qty', fn($row) => '<span class="total_pending_qty text-danger" data-value="' . $row->total_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_pending_qty) . '</span>')
 
             ->editColumn('receive_status', function ($row) {
 
@@ -369,8 +370,13 @@ class TransferStockService
             $query->whereBetween('transfer_stocks.date_ts', $date_range); // Final
         }
 
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('transfer_stocks.send_by_id', auth()->user()->id);
+        }
+
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('transfer_stocks.branch_id', auth()->user()->branch_id);
         }

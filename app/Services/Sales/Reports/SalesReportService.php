@@ -48,23 +48,23 @@ class SalesReportService
                 return '<a href="' . route('sales.show', $row->id) . '" id="details_btn">' . $row->invoice_id . '</a>';
             })
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('net_total_amount', fn($row) => '<span class="net_total_amount" data-value="' . curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . curr_cnv($row->order_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->order_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('order_discount_amount', fn($row) => '<span class="order_discount_amount" data-value="' . curr_cnv($row->order_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->order_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('shipment_charge', fn ($row) => '<span class="shipment_charge" data-value="' . curr_cnv($row->shipment_charge, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->shipment_charge, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('shipment_charge', fn($row) => '<span class="shipment_charge" data-value="' . curr_cnv($row->shipment_charge, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->shipment_charge, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="' . curr_cnv($row->order_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->order_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('order_tax_amount', fn($row) => '<span class="order_tax_amount" data-value="' . curr_cnv($row->order_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->order_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('total_invoice_amount', fn($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('received_amount', fn($row) => '<span class="received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('sale_return_amount', fn($row) => '<span class="sale_return_amount" data-value="' . curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->sale_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span></span>')
+            ->editColumn('due', fn($row) => '<span class="text-danger">' . '<span class="due" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span></span>')
 
             ->rawColumns(['date', 'branch', 'invoice_id', 'total_qty', 'net_total_amount', 'order_discount_amount', 'shipment_charge', 'order_tax_amount', 'total_invoice_amount', 'received_amount', 'sale_return_amount', 'due'])
             ->make(true);
@@ -147,35 +147,16 @@ class SalesReportService
             }
         }
 
-        $saleScreenTypes = [
-            auth()->user()->can('view_add_sale') ? SaleScreenType::AddSale->value : null,
-            auth()->user()->can('pos_all') ? SaleScreenType::PosSale->value : null,
-            auth()->user()->can('service_invoices_index') ? SaleScreenType::ServicePosSale->value : null,
-        ];
+        if ($request->sale_screen) {
 
-        $query->whereIn('sales.sale_screen', $saleScreenTypes);
+            $query->where('sales.sale_screen', $request->sale_screen);
+        }
 
-        // if (auth()->user()->can('service_invoices_only_own')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
-        //     $query->where(function ($query) {
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
 
-        //         if ($query->sale_screen == SaleScreenType::ServicePosSale->value) {
-        //             $query->where('sales.created_by_id', auth()->user()->id);
-        //         }
-        //     });
-        // }
-
-        // if (auth()->user()->can('view_own_sale')) {
-
-        //     $query->where(function ($query) {
-
-        //         if ($query->sale_screen == SaleScreenType::PosSale->value) {
-        //             $query->where('sales.created_by_id', auth()->user()->id);
-        //         }
-        //     });
-        // }
-
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);

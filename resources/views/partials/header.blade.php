@@ -21,14 +21,14 @@
                         <p class="text-uppercase">
                             @if (auth()?->user()?->branch?->parent_branch_id)
 
-                                {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }} <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("Chain Store") }})</small>
+                                {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }} <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __('Chain Store') }})</small>
                             @else
                                 @if (auth()?->user()?->branch)
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                     @if (count(auth()?->user()?->branch?->childBranches) > 0)
-                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("Main Store") }})</small>
+                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __('Main Store') }})</small>
                                     @else
-                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("DIFFERENT Store") }})</small>
+                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __('DIFFERENT Store') }})</small>
                                     @endif
                                 @else
                                     {{ $generalSettings['business_or_shop__business_name'] }}
@@ -40,8 +40,8 @@
 
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            @if (auth()->user()->can('product_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('create_sales_return') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_return_add') || auth()->user()->can('transfer_stock_create') || auth()->user()->can('stock_adjustment_add') || auth()->user()->can('production_add') || auth()->user()->can('user_add') || auth()->user()->can('role_add'))
-
+                            @if (auth()->user()->can('product_add') || auth()->user()->can('sales_create_by_add_sale') || auth()->user()->can('create_sales_return') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_return_add') || auth()->user()->can('transfer_stock_create') || auth()->user()->can('stock_adjustment_add') || auth()->user()->can('production_add') || auth()->user()->can('user_add') || auth()->user()->can('role_add'))
+                            
                                 <li class="top-icon d-hide d-md-block">
                                     <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
                                         <span>
@@ -58,7 +58,8 @@
                                             <li><a href="{{ route('products.create') }}" class="dropdown-item text-dark">{{ __('Add Product') }}</a></li>
                                         @endif
                                         {{-- <li><a href="#" class="dropdown-item text-dark">{{ __('Product Pricing/Costing') }}</a></li> --}}
-                                        @if (auth()->user()->can('create_add_sale'))
+
+                                        @if (auth()->user()->can('sales_create_by_add_sale'))
                                             <li><a href="{{ route('sales.create') }}" class="dropdown-item text-dark">{{ __('Add Sale') }}</a></li>
                                         @endif
 
@@ -140,91 +141,95 @@
                                 </ul>
                             </li>
 
-                            @if ($generalSettings['modules__pos'] == '1')
+                            <<<<<<< HEAD @if ($generalSettings['modules__pos'] == '1')
                                 @if (auth()->user()->can('pos_add'))
-                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
-                                @endif
-                            @endif
+                                    =======
+                                    @if ($generalSettings['subscription']->features['sales'] == 1 && $generalSettings['modules__pos'] == '1')
+                                        @if (auth()->user()->can('sales_create_by_pos'))
+                                            >>>>>>> b93f4b8b0cbdfe75bd3ab25a8984139b35ecfd2e
+                                            <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
+                                        @endif
+                                    @endif
 
-                            <li class="top-icon">
-                                <a href="" class="nav-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
-                                    <span>
-                                        <i class="fas fa-calculator"></i>
-                                        <br>
-                                        {{ __('Calculator') }}
-                                    </span>
-                                </a>
-                                <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modail-body" id="calculator">
-                                                <div class="calculator-bg">
-                                                    <div class="calculator-bg__main">
-                                                        <div class="calculator-bg__main__screen">
-                                                            <div class="calculator-bg__main__screen__first"></div>
-                                                            <div class="calculator-bg__main__screen__second">0</div>
+                                    <li class="top-icon">
+                                        <a href="" class="nav-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                                            <span>
+                                                <i class="fas fa-calculator"></i>
+                                                <br>
+                                                {{ __('Calculator') }}
+                                            </span>
+                                        </a>
+                                        <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modail-body" id="calculator">
+                                                        <div class="calculator-bg">
+                                                            <div class="calculator-bg__main">
+                                                                <div class="calculator-bg__main__screen">
+                                                                    <div class="calculator-bg__main__screen__first"></div>
+                                                                    <div class="calculator-bg__main__screen__second">0</div>
+                                                                </div>
+                                                                <button class="calculator-bg__main__ac">AC</button>
+                                                                <button class="calculator-bg__main__del">DEL</button>
+                                                                <button class="calculator-bg__main__operator">/</button>
+                                                                <button class="calculator-bg__main__num">7</button>
+                                                                <button class="calculator-bg__main__num">8</button>
+                                                                <button class="calculator-bg__main__num">9</button>
+                                                                <button class="calculator-bg__main__operator">x</button>
+                                                                <button class="calculator-bg__main__num">4</button>
+                                                                <button class="calculator-bg__main__num">5</button>
+                                                                <button class="calculator-bg__main__num">6</button>
+                                                                <button class="calculator-bg__main__operator">+</button>
+                                                                <button class="calculator-bg__main__num">1</button>
+                                                                <button class="calculator-bg__main__num">2</button>
+                                                                <button class="calculator-bg__main__num">3</button>
+                                                                <button class="calculator-bg__main__operator">-</button>
+                                                                <button class="calculator-bg__main__num decimal">.</button>
+                                                                <button class="calculator-bg__main__num">0</button>
+                                                                <button class="calculator-bg__main__result">=</button>
+                                                            </div>
                                                         </div>
-                                                        <button class="calculator-bg__main__ac">AC</button>
-                                                        <button class="calculator-bg__main__del">DEL</button>
-                                                        <button class="calculator-bg__main__operator">/</button>
-                                                        <button class="calculator-bg__main__num">7</button>
-                                                        <button class="calculator-bg__main__num">8</button>
-                                                        <button class="calculator-bg__main__num">9</button>
-                                                        <button class="calculator-bg__main__operator">x</button>
-                                                        <button class="calculator-bg__main__num">4</button>
-                                                        <button class="calculator-bg__main__num">5</button>
-                                                        <button class="calculator-bg__main__num">6</button>
-                                                        <button class="calculator-bg__main__operator">+</button>
-                                                        <button class="calculator-bg__main__num">1</button>
-                                                        <button class="calculator-bg__main__num">2</button>
-                                                        <button class="calculator-bg__main__num">3</button>
-                                                        <button class="calculator-bg__main__operator">-</button>
-                                                        <button class="calculator-bg__main__num decimal">.</button>
-                                                        <button class="calculator-bg__main__num">0</button>
-                                                        <button class="calculator-bg__main__result">=</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="dropdown dp__top top-icon">
-                                <a href="" class="nav-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown">
-                                    <span>
-                                        <i class="fas fa-language"></i>
-                                        <br>
-                                        {{ __('Language') }}
-                                    </span>
-                                </a>
-
-                                <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
-                                    <li>
-                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('en') ? 'text-success' : '' }}" href="{{ route('change.lang', 'en') }}">English</a>
                                     </li>
+                                    <li class="dropdown dp__top top-icon">
+                                        <a href="" class="nav-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown">
+                                            <span>
+                                                <i class="fas fa-language"></i>
+                                                <br>
+                                                {{ __('Language') }}
+                                            </span>
+                                        </a>
 
-                                    <li>
-                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
-                                    </li>
+                                        <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <a style="display:inline;" class="dropdown-item {{ app()->isLocale('en') ? 'text-success' : '' }}" href="{{ route('change.lang', 'en') }}">English</a>
+                                            </li>
 
-                                    {{-- <li>
+                                            <li>
+                                                <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
+                                            </li>
+
+                                            {{-- <li>
                                         <a style="display:inline;" class="dropdown-item {{ app()->isLocale('ar') ? 'text-success' : '' }}" href="{{ route('change.lang', 'ar') }}">Arabic</a>
                                     </li> --}}
-                                </ul>
-                            </li>
-                            <li class="top-icon d-hide d-md-block">
-                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __('Help') }}</span></a>
-                            </li>
-                            <li class="dp__top top-icon">
-                                <a role="button" class="nav-btn" id="openRightSidebar" title="User">
-                                    <span>
-                                        <i class="fas fa-user"></i>
-                                        <br>
-                                        {{ __('User') }}
-                                    </span>
-                                </a>
+                                        </ul>
+                                    </li>
+                                    <li class="top-icon d-hide d-md-block">
+                                        <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __('Help') }}</span></a>
+                                    </li>
+                                    <li class="dp__top top-icon">
+                                        <a role="button" class="nav-btn" id="openRightSidebar" title="User">
+                                            <span>
+                                                <i class="fas fa-user"></i>
+                                                <br>
+                                                {{ __('User') }}
+                                            </span>
+                                        </a>
 
-                                {{-- <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton2">
+                                        {{-- <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton2">
                                     <li>
                                         <span class="user_name text-primary">
                                             {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' .
@@ -250,7 +255,7 @@
                                             href="{{ route('users.profile.index') }}">{{ __('Edit Profile') }} </a>
                                     </li>
                                 </ul> --}}
-                            </li>
+                                    </li>
                         </ul>
                     </div>
                 </div>

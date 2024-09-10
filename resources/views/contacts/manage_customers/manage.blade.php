@@ -57,7 +57,7 @@
                                 <i class="fas fa-info-circle"></i> {{ __('Contract Info') }}
                             </a>
 
-                            @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+                            @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
                                 <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
                                     <i class="fas fa-shopping-bag"></i> {{ __('Sales') }}
                                 </a>
@@ -102,14 +102,12 @@
 
                     @include('contacts.manage_customers.partials.tab_content_partials.contact_info')
 
-
-                    @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+                    @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
                         @include('contacts.manage_customers.partials.tab_content_partials.sales')
                     @endif
 
                     @if (auth()->user()->can('sales_orders_index'))
                         @include('contacts.manage_customers.partials.tab_content_partials.sales_order')
-
                     @endif
 
                     @if (auth()->user()->can('purchase_all'))
@@ -158,7 +156,7 @@
         @include('contacts.manage_customers.js_partials.tab_content_js_partials.ledger_js')
     @endif
 
-    @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+    @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
         @include('contacts.manage_customers.js_partials.tab_content_js_partials.sales_js')
     @endif
 

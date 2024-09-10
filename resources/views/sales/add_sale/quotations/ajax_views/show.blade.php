@@ -227,10 +227,7 @@
                             @php
                                 $filename = $quotation->quotation_id . '__' . $quotation->date . '__' . $branchName;
                             @endphp
-                            {{-- @if (auth()->user()->can('edit_add_sale') && $quotation->branch_id == auth()->user()->branch_id)
-                                <a href="{{ route('sale.quotations.edit', [$quotation->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-                            @endif --}}
-
+  
                             @if ($quotation->branch_id == auth()->user()->branch_id)
                                 @if ($quotation->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                                     @if (auth()->user()->can('sale_quotations_edit'))

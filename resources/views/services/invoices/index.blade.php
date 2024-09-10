@@ -104,7 +104,7 @@
                                     <h6>{{ __('List of Invoices') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale'))
+                                @if (auth()->user()->can('sales_create_by_add_sale'))
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add Invoice') }}</a>
                                     </div>

@@ -281,9 +281,9 @@ class QuotationService
 
         $query->whereIn('sales.sale_screen', [SaleScreenType::AddSale->value, SaleScreenType::PosSale->value]);
 
-        if (auth()->user()->can('sale_quotations_only_own')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
-            $query->where('sales.created_by_id', auth()->user()->id);
+            $query->where('sale_returns.created_by_id', auth()->user()->id);
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

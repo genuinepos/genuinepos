@@ -11,7 +11,7 @@ class AddSaleIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('view_add_sale');
+        return auth()->user()->can('sales_index');
     }
 
     /**

@@ -18,7 +18,7 @@ class PosSaleUpdateRequest extends FormRequest
             return auth()->user()->can('service_invoices_edit');
         } else {
 
-            return auth()->user()->can('pos_edit');
+            return auth()->user()->can('sales_edit');
         }
     }
 

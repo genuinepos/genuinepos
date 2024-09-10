@@ -14,7 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SalesHelperService
 {
-    public function salesListTable(object $request, int|string $customerAccountId = null, ?int $saleScreen = null): object
+    public function salesListTable(object $request, int|string $customerAccountId = null): object
     {
         $generalSettings = config('generalSettings');
         $sales = '';
@@ -25,63 +25,38 @@ class SalesHelperService
         $query->leftJoin('branches', 'sales.branch_id', 'branches.id');
         $query->leftJoin('currencies', 'branches.currency_id', 'currencies.id');
 
-        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
-
-            $query->leftJoin('service_job_cards', 'sales.id', 'service_job_cards.sale_id');
-            $query->leftJoin('service_devices', 'service_job_cards.device_id', 'service_devices.id');
-            $query->leftJoin('service_device_models', 'service_job_cards.device_model_id', 'service_device_models.id');
-            $query->leftJoin('service_status', 'service_job_cards.status_id', 'service_status.id');
-        }
-
         $query->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
         $query->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id');
         $query->where('sales.status', SaleStatus::Final->value);
 
-        $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
-
-        $jobCardData = [];
-        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
-
-            $jobCardData = [
-                'service_job_cards.id as job_card_id',
-                'service_job_cards.job_no',
-                'service_job_cards.delivery_date_ts',
-                'service_job_cards.serial_no',
-                'service_devices.name as device_name',
-                'service_device_models.name as device_model_name',
-                'service_status.name as status_name',
-                'service_status.color_code as status_color_code',
-            ];
-        }
+        $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId);
 
         $sales = $query->select(
-            array_merge([
-                'sales.id',
-                'sales.branch_id',
-                'sales.invoice_id',
-                'sales.date',
-                'sales.total_item',
-                'sales.total_qty',
-                'sales.total_invoice_amount',
-                'sales.sale_return_amount',
-                'sales.sale_refund_amount',
-                'sales.paid as received_amount',
-                'sales.due',
-                'sales.is_return_available',
-                'sales.shipment_status',
-                'sales.sale_screen',
-                'salesOrder.id as sales_order_id',
-                'salesOrder.order_id',
-                'branches.name as branch_name',
-                'branches.area_name as branch_area_name',
-                'branches.branch_code',
-                'parentBranch.name as parent_branch_name',
-                'customers.name as customer_name',
-                'created_by.prefix as created_prefix',
-                'created_by.name as created_name',
-                'created_by.last_name as created_last_name',
-                'currencies.currency_rate as c_rate'
-            ], $jobCardData)
+            'sales.id',
+            'sales.branch_id',
+            'sales.invoice_id',
+            'sales.date',
+            'sales.total_item',
+            'sales.total_qty',
+            'sales.total_invoice_amount',
+            'sales.sale_return_amount',
+            'sales.sale_refund_amount',
+            'sales.paid as received_amount',
+            'sales.due',
+            'sales.is_return_available',
+            'sales.shipment_status',
+            'sales.sale_screen',
+            'salesOrder.id as sales_order_id',
+            'salesOrder.order_id',
+            'branches.name as branch_name',
+            'branches.area_name as branch_area_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
+            'customers.name as customer_name',
+            'created_by.prefix as created_prefix',
+            'created_by.name as created_name',
+            'created_by.last_name as created_last_name',
+            'currencies.currency_rate as c_rate'
         )->orderBy('sales.sale_date_ts', 'desc');
 
         $dataTables = DataTables::of($sales);
@@ -97,21 +72,39 @@ class SalesHelperService
 
                 if ($row->sale_screen == SaleScreenType::AddSale->value) {
 
-                    if (auth()->user()->can('edit_add_sale')) {
+                    if (auth()->user()->can('sales_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
                 } elseif ($row->sale_screen == SaleScreenType::PosSale->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
 
-                    if (auth()->user()->can('pos_edit')) {
+                    if ($row->sale_screen == SaleScreenType::ServicePosSale->value) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                        if (auth()->user()->can('service_invoices_edit')) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                        }
+                    } else {
+
+                        if (auth()->user()->can('sales_edit')) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                        }
                     }
                 }
 
-                if (auth()->user()->can('delete_add_sale')) {
+                if ($row->sale_screen == SaleScreenType::ServicePosSale->value) {
 
-                    $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    if (auth()->user()->can('service_invoices_delete')) {
+
+                        $html .= '<a href="' . route('services.invoices.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    }
+                } else {
+
+                    if (auth()->user()->can('sales_delete')) {
+
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    }
                 }
             }
 
@@ -132,32 +125,6 @@ class SalesHelperService
 
             return date($__date_format, strtotime($row->date));
         });
-
-        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
-
-            $dataTables->editColumn('delivery_date', function ($row) use ($generalSettings) {
-
-                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
-
-                return isset($row->delivery_date_ts) ? date($__date_format, strtotime($row->delivery_date_ts)) : '';
-            });
-
-            $dataTables->editColumn('job_no', function ($row) use ($generalSettings) {
-
-                if (isset($row->job_no)) {
-
-                    return '<a href="' . route('services.job.cards.show', [$row->job_card_id]) . '" id="details_btn">' . $row->job_no . '</a>';
-                }
-            });
-
-            $dataTables->editColumn('status_name', function ($row) use ($generalSettings) {
-
-                if (isset($row->status_name)) {
-
-                    return '<span class="fw-bold" style="color:' . $row->status_color_code . ';">' . $row->status_name . '</span>';
-                }
-            });
-        }
 
         $dataTables->editColumn('invoice_id', function ($row) {
 
@@ -217,6 +184,7 @@ class SalesHelperService
         });
 
         $dataTables->editColumn('due', function ($row) {
+
             if ($row->due < 0) {
 
                 return '(<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(abs(curr_cnv($row->due, $row->c_rate, $row->branch_id))) . '</span>)';
@@ -249,7 +217,7 @@ class SalesHelperService
 
         $jobCardRawCols = ['delivery_date', 'job_no', 'status_name'];
 
-        $dataTables->rawColumns(array_merge(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'invoice_id', 'branch', 'customer', 'due', 'sale_return_amount', 'payment_status', 'created_by'], $jobCardRawCols));
+        $dataTables->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'invoice_id', 'branch', 'customer', 'due', 'sale_return_amount', 'payment_status', 'created_by']);
 
         return $dataTables->make(true);
     }
@@ -561,32 +529,14 @@ class SalesHelperService
             $query->where('sales.customer_account_id', $customerAccountId);
         }
 
-        if (isset($saleScreen)) {
+        if ($request->sale_screen) {
 
-            $query->where('sales.sale_screen', $saleScreen);
-        } else {
-
-            $saleScreenTypes = [
-                auth()->user()->can('view_add_sale') ? SaleScreenType::AddSale->value : null,
-                auth()->user()->can('pos_all') ? SaleScreenType::PosSale->value : null,
-                auth()->user()->can('service_invoices_index') ? SaleScreenType::ServicePosSale->value : null,
-            ];
-
-            $query->whereIn('sales.sale_screen', $saleScreenTypes);
+            $query->where('sales.sale_screen', $request->sale_screen);
         }
 
-        if ($saleScreen == SaleScreenType::ServicePosSale->value) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
-            if (auth()->user()->can('service_invoices_only_own')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-        } else {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
+            $query->where('sales.created_by_id', auth()->user()->id);
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

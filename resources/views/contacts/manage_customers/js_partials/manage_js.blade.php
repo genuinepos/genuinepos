@@ -51,7 +51,7 @@
     litepicker('ledger_from_date');
     litepicker('ledger_to_date');
 
-    @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+    @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
         litepicker('sales_from_date');
         litepicker('sales_to_date');
     @endif
@@ -83,7 +83,7 @@
 </script>
 
 <script>
-    @if (auth()->user()->can('customer_ledger') || auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index') || auth()->user()->can('sales_orders_index') || auth()->user()->can('purchase_all') || auth()->user()->can('purchase_order_index') || auth()->user()->can('receipts_index') || auth()->user()->can('payments_index'))
+    @if (auth()->user()->can('customer_ledger') || auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index') || auth()->user()->can('sales_orders_index') || auth()->user()->can('purchase_all') || auth()->user()->can('purchase_order_index') || auth()->user()->can('receipts_index') || auth()->user()->can('payments_index'))
 
         function getAccountClosingBalance(filterObj, parentDiv, changeLedgerTableCurrentTotal = false) {
 
@@ -218,7 +218,7 @@
                 },
             @endif
 
-            @if (auth()->user()->can('view_add_sale') || auth()->user()->can('pos_all') || auth()->user()->can('service_invoices_index'))
+            @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))
                 {
                     filterDatePrefix: 'sales_',
                     filterSummerParentDiv: 'for_sales',
@@ -278,7 +278,7 @@
         });
     }
 
-    @if (auth()->user()->can('delete_add_sale') || auth()->user()->can('pos_delete') || auth()->user()->can('purchase_delete') || auth()->user()->can('purchase_order_delete') || auth()->user()->can('payments_delete') || auth()->user()->can('receipts_delete'))
+    @if (auth()->user()->can('sales_delete') || auth()->user()->can('service_invoices_delete') || auth()->user()->can('purchase_delete') || auth()->user()->can('purchase_order_delete') || auth()->user()->can('payments_delete') || auth()->user()->can('receipts_delete'))
 
         var tableId = '';
         $(document).on('click', '#delete', function(e) {

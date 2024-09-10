@@ -11,7 +11,7 @@ class AddSaleUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('edit_add_sale');
+        return auth()->user()->can('sales_edit');
     }
 
     /**

@@ -11,7 +11,7 @@ class AddSaleStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('create_add_sale');
+        return auth()->user()->can('sales_create_by_add_sale');
     }
 
     /**

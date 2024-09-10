@@ -53,7 +53,11 @@ class ContraService
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('date_ts', $date_range); // Final
         }
+        
+        if (auth()->user()->can('view_only_won_transactions')) {
 
+            $query->where('accounting_vouchers.created_by_id', auth()->user()->id);
+        }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
@@ -173,16 +177,5 @@ class ContraService
         }
 
         return ['pass' => true];
-    }
-
-    public function contraValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required|date',
-            'received_amount' => 'required',
-            'payment_method_id' => 'required',
-            'debit_account_id' => 'required',
-            'credit_account_id' => 'required',
-        ]);
     }
 }

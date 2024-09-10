@@ -142,7 +142,7 @@ class SalesOrderReportService
             }
         }
 
-        if (auth()->user()->can('view_own_sale')) {
+        if (auth()->user()->can('view_only_won_transactions')) {
 
             $query->where('sales.created_by_id', auth()->user()->id);
         }

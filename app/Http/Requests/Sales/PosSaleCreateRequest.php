@@ -18,7 +18,7 @@ class PosSaleCreateRequest extends FormRequest
             return auth()->user()->can('service_invoices_create');
         } else {
 
-            return auth()->user()->can('pos_add');
+            return auth()->user()->can('sales_create_by_pos');
         }
     }
 

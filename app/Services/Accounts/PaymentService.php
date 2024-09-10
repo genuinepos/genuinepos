@@ -71,6 +71,11 @@ class PaymentService
             $query->whereBetween('accounting_vouchers.date_ts', $date_range); // Final
         }
 
+        if (auth()->user()->can('view_only_won_transactions')) {
+
+            $query->where('accounting_vouchers.created_by_id', auth()->user()->id);
+        }
+
         // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 

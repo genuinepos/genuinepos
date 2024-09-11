@@ -370,11 +370,17 @@
 
                             <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Brand.') }} : </span> {{ $sale?->jobCard?->brand?->name }}</p>
 
-                            <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}</p>
+                            <p style="font-size:10px!important;"><span class="fw-bold">
+                                {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}
+                            </p>
 
-                            <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Device Model') }} : </span> {{ $sale?->jobCard?->deviceModel?->name }}</p>
+                            <p style="font-size:10px!important;">
+                                <span class="fw-bold">{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }} : </span> {{ $sale?->jobCard?->deviceModel?->name }}
+                            </p>
 
-                            <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Serial No.') }} : </span> {{ $sale?->jobCard?->serial_no }}</p>
+                            <p style="font-size:10px!important;">
+                                <span class="fw-bold">{{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial No.') }} : </span> {{ $sale?->jobCard?->serial_no }}
+                            </p>
 
                             <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Servicing Checklist') }} : </span>
                                 @if (isset($sale->jobCard) && isset($sale->jobCard->service_checklist) && is_array($sale->jobCard->service_checklist))
@@ -885,11 +891,17 @@
 
                             <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Brand.') }} :</span> {{ $sale?->jobCard?->brand?->name }}</p>
 
-                            <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Device') }} :</span> {{ $sale?->jobCard?->device?->name }}</p>
+                            <p style="font-size:9px!important;">
+                                <span class="fw-bold">{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} :</span> {{ $sale?->jobCard?->device?->name }}
+                            </p>
 
-                            <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Device Model') }} :</span> {{ $sale?->jobCard?->deviceModel?->name }}</p>
+                            <p style="font-size:9px!important;">
+                                <span class="fw-bold">{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }} :</span> {{ $sale?->jobCard?->deviceModel?->name }}
+                            </p>
 
-                            <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Serial No.') }} : </span> {{ $sale?->jobCard?->serial_no }}</p>
+                            <p style="font-size:9px!important;">
+                                <span class="fw-bold">{{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial No.') }} : </span> {{ $sale?->jobCard?->serial_no }}
+                            </p>
 
                             <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Servicing Checklist') }} : </span>
                                 @if (isset($sale->jobCard) && isset($sale->jobCard->service_checklist) && is_array($sale->jobCard->service_checklist))

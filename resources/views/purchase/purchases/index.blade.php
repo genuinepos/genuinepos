@@ -119,7 +119,7 @@
                                                 <th>{{ location_label() }}</th>
                                                 {{-- <th>{{ location_label() }}</th> --}}
                                                 <th>{{ __('Supplier') }}</th>
-                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Pmt. Status') }}</th>
                                                 <th>{{ __('Total Purchased Amount') }}</th>
                                                 <th>{{ __('Paid') }}</th>
                                                 <th>{{ __('Return') }}</th>

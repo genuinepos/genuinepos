@@ -226,17 +226,23 @@
                                     </tr>
 
                                     <tr>
-                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Device') }}</td>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">
+                                            {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}
+                                        </td>
                                         <td style="font-size:11px!important;">: {{ $sale?->jobCard?->device?->name }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Device Model') }}</td>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">
+                                            {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}
+                                        </td>
                                         <td style="font-size:11px!important;">: {{ $sale?->jobCard?->deviceModel?->name }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">{{ __('Serial No.') }}</td>
+                                        <td class="fw-bold" style="font-size:11px!important; width:30%;">
+                                            {{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial Number') }}
+                                        </td>
                                         <td style="font-size:11px!important;">: {{ $sale?->serial_no }}</td>
                                     </tr>
 

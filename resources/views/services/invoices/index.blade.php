@@ -123,14 +123,20 @@
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Delivery Date') }}</th>
                                                 <th>{{ __('Job No.') }}</th>
-                                                <th>{{ __('Device') }}</th>
-                                                <th>{{ __('Model') }}</th>
-                                                <th>{{ __('Serial No.') }}</th>
+                                                <th>
+                                                    {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}
+                                                </th>
+                                                <th>
+                                                    {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}
+                                                </th>
+                                                <th>
+                                                    {{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial Number') }}
+                                                </th>
                                                 <th>{{ __('Status') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
                                                 <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
-                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Pmt. Status') }}</th>
                                                 <th>{{ __('Invoice Amount') }}</th>
                                                 <th>{{ __('Received') }}</th>
                                                 <th>{{ __('Return') }}</th>

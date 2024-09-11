@@ -23,9 +23,10 @@ class DeviceModelStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:100', Rule::unique('service_device_models', 'name')->where(function ($query) {
-                return $query->where('branch_id', auth()->user()->branch_id);
-            })],
+            // 'name' => ['required', 'max:100', Rule::unique('service_device_models', 'name')->where(function ($query) {
+            //     return $query->where('branch_id', auth()->user()->branch_id);
+            // })],
+            'name' => ['required', 'max:100'],
             'service_checklist' => 'nullable|max:255',
         ];
     }

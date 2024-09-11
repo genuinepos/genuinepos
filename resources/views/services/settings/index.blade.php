@@ -44,13 +44,13 @@
 
                             @if (auth()->user()->can('devices_index'))
                                 <a id="tab_btn" data-show="devices" class="btn btn-sm btn-primary tab_btn" href="#">
-                                    <i class="fa-solid fa-laptop-code"></i> {{ __('Devices') }}
+                                    <i class="fa-solid fa-laptop-code"></i> {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Devices') }}
                                 </a>
                             @endif
 
                             @if (auth()->user()->can('device_models_index'))
                                 <a id="tab_btn" data-show="device_models" class="btn btn-sm btn-primary tab_btn" href="#">
-                                    <i class="fa fa-bolt"></i> {{ __('Device Models') }}
+                                    <i class="fa fa-bolt"></i> {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Models') }}
                                 </a>
                             @endif
 

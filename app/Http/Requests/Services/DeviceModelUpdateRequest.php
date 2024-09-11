@@ -24,9 +24,10 @@ class DeviceModelUpdateRequest extends FormRequest
     {
         $id = $this->route('id');
         return [
-            'name' => ['required', 'max:100', Rule::unique('service_device_models', 'name')->where(function ($query) use ($id) {
-                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
-            })],
+            // 'name' => ['required', 'max:100', Rule::unique('service_device_models', 'name')->where(function ($query) use ($id) {
+            //     return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
+            // })],
+            'name' => ['required', 'max:100'],
             'service_checklist' => 'nullable|max:255',
         ];
     }

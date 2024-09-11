@@ -71,6 +71,25 @@
 
                         <div class="row mt-1">
                             <div class="col-md-4">
+                                <label><b>{{ __('Label For Device') }}</b></label>
+                                <input type="text" name="device_label" class="form-control" id="service_settings_device_label" value="{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : null }}" placeholder="{{ __('Label For Device') }}">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label><b>{{ __('Label For Device Model') }}</b></label>
+                                <input type="text" name="device_model_label" class="form-control" id="service_settings_device_model_label" value="{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : null }}" placeholder="{{ __('Label For Device Model') }}">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label><b>{{ __('Label For Serial Number') }}</b></label>
+                                <input type="text" name="serial_number_label" class="form-control" id="service_settings_serial_number_label" value="{{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : null }}" placeholder="{{ __('Label For Serial Number') }}">
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mt-1">
+                            <div class="col-md-4">
                                 <label><b>{{ __('Label For Job Card Custom field 1') }}</b></label>
                                 <input type="text" name="custom_field_1_label" class="form-control" id="service_settings_custom_field_1_label" value="{{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : null }}" placeholder="{{ __('Label For Job Card Custom field 1') }}">
                             </div>

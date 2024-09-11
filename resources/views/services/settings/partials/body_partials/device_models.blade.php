@@ -1,12 +1,12 @@
 <div class="tab_contant device_models d-hide" id="tab_contant">
     <div class="section-header">
         <div class="col-md-6">
-            <h6>{{ __('List of Device Models') }}</h6>
+            <h6>{{ __('List of') }} {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Models') }}</h6>
         </div>
 
         <div class="col-6 d-flex justify-content-end">
             @if (auth()->user()->can('device_models_create'))
-                <a href="{{ route('services.settings.device.models.create') }}" class="btn btn-sm btn-success" id="addDeviceModel"><i class="fas fa-plus-square"></i> {{ __('Add Device Model') }}</a>
+                <a href="{{ route('services.settings.device.models.create') }}" class="btn btn-sm btn-success" id="addDeviceModel"><i class="fas fa-plus-square"></i> {{ __('Add') }} {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}</a>
             @endif
         </div>
     </div>
@@ -19,9 +19,11 @@
                         <thead>
                             <tr>
                                 {{-- <th>{{ __('S/L') }}</th> --}}
-                                <th>{{ __('Model Name') }}</th>
+                                <th>
+                                    {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Model Name') }}
+                                </th>
                                 <th>{{ __('Brand.') }}</th>
-                                <th>{{ __('Device') }}</th>
+                                <th>{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device Name') }}</th>
                                 <th>{{ __('Sevice Checklist') }}</th>
                                 <th>{{ __('Created By') }}</th>
                                 <th>{{ __('Action') }}</th>

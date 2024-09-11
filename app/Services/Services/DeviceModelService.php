@@ -76,14 +76,27 @@ class DeviceModelService
         $updateDeviceModel->save();
     }
 
-    public function deleteDeviceModel(int $id): void
+    public function deleteDeviceModel(int $id): array
     {
-        $deleteDeviceModel = $this->singleDeviceModel(id: $id);
+        $generalSettings = config('generalSettings');
+
+        $deleteDeviceModel = $this->singleDeviceModel(id: $id, with: ['jobCards']);
+
+        $modelLabel = isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device model');
 
         if (isset($deleteDeviceModel)) {
 
+            if (count($deleteDeviceModel->jobCards) > 0) {
+
+                $errorMsg = $modelLabel . ' ' . __('can not be deleted. This') . ' ' . $modelLabel . ' ' . __('has already been attached with job card.');
+
+                return ['pass' => false, 'msg' => $errorMsg];
+            }
+
             $deleteDeviceModel->delete();
         }
+
+        return ['pass' => true];
     }
 
     public function deviceModels(array $with = null): ?object

@@ -64,7 +64,7 @@
                     toastr.error(data.errorMsg, 'ERROR');
                 } else {
 
-                    toastr.success("{{ __('Device is added successfully') }}");
+                    toastr.success("{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] . ' ' . __('is added successfully') : __('Device is added successfully') }}");
                     $('#deviceAddOrEditModal').modal('hide');
                     var device_id = $('#device_id').val();
 

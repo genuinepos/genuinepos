@@ -1,7 +1,7 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Edit') }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit') }} {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -9,8 +9,12 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-12">
-                        <label><b>{{ __('Device Name') }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="name" class="form-control" id="device_name" data-next="device_short_description" value="{{ $device->name }}" placeholder="{{ __('Device Name') }}" />
+                        <label>
+                            <b>{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] . ' ' . __('Name') : __('Device Name') }}
+                            </b>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input required type="text" name="name" class="form-control" id="device_name" data-next="device_short_description" value="{{ $device->name }}" placeholder="{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] . ' ' . __('Name') : __('Device Name') }}" />
                         <span class="error error_device_name"></span>
                     </div>
                 </div>

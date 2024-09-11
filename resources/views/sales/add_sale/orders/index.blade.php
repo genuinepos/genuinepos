@@ -124,7 +124,7 @@
                                                 <th>{{ __('Order ID') }}</th>
                                                 <th>{{ location_label() }}</th>
                                                 <th>{{ __('Customer') }}</th>
-                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Pmt. Status') }}</th>
                                                 <th>{{ __('Delivery Status') }}</th>
                                                 <th>{{ __('Total Item') }}</th>
                                                 <th>{{ __('Ordered Qty') }}</th>

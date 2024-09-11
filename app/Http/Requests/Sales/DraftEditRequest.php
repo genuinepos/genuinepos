@@ -11,7 +11,7 @@ class DraftEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sale_draft');
+        return auth()->user()->can('sale_drafts_edit');
     }
 
     /**

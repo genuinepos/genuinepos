@@ -87,85 +87,89 @@
                     @endif
                 @endif
 
-                @if ($generalSettings['modules__accounting'] == '1')
+                <<<<<<< HEAD @if ($generalSettings['modules__accounting'] == '1')
                     @if (auth()->user()->can('user_view') || auth()->user()->can('user_add') || auth()->user()->can('role_view') || auth()->user()->can('role_add'))
-                        <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/team.svg') }}">
-                                <p class="title">{{ __('Users') }}</p>
-                            </a>
-                        </li>
-                    @endif
-                @endif
+                        =======
+                        @if ($generalSettings['subscription']->features['users'] == 1 && $generalSettings['modules__accounting'] == '1')
+                            @if (auth()->user()->can('user_view') || auth()->user()->can('user_add') || auth()->user()->can('role_view') || auth()->user()->can('role_add') || auth()->user()->can('user_activities_log_index'))
+                                >>>>>>> 87f829f96365ddf44042d2dec4602fa737e37fb2
+                                <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
+                                    <a href="#">
+                                        <img src="{{ asset('backend/asset/img/icon/team.svg') }}">
+                                        <p class="title">{{ __('Users') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
 
-                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_and_deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
-                    <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
-                            <p class="title">{{ __('HRM') }}</p>
-                        </a>
-                    </li>
-                @endif
+                        @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_and_deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
+                            <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
+                                    <p class="title">{{ __('HRM') }}</p>
+                                </a>
+                            </li>
+                        @endif
 
-                @if ($generalSettings['modules__manufacturing'] == 1)
-                    @if (auth()->user()->can('process_view') || auth()->user()->can('production_view') || auth()->user()->can('manufacturing_report'))
-                        <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/conveyor.svg') }}">
-                                <p class="title">{{ __('Manufacturing') }}</p>
-                            </a>
-                        </li>
-                    @endif
-                @endif
+                        @if ($generalSettings['modules__manufacturing'] == 1)
+                            @if (auth()->user()->can('process_view') || auth()->user()->can('production_view') || auth()->user()->can('manufacturing_report'))
+                                <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
+                                    <a href="#">
+                                        <img src="{{ asset('backend/asset/img/icon/conveyor.svg') }}">
+                                        <p class="title">{{ __('Manufacturing') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
 
-                @if ($generalSettings['modules__service'] == '1')
-                    @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('job_cards_index') || auth()->user()->can('job_cards_create') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
-                        <li data-menu="service" class="{{ request()->is('services*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
-                                <p class="title">{{ __('Services') }}</p>
-                            </a>
-                        </li>
-                    @endif
-                @endif
+                        @if ($generalSettings['modules__service'] == '1')
+                            @if (auth()->user()->can('status_index') || auth()->user()->can('devices_index') || auth()->user()->can('device_models') || auth()->user()->can('job_cards_index') || auth()->user()->can('job_cards_create') || auth()->user()->can('servicing_settings') || auth()->user()->can('job_card_pdf_print_label_settings'))
+                                <li data-menu="service" class="{{ request()->is('services*') ? 'menu_active' : '' }}">
+                                    <a href="#">
+                                        <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
+                                        <p class="title">{{ __('Services') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
 
-                @if ($generalSettings['modules__manage_task'] == 1)
-                    @if (auth()->user()->can('todo_index') || auth()->user()->can('workspaces_index') || auth()->user()->can('messages_index'))
-                        <li data-menu="task-management" class="{{ request()->is('task-management*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
-                                <p class="title">{{ __('Task Manage') }}</p>
-                            </a>
-                        </li>
-                    @endif
-                @endif
+                        @if ($generalSettings['modules__manage_task'] == 1)
+                            @if (auth()->user()->can('todo_index') || auth()->user()->can('workspaces_index') || auth()->user()->can('messages_index'))
+                                <li data-menu="task-management" class="{{ request()->is('task-management*') ? 'menu_active' : '' }}">
+                                    <a href="#">
+                                        <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
+                                        <p class="title">{{ __('Task Manage') }}</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
 
-                @if (auth()->user()->can('communication'))
-                    <li data-menu="communication" class="{{ request()->is('communication*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('backend/asset/img/icon/communication.svg') }}">
-                            <p class="title">{{ __('Communicate') }}</p>
-                        </a>
-                    </li>
-                @endif
+                        @if (auth()->user()->can('communication'))
+                            <li data-menu="communication" class="{{ request()->is('communication*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('backend/asset/img/icon/communication.svg') }}">
+                                    <p class="title">{{ __('Communicate') }}</p>
+                                </a>
+                            </li>
+                        @endif
 
-                @if (auth()->user()->can('advertisements_index') || auth()->user()->can('advertisements_create'))
-                    <li data-menu="advertisement" class="">
-                        <a href="#">
-                            <img src="{{ asset('backend/asset/img/icon/Ads.svg') }}">
-                            <p class="title">{{ __('Advertisement') }}</p>
-                        </a>
-                    </li>
-                @endif
+                        @if (auth()->user()->can('advertisements_index') || auth()->user()->can('advertisements_create'))
+                            <li data-menu="advertisement" class="">
+                                <a href="#">
+                                    <img src="{{ asset('backend/asset/img/icon/Ads.svg') }}">
+                                    <p class="title">{{ __('Advertisement') }}</p>
+                                </a>
+                            </li>
+                        @endif
 
-                @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings') || auth()->user()->can('warehouses_index') || auth()->user()->can('payment_methods_index') || auth()->user()->can('invoice_layouts_index') || auth()->user()->can('cash_counters_index') || auth()->user()->can('billing_index'))
-                    <li data-menu="setups" class="{{ request()->is('setups*') && !request()->is('setups/branches*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('backend/asset/img/icon/settings.svg') }}">
-                            <p class="title">{{ __('Set-up') }}</p>
-                        </a>
-                    </li>
-                @endif
+                        @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings') || auth()->user()->can('warehouses_index') || auth()->user()->can('payment_methods_index') || auth()->user()->can('invoice_layouts_index') || auth()->user()->can('cash_counters_index') || auth()->user()->can('billing_index'))
+                            <li data-menu="setups" class="{{ request()->is('setups*') && !request()->is('setups/branches*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('backend/asset/img/icon/settings.svg') }}">
+                                    <p class="title">{{ __('Set-up') }}</p>
+                                </a>
+                            </li>
+                        @endif
             </ul>
         </div>
     </div>
@@ -1555,64 +1559,71 @@
                         </div>
 
                         <div class="container-fluid">
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('User Management') }}</p>
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('user_add'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('users.create') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-circle"></i></span>
+                            @if (auth()->user()->can('user_add') || auth()->user()->can('user_view'))
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Manage User') }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('user_add'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('users.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Add User') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __('Add User') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
-                                    @if (auth()->user()->can('user_view'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('users.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
+                                        @if (auth()->user()->can('user_view'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('users.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('User List') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __('User List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
+                            @endif
 
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('role_add'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('users.role.create') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-circle"></i></span>
+                            @if (auth()->user()->can('role_add') || auth()->user()->can('role_view'))
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Manage Role') }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('role_add'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('users.role.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Add Role') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __('Add Role') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
-                                    @if (auth()->user()->can('role_view'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('users.role.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
+                                        @if (auth()->user()->can('role_view'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('users.role.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Role List') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __('Role List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             @if (auth()->user()->can('user_activities_log_index'))
                                 <div class="sub-menu-group">

@@ -1576,6 +1576,675 @@
                                 <div class="form_element rounded mt-0 mb-0">
                                     <div class="accordion-header d-flex">
                                         <p class="checkbox_input_wrap ">
+                                            <input type="checkbox" class="ms-2" id="select_all" data-target="accounting" autocomplete="off">
+                                        </p>
+                                        <a data-bs-toggle="collapse" class="collapsed" href="#accounting_permission" aria-expanded="false">
+                                            {{ __('Accounting Permission') }}
+                                        </a>
+                                    </div>
+                                    <div id="accounting_permission" class="collapse" data-bs-parent="#accounting_permission" style="">
+                                        <div class="element-body border-top">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="banks" autocomplete="off">
+                                                            <strong>{{ __('Banks') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('banks_index') ? 'CHECKED' : '' }} name="banks_index" id="banks_index" class="accounting banks">
+                                                        <label for="banks_index">{{ __('Bank List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('banks_create') ? 'CHECKED' : '' }} name="banks_create" id="banks_create" class="accounting banks">
+                                                        <label for="banks_create">{{ __('Bank Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('banks_edit') ? 'CHECKED' : '' }} name="banks_edit" id="banks_edit" class="accounting banks">
+                                                        <label for="banks_edit">{{ __('Bank Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('banks_delete') ? 'CHECKED' : '' }} name="banks_delete" id="banks_delete" class="accounting banks">
+                                                        <label for="banks_delete">{{ __('Bank Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="account_groups" autocomplete="off">
+                                                            <strong>{{ __('Account Groups') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('account_groups_index') ? 'CHECKED' : '' }} name="account_groups_index" id="account_groups_index" class="accounting account_groups">
+                                                        <label for="account_groups_index">{{ __('Account Group List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('account_groups_create') ? 'CHECKED' : '' }} name="account_groups_create" id="account_groups_create" class="accounting account_groups">
+                                                        <label for="account_groups_create">{{ __('Account Group Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('account_groups_edit') ? 'CHECKED' : '' }} name="account_groups_edit" id="account_groups_edit" class="accounting account_groups">
+                                                        <label for="account_groups_edit">{{ __('Account Group Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('account_groups_delete') ? 'CHECKED' : '' }} name="account_groups_delete" id="account_groups_delete" class="accounting account_groups">
+                                                        <label for="account_groups_delete">{{ __('Account Group Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="accounts" autocomplete="off">
+                                                            <strong>{{ __('Accounts') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('accounts_index') ? 'CHECKED' : '' }} name="accounts_index" id="accounts_index" class="accounting accounts">
+                                                        <label for="accounts_index">{{ __('Account List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('accounts_create') ? 'CHECKED' : '' }} name="accounts_create" id="accounts_create" class="accounting accounts">
+                                                        <label for="accounts_create">{{ __('Account Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('accounts_edit') ? 'CHECKED' : '' }} name="accounts_edit" id="accounts_edit" class="accounting accounts">
+                                                        <label for="accounts_edit">{{ __('Account Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('accounts_delete') ? 'CHECKED' : '' }} name="accounts_delete" id="accounts_delete" class="accounting accounts">
+                                                        <label for="accounts_delete">{{ __('Account Delete') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('accounts_bank_account_create') ? 'CHECKED' : '' }} type="checkbox" name="accounts_bank_account_create" id="accounts_bank_account_create" class="accounting accounts">
+                                                        <label for="accounts_bank_account_create">{{ __('Add Bank Account') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('accounts_ledger') ? 'CHECKED' : '' }} name="accounts_ledger" id="accounts_ledger" class="accounting accounts">
+                                                        <label for="accounts_ledger">{{ __('Account Ledger') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('capital_accounts_index') ? 'CHECKED' : '' }} name="capital_accounts_index" id="capital_accounts_index" class="accounting accounts">
+                                                        <label for="capital_accounts_index">{{ __('Capital Accounts') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('duties_and_taxes_index') ? 'CHECKED' : '' }} name="duties_and_taxes_index" id="duties_and_taxes_index" class="accounting accounts">
+                                                        <label for="duties_and_taxes_index">{{ __('Duties And Taxes') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="receipts" autocomplete="off">
+                                                            <strong>{{ __('Receipts') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('account_groups_index') ? 'CHECKED' : '' }} name="receipts_index" id="receipts_index" class="accounting receipts">
+                                                        <label for="account_groups_index">{{ __('Receipt List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('receipts_create') ? 'CHECKED' : '' }} name="receipts_create" id="receipts_create" class="accounting receipts">
+                                                        <label for="receipts_create">{{ __('Receipt Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('receipts_edit') ? 'CHECKED' : '' }} name="receipts_edit" id="receipts_edit" class="accounting receipts">
+                                                        <label for="receipts_edit">{{ __('Receipt Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('receipts_delete') ? 'CHECKED' : '' }} name="receipts_delete" id="receipts_delete" class="accounting receipts">
+                                                        <label for="receipts_delete">{{ __('Receipt Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="payments" autocomplete="off">
+                                                            <strong>{{ __('Payments') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payments_index') ? 'CHECKED' : '' }} name="payments_index" id="receipts_index" class="accounting payments">
+                                                        <label for="payments_index">{{ __('Payment List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payments_create') ? 'CHECKED' : '' }} name="payments_create" id="payments_create" class="accounting payments">
+                                                        <label for="payments_create">{{ __('Payment Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payments_edit') ? 'CHECKED' : '' }} name="payments_edit" id="payments_edit" class="accounting payments">
+                                                        <label for="payments_edit">{{ __('Payment Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payments_delete') ? 'CHECKED' : '' }} name="payments_delete" id="payments_delete" class="accounting payments">
+                                                        <label for="payments_delete">{{ __('Payment Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="expenses" autocomplete="off">
+                                                            <strong>{{ __('Expenses') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('expenses_index') ? 'CHECKED' : '' }} name="expenses_index" id="expenses_index" class="accounting expenses">
+                                                        <label for="expenses_index">{{ __('Expense List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('expenses_create') ? 'CHECKED' : '' }} name="expenses_create" id="expenses_create" class="accounting expenses">
+                                                        <label for="expenses_create">{{ __('Expense Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('expenses_edit') ? 'CHECKED' : '' }} name="expenses_edit" id="expenses_edit" class="accounting expenses">
+                                                        <label for="expenses_edit">{{ __('Expense Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('expenses_delete') ? 'CHECKED' : '' }} name="expenses_delete" id="expenses_delete" class="accounting expenses">
+                                                        <label for="expenses_delete">{{ __('Expense Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="contras" autocomplete="off">
+                                                            <strong>{{ __('Contras') }}</strong>
+                                                        </label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('contras_index') ? 'CHECKED' : '' }} name="contras_index" id="contras_index" class="accounting contras">
+                                                        <label for="contras_index">{{ __('Contra List') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('contras_create') ? 'CHECKED' : '' }} name="contras_create" id="contras_create" class="accounting contras">
+                                                        <label for="contras_create">{{ __('Contra Add') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('contras_edit') ? 'CHECKED' : '' }} name="contras_edit" id="contras_edit" class="accounting contras">
+                                                        <label for="contras_edit">{{ __('Contra Edit') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('contras_delete') ? 'CHECKED' : '' }} name="contras_delete" id="contras_delete" class="accounting contras">
+                                                        <label for="contras_delete">{{ __('Contra Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="accounting" id="select_all" data-target="account_reports" autocomplete="off">
+                                                            <strong>{{ __('Accounts Reports') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('profit_loss') ? 'CHECKED' : '' }} name="profit_loss" id="profit_loss" class="accounting account_reports">
+                                                        <label for="profit_loss">{{ __('Profit/Loss') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('financial_report') ? 'CHECKED' : '' }} name="financial_report" id="financial_report" class="accounting account_reports">
+                                                        <label for="financial_report">{{ __('Financial Report') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('trial_balance') ? 'CHECKED' : '' }} name="trial_balance" id="trial_balance" class="accounting account_reports">
+                                                        <label for="trial_balance">{{ __('Trial Balance') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('vat_tax_report') ? 'CHECKED' : '' }} name="vat_tax_report" id="vat_tax_report" class="accounting account_reports">
+                                                        <label for="vat_tax_report">{{ __('Vat/Tax Report') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('cash_flow') ? 'CHECKED' : '' }} name="cash_flow" id="cash_flow" class="accounting account_reports">
+                                                        <label for="cash_flow">{{ __('Cash Flow') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('expense_report') ? 'CHECKED' : '' }} name="expense_report" id="expense_report" class="accounting account_reports">
+                                                        <label for="cash_flow">{{ __('Expense Report') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('day_book') ? 'CHECKED' : '' }} name="day_book" id="day_book" class="accounting account_reports">
+                                                        <label for="day_book">{{ __('Day Book') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item mb-1">
+                                <div class="form_element rounded mt-0 mb-0">
+                                    <div class="accordion-header d-flex">
+                                        <p class="checkbox_input_wrap ">
+                                            <input type="checkbox" class="ms-2" id="select_all" data-target="hrms" autocomplete="off">
+                                        </p>
+                                        <a data-bs-toggle="collapse" class="collapsed" href="#hrm_permission" aria-expanded="false">
+                                            {{ __('HRM Permissions') }}
+                                        </a>
+                                    </div>
+                                    <div id="hrm_permission" class="collapse" data-bs-parent="#hrm_permission" style="">
+                                        <div class="element-body border-top">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="leaves" autocomplete="off">
+                                                            <strong>{{ __('Leaves') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leaves_index') ? 'CHECKED' : '' }} name="leaves_index" id="leaves_index" class="hrms leaves">
+                                                        <label for="leaves_index">{{ __('Leave List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leaves_create') ? 'CHECKED' : '' }} name="leaves_create" id="leaves_create" class="hrms leaves">
+                                                        <label for="leaves_create"> {{ __('Leave Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leaves_edit') ? 'CHECKED' : '' }} name="leaves_edit" id="leaves_edit" class="hrms leaves">
+                                                        <label for="leaves_edit"> {{ __('Leave Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leaves_delete') ? 'CHECKED' : '' }} name="leaves_delete" id="leaves_delete" class="hrms leaves">
+                                                        <label for="leaves_delete">{{ __('Leave Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="leave_types" autocomplete="off">
+                                                            <strong>{{ __('Leave Types') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leave_types_index') ? 'CHECKED' : '' }} name="leave_types_index" id="leave_types_index" class="hrms leave_types">
+                                                        <label for="leave_types_index">{{ __('Leave Type List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leave_types_create') ? 'CHECKED' : '' }} name="leave_types_create" id="leave_types_create" class="hrms leave_types">
+                                                        <label for="leave_types_create"> {{ __('Leave Type Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leave_types_edit') ? 'CHECKED' : '' }} name="leave_types_edit" id="leave_types_edit" class="hrms leave_types">
+                                                        <label for="leave_types_edit"> {{ __('Leave Type Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('leave_types_delete') ? 'CHECKED' : '' }} name="leave_types_delete" id="leave_types_delete" class="hrms leave_types">
+                                                        <label for="leave_types_delete">{{ __('Leave Type Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="shifts" autocomplete="off">
+                                                            <strong>{{ __('Shifts') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('shifts_index') ? 'CHECKED' : '' }} name="shifts_index" id="shifts_index" class="hrms shifts">
+                                                        <label for="shifts_index">{{ __('Shift List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('shifts_create') ? 'CHECKED' : '' }} name="shifts_create" id="shifts_create" class="hrms shifts">
+                                                        <label for="shifts_create"> {{ __('Shift Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('shifts_edit') ? 'CHECKED' : '' }} name="shifts_edit" id="shifts_edit" class="hrms shifts">
+                                                        <label for="shifts_edit"> {{ __('Shift Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('shifts_delete') ? 'CHECKED' : '' }} name="shifts_delete" id="shifts_delete" class="hrms shifts">
+                                                        <label for="shifts_delete">{{ __('Shift Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="attendances" autocomplete="off">
+                                                            <strong>{{ __('Attendences') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('attendances_index') ? 'CHECKED' : '' }} name="attendances_index" id="attendances_index" class="hrms attendances">
+                                                        <label for="attendances_index">{{ __('Attendance List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('attendances_create') ? 'CHECKED' : '' }} name="attendances_create" id="attendances_create" class="hrms attendances">
+                                                        <label for="attendances_create"> {{ __('Attendance Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('attendances_edit') ? 'CHECKED' : '' }} name="attendances_edit" id="attendances_edit" class="hrms attendances">
+                                                        <label for="attendances_edit"> {{ __('Attendance Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('attendances_delete') ? 'CHECKED' : '' }} name="attendances_delete" id="attendances_delete" class="hrms attendances">
+                                                        <label for="attendances_delete">{{ __('Attendance Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="allowances_and_deductions" autocomplete="off">
+                                                            <strong>{{ __('Allowances & Deductions') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('allowances_and_deductions_index')) name="allowances_and_deductions_index" id="allowances_and_deductions_index" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_index">{{ __('Allowance & Deduction List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('allowances_and_deductions_create')) name="allowances_and_deductions_create" id="allowances_and_deductions_create" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_create"> {{ __('Allowance & Deduction Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('allowances_and_deductions_edit')) name="allowances_and_deductions_edit" id="allowances_and_deductions_edit" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_edit"> {{ __('Allowance & Deduction Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" @checked($role->hasPermissionTo('allowances_and_deductions_delete')) name="allowances_and_deductions_delete" id="allowances_and_deductions_delete" class="hrms allowances_and_deductions">
+                                                        <label for="allowances_and_deductions_delete">{{ __('Allowance & Deduction Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                {{-- <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="deductions" autocomplete="off">
+                                                            <strong>{{ __('Deductions') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('deductions_index') ? 'CHECKED' : '' }} name="deductions_index" id="deductions_index" class="hrms deductions">
+                                                        <label for="deductions_index">{{ __('Deduction List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('deductions_create') ? 'CHECKED' : '' }} name="deductions_create" id="deductions_create" class="hrms deductions">
+                                                        <label for="deductions_create"> {{ __('Deduction Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('deductions_edit') ? 'CHECKED' : '' }} name="deductions_edit" id="deductions_edit" class="hrms deductions">
+                                                        <label for="deductions_edit"> {{ __('Deduction Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('deductions_delete') ? 'CHECKED' : '' }} name="deductions_delete" id="deductions_delete" class="hrms deductions">
+                                                        <label for="deductions_delete">{{ __('Deduction Delete') }}</label>
+                                                    </p>
+                                                </div> --}}
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="holidays" autocomplete="off">
+                                                            <strong>{{ __('Holidays') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('holidays_index') ? 'CHECKED' : '' }} name="holidays_index" id="holidays_index" class="hrms holidays">
+                                                        <label for="holidays_index">{{ __('Holiday List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('holidays_create') ? 'CHECKED' : '' }} name="holidays_create" id="holidays_create" class="hrms holidays">
+                                                        <label for="holidays_create"> {{ __('Holiday Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('holidays_edit') ? 'CHECKED' : '' }} name="holidays_edit" id="holidays_edit" class="hrms holidays">
+                                                        <label for="holidays_edit"> {{ __('Holiday Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('holidays_delete') ? 'CHECKED' : '' }} name="holidays_delete" id="holidays_delete" class="hrms holidays">
+                                                        <label for="holidays_delete">{{ __('Holiday Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="departments" autocomplete="off">
+                                                            <strong>{{ __('Departments') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('departments_index') ? 'CHECKED' : '' }} name="departments_index" id="departments_index" class="hrms departments">
+                                                        <label for="departments_index">{{ __('Department List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('departments_create') ? 'CHECKED' : '' }} name="departments_create" id="departments_create" class="hrms departments">
+                                                        <label for="departments_create"> {{ __('Department Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('departments_edit') ? 'CHECKED' : '' }} name="departments_edit" id="departments_edit" class="hrms departments">
+                                                        <label for="departments_edit"> {{ __('Department Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('departments_delete') ? 'CHECKED' : '' }} name="departments_delete" id="departments_delete" class="hrms departments">
+                                                        <label for="departments_delete">{{ __('Department Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="designations" autocomplete="off">
+                                                            <strong>{{ __('Designations') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_index') ? 'CHECKED' : '' }} name="designations_index" id="designations_index" class="hrms designations">
+                                                        <label for="designations_index">{{ __('Designation List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_create') ? 'CHECKED' : '' }} name="designations_create" id="designations_create" class="hrms designations">
+                                                        <label for="designations_create"> {{ __('Designation Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_edit') ? 'CHECKED' : '' }} name="designations_edit" id="designations_edit" class="hrms designations">
+                                                        <label for="designations_edit"> {{ __('Designation Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_delete') ? 'CHECKED' : '' }} name="designations_delete" id="designations_delete" class="hrms designations">
+                                                        <label for="designations_delete">{{ __('Designation Delete') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="designations" autocomplete="off">
+                                                            <strong>{{ __('Designations') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_index') ? 'CHECKED' : '' }} name="designations_index" id="designations_index" class="hrms designations">
+                                                        <label for="designations_index">{{ __('Designation List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_create') ? 'CHECKED' : '' }} name="designations_create" id="designations_create" class="hrms designations">
+                                                        <label for="designations_create"> {{ __('Designation Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_edit') ? 'CHECKED' : '' }} name="designations_edit" id="designations_edit" class="hrms designations">
+                                                        <label for="designations_edit"> {{ __('Designation Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('designations_delete') ? 'CHECKED' : '' }} name="designations_delete" id="designations_delete" class="hrms designations">
+                                                        <label for="designations_delete">{{ __('Designation Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="payrolls" autocomplete="off">
+                                                            <strong>{{ __('Payrolls') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payrolls_index') ? 'CHECKED' : '' }} name="payrolls_index" id="payrolls_index" class="hrms payrolls">
+                                                        <label for="payrolls_index">{{ __('Payroll List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payrolls_create') ? 'CHECKED' : '' }} name="payrolls_create" id="payrolls_create" class="hrms payrolls">
+                                                        <label for="payrolls_create"> {{ __('Payroll Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payrolls_edit') ? 'CHECKED' : '' }} name="payrolls_edit" id="payrolls_edit" class="hrms payrolls">
+                                                        <label for="payrolls_edit"> {{ __('Payroll Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payrolls_delete') ? 'CHECKED' : '' }} name="payrolls_delete" id="payrolls_delete" class="hrms payrolls">
+                                                        <label for="payrolls_delete">{{ __('Payroll Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="payroll_payments" autocomplete="off">
+                                                            <strong>{{ __('Payroll Payment') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payroll_payments_index') ? 'CHECKED' : '' }} name="payroll_payments_index" id="payroll_payments_index" class="hrms payroll_payments">
+                                                        <label for="payroll_payments_index">{{ __('Payroll Payment List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payroll_payments_create') ? 'CHECKED' : '' }} name="payroll_payments_create" id="payroll_payments_create" class="hrms payroll_payments">
+                                                        <label for="payroll_payments_create"> {{ __('Payroll Payment Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payroll_payments_edit') ? 'CHECKED' : '' }} name="payroll_payments_edit" id="payroll_payments_edit" class="hrms payroll_payments">
+                                                        <label for="payroll_payments_edit"> {{ __('Payroll Payment Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payroll_payments_delete') ? 'CHECKED' : '' }} name="payroll_payments_delete" id="payroll_payments_delete" class="hrms payroll_payments">
+                                                        <label for="payroll_payments_delete">{{ __('Payroll Payment Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="payroll_reports" autocomplete="off">
+                                                            <strong>{{ __('Payroll Reports') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payroll_report') ? 'CHECKED' : '' }} name="payroll_report" id="payroll_report" class="hrms payroll_reports">
+                                                        <label for="payroll_report">{{ __('Payroll Report') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('payroll_payment_report') ? 'CHECKED' : '' }} name="payroll_payment_report" id="payroll_payment_report" class="hrms payroll_reports">
+                                                        <label for="payroll_payment_report"> {{ __('Payroll Payment Report') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('attendance_report') ? 'CHECKED' : '' }} name="attendance_report" id="attendance_report" class="hrms payroll_reports">
+                                                        <label for="attendance_report"> {{ __('Attendance Report') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="hrms" id="select_all" data-target="hrm_others_all" autocomplete="off">
+                                                            <strong>{{ __('Others') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('hrm_dashboard') ? 'CHECKED' : '' }} name="hrm_dashboard" id="hrm_dashboard" class="hrms hrm_others_all">
+                                                        <label for="hrm_dashboard">{{ __('HRM Dashboard') }}</label>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item mb-1">
+                                <div class="form_element rounded mt-0 mb-0">
+                                    <div class="accordion-header d-flex">
+                                        <p class="checkbox_input_wrap ">
                                             <input type="checkbox" class="ms-2" id="select_all" data-target="task_management" autocomplete="off">
                                         </p>
                                         <a data-bs-toggle="collapse" class="collapsed" href="#manage_tasks_permission" aria-expanded="false">

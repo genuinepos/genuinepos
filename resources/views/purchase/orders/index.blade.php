@@ -125,7 +125,7 @@
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Created By') }}</th>
                                                 <th>{{ __('Receiving Status') }}</th>
-                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Pmt. Status') }}</th>
                                                 <th>{{ __('Ordered Qty') }}</th>
                                                 <th>{{ __('Received Qty') }}</th>
                                                 <th>{{ __('Pending Qty') }}</th>

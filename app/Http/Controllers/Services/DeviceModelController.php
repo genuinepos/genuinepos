@@ -53,16 +53,29 @@ class DeviceModelController extends Controller
 
     public function update($id, DeviceModelUpdateRequest $request)
     {
+        $generalSettings = config('generalSettings');
+
         $this->deviceModelService->updateDeviceModel(id: $id, request: $request);
 
-        return response()->json(__('Device model updated successfully'));
+        $updateMsg = isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] . ' ' . __('updated successfully') : __('Device model updated successfully');
+
+        return response()->json($updateMsg);
     }
 
     public function delete($id, DeviceModelDeleteRequest $request)
     {
-        $this->deviceModelService->deleteDeviceModel(id: $id);
+        $generalSettings = config('generalSettings');
 
-        return response()->json(__('Device model deleted successfully'));
+        $deleteDeviceModel = $this->deviceModelService->deleteDeviceModel(id: $id);
+
+        if ($deleteDeviceModel['pass'] == false) {
+
+            return response()->json(['errorMsg' => $deleteDeviceModel['msg']]);
+        }
+
+        $deleteMsg = isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] . ' ' . __('deleted successfully') : __('Device model delete successfully');
+
+        return response()->json($deleteMsg);
     }
 
     public function deviceModelsByBrand(Request $request)

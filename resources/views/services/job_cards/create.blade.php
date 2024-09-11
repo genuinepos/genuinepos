@@ -215,8 +215,6 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Quotation ID.') }}</b></label>
                                                 <div class="col-8">
-
-
                                                     <div style="position: relative;">
                                                         <input type="text" name="quotation" class="form-control fw-bold" id="quotation" data-next="brand_id" value="{{ $quotation?->quotation_id }}" placeholder="{{ __('Quotation ID.') }}" autocomplete="off">
                                                         <input type="hidden" name="quotation_id" id="quotation_id" value="{{ $quotation?->id }}">
@@ -259,11 +257,11 @@
 
                                         <div class="col-md-4">
                                             <div class="input-group flex-nowrap">
-                                                <label class="col-4"><b>{{ __('Device') }}</b></label>
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
                                                         <select name="device_id" class="form-control select2" id="device_id" data-next="device_model_id">
-                                                            <option value="">{{ __('Select Device') }}</option>
+                                                            <option value="">{{ __('Select') }} {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}</option>
                                                             @foreach ($devices as $device)
                                                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                                                             @endforeach
@@ -278,11 +276,11 @@
 
                                         <div class="col-md-4">
                                             <div class="input-group flex-nowrap">
-                                                <label class="col-4"><b>{{ __('Device Model') }}</b></label>
+                                                <label class="col-4"><b>{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
                                                         <select name="device_model_id" class="form-control select2" id="device_model_id" data-next="serial_no">
-                                                            <option value="">{{ __('Select Device Model') }}</option>
+                                                            <option value="">{{ __('Select') }} {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}</option>
                                                             @foreach ($deviceModels as $deviceModel)
                                                                 <option data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
                                                             @endforeach
@@ -311,9 +309,13 @@
                                     <div class="row gx-2 gy-1 mt-2">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('Serial Number') }}</b></label>
+                                                <label class="col-4">
+                                                    <b>
+                                                        {{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial Number') }}
+                                                    </b>
+                                                </label>
                                                 <div class="col-8">
-                                                    <input type="text" name="serial_no" class="form-control" id="serial_no" data-next="password" placeholder="{{ __('Serial Number') }}" autocomplete="off">
+                                                    <input type="text" name="serial_no" class="form-control" id="serial_no" data-next="password" placeholder="{{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial Number') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>

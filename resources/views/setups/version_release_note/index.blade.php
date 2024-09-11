@@ -45,6 +45,7 @@
                             <li> - {{ __('Service Invoice/Sale delete issue is fixed') }}</li>
                             <ol class="fw-bold">{{ __('Feature Update') }}</ol>
                             <li> - {{ __('Add Sales , POS Sales and Service sales in one list (Manage Sales)') }}</li>
+                            <li> - {{ __('Device, Device Model, and Serial Number Label name change option is added to service settings') }}</li>
                             <li> - {{ __('Added new role permission called [View Only Own Created Transactions/Data]') }}</li>
                         </ul>
                     </div>

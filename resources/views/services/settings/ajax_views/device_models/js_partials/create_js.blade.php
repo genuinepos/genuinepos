@@ -64,7 +64,7 @@
                     toastr.error(data.errorMsg, 'ERROR');
                 } else {
 
-                    toastr.success("{{ __('Device model is added successfully') }}");
+                    toastr.success("{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] . ' ' . __('is added successfully') : __('Device model is added successfully') }}");
                     $('#deviceModelAddOrEditModal').modal('hide');
                     var device_model_id = $('#device_model_id').val();
 
@@ -90,7 +90,7 @@
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
-                $('.status_loading_btn').hide();
+                $('.device_model_loading_btn').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {

@@ -11,7 +11,7 @@ class QuotationUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('sale_quotation');
+        return auth()->user()->can('sale_quotations_edit');
     }
 
     /**

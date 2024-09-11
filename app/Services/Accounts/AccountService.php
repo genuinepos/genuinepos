@@ -25,7 +25,7 @@ class AccountService
             }
         } else {
 
-            $filteredBranchId = auth()->user()->branch_id;
+            $filteredBranchId = auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL';
         }
 
         $generalSettings = config('generalSettings');
@@ -106,12 +106,12 @@ class AccountService
             $mainQuery->where('accounts.account_group_id', $request->account_group_id);
         }
 
-        $branchId = null;
-        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-            $branchId = auth()->user()->branch_id;
-        } else {
-            $branchId = $filteredBranchId;
-        }
+        $branchId = $filteredBranchId;
+        // if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        //     $branchId = auth()->user()->branch_id;
+        // } else {
+        //     $branchId = $filteredBranchId;
+        // }
 
         $mainQuery->where(function ($query) use ($branchId) {
             $__branchId = $branchId == 'NULL' ? null : $branchId;

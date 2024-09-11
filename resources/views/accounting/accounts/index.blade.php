@@ -38,6 +38,8 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                    @else
+                                        <input type="hidden" name="branch_id" id="f_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
                                     @endif
 
                                     <div class="col-md-4">

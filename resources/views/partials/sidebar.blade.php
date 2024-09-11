@@ -98,7 +98,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['users'] == 1 && $generalSettings['modules__accounting'] == '1')
-                    @if (auth()->user()->can('user_view') || auth()->user()->can('user_add') || auth()->user()->can('role_view') || auth()->user()->can('role_add'))
+                    @if (auth()->user()->can('user_view') || auth()->user()->can('user_add') || auth()->user()->can('role_view') || auth()->user()->can('role_add') || auth()->user()->can('user_activities_log_index'))
                         <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/team.svg') }}">
@@ -1606,64 +1606,71 @@
                             </div>
 
                             <div class="container-fluid">
-                                <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">{{ __('User Management') }}</p>
-                                    <div class="sub-menu-row">
-                                        @if (auth()->user()->can('user_add'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('users.create') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                @if (auth()->user()->can('user_add') || auth()->user()->can('user_view'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Manage User') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('user_add'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('users.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-plus-circle"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Add User') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Add User') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('user_view'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('users.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
+                                            @if (auth()->user()->can('user_view'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('users.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('User List') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('User List') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
+                                @endif
 
-                                    <div class="sub-menu-row">
-                                        @if (auth()->user()->can('role_add'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('users.role.create') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                @if (auth()->user()->can('role_add') || auth()->user()->can('role_view'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Manage Role') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('role_add'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('users.role.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-plus-circle"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Add Role') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Add Role') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('role_view'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('users.role.index') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
+                                            @if (auth()->user()->can('role_view'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('users.role.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Role List') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __('Role List') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
                                 @if (auth()->user()->can('user_activities_log_index'))
                                     <div class="sub-menu-group">

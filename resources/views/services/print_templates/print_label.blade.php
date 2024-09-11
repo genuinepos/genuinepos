@@ -204,20 +204,20 @@
                                 </p>
 
                                 <p>
-                                    <span class="fw-bold">{{ __('Device') }} :</span>
+                                    <span class="fw-bold">{{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} :</span>
                                     {{ $jobCard?->device?->name }}
                                 </p>
 
                                 <p>
-                                    <span class="fw-bold">{{ __('Device Model') }} :</span>
+                                    <span class="fw-bold">{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }} :</span>
                                     {{ $jobCard?->deviceModel?->name }}
                                 </p>
                             @endif
 
                             @if (isset($generalSettings['service_settings_pdf_label__serial_in_label']) && $generalSettings['service_settings_pdf_label__serial_in_label'] == '1')
                                 <p>
-                                    <span class="fw-bold">{{ __('Serial Number') }} :</span>
-                                    {{ $jobCard?->serial_number }}
+                                    <span class="fw-bold">{{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial Number') }} :</span>
+                                    {{ $jobCard?->serial_no }}
                                 </p>
                             @endif
 

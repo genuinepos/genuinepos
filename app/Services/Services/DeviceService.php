@@ -64,14 +64,36 @@ class DeviceService
         $updateDevice->save();
     }
 
-    public function deleteDevice(int $id): void
+    public function deleteDevice(int $id): array
     {
-        $deleteDevice = $this->singleDevice(id: $id);
+        $generalSettings = config('generalSettings');
+
+        $deleteDevice = $this->singleDevice(id: $id, with: ['jobCards', 'deviceModels']);
 
         if (isset($deleteDevice)) {
 
+            $modelLabel = isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device model');
+
+            $deviceLabel = isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device');
+
+            if (count($deleteDevice->jobCards) > 0) {
+
+                $errorMsg = $deviceLabel . ' ' . __('can not be deleted. This') . ' ' . $deviceLabel . ' ' . __('has already been attached with job card.');
+
+                return ['pass' => false, 'msg' => $errorMsg];
+            }
+
+            if (count($deleteDevice->deviceModels) > 0) {
+
+                $errorMsg = $deviceLabel . ' ' . __('can not be deleted. There is one or more') . ' ' . $modelLabel . ' ' . __('is belonging under this') . ' ' . $deviceLabel . '.';
+
+                return ['pass' => false, 'msg' => $errorMsg];
+            }
+
             $deleteDevice->delete();
         }
+
+        return ['pass' => true];
     }
 
     public function singleDevice(int $id, array $with = null): ?object

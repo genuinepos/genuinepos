@@ -13,9 +13,7 @@ use App\Http\Requests\Services\DeviceUpdateRequest;
 
 class DeviceController extends Controller
 {
-    public function __construct(private DeviceService $deviceService)
-    {
-    }
+    public function __construct(private DeviceService $deviceService) {}
 
     public function devicesTable(DeviceIndexRequest $request)
     {
@@ -43,15 +41,28 @@ class DeviceController extends Controller
 
     public function update($id, DeviceUpdateRequest $request)
     {
+        $generalSettings = config('generalSettings');
+
         $this->deviceService->updateDevice(id: $id, request: $request);
 
-        return response()->json(__('Device updated successfully'));
+        $updateMsg = isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] . ' ' . __('updated successfully') : __('Device updated successfully');
+
+        return response()->json($updateMsg);
     }
 
     public function delete($id, DeviceDeleteRequest $request)
     {
-        $this->deviceService->deleteDevice(id: $id);
+        $generalSettings = config('generalSettings');
 
-        return response()->json(__('Device deleted successfully'));
+        $deleteDevice = $this->deviceService->deleteDevice(id: $id);
+
+        if ($deleteDevice['pass'] == false) {
+
+            return response()->json(['errorMsg' => $deleteDevice['msg']]);
+        }
+
+        $deleteMsg = isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] . ' ' . __('deleted successfully') : __('Device deleted successfully');
+
+        return response()->json($deleteMsg);
     }
 }

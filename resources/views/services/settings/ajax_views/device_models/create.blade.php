@@ -11,7 +11,7 @@
                     <div class="col-md-12">
                         <label>
                             <b>
-                                {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] . ' ' .__('Name') : __('Model Name') }}
+                                {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] . ' ' . __('Name') : __('Model Name') }}
                             </b>
                             <span class="text-danger">*</span>
                         </label>

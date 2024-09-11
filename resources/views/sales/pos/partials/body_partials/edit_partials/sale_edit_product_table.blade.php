@@ -108,9 +108,11 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="fw-bold" style="font-size: 10px;">{{ __('Device') }}</label>
+                    <label class="fw-bold" style="font-size: 10px;">
+                        {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}
+                    </label>
                     <select name="device_id" class="form-control" id="device_id">
-                        <option value="">{{ __('Select Device') }}</option>
+                        <option value="">{{ __('Select') }} {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}</option>
                         @foreach ($devices as $device)
                             <option @selected(isset($sale->jobCard) && $sale?->jobCard?->device_id == $device->id) value="{{ $device->id }}">{{ $device->name }}</option>
                         @endforeach
@@ -118,9 +120,11 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="fw-bold" style="font-size: 10px;">{{ __('Device Model') }}</label>
+                    <label class="fw-bold" style="font-size: 10px;">
+                        {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}
+                    </label>
                     <select name="device_model_id" class="form-control" id="device_model_id">
-                        <option value="">{{ __('Select Device Model') }}</option>
+                        <option value="">{{ __('Select') }} {{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Device Model') }}</option>
                         @foreach ($deviceModels as $deviceModel)
                             <option @selected(isset($sale->jobCard) && $sale?->jobCard?->device_model_id == $deviceModel->id) data-checklist="{{ $deviceModel->service_checklist }}" value="{{ $deviceModel->id }}">{{ $deviceModel->name }}</option>
                         @endforeach
@@ -130,8 +134,10 @@
 
             <div class="row align-items-end mt-1">
                 <div class="col-md-4">
-                    <label class="fw-bold" style="font-size: 10px;">{{ __('Serial No') }}</label>
-                    <input type="text" name="serial_no" class="form-control" id="serial_no" value="{{ isset($sale->jobCard) ? $sale?->jobCard?->serial_no : '' }}" placeholder="{{ __('Serial No') }}" autocomplete="off">
+                    <label class="fw-bold" style="font-size: 10px;">
+                        {{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial No') }}
+                    </label>
+                    <input type="text" name="serial_no" class="form-control" id="serial_no" value="{{ isset($sale->jobCard) ? $sale?->jobCard?->serial_no : '' }}" placeholder="{{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial No') }}" autocomplete="off">
                 </div>
 
                 <div class="col-md-4">

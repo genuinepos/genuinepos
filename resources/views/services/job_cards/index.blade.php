@@ -170,9 +170,13 @@
                                                 <th>{{ __('Quotation ID') }}</th>
                                                 <th>{{ __('Invoice ID') }}</th>
                                                 <th>{{ __('Status') }}</th>
-                                                <th>{{ __('Device') }}</th>
-                                                <th>{{ __('Model') }}</th>
-                                                <th>{{ __('Serial No.') }}</th>
+                                                <th>
+                                                    {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }}
+                                                </th>
+                                                <th>{{ isset($generalSettings['service_settings__device_model_label']) ? $generalSettings['service_settings__device_model_label'] : __('Model') }}</th>
+                                                <th>
+                                                    {{ isset($generalSettings['service_settings__serial_number_label']) ? $generalSettings['service_settings__serial_number_label'] : __('Serial No.') }}
+                                                </th>
                                                 <th>{{ __('Total Cost') }}</th>
                                                 <th>{{ __('Created By') }}</th>
                                             </tr>

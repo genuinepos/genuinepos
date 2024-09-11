@@ -90,7 +90,7 @@
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
-                $('.status_loading_btn').hide();
+                $('.device_model_loading_btn').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {

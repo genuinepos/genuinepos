@@ -34,7 +34,7 @@
                         <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
-                                <p class="title">{{ __('Products') }}</p>
+                                <p class="title">{{ __('Inventory') }}</p>
                             </a>
                         </li>
                     @endif

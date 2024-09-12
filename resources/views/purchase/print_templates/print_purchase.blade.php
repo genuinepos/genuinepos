@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0 fw-bold">
                         @if ($purchase?->branch)
                             @if ($purchase?->branch?->parent_branch_id)
                                 {{ $purchase?->branch?->parentBranch?->name }}
@@ -99,7 +99,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @if ($purchase?->branch)
                             {{ $purchase->branch->address . ', ' . $purchase->branch->city . ', ' . $purchase->branch->state . ', ' . $purchase->branch->zip_code . ', ' . $purchase->branch->country }}
                         @else
@@ -109,11 +109,11 @@
 
                     <p>
                         @if ($purchase?->branch)
-                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $purchase?->branch?->email }},
-                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $purchase?->branch?->phone }}
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Email') }} : </span> {{ $purchase?->branch?->email }},
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </span> {{ $purchase?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
-                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -270,14 +270,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Invoice)') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                    @if ($purchase->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($purchase->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:11px!important;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>

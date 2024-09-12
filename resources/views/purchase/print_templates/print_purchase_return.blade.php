@@ -122,7 +122,7 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;">{{ __('Purchase Return Voucher') }}</h5>
+                    <h6 style="text-transform: uppercase;">{{ __('Purchase Return Voucher') }}</h6>
                 </div>
             </div>
 
@@ -250,14 +250,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @if ($return->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>
@@ -553,14 +561,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @if ($return->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>

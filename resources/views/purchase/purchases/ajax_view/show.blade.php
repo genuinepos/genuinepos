@@ -225,14 +225,22 @@
                                 <tr>
                                     <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                        @if ($purchase->due < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($purchase->due)) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                        @endif
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">{{ __('Current Balance') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end fw-bold">
-                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
                                     </td>
                                 </tr>
                             </table>

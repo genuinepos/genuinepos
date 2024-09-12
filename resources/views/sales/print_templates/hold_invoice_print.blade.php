@@ -113,7 +113,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                    <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0">
                         <strong>
                             @if ($holdInvoice?->branch)
                                 @if ($holdInvoice?->branch?->parent_branch_id)
@@ -127,7 +127,7 @@
                         </strong>
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @if ($holdInvoice?->branch)
                             {{ $holdInvoice->branch->address . ', ' }}
                             {{ $invoiceLayout->branch_city == 1 ? $holdInvoice->branch->city . ', ' : '' }}
@@ -139,7 +139,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @php
                             $email = $holdInvoice?->branch ? $holdInvoice?->branch?->email : $generalSettings['business_or_shop__email'];
                             $phone = $holdInvoice?->branch ? $holdInvoice?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -160,7 +160,7 @@
         @if ($invoiceLayout->is_header_less == 0)
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h5>
+                    <h6 class="fw-bold" style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h6>
                 </div>
             </div>
         @endif
@@ -201,7 +201,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h5>
+                        <h6 style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h6>
                     </div>
                 @endif
 

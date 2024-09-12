@@ -121,7 +121,7 @@
                     importStyle: true,
                     loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                     removeInline: false,
-                    printDelay: 500,
+                    printDelay: 1000,
                     header: "",
                     pageTitle: "",
                     // footer: 'Footer Text',

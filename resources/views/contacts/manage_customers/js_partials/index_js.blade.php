@@ -394,7 +394,6 @@
                             });
                         }
                     },
-
                     'No': {
                         'class': 'no btn-modal-primary',
                         'action': function() {

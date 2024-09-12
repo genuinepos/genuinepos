@@ -72,7 +72,7 @@ class PurchaseService
 
             $query->where('purchases.supplier_account_id', $supplierAccountId);
         }
-        
+
         if (auth()->user()->can('view_only_won_transactions')) {
 
             $query->where('purchases.admin_id', auth()->user()->id);
@@ -152,7 +152,16 @@ class PurchaseService
 
             ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span></span>')
+            ->editColumn('due', function ($row) {
+
+                if ($row->due < 0) {
+
+                    return '(<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(abs(curr_cnv($row->due, $row->c_rate, $row->branch_id))) . '</span>)';
+                } else {
+
+                    return '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>';
+                }
+            })
 
             ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="' . curr_cnv($row->purchase_return_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->purchase_return_amount, $row->c_rate, $row->branch_id)) . '</span>')
 

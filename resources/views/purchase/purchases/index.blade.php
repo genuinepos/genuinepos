@@ -13,7 +13,7 @@
                             <div class="name-head">
                                 <h5>{{ __('Purchases') }}</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -135,7 +135,7 @@
                                                 <th id="paid"></th>
                                                 <th id="purchase_return_amount"></th>
                                                 <th id="due"></th>
-                                                <th></th>
+                                                <th>---</th>
                                             </tr>
                                         </tfoot>
                                     </table>

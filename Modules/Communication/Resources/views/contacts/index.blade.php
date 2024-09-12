@@ -14,13 +14,12 @@
                                 <h6>Contacts</h6>
                             </div>
                             <div>
-                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm  float-end back-button"><i
-                                        class="fa-thin fa-left-to-line fa-2x"></i><br>@lang('menu.back')
+                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm  float-end back-button"><i class="fa-thin fa-left-to-line fa-2x"></i><br>{{ __('Back') }}
                                 </a>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="p-15">
                         <div class="form_element rounded m-0">
                             <div class="element-body">
@@ -28,8 +27,7 @@
                                     <div class="tab_list_area">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <a id="tab_btn" data-show="contact_group_list" class="tab_btn tab_active"
-                                                    href="#">
+                                                <a id="tab_btn" data-show="contact_group_list" class="tab_btn tab_active" href="#">
                                                     Contact List</a>
                                             </li>
                                             <li>

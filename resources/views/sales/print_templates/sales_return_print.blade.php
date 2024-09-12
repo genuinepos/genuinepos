@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0 fw-bold">
                         @if ($return?->branch)
                             @if ($return?->branch?->parent_branch_id)
                                 {{ $return?->branch?->parentBranch?->name }}
@@ -100,7 +100,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @if ($return?->branch)
                             {{ $return->branch->address . ', ' . $return->branch->city . ', ' . $return->branch->state . ', ' . $return->branch->zip_code . ', ' . $return->branch->country }}
                         @else
@@ -110,11 +110,11 @@
 
                     <p>
                         @if ($return?->branch)
-                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $return?->branch?->email }},
-                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $return?->branch?->phone }}
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Email') }} : </span> {{ $return?->branch?->email }},
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </span> {{ $return?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
-                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -250,14 +250,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @if ($return->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>
@@ -554,14 +562,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @if ($return->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>

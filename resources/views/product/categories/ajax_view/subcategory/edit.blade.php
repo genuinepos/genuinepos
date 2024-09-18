@@ -7,14 +7,14 @@
         <div class="modal-body">
             <form id="edit_sub_category_form" action="{{ route('subcategories.update', $subcategory->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group mt-1">
+                <div class="form-group">
                     <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>
                     <input required type="text" name="name" class="form-control" value="{{ $subcategory->name }}" id="subcategory_name" data-next="subcategory_parent_category_id" placeholder="{{ __('Sub category name') }}" />
                     <span class="error error_subcategory_name"></span>
                 </div>
 
-                <div class="form-group">
-                    <label><b>@lang('menu.parent_category')</b> <span class="text-danger">*</span></label>
+                <div class="form-group mt-1">
+                    <label><b>{{ __("Parent Category") }}</b> <span class="text-danger">*</span></label>
                     <select name="parent_category_id" class="form-control" id="subcategory_parent_category_id" data-next="subcategory_description">
                         @foreach ($categories as $row)
                             <option value="{{ $row->id }}" @if ($subcategory->parent_category_id == $row->id) selected @endif>

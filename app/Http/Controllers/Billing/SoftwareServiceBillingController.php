@@ -36,7 +36,6 @@ class SoftwareServiceBillingController extends Controller
     public function invoicePdf($id)
     {
         $transaction = $this->subscriptionTransactionService->singleSubscriptionTransaction(id: $id, with: ['subscription', 'subscription.user', 'plan']);
-        DB::reconnect();
         $pdf = Pdf::loadView('billing.pdf.transaction_details', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']);
         return $pdf->stream('invoice.pdf');
     }

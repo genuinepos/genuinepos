@@ -17,7 +17,7 @@
             <div class="nav-close-btn">
                 <button id="navClose"><i class="fa-light fa-bars-sort"></i></button>
             </div>
-            <a href="#" target="_blank" class="btn btn-sm btn-primary site-view-btn">
+            <a href="{{ route('saas.tenants.index') }}" class="btn btn-sm btn-primary site-view-btn">
                 <i class="fa-light fa-globe me-1"></i>
                 <span>{{ __('Customer List') }}</span>
             </a>

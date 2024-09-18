@@ -48,6 +48,7 @@ class SubscriptionService
                 $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count);
 
                 $addSubscription->business_expire_date = $expireDate;
+                $addSubscription->business_main_expire_date = $expireDate;
 
                 $discountPercent = isset($request->discount_percent) ? isset($request->discount_percent) : 0;
                 $businessPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->business_price);
@@ -156,7 +157,7 @@ class SubscriptionService
 
             if ($request->has_business) {
 
-                $startDate = date('Y-m-d') <= $updateSubscription->business_expire_date ? $updateSubscription->business_expire_date : null;
+                $startDate = date('Y-m-d') <= $updateSubscription->business_main_expire_date ? $updateSubscription->business_main_expire_date : null;
                 $expireDate = ExpireDateAllocation::getExpireDate(period: $request->business_price_period == 'lifetime' ? 'year' : $request->business_price_period, periodCount: $request->business_price_period == 'lifetime' ? $plan->applicable_lifetime_years : $request->business_price_period_count, startDate: $startDate);
 
                 $discountPercent = isset($discountPercent) ? $discountPercent : 0;
@@ -168,6 +169,7 @@ class SubscriptionService
                 $updateSubscription->business_adjustable_price = $adjustablePrice;
                 $updateSubscription->business_price_period = $request->business_price_period;
                 $updateSubscription->business_expire_date = $expireDate;
+                $updateSubscription->business_main_expire_date = $expireDate;
             }
         } else if ($subscriptionUpdateType == SubscriptionUpdateType::AddBusiness->value) {
 

@@ -7,14 +7,14 @@
         <div class="modal-body">
             <form id="add_sub_category_form" action="{{ route('subcategories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group mt-1">
+                <div class="form-group">
                     <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>
                     <input required type="text" name="name" class="form-control" id="subcategory_name" data-next="subcategory_parent_category" placeholder="Sub category name" />
                     <span class="error error_subcategory_name"></span>
                 </div>
 
                 @if (!$fixedParentCategory)
-                    <div class="form-group">
+                    <div class="form-group mt-1">
                         <label><b>{{ __('Parent Category') }} <span class="text-danger">*</span></b></label>
                         <select required name="parent_category_id" class="form-control" id="subcategory_parent_category" data-next="subcategory_description">
                             <option selected="" disabled="">@lang('menu.select_parent_category')</option>
@@ -25,7 +25,7 @@
                         <span class="error error_subcategory_parent_category_id"></span>
                     </div>
                 @else
-                    <div class="form-group">
+                    <div class="form-group mt-1">
                         <label><b>{{ __('Parent Cagorygory') }} <span class="text-danger">*</span></b></label>
                         <select required name="parent_category_id" class="form-control" id="subcategory_parent_category" data-next="subcategory_description">
                             <option value="{{ $fixedParentCategory->id }}">{{ $fixedParentCategory->name }}</option>

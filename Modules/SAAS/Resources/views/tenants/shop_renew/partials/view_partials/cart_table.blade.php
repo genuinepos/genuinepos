@@ -13,7 +13,7 @@
     <input type="hidden" name="shop_price_per_month" id="shop_price_per_month" value="{{ $shopPricePerMonth }}">
     <input type="hidden" name="shop_price_per_year" id="shop_price_per_year" value="{{ $shopPricePerYear }}">
     <input type="hidden" name="shop_lifetime_price" id="shop_lifetime_price" value="{{ $shopLifetimePrice }}">
-    <input type="hidden" name="business_price_per_month" id="business_price_per_month" value="{{ $businessPricePerMonth}}">
+    <input type="hidden" name="business_price_per_month" id="business_price_per_month" value="{{ $businessPricePerMonth }}">
     <input type="hidden" name="business_price_per_year" id="business_price_per_year" value="{{ $businessPricePerYear }}">
     <input type="hidden" name="business_lifetime_price" id="business_lifetime_price" value="{{ $businessLifetimePrice }}">
 
@@ -21,12 +21,12 @@
         <table class="table table-borderless">
             <thead>
                 <tr>
-                    <th>{{ __('Store Name') }}</th>
-                    <th>{{ __('Expire Date') }}</th>
-                    <th>{{ __('Price(As Per Period)') }}</th>
-                    <th>{{ __('Renewable Price Period') }}</th>
-                    <th>{{ __('Renewable Period Count') }}</th>
-                    <th>{{ __('Subtotal') }}</th>
+                    <th class="text-start">{{ __('Store Name') }}</th>
+                    <th class="text-start">{{ __('Expire Date') }}</th>
+                    <th class="text-start">{{ __('Price(As Per Period)') }}</th>
+                    <th>{{ __('Price Period') }}</th>
+                    <th>{{ __('Period Count') }}</th>
+                    <th class="text-start">{{ __('Subtotal') }}</th>
                     <th>...</th>
                 </tr>
             </thead>
@@ -35,17 +35,17 @@
                 @if ($currentSubscription->has_business == 1)
                     @if ($currentSubscription->business_price_period == 'lifetime' && date('Y-m-d') > $currentSubscription->business_main_expire_date)
                         <tr>
-                            <td class="fw-bold">
+                            <td class="text-start">
                                 <input type="hidden" name="has_business" value="1">
-                                <input type="hidden" name="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})">
-                                {{ $generalSettings['business_or_shop__business_name'] }}
+                                <input type="hidden" name="business_name" value="{{ $business->value }}({{ __('Company') }})">
+                                {{ $business->value }}
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $currentSubscription->business_main_expire_date ? 'text-danger' : 'text-success' }}">
+                            <td class="{{ date('Y-m-d') > $currentSubscription->business_main_expire_date ? 'text-danger' : 'text-success' }} text-start">
                                 {{ $currentSubscription->business_main_expire_date }}
                             </td>
 
-                            <td>
+                            <td class="text-start">
                                 <span class="price-txt">
                                     {{ $planPriceCurrency }} <span id="span_business_price">{{ App\Utils\Converter::format_in_bdt($businessLifetimePrice) }}</span>
                                 </span>
@@ -85,7 +85,7 @@
                                 </span>
                             </td>
 
-                            <td><a href="#" class="btn btn-sm btn-danger" id="remove_btn">X</a></td>
+                            <td><a href="#" class="btn btn-sm btn-danger text-white" id="remove_btn">X</a></td>
                         </tr>
                     @elseif ($currentSubscription->business_price_period == 'month' || $currentSubscription->business_price_period == 'year')
                         @php
@@ -101,17 +101,17 @@
                             @endphp
                         @endif
                         <tr>
-                            <td class="fw-bold">
+                            <td class="text-start">
                                 <input type="hidden" name="has_business" value="1">
-                                <input type="hidden" name="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})">
-                                {{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})
+                                <input type="hidden" name="business_name" value="{{ $business->value }}({{ __('Company') }})">
+                                {{ $business->value }}({{ location_label('business') }})
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $currentSubscription->business_main_expire_date ? 'text-danger' : 'text-success' }}">
+                            <td class="{{ date('Y-m-d') > $currentSubscription->business_main_expire_date ? 'text-danger' : 'text-success' }} text-start">
                                 {{ $currentSubscription->business_main_expire_date }}
                             </td>
 
-                            <td>
+                            <td class="text-start">
                                 <span class="price-txt">
                                     {{ $planPriceCurrency }} <span id="span_business_price">{{ App\Utils\Converter::format_in_bdt($defaultBusinessPrice) }}</span>
                                 </span>
@@ -157,7 +157,7 @@
                                     {{ $planPriceCurrency }} <span id="span_business_subtotal">{{ App\Utils\Converter::format_in_bdt($defaultBusinessPrice) }}</span>
                                 </span>
                             </td>
-                            <td><a href="#" class="btn btn-sm btn-danger" id="remove_btn">X</a></td>
+                            <td><a href="#" class="btn btn-sm btn-danger text-white" id="remove_btn">X</a></td>
                         </tr>
                     @endif
                 @endif
@@ -165,10 +165,10 @@
                 @foreach ($branches as $branch)
                     @if ($branch?->shopExpireDateHistory?->price_period == 'lifetime' && date('Y-m-d') > $branch->main_expire_date)
                         <tr>
-                            <td class="fw-bold">
+                            <td class="text-start">
                                 <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $branch?->shopExpireDateHistory?->id }}">
                                 @if ($branch?->parentBranch)
-                                    {{ $branch->parentBranch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}
+                                    <span class="ps-2"></span>{{ ' --- ' . $branch->parentBranch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}
                                     <input type="hidden" name="branch_names[]" value="{{ $branch->parentBranch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}">
                                 @else
                                     {{ $branch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}
@@ -176,11 +176,11 @@
                                 @endif
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $branch->main_expire_date ? 'text-danger' : 'text-success' }}">
+                            <td class="{{ date('Y-m-d') > $branch->main_expire_date ? 'text-danger' : 'text-success' }} text-start">
                                 {{ $branch->main_expire_date }}
                             </td>
 
-                            <td>
+                            <td class="text-start">
                                 <span class="price-txt">
                                     {{ $planPriceCurrency }} <span id="span_shop_price">{{ App\Utils\Converter::format_in_bdt($shopLifetimePrice) }}</span>
                                 </span>
@@ -220,7 +220,7 @@
                                 </span>
                             </td>
 
-                            <td><a href="#" class="btn btn-sm btn-danger" id="remove_btn">X</a></td>
+                            <td><a href="#" class="btn btn-sm btn-danger text-white" id="remove_btn">X</a></td>
                         </tr>
                     @elseif ($branch?->shopExpireDateHistory?->price_period == 'month' || $branch?->shopExpireDateHistory?->price_period == 'year')
                         @php
@@ -233,10 +233,10 @@
                         @endphp
 
                         <tr>
-                            <td class="fw-bold">
+                            <td class="text-start">
                                 <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $branch?->shopExpireDateHistory?->id }}">
                                 @if ($branch?->parentBranch)
-                                    {{ $branch->parentBranch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}
+                                    <span class="ps-2"></span>{{ ' --- ' . $branch->parentBranch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}
                                     <input type="hidden" name="branch_names[]" value="{{ $branch->parentBranch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}">
                                 @else
                                     {{ $branch->name . '(' . $branch?->area_name . ')-' . $branch?->branch_code }}
@@ -244,11 +244,11 @@
                                 @endif
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $branch?->shopExpireDateHistory?->main_expire_date ? 'text-danger' : 'text-success' }}">
+                            <td class="{{ date('Y-m-d') > $branch?->shopExpireDateHistory?->main_expire_date ? 'text-danger' : 'text-success' }} text-start">
                                 {{ $branch?->shopExpireDateHistory?->main_expire_date }}
                             </td>
 
-                            <td>
+                            <td class="text-start">
                                 <span class="price-txt">
                                     {{ $planPriceCurrency }} <span id="span_shop_price">{{ App\Utils\Converter::format_in_bdt($defaultShopPrice) }}</span>
                                 </span>
@@ -295,7 +295,7 @@
                                 </span>
                             </td>
 
-                            <td><a href="#" class="btn btn-sm btn-danger" id="remove_btn">X</a></td>
+                            <td><a href="#" class="btn btn-sm btn-danger text-white" id="remove_btn">X</a></td>
                         </tr>
                     @endif
                 @endforeach
@@ -353,7 +353,7 @@
                                 </span>
                             </td>
 
-                            <td><a href="#" class="btn btn-sm btn-danger" id="remove_btn">X</a></td>
+                            <td><a href="#" class="btn btn-sm btn-danger text-white" id="remove_btn">X</a></td>
                         </tr>
                     @elseif ($leftBranchExpireDateHistory?->price_period == 'month' || $leftBranchExpireDateHistory?->price_period == 'year')
                         @php
@@ -423,7 +423,7 @@
                                 </span>
                             </td>
 
-                            <td><a href="#" class="btn btn-sm btn-danger" id="remove_btn">X</a></td>
+                            <td><a href="#" class="btn btn-sm btn-danger text-white" id="remove_btn">X</a></td>
                         </tr>
                     @endif
                 @endforeach
@@ -431,28 +431,20 @@
         </table>
     </div>
 
-    <div class="btn-box" id="coupon_success_msg" style="display:none;">
-        <p class="bg-success d-block p-2 m-0">
-            <span class="text-white">{{ __('Applied Coupon is') }} : <span class="fw-bold" id="applied_coupon_code"></span></span>
-            <a href="#" class="btn btn-sm btn-danger" id="remove_applied_coupon">X</a>
-        </p>
-    </div>
-
     <div class="btn-box">
-        <div class="cart-coupon-form" id="coupon_code_applying_area">
-            <input type="text" name="coupon_code" id="coupon_code" placeholder="{{ __('Enter Your Coupon Code') }}">
-            <input type="hidden" name="coupon_id" id="coupon_id" value="">
-            <button type="button" class="def-btn coupon-apply-btn" id="applyCouponBtn">{{ __('Apply Coupon') }}</button>
-            <button type="button" style="display: none;" class="def-btn coupon-apply-btn" id="applyCouponLodingBtn">{{ __('Loading...') }}</button>
+        <div>
+            <label for="discount">{{ __('Discount Amount') }}</label>
+            <input type="hidden" name="discount_percent" id="discount_percent" value="0">
+            <input type="text" name="discount" class="form-control form-control-sm fw-bold" id="discount" placeholder="{{ __('0.00') }}" autocomplete="off">
         </div>
     </div>
 </div>
 
 <div class="cart-total-panel">
-    <h3 class="title">{{ __("Cart Total") }}</h3>
+    <h3 class="title">{{ __('Cart Total') }}</h3>
     <div class="panel-body">
         <div class="row gy-5">
-            <div class="col-12">
+            <div class="col-6">
                 <div class="calculate-area">
                     <ul>
                         <li>
@@ -473,8 +465,6 @@
                             <span class="price-txt">
                                 {{ $planPriceCurrency }} <span class="span_discount">0</span>
                             </span>
-                            <input type="hidden" name="discount_percent" id="discount_percent" value="0">
-                            <input type="hidden" name="discount" id="discount" value="0">
                         </li>
                         <li class="total-price-wrap">
                             {{ __('Total Payable') }}
@@ -484,8 +474,48 @@
                             <input type="hidden" name="total_payable" id="total_payable" value="0.00">
                         </li>
                     </ul>
-                    <a class="single-nav def-btn tab-next-btn" data-tab="stepTwoTab">{{ __('Next Step') }}</a>
                 </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="cart-total-panel payment-section">
+                    <input type="hidden" name="payment_status" value="1">
+                    <div class="panel-body">
+                        <div class="row gy-4">
+                            <div class="col-12">
+                                <div class="form-col-5">
+                                    <label for="payment_date">{{ __('Payment Date') }} <span class="text-danger">*</span></label>
+                                    <input required name="payment_date" id="payment_date" class="form-control form-control-sm" value="{{ date('d-m-Y') }}" autocomplete="off">
+                                </div>
+
+                                <div class="form-col-5 mt-2">
+                                    <label for="payment_method_name">{{ __('Payment Method') }} <span class="text-danger">*</span></label>
+                                    <select required name="payment_method_name" id="payment_method_name" class="form-control form-control-sm select wide">
+                                        <option value="">{{ __('Select Payment Method') }}</option>
+                                        <option value="Cash">{{ __('Cash') }}</option>
+                                        <option value="Card">{{ __('Card') }}</option>
+                                        <option value="Bkash">{{ __('Bkash') }}</option>
+                                        <option value="Recket">{{ __('Recket') }}</option>
+                                        <option value="Naged">{{ __('Naged') }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-col-5 mt-2">
+                                    <label for="payment_method_name">{{ __('Payment Transaction ID') }}</label>
+                                    <input name="payment_trans_id" id="payment_trans_id" class="form-control form-control-sm select wide">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="def-btn palce-order tab-next-btn btn-success text-center float-end" id="submit_button">
+                    {{ __('Confirm') }}
+                </button>
+
+                <button type="button" class="def-btn palce-order tab-next-btn btn-success d-none float-end" id="loading_button">
+                    {{ __('Loading...') }}
+                </button>
             </div>
         </div>
     </div>

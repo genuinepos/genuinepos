@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Billing;
+namespace Modules\SAAS\Http\Controllers;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
+use Illuminate\Http\RedirectResponse;
 use App\Services\Branches\BranchService;
 use App\Enums\SubscriptionTransactionType;
+use Modules\SAAS\Jobs\ShopRenewMailJobQueue;
 use Modules\SAAS\Utils\ExpireDateAllocation;
 use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Utils\AmountInUsdIfLocationIsBd;
 use App\Services\Subscriptions\SubscriptionService;
-use Modules\SAAS\Interfaces\CouponServiceInterface;
-use App\Http\Requests\Billing\ShopRenewConfirmRequest;
+use Modules\SAAS\Http\Requests\ShopRenewConfirmRequest;
 use App\Services\Subscriptions\ShopExpireDateHistoryService;
-use App\Services\Subscriptions\SubscriptionMailService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use App\Services\Subscriptions\SubscriptionTransactionService;
 use Modules\SAAS\Interfaces\UserSubscriptionTransactionServiceInterface;
@@ -27,21 +26,30 @@ class ShopRenewController extends Controller
 {
     public function __construct(
         private PlanServiceInterface $planServiceInterface,
-        private CouponServiceInterface $couponServiceInterface,
         private BranchService $branchService,
         private SubscriptionService $subscriptionService,
-        private SubscriptionMailService $subscriptionMailService,
         private SubscriptionTransactionService $subscriptionTransactionService,
         private UserSubscriptionServiceInterface $userSubscriptionServiceInterface,
         private UserSubscriptionTransactionServiceInterface $userSubscriptionTransactionServiceInterface,
         private TenantServiceInterface $tenantServiceInterface,
         private ShopExpireDateHistoryService $shopExpireDateHistoryService,
-    ) {
-    }
+    ) {}
 
-    public function cart()
+    public function cart($tenantId)
     {
-        abort_if(!auth()->user()->can('billing_renew_branch'), 403);
+        $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: [
+            'user:id,tenant_id,name',
+            'user.userSubscription',
+            'user.userSubscription.plan'
+        ]);
+
+        $plan = $tenant?->user?->userSubscription?->plan;;
+
+        $planId = $plan->id;
+
+        DB::statement('use ' . $tenant->tenancy_db_name);
+
+        $business = DB::table('general_settings')->where('key', 'business_or_shop__business_name')->select('value')->first();
 
         $branches = $this->branchService->branches(with: ['parentBranch', 'shopExpireDateHistory'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
@@ -49,24 +57,37 @@ class ShopRenewController extends Controller
         $leftBranchExpireDateHistories = $this->shopExpireDateHistoryService->shopExpireDateHistories()
             ->where('is_created', BooleanType::False->value)->get();
 
-        $planId = config('generalSettings')['subscription']->plan_id;
-        DB::statement('use ' . env('DB_DATABASE'));
-        $plan = $this->planServiceInterface->singlePlanById(id: $planId);
+        $currentSubscription = $this->subscriptionService->singleSubscription(with: ['plan']);
         DB::reconnect();
 
-        $currentSubscription =  $this->subscriptionService->singleSubscription(with: ['plan']);
-        DB::reconnect();
-
-        return view('billing.shop_renew.cart', compact('branches', 'leftBranchExpireDateHistories', 'plan', 'currentSubscription'));
+        return view('saas::tenants.shop_renew.cart', compact('tenant', 'business', 'branches', 'leftBranchExpireDateHistories', 'plan', 'currentSubscription'));
     }
 
-    public function confirm(ShopRenewConfirmRequest $request)
+    public function confirm(ShopRenewConfirmRequest $request, $tenantId)
     {
-        // return $request->all();
-        $planId = config('generalSettings')['subscription']->plan_id;
-        DB::statement('use ' . env('DB_DATABASE'));
-        $plan = $this->planServiceInterface->singlePlanById(id: $planId);
-        DB::reconnect();
+        $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
+
+        $plan = $tenant?->user?->userSubscription?->plan;
+
+        try {
+            DB::beginTransaction();
+
+            $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
+
+            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
+
+            if (isset($updateUserSubscription)) {
+
+                $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::ShopRenew->value, transactionDetailsType: SubscriptionTransactionDetailsType::ShopRenew->value, plan: $plan);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollback();
+        }
+
+        DB::statement('use ' . $tenant->tenancy_db_name);
 
         try {
             DB::beginTransaction();
@@ -98,39 +119,11 @@ class ShopRenewController extends Controller
             DB::rollback();
         }
 
-        DB::statement('use ' . env('DB_DATABASE'));
-        try {
-            DB::beginTransaction();
-
-            $tenantId = tenant('id');
-
-            $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
-
-            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
-
-            if (isset($updateUserSubscription)) {
-
-                $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::ShopRenew->value, transactionDetailsType: SubscriptionTransactionDetailsType::ShopRenew->value, plan: $plan);
-            }
-
-            if (isset($request->coupon_code) && isset($request->coupon_id)) {
-
-                $this->couponServiceInterface->increaseCouponNumberOfUsed(code: $request->coupon_code);
-            }
-
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollback();
-        }
         DB::reconnect();
 
         if ($tenant?->user) {
 
-            $this->subscriptionMailService->sendSubscriptionShopRenewInvoiceMail(
-                user: $tenant?->user,
-                data: $request->all()
-            );
+            dispatch(new ShopRenewMailJobQueue(user: $tenant?->user, data: $request->all()));
         }
 
         return response()->json(__('Store/company renewed successfully'));

@@ -48,7 +48,7 @@
                         <select name="plan_id" id="plan_id" class="form-control form-control-sm plan-select select wide">
                             <option value="">{{ __('Please Select A Plan') }}</option>
                             @foreach ($plans as $plan)
-                                <option value="{{ $plan->id }}">
+                                <option data-is_tral_plan="{{ $plan->is_trial_plan }}" value="{{ $plan->id }}">
                                     {{ $plan->name }} {{ $plan->plan_type == 2 ? '[' . __('Custom Plan') . ']' : '[' . __('Fixed Plan') . ']' }}
                                     @if ($plan->is_trial_plan == 1)
                                         ({{ __('Trial Period') . ' : ' . $plan->trial_days }} {{ __('Days') }})

@@ -223,7 +223,7 @@
                                         <tbody>
                                             @forelse ($transactions as $transaction)
                                                 <tr>
-                                                    <td>{{ $transaction->id }}</td>
+                                                    <td>{{ $loop->index + 1 }}</td>
                                                     <td class="fw-bold">{{ str(\App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name)->headline() }}</td>
                                                     <td>{{ $transaction->payment_date }}</td>
                                                     <td>{{ $transaction->payment_trans_id }}</td>

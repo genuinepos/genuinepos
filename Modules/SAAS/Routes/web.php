@@ -11,6 +11,7 @@ use Modules\SAAS\Http\Controllers\CouponController;
 use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
+use Modules\SAAS\Http\Controllers\ShopRenewController;
 use Modules\SAAS\Http\Controllers\Guest\TrialController;
 use Modules\SAAS\Http\Controllers\UpgradePlanController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
@@ -117,6 +118,12 @@ Route::middleware(['is_verified'])->group(function () {
 
             Route::get('index/{tenantId}', 'index')->name('tenants.update.expire.date.index');
             Route::post('confirm/{tenantId}', 'confirm')->name('tenants.update.expire.date.confirm');
+        });
+
+        Route::controller(ShopRenewController::class)->prefix('store-renew')->group(function () {
+
+            Route::get('cart/{tenantId}', 'cart')->name('tenants.shop.renew.cart');
+            Route::post('confirm/{tenantId}', 'confirm')->name('tenants.shop.renew.confirm');
         });
 
         Route::controller(UpdatePaymentStatusController::class)->prefix('update-payment-status')->group(function () {

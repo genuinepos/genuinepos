@@ -108,7 +108,7 @@ class PurchaseOrderService
         )->where('purchases.purchase_status', PurchaseStatus::PurchaseOrder->value)->orderBy('purchases.report_date', 'desc');
 
         return DataTables::of($orders)
-            ->addColumn('action', fn ($row) => $this->createPurchaseOrderAction($row))
+            ->addColumn('action', fn($row) => $this->createPurchaseOrderAction($row))
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
@@ -132,11 +132,20 @@ class PurchaseOrderService
 
                 return '<a href="' . route('purchase.orders.show', [$row->id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('total_purchase_amount', fn($row) => '<span class="total_purchase_amount" data-value="' . curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_purchase_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('paid', fn($row) => '<span class="paid text-success" data-value="' . curr_cnv($row->paid, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->paid, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('due', function ($row) {
+
+                if ($row->due < 0) {
+
+                    return '(<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(abs(curr_cnv($row->due, $row->c_rate, $row->branch_id))) . '</span>)';
+                } else {
+
+                    return '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>';
+                }
+            })
 
             ->editColumn('po_qty', function ($row) {
 
@@ -182,7 +191,7 @@ class PurchaseOrderService
 
                 return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
-            ->rawColumns(['action', 'date', 'invoice_id', 'branch', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'receiving_status', 'po_qty', 'po_pending_qty','po_received_qty', 'created_by'])
+            ->rawColumns(['action', 'date', 'invoice_id', 'branch', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'receiving_status', 'po_qty', 'po_pending_qty', 'po_received_qty', 'created_by'])
             ->make(true);
     }
 
@@ -258,7 +267,7 @@ class PurchaseOrderService
         $updatePurchaseOrder->is_last_created = 1;
         $updatePurchaseOrder->save();
 
-        $this->updatePoReceivingStatus(purchaseOrder: $updatePurchaseOrder);
+        $this->updatePoReceivingStatus(purchaseOrderId: $updatePurchaseOrder->id);
 
         return $updatePurchaseOrder;
     }

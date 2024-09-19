@@ -84,10 +84,10 @@ class ShopRenewController extends Controller
                     $discountAmount = ($shopPriceInUsd / 100) * $discountPercent;
                     $adjustablePrice = $shopPriceInUsd - $discountAmount;
 
-                    $startDate = date('Y-m-d') <= $shopExpireDateHistory->expire_date ? $shopExpireDateHistory->expire_date : null;
+                    $startDate = date('Y-m-d') <= $shopExpireDateHistory->main_expire_date ? $shopExpireDateHistory->main_expire_date : null;
                     $expireDate = ExpireDateAllocation::getExpireDate(period: $request->shop_price_periods[$index] == 'lifetime' ? 'year' : $request->shop_price_periods[$index], periodCount: $request->shop_price_periods[$index] == 'lifetime' ? $plan->applicable_lifetime_years : $request->shop_price_period_counts[$index], startDate: $startDate);
 
-                    $this->shopExpireDateHistoryService->updateShopExpireDateHistory(id: $shopExpireDateHistoryId, shopPricePeriod: $request->shop_price_periods[$index], adjustablePrice: $adjustablePrice, expireDate: $expireDate);
+                    $this->shopExpireDateHistoryService->updateShopExpireDateHistory(id: $shopExpireDateHistoryId, shopPricePeriod: $request->shop_price_periods[$index], adjustablePrice: $adjustablePrice, expireDate: $expireDate, mainExpireDate: $expireDate);
                 }
             }
 
@@ -106,7 +106,7 @@ class ShopRenewController extends Controller
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
 
-            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
+            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, plan: $plan, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
 
             if (isset($updateUserSubscription)) {
 

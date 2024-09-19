@@ -28,11 +28,12 @@ class ShopExpireDateHistoryService
         $shopHistory->adjustable_price = $adjustablePrice;
         $shopHistory->start_date = Carbon::now();
         $shopHistory->expire_date = $expireDate;
+        $shopHistory->main_expire_date = $expireDate;
         $shopHistory->is_created = BooleanType::False->value;
         $shopHistory->save();
     }
 
-    function updateShopExpireDateHistory(int $id, ?string $shopPricePeriod = null, ?float $adjustablePrice = null, ?string $expireDate = null, ?bool $isCreated = null): void
+    function updateShopExpireDateHistory(int $id, ?string $shopPricePeriod = null, ?float $adjustablePrice = null, ?string $expireDate = null, ?string $mainExpireDate = null, ?bool $isCreated = null): void
     {
         $updateShopExpireDateHistory = $this->singleShopExpireDateHistory(id: $id, with: ['branch']);
         if (isset($updateShopExpireDateHistory)) {
@@ -40,6 +41,7 @@ class ShopExpireDateHistoryService
             $updateShopExpireDateHistory->price_period = isset($shopPricePeriod) ? $shopPricePeriod : $updateShopExpireDateHistory->price_period;
             $updateShopExpireDateHistory->adjustable_price = isset($adjustablePrice) ? $adjustablePrice : $updateShopExpireDateHistory->adjustable_price;
             $updateShopExpireDateHistory->expire_date = isset($expireDate) ? $expireDate : $updateShopExpireDateHistory->expire_date;
+            $updateShopExpireDateHistory->main_expire_date = isset($mainExpireDate) ? $mainExpireDate : $updateShopExpireDateHistory->main_expire_date;
             $updateShopExpireDateHistory->is_created = isset($isCreated) ? $isCreated : $updateShopExpireDateHistory->is_created;
             $updateShopExpireDateHistory->save();
 

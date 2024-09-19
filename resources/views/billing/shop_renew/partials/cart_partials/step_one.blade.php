@@ -33,7 +33,7 @@
 
             <tbody>
                 @if ($currentSubscription->has_business == 1)
-                    @if ($currentSubscription->business_price_period == 'lifetime' && date('Y-m-d') > $currentSubscription->business_expire_date)
+                    @if ($currentSubscription->business_price_period == 'lifetime' && date('Y-m-d') > $currentSubscription->business_main_expire_date)
                         <tr>
                             <td class="fw-bold">
                                 <input type="hidden" name="has_business" value="1">
@@ -41,8 +41,8 @@
                                 {{ $generalSettings['business_or_shop__business_name'] }}
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $currentSubscription->business_expire_date ? 'text-danger' : 'text-success' }}">
-                                {{ $currentSubscription->business_expire_date }}
+                            <td class="{{ date('Y-m-d') > $currentSubscription->business_main_expire_date ? 'text-danger' : 'text-success' }}">
+                                {{ $currentSubscription->business_main_expire_date }}
                             </td>
 
                             <td>
@@ -107,8 +107,8 @@
                                 {{ $generalSettings['business_or_shop__business_name'] }}({{ location_label('business') }})
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $currentSubscription->business_expire_date ? 'text-danger' : 'text-success' }}">
-                                {{ $currentSubscription->business_expire_date }}
+                            <td class="{{ date('Y-m-d') > $currentSubscription->business_main_expire_date ? 'text-danger' : 'text-success' }}">
+                                {{ $currentSubscription->business_main_expire_date }}
                             </td>
 
                             <td>
@@ -163,7 +163,7 @@
                 @endif
 
                 @foreach ($branches as $branch)
-                    @if ($branch?->shopExpireDateHistory?->price_period == 'lifetime' && date('Y-m-d') > $branch->expire_date)
+                    @if ($branch?->shopExpireDateHistory?->price_period == 'lifetime' && date('Y-m-d') > $branch->main_expire_date)
                         <tr>
                             <td class="fw-bold">
                                 <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $branch?->shopExpireDateHistory?->id }}">
@@ -176,8 +176,8 @@
                                 @endif
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $branch->expire_date ? 'text-danger' : 'text-success' }}">
-                                {{ $branch->expire_date }}
+                            <td class="{{ date('Y-m-d') > $branch->main_expire_date ? 'text-danger' : 'text-success' }}">
+                                {{ $branch->main_expire_date }}
                             </td>
 
                             <td>
@@ -244,8 +244,8 @@
                                 @endif
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $branch?->shopExpireDateHistory?->expire_date ? 'text-danger' : 'text-success' }}">
-                                {{ $branch?->shopExpireDateHistory?->expire_date }}
+                            <td class="{{ date('Y-m-d') > $branch?->shopExpireDateHistory?->main_expire_date ? 'text-danger' : 'text-success' }}">
+                                {{ $branch?->shopExpireDateHistory?->main_expire_date }}
                             </td>
 
                             <td>
@@ -301,7 +301,7 @@
                 @endforeach
 
                 @foreach ($leftBranchExpireDateHistories as $leftBranchExpireDateHistory)
-                    @if ($leftBranchExpireDateHistory?->price_period == 'lifetime' && date('Y-m-d') > $leftBranchExpireDateHistory->expire_date)
+                    @if ($leftBranchExpireDateHistory?->price_period == 'lifetime' && date('Y-m-d') > $leftBranchExpireDateHistory->main_expire_date)
                         <tr>
                             <td>
                                 <input type="hidden" name="shop_expire_date_history_ids[]" value="{{ $leftBranchExpireDateHistory->id }}">
@@ -309,8 +309,8 @@
                                 <input type="hidden" name="branch_names[]" value="{{ location_label('branch') }} {{ __('Not Yet to be created') }}">
                             </td>
 
-                            <td class="{{ date('Y-m-d') > $leftBranchExpireDateHistory->expire_date ? 'text-danger' : 'text-success' }}">
-                                {{ $leftBranchExpireDateHistory->expire_date }}
+                            <td class="{{ date('Y-m-d') > $leftBranchExpireDateHistory->main_expire_date ? 'text-danger' : 'text-success' }}">
+                                {{ $leftBranchExpireDateHistory->main_expire_date }}
                             </td>
 
                             <td>

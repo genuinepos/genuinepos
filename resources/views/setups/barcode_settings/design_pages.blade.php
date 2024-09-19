@@ -1,26 +1,30 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="{{ asset('backend/asset/css/richtext.min.css') }}">
-    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .table-responsive-y {
             max-height: 350px;
             overflow-y: auto;
             overflow-x: hidden;
         }
+
         .form-check {
             padding: 0;
             gap: 5px
         }
+
         .form-check-input {
             margin-left: 0 !important;
             margin-top: -2px !important;
         }
+
         .barcode-preview {
             width: 100%;
             height: 250px;
             overflow-y: scroll;
         }
+
         .color-label {
             line-height: 27px;
             width: 100%;
@@ -28,15 +32,16 @@
             background: #babfc4;
             text-align: center;
         }
+
         .txt-sm {
             font-size: 80%;
             line-height: 150%;
         }
+
         .btn.btn-sm {
             margin-top: -3px;
         }
     </style>
-
 @endpush
 @section('title', 'Email Setup Design Pages - ')
 @section('content')
@@ -47,7 +52,7 @@
                     <h5>{{ __('Print Barcode') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
         <div class="p-3">
@@ -192,7 +197,7 @@
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end">
                                     <div class="barcode-preview overflow-hidden h-auto">
-                                        <img src="{{ asset ('assets/images/barcode.png') }}" alt="">
+                                        <img src="{{ asset('assets/images/barcode.png') }}" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -300,16 +305,16 @@
                             <div class="card barcode-preview mb-3">
                                 <div class="row g-1">
                                     <div class="col-sm-3">
-                                        <img src="{{ asset ('assets/images/barcode.png') }}" alt="">
+                                        <img src="{{ asset('assets/images/barcode.png') }}" alt="">
                                     </div>
                                     <div class="col-sm-3">
-                                        <img src="{{ asset ('assets/images/barcode.png') }}" alt="">
+                                        <img src="{{ asset('assets/images/barcode.png') }}" alt="">
                                     </div>
                                     <div class="col-sm-3">
-                                        <img src="{{ asset ('assets/images/barcode.png') }}" alt="">
+                                        <img src="{{ asset('assets/images/barcode.png') }}" alt="">
                                     </div>
                                     <div class="col-sm-3">
-                                        <img src="{{ asset ('assets/images/barcode.png') }}" alt="">
+                                        <img src="{{ asset('assets/images/barcode.png') }}" alt="">
                                     </div>
                                 </div>
                             </div>

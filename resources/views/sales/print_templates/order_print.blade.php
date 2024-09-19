@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="col-8 text-end">
-                        <p style="text-transform: uppercase;" class="p-0 m-0">
+                        <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0">
                             <strong>
                                 @if ($order?->branch)
                                     @if ($order?->branch?->parent_branch_id)
@@ -114,19 +114,19 @@
                             </strong>
                         </p>
 
-                        <p>
+                        <p style="font-size:11px!important;">
                             @if ($order?->branch)
-                                {{ $invoiceLayout->branch_city == 1 ? $order->branch->city . ', ' : '' }}
-                                {{ $invoiceLayout->branch_state == 1 ? $order->branch->state . ', ' : '' }}
+                                {{ $invoiceLayout->branch_city == 1 ? $order?->branch?->city . ', ' : '' }}
+                                {{ $invoiceLayout->branch_state == 1 ? $order?->branch?->state . ', ' : '' }}
                                 {{ $order->branch->address . ', ' }}
-                                {{ $invoiceLayout->branch_zipcode == 1 ? $order->branch->zip_code . ', ' : '' }}
-                                {{ $invoiceLayout->branch_country == 1 ? $order->branch->country : '' }}
+                                {{ $invoiceLayout->branch_zipcode == 1 ? $order?->branch?->zip_code . ', ' : '' }}
+                                {{ $invoiceLayout->branch_country == 1 ? $order?->branch?->country : '' }}
                             @else
                                 {{ $generalSettings['business_or_shop__address'] }}
                             @endif
                         </p>
 
-                        <p>
+                        <p style="font-size:11px!important;">
                             @php
                                 $email = $order?->branch ? $order?->branch?->email : $generalSettings['business_or_shop__email'];
                                 $phone = $order?->branch ? $order?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -188,7 +188,7 @@
                 <div class="col-lg-4 text-center">
                     @if ($invoiceLayout->is_header_less == 1)
                         <div class="middle_header_text text-center">
-                            <h5 style="text-transform: uppercase;">{{ __('Sales Order') }}</h5>
+                            <h6 style="text-transform: uppercase;">{{ __('Sales Order') }}</h6>
                         </div>
                     @endif
 
@@ -565,7 +565,7 @@
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row mt-2">
                     <div class="col-12 text-center">
-                        <h5 class="fw-bold" style="text-transform: uppercase;">{{ __('Sales Order') }}</h5>
+                        <h6 class="fw-bold" style="text-transform: uppercase;">{{ __('Sales Order') }}</h6>
                     </div>
                 </div>
             @endif

@@ -7,7 +7,7 @@
 </style>
 <div class="account_summary_area">
     <div class="heading py-1">
-        <h5 class="py-1 pl-1 text-center">{{ __('Account Summery') }}</h5>
+        <h5 class="py-1 pl-1 text-center">{{ __('Account Summary') }}</h5>
     </div>
 
     <div class="account_summary_table">

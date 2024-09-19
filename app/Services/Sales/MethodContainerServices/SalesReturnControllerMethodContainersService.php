@@ -115,7 +115,7 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
         ]);
 
         $data['printPageSize'] = $request->print_page_size;
-        $data['paidAmount'] = $return->paid;
+        $data['paidAmount'] = $data['return']->paid;
 
         return $data;
     }

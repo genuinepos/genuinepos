@@ -32,28 +32,28 @@
         </tr>
 
         <tr>
-            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Discount') }} :</td>
             <td style="font-size:11px!important;">
                 {{ App\Utils\Converter::format_in_bdt($transaction?->discount) }}
             </td>
         </tr>
 
         <tr>
-            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Tax') }} :</td>
             <td style="font-size:11px!important;">
                 FREE
             </td>
         </tr>
 
         <tr>
-            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Payable') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Payable') }} :</td>
             <td style="font-size:11px!important;">
                 {{ App\Utils\Converter::format_in_bdt($transaction->total_payable_amount) }}
             </td>
         </tr>
 
         <tr>
-            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} :</td>
 
             <td style="font-size:11px!important;">
                 {{ App\Utils\Converter::format_in_bdt($transaction->paid) }}
@@ -61,7 +61,7 @@
         </tr>
 
         <tr>
-            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
+            <td colspan="5" class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due') }} :</td>
             <td style="font-size:11px!important;">
                 {{ App\Utils\Converter::format_in_bdt($transaction->due) }}
             </td>

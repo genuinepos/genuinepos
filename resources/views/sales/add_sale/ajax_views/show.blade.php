@@ -72,7 +72,7 @@
                                 @elseif($sale->shipment_status == App\Enums\ShipmentStatus::Cancelled->value)
                                     <span>{{ __('Cancelled') }}</span>
                                 @elseif($sale->shipment_status == App\Enums\ShipmentStatus::Completed->value)
-                                    <span>{{ __('Cancelled') }}</span>
+                                    <span>{{ __('Completed') }}</span>
                                 @endif
                             </li>
 

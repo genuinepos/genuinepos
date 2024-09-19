@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                    <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0">
                         <strong>
                             @if ($order?->branch)
                                 @if ($order?->branch?->parent_branch_id)
@@ -101,7 +101,7 @@
                         </strong>
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @if ($order?->branch)
                             {{ $order->branch->city . ', ' . $order->branch->state . ', ' . $order->branch->zip_code . ', ' . $order->branch->country }}
                         @else
@@ -109,7 +109,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @if ($order?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $order?->branch?->email }},
                             <span class="fw-bold">{{ __('Phone') }} : </span> {{ $order?->branch?->phone }}
@@ -123,7 +123,7 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;">{{ __('Purchase Order') }}</h5>
+                    <h6 style="text-transform: uppercase;">{{ __('Purchase Order') }}</h6>
                 </div>
             </div>
 
@@ -267,14 +267,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @if ($order->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($order->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:11px!important;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>
@@ -581,14 +589,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Due (On Order)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @if ($order->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($order->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>

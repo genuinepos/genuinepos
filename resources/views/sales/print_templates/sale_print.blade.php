@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="col-8 text-end">
-                        <p style="text-transform: uppercase;font-size:12px;" class="p-0 m-0 fw-bold">
+                        <p style="text-transform: uppercase;font-size:11px;" class="p-0 m-0 fw-bold">
                             @if ($sale?->branch)
                                 @if ($sale?->branch?->parent_branch_id)
                                     {{ $sale?->branch?->parentBranch?->name }}
@@ -144,7 +144,7 @@
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row mt-2">
                     <div class="col-12 text-center">
-                        <h5 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h5>
+                        <h6 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h6>
                         @php
                             $paymentStatus = '';
                             $receivable = $sale->total_invoice_amount - $sale->sale_return_amount;

@@ -29,7 +29,7 @@
             <h6>Email Setup & Settings</h6>
             <a href="http://erp.test/communication/email/settings" class="btn text-white btn-sm float-end d-lg-block d-none">
                 <i class="fa-thin fa-left-to-line fa-2x"></i>
-                <br> @lang('menu.back')
+                <br> {{ __('Back') }}
             </a>
         </div>
         <div class="p-3">

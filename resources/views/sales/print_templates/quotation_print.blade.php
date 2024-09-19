@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="col-8 text-end">
-                        <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                        <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0 fw-bold">
                             @if ($quotation?->branch)
                                 @if ($quotation?->branch?->parent_branch_id)
                                     {{ $quotation?->branch?->parentBranch?->name }}
@@ -104,7 +104,7 @@
                             @endif
                         </p>
 
-                        <p>
+                        <p style="font-size:11px!important;">
                             @if ($quotation?->branch)
                                 {{ $invoiceLayout->branch_city == 1 ? $quotation->branch->city . ', ' : '' }}
                                 {{ $invoiceLayout->branch_state == 1 ? $quotation->branch->state . ', ' : '' }}
@@ -115,7 +115,7 @@
                             @endif
                         </p>
 
-                        <p>
+                        <p style="font-size:11px!important;">
                             @php
                                 $email = $quotation?->branch ? $quotation?->branch?->email : $generalSettings['business_or_shop__email'];
                                 $phone = $quotation?->branch ? $quotation?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -136,7 +136,7 @@
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row mt-2">
                     <div class="col-12 text-center">
-                        <h5 class="fw-bold" style="text-transform: uppercase;">{{ $invoiceLayout->quotation_heading }}</h5>
+                        <h6 class="fw-bold" style="text-transform: uppercase;">{{ $invoiceLayout->quotation_heading }}</h6>
                     </div>
                 </div>
             @endif

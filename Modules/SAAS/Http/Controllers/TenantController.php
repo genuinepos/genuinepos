@@ -47,6 +47,7 @@ class TenantController extends Controller
         $business = DB::table('general_settings')->where('key', 'business_or_shop__business_name')->select('value')->first();
         $branches = DB::table('branches')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('shop_expire_date_histories', 'branches.shop_expire_date_history_id', 'shop_expire_date_histories.id')
             ->select(
                 'branches.branch_type',
                 'branches.category',
@@ -57,6 +58,7 @@ class TenantController extends Controller
                 'parentBranch.name as parent_branch_name',
                 'parentBranch.logo as parent_branch_logo',
                 'parentBranch.category as parent_category',
+                'shop_expire_date_histories.price_period',
             )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
         DB::reconnect();
 

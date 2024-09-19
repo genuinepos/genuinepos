@@ -61,7 +61,7 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
             $query->whereBetween('user_subscriptions.created_at', $date_range); // Final
         }
 
-        $transactions = $query;
+        $transactions = $query->orderBy('user_subscription_transactions.payment_date', 'desc');
 
         return DataTables::of($transactions)
 
@@ -203,7 +203,8 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
         $addTransaction->paid = $request->payment_status == BooleanType::True->value ? $request->total_payable : 0;
         $addTransaction->due = $request->payment_status == BooleanType::False->value ? $request->total_payable : 0;
         $addTransaction->payment_status = $request->payment_status;
-        $addTransaction->payment_date = $request->payment_status == BooleanType::True->value ? Carbon::now() : null;
+        $__paymentDate = isset($request->payment_date) ? date('Y-m-d H:i:s', strtotime($request->payment_date . date(' H:i:s'))) : Carbon::now();
+        $addTransaction->payment_date = $request->payment_status == BooleanType::True->value ? $__paymentDate : null;
         // $addTransaction->currency = $gioInfo['country'] == 'bangladesh' ? 'TK' : 'USD';
         // $addTransaction->currency_rate_in_bdt = $gioInfo['currency_rate'];
         $addTransaction->details_type = $transactionDetailsType;
@@ -330,9 +331,10 @@ class UserSubscriptionTransactionService implements UserSubscriptionTransactionS
         if (isset($dueSubscriptionTransaction)) {
 
             $dueSubscriptionTransaction->payment_status = $request->payment_status;
-            $dueSubscriptionTransaction->payment_date = Carbon::now();
-            $dueSubscriptionTransaction->discount_percent = $request->discount_percent;
-            $dueSubscriptionTransaction->discount = $request->discount;
+            $__paymentDate = isset($request->payment_date) ? date('Y-m-d H:i:s', strtotime($request->payment_date . date(' H:i:s'))) : Carbon::now();
+            $dueSubscriptionTransaction->payment_date = $__paymentDate;
+            $dueSubscriptionTransaction->discount_percent = isset($request->discount_percent) ? $request->discount_percent : 0;
+            $dueSubscriptionTransaction->discount = isset($request->discount) ? $request->discount : 0;
             $dueSubscriptionTransaction->total_payable_amount = $request->total_payable_amount;
             $dueSubscriptionTransaction->paid = $request->total_payable_amount;
             $dueSubscriptionTransaction->due = 0;

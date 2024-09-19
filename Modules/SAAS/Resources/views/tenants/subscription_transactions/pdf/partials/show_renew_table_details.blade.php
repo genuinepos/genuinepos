@@ -62,56 +62,58 @@
 
         @if (isset($transaction?->details?->data?->branch_names) && count($transaction?->details?->data?->branch_names) > 0)
             @foreach ($transaction?->details?->data?->branch_names as $index => $branchName)
-                <td style="font-size:11px!important;">{{ $branchName }}</td>
+                <tr>
+                    <td style="font-size:11px!important;">{{ $branchName }}</td>
 
-                <td style="font-size:11px!important;">
-                    @php
-                        $shopPrice = 0;
-                    @endphp
-                    @if ($transaction?->details?->data?->shop_price_periods[$index] == 'month')
+                    <td style="font-size:11px!important;">
                         @php
-                            $shopPrice = $transaction?->details?->data?->shop_price_per_month;
+                            $shopPrice = 0;
                         @endphp
-                    @elseif ($transaction?->details?->data?->shop_price_periods[$index] == 'year')
-                        @php
-                            $shopPrice = $transaction?->details?->data?->shop_price_per_year;
-                        @endphp
-                    @else
-                        @php
-                            $shopPrice = $transaction?->details?->data?->shop_lifetime_price;
-                        @endphp
-                    @endif
+                        @if ($transaction?->details?->data?->shop_price_periods[$index] == 'month')
+                            @php
+                                $shopPrice = $transaction?->details?->data?->shop_price_per_month;
+                            @endphp
+                        @elseif ($transaction?->details?->data?->shop_price_periods[$index] == 'year')
+                            @php
+                                $shopPrice = $transaction?->details?->data?->shop_price_per_year;
+                            @endphp
+                        @else
+                            @php
+                                $shopPrice = $transaction?->details?->data?->shop_lifetime_price;
+                            @endphp
+                        @endif
 
-                    @if ($transaction?->details?->country != 'bangladesh')
-                        @php
-                            $shopPriceInBdt = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($shopPrice);
-                        @endphp
-                        {{ App\Utils\Converter::format_in_bdt($shopPriceInBdt) }}
-                    @else
-                        {{ App\Utils\Converter::format_in_bdt($shopPrice) }}
-                    @endif
-                </td>
+                        @if ($transaction?->details?->country != 'bangladesh')
+                            @php
+                                $shopPriceInBdt = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($shopPrice);
+                            @endphp
+                            {{ App\Utils\Converter::format_in_bdt($shopPriceInBdt) }}
+                        @else
+                            {{ App\Utils\Converter::format_in_bdt($shopPrice) }}
+                        @endif
+                    </td>
 
-                <td style="font-size:11px!important;">{{ $transaction?->details?->data?->shop_price_periods[$index] }}</td>
+                    <td style="font-size:11px!important;">{{ $transaction?->details?->data?->shop_price_periods[$index] }}</td>
 
-                <td style="font-size:11px!important;">
-                    @if ($transaction?->details?->data?->shop_price_periods[$index] == 'lifetime')
-                        {{ __('Lifetime') }}
-                    @else
-                        {{ $transaction?->details?->data?->shop_price_period_counts[$index] }}
-                    @endif
-                </td>
+                    <td style="font-size:11px!important;">
+                        @if ($transaction?->details?->data?->shop_price_periods[$index] == 'lifetime')
+                            {{ __('Lifetime') }}
+                        @else
+                            {{ $transaction?->details?->data?->shop_price_period_counts[$index] }}
+                        @endif
+                    </td>
 
-                <td style="font-size:11px!important;">
-                    @if ($transaction?->details?->country != 'bangladesh')
-                        @php
-                            $shopSubtotalInBdt = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($transaction?->details?->data?->shop_subtotals[$index]);
-                        @endphp
-                        {{ App\Utils\Converter::format_in_bdt($shopSubtotalInBdt) }}
-                    @else
-                        {{ App\Utils\Converter::format_in_bdt($transaction?->details?->data?->shop_subtotals[$index]) }}
-                    @endif
-                </td>
+                    <td style="font-size:11px!important;">
+                        @if ($transaction?->details?->country != 'bangladesh')
+                            @php
+                                $shopSubtotalInBdt = \Modules\SAAS\Utils\AmountInBdtCurrency::amountInBdt($transaction?->details?->data?->shop_subtotals[$index]);
+                            @endphp
+                            {{ App\Utils\Converter::format_in_bdt($shopSubtotalInBdt) }}
+                        @else
+                            {{ App\Utils\Converter::format_in_bdt($transaction?->details?->data?->shop_subtotals[$index]) }}
+                        @endif
+                    </td>
+                </tr>
             @endforeach
         @endif
 

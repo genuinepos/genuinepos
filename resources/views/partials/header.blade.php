@@ -196,7 +196,7 @@
                                 @endif
                             @endif
 
-                            <li class="top-icon">
+                            <li class="top-icon d-hide d-md-block">
                                 <a href="" class="nav-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                     <span>
                                         <i class="fas fa-calculator"></i>
@@ -262,10 +262,12 @@
                                     </li> --}}
                                 </ul>
                             </li>
+
                             <li class="top-icon d-hide d-md-block">
                                 <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __('Help') }}</span></a>
                             </li>
-                            <li class="dp__top top-icon">
+
+                            <li class="top-icon">
                                 <a role="button" class="nav-btn" id="openRightSidebar" title="User">
                                     <span>
                                         <i class="fas fa-user"></i>

@@ -393,6 +393,7 @@ div#left_bar_toggle {
         justify-content: center;
         align-items: center;
         margin-top: 0px !important;
+        font-size: 8px;
     }
     .sub-menu {
         position: absolute;

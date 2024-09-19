@@ -882,8 +882,10 @@ div#rightSidebar.open {
 
 @media screen and (max-width: 768px) {
     div#rightSidebar {
-        margin-top: 102px;
+        margin-top: 70px;
         height: calc(100% - 102px);
+        right: -200%;
+        width: 100%;
     }
 }
 

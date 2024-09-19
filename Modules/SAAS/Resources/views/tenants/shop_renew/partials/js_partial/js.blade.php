@@ -215,7 +215,7 @@
 
                 toastr.success(res);
 
-                window.location = "{{ route('saas.tenants.index') }}";
+                window.location = "{{ url()->previous() }}";
             },
             error: function(err) {
 

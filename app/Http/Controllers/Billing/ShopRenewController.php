@@ -106,7 +106,7 @@ class ShopRenewController extends Controller
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
 
-            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
+            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, plan: $plan, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
 
             if (isset($updateUserSubscription)) {
 

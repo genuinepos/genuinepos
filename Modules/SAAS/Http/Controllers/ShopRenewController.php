@@ -43,7 +43,7 @@ class ShopRenewController extends Controller
             'user.userSubscription.plan'
         ]);
 
-        $plan = $tenant?->user?->userSubscription?->plan;;
+        $plan = $tenant?->user?->userSubscription?->plan;
 
         $planId = $plan->id;
 
@@ -68,13 +68,13 @@ class ShopRenewController extends Controller
         $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
 
         $plan = $tenant?->user?->userSubscription?->plan;
-
+     
         try {
             DB::beginTransaction();
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
 
-            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
+            $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, plan: $plan, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
 
             if (isset($updateUserSubscription)) {
 

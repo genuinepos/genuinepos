@@ -45,7 +45,13 @@
     @endpush
     <div class="panel">
         <div class="panel-header">
-            <h5>{{ __('Customer Details') }}</h5>
+            <div class="col-md-4">
+                <h5>{{ __('Customer Details') }}</h5>
+            </div>
+
+            <div class="col-md-8 text-end">
+                <a href="{{ route('saas.tenants.shop.renew.cart', $tenant->id) }}" class="btn btns-m btn-success">{{ __('Renew Shop') }}</a>
+            </div>
         </div>
 
         <div class="panel-body">
@@ -170,7 +176,7 @@
 
                                                         $expireDateText = date('Y-m-d') > date('Y-m-d', strtotime($expireDate)) ? ' <span class="text-danger fw-bold">' . date('d-m-Y', strtotime($expireDate)) . '</span>' : ' <span class="text-success fw-bold">' . date('d-m-Y', strtotime($expireDate)) . '</span>';
                                                     @endphp
-                                                    {!! $expireDateText !!}
+                                                    {!! $expireDateText !!} {!! $tenant?->user?->userSubscription?->plan?->is_trial_plan ? '(<span class="fw-bold">' . __('In Trial Period') . '</span>)' : '(<span class="fw-bold">' . $tenant?->user?->userSubscription?->business_price_period . '</span>)' !!}
                                                 </td>
                                             </tr>
                                         @endif
@@ -202,7 +208,7 @@
                                                             $expireDateText = date('Y-m-d') > date('Y-m-d', strtotime($expireDate)) ? ' <span class="text-danger fw-bold">' . date('d-m-Y', strtotime($expireDate)) . '</span>' : ' <span class="text-success fw-bold">' . date('d-m-Y', strtotime($expireDate)) . '</span>';
                                                         @endphp
 
-                                                        {!! $expireDateText !!}
+                                                        {!! $expireDateText !!} (<span class="fw-bold">{{ ucfirst($branch->price_period) }}</span>)
                                                     @elseif ($tenant?->user?->userSubscription?->plan?->is_trial_plan)
                                                         @php
                                                             $planStartDate = $tenant?->user?->userSubscription?->trial_start_date;
@@ -211,7 +217,7 @@
                                                             $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
                                                             $expireDate = $lastDate->format('Y-m-d');
                                                         @endphp
-                                                        {{ date('d-m-Y', strtotime($expireDate)) }}
+                                                        {{ date('d-m-Y', strtotime($expireDate)) }} (<span class="fw-bold">{{ __('In Trial Period') }}</span>)
                                                     @endif
                                                 </td>
                                             </tr>

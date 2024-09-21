@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Setups;
+namespace App\Services\Subscriptions;
 
 use App\Models\Sales\Sale;
 use App\Models\Branches\Branch;

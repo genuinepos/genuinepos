@@ -96,6 +96,7 @@ class PurchaseProductService
             'units.code_name as unit_code',
             'purchase_products.line_total',
             'purchase_products.selling_price',
+            'purchase_products.lot_no',
             'purchases.id',
             'purchases.branch_id',
             'purchases.supplier_account_id',

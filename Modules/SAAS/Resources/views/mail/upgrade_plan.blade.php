@@ -171,68 +171,105 @@
                     <td>{{ __("Go To Your App") }}</td>
                     <td>: <a href="{{ $appUrl }}">{{ $appUrl }}</a></td>
                 </tr>
-                <tr>
-                    <td>{{ __("Details") }}:</td>
-                </tr>
-                <tr>
-                    <td>
-                        <table>
-                            <tr style="border-bottom: 1px solid black;">
-                                <th>{{ __("Plan") }}</th>
-                                <th>{{ __("Price") }}</th>
-                                <th>{{ __("Store Count") }}</th>
-                                <th>{{ __("Price Period") }}</th>
-                                <th>{{ __("Price Period Count") }}</th>
-                                <th>{{ __("Subtotal") }}</th>
-                            </tr>
+                
+                @if ($isTrialPlan == 1)
+                    <tr>
+                        <td>Details:</td>
+                    </tr>
 
-                            <tr>
-                                <td>{{ $planName }}</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($data['shop_price']) }}</td>
-                                <td>{{ $data['shop_count'] }}</td>
-                                <td>{{ $data['shop_price_period'] }}</td>
-                                <td>{{ $data['shop_price_period'] == 'lifetime' ? 'Lifetime' : $data['shop_price_period_count'] }}</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($data['shop_subtotal']) }}</td>
-                            </tr>
-
-                            @if (isset($data['has_business']))
-                                <tr>
-                                    <td>{{ __("Multi Store Management System") }}({{ __("Company") }})</td>
-                                    <td>{{ App\Utils\Converter::format_in_bdt($data['business_price']) }}</td>
-                                    <td>...</td>
-                                    <td>{{ $data['business_price_period'] }}</td>
-                                    <td>{{ $data['business_price_period'] == 'lifetime' ? 'Lifetime' : $data['business_price_period_count'] }}</td>
-                                    <td>{{ App\Utils\Converter::format_in_bdt($data['business_subtotal']) }}</td>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr style="border-bottom: 1px solid black;">
+                                    <th>{{ __("Plan") }}</th>
+                                    <th>{{ __("Price") }}</th>
+                                    <th>{{ __("Store Count") }}</th>
+                                    <th>{{ __("Price Period") }}</th>
+                                    <th>{{ __("Price Period Count") }}</th>
+                                    <th>{{ __("Subtotal") }}</th>
                                 </tr>
-                            @endif
 
-                            <tr>
-                                <td colspan="5" style="text-align: right;">Net Total</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($data['net_total']) }}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $planName }}</td>
+                                    <td>{{ App\Utils\Converter::format_in_bdt($data['shop_price']) }}</td>
+                                    <td>{{ $data['shop_count'] }}</td>
+                                    <td>{{ $data['shop_price_period'] }}</td>
+                                    <td>{{ $data['shop_price_period'] == 'lifetime' ? 'Lifetime' : $data['shop_price_period_count'] }}</td>
+                                    <td>{{ App\Utils\Converter::format_in_bdt($data['shop_subtotal']) }}</td>
+                                </tr>
 
-                            <tr>
-                                <td colspan="5" style="text-align: right;">Discount</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($data['discount']) }}</td>
-                            </tr>
+                                @if (isset($data['has_business']))
+                                    <tr>
+                                        <td>{{ __("Multi Store Management System") }}({{ location_label('business') }})</td>
+                                        <td>{{ App\Utils\Converter::format_in_bdt($data['business_price']) }}</td>
+                                        <td>...</td>
+                                        <td>{{ $data['business_price_period'] }}</td>
+                                        <td>{{ $data['business_price_period'] == 'lifetime' ? 'Lifetime' : $data['business_price_period_count'] }}</td>
+                                        <td>{{ App\Utils\Converter::format_in_bdt($data['business_subtotal']) }}</td>
+                                    </tr>
+                                @endif
 
-                            <tr>
-                                <td colspan="5" style="text-align: right;">Total Payable</td>
-                                <td>{{ App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="5" style="text-align: right;">{{ __("Net Total") }}</td>
+                                    <td>{{ App\Utils\Converter::format_in_bdt($data['net_total']) }}</td>
+                                </tr>
 
-                            <tr>
-                                <td colspan="5" style="text-align: right;">Paid</td>
-                                <td>{{ $data['payment_status'] == 1 ? App\Utils\Converter::format_in_bdt($data['total_payable']) : '0.00' }}</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="5" style="text-align: right;">{{ __("Discount") }}</td>
+                                    <td>{{ App\Utils\Converter::format_in_bdt($data['discount']) }}</td>
+                                </tr>
 
-                            <tr>
-                                <td colspan="5" style="text-align: right;">Due</td>
-                                <td>{{ $data['payment_status'] == 1 ? '0.00' : App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                                <tr>
+                                    <td colspan="5" style="text-align: right;">{{ __("Total Payable") }}</td>
+                                    <td>{{ App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="5" style="text-align: right;">{{ __("Paid") }}</td>
+                                    <td>{{ $data['payment_status'] == 1 ? App\Utils\Converter::format_in_bdt($data['total_payable']) : '0.00' }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="5" style="text-align: right;">{{ __("Due") }}</td>
+                                    <td>{{ $data['payment_status'] == 1 ? '0.00' : App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                @else
+                    <tr>
+                        <td>{{ __("Amount Details") }}:</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">{{ __("Net Total") }}</td>
+                        <td>{{ App\Utils\Converter::format_in_bdt($data['net_total']) }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">{{ __("Adjusted Amount") }}</td>
+                        <td>{{ App\Utils\Converter::format_in_bdt($data['total_adjusted_amount']) }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">{{ __("Discount") }}</td>
+                        <td>{{ App\Utils\Converter::format_in_bdt($data['discount']) }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">{{ __("Total Payable") }}</td>
+                        <td>{{ App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">{{ __("Paid") }}</td>
+                        <td>{{ $data['payment_status'] == 1 ? App\Utils\Converter::format_in_bdt($data['total_payable']) : '0.00' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">{{ __("Due") }}</td>
+                        <td>{{ $data['payment_status'] == 1 ? '0.00' : App\Utils\Converter::format_in_bdt($data['total_payable']) }}</td>
+                    </tr>
+                @endif
                 <tr>
                     <td>
                         <div class="mail-footer">

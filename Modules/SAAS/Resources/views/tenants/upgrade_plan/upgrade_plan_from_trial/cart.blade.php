@@ -143,7 +143,7 @@
                                     <div class="tab-contents">
                                         <form id="upgrade_plan_form" action="{{ route('saas.tenants.upgrade.plan.confirm', $tenantId) }}" method="POST">
                                             @csrf
-                                            @include('saas::tenants.upgrade_plan.partials.view_partials.cart_table')
+                                            @include('saas::tenants.upgrade_plan.upgrade_plan_from_trial.partials.view_partials.cart_table')
                                         </form>
                                     </div>
                                 </div>
@@ -156,6 +156,6 @@
     </div>
 
     @push('js')
-        @include('saas::tenants.upgrade_plan.partials.js_partial.js')
+        @include('saas::tenants.upgrade_plan.upgrade_plan_from_trial.partials.js_partial.js')
     @endpush
 </x-saas::admin-layout>

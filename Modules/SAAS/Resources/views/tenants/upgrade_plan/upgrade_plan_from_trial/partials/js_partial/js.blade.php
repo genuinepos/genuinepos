@@ -59,6 +59,15 @@
         var url = "{{ route('saas.plans.single.by.id', ':planId') }}";
         var route = url.replace(':planId', planId);
 
+        var shopPricePeriod = $('#shop_price_period:checked').val();
+
+        if ((shopPricePeriod == '' || shopPricePeriod == undefined)) {
+
+            toastr.error('Please select a price period first');
+            $(this).val('');
+            return;
+        }
+
         if (planId == '') {
             return;
         }
@@ -75,44 +84,53 @@
                 var businessPricePerYear = parseFloat(planPriceIfLocationIsBd(plan.business_price_per_year)).toFixed(0);
                 var businessLifetimePrice = parseFloat(planPriceIfLocationIsBd(plan.business_lifetime_price)).toFixed(0);
 
+                var shopPrice = 0;
+                var businessPricePeriod = 0;
+
+                if (shopPricePeriod == 'month') {
+                    shopPrice = pricePerMonth;
+                } else if (shopPricePeriod == 'year') {
+                    shopPrice = pricePerYear;
+                } else if (shopPricePeriod == 'lifetime') {
+                    shopPrice = lifetimePrice;
+                }
+
+                if (shopPricePeriod == 'month') {
+                    businessPricePeriod = businessPricePerMonth;
+                } else if (shopPricePeriod == 'year') {
+                    businessPricePeriod = businessPricePerYear;
+                } else if (shopPricePeriod == 'lifetime') {
+                    businessPricePeriod = businessLifetimePrice;
+                }
+
                 $('#add_business_tr').remove();
                 $('#has_business').prop('checked', false);
-                $('#shop_price_period').prop('checked', true);
+                // $('#shop_price_period').prop('checked', true);
                 $('#is_trial_plan').val(plan.is_trial_plan);
                 $('#shop_price_per_month').val(pricePerMonth);
                 $('#shop_price_per_year').val(pricePerYear);
                 $('#shop_lifetime_price').val(lifetimePrice);
-                $('#shop_price').val(pricePerMonth);
+                $('#shop_price').val(shopPrice);
                 $('#business_price_per_month').val(businessPricePerMonth);
                 $('#business_price_per_year').val(businessPricePerYear);
                 $('#business_lifetime_price').val(businessLifetimePrice);
-                $('#span_shop_price').html(bdFormat(pricePerMonth));
-                $('#shop_count').val(plan.is_trial_plan == 1 ? plan.trial_shop_count : 1);
+                $('#span_shop_price').html(bdFormat(shopPrice));
+                $('#shop_count').val(1);
                 $('#shop_price_period_count').val(1);
-                $('#shop_subtotal').val(pricePerMonth);
-                $('#span_shop_subtotal').html(bdFormat(pricePerMonth));
+                $('#shop_subtotal').val(shopPrice);
+                $('#span_shop_subtotal').html(bdFormat(shopPrice));
                 $('.span_total_shop_count').html(1);
-                $('#net_total').val(pricePerMonth);
-                $('.span_net_total').html(bdFormat(pricePerMonth));
-                $('.span_total_shop_count').html(plan.is_trial_plan == 1 ? plan.trial_shop_count : 1);
-                $('#total_payable').val(pricePerMonth);
-                $('.span_total_payable').html(bdFormat(pricePerMonth));
+                $('#net_total').val(shopPrice);
+                $('.span_net_total').html(bdFormat(shopPrice));
+                $('.span_total_shop_count').html(1);
+                $('#total_payable').val(shopPrice);
+                $('.span_total_payable').html(bdFormat(shopPrice));
 
-                if (plan.is_trial_plan == 1) {
-
-                    $('.shop_price_period_count').addClass('d-none');
-                    $('#shop_fixed_price_period_text').removeClass('d-none');
-                    $('#shop_fixed_price_period_text').html(plan.trial_days + ' days');
-                    $('#payment_status').prop('required', false);
-                    $('.payment-section').addClass('d-none');
-                } else {
-
-                    $('.shop_price_period_count').removeClass('d-none');
-                    $('#shop_fixed_price_period_text').html('');
-                    $('#shop_fixed_price_period_text').addClass('d-none');
-                    $('#payment_status').prop('required', true);
-                    $('.payment-section').removeClass('d-none');
-                }
+                $('.shop_price_period_count').removeClass('d-none');
+                $('#shop_fixed_price_period_text').html('');
+                $('#shop_fixed_price_period_text').addClass('d-none');
+                $('#payment_status').prop('required', true);
+                $('.payment-section').removeClass('d-none');
 
                 calculateCartAmount();
             },

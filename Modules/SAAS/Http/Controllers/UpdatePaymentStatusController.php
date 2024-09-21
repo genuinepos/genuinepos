@@ -30,7 +30,7 @@ class UpdatePaymentStatusController extends Controller
     public function index($tenantId)
     {
         $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
-        $dueTransaction = $this->userSubscriptionTransactionServiceInterface->subscriptionTransactions()->where('due', '>', 0)->first();
+        $dueTransaction = $this->userSubscriptionTransactionServiceInterface->subscriptionTransactions()->where('user_subscription_id', $tenant?->user?->userSubscription?->id)->where('due', '>', 0)->first();
 
         return view('saas::tenants.update_payment_status.index', compact('tenant', 'dueTransaction'));
     }
@@ -77,6 +77,7 @@ class UpdatePaymentStatusController extends Controller
         }
 
         DB::reconnect();
+
         Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         return response()->json(__('Payment Status is updated successfully.'));

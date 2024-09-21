@@ -17,7 +17,7 @@ class SendUpgradePlanMailJobQueue implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $user, private $data, private $planName, private $appUrl)
+    public function __construct(private $user, private $data, private $planName, private $isTrialPlan, private $appUrl)
     {
         //
     }
@@ -27,7 +27,7 @@ class SendUpgradePlanMailJobQueue implements ShouldQueue
      */
     public function handle(): void
     {
-        $email = new SendUpgradePlanMail(user: $this->user, data: $this->data, planName: $this->planName, appUrl: $this->appUrl);
+        $email = new SendUpgradePlanMail(user: $this->user, data: $this->data, planName: $this->planName, isTrialPlan: $this->isTrialPlan, appUrl: $this->appUrl);
         Mail::to($this->user->email)->send($email);
     }
 }

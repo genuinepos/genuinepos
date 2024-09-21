@@ -33,7 +33,7 @@
                                     <button href="#" id="link-plan" class="btn btn-primary" disabled>{{ __('Current Plan') }}</button>
                                 @else
 
-                                    @if ($plan->id < $generalSettings['subscription']->plan_id)
+                                    @if ($plan->price_per_month < $generalSettings['subscription']->price_per_month && $plan->price_per_year < $generalSettings['subscription']->price_per_year)
 
                                         <button href="#" id="link-plan" class="btn btn-primary" disabled>{{ __('Select') }}</button>
                                     @else

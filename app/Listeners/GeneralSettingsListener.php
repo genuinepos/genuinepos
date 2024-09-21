@@ -326,6 +326,8 @@ class GeneralSettingsListener
                             'plans.name as plan_name',
                             'plans.is_trial_plan',
                             'plans.trial_days',
+                            'plans.price_per_month',
+                            'plans.price_per_year',
                             'plans.features',
                             'subscriptions.current_shop_count',
                             'subscriptions.trial_start_date',

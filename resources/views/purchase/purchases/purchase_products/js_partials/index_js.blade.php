@@ -60,6 +60,10 @@
                 name: 'purchases.invoice_id'
             },
             {
+                data: 'lot_no',
+                name: 'purchase_products.lot_no'
+            },
+            {
                 data: 'quantity',
                 name: 'quantity',
                 className: 'text-end fw-bold'

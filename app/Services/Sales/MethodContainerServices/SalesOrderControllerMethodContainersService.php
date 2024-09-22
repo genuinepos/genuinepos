@@ -153,7 +153,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
 
     public function updateMethodContainer(int $id, object $request, object $codeGenerator): ?array
     {
-        $restrictions = $this->saleService->restrictions(request: $request, accountService: $accountService, checkCustomerChangeRestriction: true, saleId: $id);
+        $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $id);
 
         if ($restrictions['pass'] == false) {
 
@@ -214,7 +214,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $this->salesOrderService->calculateDeliveryLeftQty(order: $order);
 
         // Add user Log
-        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::SalesOrder->value, data_obj: $order);
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::SalesOrder->value, dataObj: $order);
 
         return null;
     }

@@ -65,7 +65,16 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
 
             $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
-            $order = $this->saleService->singleSale(id: $id, with: ['customer', 'customer.group', 'saleProducts']);
+            $order = $this->saleService->singleSale(id: $id, with: [
+                'customer', 
+                'customer.group', 
+                'saleProducts', 
+                'saleProducts.product', 
+                'saleProducts.product.brand', 
+                'saleProducts.variant',
+                'saleProducts.unit:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
+            ]);
             $invoiceId = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: $order->branch_id);
         }
 

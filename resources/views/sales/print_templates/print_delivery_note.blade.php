@@ -8,6 +8,10 @@
 @if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
+            /* *{
+                font-family: 'Arial!important';
+            } */
+
             table {
                 page-break-after: auto;
             }
@@ -35,8 +39,8 @@
             size: a4;
             margin-top: 0.8cm;
             margin-bottom: 35px;
-            margin-left: 15px;
-            margin-right: 15px;
+            margin-left: 20px;
+            margin-right: 20px;
         }
 
         div#footer {
@@ -182,6 +186,16 @@
                             <span class="fw-bold">{{ __('Invoice No') }} : </span> {{ $sale->invoice_id }}
                         </li>
 
+                        @if (isset($sale->salesOrder))
+                            <li style="font-size:11px!important;">
+                                <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $sale?->salesOrder->order_id }}
+                            </li>
+
+                            <li style="font-size:11px!important;">
+                                <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
+                            </li>
+                        @endif
+
                         <li style="font-size:11px!important;">
                             <span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($sale->date)) . ' ' . $sale->time }}
                         </li>
@@ -213,7 +227,15 @@
                                     @if ($saleProduct->variant_id)
                                         -{{ $saleProduct->variant_name }}
                                     @endif
-                                    {!! $invoiceLayout->product_imei == 1 ? '<br><small class="text-muted">' . $saleProduct->description . '</small>' : '' !!}
+                                    @php
+                                        $productCode = $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code;
+                                    @endphp
+
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
+
+                                    {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}
+
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 200, '...') . '</span>' : '' !!}
                                 </td>
 
                                 <td class="text-end" style="font-size:11px!important;">{{ $saleProduct->quantity }}</td>
@@ -283,6 +305,10 @@
 @else
     <style>
         @media print {
+            /* *{
+                font-family: 'Arial!important';
+            } */
+
             table {
                 page-break-after: auto;
             }
@@ -451,6 +477,16 @@
                     <ul class="list-unstyled">
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Invoice No') }} : </span> {{ $sale->invoice_id }}</li>
 
+                        @if (isset($sale->salesOrder))
+                            <li style="font-size:9px!important; line-height:1.5;">
+                                <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $sale?->salesOrder?->order_id }}
+                            </li>
+
+                            <li style="font-size:9px!important;">
+                                <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
+                            </li>
+                        @endif
+
                         <li style="font-size:9px!important; line-height:1.5;">
                             <span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($sale->date)) . ' ' . $sale->time }}
                         </li>
@@ -482,7 +518,16 @@
                                     @if ($saleProduct->variant_id)
                                         -{{ $saleProduct->variant_name }}
                                     @endif
-                                    {!! $invoiceLayout->product_imei == 1 ? '<br><small class="text-muted">' . $saleProduct->description . '</small>' : '' !!}
+
+                                    @php
+                                        $productCode = $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code;
+                                    @endphp
+
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
+
+                                    {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}
+
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 200, '...') . '</span>' : '' !!}
                                 </td>
 
                                 <td class="text-end" style="font-size:9px!important;">{{ $saleProduct->quantity }}</td>

@@ -379,8 +379,8 @@
 
                                                         <tr id="select_item">
                                                             <td class="text-start">
-                                                                <span id="span_item_name">{{ $purchaseProduct->product->name . $variant }}</span>
-                                                                <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant }}">
+                                                                <span id="span_item_name">{{ $purchaseProduct->product->name . $variant . ' (' . $purchaseProduct->product->name . ')' }}</span>
+                                                                <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant . ' (' . $purchaseProduct->product->name . ')' }}">
                                                                 <input type="hidden" name="descriptions[]" id="description" value="{{ $purchaseProduct->description }}">
                                                                 <input type="hidden" name="product_ids[]" id="product_id" value="{{ $purchaseProduct->product_id }}">
                                                                 <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">

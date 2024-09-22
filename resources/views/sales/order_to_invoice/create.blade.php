@@ -230,7 +230,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Sales Account') }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="sales_order_product_id">
+                                                        <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="reference">
                                                             @foreach ($saleAccounts as $saleAccount)
                                                                 <option @selected($order?->sale_account_id == $saleAccount->id) value="{{ $saleAccount->id }}">
                                                                     {{ $saleAccount->name }}
@@ -238,6 +238,13 @@
                                                             @endforeach
                                                         </select>
                                                         <span class="error error_sale_account_id"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class="col-4"><b>{{ __('Reference') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input type="text" name="reference" id="reference" class="form-control fw-bold" placeholder="{{ __('Reference') }}" autocomplete="off" data-next="sales_order_product_id">
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,9 +260,14 @@
                                                 <select class="form-control select2" id="sales_order_product_id">
                                                     <option value="">{{ __('Select Product') }}</option>
                                                     @foreach ($order?->saleProducts ? $order?->saleProducts : [] as $orderedProduct)
-                                                        <option value="{{ $orderedProduct->id }}" data-name="{{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') }}" data-p_id="{{ $orderedProduct->product_id }}" data-is_manage_stock="{{ $orderedProduct?->product?->is_manage_stock }}" data-v_id="{{ $orderedProduct?->variant_id }}" data-p_tax_ac_id="{{ $orderedProduct->tax_ac_id ? $orderedProduct->tax_ac_id : '' }}" data-tax_type="{{ $orderedProduct?->tax_type }}" data-is_show_emi_on_pos="{{ $orderedProduct?->product?->is_show_emi_on_pos }}" data-p_price_exc_tax="{{ $orderedProduct?->unit_price_exc_tax }}" data-p_discount="{{ $orderedProduct?->unit_discount }}" data-p_discount_type="{{ $orderedProduct?->unit_discount_type }}" data-p_discount_amount="{{ $orderedProduct?->unit_discount_amount }}" data-p_price_inc_tax="{{ $orderedProduct?->unit_price_inc_tax }}"
+
+                                                        @php
+                                                            $brand = $orderedProduct?->product?->brand ? ' | ' . $orderedProduct?->product?->brand?->name : '';
+                                                        @endphp
+
+                                                        <option value="{{ $orderedProduct->id }}" data-name="{{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') . ' (' . $orderedProduct?->product?->product_code . ')' }}" data-p_id="{{ $orderedProduct->product_id }}" data-is_manage_stock="{{ $orderedProduct?->product?->is_manage_stock }}" data-v_id="{{ $orderedProduct?->variant_id }}" data-p_tax_ac_id="{{ $orderedProduct->tax_ac_id ? $orderedProduct->tax_ac_id : '' }}" data-tax_type="{{ $orderedProduct?->tax_type }}" data-is_show_emi_on_pos="{{ $orderedProduct?->product?->is_show_emi_on_pos }}" data-p_price_exc_tax="{{ $orderedProduct?->unit_price_exc_tax }}" data-p_discount="{{ $orderedProduct?->unit_discount }}" data-p_discount_type="{{ $orderedProduct?->unit_discount_type }}" data-p_discount_amount="{{ $orderedProduct?->unit_discount_amount }}" data-p_price_inc_tax="{{ $orderedProduct?->unit_price_inc_tax }}"
                                                             data-p_cost_inc_tax="{{ $orderedProduct?->unit_cost_inc_tax }}" data-p_ordered_quantity="{{ $orderedProduct?->ordered_quantity }}" data-p_delivered_quantity="{{ $orderedProduct?->delivered_quantity }}" data-p_left_quantity="{{ $orderedProduct?->left_quantity }}">
-                                                            {{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') }}
+                                                            {{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') . ' (' . $orderedProduct?->product?->product_code . $brand . ')' }}
                                                         </option>
                                                     @endforeach
                                                 </select>

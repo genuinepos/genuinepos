@@ -171,7 +171,7 @@
 
                             $('.select_area').hide();
 
-                            var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
+                            var name = product.name + ' (' + product.product_code + ')';
                             var unique_id = product.id + 'noid';
 
                             $('#search_product').val(name);
@@ -219,15 +219,15 @@
                             $('#add_item').html('Add');
                         } else {
 
+                            product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
+
                             var li = "";
                             $.each(product.variants, function(key, variant) {
-
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 var brand = product.brand != null ? ' | ' + product.brand.name : '';
 
                                 li += '<li>';
-                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + ' - ' + variant.variant_name + ' (' + variant_code + ')' + '" data-v_name="' + variant.variant_name + '" data-has_batch_no_expire_date="' + product.has_batch_no_expire_date + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_code="' + variant.variant_code + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_profit="' + variant.variant_profit + '" data-p_price="' + variant.variant_price + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + ' (' + variant_code + brand + ')' + '</a>';
+                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-v_id="' + variant.id + '" data-p_name="' + variant.id + '" data-p_name="' + product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')' + '" data-v_name="' + variant.variant_name + '" data-has_batch_no_expire_date="' + product.has_batch_no_expire_date + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_code="' + variant.variant_code + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_profit="' + variant.variant_profit + '" data-p_price="' + variant.variant_price + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + brand + ')' + '</a>';
                                 li += '</li>';
                             });
 
@@ -269,12 +269,12 @@
                         $('.select_area').hide();
 
                         var variant = product.variant_product;
-                        var name = variant.product.name.length > 35 ? product.name.substring(0, 35) + '...' : variant.product.name;
+                        var name = variant.product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')';
                         var unique_id = variant.product.id + variant.id;
 
                         $('#e_unique_id').val(unique_id);
-                        $('#search_product').val(name + ' - ' + variant.variant_name);
-                        $('#e_item_name').val(name + ' - ' + variant.variant_name);
+                        $('#search_product').val(name);
+                        $('#e_item_name').val(name);
                         $('#e_product_id').val(variant.product.id);
                         $('#e_variant_id').val(variant.id);
                         $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
@@ -352,8 +352,8 @@
                 var unique_id = product_id + variant_id;
 
                 $('#e_unique_id').val(unique_id);
-                $('#search_product').val(product_name + (variant_name ? ' - ' + variant_name : ''));
-                $('#e_item_name').val(product_name + (variant_name ? ' - ' + variant_name : ''));
+                $('#search_product').val(product_name);
+                $('#e_item_name').val(product_name);
                 $('#e_product_id').val(product_id);
                 $('#e_variant_id').val(variant_id ? variant_id : 'noid');
                 $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();

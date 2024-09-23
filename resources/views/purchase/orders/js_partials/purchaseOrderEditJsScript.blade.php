@@ -154,11 +154,11 @@
 
                             $('.select_area').hide();
 
-                            var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
+                            var name = product.name + ' (' + product.product_code + ')';
                             var unique_id = product.id + 'noid';
 
-                            $('#search_product').val(name);
                             $('#e_unique_id').val(unique_id);
+                            $('#search_product').val(name);
                             $('#e_item_name').val(name);
                             $('#e_unit').val(product.unit.name);
                             $('#e_product_id').val(product.id);
@@ -177,11 +177,10 @@
                             $('#add_item').html('Add');
                         } else {
 
+                            product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
+
                             var li = "";
-
                             $.each(product.product_variants, function(key, variant) {
-
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
                                 var brand = product.brand != null ? ' | ' + product.brand.name : '';
 
@@ -229,13 +228,13 @@
 
                         var variant = product.variant_product;
 
-                        var name = variant.product.name.length > 35 ? product.name.substring(0, 35) + '...' : variant.product.name;
+                        var name = variant.product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')';
 
                         var unique_id = variant.product.id + variant.id;
 
                         $('#e_unique_id').val(unique_id);
-                        $('#search_product').val(name + ' - ' + variant.variant_name);
-                        $('#e_item_name').val(name + ' - ' + variant.variant_name);
+                        $('#search_product').val(name);
+                        $('#e_item_name').val(name);
                         $('#e_unit').val(variant.product.unit.name);
                         $('#e_product_id').val(variant.product.id);
                         $('#e_variant_id').val(variant.id);
@@ -289,8 +288,8 @@
                 var unique_id = product_id + variant_id;
 
                 $('#e_unique_id').val(unique_id);
-                $('#search_product').val(product_name + (variant_name ? ' - ' + variant_name : ''));
-                $('#e_item_name').val(product_name + (variant_name ? ' - ' + variant_name : ''));
+                $('#search_product').val(product_name);
+                $('#e_item_name').val(product_name);
                 $('#e_product_id').val(product_id);
                 $('#e_variant_id').val(variant_id ? variant_id : 'noid');
                 $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();

@@ -302,7 +302,7 @@ class SaleService
         $addSale->total_invoice_amount = $request->total_invoice_amount;
         $addSale->due = $request->total_invoice_amount;
         $addSale->sales_order_id = isset($request->sales_order_id) ? $request->sales_order_id : null;
-        // $addSale->reference = isset($request->reference) ? $request->reference : null;
+        $addSale->reference = isset($request->reference) ? $request->reference : null;
         $addSale->sale_screen = $saleScreenType;
         $addSale->save();
 

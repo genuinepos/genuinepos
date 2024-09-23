@@ -95,13 +95,15 @@
                                         <tr>
                                             @php
                                                 $variant = $draftProduct->variant ? ' - ' . $draftProduct->variant->variant_name : '';
+                                                $productCode = $draftProduct->variant ? $draftProduct->variant->variant_code : $draftProduct->product->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $draftProduct->product->name . ' ' . $variant }}
-                                                <small>{{ $draftProduct->description }}</small>
+                                                <small class=" d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                                <small class="d-block" style="font-size:9px!important;">{{ $draftProduct->description }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $draftProduct->quantity . '/' . $draftProduct?->unit?->code_name }}</td>

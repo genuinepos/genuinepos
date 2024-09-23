@@ -79,7 +79,7 @@
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Product') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Stock Location') }}</th>
-                                    <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Return Qty') }}</th>
+                                    <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Returned Qty') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
@@ -92,11 +92,13 @@
                                     <tr>
                                         @php
                                             $variant = $purchaseReturnProduct->variant ? ' - ' . $purchaseReturnProduct->variant->variant_name : '';
+                                            $productCode = $purchaseReturnProduct?->variant ? $purchaseReturnProduct?->variant?->variant_code : $purchaseReturnProduct?->product?->product_code;
                                         @endphp
                                         <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                         <td class="text-start" style="font-size:11px!important;">
                                             {{ $purchaseReturnProduct->product->name . $variant }}
+                                            <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">

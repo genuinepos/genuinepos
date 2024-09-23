@@ -403,7 +403,7 @@
                             <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Brand.') }} : </span> {{ $sale?->jobCard?->brand?->name }}</p>
 
                             <p style="font-size:10px!important;"><span class="fw-bold">
-                                    {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}
+                                {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}
                             </p>
 
                             <p style="font-size:10px!important;">

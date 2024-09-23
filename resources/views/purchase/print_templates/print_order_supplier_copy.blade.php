@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                    <p style="text-transform: uppercase;font-size:10px!important;" class="p-0 m-0">
                         <strong>
                             @if ($order?->branch)
                                 @if ($order?->branch?->parent_branch_id)
@@ -94,7 +94,7 @@
                         </strong>
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($order?->branch)
                             {{ $order->branch->city . ', ' . $order->branch->state . ', ' . $order->branch->zip_code . ', ' . $order->branch->country }}
                         @else
@@ -102,7 +102,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($order?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span>{{ $order?->branch?->email }},
                             <span class="fw-bold">{{ __('Phone') }} : </span>{{ $order?->branch?->phone }}
@@ -123,17 +123,17 @@
             <div class="row mt-2">
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span>{{ $order?->supplier?->name }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span>{{ $order?->supplier?->address }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Phone') }} : </span>{{ $order?->supplier?->phone }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span>{{ $order?->supplier?->name }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Address') }} : </span>{{ $order?->supplier?->address }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Phone') }} : </span>{{ $order?->supplier?->phone }}</li>
                     </ul>
                 </div>
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span> {{ $order->invoice_id }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span> {{ $order->invoice_id }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $order?->admin?->prefix . ' ' . $order?->admin?->name . ' ' . $order?->admin?->last_name }}
                         </li>
                     </ul>
@@ -141,8 +141,8 @@
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Delivery Date') }} : </span>{{ $order->delivery_date ? date($dateFormat, strtotime($order->delivery_date)) : '' }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Receiving Status') }} : </span>{{ $order->po_receiving_status }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Delivery Date') }} : </span>{{ $order->delivery_date ? date($dateFormat, strtotime($order->delivery_date)) : '' }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Receiving Status') }} : </span>{{ $order->po_receiving_status }}</li>
                     </ul>
                 </div>
             </div>
@@ -151,9 +151,9 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ordered Quantity') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Description') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Ordered Quantity') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -162,13 +162,15 @@
                             <tr>
                                 @php
                                     $variant = $orderProduct?->variant ? ' (' . $orderProduct?->variant?->variant_name . ')' : '';
+                                    $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                 @endphp
-                                <td class="text-start" style="font-size:11px!important;">{{ $index + 1 }}</td>
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">{{ $index + 1 }}</td>
+                                <td class="text-start" style="font-size:10px!important;">
                                     {{ Str::limit($orderProduct->product->name, 25) . ' ' . $variant }}
-                                    <small>{!! $orderProduct->description ? '<br/>' . $orderProduct->description : '' !!}</small>
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' !!}
+                                    {!! $orderProduct->description1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $orderProduct->description . '</span>' : '' !!}
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ $orderProduct->ordered_quantity }}/{{ $orderProduct?->unit?->code_name }}</td>
                             </tr>
                             @php $index++; @endphp
                         @endforeach
@@ -179,15 +181,15 @@
             <br /><br />
             <div class="row">
                 <div class="col-4 text-start">
-                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;">{{ __('Prepared By') }}</p>
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size: 11px!important;">{{ __('Prepared By') }}</p>
                 </div>
 
                 <div class="col-4 text-center fw-bold">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px;">{{ __('Checked By') }}</p>
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size: 11px!important;">{{ __('Checked By') }}</p>
                 </div>
 
                 <div class="col-4 text-end fw-bold">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px;">{{ __('Authorized By') }}</p>
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size: 11px!important;">{{ __('Authorized By') }}</p>
                 </div>
             </div>
             <br>
@@ -377,13 +379,15 @@
                             <tr>
                                 @php
                                     $variant = $orderProduct?->variant ? ' (' . $orderProduct?->variant?->variant_name . ')' : '';
+                                    $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                 @endphp
                                 <td class="text-start" style="font-size:9px!important;">{{ $index + 1 }}</td>
                                 <td class="text-start" style="font-size:9px!important;">
                                     {{ Str::limit($orderProduct->product->name, 25) . ' ' . $variant }}
-                                    <small>{!! $orderProduct->description ? '<br/>' . $orderProduct->description : '' !!}</small>
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' !!}
+                                    {!! $orderProduct->description1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $orderProduct->description . '</span>' : '' !!}
                                 </td>
-                                <td class="text-start" style="font-size:9px!important;">{{ $orderProduct->ordered_quantity }}</td>
+                                <td class="text-start" style="font-size:9px!important;">{{ $orderProduct->ordered_quantity }}/{{ $orderProduct?->unit?->code_name }}</td>
                             </tr>
                             @php $index++; @endphp
                         @endforeach

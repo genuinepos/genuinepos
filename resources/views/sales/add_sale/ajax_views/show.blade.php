@@ -44,7 +44,7 @@
                             @if (isset($sale->salesOrder))
                                 <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sales Order ID') }} : </span> {{ $sale?->salesOrder?->order_id }}</li>
 
-                                {{-- <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}</li> --}}
+                                <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}</li>
                             @endif
 
                             <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
@@ -144,8 +144,8 @@
                                     @foreach ($sale->saleProducts as $saleProduct)
                                         <tr>
                                             @php
-                                                $variant = $saleProduct->variant ? ' - ' . $saleProduct->variant->variant_name : '';
-                                                $productCode = $saleProduct->variant ? ' - ' . $saleProduct->variant->variant_code : $saleProduct->product->product_code;
+                                                $variant = $saleProduct?->variant ? ' - ' . $saleProduct->variant->variant_name : '';
+                                                $productCode = $saleProduct?->variant ? $saleProduct?->variant->variant_code : $saleProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>

@@ -362,7 +362,10 @@
                                                     @endphp
                                                     @foreach ($purchase->purchaseProducts as $purchaseProduct)
                                                         @php
-                                                            $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->variant_name : '';
+                                                            $variant = $purchaseProduct?->variant ? ' - ' . $purchaseProduct?->variant?->variant_name : '';
+
+                                                            $productCode = $purchaseProduct?->variant ? $purchaseProduct?->variant?->variant_code : $purchaseProduct->product->product_code;
+
                                                             $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : 'noid';
 
                                                             if (isset($purchaseProduct->product_id)) {
@@ -379,8 +382,8 @@
 
                                                         <tr id="select_item">
                                                             <td class="text-start">
-                                                                <span id="span_item_name">{{ $purchaseProduct->product->name . $variant . ' (' . $purchaseProduct->product->name . ')' }}</span>
-                                                                <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant . ' (' . $purchaseProduct->product->name . ')' }}">
+                                                                <span id="span_item_name">{{ $purchaseProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                                <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                                 <input type="hidden" name="descriptions[]" id="description" value="{{ $purchaseProduct->description }}">
                                                                 <input type="hidden" name="product_ids[]" id="product_id" value="{{ $purchaseProduct->product_id }}">
                                                                 <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">

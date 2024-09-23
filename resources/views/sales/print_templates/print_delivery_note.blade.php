@@ -99,7 +99,7 @@
                             @endif
                         </p>
 
-                        <p style="font-size:11px!important;">
+                        <p style="font-size:10px!important;">
                             @if ($sale?->branch)
                                 {{ $sale->branch->address . ', ' }}
                                 {{ $invoiceLayout->branch_city == 1 ? $sale->branch->city . ', ' : '' }}
@@ -111,7 +111,7 @@
                             @endif
                         </p>
 
-                        <p style="font-size:11px!important;">
+                        <p style="font-size:10px!important;">
                             @php
                                 $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
                                 $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -147,25 +147,25 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         @if ($invoiceLayout->customer_name)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Customer') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Customer') }} : </span>
                                 {{ $sale?->customer?->name }}
                             </li>
                         @endif
 
                         @if ($invoiceLayout->customer_address)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Address') }} : </span>
                                 {{ $sale?->customer?->address }}
                             </li>
                         @endif
 
                         @if ($invoiceLayout->customer_tax_no)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Tax Number') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Tax Number') }} : </span>
                                 {{ $sale?->customer?->tax_number }}
                             </li>
                         @endif
 
                         @if ($invoiceLayout->customer_phone)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Phone') }} : </span> {{ $sale?->customer?->phone }}</li>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Phone') }} : </span> {{ $sale?->customer?->phone }}</li>
                         @endif
                     </ul>
                 </div>
@@ -182,25 +182,25 @@
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Invoice No') }} : </span> {{ $sale->invoice_id }}
                         </li>
 
                         @if (isset($sale->salesOrder))
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;">
                                 <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $sale?->salesOrder->order_id }}
                             </li>
 
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;">
                                 <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
                             </li>
                         @endif
 
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($sale->date)) . ' ' . $sale->time }}
                         </li>
 
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Created By') }} : </span> {{ $sale?->createdBy?->prefix . ' ' . $sale?->createdBy?->name . ' ' . $sale?->createdBy?->last_name }}
                         </li>
                     </ul>
@@ -211,17 +211,17 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Quantity') }}</th>
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Unit') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Description') }}</th>
+                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Quantity') }}</th>
+                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Unit') }}</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
                         @foreach ($customerCopySaleProducts as $saleProduct)
                             <tr>
-                                <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">{{ $loop->index + 1 }}</td>
+                                <td class="text-start" style="font-size:10px!important;">
                                     {{ $saleProduct->p_name }}
 
                                     @if ($saleProduct->variant_id)
@@ -238,8 +238,8 @@
                                     {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 200, '...') . '</span>' : '' !!}
                                 </td>
 
-                                <td class="text-end" style="font-size:11px!important;">{{ $saleProduct->quantity }}</td>
-                                <td class="text-end" style="font-size:11px!important;">{{ $saleProduct->unit_code_name }}</td>
+                                <td class="text-end" style="font-size:10px!important;">{{ $saleProduct->quantity }}</td>
+                                <td class="text-end" style="font-size:10px!important;">{{ $saleProduct->unit_code_name }}</td>
                             </tr>
                         @endforeach
                     </tbody>

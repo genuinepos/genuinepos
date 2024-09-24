@@ -28,9 +28,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -292,7 +292,7 @@
                                         $productCode = $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code;
                                     @endphp
 
-                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
 
                                     {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}
 
@@ -406,7 +406,7 @@
                             <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Brand.') }} : </span> {{ $sale?->jobCard?->brand?->name }}</p>
 
                             <p style="font-size:10px!important;"><span class="fw-bold">
-                                {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}
+                                    {{ isset($generalSettings['service_settings__device_label']) ? $generalSettings['service_settings__device_label'] : __('Device') }} : </span> {{ $sale?->jobCard?->device?->name }}
                             </p>
 
                             <p style="font-size:10px!important;">
@@ -594,9 +594,9 @@
                 page-break-after: auto;
                 margin: 0px;
                 padding: 0px;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             th {
@@ -857,7 +857,7 @@
                                         $productCode = $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code;
                                     @endphp
 
-                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
 
                                     {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}
 

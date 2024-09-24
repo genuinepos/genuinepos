@@ -246,7 +246,7 @@ class BranchSettingController extends Controller
             'modules__purchases' => $purchase,
             'modules__add_sale' => $addSale,
             'modules__pos' => $pos,
-            'modules__service' =>  $services,
+            'modules__service' => $services,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,

@@ -8,7 +8,7 @@
             <div class="pos-foot-con d-inline-block position-absolute" style="right: 15%; top: 60%; transform: translateY(-41%)">
                 <div class="input-group">
                     <label class="pe-1 fw-bold">{{ __('Print') }}</label>
-                    <select name="print_page_size" id="print_page_size" class="form-control print_page_size">
+                    <select name="print_page_size" id="print_page_size" class="form-control print_page_size" tabindex="-1">
                         @foreach (\App\Enums\PrintPageSize::cases() as $item)
                             <option {{ $generalSettings['print_page_size__pos_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                         @endforeach

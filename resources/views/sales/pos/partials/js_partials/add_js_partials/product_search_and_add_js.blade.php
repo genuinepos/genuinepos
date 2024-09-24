@@ -414,7 +414,6 @@
         var p_tax_type = e.getAttribute('data-tax_type');
         var tax_percent = e.getAttribute('data-tax_percent');
         var is_show_emi_on_pos = e.getAttribute('data-is_show_emi_on_pos');
-        $('#search_product').val('');
 
         var url = "{{ route('general.product.search.check.product.discount.with.single.or.variant.branch.stock', ['productId' => ':product_id', 'variantId' => ':variant_id', 'priceGroupId' => ':price_group_id', 'branchId' => auth()->user()->branch_id]) }}"
         var route = url.replace(':product_id', product_id);
@@ -426,6 +425,8 @@
             type: 'get',
             dataType: 'json',
             success: function(data) {
+
+                $('#search_product').focus();
 
                 if ($.isEmptyObject(data.errorMsg)) {
 

@@ -10,7 +10,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 172.3%;
             z-index: 9999999;
             padding: 0;
             left: 0%;
@@ -155,7 +156,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="search_product" class="form-control" autocomplete="off" id="search_product" placeholder="{{ __('Search Product by Name/Code') }}" autofocus>
+                                                        <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" placeholder="{{ __('Search Product by Name/Code') }}" autofocus>
                                                     </div>
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>

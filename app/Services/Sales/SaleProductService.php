@@ -111,15 +111,19 @@ class SaleProductService
         )->orderBy('sales.sale_date_ts', 'desc');
 
         return DataTables::of($saleProducts)
-            ->editColumn('product', function ($row) {
+
+            ->editColumn('product_name', function ($row) use ($generalSettings) {
 
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                return Str::limit($row->name, 35, '') . $variant;
+                $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
+                return $row->name . $variant . $productCode;
             })
+
             ->editColumn('date', function ($row) {
 
                 return date('d/m/Y', strtotime($row->date));
             })
+
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -160,23 +164,23 @@ class SaleProductService
                 }
             })
 
-            ->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
+            ->editColumn('invoice_id', fn($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
-            ->editColumn('sale_screen', fn ($row) => '<span class="text-info fw-bold">' . SaleScreenType::tryFrom($row->sale_screen)->name . '</span>')
+            ->editColumn('sale_screen', fn($row) => '<span class="text-info fw-bold">' . SaleScreenType::tryFrom($row->sale_screen)->name . '</span>')
 
-            ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="' . $row->quantity . '">' . \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_code . '</span>')
+            ->editColumn('quantity', fn($row) => '<span class="quantity" data-value="' . $row->quantity . '">' . \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_code . '</span>')
 
-            ->editColumn('unit_price_exc_tax', fn ($row) => '<span class="unit_price_exc_tax" data-value="' . curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('unit_price_exc_tax', fn($row) => '<span class="unit_price_exc_tax" data-value="' . curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_exc_tax, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('unit_discount_amount', fn ($row) => '<span class="unit_discount_amount" data-value="' . curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('unit_discount_amount', fn($row) => '<span class="unit_discount_amount" data-value="' . curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_discount_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('unit_tax_amount', fn ($row) => '<span class="unit_tax_amount" data-value="' . curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('unit_tax_amount', fn($row) => '<span class="unit_tax_amount" data-value="' . curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id) . '">' . '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_tax_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('unit_price_inc_tax', fn($row) => '<span class="unit_price_inc_tax" data-value="' . curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->unit_price_inc_tax, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . curr_cnv($row->subtotal, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->subtotal, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('subtotal', fn($row) => '<span class="subtotal" data-value="' . curr_cnv($row->subtotal, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->subtotal, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->rawColumns(['product', 'product_code', 'date', 'invoice_id', 'branch', 'stock_location', 'sale_screen', 'quantity', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
+            ->rawColumns(['product_name', 'product_code', 'date', 'invoice_id', 'branch', 'stock_location', 'sale_screen', 'quantity', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
             ->make(true);
     }
 

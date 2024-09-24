@@ -226,7 +226,7 @@
                     name: 'sales.date'
                 },
                 {
-                    data: 'product',
+                    data: 'product_name',
                     name: 'products.name',
                     className: 'fw-bold'
                 },
@@ -253,12 +253,12 @@
                 },
                 {
                     data: 'quantity',
-                    name: 'quantity',
+                    name: 'products.product_code',
                     className: 'text-end fw-bold'
                 },
                 {
                     data: 'unit_price_exc_tax',
-                    name: 'unit_price_exc_tax',
+                    name: 'product_variants.variant_code',
                     className: 'text-end fw-bold'
                 },
                 {

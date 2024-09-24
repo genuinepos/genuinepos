@@ -89,12 +89,14 @@
                                         <tr>
                                             @php
                                                 $variant = $adjustmentProduct->variant ? ' - ' . $adjustmentProduct->variant->variant_name : '';
+                                                $productCode = $adjustmentProduct?->variant ? $adjustmentProduct?->variant->variant_code : $adjustmentProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $adjustmentProduct->product->name . ' ' . $variant }}
+                                                <small class=" d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">

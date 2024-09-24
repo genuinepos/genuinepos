@@ -20,6 +20,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -306,6 +309,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -501,7 +507,7 @@
                                     @if ($saleProduct->variant_id)
                                         -{{ $saleProduct->variant_name }}
                                     @endif
-                                    
+
                                     {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
 
                                     {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}

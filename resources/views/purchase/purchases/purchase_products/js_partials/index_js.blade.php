@@ -49,7 +49,8 @@
             },
             {
                 data: 'product',
-                name: 'products.name'
+                name: 'products.name',
+                className: 'fw-bold'
             },
             {
                 data: 'supplier_name',
@@ -65,12 +66,12 @@
             },
             {
                 data: 'quantity',
-                name: 'quantity',
+                name: 'products.product_code',
                 className: 'text-end fw-bold'
             },
             {
                 data: 'net_unit_cost',
-                name: 'net_unit_cost',
+                name: 'product_variants.variant_code',
                 className: 'text-end fw-bold'
             },
             {

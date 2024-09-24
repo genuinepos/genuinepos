@@ -14,12 +14,15 @@
 
         tr {
             page-break-inside: avoid;
-            page-break-after: auto
+            page-break-after: auto;
         }
 
         td {
             page-break-inside: avoid;
-            page-break-after: auto
+            page-break-after: auto;
+            line-height: 1 !important;
+            padding: 0px !important;
+            margin: 0px !important;
         }
 
         thead {

@@ -19,6 +19,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -82,7 +85,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    <p style="text-transform: uppercase;font-size:10px!important;" class="p-0 m-0 fw-bold">
                         @if ($adjustment?->branch)
 
                             @if ($adjustment?->branch?->parent_branch_id)
@@ -95,7 +98,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($adjustment?->branch)
                             {{ $adjustment->branch->city . ', ' . $adjustment->branch->state . ', ' . $adjustment->branch->zip_code . ', ' . $adjustment->branch->country }}
                         @else
@@ -103,7 +106,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($adjustment?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $adjustment?->branch?->email }},
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $adjustment?->branch?->phone }}
@@ -124,19 +127,19 @@
             <div class="row mt-2">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
                             {{ date($dateFormat, strtotime($adjustment->date)) }}
                         </li>
 
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Voucehr No') }} : </span>{{ $adjustment->voucher_no }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Voucehr No') }} : </span>{{ $adjustment->voucher_no }}</li>
                     </ul>
                 </div>
 
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Type') }} : </span>{{ App\Enums\StockAdjustmentType::tryFrom($adjustment->type)->name }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Type') }} : </span>{{ App\Enums\StockAdjustmentType::tryFrom($adjustment->type)->name }}</li>
 
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $adjustment?->createdBy?->prefix . ' ' . $adjustment?->createdBy?->name . ' ' . $adjustment?->createdBy?->last_name }}
                         </li>
@@ -148,12 +151,12 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Product') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Stock Location') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Quantity') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost (Inc. Tax)') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Product') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Stock Location') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Quantity') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost (Inc. Tax)') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -161,15 +164,17 @@
                             <tr>
                                 @php
                                     $variant = $adjustmentProduct->variant ? ' - ' . $adjustmentProduct->variant->variant_name : '';
+                                    $productCode = $adjustmentProduct?->variant ? $adjustmentProduct?->variant?->variant_code : $adjustmentProduct?->product?->product_code;
                                 @endphp
 
-                                <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ $loop->index + 1 }}</td>
 
-                                <td class="text-start" style="font-size:11px!important;">
-                                    {{ Str::limit($adjustmentProduct->product->name, 25) . ' ' . $variant }}
+                                <td class="text-start" style="font-size:10px!important;">
+                                    {{ $adjustmentProduct->product->name . ' ' . $variant }}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
                                 </td>
 
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">
                                     @if ($adjustmentProduct?->warehouse)
                                         {{ $adjustmentProduct?->warehouse?->warehouse_name . '/' . $adjustmentProduct?->warehouse?->warehouse_code . '-(WH)' }}
                                     @else
@@ -185,12 +190,12 @@
                                     @endif
                                 </td>
 
-                                <td class="text-start" style="font-size:11px!important;">{{ $adjustmentProduct->quantity . '/' . $adjustmentProduct?->unit?->code_name }}</td>
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">{{ $adjustmentProduct->quantity . '/' . $adjustmentProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustmentProduct->unit_cost_inc_tax) }}
                                 </td>
 
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($adjustmentProduct->subtotal) }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($adjustmentProduct->subtotal) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -202,15 +207,15 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Net Total Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustment->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Recovered Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Recovered Amount') }} : {{ $adjustment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                                 </td>
                             </tr>
@@ -222,19 +227,19 @@
             <br /><br />
             <div class="row">
                 <div class="col-4 text-start">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;font-size:11px!important;">
                         {{ __('Prepared By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-center">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;font-size:11px!important;">
                         {{ __('Checked By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-end">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;font-size:11px!important;">
                         {{ __('Authorized By') }}
                     </p>
                 </div>
@@ -283,6 +288,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -425,12 +433,14 @@
                             <tr>
                                 @php
                                     $variant = $adjustmentProduct->variant ? ' - ' . $adjustmentProduct->variant->variant_name : '';
+                                    $productCode = $adjustmentProduct?->variant ? $adjustmentProduct?->variant?->variant_code : $adjustmentProduct?->product?->product_code;
                                 @endphp
 
                                 <td class="text-start" style="font-size:9px!important;">{{ $loop->index + 1 }}</td>
 
                                 <td class="text-start" style="font-size:9px!important;">
-                                    {{ Str::limit($adjustmentProduct->product->name, 25) . ' ' . $variant }}
+                                    {{ $adjustmentProduct->product->name . ' ' . $variant }}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
                                 </td>
 
                                 <td class="text-start" style="font-size:9px!important;">

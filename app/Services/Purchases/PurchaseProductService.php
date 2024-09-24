@@ -120,8 +120,8 @@ class PurchaseProductService
             ->editColumn('product', function ($row) {
 
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-
-                return Str::limit($row->name, 35, '') . $variant;
+                $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
+                return $row->name . $variant . $productCode;
             })
             ->editColumn('date', function ($row) {
 

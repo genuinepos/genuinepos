@@ -144,7 +144,7 @@ class UpgradePlanController extends Controller
         try {
             DB::beginTransaction();
 
-            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: BooleanType::True->value);
+            $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
             // $discountPercent = isset($request->discount_percent) ? $request->discount_percent : 0;
             // $shopPriceInUsd = AmountInUsdIfLocationIsBd::amountInUsd($request->shop_price);

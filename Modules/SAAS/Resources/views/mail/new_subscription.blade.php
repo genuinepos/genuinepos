@@ -151,7 +151,7 @@
                     <td>
                         <div class="mail-header">
                             <div class="logo">
-                                <a href="#" target="_blank"><img src="{{ url('/') }}/assets/images/logo_black.png" alt="Logo"></a>
+                                <a href="#" target="_blank"><img src="{{ url('/') }}/assets/images/app_logo.png" alt="Logo"></a>
                             </div>
                         </div>
                     </td>

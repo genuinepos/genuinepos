@@ -151,7 +151,7 @@
                     <td>
                         <div class="mail-header">
                             <div class="logo">
-                                <a href="#" target="_blank"><img src="{{ url('/') }}/assets/logo/logo.png" alt="Logo"></a>
+                                <a href="#" target="_blank"><img src="{{ url('/') }}/assets/images/app_logo.png" alt="Logo"></a>
                             </div>
                         </div>
                     </td>
@@ -269,7 +269,7 @@
                 <tr>
                     <td>
                         <div class="mail-footer">
-                            <div class="logo"><img src="{{ url('/') }}/assets/images/logo_black.png" alt="LOGO"></div>
+                            <div class="logo"><img src="{{ url('/') }}/assets/images/app_logo.png" alt="LOGO"></div>
                             <div class="footer-social">
                                 <a href="{{ config('speeddigit.facebook') }}" title="Facebook" target="_blank"><img src="{{ url('/') }}/assets/social/facebook.png" alt="facebook"></a>
                                 <a href="{{ config('speeddigit.youtube') }}" title="Instagram" target="_blank"><img src="{{ url('/') }}/assets/social/instagram.png" alt="instagram"></a>

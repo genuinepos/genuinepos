@@ -448,7 +448,7 @@ class JobCardService
 
             if (isset($deleteJobCard->sale)) {
 
-                return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is added against this job card.')];
+                return ['pass' => false, 'msg' => __('Job card can not be deleted. Invoice is created against this job card.')];
             }
 
             FileUploader::deleteFile(fileType: 'jobCardDocument', deletableFile: $deleteJobCard->document);

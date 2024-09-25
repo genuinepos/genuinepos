@@ -375,6 +375,14 @@
         calculateCartAmount();
     });
 
+    $(document).on('blur', '#discount', function() {
+
+        if ($(this).val() == '') {
+
+            $(this).val(0)
+        }
+    });
+
     $(document).on('change', '#has_business', function() {
 
         var planId = $('#plan_id').val();
@@ -476,78 +484,4 @@
             return parseFloat(amount).toFixed(0);
         }
     }
-</script>
-
-<script>
-    $(document).on('click', '#remove_applied_coupon', function(e) {
-        e.preventDefault();
-
-        $('#coupon_code').val('');
-        $('#coupon_id').val('');
-        $('#coupon_success_msg').hide();
-        $('#coupon_code_applying_area').show();
-
-        $('#discount').val(0);
-        $('#discount_percent').val(0);
-        $('.span_discount').html(parseFloat(0).toFixed(2));
-        calculateCartAmount();
-    });
-
-    $(document).on('click', '#applyCouponBtn', function(e) {
-        e.preventDefault();
-
-        var coupon_code = $('#coupon_code').val();
-        var total_payable = $('#total_payable').val();
-        if (coupon_code == '') {
-
-            toastr.error("{{ __('Please enter a valid coupon code.') }}");
-            return;
-        }
-
-        $('#applyCouponBtn').hide();
-        $('#applyCouponLodingBtn').show();
-        var url = "{{ route('saas.coupons.code.check') }}";
-
-        $.ajax({
-            url: url,
-            type: 'get',
-            data: {
-                coupon_code,
-                total_payable
-            },
-            success: function(data) {
-
-                $('#applyCouponBtn').show();
-                $('#applyCouponLodingBtn').hide();
-                if (!$.isEmptyObject(data.errorMsg)) {
-
-                    toastr.error(data.errorMsg);
-                    return;
-                }
-
-                $('#applied_coupon_code').html(data.code);
-                $('#coupon_id').val(data.id);
-                $('#discount_percent').val(data.percent);
-                $('#coupon_success_msg').show();
-                $('#coupon_code_applying_area').hide();
-                calculateCartAmount();
-
-                toastr.success("{{ __('Coupon is applied successfully.') }}");
-            },
-            error: function(err) {
-
-                $('#applyCouponBtn').show();
-                $('#applyCouponLodingBtn').hide();
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connection Error.') }}");
-                    return;
-                } else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    return;
-                }
-            }
-        });
-    });
 </script>

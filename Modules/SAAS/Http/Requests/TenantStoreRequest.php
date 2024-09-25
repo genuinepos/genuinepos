@@ -26,7 +26,7 @@ class TenantStoreRequest extends FormRequest
             'currency_id' => 'required',
             'phone' => 'required|max:50|unique:users,phone',
             'payment_status' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
-            'repayment_date' => Rule::when($request->is_trial_plan == 0 &&  $request->payment_status == 0, 'required'),
+            'repayment_date' => Rule::when($request->is_trial_plan == 0 && $request->payment_status == 0, 'required'),
             'username' => 'required|min:5|max:25',
             'password' => 'required|min:6|confirmed',
         ];

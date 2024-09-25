@@ -20,7 +20,7 @@ class UpgradePlanConfirmRequest extends FormRequest
             'discount' => 'required|numeric',
             'total_payable' => 'required|numeric',
             'payment_status' => 'required',
-            'payment_method_name' => Rule::when($request->payment_status == 0, 'required'),
+            'payment_method_name' => Rule::when($request->payment_status == 1, 'required'),
             'repayment_date' => Rule::when($request->payment_status == 0, 'required'),
         ];
     }

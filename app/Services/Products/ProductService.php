@@ -330,7 +330,6 @@ class ProductService
         ]);
 
         $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
-            ->where('product_ledgers.branch_id', auth()->user()->branch_id)
             ->where('product_ledgers.product_id', $data['product']->id)
             ->leftJoin('product_variants', 'product_ledgers.variant_id', 'product_variants.id')
             ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
@@ -376,6 +375,7 @@ class ProductService
             );
 
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
+            ->where('product_ledgers.branch_id', auth()->user()->branch_id)
             ->orderBy('product_ledgers.branch_id', 'asc')
             ->orderBy('product_ledgers.product_id', 'desc')
             ->orderBy('product_ledgers.variant_id', 'desc')

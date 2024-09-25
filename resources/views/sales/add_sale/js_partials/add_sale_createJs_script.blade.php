@@ -84,7 +84,7 @@
                             var price = 0;
                             var __price = priceGroups.filter(function(value) {
 
-                                return value.price_group_id == price_group_id && value.product_id == product.id;
+                                return value.price_group_id == priceGroupId && value.product_id == product.id;
                             });
 
                             if (__price.length != 0) {
@@ -137,7 +137,7 @@
                             $('#add_item').html('Add');
                             calculateEditOrAddAmount();
                         } else {
-                            
+
                             var li = "";
 
                             product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
@@ -169,11 +169,17 @@
                             $('#stock_quantity').val(parseFloat(stock).toFixed(2));
                         }
 
+                        console.log('Pg: ' + priceGroupId);
+                        console.log('P: ' + variant.product.id);
+                        console.log('V: ' + variant.id);
+
                         var price = 0;
                         var __price = priceGroups.filter(function(value) {
 
-                            return value.price_group_id == price_group_id && value.product_id == variant.product.id && value.variant_id == variant.id;
+                            return value.price_group_id == priceGroupId && value.product_id == variant.product.id && value.variant_id == variant.id;
                         });
+
+                        console.log(priceGroups);
 
                         if (__price.length != 0) {
 

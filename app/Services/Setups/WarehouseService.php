@@ -116,7 +116,7 @@ class WarehouseService
         $updateWarehouse->save();
     }
 
-    public function deleteWarehouse(int $id): mixed
+    public function deleteWarehouse(int $id): ?array
     {
         $deleteWarehouse = $this->singleWarehouse($id);
 
@@ -133,6 +133,8 @@ class WarehouseService
 
             $deleteWarehouse->delete();
         }
+
+        return ['pass' => true];
     }
 
     public function warehouses(array $with = null)

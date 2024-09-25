@@ -108,7 +108,7 @@ class StockInOutReportService
                     return __('Opening Stock');
                 } elseif ($row->sale_return_id) {
 
-                    return __('Sales Returned Stock') . ': <a href="' . route('sales.returns.show', [$row->production_id]) . '" id="details_btn" title="view" >' . $row->sales_return_voucher_no . '</a>';
+                    return __('Sales Returned Stock') . ': <a href="' . route('sales.returns.show', [$row->sale_return_id]) . '" id="details_btn" title="view" >' . $row->sales_return_voucher_no . '</a>';
                 } elseif ($row->transfer_stock_id) {
 
                     return __('Received Stock') . ': <a href="' . route('transfer.stocks.show', [$row->transfer_stock_id]) . '" id="details_btn" title="view" >' . $row->transfer_stock_voucher_no . '</a>';

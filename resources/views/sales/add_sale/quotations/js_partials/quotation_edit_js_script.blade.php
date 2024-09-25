@@ -74,7 +74,7 @@
                             var price = 0;
                             var __price = priceGroups.filter(function(value) {
 
-                                return value.price_group_id == price_group_id && value.product_id == product.id;
+                                return value.price_group_id == priceGroupId && value.product_id == product.id;
                             });
 
                             if (__price.length != 0) {
@@ -129,7 +129,7 @@
                         } else {
 
                             product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
-                            
+
                             var li = "";
                             $.each(product.variants, function(key, variant) {
 
@@ -154,7 +154,7 @@
                         var price = 0;
                         var __price = priceGroups.filter(function(value) {
 
-                            return value.price_group_id == price_group_id && value.product_id == variant.product.id && value.variant_id == variant.id;
+                            return value.price_group_id == priceGroupId && value.product_id == variant.product.id && value.variant_id == variant.id;
                         });
 
                         if (__price.length != 0) {

@@ -25,6 +25,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -339,6 +342,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {

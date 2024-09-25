@@ -202,8 +202,7 @@
                             var price = 0;
                             var __price = priceGroups.filter(function(value) {
 
-                                return value.price_group_id == price_group_id && value.product_id ==
-                                    product.id;
+                                return value.price_group_id == price_group_id && value.product_id == product.id;
                             });
 
                             if (__price.length != 0) {

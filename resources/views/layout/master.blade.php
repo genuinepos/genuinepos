@@ -41,7 +41,7 @@
                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
             </div>
 
-            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small><a href="{{ route('settings.release.note.index') }}" class="text-deep-green fw-bold">V - 2.0.6</a></small></span>
+            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small><a href="{{ route('settings.release.note.index') }}" class="text-deep-green fw-bold">V - 2.0.7</a></small></span>
         </footer>
     </div>
 

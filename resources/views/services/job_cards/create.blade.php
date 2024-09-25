@@ -207,7 +207,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="quotation" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="quotation" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>

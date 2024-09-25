@@ -149,7 +149,7 @@
         <div>
             <label for="discount">{{ __('Discount Amount') }}</label>
             <input type="hidden" name="discount_percent" id="discount_percent" value="0">
-            <input type="text" name="discount" class="form-control form-control-sm fw-bold" id="discount" placeholder="{{ __('0.00') }}" autocomplete="off">
+            <input type="text" name="discount" class="form-control form-control-sm fw-bold" id="discount" value="0" placeholder="{{ __('0.00') }}" autocomplete="off">
         </div>
     </div>
 </div>

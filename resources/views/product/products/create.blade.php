@@ -590,6 +590,7 @@
             </section>
         </form>
     </div>
+    <div id="details"></div>
     @include('product.products.partials.all-modals')
 @endsection
 @push('scripts')

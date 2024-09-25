@@ -192,6 +192,14 @@
     $(document).on('input', '#discount', function() {
         calculateCartAmount();
     });
+
+    $(document).on('blur', '#discount', function(e) {
+
+        if ($(this).val() == '') {
+
+            $(this).val(0)
+        }
+    });
 </script>
 
 <script>

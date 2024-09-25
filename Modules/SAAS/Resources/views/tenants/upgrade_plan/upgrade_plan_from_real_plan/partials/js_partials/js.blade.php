@@ -24,6 +24,14 @@
         $('#total_payable').val(parseFloat(totalPayableAmount).toFixed(0));
         $('.span_total_payable').html(bdFormat(parseFloat(totalPayableAmount).toFixed(0)));
     });
+
+    $(document).on('blur', '#discount', function(e) {
+
+        if ($(this).val() == '') {
+
+            $(this).val(0)
+        }
+    });
 </script>
 
 <script>

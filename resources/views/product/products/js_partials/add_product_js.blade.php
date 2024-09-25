@@ -10,8 +10,8 @@
         messages: {
             'default': "{{ __('Drag and drop a file here or click') }}",
             'replace': "{{ __('Drag and drop or click to replace') }}",
-            'remove':  "{{ __('Remove') }}",
-            'error':   "{{ __('Ooops, something wrong happended.') }}"
+            'remove': "{{ __('Remove') }}",
+            'error': "{{ __('Ooops, something wrong happended.') }}"
         }
     });
 
@@ -27,11 +27,24 @@
         "ajax": {
             "url": "{{ route('products.index', App\Enums\BooleanType::True->value) }}",
         },
-        columns: [
-            { data: 'name', name: 'name' },
-            { data: 'product_cost_with_tax', name: 'product_cost_with_tax', className: 'fw-bold' },
-            { data: 'product_price', name: 'product_price', className: 'fw-bold' },
-            { data: 'action', name: 'name' },
+        columns: [{
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'product_cost_with_tax',
+                name: 'product_cost_with_tax',
+                className: 'fw-bold'
+            },
+            {
+                data: 'product_price',
+                name: 'product_price',
+                className: 'fw-bold'
+            },
+            {
+                data: 'action',
+                name: 'name'
+            },
         ],
     });
 
@@ -169,7 +182,8 @@
 
                         $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                     });
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -282,7 +296,8 @@
 
                         toastr.error(data.errorMsg);
                     }
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').addClass('d-hide');
                     $('.error').html('');
@@ -484,7 +499,8 @@
 
                     $('#brand_name').focus();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -517,7 +533,8 @@
 
                     $('#warranty_name').focus();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -568,7 +585,7 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">';
         html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
         html += '</td>';
 
@@ -579,7 +596,7 @@
         html += '</div>';
         html += '<div class="col-md-10">';
         html += '<select name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes" id="assigned_unit_id" style="min-width: 110px !important;">';
-        html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
+        html += '<option data-assigned_unit_name="" value="">{{ __('Unit') }}</option>';
         units.forEach(function(unit) {
 
             html += '<option data-assigned_unit_name="' + unit.name + '" value="' + unit.id + '">' + unit.name + '</option>';
@@ -590,15 +607,15 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __('0.00') }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __('0.00') }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __('0.00') }}">';
 
         html += '</td>';
         html += '<td class="text-start">';
@@ -613,7 +630,7 @@
         if (hasMultipleUnit == 1) {
 
             $('.multiple_unit_required_sometimes').prop('required', true);
-        }else {
+        } else {
 
             $('.multiple_unit_required_sometimes').prop('required', false);
         }
@@ -678,8 +695,8 @@
         var html = '';
         html += '<tr>';
         html += '<td class="text-start" style="min-width: 100px;">';
-        html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 '+baseUnitName+'</span>';
-        html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="'+baseUnitId+'">';
+        html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 ' + baseUnitName + '</span>';
+        html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="' + baseUnitId + '">';
         html += '</td>';
 
         html += '<td class="text-start">';
@@ -687,7 +704,7 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">';
         html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
         html += '</td>';
 
@@ -698,10 +715,10 @@
         html += '</div>';
         html += '<div class="col-md-10">';
         html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes" id="assigned_unit_id' + count + '" style="min-width: 110px !important;">';
-        html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
+        html += '<option data-assigned_unit_name="" value="">{{ __('Unit') }}</option>';
         units.forEach(function(unit) {
 
-            html += '<option data-assigned_unit_name="'+unit.name+'" value="' + unit.id + '">' + unit.name + '</option>';
+            html += '<option data-assigned_unit_name="' + unit.name + '" value="' + unit.id + '">' + unit.name + '</option>';
         });
         html += '</select>';
         html += '</div>';
@@ -709,15 +726,15 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __('0.00') }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __('0.00') }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __('0.00') }}">';
         html += '<input type="hidden" name="assigned_unit_profit_margins[]" id="assigned_unit_profit_margin">';
 
         html += '</td>';
@@ -829,5 +846,34 @@
             $(this).focus();
             return;
         }
+    });
+
+    $(document).on('click', '#details_btn', function(e) {
+        e.preventDefault();
+
+        $('.data_preloader').show();
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#details').html(data);
+                $('#detailsModal').modal('show');
+                $('.data_preloader').hide();
+            },
+            error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connection Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
     });
 </script>

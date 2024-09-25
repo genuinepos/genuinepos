@@ -172,7 +172,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" placeholder="{{ __('Date') }}" autocomplete="off">
+                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('Date') }}" autocomplete="off">
                                                     <span class="error error_date"></span>
                                                 </div>
                                             </div>
@@ -207,7 +207,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Delivery Date') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="quotation" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
+                                                    <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="quotation" placeholder="{{ __('Delivery Date') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>

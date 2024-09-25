@@ -84,7 +84,7 @@ class SubscriptionService
 
         $updateSubscription->trial_start_date = null;
 
-        if ($isTrialPlan == BooleanType::False->value && $subscriptionUpdateType != SubscriptionUpdateType::UpdateExpireDate->value) {
+        if ($isTrialPlan == BooleanType::True->value && $subscriptionUpdateType != SubscriptionUpdateType::UpdateExpireDate->value) {
 
             $updateSubscription->has_due_amount = $paymentStatus == BooleanType::True->value ? BooleanType::False->value : BooleanType::True->value;
 

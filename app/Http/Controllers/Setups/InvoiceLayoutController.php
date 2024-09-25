@@ -37,7 +37,7 @@ class InvoiceLayoutController extends Controller
     {
         abort_if(!auth()->user()->can('invoice_layouts_add'), 403);
 
-        $this->invoiceLayoutService->invoiceLayoutValidation(request: $request);
+        $this->invoiceLayoutService->invoiceLayoutStoreValidation(request: $request);
 
         try {
             DB::beginTransaction();

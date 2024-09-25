@@ -12,7 +12,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 173%;
             z-index: 9999999;
             padding: 0;
             left: 0%;

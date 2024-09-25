@@ -50,7 +50,15 @@
             </div>
 
             <div class="col-md-8 text-end">
-                <a href="{{ route('saas.tenants.shop.renew.cart', $tenant->id) }}" class="btn btns-m btn-success">{{ __('Renew Shop') }}</a>
+                @if (auth()->user()->can('tenants_upgrade_plan'))
+
+                    <a href="{{ route('saas.tenants.upgrade.plan.index', ['tenantId' => $tenant->id]) }}" class="btn btns-m btn-danger">{{ __('Upgrade Plan') }}</a>
+                @endif
+
+                @if ($tenant?->user?->userSubscription?->plan?->is_trial_plan == 0)
+
+                    <a href="{{ route('saas.tenants.shop.renew.cart', $tenant->id) }}" class="btn btns-m btn-success">{{ __('Renew Store') }}</a>
+                @endif
             </div>
         </div>
 

@@ -149,12 +149,15 @@
 
                                                             @foreach ($transferStock->transferStockProducts as $transferStockProduct)
                                                                 @php
-                                                                    $variantName = $transferStockProduct?->variant ? ' - ' . $transferStockProduct?->variant?->variant_name : '';
+                                                                    $variant = $transferStockProduct?->variant ? ' - ' . $transferStockProduct?->variant?->variant_name : '';
+
+                                                                    $productCode = $transferStockProduct?->variant ? $transferStockProduct?->variant?->variant_code : $transferStockProduct->product->product_code;
+                                                                    
                                                                     $variantId = $transferStockProduct->variant_id ? $transferStockProduct->variant_id : 'noid';
                                                                 @endphp
                                                                 <tr id="select_item">
                                                                     <td class="text-start">
-                                                                        <span class="product_name">{{ $transferStockProduct->product->name . $variantName }}</span>
+                                                                        <span class="product_name">{{ $transferStockProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
                                                                         <input type="hidden" id="unit_cost_inc_tax" value="{{ $transferStockProduct->unit_cost_inc_tax }}">
                                                                         <input type="hidden" name="transfer_stock_product_ids[]" value="{{ $transferStockProduct->id }}">
                                                                     </td>

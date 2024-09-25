@@ -17,6 +17,9 @@
         td {
             page-break-inside: avoid;
             page-break-after: auto;
+            line-height: 1 !important;
+            padding: 0px !important;
+            margin: 0px !important;
         }
 
         thead {
@@ -78,7 +81,7 @@
             </div>
 
             <div class="col-8 text-end">
-                <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                <p style="text-transform: uppercase;font-size:10px;" class="p-0 m-0 fw-bold">
                     @if ($jobCard?->branch)
                         @if ($jobCard?->branch?->parent_branch_id)
                             {{ $jobCard?->branch?->parentBranch?->name }}
@@ -90,7 +93,7 @@
                     @endif
                 </p>
 
-                <p>
+                <p style="font-size:10px;">
                     @if ($jobCard?->branch)
                         {{ $jobCard->branch->address . ', ' }}
                         {{ $jobCard->branch->city . ', ' }}
@@ -102,14 +105,13 @@
                     @endif
                 </p>
 
-                <p>
+                <p style="font-size:10px;">
                     @php
                         $email = $jobCard?->branch ? $jobCard?->branch?->email : $generalSettings['business_or_shop__email'];
                         $phone = $jobCard?->branch ? $jobCard?->branch?->phone : $generalSettings['business_or_shop__phone'];
                     @endphp
 
                     <span class="fw-bold">{{ __('Email') }}</span> : {{ $email }},
-
                     <span class="fw-bold">{{ __('Phone') }}</span> : {{ $phone }}
                 </p>
             </div>
@@ -119,15 +121,15 @@
             <table class="table print-table table-sm table-bordered">
                 <tbody>
                     <tr>
-                        <td rowspan="3">
+                        <td rowspan="3" style="font-size:10px;">
                             <p><span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($jobCard->date_ts)) }}</p>
                             <p><span class="fw-bold">{{ __('Delivery Date') }} : </span> {{ $jobCard->delivery_date_ts ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</p>
                         </td>
-                        <td colspan="2" class="fw-bold text-center">{{ __('Job Card Label') }}</td>
+                        <td colspan="2" class="fw-bold text-center" style="font-size:10px;">{{ __('Job Card Label') }}</td>
                     </tr>
 
                     <tr>
-                        <td colspan="3" class="fw-bold text-center">
+                        <td colspan="3" class="fw-bold text-center" style="font-size:10px;">
                             <img style="width: {{ isset($generalSettings['service_settings_pdf_label__label_width']) ? $generalSettings['service_settings_pdf_label__label_width'] : '75' }}mm; height:{{ isset($generalSettings['service_settings_pdf_label__label_height']) ? $generalSettings['service_settings_pdf_label__label_height'] : '55' }}mm; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($jobCard->job_no, $generator::TYPE_CODE_128)) }}">
                             @if (isset($generalSettings['service_settings_pdf_label__barcode_in_label']) && $generalSettings['service_settings_pdf_label__barcode_in_label'] == '1')
                                 <p>{{ $jobCard->job_no }}</p>
@@ -136,12 +138,12 @@
                     </tr>
 
                     <tr>
-                        <td>
+                        <td style="font-size:10px;">
                             <span class="fw-bold">{{ __('Service type') }} : </span> {{ str(\App\Enums\ServiceType::tryFrom($jobCard->service_type)->name)->headline() }}
                         </td>
 
                         @if (isset($generalSettings['service_settings_pdf_label__due_date_in_label']) && $generalSettings['service_settings_pdf_label__due_date_in_label'] == '1')
-                            <td rowspan="2">
+                            <td rowspan="2" style="font-size:10px;">
                                 <span class="fw-bold">{{ __('Due Date') }}</span> : {{ $jobCard->due_date_ts ? date($dateFormat, strtotime($jobCard->due_date_ts)) : '' }}
                             </td>
                         @endif
@@ -149,17 +151,17 @@
 
                     <tr>
                         @if (isset($generalSettings['service_settings_pdf_label__job_card_no_in_label']) && $generalSettings['service_settings_pdf_label__job_card_no_in_label'] == '1')
-                            <td><span class="fw-bold">{{ __('Job No') }} :</span> {{ $jobCard->job_no }}</td>
+                            <td style="font-size:10px;"><span class="fw-bold">{{ __('Job No') }} :</span> {{ $jobCard->job_no }}</td>
                         @endif
 
                         @if (isset($generalSettings['service_settings_pdf_label__sales_person_in_label']) && $generalSettings['service_settings_pdf_label__sales_person_in_label'] == '1')
-                            <td><span class="fw-bold">{{ __('Sales Person') }} :</span> {{ $jobCard?->createdBy?->prefix . ' ' . $jobCard?->createdBy?->name . ' ' . $jobCard?->createdBy?->last_name }}</td>
+                            <td style="font-size:10px;"><span class="fw-bold">{{ __('Sales Person') }} :</span> {{ $jobCard?->createdBy?->prefix . ' ' . $jobCard?->createdBy?->name . ' ' . $jobCard?->createdBy?->last_name }}</td>
                         @endif
                     </tr>
 
 
                     <tr>
-                        <td colspan="2">
+                        <td colspan="2" style="font-size:10px;">
                             @if (isset($generalSettings['service_settings_pdf_label__customer_name_in_label']) && $generalSettings['service_settings_pdf_label__show_contact_id'] == '1')
                                 <p>
                                     <span class="fw-bold">{{ isset($generalSettings['service_settings_pdf_label_customer_name_in_label']) ? $generalSettings['service_settings_pdf_label__customer_label_name'] : __('Customer') }} :</span>
@@ -196,7 +198,7 @@
                             @endif
                         </td>
 
-                        <td>
+                        <td style="font-size:10px;">
                             @if (isset($generalSettings['service_settings_pdf_label__model_in_label']) && $generalSettings['service_settings_pdf_label__model_in_label'] == '1')
                                 <p>
                                     <span class="fw-bold">{{ __('Brand.') }} :</span>
@@ -232,21 +234,21 @@
 
                     @if (isset($generalSettings['service_settings_pdf_label__status_in_label']) && $generalSettings['service_settings_pdf_label__status_in_label'] == '1')
                         <tr>
-                            <td colspan="2" class="fw-bold">{{ __('Status') }} :</td>
-                            <td> {{ $jobCard?->status?->name }}</td>
+                            <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Status') }} :</td>
+                            <td style="font-size:10px;"> {{ $jobCard?->status?->name }}</td>
                         </tr>
                     @endif
 
                     @if (isset($generalSettings['service_settings_pdf_label__technician_in_label']) && $generalSettings['service_settings_pdf_label__technician_in_label'] == '1')
                         <tr>
-                            <td colspan="2" class="fw-bold">{{ __('Comment By Technician') }}:</td>
-                            <td>{{ $jobCard->technician_comment }}</td>
+                            <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Comment By Technician') }}:</td>
+                            <td style="font-size:10px;">{{ $jobCard->technician_comment }}</td>
                         </tr>
                     @endif
 
                     @if (isset($generalSettings['service_settings_pdf_label__problems_in_label']) && $generalSettings['service_settings_pdf_label__problems_in_label'] == '1')
                         <tr>
-                            <td colspan="3">
+                            <td colspan="3" style="font-size:10px;">
                                 <p><span class="fw-bold">{{ __('Problem Reported By The Customer') }} : </span> {{ $jobCard->problems_report }}</p>
                             </td>
                         </tr>

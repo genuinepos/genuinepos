@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Setups;
+namespace App\Services\Subscriptions;
 
 use App\Enums\BooleanType;
 use Modules\SAAS\Utils\PlanPriceIfLocationIsBd;

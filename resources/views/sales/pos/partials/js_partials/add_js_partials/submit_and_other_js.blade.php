@@ -198,7 +198,19 @@
 
             $('.select_area').hide();
             $('#list').empty();
+
+            $('tr').removeClass('active_tr');
         }
+    });
+
+    $(document).on('focus', 'input', function(e) {
+
+        $('tr').removeClass('active_tr');
+    });
+
+    $(document).on('focus', 'select', function(e) {
+
+        $('tr').removeClass('active_tr');
     });
 
     // After submitting form successfully this function will be executed.

@@ -18,6 +18,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -80,7 +83,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    <p style="text-transform: uppercase;font-size:10px!important;" class="p-0 m-0 fw-bold">
                         @if ($transferStock?->branch)
                             @if ($transferStock?->branch?->parent_branch_id)
                                 {{ $transferStock?->branch?->parentBranch?->name }}
@@ -92,7 +95,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($transferStock?->branch)
                             {{ $transferStock->branch->city . ', ' . $transferStock->branch->state . ', ' . $transferStock->branch->zip_code . ', ' . $transferStock->branch->country }}
                         @else
@@ -100,7 +103,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($transferStock?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $transferStock?->branch?->email }}
                             <span class="fw-bold">{{ __('Phone') }} : </span> {{ $transferStock?->branch?->phone }}
@@ -121,7 +124,7 @@
             <div class="row mt-2">
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Send From') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Send From') }} : </span>
                             @if ($transferStock?->senderBranch)
                                 @if ($transferStock?->senderBranch?->parent_branch_id)
                                     {{ $transferStock?->senderBranch?->parentBranch?->name }}
@@ -134,12 +137,12 @@
                         </li>
 
                         @if ($transferStock?->senderWarehouse)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Send At') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Send At') }} : </span>
                                 {{ $transferStock?->senderWarehouse?->warehouse_name . '-(' . $transferStock?->senderWarehouse->warehouse_code . ')' }}
                             </li>
                         @endif
 
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Send To') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Send To') }} : </span>
                             @if ($transferStock?->receiverBranch)
                                 @if ($transferStock?->receiverBranch?->parent_branch_id)
                                     {{ $transferStock?->receiverBranch?->parentBranch?->name }}
@@ -152,7 +155,7 @@
                         </li>
 
                         @if ($transferStock?->receiverWarehouse)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Receive At') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Receive At') }} : </span>
                                 {{ $transferStock?->receiverWarehouse?->warehouse_name . '-(' . $transferStock?->receiverWarehouse->warehouse_code . ')' }}
                             </li>
                         @endif
@@ -161,19 +164,19 @@
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
                             {{ date($dateFormat, strtotime($transferStock->date)) }}
                         </li>
 
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $transferStock->voucher_no }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $transferStock->voucher_no }}</li>
                     </ul>
                 </div>
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Receiving Status') }} : </span>{{ App\Enums\TransferStockReceiveStatus::tryFrom($transferStock->receive_status)->name }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Receiving Status') }} : </span>{{ App\Enums\TransferStockReceiveStatus::tryFrom($transferStock->receive_status)->name }}</li>
 
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $transferStock?->sendBy?->prefix . ' ' . $transferStock?->sendBy?->name . ' ' . $transferStock?->sendBy?->last_name }}
                         </li>
                     </ul>
@@ -184,12 +187,12 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Product') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Send Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost (Inc. Tax)') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Product') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Send Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost (Inc. Tax)') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Received Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Pending Qty') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -197,18 +200,20 @@
                             <tr>
                                 @php
                                     $variant = $transferStockProduct->variant ? ' - ' . $transferStockProduct->variant->variant_name : '';
+                                    $productCode = $transferStockProduct?->variant ? $transferStockProduct?->variant?->variant_code : $transferStockProduct?->product?->product_code;
                                 @endphp
 
-                                <td class="text-start" style="font-size:11px!important;">
-                                    <p>{{ Str::limit($transferStockProduct->product->name, 25) . ' ' . $variant }}</p>
+                                <td class="text-start" style="font-size:10px!important;">
+                                    {{ $transferStockProduct->product->name . ' ' . $variant }}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->send_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->send_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStockProduct->unit_cost_inc_tax) }}
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->subtotal) }} </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->received_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->pending_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->subtotal) }} </td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->received_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->pending_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -220,29 +225,29 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Send Qty') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Send Qty') }} : </th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->total_send_qty) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Received Qty') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Received Qty') }} : </th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->total_received_qty) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Pending Qty') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Pending Qty') }} : </th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->total_pending_qty) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : ({{ $transferStock?->receiverBranch?->branchCurrency?->symbol ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Stock Value') }} : ({{ $transferStock?->receiverBranch?->branchCurrency?->symbol ?? $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->total_stock_value) }}
                                 </td>
                             </tr>
@@ -254,19 +259,19 @@
             <br /><br />
             <div class="row">
                 <div class="col-4 text-start">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;font-size:10px!important;">
                         {{ __('Prepared By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-center">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;font-size:10px!important;">
                         {{ __('Checked By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-end">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;font-size:10px!important;">
                         {{ __('Authorized By') }}
                     </p>
                 </div>
@@ -315,6 +320,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -495,10 +503,12 @@
                             <tr>
                                 @php
                                     $variant = $transferStockProduct->variant ? ' - ' . $transferStockProduct->variant->variant_name : '';
+                                    $productCode = $transferStockProduct?->variant ? $transferStockProduct?->variant?->variant_code : $transferStockProduct?->product?->product_code;
                                 @endphp
 
                                 <td class="text-start" style="font-size:9px!important;">
-                                    <p>{{ Str::limit($transferStockProduct->product->name, 25) . ' ' . $variant }}</p>
+                                    {{ $transferStockProduct->product->name . ' ' . $variant }}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
                                 </td>
                                 <td class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->send_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
                                 <td class="text-start" style="font-size:9px!important;">

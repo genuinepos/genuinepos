@@ -11,7 +11,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 203%;
             z-index: 9999999;
             padding: 0;
             left: 0%;
@@ -24,7 +25,8 @@
         .select_area ul {
             list-style: none;
             margin-bottom: 0;
-            padding: 0px 2px;
+            /* padding: 0px 2px; */
+            padding: 3px 3px;
         }
 
         .select_area ul li a {

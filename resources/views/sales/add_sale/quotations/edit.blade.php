@@ -11,7 +11,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 203%;
             z-index: 9999999;
             padding: 0;
             left: 0%;
@@ -366,15 +367,17 @@
                                                                     <tr id="select_item">
                                                                         <td class="text-start">
                                                                             @php
-                                                                                $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
+                                                                                $variant = $saleProduct?->variant_id ? ' -' . $saleProduct?->variant?->variant_name : '';
+
+                                                                                $productCode = $saleProduct?->variant ? $saleProduct?->variant?->variant_code : $saleProduct?->product?->product_code;
 
                                                                                 $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
                                                                                 $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
                                                                             @endphp
 
-                                                                            <span class="product_name">{{ $saleProduct->product->name . $variant }}</span>
-                                                                            <input type="hidden" id="item_name" value="{{ $saleProduct->product->name . $variant }}">
+                                                                            <span class="product_name">{{ $saleProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                                            <input type="hidden" id="item_name" value="{{ $saleProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                                             <input type="hidden" id="is_show_emi_on_pos" value="{{ $saleProduct->product->is_show_emi_on_pos }}">
                                                                             <input type="hidden" name="descriptions[]" id="descriptions" value="{{ $saleProduct->description }}">
                                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $saleProduct->product_id }}">

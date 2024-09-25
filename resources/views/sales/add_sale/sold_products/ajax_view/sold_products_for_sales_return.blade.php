@@ -1,13 +1,14 @@
 @foreach ($saleProducts as $saleProduct)
     @php
-        $variantName = $saleProduct?->variant ? ' - ' . $saleProduct?->variant?->variant_name : '';
+        $variant = $saleProduct?->variant ? ' - ' . $saleProduct?->variant?->variant_name : '';
         $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
+        $productCode = $saleProduct?->variant ? $saleProduct?->variant?->variant_code : $saleProduct?->product?->product_code;
     @endphp
 
     <tr id="select_item">
         <td class="text-start">
-            <span class="product_name">{{ $saleProduct?->product?->name . $variantName }}</span>
-            <input type="hidden" id="item_name" value="{{ $saleProduct?->product?->name . $variantName }}">
+            <span class="product_name">{{ $saleProduct?->product?->name . $variant . ' (' . $productCode . ')' }}</span>
+            <input type="hidden" id="item_name" value="{{ $saleProduct?->product?->name . $variant . ' (' . $productCode . ')' }}">
             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $saleProduct->product_id }}">
             <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
             <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $saleProduct->tax_ac_id != null ? $saleProduct->tax_ac_id : '' }}">

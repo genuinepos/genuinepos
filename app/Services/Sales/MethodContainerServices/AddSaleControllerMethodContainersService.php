@@ -60,7 +60,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     public function indexMethodContainer(object $request): array|object
     {
         $data = [];
-        
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
@@ -88,6 +88,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
             'saleProducts',
             'saleProducts.product',
+            'saleProducts.product.brand:id,name',
             'saleProducts.variant',
             'saleProducts.branch:id,name,branch_code,area_name,parent_branch_id',
             'saleProducts.branch.parentBranch:id,name,branch_code,area_name',

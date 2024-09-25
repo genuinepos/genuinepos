@@ -15,7 +15,7 @@ class SendUpgradePlanMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private $user, private $data, private $planName, private $appUrl)
+    public function __construct(private $user, private $data, private $planName, private $isTrialPlan, private $appUrl)
     {
         //
     }
@@ -35,8 +35,9 @@ class SendUpgradePlanMail extends Mailable
         $user = $this->user;
         $data = $this->data;
         $planName = $this->planName;
+        $isTrialPlan = $this->isTrialPlan;
         $appUrl = $this->appUrl;
 
-        return $this->view('saas::mail.upgrade_plan', compact('user', 'data', 'planName', 'appUrl'));
+        return $this->view('saas::mail.upgrade_plan', compact('user', 'data', 'planName', 'isTrialPlan', 'appUrl'));
     }
 }

@@ -66,8 +66,8 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
     {
         $data = [];
         $data['adjustment'] = $this->stockAdjustmentService->singleStockAdjustment(id: $id, with: [
-            'branch:id,name,branch_code,area_name,parent_branch_id',
-            'branch.parentBranch:id,name,branch_code,area_name',
+            'branch',
+            'branch.parentBranch',
             'adjustmentProducts',
             'adjustmentProducts.product',
             'adjustmentProducts.variant',
@@ -239,8 +239,8 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
     {
         $data = [];
         $data['adjustment'] = $this->stockAdjustmentService->singleStockAdjustment(id: $id, with: [
-            'branch:id,name,branch_code,area_name,parent_branch_id',
-            'branch.parentBranch:id,name,branch_code,area_name',
+            'branch',
+            'branch.parentBranch',
             'adjustmentProducts',
             'adjustmentProducts.product',
             'adjustmentProducts.variant',

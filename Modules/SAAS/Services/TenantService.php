@@ -180,9 +180,10 @@ class TenantService implements TenantServiceInterface
                     $html .= '<a href="' . route('saas.tenants.update.payment.status.index', $row->id) . '" class="dropdown-item" id="receiveDueAmount">' . __('Update Payment Status') . '</a>';
                 }
 
-                if (auth()->user()->can('tenants_upgrade_plan') && $row->is_trial_plan == BooleanType::True->value) {
+                // if (auth()->user()->can('tenants_upgrade_plan') && $row->is_trial_plan == BooleanType::True->value) {
+                if (auth()->user()->can('tenants_upgrade_plan')) {
 
-                    $html .= '<a href="' . route('saas.tenants.upgrade.plan.cart', $row->id) . '" class="dropdown-item">' . __('Upgrade Plan') . '</a>';
+                    $html .= '<a href="' . route('saas.tenants.upgrade.plan.index', ['tenantId' => $row->id]) . '" class="dropdown-item">' . __('Upgrade Plan') . '</a>';
                 }
 
                 if (auth()->user()->can('tenants_update_expire_date') && $row->is_trial_plan == BooleanType::False->value) {

@@ -23,6 +23,42 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
+                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.7</h5>
+                        </div>
+                        <div class="release-list p-1">
+                            <ul class="list-styled">
+                                <ol class="fw-bold">{{ __('About This Update') }}</ol>
+                                <li>{{ __('Upgrade to the new version of the Gposs System (fixes several bugs, upgrades features, enhances stability, and improves the overall user experience).') }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="changes-log-area p-2 mt-3">
+                    <div class="release-version">
+                        <h5 class="text-blue">{{ __('Update Log') }}</h5>
+                    </div>
+                    <div class="changes-log mt-1">
+                        <ul class="list-styled">
+                            <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
+                            <li> - {{ __('Fixed an error when adding purchases by global warehouse') }}</li>
+                            <li> - {{ __('Fixed an error in the Stock In-out Report table') }}</li>
+                            <li> - {{ __('Fixed an error when updating Sale Orders') }}</li>
+
+                            <ol class="fw-bold">{{ __('Feature Update') }}</ol>
+                            <li> - {{ __('Added new settings to the Sale Invoice layout') }}</li>
+                            <li> - {{ __('Display Product Code and Brand in product search results') }}</li>
+                            <li> - {{ __('Display Product Code in the product list table') }}</li>
+                            <li> - {{ __('Added a new input field called "Reference" in the Sale Order to Invoice section') }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="all-release-note-area p-2">
+                    <div class="version-release-note mt-1">
+                        <div class="release-version">
                             <h5 class="text-blue">{{ __('Last Release') }}: 2.0.6</h5>
                         </div>
                         <div class="release-list p-1">

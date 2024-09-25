@@ -82,6 +82,7 @@ class StockChainService
                             ->where('purchase_products.product_id', $saleProduct->product_id)
                             ->where('purchase_products.variant_id', $variantId)
                             ->where('warehouses.is_global', BooleanType::True->value)
+                            ->select('purchase_products.*')
                             ->orderBy('purchase_products.created_at', $sortedBy)->get();
 
                         if (count($purchaseProductsInGlobalWarehouse) > 0) {
@@ -119,7 +120,7 @@ class StockChainService
                                         $this->stockChainInsert(branchId: $sale->branch_id, productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, purchaseProductId: $purchaseProduct->id, transColName: 'sale_product_id', transId: $saleProduct->id, outQty: $soldQty, createdAt: $sale->sale_date_ts);
 
                                         $soldQty = $soldQty - $soldQty;
-                                        $this->adjustPurchaseProductOutLeftQty($purchaseProduct);
+                                        $this->adjustPurchaseProductOutLeftQty(purchaseProduct: $purchaseProduct);
                                     } else {
 
                                         break;
@@ -205,6 +206,7 @@ class StockChainService
                             ->where('purchase_products.product_id', $issuedProduct->product_id)
                             ->where('purchase_products.variant_id', $variantId)
                             ->where('warehouses.is_global', BooleanType::True->value)
+                            ->select('purchase_products.*')
                             ->orderBy('purchase_products.created_at', $sortedBy)->get();
 
                         if (count($purchaseProductsInGlobalWarehouse) > 0) {
@@ -328,6 +330,7 @@ class StockChainService
                             ->where('purchase_products.product_id', $adjustmentProduct->product_id)
                             ->where('purchase_products.variant_id', $variantId)
                             ->where('warehouses.is_global', BooleanType::True->value)
+                            ->select('purchase_products.*')
                             ->orderBy('purchase_products.created_at', $sortedBy)->get();
 
                         if (count($purchaseProductsInGlobalWarehouse) > 0) {
@@ -853,8 +856,14 @@ class StockChainService
             ->groupBy('purchase_product_id')->get();
 
         $leftQty = $purchaseProduct->quantity - $totalOut->sum('total_out');
-        $purchaseProduct->left_qty = $leftQty;
-        $purchaseProduct->save();
+
+        $updatePurchaseProduct = PurchaseProduct::where('id', $purchaseProduct->id)->first();
+
+        if (isset($updatePurchaseProduct)) {
+
+            $updatePurchaseProduct->left_qty = $leftQty;
+            $updatePurchaseProduct->save();
+        }
     }
 
     private function stockChainInsert(?int $branchId, int $productId, ?int $variantId, ?int $purchaseProductId, string $transColName, int $transId, float $outQty, string $createdAt): void

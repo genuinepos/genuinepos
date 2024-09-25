@@ -28,6 +28,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -114,7 +117,7 @@
                             </strong>
                         </p>
 
-                        <p style="font-size:11px!important;">
+                        <p style="font-size:10px!important;">
                             @if ($order?->branch)
                                 {{ $invoiceLayout->branch_city == 1 ? $order?->branch?->city . ', ' : '' }}
                                 {{ $invoiceLayout->branch_state == 1 ? $order?->branch?->state . ', ' : '' }}
@@ -126,7 +129,7 @@
                             @endif
                         </p>
 
-                        <p style="font-size:11px!important;">
+                        <p style="font-size:10px!important;">
                             @php
                                 $email = $order?->branch ? $order?->branch?->email : $generalSettings['business_or_shop__email'];
                                 $phone = $order?->branch ? $order?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -162,25 +165,25 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         @if ($invoiceLayout->customer_name)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Customer') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Customer') }} : </span>
                                 {{ $order?->customer?->name }}
                             </li>
                         @endif
 
                         @if ($invoiceLayout->customer_address)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Address') }} : </span>
                                 {{ $order?->customer?->address }}
                             </li>
                         @endif
 
                         @if ($invoiceLayout->customer_tax_no)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Tax Number') }} : </span>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Tax Number') }} : </span>
                                 {{ $order?->customer?->tax_number }}
                             </li>
                         @endif
 
                         @if ($invoiceLayout->customer_phone)
-                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Phone') }} : </span> {{ $order?->customer?->phone }}</li>
+                            <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Phone') }} : </span> {{ $order?->customer?->phone }}</li>
                         @endif
                     </ul>
                 </div>
@@ -197,15 +200,15 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Date') }} : </span> {{ date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) . ' ' . $order->time }}
                         </li>
 
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $order->order_id }}
                         </li>
 
-                        <li style="font-size:11px!important;">
+                        <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Created By') }} : </span> {{ $order?->createdBy?->prefix . ' ' . $order?->createdBy?->name . ' ' . $order?->createdBy?->last_name }}
                         </li>
                     </ul>
@@ -216,45 +219,68 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Description') }}</th>
 
-                            @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Warranty') }}</th>
+                            @if ($invoiceLayout->product_brand)
+                                <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Brand.') }}</th>
                             @endif
 
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Quantity') }}</th>
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
+                                <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Warranty') }}</th>
+                            @endif
 
+                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Quantity') }}</th>
+
+                            @if ($invoiceLayout->product_price_exc_tax)
+                                <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            @endif
 
                             @if ($invoiceLayout->product_discount)
-                                <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
+                                <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Discount') }}</th>
                             @endif
 
                             @if ($invoiceLayout->product_tax)
-                                <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
+                                <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
                             @endif
 
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                            @if ($invoiceLayout->product_price_inc_tax)
+                                <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                            @endif
 
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
                         @foreach ($customerCopySaleProducts as $orderProduct)
                             <tr>
-                                <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">{{ $loop->index + 1 }}</td>
+                                <td class="text-start" style="font-size:10px!important;">
                                     {{ $orderProduct->p_name }}
 
                                     @if ($orderProduct->variant_id)
                                         -{{ $orderProduct->variant_name }}
                                     @endif
-                                    {!! $invoiceLayout->product_imei == 1 ? '<br><small class="text-muted">' . $orderProduct->description . '</small>' : '' !!}
+
+                                    @php
+                                        $productCode = $orderProduct->variant_code ? $orderProduct->variant_code : $orderProduct->product_code;
+                                    @endphp
+
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
+
+                                    {!! isset($orderProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $orderProduct->description . '</span>' : '' !!}
+
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($orderProduct->product_details, 200, '...') . '</span>' : '' !!}
                                 </td>
 
+                                @if ($invoiceLayout->product_brand)
+                                    <td class="text-start" style="font-size:10px!important;">
+                                        {{ $orderProduct->brand_name }}
+                                    </td>
+                                @endif
+
                                 @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         @if ($orderProduct->warranty_id)
                                             {{ $orderProduct->w_duration . ' ' . $orderProduct->w_duration_type }}
                                             {{ $orderProduct->w_type == 1 ? __('Warranty') : __('Guaranty') }}
@@ -265,26 +291,30 @@
                                     </td>
                                 @endif
 
-                                <td class="text-end" style="font-size:11px!important;">{{ $orderProduct->quantity }}/{{ $orderProduct->unit_code_name }}</td>
+                                <td class="text-end" style="font-size:10px!important;">{{ $orderProduct->quantity }}/{{ $orderProduct->unit_code_name }}</td>
 
-                                <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }} </td>
+                                @if ($invoiceLayout->product_price_exc_tax)
+                                    <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }} </td>
+                                @endif
 
                                 @if ($invoiceLayout->product_discount)
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount_amount) }}
                                     </td>
                                 @endif
 
                                 @if ($invoiceLayout->product_tax)
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <td class="text-end" style="font-size:10px!important;">
                                         ({{ $orderProduct->unit_tax_percent }}%)
                                         ={{ $orderProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 
-                                <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }}</td>
+                                @if ($invoiceLayout->product_price_inc_tax)
+                                    <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }}</td>
+                                @endif
 
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($orderProduct->subtotal) }}
                                 </td>
                             </tr>
@@ -311,7 +341,7 @@
             <div class="row">
                 <div class="col-6">
                     @if ($invoiceLayout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;" style="font-size:10px!important;"><span class="fw-bold">{{ __('Inword') }} : </span> <span id="inword"></span> {{ __('Only') }}.</p>
+                        <p style="text-transform: uppercase;font-size:10px!important;"><span class="fw-bold">{{ __('Inword') }} : </span> <span id="inword"></span> {{ __('Only') }}.</p>
                     @endif
                 </div>
 
@@ -319,12 +349,12 @@
                     <table class="table print-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}</td>
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}</td>
                             </tr>
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Discount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Discount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">
                                     @if ($order->order_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($order->order_discount_amount) }}
                                     @else
@@ -335,36 +365,36 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">
                                     ({{ $order->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($order->order_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Shipment Charge') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Ordered Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Ordered Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->total_invoice_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Advance Received') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Advance Received') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($__receivedAmount > 0 ? $__receivedAmount : $order->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end" style="font-size:10px!important;">
                                     @if ($order->due < 0)
                                         ({{ App\Utils\Converter::format_in_bdt(abs($order->due)) }})
                                     @else
@@ -373,16 +403,18 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
-                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
-                                    @else
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
-                                    @endif
-                                </td>
-                            </tr>
+                            @if ($invoiceLayout->customer_current_balance)
+                                <tr>
+                                    <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:10px!important;">
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -391,19 +423,19 @@
             <div class="row">
                 <div class="col-4">
                     <div class="details_area text-start">
-                        <p class="text-uppercase borderTop fw-bold"><span>{{ __("Customer's Signature") }}</span></p>
+                        <p class="text-uppercase borderTop fw-bold" style="font-size: 11px!important;"><span>{{ __("Customer's Signature") }}</span></p>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="details_area text-center">
-                        <p class="text-uppercase borderTop fw-bold">{{ __('Prepared By') }}</p>
+                        <p class="text-uppercase borderTop fw-bold" style="font-size: 11px!important;">{{ __('Prepared By') }}</p>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="details_area text-end">
-                        <p class="text-uppercase borderTop fw-bold">{{ __('Authorized By') }}</p>
+                        <p class="text-uppercase borderTop fw-bold" style="font-size: 11px!important;">{{ __('Authorized By') }}</p>
                     </div>
                 </div>
             </div>
@@ -448,6 +480,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -637,13 +672,19 @@
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('S/L') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Description') }}</th>
 
+                            @if ($invoiceLayout->product_brand)
+                                <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Brand.') }}</th>
+                            @endif
+
                             @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
                                 <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Warranty') }}</th>
                             @endif
 
                             <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Quantity') }}</th>
-                            <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Price (Exc. Tax)') }}</th>
 
+                            @if ($invoiceLayout->product_price_exc_tax)
+                                <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            @endif
 
                             @if ($invoiceLayout->product_discount)
                                 <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Discount') }}</th>
@@ -653,7 +694,9 @@
                                 <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Vat/Tax') }}</th>
                             @endif
 
-                            <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                            @if ($invoiceLayout->product_price_inc_tax)
+                                <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                            @endif
 
                             <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Subtotal') }}</th>
                         </tr>
@@ -668,8 +711,23 @@
                                     @if ($orderProduct->variant_id)
                                         -{{ $orderProduct->variant_name }}
                                     @endif
-                                    {!! $invoiceLayout->product_imei == 1 ? '<br><small class="text-muted">' . $orderProduct->description . '</small>' : '' !!}
+
+                                    @php
+                                        $productCode = $orderProduct->variant_code ? $orderProduct->variant_code : $orderProduct->product_code;
+                                    @endphp
+
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
+
+                                    {!! isset($orderProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $orderProduct->description . '</span>' : '' !!}
+
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($orderProduct->product_details, 200, '...') . '</span>' : '' !!}
                                 </td>
+
+                                @if ($invoiceLayout->product_brand)
+                                    <td class="text-start" style="font-size:9px!important;">
+                                        {{ $orderProduct->brand_name }}
+                                    </td>
+                                @endif
 
                                 @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
                                     <td class="text-start" style="font-size:9px!important;">
@@ -685,7 +743,9 @@
 
                                 <td class="text-end" style="font-size:9px!important;">{{ $orderProduct->quantity }}/{{ $orderProduct->unit_code_name }}</td>
 
-                                <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }} </td>
+                                @if ($invoiceLayout->product_price_exc_tax)
+                                    <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }} </td>
+                                @endif
 
                                 @if ($invoiceLayout->product_discount)
                                     <td class="text-end" style="font-size:9px!important;">
@@ -700,7 +760,9 @@
                                     </td>
                                 @endif
 
-                                <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }}</td>
+                                @if ($invoiceLayout->product_price_inc_tax)
+                                    <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }}</td>
+                                @endif
 
                                 <td class="text-end" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($orderProduct->subtotal) }}
@@ -791,16 +853,18 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
-                                <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
-                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
-                                    @else
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
-                                    @endif
-                                </td>
-                            </tr>
+                            @if ($invoiceLayout->customer_current_balance)
+                                <tr>
+                                    <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                    <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>

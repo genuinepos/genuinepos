@@ -110,7 +110,8 @@ Route::middleware(['is_verified'])->group(function () {
 
         Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
 
-            Route::get('cart/{tenantId}', 'cart')->name('tenants.upgrade.plan.cart');
+            Route::get('index/{tenantId}', 'index')->name('tenants.upgrade.plan.index');
+            Route::get('cart/{tenantId}/{planId?}/{pricePeriod?}', 'cart')->name('tenants.upgrade.plan.cart');
             Route::post('confirm/{tenantId}', 'confirm')->name('tenants.upgrade.plan.confirm');
         });
 

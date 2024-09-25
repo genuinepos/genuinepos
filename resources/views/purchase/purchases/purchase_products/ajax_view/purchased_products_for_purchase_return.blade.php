@@ -2,12 +2,14 @@
     @php
         $variantName = $purchaseProduct?->variant ? ' - ' . $purchaseProduct?->variant?->variant_name : '';
         $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : 'noid';
+
+        $productCode = $purchaseProduct?->variant ? $purchaseProduct?->variant?->variant_code : $purchaseProduct->product->product_code;
     @endphp
 
     <tr id="select_item">
         <td class="text-start">
-            <span class="product_name">{{ $purchaseProduct?->product?->name . $variantName }}</span>
-            <input type="hidden" id="item_name" value="{{ $purchaseProduct?->product?->name . $variantName }}">
+            <span class="product_name">{{ $purchaseProduct?->product?->name . $variantName . ' (' . $productCode . ')' }}</span>
+            <input type="hidden" id="item_name" value="{{ $purchaseProduct?->product?->name . $variantName . '(' . $productCode . ')' }}">
             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $purchaseProduct->product_id }}">
             <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
             <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $purchaseProduct->tax_ac_id != null ? $purchaseProduct->tax_ac_id : '' }}">

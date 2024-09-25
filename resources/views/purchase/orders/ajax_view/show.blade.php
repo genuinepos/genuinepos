@@ -116,9 +116,13 @@
                                         <tr>
                                             @php
                                                 $variant = $orderProduct?->variant ? '(' . $orderProduct?->variant?->variant_name . ')' : '';
+                                                $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                             @endphp
 
-                                            <td class="text-start" style="font-size:11px!important;">{{ $orderProduct?->product->name . ' ' . $variant }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">
+                                                {{ $orderProduct?->product->name . ' ' . $variant }}
+                                                <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                            </td>
                                             <td class="text-start fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) . '/' . $orderProduct?->unit?->code_name }}</td>
                                             <td class="text-start text-success fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
                                             <td class="text-start text-danger fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>

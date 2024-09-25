@@ -116,7 +116,8 @@ class BranchSettingService
             ['key' => 'modules__contacts', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'modules__hrms', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => $branchId],
-
+            ['key' => 'modules__service', 'value' => '1', 'branch_id' => $branchId],
+            
             ['key' => 'reward_point_settings__enable_cus_point', 'value' => '0', 'branch_id' => !isset($parentBranchId) ? $branchId : null],
             ['key' => 'reward_point_settings__point_display_name', 'value' => 'Reward Point', 'branch_id' => !isset($parentBranchId) ? $branchId : null],
             ['key' => 'reward_point_settings__amount_for_unit_rp', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],

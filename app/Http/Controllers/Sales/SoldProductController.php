@@ -92,8 +92,9 @@ class SoldProductController extends Controller
     {
         $saleProducts = $this->saleProductService->saleProducts(with: [
             'sale:id',
-            'product:id,name,product_code,unit_id',
+            'product:id,name,product_code,unit_id,brand_id',
             'product.unit:id,name,code_name',
+            'product.brand:id,name',
             'product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
             'variant:id,variant_name,variant_code',
             'unit:id,name,base_unit_id,base_unit_multiplier',

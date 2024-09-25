@@ -402,7 +402,9 @@
                                                 @foreach ($order?->purchaseOrderProducts ? $order?->purchaseOrderProducts : [] as $orderProduct)
                                                     @php
                                                         $variant = $orderProduct->variant ? ' - ' . $orderProduct->variant->variant_name : '';
-                                                        $variantId = $orderProduct->product_variant_id ? $orderProduct->product_variant_id : 'noid';
+                                                        $variantId = $orderProduct->variant_id ? $orderProduct->variant_id : 'noid';
+
+                                                        $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct->product->product_code;
 
                                                         if (isset($orderProduct->product_id)) {
                                                             $itemUnitsArray[$orderProduct->product_id][] = [
@@ -418,8 +420,8 @@
 
                                                     <tr id="select_product">
                                                         <td>
-                                                            <span id="span_product_name">{{ $orderProduct->product->name . $variant }}</span>
-                                                            <input type="hidden" id="product_name" value="{{ $orderProduct->product->name . $variant }}">
+                                                            <span id="span_product_name">{{ $orderProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                            <input type="hidden" id="product_name" value="{{ $orderProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                             <input type="hidden" name="descriptions[]" id="description">
                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $orderProduct->product_id }}">
                                                             <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">

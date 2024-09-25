@@ -16,6 +16,9 @@
         td {
             page-break-inside: avoid;
             page-break-after: auto;
+            line-height: 1 !important;
+            padding: 0px !important;
+            margin: 0px !important;
         }
 
         thead {
@@ -77,7 +80,7 @@
             </div>
 
             <div class="col-8 text-end">
-                <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                <p style="text-transform: uppercase;font-size:10px;" class="p-0 m-0 fw-bold">
                     @if ($jobCard?->branch)
                         @if ($jobCard?->branch?->parent_branch_id)
                             {{ $jobCard?->branch?->parentBranch?->name }}
@@ -89,7 +92,7 @@
                     @endif
                 </p>
 
-                <p>
+                <p style="font-size:10px;">
                     @if ($jobCard?->branch)
                         {{ $jobCard->branch->address . ', ' }}
                         {{ $jobCard->branch->city . ', ' }}
@@ -101,7 +104,7 @@
                     @endif
                 </p>
 
-                <p>
+                <p style="font-size:10px;">
                     @php
                         $email = $jobCard?->branch ? $jobCard?->branch?->email : $generalSettings['business_or_shop__email'];
                         $phone = $jobCard?->branch ? $jobCard?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -118,27 +121,26 @@
             <table class="table print-table table-sm table-bordered">
                 <tbody>
                     <tr>
-                        <td rowspan="3">
+                        <td rowspan="3" style="font-size:10px;">
                             <p><span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($jobCard->date_ts)) }}</p>
                             <p><span class="fw-bold">{{ __('Delivery Date') }} : </span> {{ $jobCard->delivery_date_ts ? date($dateFormat, strtotime($jobCard->delivery_date_ts)) : '' }}</p>
                         </td>
-                        <td colspan="2" class="fw-bold text-center">{{ __('Job Card') }}</td>
+                        <td colspan="2" class="fw-bold text-center" style="font-size:10px;">{{ __('Job Card') }}</td>
                     </tr>
                     <tr>
-
-                        <td>
+                        <td style="font-size:10px;">
                             <span class="fw-bold">{{ __('Service type') }} : </span> {{ str(\App\Enums\ServiceType::tryFrom($jobCard->service_type)->name)->headline() }}
                         </td>
-                        <td rowspan="2">
+                        <td rowspan="2" style="font-size:10px;">
                             <span class="fw-bold">{{ __('Due Date') }}</span> : {{ $jobCard->due_date_ts ? date($dateFormat, strtotime($jobCard->due_date_ts)) : '' }}
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="fw-bold">{{ __('Job No') }} :</span> {{ $jobCard->job_no }}</td>
+                        <td style="font-size:10px;"><span class="fw-bold">{{ __('Job No') }} :</span> {{ $jobCard->job_no }}</td>
                     </tr>
                     <tr>
                         @if (isset($generalSettings['service_settings_pdf_label__show_customer_info']) && $generalSettings['service_settings_pdf_label__show_customer_info'] == '1')
-                            <td colspan="2">
+                            <td colspan="2" style="font-size:10px;">
                                 <p>
                                     <span class="fw-bold">{{ isset($generalSettings['service_settings_pdf_label__customer_label_name']) ? $generalSettings['service_settings_pdf_label__customer_label_name'] : __('Customer') }} :</span>
                                     {{ $jobCard?->customer?->name }}
@@ -170,7 +172,7 @@
                             </td>
                         @endif
 
-                        <td>
+                        <td style="font-size:10px;">
                             <p>
                                 <span class="fw-bold">{{ __('Brand.') }} :</span>
                                 {{ $jobCard?->brand?->name }}
@@ -198,25 +200,25 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">{{ __('Quotation ID') }} : </td>
-                        <td>{{ $jobCard?->quotation?->quotation_id }}</td>
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Quotation ID') }} : </td>
+                        <td style="font-size:10px;">{{ $jobCard?->quotation?->quotation_id }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">{{ __('Invoice ID') }} : </td>
-                        <td>{{ $jobCard?->sale?->invoice_id }}</td>
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Invoice ID') }} : </td>
+                        <td style="font-size:10px;">{{ $jobCard?->sale?->invoice_id }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">{{ __('Status') }} :</td>
-                        <td> {{ $jobCard?->status?->name }}</td>
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Status') }} :</td>
+                        <td style="font-size:10px;"> {{ $jobCard?->status?->name }}</td>
                     </tr>
 
                     <tr>
-                        <td colspan="2" class="fw-bold">{{ __('Comment By Technician') }}:</td>
-                        <td>{{ $jobCard->technician_comment }}</td>
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Comment By Technician') }}:</td>
+                        <td style="font-size:10px;">{{ $jobCard->technician_comment }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">{{ __('Pre Service Checklist') }} :</td>
-                        <td>
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">{{ __('Pre Service Checklist') }} :</td>
+                        <td style="font-size:10px;">
                             @if (isset($jobCard->service_checklist) && is_array($jobCard->service_checklist))
                                 @foreach ($jobCard->service_checklist as $key => $value)
                                     <span>
@@ -255,28 +257,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             <p><span class="fw-bold">{{ __('Pick Up/On Site Address') }} : </span> {{ $jobCard->address }}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             <p><span class="fw-bold">{{ __('Product Configuration') }} : </span> {{ $jobCard->product_configuration }}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             <p><span class="fw-bold">{{ __('Condition Of The Product') }} : </span> {{ $jobCard->product_condition }}</p>
                         </td>
                     </tr>
 
-
                     <tr>
-                        <td colspan="3" class="fw-bold">{{ __('Service Changes') }}:</td>
+                        <td colspan="3" class="fw-bold" style="font-size:10px;">{{ __('Service Changes') }}:</td>
                     </tr>
 
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             @php
                                 $serviceProducts = $jobCard->jobCardProducts
                                     ->filter(function ($jobCardProduct) {
@@ -288,14 +289,14 @@
                                 <table class="table print-table table-sm table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Qty') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important; width:25%;">{{ __('Description') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Qty') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Discount') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="sale_print_product_list">
@@ -306,19 +307,19 @@
                                                     $variant = $jobCardProduct->variant ? ' - ' . $jobCardProduct->variant->variant_name : '';
                                                 @endphp
 
-                                                <td class="text-start" style="font-size:11px!important;">{{ $index + 1 }}
+                                                <td class="text-start" style="font-size:10px!important;">{{ $index + 1 }}
                                                 </td>
 
-                                                <td class="text-start" style="font-size:11px!important;">{{ Str::limit($jobCardProduct->product->name, 25) . ' ' . $variant }}
+                                                <td class="text-start" style="font-size:10px!important;">{{ Str::limit($jobCardProduct->product->name, 25) . ' ' . $variant }}
                                                 </td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->quantity) }}</td>
-                                                <td class="text-start" style="font-size:11px!important;">
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->quantity) }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">
                                                     {{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_exc_tax) }}
                                                 </td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_discount) }} </td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ '(' . $jobCardProduct->unit_tax_percent . '%)=' . $jobCardProduct->unit_tax_amount }}</td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_inc_tax) }}</td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->subtotal) }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_discount) }} </td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ '(' . $jobCardProduct->unit_tax_percent . '%)=' . $jobCardProduct->unit_tax_amount }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_inc_tax) }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->subtotal) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -336,11 +337,11 @@
                     </tr>
 
                     <tr>
-                        <td colspan="3" class="fw-bold">{{ __('Parts Description') }}:</td>
+                        <td colspan="3" class="fw-bold" style="font-size:10px;">{{ __('Parts Description') }}:</td>
                     </tr>
 
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             @php
                                 $parts = $jobCard->jobCardProducts
                                     ->filter(function ($jobCardProduct) {
@@ -352,14 +353,14 @@
                                 <table class="table print-table table-sm table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Qty') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
-                                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important; width:25%;">{{ __('Description') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Qty') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Discount') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="sale_print_product_list">
@@ -370,19 +371,19 @@
                                                     $variant = $jobCardProduct->variant ? ' - ' . $jobCardProduct->variant->variant_name : '';
                                                 @endphp
 
-                                                <td class="text-start" style="font-size:11px!important;">{{ $index + 1 }}
+                                                <td class="text-start" style="font-size:10px!important;">{{ $index + 1 }}
                                                 </td>
 
-                                                <td class="text-start" style="font-size:11px!important;">{{ Str::limit($jobCardProduct->product->name, 25) . ' ' . $variant }}
+                                                <td class="text-start" style="font-size:10px!important;">{{ Str::limit($jobCardProduct->product->name, 25) . ' ' . $variant }}
                                                 </td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->quantity) }}</td>
-                                                <td class="text-start" style="font-size:11px!important;">
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->quantity) }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">
                                                     {{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_exc_tax) }}
                                                 </td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_discount) }} </td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ '(' . $jobCardProduct->unit_tax_percent . '%)=' . $jobCardProduct->unit_tax_amount }}</td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_inc_tax) }}</td>
-                                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->subtotal) }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_discount) }} </td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ '(' . $jobCardProduct->unit_tax_percent . '%)=' . $jobCardProduct->unit_tax_amount }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->unit_price_inc_tax) }}</td>
+                                                <td class="text-end" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($jobCardProduct->subtotal) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -400,56 +401,56 @@
                     </tr>
 
                     <tr>
-                        <td colspan="2" class="fw-bold">
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">
                             {{ isset($generalSettings['service_settings__custom_field_1_label']) ? $generalSettings['service_settings__custom_field_1_label'] : __('Custom Field 1') }} :
                         </td>
-                        <td>{{ $jobCard->custom_field_1 }}</td>
+                        <td style="font-size:10px;">{{ $jobCard->custom_field_1 }}</td>
                     </tr>
 
                     <tr>
-                        <td colspan="2" class="fw-bold">
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">
                             {{ isset($generalSettings['service_settings__custom_field_2_label']) ? $generalSettings['service_settings__custom_field_2_label'] : __('Custom Field 2') }} :
                         </td>
-                        <td>{{ $jobCard->custom_field_2 }}</td>
+                        <td style="font-size:10px;">{{ $jobCard->custom_field_2 }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">
                             {{ isset($generalSettings['service_settings__custom_field_3_label']) ? $generalSettings['service_settings__custom_field_3_label'] : __('Custom Field 3') }} :
                         </td>
-                        <td>{{ $jobCard->custom_field_3 }}</td>
+                        <td style="font-size:10px;">{{ $jobCard->custom_field_3 }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">
                             {{ isset($generalSettings['service_settings__custom_field_4_label']) ? $generalSettings['service_settings__custom_field_4_label'] : __('Custom Field 4') }} :
                         </td>
-                        <td>
+                        <td style="font-size:10px;">
                             {{ $jobCard->custom_field_4 }}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold">
+                        <td colspan="2" class="fw-bold" style="font-size:10px;">
                             {{ isset($generalSettings['service_settings__custom_field_5_label']) ? $generalSettings['service_settings__custom_field_5_label'] : __('Custom Field 5') }} :
                         </td>
-                        <td>
+                        <td style="font-size:10px;">
                             {{ $jobCard->custom_field_5 }}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             <p><span class="fw-bold">{{ __('Problem Reported By The Customer') }} : </span> {{ $jobCard->problems_report }}</p>
                         </td>
                     </tr>
 
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" style="font-size:10px;">
                             <p> <span class="fw-bold">{{ __('Terms & Conditions') }} : </span> {!! isset($generalSettings['service_settings__terms_and_condition']) ? $generalSettings['service_settings__terms_and_condition'] : '' !!}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;">
+                        <td colspan="2" class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;font-size:10px;">
                             {{ __('Customer signature') }}
                         </td>
-                        <td class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;">
+                        <td class="fw-bold text-center" style="height: 50px; vertical-align: bottom; width: 50%;font-size:10px;">
                             {{ __('Authorized signature') }}
                         </td>
                     </tr>

@@ -136,13 +136,15 @@
                                         <tr>
                                             @php
                                                 $variant = $orderProduct->variant ? ' - ' . $orderProduct->variant->variant_name : '';
+                                                $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $orderProduct->product->name . ' ' . $variant }}
-                                                <small>{{ $orderProduct->description }}</small>
+                                                <small class=" d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                                <small class="d-block" style="font-size:9px!important;">{{ $orderProduct->description }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity . '/' . $orderProduct?->unit?->code_name }}</td>

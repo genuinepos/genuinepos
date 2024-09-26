@@ -283,7 +283,7 @@
 
                                 {!! isset($holdInvoiceProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $holdInvoiceProduct->description . '</span>' : '' !!}
 
-                                {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($holdInvoiceProduct->product_details, 200, '...') . '</span>' : '' !!}
+                                {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($holdInvoiceProduct->product_details, 1000, '...') . '</span>' : '' !!}
                             </td>
 
                             @if ($invoiceLayout->product_brand)
@@ -355,6 +355,14 @@
                 @if ($invoiceLayout->show_total_in_word == 1)
                     <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __('Inword') }} : </strong> <span id="inword"></span> {{ __('Only') }}.</p>
                 @endif
+
+                <div class="bank_details mt-2">
+                    <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Note') }} : </span> {{ $holdInvoice?->note }}</p>
+                </div>
+
+                <div class="bank_details mt-1">
+                    <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $holdInvoice?->shipment_address }}</p>
+                </div>
             </div>
 
             <div class="col-6">
@@ -378,7 +386,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Vat/Tax') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 ({{ $holdInvoice->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($holdInvoice->order_tax_amount) }}
                             </td>

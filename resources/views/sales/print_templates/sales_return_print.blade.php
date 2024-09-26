@@ -66,17 +66,15 @@
             <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
                 <div class="col-4">
                     @if ($return->branch)
-
                         @if ($return?->branch?->parent_branch_id)
-
                             @if ($return->branch?->parentBranch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $return->branch?->parentBranch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $return?->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $return->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
                             @if ($return->branch?->logo)
-                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $return->branch?->logo) }}">
+                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $return?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $return->branch?->name }}</span>
                             @endif
@@ -232,7 +230,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Return Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Return Vat/Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:10px!important;">
                                     {{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}
                                 </td>
@@ -551,7 +549,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Return Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Return Vat/Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}
                                 </td>

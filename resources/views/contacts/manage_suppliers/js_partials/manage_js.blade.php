@@ -489,8 +489,8 @@
                 className: 'text-end fw-bold'
             },
             {
-                data: 'total_qty',
-                name: 'total_qty',
+                data: 'total_ordered_qty',
+                name: 'total_ordered_qty',
                 className: 'text-end fw-bold'
             },
             {
@@ -519,8 +519,8 @@
             var total_item = sum_table_col($('#sales-order-table'), 'total_item');
             $('#sales_order_total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('#sales-order-table'), 'total_qty');
-            $('#sales_order_total_qty').text(bdFormat(total_qty));
+            var total_ordered_qty = sum_table_col($('#sales-order-table'), 'total_ordered_qty');
+            $('#sales_order_total_qty').text(bdFormat(total_ordered_qty));
 
             var total_invoice_amount = sum_table_col($('#sales-order-table'), 'total_invoice_amount');
             $('#sales_order_total_invoice_amount').text(bdFormat(total_invoice_amount));

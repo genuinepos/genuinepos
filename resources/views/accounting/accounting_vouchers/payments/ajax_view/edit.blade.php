@@ -284,7 +284,7 @@
                                                                         if ($reference->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value) {
                                                                             $voucherNo = $reference->purchase->invoice_id;
                                                                             $voucherType = \App\Enums\DayBookVoucherType::Purchase->value;
-                                                                            $voucherTypeStr = __('Sales');
+                                                                            $voucherTypeStr = __('Purchase');
                                                                             $refId = $reference->Purchase->id;
                                                                             $remainingAmount = $reference->Purchase->due;
                                                                         } elseif ($reference->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value) {
@@ -328,7 +328,13 @@
                                                                         @endif
                                                                     </td>
 
-                                                                    <td class="text-start text-danger fw-bold">{{ $remainingAmount }}</td>
+                                                                    <td class="text-start text-danger fw-bold">
+                                                                        @if ($remainingAmount < 0)
+                                                                            ({{ App\Utils\Converter::format_in_bdt(abs($remainingAmount)) }})
+                                                                        @else
+                                                                            {{ App\Utils\Converter::format_in_bdt($remainingAmount) }}
+                                                                        @endif
+                                                                    </td>
 
                                                                     <td class="text-start">
                                                                         <a href="#" id="remove_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>

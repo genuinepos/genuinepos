@@ -1,10 +1,20 @@
 <script>
     var subcategoriesTable = $('.data_tbl2').DataTable({
         dom: "lBfrtip",
-        buttons: [{
+        buttons: [
+            {
+                extend: 'excel',
+                'title': "{{ __('List of Subcategories') }}",
+                text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
                 extend: 'pdf',
-                'title': 'List of Subcategories',
-                text: 'Pdf',
+                'title': "{{ __('List of Subcategories') }}",
+                text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
@@ -12,13 +22,14 @@
             },
             {
                 extend: 'print',
-                'title': 'List of Subcategories',
-                text: 'Print',
+                'title': "{{ __('List of Subcategories') }}",
+                text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
                 className: 'btn btn-primary',
+                autoPrint: true,
                 exportOptions: {
-                    columns: 'th:not(:last-child)'
+                    columns: ':visible'
                 }
-            },
+            }
         ],
         "language": {
             "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',

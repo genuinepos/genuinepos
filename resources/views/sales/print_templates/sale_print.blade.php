@@ -258,7 +258,9 @@
                             <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Quantity') }}</th>
 
                             @if ($invoiceLayout->product_price_exc_tax)
-                                <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                                <th class="fw-bold text-end" style="font-size:10px!important;">
+                                    {{ $invoiceLayout->product_price_inc_tax ? __('Price (Exc. Tax)') : __('Unit Price') }}
+                                </th>
                             @endif
 
                             @if ($invoiceLayout->product_discount)
@@ -823,7 +825,9 @@
                             <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Quantity') }}</th>
 
                             @if ($invoiceLayout->product_price_exc_tax)
-                                <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                                <th class="fw-bold text-end" style="font-size:9px!important;">
+                                    {{ $invoiceLayout->product_price_inc_tax ? __('Price (Exc. Tax)') : __('Unit Price') }}
+                                </th>
                             @endif
 
                             @if ($invoiceLayout->product_discount)
@@ -1298,7 +1302,7 @@
                                     <th class="text-center" style="font-size:8px;line-height:1.5!important;padding:0px!important;padding-top:2px!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</th>
                                     <th class="text-end" style="font-size:8px;line-height:1.5!important;padding:0px!important;padding-top:2px!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</th>
                                 </tr>
-                                <tr style="padding: 0px!important;margin:0px!important;padding:0px!important;padding-top:2px!important;">
+                                <tr style="padding: 0px!important;margin:0px!important;padding:0px!important;">
                                     <th colspan="4" style="font-size:8px;line-height:1.5!important;border-bottom: 1px solid #000;padding:0px!important;margin:0px!important;" class="text-start">
                                         {{ $saleProduct->p_name . $variant }}
                                         {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 1000, '...') . '</span>' : '' !!}

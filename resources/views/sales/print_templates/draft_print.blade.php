@@ -214,7 +214,9 @@
                                 <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Quantity') }}</th>
                             @endif
 
-                            <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            <th class="fw-bold text-end" style="font-size:10px!important;">
+                                {{ $invoiceLayout->product_price_inc_tax ? __('Price (Exc. Tax)') : __('Unit Price') }}
+                            </th>
 
                             @if ($invoiceLayout->product_discount)
                                 <th class="fw-bold text-end" style="font-size:10px!important;">{{ __('Discount') }}</th>
@@ -605,7 +607,9 @@
                                 <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Quantity') }}</th>
                             @endif
 
-                            <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            <th class="fw-bold text-end" style="font-size:9px!important;">
+                                {{ $invoiceLayout->product_price_inc_tax ? __('Price (Exc. Tax)') : __('Unit Price') }}
+                            </th>
 
                             @if ($invoiceLayout->product_discount)
                                 <th class="fw-bold text-end" style="font-size:9px!important;">{{ __('Discount') }}</th>

@@ -142,10 +142,10 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && $purchase->warehouse_id)
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 || $purchase->warehouse_id)
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b><span class="text-danger">*</span></label>
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
                                             <div class="col-8">
                                                 <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>

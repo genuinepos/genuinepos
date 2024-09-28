@@ -1,4 +1,4 @@
-<x-saas::admin-layout title="Renew">
+<x-saas::admin-layout title="Add Store">
     @push('css')
         <style>
             .quantity .quantity-nav .quantity-button {
@@ -129,7 +129,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="tab-contents">
-                                        <form id="add_shop_form" action="#" method="POST">
+                                        <form id="add_shop_form" action="{{ route('saas.tenants.add.shop.confirm', $tenant->id) }}" method="POST">
                                             @csrf
                                             @include('saas::tenants.add_shop.partials.view_partials.cart_table')
                                         </form>

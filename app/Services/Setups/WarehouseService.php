@@ -165,7 +165,8 @@ class WarehouseService
     {
         $generalSettings = config('generalSettings');
         $warehouseCount = (int)$generalSettings['subscription']->features['warehouse_count'];
-        $count = $this->warehouses()->where('branch_id', auth()->user()->branch_id)->count();
+
+        $count = $this->warehouses()->count();
 
         if ($count == $warehouseCount) {
 

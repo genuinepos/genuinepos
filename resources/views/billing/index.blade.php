@@ -82,6 +82,7 @@
                                                         <span class="text-danger fw-bold">{{ count($branches) }}</span> / {{ $generalSettings['subscription']->current_shop_count }}
                                                     </td>
                                                 </tr>
+
                                                 <tr>
                                                     <th>{{ __('Current Status') }}</th>
                                                     <td>: {{ __('Active') }}</td>

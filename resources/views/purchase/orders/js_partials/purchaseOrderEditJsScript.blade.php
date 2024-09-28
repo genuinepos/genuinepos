@@ -1118,7 +1118,7 @@
                     isAllowQuickProductSubmit = true;
                     toastr.success("{{ __('Product is added successfully.') }}");
 
-                    var name = data.name.length > 35 ? data.name.substring(0, 35) + '...' : data.name;
+                    var name = data.name + ' (' + data.product_code + ')';
                     var unique_id = data.id + 'noid';
 
                     $('#search_product').val(name);

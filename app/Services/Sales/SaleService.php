@@ -341,6 +341,7 @@ class SaleService
         $updateSale->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->note = $request->note;
+        $updateSale->reference = isset($request->reference) ? $request->reference : null;
         $updateSale->total_invoice_amount = $request->total_invoice_amount;
         $updateSale->save();
 

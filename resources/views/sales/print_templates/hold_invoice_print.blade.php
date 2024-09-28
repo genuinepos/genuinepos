@@ -246,7 +246,9 @@
                         <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Quantity') }}</th>
 
                         @if ($invoiceLayout->product_price_exc_tax)
-                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            <th class="fw-bold text-end" style="font-size:11px!important;">
+                                {{ $invoiceLayout->product_price_inc_tax ? __('Price (Exc. Tax)') : __('Unit Price') }}
+                            </th>
                         @endif
 
                         @if ($invoiceLayout->product_discount)

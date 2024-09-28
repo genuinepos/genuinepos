@@ -3,9 +3,12 @@
 namespace Modules\SAAS\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
+use Illuminate\Support\Facades\Artisan;
 use App\Enums\SubscriptionTransactionType;
+use Modules\SAAS\Jobs\AddShopMailJobQueue;
 use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
@@ -48,16 +51,12 @@ class AddShopController extends Controller
      */
     public function confirm($tenantId, Request $request)
     {
-        $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
-
-        $plan = $tenant?->user?->userSubscription?->plan;
-
         try {
             DB::beginTransaction();
 
-            $tenantId = tenant('id');
+            $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
 
-            $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
+            $plan = $tenant?->user?->userSubscription?->plan;
 
             $updateUserSubscription = $this->userSubscriptionServiceInterface->updateUserSubscription(id: $tenant?->user?->userSubscription?->id, request: $request, subscriptionUpdateType: SubscriptionUpdateType::AddShop->value);
 
@@ -99,9 +98,11 @@ class AddShopController extends Controller
         }
         DB::reconnect();
 
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
         if ($tenant?->user) {
 
-            $this->subscriptionMailService->sendSubscriptionAddShopInvoiceMail(
+            dispatch(new AddShopMailJobQueue(
                 user: $tenant?->user,
                 increasedShopCount: $request->increase_shop_count,
                 pricePerShop: $request->shop_price,
@@ -111,7 +112,7 @@ class AddShopController extends Controller
                 netTotalAmount: $request->net_total,
                 discount: $request->discount,
                 totalPayable: $request->total_payable,
-            );
+            ));
         }
 
         return response()->json(__('Plan upgraded successfully'));

@@ -284,7 +284,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
             $this->productStockService->adjustBranchAllStock($productId, $variantId, branchId: auth()->user()->branch_id);
 
-            if (isset($request->warehouse_count)) {
+            if (isset($request->warehouse_count) && $request->warehouse_id) {
 
                 $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
             } else {
@@ -481,7 +481,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
             $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updatePurchaseProduct->branch_id);
 
-            if (isset($request->warehouse_count)) {
+            if (isset($request->warehouse_count) && $request->warehouse_id) {
 
                 $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
             } else {

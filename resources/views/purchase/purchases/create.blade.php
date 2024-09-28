@@ -122,6 +122,7 @@
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
                 <input type="hidden" name="print_page_size" id="print_page_size" value="1">
+                <input type="number" class="d-none" id="warehouse_alert" value="{{ $generalSettings['subscription']->features['warehouse_count'] > 0 ? 1 : 0 }}">
                 <section>
                     <div class="form_element rounded mt-0 mb-2">
                         <div class="element-body">
@@ -169,11 +170,11 @@
                                     </div>
 
                                     @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && count($warehouses) > 0)
-                                        <input name="warehouse_count" value="YES" type="hidden" />
+                                        <input name="warehouse_count" id="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
                                             <div class="col-8">
-                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
+                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($warehouses as $w)
                                                         @php

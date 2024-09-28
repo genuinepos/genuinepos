@@ -28,9 +28,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -266,11 +266,11 @@
                                         $productCode = $orderProduct->variant_code ? $orderProduct->variant_code : $orderProduct->product_code;
                                     @endphp
 
-                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
 
                                     {!! isset($orderProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $orderProduct->description . '</span>' : '' !!}
 
-                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($orderProduct->product_details, 200, '...') . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($orderProduct->product_details, 1000, '...') . '</span>' : '' !!}
                                 </td>
 
                                 @if ($invoiceLayout->product_brand)
@@ -343,6 +343,14 @@
                     @if ($invoiceLayout->show_total_in_word == 1)
                         <p style="text-transform: uppercase;font-size:10px!important;"><span class="fw-bold">{{ __('Inword') }} : </span> <span id="inword"></span> {{ __('Only') }}.</p>
                     @endif
+
+                    <div class="bank_details mt-2">
+                        <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Note') }} : </span> {{ $order?->note }}</p>
+                    </div>
+
+                    <div class="bank_details mt-1">
+                        <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $order?->shipment_address }}</p>
+                    </div>
                 </div>
 
                 <div class="col-6">
@@ -365,7 +373,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Vat/Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:10px!important;">
                                     ({{ $order->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($order->order_tax_amount) }}
                                 </td>
@@ -480,9 +488,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -716,11 +724,11 @@
                                         $productCode = $orderProduct->variant_code ? $orderProduct->variant_code : $orderProduct->product_code;
                                     @endphp
 
-                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
 
                                     {!! isset($orderProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $orderProduct->description . '</span>' : '' !!}
 
-                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($orderProduct->product_details, 200, '...') . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($orderProduct->product_details, 1000, '...') . '</span>' : '' !!}
                                 </td>
 
                                 @if ($invoiceLayout->product_brand)
@@ -793,6 +801,14 @@
                     @if ($invoiceLayout->show_total_in_word == 1)
                         <p style="text-transform: uppercase;font-size:9px!important;"><span class="fw-bold">{{ __('Inword') }} : </span> <span id="inword"></span> {{ __('Only') }}.</p>
                     @endif
+
+                    <div class="bank_details mt-2">
+                        <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Note') }} : </span> {{ $order?->note }}</p>
+                    </div>
+
+                    <div class="bank_details mt-1">
+                        <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $order?->shipment_address }}</p>
+                    </div>
                 </div>
 
                 <div class="col-6">
@@ -815,7 +831,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
+                                <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Order Vat/Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     ({{ $order->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($order->order_tax_amount) }}
                                 </td>

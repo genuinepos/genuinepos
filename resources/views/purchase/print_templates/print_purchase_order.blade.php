@@ -241,7 +241,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Vat/Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ '(' . $order->purchase_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($order->purchase_tax_amount) }}
                                 </td>
@@ -569,7 +569,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Order Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Order Vat/Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ '(' . $order->purchase_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($order->purchase_tax_amount) }}
                                 </td>

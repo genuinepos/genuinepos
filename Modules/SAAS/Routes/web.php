@@ -9,6 +9,7 @@ use Modules\SAAS\Http\Controllers\LoginController;
 
 use Modules\SAAS\Http\Controllers\CouponController;
 use Modules\SAAS\Http\Controllers\TenantController;
+use Modules\SAAS\Http\Controllers\AddShopController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\ShopRenewController;
@@ -125,6 +126,12 @@ Route::middleware(['is_verified'])->group(function () {
 
             Route::get('cart/{tenantId}', 'cart')->name('tenants.shop.renew.cart');
             Route::post('confirm/{tenantId}', 'confirm')->name('tenants.shop.renew.confirm');
+        });
+
+        Route::controller(AddShopController::class)->prefix('add-store')->group(function () {
+
+            Route::get('cart/{tenantId}', 'cart')->name('tenants.add.shop.cart');
+            Route::post('confirm/{tenantId}', 'confirm')->name('tenants.add.shop.confirm');
         });
 
         Route::controller(UpdatePaymentStatusController::class)->prefix('update-payment-status')->group(function () {

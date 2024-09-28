@@ -462,13 +462,13 @@
                         </li>
                         <li>
                             {{ __('Discount') }}
-                            <span class="price-txt">
-                                {{ $planPriceCurrency }} <span class="span_discount">0</span>
+                            <span class="price-txt">{{ $planPriceCurrency }}
+                                (<span class="span_discount text-danger">0</span>)
                             </span>
                         </li>
                         <li class="total-price-wrap">
                             {{ __('Total Payable') }}
-                            <span class="price-txt">
+                            <span class="price-txt text-success">
                                 {{ $planPriceCurrency }} <span class="span_total_payable">0.00</span>
                             </span>
                             <input type="hidden" name="total_payable" id="total_payable" value="0.00">

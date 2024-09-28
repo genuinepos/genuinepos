@@ -65,10 +65,20 @@
         // Get all Bulk Variants by ajax
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [{
+            buttons: [
+                {
+                    extend: 'excel',
+                    'title': "{{ __('List of Bulk Variants') }}",
+                    text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
                     extend: 'pdf',
-                    'title': 'List of Bulk Variants',
-                    text: 'Pdf',
+                    'title': "{{ __('List of Bulk Variants') }}",
+                    text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -76,7 +86,8 @@
                 },
                 {
                     extend: 'print',
-                    'title': 'List of Bulk Variants',
+                    'title': "{{ __('List of Bulk Variants') }}",
+                    text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
                     className: 'btn btn-primary',
                     autoPrint: true,
                     exportOptions: {

@@ -1,10 +1,20 @@
 <script>
     var categoriesTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [{
+        buttons: [
+            {
+                extend: 'excel',
+                'title': "{{ __('List of categories') }}",
+                text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
                 extend: 'pdf',
-                'title': 'List of categories',
-                text: 'Pdf',
+                'title': "{{ __('List of categories') }}",
+                text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
                 className: 'btn btn-primary',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
@@ -12,7 +22,8 @@
             },
             {
                 extend: 'print',
-                'title': 'List of categories',
+                'title': "{{ __('List of categories') }}",
+                text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
                 className: 'btn btn-primary',
                 autoPrint: true,
                 exportOptions: {

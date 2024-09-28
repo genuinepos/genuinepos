@@ -181,7 +181,7 @@
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Quantity') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost (Exc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Discount') }}</th>
-                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Tax') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Net Unit Cost') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Lot No.') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
@@ -245,7 +245,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Purchase Tax') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Purchase Vat/Tax') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:10px!important;">
                                     {{ '(' . $purchase->purchase_tax_percent . '%)=' . $purchase->purchase_tax_amount }}
                                 </td>
@@ -510,7 +510,7 @@
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Quantity') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Unit Cost (Exc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Unit Discount') }}</th>
-                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Tax') }}</th>
+                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Vat/Tax') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Net Unit Cost') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Lot Number') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Subtotal') }}</th>
@@ -571,7 +571,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Purchase Tax') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Purchase Vat/Tax') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ '(' . $purchase->purchase_tax_percent . '%)=' . $purchase->purchase_tax_amount }}
                                 </td>

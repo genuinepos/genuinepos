@@ -188,6 +188,11 @@ class TenantService implements TenantServiceInterface
 
                 if (auth()->user()->can('tenants_update_expire_date') && $row->is_trial_plan == BooleanType::False->value) {
 
+                    $html .= '<a href="' . route('saas.tenants.add.shop.cart', $row->id) . '" class="dropdown-item">' . __('Add Store') . '</a>';
+                }
+
+                if (auth()->user()->can('tenants_update_expire_date') && $row->is_trial_plan == BooleanType::False->value) {
+
                     $html .= '<a href="' . route('saas.tenants.shop.renew.cart', $row->id) . '" class="dropdown-item">' . __('Renew Store') . '</a>';
                 }
 

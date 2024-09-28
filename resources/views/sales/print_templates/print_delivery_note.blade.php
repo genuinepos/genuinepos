@@ -24,9 +24,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -210,7 +210,7 @@
                 </div>
             </div>
 
-            <div class="sale_product_table pt-3 pb-3">
+            <div class="sale_product_table pt-2 pb-2">
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
@@ -238,7 +238,7 @@
 
                                     {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}
 
-                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 200, '...') . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 1000, '...') . '</span>' : '' !!}
                                 </td>
 
                                 <td class="text-end" style="font-size:10px!important;">{{ $saleProduct->quantity }}</td>
@@ -263,6 +263,18 @@
                     @endfor
                 @endif
             @endif
+
+            <div class="row">
+                <div class="col-12">
+                    <div>
+                        <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Note') }} : </span> {{ $sale?->note }}</p>
+                    </div>
+
+                    <div class="bank_details mt-1">
+                        <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $sale?->shipment_address }}</p>
+                    </div>
+                </div>
+            </div>
 
             <br><br>
 
@@ -324,9 +336,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -533,7 +545,7 @@
 
                                     {!! isset($saleProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $saleProduct->description . '</span>' : '' !!}
 
-                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 200, '...') . '</span>' : '' !!}
+                                    {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($saleProduct->product_details, 1000, '...') . '</span>' : '' !!}
                                 </td>
 
                                 <td class="text-end" style="font-size:9px!important;">{{ $saleProduct->quantity }}</td>
@@ -558,6 +570,18 @@
                     @endfor
                 @endif
             @endif
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="bank_details">
+                        <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Note') }} : </span> {{ $sale?->note }}</p>
+                    </div>
+
+                    <div class="bank_details mt-1">
+                        <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $sale?->shipment_address }}</p>
+                    </div>
+                </div>
+            </div>
 
             <br><br>
 

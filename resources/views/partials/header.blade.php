@@ -18,16 +18,16 @@
                                 @if (auth()?->user()?->branch)
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                     @if (count(auth()?->user()?->branch?->childBranches) > 0)
-                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("Main Store") }})</small>
+                                        <small class="fw-bold text-danger" style="font-size:9px!important;">({{ __("Main Store") }})</small>
                                     @else
-                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __("DIFFERENT Store") }})</small>
+                                        <small class="fw-bold text-danger" style="font-size:9px!important;">({{ __("DIFFERENT Store") }})</small>
                                     @endif
                                 @else
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             @endif
                         </p>
-                        <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
+                        <span class="financial_year"><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
 
                     @if ($generalSettings['subscription']->is_trial_plan == 1 || ($generalSettings['subscription']->has_due_amount == 1 && $generalSettings['subscription']->due_repayment_date))
@@ -62,7 +62,7 @@
                                 $branchExpireDate = auth()?->user()?->branch?->expire_date;
                                 $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
                             @endphp
-                            <p class="text-white mt-1">
+                            <p class="text-white mt-1 expire_date_text">
                                 <span class="text-warning fw-bold">{{ __("Store") }}</span> | <span class="text-white">{{ __('Expire On') }}</span> : <span class="text-deep-green">{{ $__branchExpireDate }}</span>
                             </p>
                         @else
@@ -71,7 +71,7 @@
                                 $businessExpireDate = $generalSettings['subscription']->business_expire_date;
                                 $__businessExpireDate = date($dateFormat, strtotime($businessExpireDate));
                             @endphp
-                            <p class="text-white mt-1">
+                            <p class="text-white mt-1 expire_date_text">
                                 <span class="text-info fw-bold">{{ __("Company") }}</span> | <span class="text-white">{{ __('Expire On') }}</span> : <span class="text-deep-green">{{ $__businessExpireDate }}</span>
                             </p>
                         @endif

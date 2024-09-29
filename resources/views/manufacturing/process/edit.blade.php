@@ -191,7 +191,7 @@
                                                                     </td>
 
                                                                     <td>
-                                                                        <span id="span_linetotal" class="fw-bold">{{ $ingredient->subtotal }}</span>
+                                                                        <span id="span_subtotal" class="fw-bold">{{ $ingredient->subtotal }}</span>
                                                                         <input type="hidden" name="subtotals[]" id="subtotal" value="{{ $ingredient->subtotal }}">
                                                                     </td>
 

@@ -67,6 +67,7 @@ class WarehouseService
 
                     $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 }
+
                 $html .= '</div>';
 
                 return $html;
@@ -170,7 +171,7 @@ class WarehouseService
 
         if ($count == $warehouseCount) {
 
-            return ['pass' => false, 'msg' => __("Warehouse limit is ${warehouseCount} for every shop")];
+            return ['pass' => false, 'msg' => __("Warehouse limit is ${warehouseCount}")];
         }
 
         return ['pass' => true];

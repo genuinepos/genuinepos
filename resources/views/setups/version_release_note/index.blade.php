@@ -23,6 +23,33 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
+                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.8</h5>
+                        </div>
+                        <div class="release-list p-1">
+                            <ul class="list-styled">
+                                <ol class="fw-bold">{{ __('About This Update') }}</ol>
+                                <li>{{ __('Upgrade to the new version of the Gposs System (fixes several bugs, enhances stability, and improves the overall user experience).') }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="changes-log-area p-2 mt-3">
+                    <div class="release-version">
+                        <h5 class="text-blue">{{ __('Update Log') }}</h5>
+                    </div>
+                    <div class="changes-log mt-1">
+                        <ul class="list-styled">
+                            <ol class="fw-bold">{{ __('Fixed Some Minor Bugs') }}</ol>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="all-release-note-area p-2">
+                    <div class="version-release-note mt-1">
+                        <div class="release-version">
                             <h5 class="text-blue">{{ __('Last Release') }}: 2.0.7</h5>
                         </div>
                         <div class="release-list p-1">

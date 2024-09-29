@@ -226,7 +226,15 @@
                                                 <div class="input-group mt-1">
                                                     <label class=" col-4"><b>{{ __('Date') }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="reference" autocomplete="off" id="date">
+                                                        <span class="error error_date"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class=" col-4"><b>{{ __('Reference') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input type="text" name="reference" class="form-control" id="reference"  data-next="sale_account_id" placeholder="{{ __('Reference') }}" autocomplete="off">
                                                         <span class="error error_date"></span>
                                                     </div>
                                                 </div>

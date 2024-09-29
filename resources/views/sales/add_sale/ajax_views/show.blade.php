@@ -41,11 +41,12 @@
                             @endif
 
                             <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $sale->invoice_id }}</li>
+                            
                             @if (isset($sale->salesOrder))
                                 <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sales Order ID') }} : </span> {{ $sale?->salesOrder?->order_id }}</li>
-
-                                <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}</li>
                             @endif
+
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}</li>
 
                             <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
                                 @php

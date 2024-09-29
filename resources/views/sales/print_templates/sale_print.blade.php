@@ -227,11 +227,11 @@
                             <li style="font-size:10px!important;">
                                 <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $sale?->salesOrder->order_id }}
                             </li>
-
-                            <li style="font-size:10px!important;">
-                                <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
-                            </li>
                         @endif
+
+                        <li style="font-size:10px!important;">
+                            <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
+                        </li>
 
                         <li style="font-size:10px!important;">
                             <span class="fw-bold">{{ __('Created By') }} : </span> {{ $sale?->createdBy?->prefix . ' ' . $sale?->createdBy?->name . ' ' . $sale?->createdBy?->last_name }}
@@ -794,11 +794,11 @@
                             <li style="font-size:9px!important; line-height:1.5;">
                                 <span class="fw-bold">{{ __('Order ID') }} : </span> {{ $sale?->salesOrder->order_id }}
                             </li>
-
-                            <li style="font-size:9px!important; line-height:1.5;">
-                                <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
-                            </li>
                         @endif
+
+                        <li style="font-size:9px!important; line-height:1.5;">
+                            <span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}
+                        </li>
 
                         <li style="font-size:9px!important; line-height:1.5;">
                             <span class="fw-bold">{{ __('Created By') }}</span> : {{ $sale?->createdBy?->prefix . ' ' . $sale?->createdBy?->name . ' ' . $sale?->createdBy?->last_name }}

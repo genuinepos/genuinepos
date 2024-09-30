@@ -118,6 +118,7 @@
                             $('#e_tax_ac_id').val(product.tax_ac_id != null ? product.tax_ac_id : '');
                             $('#e_tax_type').val(product.tax_type);
                             $('#e_unit_cost_inc_tax').val(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax);
+                            $('#display_unit_cost').html(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax);
                             $('#e_is_show_emi_on_pos').val(product.is_show_emi_on_pos);
 
                             $('#e_unit_id').empty();
@@ -147,7 +148,7 @@
                                 var brand = product.brand != null ? ' | ' + product.brand.name : '';
 
                                 li += '<li>';
-                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')' + '" data-v_name="' + variant.variant_name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_price_exc_tax="' + variant.variant_price + '" data-p_cost_inc_tax="' + (variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax) + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + ' (Price: ' + variant.variant_price+ ' | ' + variant.variant_code + brand + ')' + '</a>';
+                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + ' - ' + variant.variant_name + ' (' + variant.variant_code + ')' + '" data-v_name="' + variant.variant_name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_price_exc_tax="' + variant.variant_price + '" data-p_cost_inc_tax="' + (variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax) + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + ' (Price: ' + variant.variant_price + ' | ' + variant.variant_code + brand + ')' + '</a>';
                                 li += '</li>';
                             });
 
@@ -168,10 +169,6 @@
 
                             $('#stock_quantity').val(parseFloat(stock).toFixed(2));
                         }
-
-                        console.log('Pg: ' + priceGroupId);
-                        console.log('P: ' + variant.product.id);
-                        console.log('V: ' + variant.id);
 
                         var price = 0;
                         var __price = priceGroups.filter(function(value) {
@@ -212,6 +209,7 @@
                         $('#e_tax_ac_id').val(variant.product.tax_ac_id != null ? variant.product.tax_ac_id : '');
                         $('#e_tax_type').val(variant.product.tax_type);
                         $('#e_unit_cost_inc_tax').val(variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax);
+                        $('#display_unit_cost').html(variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax);
                         $('#e_is_show_emi_on_pos').val(product.is_show_emi_on_pos);
 
                         $('#e_unit_id').empty();
@@ -401,6 +399,7 @@
                     $('#e_tax_ac_id').val(p_tax_ac_id);
                     $('#e_tax_type').val(p_tax_type);
                     $('#e_unit_cost_inc_tax').val(parseFloat(product_cost_inc_tax).toFixed(2));
+                    $('#display_unit_cost').html(parseFloat(product_cost_inc_tax).toFixed(2));
                     $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
 
                     $('#e_unit_id').empty();
@@ -685,6 +684,7 @@
         $('#e_price_inc_tax').val(parseFloat(unit_price_inc_tax).toFixed(2));
         $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
         $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
+        $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax).toFixed(2));
         $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
         $('#e_descriptions').val(descriptions);
         $('#stock_quantity').val(parseFloat(current_stock).toFixed(2));
@@ -1038,6 +1038,7 @@
         $('#e_price_inc_tax').val(parseFloat(0).toFixed(2));
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(0);
+        $('#display_unit_cost').html(0.00);
         $('#e_is_show_discription').val('');
         $('#stock_quantity').val(parseFloat(0).toFixed(2));
         $('#e_warehouse_id').val('');
@@ -1787,6 +1788,7 @@
                     $('#e_tax_ac_id').val(data.tax_ac_id != null ? data.tax_ac_id : '');
                     $('#e_tax_type').val(data.tax_type);
                     $('#e_unit_cost_inc_tax').val(data.product_cost_with_tax);
+                    $('#display_unit_cost').html(parseFloat(data.product_cost_with_tax).toFixed(2));
                     $('#e_is_show_emi_on_pos').val(data.is_show_emi_on_pos);
 
                     $('#e_unit_id').empty();
@@ -1841,6 +1843,20 @@
 
                 isAllowQuickProductSubmit = true;
             }
+        });
+    </script>
+@endif
+
+@if (auth()->user()->can('view_product_cost_is_sale_screed'))
+    <script>
+        $(document).on('click', '#display_unit_cost_toggle_btn', function(e) {
+
+            $('#display_unit_cost_section').toggle(500);
+
+            setTimeout(function() {
+
+                $('#display_unit_cost_section').hide(500);
+            }, 1500);
         });
     </script>
 @endif

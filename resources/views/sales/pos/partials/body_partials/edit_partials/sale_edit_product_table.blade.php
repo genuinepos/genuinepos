@@ -194,8 +194,8 @@
                         <td class="fw-bold" id="serial">1</td>
                         <td class="text-start">
                             @php
-                                $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
-                                $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
+                                $variant = $saleProduct?->variant_id ? ' -' . $saleProduct?->variant?->variant_name : '';
+                                $variantId = $saleProduct?->variant_id ? $saleProduct?->variant_id : 'noid';
 
                                 $productStock = DB::table('product_stocks')
                                     ->where('branch_id', $sale->branch_id)
@@ -204,7 +204,7 @@
                                     ->where('variant_id', $saleProduct->variant_id)
                                     ->first();
 
-                                $currentStock = $productStock ? $productStock->stock : 0;
+                                $currentStock = $productStock ? $productStock?->stock : 0;
 
                                 $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
 
@@ -213,14 +213,16 @@
                             @endphp
 
                             <a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">{{ $__name }}</a><br />
-                            <span><small id="span_description" style="font-size:9px;">
+                            <span>
+                                <small id="span_description" style="font-size:9px;">
                                     @php
                                         $description = strlen($saleProduct->description) > 40 ? Str::limit($saleProduct->description, 40, '...') : $saleProduct->description;
                                     @endphp
                                     {{ $description }}
-                                </small></span>
+                                </small>
+                            </span>
                             <input type="hidden" id="is_show_emi_on_pos" value="{{ $saleProduct?->product?->is_show_emi_on_pos }}">
-                            <input type="hidden" name="descriptions[]" id="description" value="{{ $description }}">
+                            <input type="hidden" name="descriptions[]" id="description" value="{{ $saleProduct->description }}">
 
                             <input type="hidden" id="product_name" value="{{ $__name }}">
                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $saleProduct->product_id }}">

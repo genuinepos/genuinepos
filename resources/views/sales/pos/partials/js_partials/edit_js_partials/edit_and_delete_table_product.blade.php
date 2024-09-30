@@ -282,7 +282,7 @@
                 tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
                 tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
                 var __description = e_description.length > 30 ? e_description.substring(0, 40) + '...' : e_description;
-                tr.find('#description').val(__description);
+                tr.find('#description').val(e_description);
                 tr.find('#span_description').html(__description);
 
                 $('#editProductModal').modal('hide');

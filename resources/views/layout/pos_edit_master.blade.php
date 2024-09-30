@@ -377,7 +377,7 @@
                         </div>
 
                         <div class="row g-2 align-items-end">
-                            <div class="col-md-3" id="description_field">
+                            <div class="col-md-6" id="description_field">
                                 <label class="fw-bold">{{ __('IMEI, Serial number or other info.') }}</label>
                                 <input type="text" class="form-control" id="e_description" placeholder="{{ __('IMEI, Serial number or other info.') }}" tabindex="-1">
                             </div>
@@ -387,7 +387,7 @@
                                 <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Update') }}</a>
                             </div>
                         </div>

@@ -338,7 +338,7 @@
                                         <div class="row g-2 align-items-end">
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
+                                                <input type="text" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
@@ -361,12 +361,23 @@
                                                 <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6">
+                                            <div class="col-xl-3 col-md-6">
                                                 <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __('Add') }}</a>
                                                 <input type="reset" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger" value="{{ __('Reset') }}">
+
+                                                @if (auth()->user()->can('view_product_cost_is_sale_screed'))
+                                                    <a>
+                                                        <span class="d-hide" id="display_unit_cost_section">
+                                                            <span>{{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
+                                                            <span class="text-muted" id="display_unit_cost">0.00</span>
+                                                        </span>
+
+                                                        <span class="btn btn-sm btn-info text-white" id="display_unit_cost_toggle_btn">{{ __('Cost') }}</span>
+                                                    </a>
+                                                @endif
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6 offset-2">
+                                            <div class="col-xl-2 col-md-6 offset-xl-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">{{ __('Stock') }}</span>

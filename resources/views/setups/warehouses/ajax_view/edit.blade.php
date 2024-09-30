@@ -30,13 +30,13 @@
                     <input name="address" class="form-control" id="warehouse_address" data-next="is_global" value="{{ $warehouse->address }}" placeholder="{{ __('Warehouse address') }}">
                 </div>
 
-                <div class="form-group mt-1">
+                {{-- <div class="form-group mt-1">
                     <label><b>{{ __('Is Global Warehouse') }}</b> </label>
                     <select name="is_global" class="form-control" id="is_global" data-next="warehouse_save_changes">
                         <option value="0">{{ __('No') }}</option>
                         <option {{ $warehouse->is_global == 1 ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
                     </select>
-                </div>
+                </div> --}}
 
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">

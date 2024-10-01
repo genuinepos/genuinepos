@@ -203,7 +203,7 @@
                     <table id="" class="table modal-table table-sm">
                         <thead>
                             <tr class="bg-primary">
-                                @if ($ownBranchAndWarehouseStocks->first()->variant_name)
+                                @if ($ownBranchAndWarehouseStocks?->first()?->variant_name)
                                     <th style="font-size:10px!important;">{{ __('Variant') }}</th>
                                 @endif
 
@@ -285,7 +285,7 @@
                     <table id="" class="table modal-table table-sm">
                         <thead>
                             <tr class="bg-primary">
-                                @if ($globalWareHouseStocks->first()->variant_name)
+                                @if ($globalWareHouseStocks?->first()?->variant_name)
                                     <th style="font-size:10px!important;">{{ __('Variant') }}</th>
                                 @endif
                                 <th style="font-size:10px!important;">{{ __('Stock Location') }}</th>

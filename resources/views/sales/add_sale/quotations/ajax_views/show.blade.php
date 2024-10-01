@@ -111,13 +111,15 @@
                                         <tr>
                                             @php
                                                 $variant = $quotationProduct->variant ? ' - ' . $quotationProduct->variant->variant_name : '';
+                                                $productCode = $quotationProduct?->variant ? $quotationProduct?->variant?->variant_code : $quotationProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $quotationProduct->product->name . ' ' . $variant }}
-                                                <small>{{ $quotationProduct->description }}</small>
+                                                <small class=" d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                                <small class="d-block" style="font-size:9px!important;">{{ $quotationProduct->description }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $quotationProduct->quantity . '/' . $quotationProduct?->unit?->code_name }}</td>
@@ -227,7 +229,7 @@
                             @php
                                 $filename = $quotation->quotation_id . '__' . $quotation->date . '__' . $branchName;
                             @endphp
-  
+
                             @if ($quotation->branch_id == auth()->user()->branch_id)
                                 @if ($quotation->sale_screen == \App\Enums\SaleScreenType::AddSale->value)
                                     @if (auth()->user()->can('sale_quotations_edit'))

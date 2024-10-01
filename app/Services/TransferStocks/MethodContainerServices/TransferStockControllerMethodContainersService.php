@@ -4,11 +4,14 @@ namespace App\Services\TransferStocks\MethodContainerServices;
 
 use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
-use App\Services\Branches\BranchService;
 use App\Enums\ProductLedgerVoucherType;
+use App\Enums\UserActivityLogActionType;
+use App\Services\Branches\BranchService;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\DayBookService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Products\ProductStockService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\TransferStocks\TransferStockService;
 use App\Services\TransferStocks\TransferStockProductService;
@@ -24,6 +27,7 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private ProductLedgerService $productLedgerService,
+        private UserActivityLogService $userActivityLogService,
     ) {}
 
     public function indexMethodContainer(object $request): array|object
@@ -155,6 +159,8 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
 
         $printPageSize = $request->print_page_size;
 
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::TransferStock->value, dataObj: $transferStock);
+
         return ['transferStock' => $transferStock, 'printPageSize' => $printPageSize];
     }
 
@@ -236,6 +242,8 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
         $this->transferStockService->unsetOptionKeyValueOfTransferStockObject(transferStock: $updateTransferStock);
 
         $this->transferStockService->updateTransferStockReceiveStatus(transferStock: $updateTransferStock);
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::TransferStock->value, dataObj: $updateTransferStock);
     }
 
     public function deleteMethodContainer(int $id): ?array
@@ -257,6 +265,8 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
                 $this->productStockService->adjustBranchStock(productId: $transferStockProduct->product_id, variantId: $transferStockProduct->variant_id, branchId: $deleteTransferStock->sender_branch_id);
             }
         }
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::TransferStock->value, dataObj: $deleteTransferStock);
 
         return null;
     }

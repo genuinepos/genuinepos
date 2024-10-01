@@ -118,7 +118,7 @@
                                                 <th>{{ __('Parent Purchase') }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('Branch') }}</th>
-                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Pmt. Status') }}</th>
                                                 <th>{{ __('Total Qty') }}</th>
                                                 <th>{{ __('Net Total Amount') }}</th>
                                                 <th>{{ __('Return Discount') }}</th>

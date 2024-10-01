@@ -79,7 +79,7 @@
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Product') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Stock Location') }}</th>
-                                    <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Return Qty') }}</th>
+                                    <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Returned Qty') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
                                     <th class="text-white fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
@@ -92,11 +92,13 @@
                                     <tr>
                                         @php
                                             $variant = $purchaseReturnProduct->variant ? ' - ' . $purchaseReturnProduct->variant->variant_name : '';
+                                            $productCode = $purchaseReturnProduct?->variant ? $purchaseReturnProduct?->variant?->variant_code : $purchaseReturnProduct?->product?->product_code;
                                         @endphp
                                         <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                         <td class="text-start" style="font-size:11px!important;">
                                             {{ $purchaseReturnProduct->product->name . $variant }}
+                                            <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
@@ -192,14 +194,22 @@
                                 <tr>
                                     <th class="text-end">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                        @if ($return->due < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                        @endif
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
                                     </td>
                                 </tr>
                             </table>

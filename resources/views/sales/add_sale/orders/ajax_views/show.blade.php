@@ -136,13 +136,15 @@
                                         <tr>
                                             @php
                                                 $variant = $orderProduct->variant ? ' - ' . $orderProduct->variant->variant_name : '';
+                                                $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $orderProduct->product->name . ' ' . $variant }}
-                                                <small>{{ $orderProduct->description }}</small>
+                                                <small class=" d-block" style="font-size:9px!important;">{{ __('P/c') }}: {{ $productCode }}</small>
+                                                <small class="d-block" style="font-size:9px!important;">{{ $orderProduct->description }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity . '/' . $orderProduct?->unit?->code_name }}</td>
@@ -309,9 +311,14 @@
                             $filename = $order->order_id . '__' . $order->date . '__' . $branchName;
                         @endphp
                         <div class="btn-box">
+                            @if (auth()->user()->can('sales_order_to_invoice') && $order->branch_id == auth()->user()->branch_id)
+                                <a href="{{ route('sales.order.to.invoice.create', [$order->id]) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> {{ __('Sales Order To Invoice') }}</a>
+                            @endif
+
                             @if (auth()->user()->can('sales_edit') && $order->branch_id == auth()->user()->branch_id)
                                 <a href="{{ route('sale.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             @endif
+
                             <a href="{{ route('sales.helper.related.voucher.print', $order->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Sales Order') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>

@@ -145,7 +145,7 @@
                                     @if ($purchase->warehouse_id)
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Warehouse') }}</b><span class="text-danger">*</span></label>
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
                                             <div class="col-8">
                                                 <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
@@ -362,7 +362,10 @@
                                                     @endphp
                                                     @foreach ($purchase->purchaseProducts as $purchaseProduct)
                                                         @php
-                                                            $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->variant_name : '';
+                                                            $variant = $purchaseProduct?->variant ? ' - ' . $purchaseProduct?->variant?->variant_name : '';
+
+                                                            $productCode = $purchaseProduct?->variant ? $purchaseProduct?->variant?->variant_code : $purchaseProduct->product->product_code;
+
                                                             $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : 'noid';
 
                                                             if (isset($purchaseProduct->product_id)) {
@@ -379,8 +382,8 @@
 
                                                         <tr id="select_item">
                                                             <td class="text-start">
-                                                                <span id="span_item_name">{{ $purchaseProduct->product->name . $variant }}</span>
-                                                                <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant }}">
+                                                                <span id="span_item_name">{{ $purchaseProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                                <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                                 <input type="hidden" name="descriptions[]" id="description" value="{{ $purchaseProduct->description }}">
                                                                 <input type="hidden" name="product_ids[]" id="product_id" value="{{ $purchaseProduct->product_id }}">
                                                                 <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">

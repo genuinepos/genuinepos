@@ -96,6 +96,7 @@ class PurchaseProductService
             'units.code_name as unit_code',
             'purchase_products.line_total',
             'purchase_products.selling_price',
+            'purchase_products.lot_no',
             'purchases.id',
             'purchases.branch_id',
             'purchases.supplier_account_id',
@@ -119,8 +120,8 @@ class PurchaseProductService
             ->editColumn('product', function ($row) {
 
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-
-                return Str::limit($row->name, 35, '') . $variant;
+                $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
+                return $row->name . $variant . $productCode;
             })
             ->editColumn('date', function ($row) {
 

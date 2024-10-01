@@ -157,13 +157,22 @@ class PurchaseReturnService
                 }
             })
 
-            ->editColumn('total_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->total_qty))
-            ->editColumn('net_total_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)))
-            ->editColumn('return_discount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount, $row->c_rate, $row->branch_id)))
-            ->editColumn('return_tax_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)))
-            ->editColumn('total_return_amount', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)))
-            ->editColumn('received', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)))
-            ->editColumn('due', fn ($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)))
+            ->editColumn('total_qty', fn($row) => \App\Utils\Converter::format_in_bdt($row->total_qty))
+            ->editColumn('net_total_amount', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->net_total_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('return_discount', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_discount, $row->c_rate, $row->branch_id)))
+            ->editColumn('return_tax_amount', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->return_tax_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('total_return_amount', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_return_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('received', fn($row) => \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)))
+            ->editColumn('due', function ($row) {
+
+                if ($row->due < 0) {
+
+                    return '(<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(abs(curr_cnv($row->due, $row->c_rate, $row->branch_id))) . '</span>)';
+                } else {
+
+                    return '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>';
+                }
+            })
 
             ->editColumn('createdBy', function ($row) {
 

@@ -10,7 +10,7 @@
 @section('title', 'Manage Customer - ')
 @section('content')
     @push('stylesheets')
-        <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
+        {{-- <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" /> --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <style>
             .contract_info_area ul li strong {
@@ -54,7 +54,7 @@
                             @endif
 
                             <a id="tab_btn" data-show="contract_info_area" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-info-circle"></i> {{ __('Contract Info') }}
+                                <i class="fas fa-info-circle"></i> {{ __('Contact Info') }}
                             </a>
 
                             @if (auth()->user()->can('sales_index') || auth()->user()->can('service_invoices_index'))

@@ -53,7 +53,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 151%;
             z-index: 9999999;
             padding: 0;
             left: 0%;
@@ -171,7 +172,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" placeholder="{{ __('Date') }}" autocomplete="off">
+                                                    <input required type="text" name="date" class="form-control" id="date" data-next="service_type" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="{{ __('Date') }}" autocomplete="off">
                                                     <span class="error error_date"></span>
                                                 </div>
                                             </div>

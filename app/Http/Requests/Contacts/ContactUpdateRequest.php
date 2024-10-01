@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Contacts;
 
 use App\Enums\ContactType;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactUpdateRequest extends FormRequest
@@ -29,9 +30,22 @@ class ContactUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $type = $this->route('type');
+        $id = $this->route('id');
+        $branchId = null;
+        if ($type == ContactType::Customer->value) {
+
+            $branchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        } elseif ($type == ContactType::Supplier->value) {
+
+            $branchId = auth()->user()->branch_id;
+        }
+
         return [
-            'name' => 'required',
-            'phone' => 'required',
+            'name' => 'required|max:50',
+            'phone' => ['required', 'max:50', Rule::unique('contacts', 'phone')->where(function ($query) use ($id, $branchId) {
+                return $query->where('branch_id', $branchId)->where('id', '!=', $id);
+            })],
         ];
     }
 }

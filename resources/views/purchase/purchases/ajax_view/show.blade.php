@@ -129,12 +129,14 @@
                                         <tr>
                                             @php
                                                 $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->variant_name : '';
+                                                $productCode = $purchaseProduct?->variant ? $purchaseProduct?->variant?->variant_code : $purchaseProduct?->product?->product_code;
                                             @endphp
 
-                                            <td class="text-start fw-bold" style="font-size:11px!important;">
+                                            <td class="text-start" style="font-size:11px!important;">
                                                 {{ $purchaseProduct->product->name . ' ' . $variant }}
+                                                <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
                                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                                    <small class="d-block text-muted" style="font-size: 9px;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} :{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                                    <small class="d-block" style="font-size: 9px;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} :{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                                 @endif
                                             </td>
                                             <td class="text-start fw-bold" style="font-size:11px!important;">{{ $purchaseProduct->quantity . '/' . $purchaseProduct?->unit?->code_name }}</td>
@@ -225,14 +227,22 @@
                                 <tr>
                                     <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                        @if ($purchase->due < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($purchase->due)) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
+                                        @endif
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">{{ __('Current Balance') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end fw-bold">
-                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
                                     </td>
                                 </tr>
                             </table>

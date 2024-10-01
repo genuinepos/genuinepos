@@ -54,7 +54,7 @@
                             <div class="name-head">
                                 <h5>{{ __('Purchased Products') }}</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -185,6 +185,7 @@
                                                 <th>{{ __('Product') }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
+                                                <th>{{ __('Lot No.') }}</th>
                                                 <th>{{ __('Quantity') }}</th>
                                                 <th>{{ __('Unit Cost') }}</th>
                                                 <th>{{ __('Subtotal') }}</th>
@@ -193,7 +194,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                                <th colspan="6" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th class="text-start text-white fw-bold">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white fw-bold"><span id="total_subtotal"></span></th>

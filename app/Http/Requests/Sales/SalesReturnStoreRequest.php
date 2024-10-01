@@ -29,7 +29,7 @@ class SalesReturnStoreRequest extends FormRequest
             'payment_method_id' => 'required',
             'sale_account_id' => 'required',
             'account_id' => 'required',
-            'warehouse_id' => Rule::when(isset($request->warehouse_count) == true, 'required')
+            // 'warehouse_id' => Rule::when(isset($request->warehouse_count) == true, 'required')
         ];
     }
 

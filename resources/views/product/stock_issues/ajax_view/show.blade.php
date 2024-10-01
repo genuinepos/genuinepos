@@ -89,6 +89,7 @@
                                         <tr>
                                             @php
                                                 $variant = $issuedProduct?->variant ? ' - ' . $issuedProduct->variant->variant_name : '';
+                                                $productCode = $issuedProduct?->variant ? $issuedProduct?->variant?->variant_code : $issuedProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">
@@ -97,6 +98,7 @@
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $issuedProduct->product->name . ' ' . $variant }}
+                                                <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">

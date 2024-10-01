@@ -185,6 +185,8 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
         $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
         $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
+        $autoRepayPurchaseAndSalesReturn = isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) ? $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] : 0;
+
         $updateLastCreated = $this->purchaseService->purchaseByAnyConditions()->where('is_last_created', BooleanType::True->value)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
 
         if ($updateLastCreated) {
@@ -262,7 +264,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             ]
         )->where('id', $addPurchase->id)->first();
 
-        if ($purchase->due > 0) {
+        if ($purchase->due > 0 && $autoRepayPurchaseAndSalesReturn == 1) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: AccountingVoucherType::Payment->value, refIdColName: 'purchase_id', purchase: $purchase);
         }
@@ -284,7 +286,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
             $this->productStockService->adjustBranchAllStock($productId, $variantId, branchId: auth()->user()->branch_id);
 
-            if (isset($request->warehouse_count)) {
+            if (isset($request->warehouse_count) && $request->warehouse_id) {
 
                 $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
             } else {
@@ -371,6 +373,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
         $generalSettings = config('generalSettings');
         $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
         $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
+        $autoRepayPurchaseAndSalesReturn = isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) ? $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] : 0;
 
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: ['purchaseProducts']);
 
@@ -448,7 +451,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
         $adjustedPurchase = $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $purchase);
 
-        if ($purchase->due > 0) {
+        if ($purchase->due > 0 && $autoRepayPurchaseAndSalesReturn == 1) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: AccountingVoucherType::Payment->value, refIdColName: 'purchase_id', purchase: $adjustedPurchase);
         }
@@ -481,7 +484,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
             $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updatePurchaseProduct->branch_id);
 
-            if (isset($request->warehouse_count)) {
+            if (isset($request->warehouse_count) && $request->warehouse_id) {
 
                 $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
             } else {

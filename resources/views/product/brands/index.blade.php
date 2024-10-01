@@ -65,11 +65,19 @@
         // Get all brands by ajax
         var brandsTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    'title': "{{ __('List of Brands') }}",
+                    text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
                 {
                     extend: 'pdf',
-                    text: 'Pdf',
+                    'title': "{{ __('List of Brands') }}",
+                    text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -77,12 +85,14 @@
                 },
                 {
                     extend: 'print',
-                    text: 'Print',
+                    'title': "{{ __('List of Brands') }}",
+                    text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
                     className: 'btn btn-primary',
+                    autoPrint: true,
                     exportOptions: {
-                        columns: 'th:not(:last-child)'
+                        columns: ':visible'
                     }
-                },
+                }
             ],
             "language": {
                 "zeroRecords": '<img style="padding:100px 100px!important;" src="' + "{{ asset('images/data_not_found_default_photo.png') }}" + '">',

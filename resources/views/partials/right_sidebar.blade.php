@@ -100,6 +100,7 @@
                 </li>
             </ul>
         </div>
+
         <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
                 <li class="icon text-white"><small class=""><i class="fas fa-book"></i></small></li>
@@ -121,6 +122,10 @@
                 </li>
 
                 <li><a href="#" class="text-white bg-danger border-danger" id="logout_option"><span><i class="fas fa-power-off"></i></span><span>{{ __('Logout') }}</span></a></li>
+
+                <li>
+                    <a href="https://demo.gposs.com" class="text-white" target="_blank"><span><i class="fa-solid fa-chalkboard"></i></span><span>{{ __('Training Mode') }}</span></a>
+                </li>
             </ul>
         </div>
     </div>

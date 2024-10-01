@@ -80,7 +80,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">{{ __("No Date Found") }}</td>
+                        <td colspan="7" class="text-center">{{ __("No Data Found") }}</td>
                     </tr>
                 @endif
             </tbody>

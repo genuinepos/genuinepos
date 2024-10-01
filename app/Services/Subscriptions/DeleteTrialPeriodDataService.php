@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Services\Setups;
+namespace App\Services\Subscriptions;
 
 use App\Models\Sales\Sale;
+use App\Utils\FileUploader;
 use App\Models\Branches\Branch;
 use App\Models\Products\Product;
+use App\Models\Services\JobCard;
 use App\Models\Setups\Warehouse;
 use App\Models\Sales\SaleProduct;
 use App\Models\Purchases\Purchase;
 use App\Models\Sales\CashRegister;
 use Illuminate\Support\Facades\DB;
+use App\Models\Products\StockIssue;
 use App\Models\Manufacturing\Process;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Manufacturing\Production;
 use App\Models\Purchases\PurchaseProduct;
 use App\Models\Accounts\AccountingVoucher;
-use App\Models\Products\StockIssue;
 use App\Models\TransferStocks\TransferStock;
 use App\Models\StockAdjustments\StockAdjustment;
 use App\Models\TransferStocks\TransferStockProduct;
@@ -53,17 +55,9 @@ class DeleteTrialPeriodDataService
         $branches = Branch::all();
         foreach ($branches as $branch) {
 
+            FileUploader::deleteFile(fileType: 'branchLogo', deletableFile: $branch->logo);
+
             $branch->delete();
-
-            if ($branch->logo) {
-
-                $dir = public_path('uploads/branch_logo/');
-
-                if (file_exists($dir . $branch->logo)) {
-
-                    unlink($dir . $branch->logo);
-                }
-            }
         }
 
         if (Branch::count() == 0) {
@@ -161,28 +155,20 @@ class DeleteTrialPeriodDataService
         $products = Product::with('variants')->get();
         foreach ($products as $product) {
 
-            $product->delete();
-
-            $dir = public_path('uploads/product/thumbnail/');
-            if (isset($product->thumbnail_photo) && file_exists($dir . $product->thumbnail_photo)) {
-
-                unlink($dir . $product->thumbnail_photo);
-            }
+            FileUploader::deleteFile(fileType: 'productThumbnail', deletableFile: $product->thumbnail_photo);
 
             if (count($product->variants) > 0) {
 
-                $variantImgDir = public_path('uploads/product/variant_image/');
                 foreach ($product->variants as $variant) {
 
                     if ($variant->variant_image) {
 
-                        if (file_exists($variantImgDir . $variant->variant_image)) {
-
-                            unlink($variantImgDir . $variant->variant_image);
-                        }
+                        FileUploader::deleteFile(fileType: 'productVariant', deletableFile: $variant->variant_image);
                     }
                 }
             }
+
+            $product->delete();
         }
 
         if (Product::count() == 0) {
@@ -200,6 +186,19 @@ class DeleteTrialPeriodDataService
         if (StockIssue::count() == 0) {
             Schema::disableForeignKeyConstraints();
             StockIssue::truncate();
+            Schema::enableForeignKeyConstraints();
+        }
+
+        $jobCards = JobCard::all();
+        foreach ($jobCards as $jobCard) {
+
+            FileUploader::deleteFile(fileType: 'jobCardDocument', deletableFile: $jobCard->document);
+            $jobCard->delete();
+        }
+
+        if (JobCard::count() == 0) {
+            Schema::disableForeignKeyConstraints();
+            JobCard::truncate();
             Schema::enableForeignKeyConstraints();
         }
     }

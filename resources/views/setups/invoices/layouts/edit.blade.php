@@ -319,6 +319,18 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Current Balance') }}</b></label>
+                                        <div class="col-8">
+                                            <select name="customer_current_balance" id="customer_current_balance" class="form-control" data-next="product_w_type">
+                                                <option value="1">{{ __('Yes') }}</option>
+                                                <option {{ $invoiceLayout->customer_current_balance == 0 ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -368,14 +380,75 @@
                             </div>
 
                             <div class="row gx-2 mt-1">
-
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <label class="col-4 text-end pe-1"><b>{{ __('Tax') }}</b></label>
                                         <div class="col-8">
-                                            <select name="product_tax" id="product_tax" class="form-control" data-next="account_no">
+                                            <select name="product_tax" id="product_tax" class="form-control" data-next="product_price_exc_tax">
                                                 <option value="1">{{ __('Yes') }}</option>
                                                 <option {{ $invoiceLayout->product_tax == 0 ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Price Exc. Tax') }}</b></label>
+                                        <div class="col-8">
+                                            <select name="product_price_exc_tax" id="product_price_exc_tax" class="form-control" data-next="product_price_inc_tax">
+                                                <option value="1">{{ __('Yes') }}</option>
+                                                <option {{ $invoiceLayout->product_price_exc_tax == 0 ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Price Inc. Tax') }}</b></label>
+                                        <div class="col-8">
+                                            <select name="product_price_inc_tax" id="product_price_inc_tax" class="form-control" data-next="product_brand">
+                                                <option value="1">{{ __('Yes') }}</option>
+                                                <option {{ $invoiceLayout->product_price_inc_tax == 0 ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row gx-2 mt-1">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Brand.') }}</b></label>
+                                        <div class="col-8">
+                                            <select name="product_brand" id="product_brand" class="form-control" data-next="product_details">
+                                                <option value="0">{{ __('No') }}</option>
+                                                <option {{ $invoiceLayout->product_brand == 1 ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Description') }}</b></label>
+                                        <div class="col-8">
+                                            <select name="product_details" id="product_details" class="form-control" data-next="product_code">
+                                                <option value="0">{{ __('No') }}</option>
+                                                <option {{ $invoiceLayout->product_details == 1 ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Product Code') }}</b></label>
+                                        <div class="col-8">
+                                            <select name="product_code" id="product_code" class="form-control" data-next="account_no">
+                                                <option value="0">{{ __('No') }}</option>
+                                                <option {{ $invoiceLayout->product_code == 1 ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
                                             </select>
                                         </div>
                                     </div>

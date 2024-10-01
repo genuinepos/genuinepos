@@ -38,12 +38,12 @@
                                                     @csrf
                                                     <div class="left-inner-addon input-container">
                                                         <i class="fa fa-user"></i>
-                                                        <input required type="text" name="username_or_email" class="form-control form-st" value="{{ old('username_or_email') }}" placeholder="{{ __('Username Or Email Address') }}" />
+                                                        <input required type="text" name="username_or_email" class="form-control form-st" value="{{ old('username_or_email') ? old('username_or_email') : (tenant('id') == 'demo' ? 'demos' : '') }}" placeholder="{{ __('Username Or Email Address') }}" />
                                                     </div>
 
                                                     <div class="left-inner-addon input-container">
                                                         <i class="fa fa-key"></i>
-                                                        <input required name="password" type="Password" class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
+                                                        <input required name="password" type="Password" class="form-control form-st rounded-bottom" value="{{ tenant('id') == 'demo' ? 'demos' : '' }}" placeholder="{{ __('Password') }}" />
                                                     </div>
 
                                                     @if (Session::has('errorMsg'))
@@ -130,7 +130,7 @@
 
     {{-- <div class="back_btn_wrapper">
         <div class="back_btn">
-            <a href="#" class="btn">@lang('menu.back')</a>
+            <a href="#" class="btn">{{ __('Back') }}</a>
         </div>
     </div> --}}
 @endsection

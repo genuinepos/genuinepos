@@ -15,14 +15,13 @@
                     </a>
                 </li>
 
-                @if ($generalSettings['modules__contacts'] == '1')
-                    @if (auth()->user()->can('supplier_all') || auth()->user()->can('supplier_add') || auth()->user()->can('supplier_import') || auth()->user()->can('customer_all') || auth()->user()->can('customer_add') || auth()->user()->can('customer_import') || auth()->user()->can('customer_group') || auth()->user()->can('supplier_report') || auth()->user()->can('customer_report'))
-                        <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
-                            <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/agenda.svg') }}">
-                                <p class="title">{{ __('Contacts') }}</p>
-                            </a>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('stock_issues_index') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report') || auth()->user()->can('product_expired_list'))
+                    <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
+                        <a href="#">
+                            <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
+                            <p class="title">{{ __('Inventory') }}</p>
+                        </a>
+                    </li>
                 @endif
 
                 @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('stock_issues_index') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report') || auth()->user()->can('product_expired_list'))

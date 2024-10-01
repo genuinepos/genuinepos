@@ -10,7 +10,7 @@
                 <div class="name-head">
                     <h5>{{ __('Units') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -70,9 +70,11 @@
         var unitsTable = $('.data_tbl').DataTable({
             processing: true,
             dom: "lBfrtip",
-            buttons: [{
+            buttons: [
+                {
                     extend: 'excel',
-                    text: 'Excel',
+                    'title': "{{ __('List of Units') }}",
+                    text: '<i class="fas fa-file-excel"></i> ' + "{{ __('Excel') }}" + '',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -80,7 +82,8 @@
                 },
                 {
                     extend: 'pdf',
-                    text: 'Pdf',
+                    'title': "{{ __('List of Units') }}",
+                    text: '<i class="fas fa-file-pdf"></i> ' + "{{ __('Pdf') }}" + '',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
@@ -88,12 +91,14 @@
                 },
                 {
                     extend: 'print',
-                    text: 'Print',
+                    'title': "{{ __('List of Units') }}",
+                    text: '<i class="fas fa-print"></i> ' + "{{ __('Print') }}" + '',
                     className: 'btn btn-primary',
+                    autoPrint: true,
                     exportOptions: {
-                        columns: 'th:not(:last-child)'
+                        columns: ':visible'
                     }
-                },
+                }
             ],
             serverSide: true,
             "language": {

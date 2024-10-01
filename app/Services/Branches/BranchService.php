@@ -60,10 +60,12 @@ class BranchService
 
                 if ($row->branch_type == BranchType::DifferentShop->value) {
 
-                    return '</span> <span class="fw-bold">' . $row->branch_name . ' (' . $row->area_name . ')' . '</span>';
+                    return '<span class="fw-bold">' . $row->branch_name . ' (' . $row->area_name . ')' . '</span>';
                 } else {
 
-                    return '<span class="fas fa-long-arrow-alt-right text-success" style="font-size:15px;"></span> <span class="fw-bold">' . $row->parent_branch_name . ' (' . $row->area_name . ')' . '</span>';
+                    // return '<span class="fas fa-long-arrow-alt-right text-success" style="font-size:15px;"></span> <span class="fw-bold">' . $row->parent_branch_name . ' (' . $row->area_name . ')' . '</span>';
+
+                    return '<span class="ps-3 fw-bold"> ---</span> <span class="fw-bold">' . $row->parent_branch_name . ' (' . $row->area_name . ')' . '</span>';
                 }
             })
 

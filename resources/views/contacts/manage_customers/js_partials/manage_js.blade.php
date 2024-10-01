@@ -101,18 +101,49 @@
                         $('#' + parentDiv + ' .total_sale').html(data.total_sale_string);
                         $('#' + parentDiv + ' .total_purchase').html(data.total_purchase_string);
                         $('#' + parentDiv + ' .total_return').html(data.total_return_string);
+
+                        if (data.total_return < 0) {
+
+                            $('#' + parentDiv + ' .total_return').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.total_return)) + '<span class="text-dark">)</span>');
+                        } else {
+
+                            $('#' + parentDiv + ' .total_return').html(data.total_return_string);
+                        }
+
                         $('#' + parentDiv + ' .total_received').html(data.total_received_string);
                         $('#' + parentDiv + ' .total_paid').html(data.total_paid_string);
-                        $('#' + parentDiv + ' .closing_balance').html(data.closing_balance_in_flat_amount_string);
+
+                        if (data.closing_balance_in_flat_amount < 0) {
+
+                            $('#' + parentDiv + ' .closing_balance').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.closing_balance_in_flat_amount)) + '<span class="text-dark">)</span>');
+                        } else {
+
+                            $('#' + parentDiv + ' .closing_balance').html(data.closing_balance_in_flat_amount_string);
+                        }
                     } else {
 
                         $('.opening_balance').html(data.opening_balance_in_flat_amount_string);
                         $('.total_sale').html(data.total_sale_string);
                         $('.total_purchase').html(data.total_purchase_string);
-                        $('.total_return').html(data.total_return_string);
+
+                        if (data.total_return < 0) {
+
+                            $('.total_return').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.total_return)) + '<span class="text-dark">)</span>');
+                        } else {
+
+                            $('.total_return').html(data.total_return_string);
+                        }
+
                         $('.total_received').html(data.total_received_string);
                         $('.total_paid').html(data.total_paid_string);
-                        $('.closing_balance').html(data.closing_balance_in_flat_amount_string);
+
+                        if (data.closing_balance_in_flat_amount < 0) {
+
+                            $('.closing_balance').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.closing_balance_in_flat_amount)) + '<span class="text-dark">)</span>');
+                        } else {
+
+                            $('.closing_balance').html(data.closing_balance_in_flat_amount_string);
+                        }
                     }
 
                     if (changeLedgerTableCurrentTotal == true) {
@@ -121,7 +152,6 @@
                         $('#ledger_table_total_credit').html(data.all_total_debit_string);
                         $('#ledger_table_current_balance').html(data.closing_balance_string);
                     }
-
                 }
             });
         }

@@ -11,7 +11,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 203%;
             z-index: 9999999;
             padding: 0;
             left: 0%;
@@ -209,8 +210,15 @@
                                                 <div class="input-group mt-1">
                                                     <label class=" col-4"><b>{{ __('Date') }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) }}" data-next="sale_account_id" autocomplete="off">
                                                         <span class="error error_date"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class=" col-4"><b>{{ __('Reference') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input type="text" name="reference" class="form-control" id="reference" value="{{ $sale->reference }}" data-next="sale_account_id" placeholder="{{ __('Reference') }}" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -332,7 +340,7 @@
                                         <div class="row g-2 align-items-end">
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
+                                                <input type="text" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
@@ -353,12 +361,23 @@
                                                 <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6">
+                                            <div class="col-xl-3 col-md-6">
                                                 <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __('Add') }}</a>
                                                 <input type="reset" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger" value="{{ __('Reset') }}">
+
+                                                @if (auth()->user()->can('view_product_cost_is_sale_screed'))
+                                                    <a>
+                                                        <span class="d-hide" id="display_unit_cost_section">
+                                                            <span>{{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
+                                                            <span class="text-muted" id="display_unit_cost">0.00</span>
+                                                        </span>
+
+                                                        <span class="btn btn-sm btn-info text-white" id="display_unit_cost_toggle_btn">{{ __('Cost') }}</span>
+                                                    </a>
+                                                @endif
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6 offset-2">
+                                            <div class="col-xl-2 col-md-6 offset-xl-1">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">{{ __('Stock') }}</span>
@@ -408,7 +427,9 @@
                                                                     <tr id="select_item">
                                                                         <td class="text-start">
                                                                             @php
-                                                                                $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
+                                                                                $variant = $saleProduct->variant_id ? ' -' . $saleProduct?->variant?->variant_name : '';
+
+                                                                                $productCode = $saleProduct?->variant ? $saleProduct?->variant?->variant_code : $saleProduct?->product?->product_code;
 
                                                                                 $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
@@ -422,8 +443,8 @@
                                                                                 $baseUnitMultiplier = $saleProduct?->unit?->base_unit_multiplier ? $saleProduct?->unit?->base_unit_multiplier : 1;
                                                                             @endphp
 
-                                                                            <span class="product_name">{{ $saleProduct->product->name . $variant }}</span>
-                                                                            <input type="hidden" id="item_name" value="{{ $saleProduct->product->name . $variant }}">
+                                                                            <span class="product_name">{{ $saleProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                                            <input type="hidden" id="item_name" value="{{ $saleProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                                             <input type="hidden" id="is_show_emi_on_pos" value="{{ $saleProduct->product->is_show_emi_on_pos }}">
                                                                             <input type="hidden" name="descriptions[]" id="descriptions" value="{{ $saleProduct->description }}">
                                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $saleProduct->product_id }}">

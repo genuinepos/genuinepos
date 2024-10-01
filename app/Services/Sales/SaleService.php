@@ -172,11 +172,11 @@ class SaleService
             $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
             $link = '';
-            $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+            $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn" style="line-height:1.5!important;">' . $html . '</a>';
 
             if ($row->sales_order_id) {
 
-                $link .= '<p class="p-0 m-0">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a>';
+                $link .= '<span class="p-0 m-0" style="line-height:1.5!important;">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a><span>';
             }
 
             return $link;
@@ -302,6 +302,7 @@ class SaleService
         $addSale->total_invoice_amount = $request->total_invoice_amount;
         $addSale->due = $request->total_invoice_amount;
         $addSale->sales_order_id = isset($request->sales_order_id) ? $request->sales_order_id : null;
+        $addSale->reference = isset($request->reference) ? $request->reference : null;
         $addSale->sale_screen = $saleScreenType;
         $addSale->save();
 
@@ -340,6 +341,7 @@ class SaleService
         $updateSale->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->note = $request->note;
+        $updateSale->reference = isset($request->reference) ? $request->reference : null;
         $updateSale->total_invoice_amount = $request->total_invoice_amount;
         $updateSale->save();
 

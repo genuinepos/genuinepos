@@ -14,12 +14,15 @@
 
         tr {
             page-break-inside: avoid;
-            page-break-after: auto
+            page-break-after: auto;
         }
 
         td {
             page-break-inside: avoid;
-            page-break-after: auto
+            page-break-after: auto;
+            line-height: 1 !important;
+            padding: 0px !important;
+            margin: 0px !important;
         }
 
         thead {
@@ -113,7 +116,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                    <p style="text-transform: uppercase;font-size:11px!important;" class="p-0 m-0">
                         <strong>
                             @if ($holdInvoice?->branch)
                                 @if ($holdInvoice?->branch?->parent_branch_id)
@@ -127,7 +130,7 @@
                         </strong>
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @if ($holdInvoice?->branch)
                             {{ $holdInvoice->branch->address . ', ' }}
                             {{ $invoiceLayout->branch_city == 1 ? $holdInvoice->branch->city . ', ' : '' }}
@@ -139,7 +142,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:11px!important;">
                         @php
                             $email = $holdInvoice?->branch ? $holdInvoice?->branch?->email : $generalSettings['business_or_shop__email'];
                             $phone = $holdInvoice?->branch ? $holdInvoice?->branch?->phone : $generalSettings['business_or_shop__phone'];
@@ -160,7 +163,7 @@
         @if ($invoiceLayout->is_header_less == 0)
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h5>
+                    <h6 class="fw-bold" style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h6>
                 </div>
             </div>
         @endif
@@ -201,7 +204,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h5>
+                        <h6 style="text-transform: uppercase;">{{ __('Hold Invoice') }}</h6>
                     </div>
                 @endif
 
@@ -232,13 +235,21 @@
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
 
+                        @if ($invoiceLayout->product_brand)
+                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Brand.') }}</th>
+                        @endif
+
                         @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Warranty') }}</th>
                         @endif
 
                         <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Quantity') }}</th>
-                        <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
 
+                        @if ($invoiceLayout->product_price_exc_tax)
+                            <th class="fw-bold text-end" style="font-size:11px!important;">
+                                {{ $invoiceLayout->product_price_inc_tax ? __('Price (Exc. Tax)') : __('Unit Price') }}
+                            </th>
+                        @endif
 
                         @if ($invoiceLayout->product_discount)
                             <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Discount') }}</th>
@@ -248,7 +259,9 @@
                             <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
                         @endif
 
-                        <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                        @if ($invoiceLayout->product_price_inc_tax)
+                            <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
+                        @endif
 
                         <th class="fw-bold text-end" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
                     </tr>
@@ -263,8 +276,23 @@
                                 @if ($holdInvoiceProduct->variant_id)
                                     -{{ $holdInvoiceProduct->variant_name }}
                                 @endif
-                                {!! $invoiceLayout->product_imei == 1 ? '<br><small class="text-muted">' . $holdInvoiceProduct->description . '</small>' : '' !!}
+
+                                @php
+                                    $productCode = $holdInvoiceProduct->variant_code ? $holdInvoiceProduct->variant_code : $holdInvoiceProduct->product_code;
+                                @endphp
+
+                                {!! $invoiceLayout->product_code == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' : '' !!}
+
+                                {!! isset($holdInvoiceProduct->description) ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . $holdInvoiceProduct->description . '</span>' : '' !!}
+
+                                {!! $invoiceLayout->product_details == 1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . Str::limit($holdInvoiceProduct->product_details, 1000, '...') . '</span>' : '' !!}
                             </td>
+
+                            @if ($invoiceLayout->product_brand)
+                                <td class="text-start" style="font-size:9px!important;">
+                                    {{ $holdInvoiceProduct->brand_name }}
+                                </td>
+                            @endif
 
                             @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
                                 <td class="text-start" style="font-size:11px!important;">
@@ -280,7 +308,9 @@
 
                             <td class="text-end" style="font-size:11px!important;">{{ $holdInvoiceProduct->quantity }}/{{ $holdInvoiceProduct->unit_code_name }}</td>
 
-                            <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($holdInvoiceProduct->unit_price_exc_tax) }} </td>
+                            @if ($invoiceLayout->product_price_exc_tax)
+                                <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($holdInvoiceProduct->unit_price_exc_tax) }} </td>
+                            @endif
 
                             @if ($invoiceLayout->product_discount)
                                 <td class="text-end" style="font-size:11px!important;">
@@ -294,7 +324,9 @@
                                 </td>
                             @endif
 
-                            <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($holdInvoiceProduct->unit_price_inc_tax) }}</td>
+                            @if ($invoiceLayout->product_price_inc_tax)
+                                <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($holdInvoiceProduct->unit_price_inc_tax) }}</td>
+                            @endif
 
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($holdInvoiceProduct->subtotal) }}
@@ -325,6 +357,14 @@
                 @if ($invoiceLayout->show_total_in_word == 1)
                     <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __('Inword') }} : </strong> <span id="inword"></span> {{ __('Only') }}.</p>
                 @endif
+
+                <div class="bank_details mt-2">
+                    <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Note') }} : </span> {{ $holdInvoice?->note }}</p>
+                </div>
+
+                <div class="bank_details mt-1">
+                    <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $holdInvoice?->shipment_address }}</p>
+                </div>
             </div>
 
             <div class="col-6">
@@ -348,7 +388,7 @@
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Vat/Tax') }} : {{ $holdInvoice?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 ({{ $holdInvoice->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($holdInvoice->order_tax_amount) }}
                             </td>

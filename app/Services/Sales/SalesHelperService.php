@@ -134,11 +134,11 @@ class SalesHelperService
             $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
             $link = '';
-            $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
+            $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">' . $html . '</a>';
 
             if ($row->sales_order_id) {
 
-                $link .= '<p class="p-0 m-0">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a>';
+                $link .= '<span class="p-0 m-0 d-block" style="line-height:1.5!important;font-size:11px;">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->order_id . '</a></span>';
             }
 
             return $link;

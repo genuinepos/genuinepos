@@ -62,7 +62,7 @@
 
     function calculateEditOrAddAmount() {
 
-        var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0.00;
+        var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0;
         var e_tax_type = $('#e_tax_type').val();
         var e_unit_discount_type = $('#e_unit_discount_type').val();
         var e_quantity = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
@@ -280,7 +280,7 @@
                 tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
                 tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
                 var __description = e_description.length > 30 ? e_description.substring(0, 40) + '...' : e_description;
-                tr.find('#description').val(__description);
+                tr.find('#description').val(e_description);
                 tr.find('#span_description').html(__description);
 
                 $('#editProductModal').modal('hide');

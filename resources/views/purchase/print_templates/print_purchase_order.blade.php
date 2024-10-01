@@ -25,6 +25,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -87,7 +90,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                    <p style="text-transform: uppercase;font-size:10px!important;" class="p-0 m-0">
                         <strong>
                             @if ($order?->branch)
                                 @if ($order?->branch?->parent_branch_id)
@@ -101,7 +104,7 @@
                         </strong>
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($order?->branch)
                             {{ $order->branch->city . ', ' . $order->branch->state . ', ' . $order->branch->zip_code . ', ' . $order->branch->country }}
                         @else
@@ -109,7 +112,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($order?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $order?->branch?->email }},
                             <span class="fw-bold">{{ __('Phone') }} : </span> {{ $order?->branch?->phone }}
@@ -123,24 +126,24 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;">{{ __('Purchase Order') }}</h5>
+                    <h6 style="text-transform: uppercase;">{{ __('Purchase Order') }}</h6>
                 </div>
             </div>
 
             <div class="row mt-2">
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span>{{ $order?->supplier?->name }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Address') }} : </span>{{ $order?->supplier?->address }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Phone') }} : </span>{{ $order?->supplier?->phone }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span>{{ $order?->supplier?->name }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Address') }} : </span>{{ $order?->supplier?->address }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Phone') }} : </span>{{ $order?->supplier?->phone }}</li>
                     </ul>
                 </div>
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span> {{ $order->invoice_id }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('P/o ID') }} : </span> {{ $order->invoice_id }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('P/o Date') }} : </span>{{ date($dateFormat, strtotime($order->date)) }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $order?->admin?->prefix . ' ' . $order?->admin?->name . ' ' . $order?->admin?->last_name }}
                         </li>
                     </ul>
@@ -148,10 +151,9 @@
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Delivery Date') }} : </span>{{ $order->delivery_date ? date($dateFormat, strtotime($order->delivery_date)) : '' }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Receiving Status') }} : </span>{{ $order->po_receiving_status }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Delivery Date') }} : </span>{{ $order->delivery_date ? date($dateFormat, strtotime($order->delivery_date)) : '' }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Receiving Status') }} : </span>{{ $order->po_receiving_status }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
                             @php
                                 $payable = $order->total_purchase_amount - $order->total_return_amount;
                             @endphp
@@ -171,15 +173,15 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Description') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ordered Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Description') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Ordered Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Received Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Pending Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Discount') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -187,22 +189,24 @@
                             <tr>
                                 @php
                                     $variant = $orderProduct?->variant ? ' - ' . $orderProduct?->variant?->variant_name : '';
+                                    $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                 @endphp
 
-                                <td class="text-start" style="font-size:11px!important;">
-                                    {{ Str::limit($orderProduct->product->name, 25) . ' ' . $variant }}
-                                    <small>{!! $orderProduct->description ? '<br/>' . $orderProduct->description : '' !!}</small>
+                                <td class="text-start" style="font-size:10px!important;">
+                                    {{ $orderProduct->product->name . ' ' . $variant }}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
+                                    {!! $orderProduct->description1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">'. $orderProduct->description . '</span>' : '' !!}
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) }}/{{ $orderProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}/{{ $orderProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}/{{ $orderProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_exc_tax) }}
                                 </td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }}</td>
-                                <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount) }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }}</td>
+                                <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
 
                             </tr>
                         @endforeach
@@ -212,69 +216,77 @@
 
             <div class="row">
                 <div class="col-6">
-                    <p style="font-size:11px!important;"><strong>{{ __('Order Note') }} : </strong> </p>
-                    <p style="font-size:11px!important;">{{ $order->purchase_note }}</p><br>
-                    <p style="font-size:11px!important;"><strong>{{ __('Shipment Details') }} : </strong> </p>
-                    <p style="font-size:11px!important;">{{ $order->shipment_details }}</p>
+                    <p style="font-size:10px!important;"><strong>{{ __('Order Note') }} : </strong> </p>
+                    <p style="font-size:10px!important;">{{ $order->purchase_note }}</p><br>
+                    <p style="font-size:10px!important;"><strong>{{ __('Shipment Details') }} : </strong> </p>
+                    <p style="font-size:10px!important;">{{ $order->shipment_details }}</p>
                 </div>
 
                 <div class="col-6">
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Discount') }} :
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Discount') }} :
                                     {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->order_discount) }} {{ $order->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Order Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Order Vat/Tax') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ '(' . $order->purchase_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($order->purchase_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Shipment Charge') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Ordered Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Ordered Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($order->total_purchase_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Paid') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt(isset($payingAmount) ? $payingAmount : $order->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td colspan="2" class="text-end fw-bold" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td colspan="2" class="text-end fw-bold" style="font-size:10px!important;">
+                                    @if ($order->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($order->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end fw-bold" style="font-size:10px!important;">
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>
@@ -285,15 +297,15 @@
             <br /><br />
             <div class="row">
                 <div class="col-4 text-start">
-                    <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.prepared_by')</p>
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size:10px;">{{ __('Prepared By') }}</p>
                 </div>
 
                 <div class="col-4 text-center">
-                    <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.checked_by')</p>
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size:10px;">{{ __('Checked By') }}</p>
                 </div>
 
                 <div class="col-4 text-end">
-                    <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.authorized_by')</p>
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size:10px;">{{ __('Authorized By') }}</p>
                 </div>
             </div>
             <br>
@@ -340,6 +352,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -488,13 +503,13 @@
                         <tr>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Description') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Ordered Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Received Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Pending Qty') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Discount') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Vat/Tax') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
                             <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Subtotal') }}</th>
-                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Pending Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:9px!important;">{{ __('Received Qty') }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -502,13 +517,17 @@
                             <tr>
                                 @php
                                     $variant = $orderProduct?->variant ? ' - ' . $orderProduct?->variant?->variant_name : '';
+                                    $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                 @endphp
 
                                 <td class="text-start" style="font-size:9px!important;">
                                     {{ Str::limit($orderProduct->product->name, 25) . ' ' . $variant }}
-                                    <small>{!! $orderProduct->description ? '<br/>' . $orderProduct->description : '' !!}</small>
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
+                                    {!! $orderProduct->description1 ? '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">'. $orderProduct->description . '</span>' : '' !!}
                                 </td>
-                                <td class="text-start" style="font-size:9px!important;">{{ $orderProduct->ordered_quantity }}</td>
+                                <td class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) }}/{{ $orderProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}/{{ $orderProduct?->unit?->code_name }}</td>
+                                <td class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}/{{ $orderProduct?->unit?->code_name }}</td>
                                 <td class="text-start" style="font-size:9px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_exc_tax) }}
                                 </td>
@@ -516,8 +535,7 @@
                                 <td class="text-start" style="font-size:9px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
                                 <td class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }}</td>
                                 <td class="text-start" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
-                                <td class="text-start" style="font-size:9px!important;">{{ $orderProduct->pending_quantity }}</td>
-                                <td class="text-start" style="font-size:9px!important;">{{ $orderProduct->received_quantity }}</td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -551,7 +569,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Order Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Order Vat/Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
                                     {{ '(' . $order->purchase_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($order->purchase_tax_amount) }}
                                 </td>
@@ -581,14 +599,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Due (On Order)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td colspan="2" class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @if ($order->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($order->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>

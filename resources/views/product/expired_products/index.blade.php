@@ -12,7 +12,7 @@
                             <div class="name-head">
                                 <h6>{{ __('Expired Products') }}</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -28,7 +28,7 @@
                                                     <div class="col-md-4">
                                                         <label><strong>{{ location_label() }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">{{ __("All") }}</option>
+                                                            <option value="">{{ __('All') }}</option>
                                                             <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">

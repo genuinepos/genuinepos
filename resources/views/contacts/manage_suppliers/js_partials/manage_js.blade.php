@@ -6,9 +6,16 @@
         "serverSide": true,
         "searching": false,
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary'
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary'
+            },
         ],
         "lengthMenu": [
             [50, 100, 500, 1000, -1],
@@ -27,13 +34,37 @@
                 d.inventory_list = $('#ledger_inventory_list').val();
             }
         },
-        columns: [{ data: 'date', name: 'account_ledgers.date' },
-            { data: 'particulars', name: 'particulars' },
-            { data: 'voucher_type', name: 'voucher_no' },
-            { data: 'voucher_no', name: 'voucher_no' },
-            { data: 'debit', name: 'account_ledgers.debit', className: 'text-end' },
-            { data: 'credit', name: 'account_ledgers.credit', className: 'text-end' },
-            { data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end' },
+        columns: [{
+                data: 'date',
+                name: 'account_ledgers.date'
+            },
+            {
+                data: 'particulars',
+                name: 'particulars'
+            },
+            {
+                data: 'voucher_type',
+                name: 'voucher_no'
+            },
+            {
+                data: 'voucher_no',
+                name: 'voucher_no'
+            },
+            {
+                data: 'debit',
+                name: 'account_ledgers.debit',
+                className: 'text-end'
+            },
+            {
+                data: 'credit',
+                name: 'account_ledgers.credit',
+                className: 'text-end'
+            },
+            {
+                data: 'running_balance',
+                name: 'account_ledgers.running_balance',
+                className: 'text-end'
+            },
         ],
         fnDrawCallback: function() {
 
@@ -43,16 +74,39 @@
 
     var purchasesTable = $('#purchases-table').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
         ],
         "processing": true,
         "serverSide": true,
         //aaSorting: [[0, 'asc']],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             "url": "{{ route('purchases.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
@@ -62,27 +116,64 @@
                 d.to_date = $('#purchases_to_date').val();
             }
         },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'purchases.date'},
-            {data: 'invoice_id',name: 'purchases.invoice_id'},
-            {data: 'branch',name: 'branches.name'},
-            {data: 'supplier_name', name: 'suppliers.name'},
-            {data: 'payment_status',name: 'payment_status', className: 'fw-bold'},
-            {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end fw-bold'},
-            {data: 'paid',name: 'paid', className: 'text-end fw-bold'},
-            {data: 'purchase_return_amount',name: 'purchase_return_amount', className: 'text-end fw-bold'},
-            {data: 'due',name: 'due', className: 'text-end fw-bold'},
-            {data: 'created_by',name: 'created_by.name'},
-        ],fnDrawCallback: function() {
+        columns: [{
+                data: 'action'
+            },
+            {
+                data: 'date',
+                name: 'purchases.date'
+            },
+            {
+                data: 'invoice_id',
+                name: 'purchases.invoice_id'
+            },
+            {
+                data: 'branch',
+                name: 'branches.name'
+            },
+            {
+                data: 'supplier_name',
+                name: 'suppliers.name'
+            },
+            {
+                data: 'payment_status',
+                name: 'payment_status',
+                className: 'fw-bold'
+            },
+            {
+                data: 'total_purchase_amount',
+                name: 'total_purchase_amount',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'paid',
+                name: 'paid',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'purchase_return_amount',
+                name: 'purchase_return_amount',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'due',
+                name: 'due',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by.name'
+            },
+        ],
+        fnDrawCallback: function() {
 
-            var total_purchase_amount = sum_table_col($('.purchases-table'), 'total_purchase_amount');
+            var total_purchase_amount = sum_table_col($('#purchases-table'), 'total_purchase_amount');
             $('#purchases_total_purchase_amount').text(bdFormat(total_purchase_amount));
-            var paid = sum_table_col($('.purchases-table'), 'paid');
+            var paid = sum_table_col($('#purchases-table'), 'paid');
             $('#purchases_paid').text(bdFormat(paid));
-            var due = sum_table_col($('.purchases-table'), 'due');
+            var due = sum_table_col($('#purchases-table'), 'due');
             $('#purchases_due').text(bdFormat(due));
-            var purchase_return_amount = sum_table_col($('.purchases-table'), 'purchase_return_amount');
+            var purchase_return_amount = sum_table_col($('#purchases-table'), 'purchase_return_amount');
             $('#purchases_purchase_return_amount').text(bdFormat(purchase_return_amount));
 
             $('.data_preloader').hide();
@@ -91,16 +182,39 @@
 
     var purchaseOrdersTable = $('#purchase-orders-table').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
         ],
         "processing": true,
         "serverSide": true,
         //aaSorting: [[0, 'asc']],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             "url": "{{ route('purchase.orders.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
@@ -110,25 +224,62 @@
                 d.to_date = $('#purchase_orders_to_date').val();
             }
         },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'purchases.date'},
-            {data: 'invoice_id',name: 'purchases.invoice_id'},
-            {data: 'branch',name: 'branches.name'},
-            {data: 'supplier_name', name: 'suppliers.name'},
-            {data: 'created_by', name: 'created_by.name'},
-            {data: 'receiving_status', name: 'purchases.po_receiving_status', className: 'fw-bold'},
-            {data: 'payment_status', name: 'created_by.last_name', className: 'fw-bold'},
-            {data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end fw-bold'},
-            {data: 'paid', name: 'purchases.paid', className: 'text-end fw-bold'},
-            {data: 'due', name: 'purchases.due', className: 'text-end fw-bold'},
-        ],fnDrawCallback: function() {
+        columns: [{
+                data: 'action'
+            },
+            {
+                data: 'date',
+                name: 'purchases.date'
+            },
+            {
+                data: 'invoice_id',
+                name: 'purchases.invoice_id'
+            },
+            {
+                data: 'branch',
+                name: 'branches.name'
+            },
+            {
+                data: 'supplier_name',
+                name: 'suppliers.name'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by.name'
+            },
+            {
+                data: 'receiving_status',
+                name: 'purchases.po_receiving_status',
+                className: 'fw-bold'
+            },
+            {
+                data: 'payment_status',
+                name: 'created_by.last_name',
+                className: 'fw-bold'
+            },
+            {
+                data: 'total_purchase_amount',
+                name: 'total_purchase_amount',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'paid',
+                name: 'purchases.paid',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'due',
+                name: 'purchases.due',
+                className: 'text-end fw-bold'
+            },
+        ],
+        fnDrawCallback: function() {
 
-            var total_purchase_amount = sum_table_col($('.purchase-orders-table'), 'total_purchase_amount');
+            var total_purchase_amount = sum_table_col($('#purchase-orders-table'), 'total_purchase_amount');
             $('#purchase_orders_total_purchase_amount').text(bdFormat(total_purchase_amount));
-            var paid = sum_table_col($('.purchase-orders-table'), 'paid');
+            var paid = sum_table_col($('#purchase-orders-table'), 'paid');
             $('#purchase_orders_paid').text(bdFormat(paid));
-            var due = sum_table_col($('.purchase-orders-table'), 'due');
+            var due = sum_table_col($('#purchase-orders-table'), 'due');
             $('#purchase_orders_due').text(bdFormat(due));
             $('.data_preloader').hide();
         }
@@ -138,13 +289,36 @@
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
         ],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             // "url": "{{ route('sales.index', ['customerAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "url": "{{ route('sales.helper.sales.list.table', ['customerAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
@@ -156,38 +330,85 @@
                 d.to_date = $('#sales_to_date').val();
             }
         },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'date'},
-            {data: 'invoice_id', name: 'sales.invoice_id', className: 'fw-bold'},
-            {data: 'branch', name: 'branches.name'},
-            {data: 'customer_name', name: 'customers.name'},
-            {data: 'payment_status', name: 'created_by.name', className: 'text-start'},
-            {data: 'total_item', name: 'total_item', className: 'text-end fw-bold'},
-            {data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold'},
-            {data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold'},
-            {data: 'received_amount', name: 'paid', className: 'text-end fw-bold'},
-            {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end fw-bold'},
-            {data: 'due', name: 'due', className: 'text-end fw-bold'},
-            {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
+        columns: [{
+                data: 'action'
+            },
+            {
+                data: 'date',
+                name: 'date'
+            },
+            {
+                data: 'invoice_id',
+                name: 'sales.invoice_id',
+                className: 'fw-bold'
+            },
+            {
+                data: 'branch',
+                name: 'branches.name'
+            },
+            {
+                data: 'customer_name',
+                name: 'customers.name'
+            },
+            {
+                data: 'payment_status',
+                name: 'created_by.name',
+                className: 'text-start'
+            },
+            {
+                data: 'total_item',
+                name: 'total_item',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'total_qty',
+                name: 'total_qty',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'total_invoice_amount',
+                name: 'total_invoice_amount',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'received_amount',
+                name: 'paid',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'sale_return_amount',
+                name: 'sale_return_amount',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'due',
+                name: 'due',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by.name',
+                className: 'text-end fw-bold'
+            },
 
-        ],fnDrawCallback: function() {
-            var total_item = sum_table_col($('.sales-table'), 'total_item');
+        ],
+        fnDrawCallback: function() {
+            var total_item = sum_table_col($('#sales-table'), 'total_item');
             $('#sales_total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.sales-table'), 'total_qty');
+            var total_qty = sum_table_col($('#sales-table'), 'total_qty');
             $('#sales_total_qty').text(bdFormat(total_qty));
 
-            var total_invoice_amount = sum_table_col($('.sales-table'), 'total_invoice_amount');
+            var total_invoice_amount = sum_table_col($('#sales-table'), 'total_invoice_amount');
             $('#sales_total_invoice_amount').text(bdFormat(total_invoice_amount));
 
-            var received_amount = sum_table_col($('.sales-table'), 'received_amount');
+            var received_amount = sum_table_col($('#sales-table'), 'received_amount');
             $('#sales_received_amount').text(bdFormat(received_amount));
 
-            var sale_return_amount = sum_table_col($('.sales-table'), 'sale_return_amount');
+            var sale_return_amount = sum_table_col($('#sales-table'), 'sale_return_amount');
             $('#sales_sale_return_amount').text(bdFormat(sale_return_amount));
 
-            var due = sum_table_col($('.sales-table'), 'due');
+            var due = sum_table_col($('#sales-table'), 'due');
             $('#sales_due').text(bdFormat(due));
 
             $('.data_preloader').hide();
@@ -198,13 +419,36 @@
         "processing": true,
         "serverSide": true,
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
         ],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             "url": "{{ route('sale.orders.index', ['customerAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
@@ -214,34 +458,77 @@
                 d.to_date = $('#sales_to_date').val();
             }
         },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'date'},
-            {data: 'order_id', name: 'sales.order_id', className: 'fw-bold'},
-            {data: 'branch', name: 'branches.name'},
-            {data: 'customer_name', name: 'customers.name'},
-            {data: 'payment_status', name: 'created_by.name', className: 'text-start'},
-            {data: 'total_item', name: 'total_item', className: 'text-end fw-bold'},
-            {data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold'},
-            {data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold'},
-            {data: 'received_amount', name: 'paid', className: 'text-end fw-bold'},
-            {data: 'due', name: 'due', className: 'text-end fw-bold'},
-            {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
+        columns: [{
+                data: 'action'
+            },
+            {
+                data: 'date',
+                name: 'date'
+            },
+            {
+                data: 'order_id',
+                name: 'sales.order_id',
+                className: 'fw-bold'
+            },
+            {
+                data: 'branch',
+                name: 'branches.name'
+            },
+            {
+                data: 'customer_name',
+                name: 'customers.name'
+            },
+            {
+                data: 'payment_status',
+                name: 'created_by.name',
+                className: 'text-start'
+            },
+            {
+                data: 'total_item',
+                name: 'total_item',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'total_ordered_qty',
+                name: 'total_ordered_qty',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'total_invoice_amount',
+                name: 'total_invoice_amount',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'received_amount',
+                name: 'paid',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'due',
+                name: 'due',
+                className: 'text-end fw-bold'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by.name',
+                className: 'text-end fw-bold'
+            },
 
-        ],fnDrawCallback: function() {
-            var total_item = sum_table_col($('.sales-order-table'), 'total_item');
+        ],
+        fnDrawCallback: function() {
+            var total_item = sum_table_col($('#sales-order-table'), 'total_item');
             $('#sales_order_total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.sales-order-table'), 'total_qty');
-            $('#sales_order_total_qty').text(bdFormat(total_qty));
+            var total_ordered_qty = sum_table_col($('#sales-order-table'), 'total_ordered_qty');
+            $('#sales_order_total_qty').text(bdFormat(total_ordered_qty));
 
-            var total_invoice_amount = sum_table_col($('.sales-order-table'), 'total_invoice_amount');
+            var total_invoice_amount = sum_table_col($('#sales-order-table'), 'total_invoice_amount');
             $('#sales_order_total_invoice_amount').text(bdFormat(total_invoice_amount));
 
-            var received_amount = sum_table_col($('.sales-order-table'), 'received_amount');
+            var received_amount = sum_table_col($('#sales-order-table'), 'received_amount');
             $('#sales_order_received_amount').text(bdFormat(received_amount));
 
-            var due = sum_table_col($('.sales-order-table'), 'due');
+            var due = sum_table_col($('#sales-order-table'), 'due');
             $('#sales_order_due').text(bdFormat(due));
 
             $('.data_preloader').hide();
@@ -250,16 +537,39 @@
 
     var receiptTable = $('#receipts-table').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
         ],
         "processing": true,
         "serverSide": true,
         //aaSorting: [[0, 'asc']],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             "url": "{{ route('receipts.index', ['creditAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
@@ -268,24 +578,58 @@
                 d.to_date = $('#receipts_to_date').val();
             }
         },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'accountingVoucher.date'},
-            {data: 'voucher_no',name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
-            {data: 'branch',name: 'accountingVoucher.branch.name'},
-            {data: 'reference', name: 'accountingVoucher.saleRef.invoice_id'},
-            {data: 'remarks',name: 'accountingVoucher.remarks'},
+        columns: [{
+                data: 'action'
+            },
+            {
+                data: 'date',
+                name: 'accountingVoucher.date'
+            },
+            {
+                data: 'voucher_no',
+                name: 'accountingVoucher.voucher_no',
+                className: 'fw-bold'
+            },
+            {
+                data: 'branch',
+                name: 'accountingVoucher.branch.name'
+            },
+            {
+                data: 'reference',
+                name: 'accountingVoucher.saleRef.invoice_id'
+            },
+            {
+                data: 'remarks',
+                name: 'accountingVoucher.remarks'
+            },
             // {data: 'received_from',name: 'account.name'},
-            {data: 'received_to',name: 'accountingVoucher.voucherDebitDescription.account.name'},
-            {data: 'payment_method',name: 'accountingVoucher.voucherDebitDescription.paymentMethod.name'},
-            {data: 'transaction_no',name: 'accountingVoucher.voucherDebitDescription.transaction_no'},
-            {data: 'cheque_no',name: 'accountingVoucher.voucherDebitDescription.cheque_no'},
+            {
+                data: 'received_to',
+                name: 'accountingVoucher.voucherDebitDescription.account.name'
+            },
+            {
+                data: 'payment_method',
+                name: 'accountingVoucher.voucherDebitDescription.paymentMethod.name'
+            },
+            {
+                data: 'transaction_no',
+                name: 'accountingVoucher.voucherDebitDescription.transaction_no'
+            },
+            {
+                data: 'cheque_no',
+                name: 'accountingVoucher.voucherDebitDescription.cheque_no'
+            },
             // {data: 'cheque_serial_no',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no'},
-            {data: 'total_amount',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no', className: 'text-end fw-bold'},
+            {
+                data: 'total_amount',
+                name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no',
+                className: 'text-end fw-bold'
+            },
             // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
-        ],fnDrawCallback: function() {
+        ],
+        fnDrawCallback: function() {
 
-            var total_amount = sum_table_col($('.receipts-table'), 'total_amount');
+            var total_amount = sum_table_col($('#receipts-table'), 'total_amount');
             $('#receipts_total_amount').text(bdFormat(total_amount));
             $('.data_preloader').hide();
         }
@@ -293,16 +637,39 @@
 
     var paymentTable = $('#payments-table').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        buttons: [{
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:first-child)'
+                }
+            },
         ],
         "processing": true,
         "serverSide": true,
         //aaSorting: [[0, 'asc']],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             "url": "{{ route('payments.index', ['debitAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
@@ -311,23 +678,57 @@
                 d.to_date = $('#payments_to_date').val();
             }
         },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'accountingVoucher.date'},
-            {data: 'voucher_no', name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
-            {data: 'branch', name: 'accountingVoucher.branch.name'},
-            {data: 'reference', name: 'accountingVoucher.purchaseRef.invoice_id'},
-            {data: 'remarks', name: 'accountingVoucher.remarks'},
-            {data: 'paid_from', name: 'accountingVoucher.voucherCreditDescription.account.name'},
-            {data: 'payment_method', name: 'accountingVoucher.voucherCreditDescription.paymentMethod.name'},
-            {data: 'transaction_no', name: 'accountingVoucher.voucherCreditDescription.transaction_no'},
-            {data: 'cheque_no', name: 'accountingVoucher.voucherCreditDescription.cheque_no'},
+        columns: [{
+                data: 'action'
+            },
+            {
+                data: 'date',
+                name: 'accountingVoucher.date'
+            },
+            {
+                data: 'voucher_no',
+                name: 'accountingVoucher.voucher_no',
+                className: 'fw-bold'
+            },
+            {
+                data: 'branch',
+                name: 'accountingVoucher.branch.name'
+            },
+            {
+                data: 'reference',
+                name: 'accountingVoucher.purchaseRef.invoice_id'
+            },
+            {
+                data: 'remarks',
+                name: 'accountingVoucher.remarks'
+            },
+            {
+                data: 'paid_from',
+                name: 'accountingVoucher.voucherCreditDescription.account.name'
+            },
+            {
+                data: 'payment_method',
+                name: 'accountingVoucher.voucherCreditDescription.paymentMethod.name'
+            },
+            {
+                data: 'transaction_no',
+                name: 'accountingVoucher.voucherCreditDescription.transaction_no'
+            },
+            {
+                data: 'cheque_no',
+                name: 'accountingVoucher.voucherCreditDescription.cheque_no'
+            },
             // {data: 'cheque_serial_no',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no'},
-            {data: 'total_amount',name: 'accountingVoucher.voucherCreditDescription.cheque_serial_no', className: 'text-end fw-bold'},
+            {
+                data: 'total_amount',
+                name: 'accountingVoucher.voucherCreditDescription.cheque_serial_no',
+                className: 'text-end fw-bold'
+            },
             // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
-        ],fnDrawCallback: function() {
+        ],
+        fnDrawCallback: function() {
 
-            var total_amount = sum_table_col($('.payments-table'), 'total_amount');
+            var total_amount = sum_table_col($('#payments-table'), 'total_amount');
             $('#payments_total_amount').text(bdFormat(total_amount));
 
             $('.data_preloader').hide();
@@ -349,108 +750,108 @@
     }
 
     var filterObj = {
-        branch_id : null,
-        from_date : null,
-        to_date : null,
+        branch_id: null,
+        from_date: null,
+        to_date: null,
     };
 
     // Submit filter form by select input changing
-    $(document).on('submit', '#filter_supplier_ledgers', function (e) {
+    $(document).on('submit', '#filter_supplier_ledgers', function(e) {
         e.preventDefault();
         $('.data_preloader').show();
         accountLedgerTable.ajax.reload();
 
         var filterObj = {
-            branch_id : $('#ledger_branch_id').val() ? $('#ledger_branch_id').val() : null,
-            from_date : $('#ledger_from_date').val() ? $('#ledger_from_date').val() : null,
-            to_date : $('#ledger_to_date').val() ? $('#ledger_to_date').val() : null,
+            branch_id: $('#ledger_branch_id').val() ? $('#ledger_branch_id').val() : null,
+            from_date: $('#ledger_from_date').val() ? $('#ledger_from_date').val() : null,
+            to_date: $('#ledger_to_date').val() ? $('#ledger_to_date').val() : null,
         };
 
         getAccountClosingBalance(filterObj, 'for_ledger', true);
     });
 
-     //Submit filter form by select input changing
-    $(document).on('submit', '#filter_sales', function (e) {
+    //Submit filter form by select input changing
+    $(document).on('submit', '#filter_sales', function(e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         var filterObj = {
-            branch_id : $('#sales_branch_id').val(),
-            from_date : $('#sale_from_date').val(),
-            to_date : $('#sales_to_date').val(),
+            branch_id: $('#sales_branch_id').val(),
+            from_date: $('#sale_from_date').val(),
+            to_date: $('#sales_to_date').val(),
         };
 
         getAccountClosingBalance(filterObj, 'for_sales', false);
     });
 
-    $(document).on('submit', '#filter_sales_order', function (e) {
+    $(document).on('submit', '#filter_sales_order', function(e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         var filterObj = {
-            branch_id : $('#sales_order_branch_id').val(),
-            from_date : $('#sales_order_from_date').val(),
-            to_date : $('#sales_order_to_date').val(),
+            branch_id: $('#sales_order_branch_id').val(),
+            from_date: $('#sales_order_from_date').val(),
+            to_date: $('#sales_order_to_date').val(),
         };
 
         getAccountClosingBalance(filterObj, 'for_sales_order', false);
     });
 
-    $(document).on('submit', '#filter_purchases', function (e) {
+    $(document).on('submit', '#filter_purchases', function(e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         purchasesTable.ajax.reload();
 
         var filterObj = {
-            branch_id : $('#purchases_branch_id').val(),
-            from_date : $('#purchases_from_date').val(),
-            to_date : $('#purchases_to_date').val(),
+            branch_id: $('#purchases_branch_id').val(),
+            from_date: $('#purchases_from_date').val(),
+            to_date: $('#purchases_to_date').val(),
         };
 
         getAccountClosingBalance(filterObj, 'for_purchases', false);
     });
 
-    $(document).on('submit', '#filter_purchase_orders', function (e) {
+    $(document).on('submit', '#filter_purchase_orders', function(e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         purchaseOrderstable.ajax.reload();
 
         var filterObj = {
-            branch_id : $('#purchase_orders_branch_id').val(),
-            from_date : $('#purchase_orders_from_date').val(),
-            to_date : $('#purchase_orders_to_date').val(),
+            branch_id: $('#purchase_orders_branch_id').val(),
+            from_date: $('#purchase_orders_from_date').val(),
+            to_date: $('#purchase_orders_to_date').val(),
         };
 
         getAccountClosingBalance(filterObj, 'for_purchase_orders', false);
     });
 
-    $(document).on('submit', '#filter_receipts', function (e) {
+    $(document).on('submit', '#filter_receipts', function(e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         receiptTable.ajax.reload();
 
         var filterObj = {
-            branch_id : $('#receipts_branch_id').val(),
-            from_date : $('#receipts_from_date').val(),
-            to_date : $('#receipts_to_date').val(),
+            branch_id: $('#receipts_branch_id').val(),
+            from_date: $('#receipts_from_date').val(),
+            to_date: $('#receipts_to_date').val(),
         };
 
         getAccountClosingBalance(filterObj, 'for_receipts', false);
     });
 
-    $(document).on('submit', '#filter_payments', function (e) {
+    $(document).on('submit', '#filter_payments', function(e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         paymentTable.ajax.reload();
 
         var filterObj = {
-            branch_id : $('#payments_branch_id').val(),
-            from_date : $('#payments_from_date').val(),
-            to_date : $('#payments_to_date').val(),
+            branch_id: $('#payments_branch_id').val(),
+            from_date: $('#payments_from_date').val(),
+            to_date: $('#payments_to_date').val(),
         };
 
         getAccountClosingBalance(filterObj, 'for_payments', false);
@@ -468,7 +869,6 @@
 </script>
 
 <script>
-
     function getAccountClosingBalance(filterObj, parentDiv, changeLedgerTableCurrentTotal = false) {
 
         var url = "{{ route('accounts.balance', $contact?->account?->id) }}";
@@ -484,19 +884,49 @@
                     $('#' + parentDiv + ' .opening_balance').html(data.opening_balance_in_flat_amount_string);
                     $('#' + parentDiv + ' .total_sale').html(data.total_sale_string);
                     $('#' + parentDiv + ' .total_purchase').html(data.total_purchase_string);
-                    $('#' + parentDiv + ' .total_return').html(data.total_return_string);
+
+                    if (data.total_return < 0) {
+
+                        $('#' + parentDiv + ' .total_return').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.total_return)) + '<span class="text-dark">)</span>');
+                    } else {
+
+                        $('#' + parentDiv + ' .total_return').html(data.total_return_string);
+                    }
+
                     $('#' + parentDiv + ' .total_received').html(data.total_received_string);
                     $('#' + parentDiv + ' .total_paid').html(data.total_paid_string);
-                    $('#' + parentDiv + ' .closing_balance').html(data.closing_balance_in_flat_amount_string);
-                }else {
+
+                    if (data.closing_balance_in_flat_amount < 0) {
+
+                        $('#' + parentDiv + ' .closing_balance').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.closing_balance_in_flat_amount)) + '<span class="text-dark">)</span>');
+                    } else {
+
+                        $('#' + parentDiv + ' .closing_balance').html(data.closing_balance_in_flat_amount_string);
+                    }
+                } else {
 
                     $('.opening_balance').html(data.opening_balance_in_flat_amount_string);
                     $('.total_sale').html(data.total_sale_string);
                     $('.total_purchase').html(data.total_purchase_string);
-                    $('.total_return').html(data.total_return_string);
+
+                    if (data.total_return < 0) {
+
+                        $('.total_return').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.total_return)) + '<span class="text-dark">)</span>');
+                    } else {
+
+                        $('.total_return').html(data.total_return_string);
+                    }
+
                     $('.total_received').html(data.total_received_string);
                     $('.total_paid').html(data.total_paid_string);
-                    $('.closing_balance').html(data.closing_balance_in_flat_amount_string);
+
+                    if (data.closing_balance_in_flat_amount < 0) {
+
+                        $('.closing_balance').html('<span class="text-dark">(</span>' + bdFormat(Math.abs(data.closing_balance_in_flat_amount)) + '<span class="text-dark">)</span>');
+                    } else {
+
+                        $('.closing_balance').html(data.closing_balance_in_flat_amount_string);
+                    }
                 }
 
                 if (changeLedgerTableCurrentTotal == true) {
@@ -511,15 +941,14 @@
     }
 
     var filterObj = {
-        branch_id : null,
-        from_date : null,
-        to_date : null,
+        branch_id: null,
+        from_date: null,
+        to_date: null,
     };
     getAccountClosingBalance(filterObj, '', true);
 </script>
 
 <script type="text/javascript">
-
     function litepicker(idName) {
 
         new Litepicker({
@@ -578,13 +1007,14 @@
 
                     $('#shipment_shipment_address').focus().select();
                 }, 500);
-            },error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connection Error.') }}");
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                 }
@@ -606,13 +1036,14 @@
                 $('#details').html(data);
                 $('#detailsModal').modal('show');
                 $('.data_preloader').hide();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connection Error.') }}");
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                 }
@@ -629,7 +1060,7 @@
         var branch_name = $('#sales_branch_id').find('option:selected').data('branch_name');
         var payment_status = $('#sales_payment_status').val();
         var customer_account_id = "{{ $contact?->account?->id ? $contact?->account?->id : null }}";
-        var customer_name = "{{ $contact->name.'/'.$contact->phone }}";
+        var customer_name = "{{ $contact->name . '/' . $contact->phone }}";
         var from_date = $('#sales_from_date').val();
         var to_date = $('#sales_to_date').val();
 
@@ -644,7 +1075,8 @@
                 customer_name,
                 from_date,
                 to_date
-            }, success: function(data) {
+            },
+            success: function(data) {
 
                 $(data).printThis({
                     debug: false,
@@ -685,7 +1117,8 @@
                 customer_name,
                 from_date,
                 to_date
-            }, success: function(data) {
+            },
+            success: function(data) {
 
                 $(data).printThis({
                     debug: false,
@@ -709,7 +1142,7 @@
         var branch_id = $('#purchases_branch_id').val();
         var branch_name = $('#purchases_branch_id').find('option:selected').data('branch_name');
         var supplier_account_id = "{{ $contact?->account?->id ? $contact?->account?->id : null }}";
-        var supplier_name = "{{ $contact->name.'/'.$contact->phone }}";
+        var supplier_name = "{{ $contact->name . '/' . $contact->phone }}";
         var payment_status = $('#purchases_payment_status').val();
         var from_date = $('#purchases_from_date').val();
         var to_date = $('#purchases_to_date').val();
@@ -725,7 +1158,8 @@
                 payment_status,
                 from_date,
                 to_date
-            }, success: function(data) {
+            },
+            success: function(data) {
 
                 $(data).printThis({
                     debug: false,
@@ -750,7 +1184,7 @@
         var branch_id = $('#purchase_orders_branch_id').val();
         var branch_name = $('#purchase_orders_branch_id').find('option:selected').data('branch_name');
         var supplier_account_id = "{{ $contact?->account?->id ? $contact?->account?->id : null }}";
-        var supplier_name = "{{ $contact->name.'/'.$contact->phone }}";
+        var supplier_name = "{{ $contact->name . '/' . $contact->phone }}";
         var payment_status = $('#purchase_orders_payment_status').val();
         var from_date = $('#purchase_orders_from_date').val();
         var to_date = $('#purchase_orders_to_date').val();
@@ -766,7 +1200,8 @@
                 payment_status,
                 from_date,
                 to_date
-            }, success: function(data) {
+            },
+            success: function(data) {
 
                 $(data).printThis({
                     debug: false,
@@ -829,7 +1264,7 @@
 </script>
 
 <script>
-    $.ajaxSetup ({
+    $.ajaxSetup({
         // Disable caching of AJAX responses
         cache: false
     });
@@ -857,7 +1292,8 @@
 
                     $('#receipt_date').focus().select();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -893,7 +1329,8 @@
 
                     $('#receipt_date').focus().select();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -931,7 +1368,8 @@
 
                     $('#payment_date').focus().select();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -967,7 +1405,8 @@
 
                     $('#payment_date').focus().select();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -984,49 +1423,48 @@
 
     function reloadAllAccountSummaryArea() {
 
-        var summeryReloaderDatas = [
-            {
-                filterDatePrefix : 'ledger_',
-                filterSummerParentDiv : 'for_ledger',
-                changeLedgerTableCurrentTotal : true,
+        var summeryReloaderDatas = [{
+                filterDatePrefix: 'ledger_',
+                filterSummerParentDiv: 'for_ledger',
+                changeLedgerTableCurrentTotal: true,
             },
             {
-                filterDatePrefix : 'sales_',
-                filterSummerParentDiv : 'for_sales',
-                changeLedgerTableCurrentTotal : false,
+                filterDatePrefix: 'sales_',
+                filterSummerParentDiv: 'for_sales',
+                changeLedgerTableCurrentTotal: false,
             },
             {
-                filterDatePrefix : 'sales_order_',
-                filterSummerParentDiv : 'for_sales_order',
-                changeLedgerTableCurrentTotal : false,
+                filterDatePrefix: 'sales_order_',
+                filterSummerParentDiv: 'for_sales_order',
+                changeLedgerTableCurrentTotal: false,
             },
             {
-                filterDatePrefix : 'purchases_',
-                filterSummerParentDiv : 'for_purchases',
-                changeLedgerTableCurrentTotal : false,
+                filterDatePrefix: 'purchases_',
+                filterSummerParentDiv: 'for_purchases',
+                changeLedgerTableCurrentTotal: false,
             },
             {
-                filterDatePrefix : 'purchases_orders_',
-                filterSummerParentDiv : 'for_purchase_orders',
-                changeLedgerTableCurrentTotal : false,
+                filterDatePrefix: 'purchases_orders_',
+                filterSummerParentDiv: 'for_purchase_orders',
+                changeLedgerTableCurrentTotal: false,
             },
             {
-                filterDatePrefix : 'receipts_',
-                filterSummerParentDiv : 'for_receipts',
-                changeLedgerTableCurrentTotal : false,
+                filterDatePrefix: 'receipts_',
+                filterSummerParentDiv: 'for_receipts',
+                changeLedgerTableCurrentTotal: false,
             },
             {
-                filterDatePrefix : 'payments_',
-                filterSummerParentDiv : 'for_payments',
-                changeLedgerTableCurrentTotal : false,
+                filterDatePrefix: 'payments_',
+                filterSummerParentDiv: 'for_payments',
+                changeLedgerTableCurrentTotal: false,
             },
         ];
 
-        summeryReloaderDatas.forEach(function (element) {
+        summeryReloaderDatas.forEach(function(element) {
             var filterObj = {
-                branch_id : $('#'+element.filterDatePrefix+'branch_id').val(),
-                from_date : $('#'+element.filterDatePrefix+'from_date').val(),
-                to_date : $('#'+element.filterDatePrefix+'to_date').val(),
+                branch_id: $('#' + element.filterDatePrefix + 'branch_id').val(),
+                from_date: $('#' + element.filterDatePrefix + 'from_date').val(),
+                to_date: $('#' + element.filterDatePrefix + 'to_date').val(),
             };
 
             getAccountClosingBalance(filterObj, element.filterSummerParentDiv, element.changeLedgerTableCurrentTotal);
@@ -1034,7 +1472,7 @@
     }
 
     var tableId = '';
-    $(document).on('click', '#delete',function(e){
+    $(document).on('click', '#delete', function(e) {
 
         e.preventDefault();
         var url = $(this).attr('href');
@@ -1044,22 +1482,32 @@
             'title': 'Confirmation',
             'content': 'Are you sure?',
             'buttons': {
-                'Yes': {'class': 'yes btn-modal-primary', 'action': function() {$('#deleted_form').submit();}},
-                'No': {'class': 'no btn-danger', 'action': function() {console.log('Deleted canceled.');}}
+                'Yes': {
+                    'class': 'yes btn-modal-primary',
+                    'action': function() {
+                        $('#deleted_form').submit();
+                    }
+                },
+                'No': {
+                    'class': 'no btn-danger',
+                    'action': function() {
+                        console.log('Deleted canceled.');
+                    }
+                }
             }
         });
     });
 
     //data delete by ajax
-    $(document).on('submit', '#deleted_form',function(e){
+    $(document).on('submit', '#deleted_form', function(e) {
         e.preventDefault();
         var url = $(this).attr('action');
         var request = $(this).serialize();
         $.ajax({
-            url:url,
-            type:'post',
-            data:request,
-            success:function(data){
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
 
@@ -1071,12 +1519,13 @@
                 $('.common-reloader').DataTable().ajax.reload();
 
                 reloadAllAccountSummaryArea();
-            },error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connection Error.') }}");
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                 }

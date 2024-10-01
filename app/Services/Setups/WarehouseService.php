@@ -67,6 +67,7 @@ class WarehouseService
 
                     $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 }
+
                 $html .= '</div>';
 
                 return $html;
@@ -116,7 +117,7 @@ class WarehouseService
         $updateWarehouse->save();
     }
 
-    public function deleteWarehouse(int $id): array
+    public function deleteWarehouse(int $id): ?array
     {
         $deleteWarehouse = $this->singleWarehouse($id);
 

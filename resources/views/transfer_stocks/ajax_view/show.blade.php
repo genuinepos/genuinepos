@@ -120,10 +120,12 @@
                                         <tr>
                                             @php
                                                 $variant = $transferStockProduct->variant ? ' - ' . $transferStockProduct->variant->variant_name : '';
+                                                $productCode = $transferStockProduct?->variant ? $transferStockProduct?->variant?->variant_code : $transferStockProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">
-                                                <p>{{ Str::limit($transferStockProduct->product->name, 25) . ' ' . $variant }}</p>
+                                                {{ $transferStockProduct->product->name . ' ' . $variant }}
+                                                <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
                                             </td>
                                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($transferStockProduct->send_qty) . '/' . $transferStockProduct?->unit?->code_name }}</td>
                                             <td class="text-start" style="font-size:11px!important;">

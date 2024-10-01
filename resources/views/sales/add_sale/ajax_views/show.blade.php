@@ -41,9 +41,12 @@
                             @endif
 
                             <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $sale->invoice_id }}</li>
+                            
                             @if (isset($sale->salesOrder))
                                 <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sales Order ID') }} : </span> {{ $sale?->salesOrder?->order_id }}</li>
                             @endif
+
+                            <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span> {{ $sale?->reference }}</li>
 
                             <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Payment Status') }} : </span>
                                 @php
@@ -72,7 +75,7 @@
                                 @elseif($sale->shipment_status == App\Enums\ShipmentStatus::Cancelled->value)
                                     <span>{{ __('Cancelled') }}</span>
                                 @elseif($sale->shipment_status == App\Enums\ShipmentStatus::Completed->value)
-                                    <span>{{ __('Cancelled') }}</span>
+                                    <span>{{ __('Completed') }}</span>
                                 @endif
                             </li>
 
@@ -142,14 +145,16 @@
                                     @foreach ($sale->saleProducts as $saleProduct)
                                         <tr>
                                             @php
-                                                $variant = $saleProduct->variant ? ' - ' . $saleProduct->variant->variant_name : '';
+                                                $variant = $saleProduct?->variant ? ' - ' . $saleProduct->variant->variant_name : '';
+                                                $productCode = $saleProduct?->variant ? $saleProduct?->variant->variant_code : $saleProduct?->product?->product_code;
                                             @endphp
 
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
-                                                {{ $saleProduct->product->name . ' ' . $variant }}
-                                                <small>{{ $saleProduct->description }}</small>
+                                                {{ $saleProduct->product->name . ' ' . $variant }} {{ $saleProduct?->product?->brand ? '(' . $saleProduct?->product?->brand->name . ')' : '' }}
+                                                <small class=" d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                                <small class="d-block" style="font-size:9px!important;">{{ $saleProduct->description }}</small>
                                             </td>
 
                                             <td class="text-start" style="font-size:11px!important;">
@@ -378,8 +383,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;" class="fw-bold">{{ __('Shipment Details') }}</p>
-                            <p class="shipping_details" style="font-size:11px!important;">{{ $sale->shipment_details }}</p>
+                            <p style="font-size:11px!important;" class="fw-bold">{{ __('Shipment Address') }}</p>
+                            <p class="shipping_details" style="font-size:11px!important;">{{ $sale->shipment_address }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">

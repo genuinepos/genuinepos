@@ -176,7 +176,7 @@ class ProductService
 
                     if (auth()->user()->can('openingStock_add')) {
 
-                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __('Add or edit opening stock') . '</a>';
+                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __('Add or Edit Opening Stock') . '</a>';
                     }
 
                     if (auth()->user()->can('product_add')) {
@@ -194,8 +194,9 @@ class ProductService
                 }
             })->editColumn('name', function ($row) {
                 $html = '';
-                $html .= $row->name;
-                $html .= $row->is_manage_stock == 0 ? ' <span class="badge bg-primary pt-1"><i class="fas fa-wrench mr-1 text-white"></i></span>' : '';
+                $html .= '<p class="p-0 m-0">' . $row->name;
+                $html .= $row->is_manage_stock == 0 ? ' <span class="badge bg-primary pt-1"><i class="fas fa-wrench mr-1 text-white"></i></span></p>' : '';
+                $html .= '<a href="' . route('products.show', [$row->id]) . '" id="details_btn" style="font-size:9px!important;display:block;line-height:1!important;">' . $row->product_code . '</a>';
 
                 return $html;
             })->editColumn('type', function ($row) {
@@ -214,13 +215,13 @@ class ProductService
                     return '<span class="text-info">' . __('Digital') . '</span>';
                 }
             })
-            ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
+            ->editColumn('cate_name', fn($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
 
             ->editColumn('status', function ($row) {
 
                 if ($row->status == BooleanType::True->value) {
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                     $html .= '</div>';
 
                     return $html;
@@ -301,13 +302,13 @@ class ProductService
                         $branchAllStock += $stock->stock;
                     }
 
-                    return \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name;
+                    return '<span class="quantity" data-value="' . $branchAllStock. '">' . \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name . '</span>';
                 }
 
                 return \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_name;
             })
-            ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
-            ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
+            ->editColumn('brand_name', fn($row) => $row->brand_name ? $row->brand_name : '...')
+            ->editColumn('tax_name', fn($row) => $row->tax_name ? $row->tax_name : '...')
             ->rawColumns(['multiple_delete', 'photo', 'product_cost_with_tax', 'product_cost_with_tax', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
             ->smart(true)->make(true);
     }
@@ -329,7 +330,6 @@ class ProductService
         ]);
 
         $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
-            ->where('product_ledgers.branch_id', auth()->user()->branch_id)
             ->where('product_ledgers.product_id', $data['product']->id)
             ->leftJoin('product_variants', 'product_ledgers.variant_id', 'product_variants.id')
             ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
@@ -375,6 +375,7 @@ class ProductService
             );
 
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
+            ->where('product_ledgers.branch_id', auth()->user()->branch_id)
             ->orderBy('product_ledgers.branch_id', 'asc')
             ->orderBy('product_ledgers.product_id', 'desc')
             ->orderBy('product_ledgers.variant_id', 'desc')
@@ -398,8 +399,8 @@ class ProductService
             ->orderBy('products.id', 'desc');
 
         return DataTables::of($products)
-            ->addColumn('action', fn ($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
-            ->editColumn('name', fn ($row) => '<span title="' . $row->name . '">' . Str::limit($row->name, 25) . '</span>')
+            ->addColumn('action', fn($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
+            ->editColumn('name', fn($row) => '<span title="' . $row->name . '">' . Str::limit($row->name, 25) . '</span>')
             ->rawColumns(['action', 'name'])->make(true);
     }
 

@@ -370,6 +370,7 @@
             tr.find('#span_unit_cost_inc_tax').html(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#unit_cost_inc_tax').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
+            tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
             clearEditItemFileds();
             calculateTotalAmount();
         }

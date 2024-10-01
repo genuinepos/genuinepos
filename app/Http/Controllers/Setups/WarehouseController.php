@@ -23,6 +23,7 @@ class WarehouseController extends Controller
         }
 
         $count = $this->warehouseService->warehouses()->count();
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -32,6 +33,7 @@ class WarehouseController extends Controller
     public function create()
     {
         abort_if(!auth()->user()->can('warehouses_add'), 403);
+        
         return view('setups.warehouses.ajax_view.create');
     }
 

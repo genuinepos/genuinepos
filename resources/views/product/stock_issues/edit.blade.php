@@ -12,7 +12,8 @@
             background: #ffffff;
             box-sizing: border-box;
             position: absolute;
-            width: 100%;
+            /* width: 100%; */
+            width: 173%;
             z-index: 9999999;
             padding: 0;
             left: 0%;
@@ -285,11 +286,13 @@
 
                                                                 $variantId = $issuedProduct->variant_id ? $issuedProduct->variant_id : 'noid';
 
+                                                                $productCode = $issuedProduct?->variant ? $issuedProduct?->variant?->variant_code : $issuedProduct->product->product_code;
+
                                                                 $baseUnitMultiplier = $issuedProduct?->unit?->base_unit_multiplier ? $issuedProduct?->unit?->base_unit_multiplier : 1;
                                                             @endphp
 
-                                                            <span class="product_name">{{ $issuedProduct->product->name . $variant }}</span>
-                                                            <input type="hidden" id="item_name" value="{{ $issuedProduct?->product->name . $variant }}">
+                                                            <span class="product_name">{{ $issuedProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                            <input type="hidden" id="item_name" value="{{ $issuedProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $issuedProduct->product_id }}">
                                                             <input type="hidden" name="variant_ids[]" value="{{ $variantId }}" id="variant_id">
                                                             <input type="hidden" name="stock_issue_product_ids[]" value="{{ $issuedProduct->id }}">

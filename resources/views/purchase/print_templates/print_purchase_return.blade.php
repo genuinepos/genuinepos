@@ -24,6 +24,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -64,13 +67,13 @@
 
                         @if ($return?->branch?->parent_branch_id)
 
-                            @if ($return->branch?->parentBranch?->logo)
+                            @if ($return?->branch?->parentBranch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $return->branch?->parentBranch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $return->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($return->branch?->logo)
+                            @if ($return?->branch?->logo)
                                 <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $return->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;text-transform:uppercase;">{{ $return->branch?->name }}</span>
@@ -86,7 +89,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                    <p style="text-transform: uppercase;font-size:10px!important;" class="p-0 m-0">
                         <strong>
                             @if ($return?->branch)
                                 @if ($return?->branch?->parent_branch_id)
@@ -100,7 +103,7 @@
                         </strong>
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($return?->branch)
                             {{ $return->branch->city . ', ' . $return->branch->state . ', ' . $return->branch->zip_code . ', ' . $return->branch->country }}
                         @else
@@ -108,13 +111,13 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($return?->branch)
-                            <span class="fw-bold">{{ __('Email') }} : </span> <b>{{ $return?->branch?->email }}</b>,
-                            <span class="fw-bold">{{ __('Phone') }} : </span> <b>{{ $return?->branch?->phone }}</b>
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $return?->branch?->email }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $return?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __('Email') }} : </span> <b>{{ $generalSettings['business_or_shop__email'] }}</b>,
-                            <span class="fw-bold">{{ __('Phone') }} : </span> <b>{{ $generalSettings['business_or_shop__phone'] }}</b>
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -122,24 +125,24 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;">{{ __('Purchase Return Voucher') }}</h5>
+                    <h6 style="text-transform: uppercase;">{{ __('Purchase Return Voucher') }}</h6>
                 </div>
             </div>
 
             <div class="row mt-2">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $return->voucher_no }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>{{ $return->date }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span> {{ $return?->supplier?->name }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $return->voucher_no }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Date') }} : </span>{{ $return->date }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Supplier') }} : </span> {{ $return?->supplier?->name }}</li>
                     </ul>
                 </div>
 
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Purchase Invoice Details') }} : </span> </li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('P. Invoice ID') }} : </span> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Purchase Date') }} : </span>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Purchase Invoice Details') }} : </span> </li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('P. Invoice ID') }} : </span> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Purchase Date') }} : </span>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
             </div>
@@ -149,14 +152,14 @@
                     <thead>
                         <tr>
                         <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Product') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Return Qty') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Product') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Returned Qty') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Discount') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                         </tr>
                         </tr>
                     </thead>
@@ -166,34 +169,36 @@
                                 <tr>
                                     @php
                                         $variant = $purchaseReturnProduct->variant ? ' - ' . $purchaseReturnProduct->variant->variant_name : '';
+                                        $productCode = $purchaseReturnProduct?->variant ? $purchaseReturnProduct?->variant?->variant_code : $purchaseReturnProduct?->product?->product_code;
                                     @endphp
-                                    <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
+                                    <td class="text-start" style="font-size:10px!important;">{{ $loop->index + 1 }}</td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ $purchaseReturnProduct->product->name . $variant }}
+                                        {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->return_qty) }}/{{ $purchaseReturnProduct?->unit?->code_name }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_exc_tax) }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_discount_amount) }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ '(' . $purchaseReturnProduct->unit_tax_percent . ')=' . App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_tax_amount) }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_inc_tax) }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ $purchaseReturnProduct->return_subtotal }}
                                     </td>
                                 </tr>
@@ -208,15 +213,15 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Net Total Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Discount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Return Discount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     @if ($return->return_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}
                                     @else
@@ -227,37 +232,45 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Return Tax') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Returned Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Returned Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Received Amount') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt(isset($receivedAmount) ? $receivedAmount : $return->received_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
+                                    @if ($return->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                <td class="text-end" style="font-size:10px!important;">
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>
@@ -268,19 +281,19 @@
             <br /><br />
             <div class="row">
                 <div class="col-4 text-start">
-                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;">
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size:10px!important;">
                         {{ __('Prepared By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-center">
-                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;">
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size:10px!important;">
                         {{ __('Checked By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-end">
-                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;">
+                    <p class="text-uppercase fw-bold" style="display: inline; border-top: 1px solid black; padding:0px 10px;font-size:10px!important;">
                         {{ __('Authorized By') }}
                     </p>
                 </div>
@@ -329,6 +342,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1!important;
+                padding: 0px!important;
+                margin: 0px!important;
             }
 
             thead {
@@ -469,11 +485,13 @@
                                 <tr>
                                     @php
                                         $variant = $purchaseReturnProduct->variant ? ' - ' . $purchaseReturnProduct->variant->variant_name : '';
+                                        $productCode = $purchaseReturnProduct?->variant ? $purchaseReturnProduct?->variant?->variant_code : $purchaseReturnProduct?->product?->product_code;
                                     @endphp
                                     <td class="text-start" style="font-size:9px!important;">{{ $loop->index + 1 }}</td>
 
                                     <td class="text-start" style="font-size:9px!important;">
                                         {{ $purchaseReturnProduct->product->name . $variant }}
+                                        {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' !!}
                                     </td>
 
                                     <td class="text-start" style="font-size:9px!important;">
@@ -553,14 +571,22 @@
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Due (On Return Voucher)') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @if ($return->due < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($return->due)) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($return->due) }}
+                                    @endif
                                 </td>
                             </tr>
 
                             <tr>
                                 <th class="text-end fw-bold" style="font-size:9px!important; height:10px; line-height:10px;">{{ __('Current Balance') }} : {{ $return?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:9px!important; height:10px; line-height:10px;">
-                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                    @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                        ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                    @else
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                    @endif
                                 </td>
                             </tr>
                         </thead>

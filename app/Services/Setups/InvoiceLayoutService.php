@@ -88,6 +88,7 @@ class InvoiceLayoutService
 
                     $html .= '<a href="' . route('invoices.layouts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 }
+                
                 $html .= '</div>';
 
                 return $html;
@@ -113,20 +114,26 @@ class InvoiceLayoutService
         $addLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $addLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
         $addLayout->delivery_note_heading = isset($request->delivery_note_heading) ? $request->delivery_note_heading : 'Delivery Note';
-        $addLayout->branch_city = $request->branch_city ? $request->branch_city : BooleanType::True->value;
-        $addLayout->branch_state = $request->branch_state ? $request->branch_state : BooleanType::True->value;
-        $addLayout->branch_zipcode = $request->branch_zipcode ? $request->branch_zipcode : BooleanType::True->value;
-        $addLayout->branch_phone = $request->branch_phone ? $request->branch_phone : BooleanType::True->value;
-        $addLayout->branch_alternate_number = $request->branch_alternate_number ? $request->branch_alternate_number : BooleanType::True->value;
-        $addLayout->branch_email = $request->branch_email ? $request->branch_email : BooleanType::True->value;
-        $addLayout->product_w_type = $request->product_w_type ? $request->product_w_type : BooleanType::True->value;
-        $addLayout->product_w_duration = $request->product_w_duration ? $request->product_w_duration : BooleanType::True->value;
-        $addLayout->product_w_discription = $request->product_w_discription ? $request->product_w_discription : BooleanType::False->value;
-        $addLayout->product_discount = $request->product_discount ? $request->product_discount : BooleanType::False->value;
-        $addLayout->product_tax = $request->product_tax ? $request->product_tax : BooleanType::True->value;
-        $addLayout->customer_address = $request->customer_address ? $request->customer_address : BooleanType::True->value;
-        $addLayout->customer_tax_no = $request->customer_tax_no ? $request->customer_tax_no : BooleanType::True->value;
-        $addLayout->customer_phone = $request->customer_phone ? $request->customer_phone : BooleanType::True->value;
+        $addLayout->branch_city = isset($request->branch_city) ? $request->branch_city : BooleanType::True->value;
+        $addLayout->branch_state = isset($request->branch_state) ? $request->branch_state : BooleanType::True->value;
+        $addLayout->branch_zipcode = isset($request->branch_zipcode) ? $request->branch_zipcode : BooleanType::True->value;
+        $addLayout->branch_phone = isset($request->branch_phone) ? $request->branch_phone : BooleanType::True->value;
+        $addLayout->branch_alternate_number = isset($request->branch_alternate_number) ? $request->branch_alternate_number : BooleanType::True->value;
+        $addLayout->branch_email = isset($request->branch_email) ? $request->branch_email : BooleanType::True->value;
+        $addLayout->product_w_type = isset($request->product_w_type) ? $request->product_w_type : BooleanType::True->value;
+        $addLayout->product_w_duration = isset($request->product_w_duration) ? $request->product_w_duration : BooleanType::True->value;
+        $addLayout->product_w_discription = isset($request->product_w_discription) ? $request->product_w_discription : BooleanType::False->value;
+        $addLayout->product_discount = isset($request->product_discount) ? $request->product_discount : BooleanType::False->value;
+        $addLayout->product_tax = isset($request->product_tax) ? $request->product_tax : BooleanType::True->value;
+        $addLayout->product_brand = isset($request->product_brand) ? $request->product_brand : BooleanType::False->value;
+        $addLayout->product_details = isset($request->product_tax) ? $request->product_details : BooleanType::False->value;
+        $addLayout->product_price_inc_tax = isset($request->product_price_inc_tax) ? $request->product_price_inc_tax : BooleanType::True->value;
+        $addLayout->product_price_exc_tax = isset($request->product_price_exc_tax) ? $request->product_price_exc_tax : BooleanType::True->value;
+        $addLayout->product_code = isset($request->product_code) ? $request->product_code : BooleanType::False->value;
+        $addLayout->customer_address = isset($request->customer_address) ? $request->customer_address : BooleanType::True->value;
+        $addLayout->customer_tax_no = isset($request->customer_tax_no) ? $request->customer_tax_no : BooleanType::True->value;
+        $addLayout->customer_phone = isset($request->customer_phone) ? $request->customer_phone : BooleanType::True->value;
+        $addLayout->customer_current_balance = isset($request->customer_current_balance) ? $request->customer_current_balance : BooleanType::True->value;
         $addLayout->bank_name = isset($request->bank_name) ? $request->bank_name : null;
         $addLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : null;
         $addLayout->account_name = isset($request->account_name) ? $request->account_name : null;
@@ -142,7 +149,8 @@ class InvoiceLayoutService
     {
         $updateInvoiceLayout = $this->singleInvoiceLayout(id: $id);
 
-        // dd($updateInvoiceLayout);
+        // dd($request->all());
+        //  dd($updateInvoiceLayout);
 
         $updateInvoiceLayout->name = $request->name;
         $updateInvoiceLayout->show_shop_logo = $request->show_shop_logo;
@@ -165,12 +173,18 @@ class InvoiceLayoutService
         $updateInvoiceLayout->branch_email = $request->branch_email;
         $updateInvoiceLayout->product_w_type = $request->product_w_type;
         $updateInvoiceLayout->product_w_duration = $request->product_w_duration;
-        $updateInvoiceLayout->product_w_discription = BooleanType::False->value;
+        $updateInvoiceLayout->product_w_discription = isset($request->product_w_discription) ? $request->product_w_discription : BooleanType::False->value;
         $updateInvoiceLayout->product_discount = $request->product_discount;
         $updateInvoiceLayout->product_tax = $request->product_tax;
+        $updateInvoiceLayout->product_brand = $request->product_brand;
+        $updateInvoiceLayout->product_details = $request->product_details;
+        $updateInvoiceLayout->product_price_inc_tax = $request->product_price_inc_tax;
+        $updateInvoiceLayout->product_price_exc_tax = $request->product_price_exc_tax;
+        $updateInvoiceLayout->product_code = $request->product_code;
         $updateInvoiceLayout->customer_address = $request->customer_address;
         $updateInvoiceLayout->customer_tax_no = $request->customer_tax_no;
         $updateInvoiceLayout->customer_phone = $request->customer_phone;
+        $updateInvoiceLayout->customer_current_balance = $request->customer_current_balance;
         $updateInvoiceLayout->bank_name = isset($request->bank_name) ? $request->bank_name : null;
         $updateInvoiceLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : null;
         $updateInvoiceLayout->account_name = isset($request->account_name) ? $request->account_name : null;
@@ -178,8 +192,6 @@ class InvoiceLayoutService
         $updateInvoiceLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : null;
         $updateInvoiceLayout->footer_text = isset($request->footer_text) ? $request->footer_text : null;
         $updateInvoiceLayout->save();
-
-        // dd($updateInvoiceLayout);
 
         $this->forgetCache(id: $id);
     }

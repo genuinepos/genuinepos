@@ -116,9 +116,13 @@
                                         <tr>
                                             @php
                                                 $variant = $orderProduct?->variant ? '(' . $orderProduct?->variant?->variant_name . ')' : '';
+                                                $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                             @endphp
 
-                                            <td class="text-start" style="font-size:11px!important;">{{ $orderProduct?->product->name . ' ' . $variant }}</td>
+                                            <td class="text-start" style="font-size:11px!important;">
+                                                {{ $orderProduct?->product->name . ' ' . $variant }}
+                                                <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                            </td>
                                             <td class="text-start fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) . '/' . $orderProduct?->unit?->code_name }}</td>
                                             <td class="text-start text-success fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
                                             <td class="text-start text-danger fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>
@@ -232,14 +236,22 @@
                                 <tr>
                                     <th class="text-end">{{ __('Due (On Order)') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                        @if ($order->due < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($order->due)) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($order->due) }}
+                                        @endif
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">{{ __('Current Balance') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
-                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
+                                        @if ($amounts['closing_balance_in_flat_amount'] < 0)
+                                            ({{ App\Utils\Converter::format_in_bdt(abs($amounts['closing_balance_in_flat_amount'])) }})
+                                        @else
+                                            {{ App\Utils\Converter::format_in_bdt($amounts['closing_balance_in_flat_amount']) }}
+                                        @endif
                                     </td>
                                 </tr>
                             </table>
@@ -290,7 +302,7 @@
                             <a href="{{ route('purchase.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
 
-                        @if (auth()->user()->can('purchase_order_to_invoice'))
+                        @if (auth()->user()->can('purchase_order_to_invoice') && $order->branch_id == auth()->user()->branch_id)
                             <a href="{{ route('purchase.order.to.invoice.create', [$order->id]) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> {{ __('P/o To Purchase Invoice') }}</a>
                         @endif
 

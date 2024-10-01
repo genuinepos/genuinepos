@@ -60,7 +60,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     public function indexMethodContainer(object $request): array|object
     {
         $data = [];
-        
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
@@ -88,6 +88,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
             'saleProducts',
             'saleProducts.product',
+            'saleProducts.product.brand:id,name',
             'saleProducts.variant',
             'saleProducts.branch:id,name,branch_code,area_name,parent_branch_id',
             'saleProducts.branch.parentBranch:id,name,branch_code,area_name',
@@ -165,6 +166,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $salesOrderPrefix = $generalSettings['prefix__sales_order_prefix'] ? $generalSettings['prefix__sales_order_prefix'] : 'SO';
         $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
+
+        $autoRepaySaleAndPurchaseReturn = isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) ? $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] : 0;
 
         $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService);
         if ($restrictions['pass'] == false) {
@@ -248,7 +251,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ]
         );
 
-        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value) {
+        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value && $autoRepaySaleAndPurchaseReturn == 1) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $sale);
         }
@@ -370,6 +373,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
+        $autoRepaySaleAndPurchaseReturn = isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) ? $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] : 0;
+
         $sale = $this->saleService->singleSale(id: $id, with: ['saleProducts']);
 
         $storedCurrSaleAccountId = $sale->sale_account_id;
@@ -488,7 +493,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         $adjustedSale = $this->saleService->adjustSaleInvoiceAmounts(sale: $sale);
 
-        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value) {
+        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value && $autoRepaySaleAndPurchaseReturn == 1) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $adjustedSale);
         }

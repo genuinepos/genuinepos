@@ -52,7 +52,7 @@
                             </a>
 
                             <a id="tab_btn" data-show="contract_info_area" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-info-circle"></i> {{ __('Contract Info') }}
+                                <i class="fas fa-info-circle"></i> {{ __('Contact Info') }}
                             </a>
 
                             <a id="tab_btn" data-show="purchases" class="btn btn-sm btn-primary tab_btn" href="#">
@@ -813,8 +813,8 @@
                                                     <th>{{ __('Customer') }}</th>
                                                     <th>{{ __('Payment Status') }}</th>
                                                     <th>{{ __('Total Item') }}</th>
-                                                    <th>{{ __('Total Qty') }}</th>
-                                                    <th>{{ __('Total Ordered Amt') }}</th>
+                                                    <th>{{ __('Total Ordered Qty') }}</th>
+                                                    <th>{{ __('Total Ordered Amt.') }}</th>
                                                     <th>{{ __('Advance Received') }}</th>
                                                     <th>{{ __('Due') }}</th>
                                                     <th>{{ __('Created By') }}</th>

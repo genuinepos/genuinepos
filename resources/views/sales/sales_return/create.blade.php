@@ -191,7 +191,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
+                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($warehouses as $w)
                                                         <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">

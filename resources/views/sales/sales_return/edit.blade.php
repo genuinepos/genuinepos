@@ -369,14 +369,17 @@
                                                                             ];
                                                                         }
 
-                                                                        $variantName = $returnProduct?->variant ? ' - ' . $returnProduct?->variant?->variant_name : '';
+                                                                        $variant = $returnProduct?->variant ? ' - ' . $returnProduct?->variant?->variant_name : '';
+
+                                                                        $productCode = $returnProduct?->variant ? $returnProduct?->variant?->variant_code : $returnProduct?->product?->product_code;
+
                                                                         $variantId = $returnProduct->variant_id ? $returnProduct->variant_id : 'noid';
                                                                     @endphp
 
                                                                     <tr id="select_item">
                                                                         <td class="text-start">
-                                                                            <span class="product_name">{{ $returnProduct->product->name . $variantName }}</span>
-                                                                            <input type="hidden" id="item_name" value="{{ $returnProduct->product->name . $variantName }}">
+                                                                            <span class="product_name">{{ $returnProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                                            <input type="hidden" id="item_name" value="{{ $returnProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $returnProduct->product_id }}">
                                                                             <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
                                                                             <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $returnProduct->tax_ac_id ? $returnProduct->tax_ac_id : '' }}">

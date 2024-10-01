@@ -308,14 +308,17 @@
                                                                         ];
                                                                     }
 
-                                                                    $variantName = $transferStockProduct?->variant ? ' - ' . $transferStockProduct?->variant?->variant_name : '';
+                                                                    $variant = $transferStockProduct?->variant ? ' - ' . $transferStockProduct?->variant?->variant_name : '';
+
                                                                     $variantId = $transferStockProduct->variant_id ? $transferStockProduct->variant_id : 'noid';
+
+                                                                    $productCode = $transferStockProduct?->variant ? $transferStockProduct?->variant?->variant_code : $transferStockProduct->product->product_code;
                                                                 @endphp
 
                                                                 <tr id="select_item">
                                                                     <td class="text-start">
-                                                                        <span class="product_name">{{ $transferStockProduct->product->name . $variantName }}</span>
-                                                                        <input type="hidden" id="item_name" value="{{ $transferStockProduct->product->name . $variantName }}">
+                                                                        <span class="product_name">{{ $transferStockProduct->product->name . $variant . ' (' . $productCode . ')' }}</span>
+                                                                        <input type="hidden" id="item_name" value="{{ $transferStockProduct->product->name . $variant . ' (' . $productCode . ')' }}">
                                                                         <input type="hidden" name="product_ids[]" id="product_id" value="{{ $transferStockProduct->product_id }}">
                                                                         <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
                                                                         <input type="hidden" name="transfer_stock_product_ids[]" value="{{ $transferStockProduct->id }}">

@@ -389,6 +389,7 @@ class GeneralProductSearchService
 
         $query->leftJoin('accounts as taxes', 'products.tax_ac_id', 'taxes.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('brands', 'products.brand_id', 'brands.id')
             ->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
             ->leftJoin('product_access_branches', 'products.id', '=', 'product_access_branches.product_id')
             ->select(
@@ -419,6 +420,7 @@ class GeneralProductSearchService
                 'product_variants.variant_profit',
                 'product_variants.variant_price',
                 'units.name as unit_name',
+                'brands.name as brand_name',
             )
             ->distinct('product_access_branches.branch_id');
         $main = $query->orderBy('products.name', 'asc')->limit(25)->get();

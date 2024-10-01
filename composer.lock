@@ -62,16 +62,17 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.322.8",
+
+            "version": "3.322.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fb5099160e49b676277ae787ff721628e5e4dd5a"
+                "reference": "9a94b9a123e0a14cacd72a34c24624ab728aa398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fb5099160e49b676277ae787ff721628e5e4dd5a",
-                "reference": "fb5099160e49b676277ae787ff721628e5e4dd5a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9a94b9a123e0a14cacd72a34c24624ab728aa398",
+                "reference": "9a94b9a123e0a14cacd72a34c24624ab728aa398",
                 "shasum": ""
             },
             "require": {
@@ -157,6 +158,7 @@
                 "source": "https://github.com/aws/aws-sdk-php/tree/3.322.8"
             },
             "time": "2024-09-30T19:09:25+00:00"
+
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2254,6 +2256,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/1dc4a3dbfa2b7628a3114e43e32120cce7cdda9c",
                 "reference": "1dc4a3dbfa2b7628a3114e43e32120cce7cdda9c",
+
                 "shasum": ""
             },
             "require": {
@@ -3895,6 +3898,7 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.3.0"
             },
             "time": "2024-09-29T13:56:26+00:00"
+
         },
         {
             "name": "nunomaduro/termwind",

@@ -26,16 +26,16 @@
                                 @if (auth()?->user()?->branch)
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                     @if (count(auth()?->user()?->branch?->childBranches) > 0)
-                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __('Main Store') }})</small>
+                                        <small class="fw-bold text-danger" style="font-size:9px!important;">({{ __("Main Store") }})</small>
                                     @else
-                                        <small class="fw-bold text-danger" style="font-size:10px!important;">({{ __('DIFFERENT Store') }})</small>
+                                        <small class="fw-bold text-danger" style="font-size:9px!important;">({{ __("DIFFERENT Store") }})</small>
                                     @endif
                                 @else
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             @endif
                         </p>
-                        <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
+                        <span class="financial_year"><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
 
                     <div class="head__content__sec">
@@ -145,7 +145,7 @@
                                 <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                             @endif
 
-                            <li class="top-icon">
+                            <li class="top-icon d-hide d-md-block">
                                 <a href="" class="nav-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
                                     <span>
                                         <i class="fas fa-calculator"></i>
@@ -207,10 +207,12 @@
                                     </li>
                                 </ul>
                             </li>
+
                             <li class="top-icon d-hide d-md-block">
                                 <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __('Help') }}</span></a>
                             </li>
-                            <li class="dp__top top-icon">
+
+                            <li class="top-icon">
                                 <a role="button" class="nav-btn" id="openRightSidebar" title="User">
                                     <span>
                                         <i class="fas fa-user"></i>

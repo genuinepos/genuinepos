@@ -30,6 +30,7 @@ class QuotationService
         $quotations = $query->select(
             'sales.id',
             'sales.branch_id',
+            'sales.order_id',
             'sales.quotation_id',
             'sales.date',
             'sales.total_item',
@@ -105,7 +106,22 @@ class QuotationService
             })
             ->editColumn('quotation_id', function ($row) {
 
-                return '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn">' . $row->quotation_id . '</a>';
+                // return '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn">' . $row->quotation_id . '</a>';
+
+                // if ($row->order_id) {
+
+                //     $link .= '<p class="p-0 m-0">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->id]) . '" id="details_btn">' . $row->order_id . '</a>';
+                // }
+
+                $link = '';
+                $link .= '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">' . $row->quotation_id . '</a>';
+
+                if ($row->order_id) {
+
+                    $link .= '<span class="p-0 m-0 d-block" style="line-height:1.5!important;font-size:11px;">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->id]) . '" id="details_btn">' . $row->order_id . '</a></span>';
+                }
+
+                return $link;
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 

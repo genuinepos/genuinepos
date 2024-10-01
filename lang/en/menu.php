@@ -859,7 +859,7 @@ return [
     'select_loan_account' => 'Select Loan Account',
     'payment_type' => 'Payment Type',
     'bank_branch_name' => 'Bank Branch Name',
-    'account_summery' => 'Account Summery',
+    'account_summary' => 'Account Summary',
     'loan_and_advance' => 'Loan & Advance',
     'loan_and_liabilities' => 'Loan & Liabilities',
     'loan_advance_receive' => 'Loan Advance Receive',

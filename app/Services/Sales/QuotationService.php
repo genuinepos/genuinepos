@@ -114,7 +114,7 @@ class QuotationService
                 // }
 
                 $link = '';
-                $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">' . $row->quotation_id . '</a>';
+                $link .= '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">' . $row->quotation_id . '</a>';
 
                 if ($row->order_id) {
 

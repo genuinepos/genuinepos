@@ -1400,7 +1400,7 @@
     "Quantity is empty in the last conversion.": "শেষ রূপান্তরে পরিমাণ খালি।",
     "Quantity is 0.00 in the last conversion.": "শেষ রূপান্তরে পরিমাণ হল 0.00।",
     "Same unit does not allowed.": "একই একক অনুমোদিত নয়।",
-    "After creating the variant, product cost and product price field must not be empty.": "ভেরিয়েন্ট তৈরি করার পরে, পণ্যের মূল্য এবং পণ্যের মূল্য ক্ষেত্রটি খালি থাকবে না।",
+    "Before creating the variant, product cost and product price field must not be empty.": "ভেরিয়েন্ট তৈরি করার পূর্বে, পণ্যের মূল্য এবং পণ্যের মূল্য ক্ষেত্রটি খালি থাকবে না।",
     "Unit Price Exc. Tax": "একক মূল্য (ট্যাক্স ছাড়া)",
     "Cost Exc. Tax": "খরচ (ট্যাক্স ছাড়া)",
     "Cost Inc. Tax": "খরচ (ট্যাক্স সহ)",

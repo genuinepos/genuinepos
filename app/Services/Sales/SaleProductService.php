@@ -195,7 +195,7 @@ class SaleProductService
         $addSaleProduct->product_id = $request->product_ids[$index];
         $addSaleProduct->variant_id = $variantId;
         $addSaleProduct->quantity = $request->quantities[$index];
-        $addSaleProduct->ordered_quantity = $sale->status == SaleStatus::Order->value ? $request->quantities[$index] : 0;
+        $addSaleProduct->ordered_quantity = $sale->status == SaleStatus::Order->value || $sale->status == SaleStatus::Quotation->value ? $request->quantities[$index] : 0;
         $addSaleProduct->left_quantity = $sale->status == SaleStatus::Order->value ? $request->quantities[$index] : 0;
         $addSaleProduct->unit_discount_type = $request->unit_discount_types[$index];
         $addSaleProduct->unit_discount = $request->unit_discounts[$index];

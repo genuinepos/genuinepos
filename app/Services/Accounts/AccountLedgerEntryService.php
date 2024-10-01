@@ -177,7 +177,7 @@ class AccountLedgerEntryService
 
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            if ($account?->group?->sub_sub_group_number != 6) {
+            if ($account?->group?->sub_sub_group_number != 6 && $account?->group?->sub_sub_group_number != 1) {
 
                 $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
             }

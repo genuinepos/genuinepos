@@ -164,7 +164,7 @@
         if ($(this).val() == 1 && (product_cost == '' || product_price == '')) {
 
             $(this).val(0);
-            alert("{{ __('After creating the variant, product cost and product price field must not be empty.') }}");
+            alert("{{ __('Before creating the variant, product cost and product price field must not be empty.') }}");
             return;
         }
 

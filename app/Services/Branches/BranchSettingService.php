@@ -55,7 +55,8 @@ class BranchSettingService
             ['key' => 'email_settings__customer_due_reminder_via_sms', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'modules__manufacturing', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'modules__service', 'value' => 1, 'branch_id' => $branchId],
-            ['key' => 'product__product_code_prefix', 'value' => $branchPrefix . $numberOfChildBranch, 'branch_id' => $branchId],
+            // ['key' => 'product__product_code_prefix', 'value' => $branchPrefix . $numberOfChildBranch, 'branch_id' => $branchId],
+            ['key' => 'product__product_code_prefix', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'product__default_unit_id', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'product__is_enable_brands', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'product__is_enable_categories', 'value' => '1', 'branch_id' => $branchId],
@@ -117,7 +118,7 @@ class BranchSettingService
             ['key' => 'modules__hrms', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'modules__service', 'value' => '1', 'branch_id' => $branchId],
-            
+
             ['key' => 'reward_point_settings__enable_cus_point', 'value' => '0', 'branch_id' => !isset($parentBranchId) ? $branchId : null],
             ['key' => 'reward_point_settings__point_display_name', 'value' => 'Reward Point', 'branch_id' => !isset($parentBranchId) ? $branchId : null],
             ['key' => 'reward_point_settings__amount_for_unit_rp', 'value' => null, 'branch_id' => !isset($parentBranchId) ? $branchId : null],

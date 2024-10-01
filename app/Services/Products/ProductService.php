@@ -176,7 +176,7 @@ class ProductService
 
                     if (auth()->user()->can('openingStock_add')) {
 
-                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __('Add or edit opening stock') . '</a>';
+                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __('Add or Edit Opening Stock') . '</a>';
                     }
 
                     if (auth()->user()->can('product_add')) {
@@ -302,7 +302,7 @@ class ProductService
                         $branchAllStock += $stock->stock;
                     }
 
-                    return \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name;
+                    return '<span class="quantity" data-value="' . $branchAllStock. '">' . \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name . '</span>';
                 }
 
                 return \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_name;

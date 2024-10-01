@@ -702,9 +702,11 @@
         $('#e_price_inc_tax').val(parseFloat(unit_price_inc_tax).toFixed(2));
         $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
         $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
+        $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax).toFixed(2));
         $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
         $('#e_descriptions').val(descriptions);
         $('#stock_quantity').val(parseFloat(current_stock).toFixed(2));
+        $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax).toFixed(2));
 
         $('#add_item').html("{{ __('Update') }}");
     });

@@ -3,12 +3,13 @@
 
     var productTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [{
+        buttons: [
+            {
                 extend: 'excel',
                 text: '<i class="fas fa-file-excel"></i> Excel',
                 className: 'btn btn-primary',
                 exportOptions: {
-                    columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10, 11]
                 }
             },
             {
@@ -16,7 +17,74 @@
                 text: '<i class="fas fa-file-pdf"></i> Pdf',
                 className: 'btn btn-primary',
                 exportOptions: {
-                    columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10, 11]
+                },
+                'customize': function(doc) {
+                    doc.styles.tableHeader.alignment = "left";
+                    doc.defaultStyle.fontSize = 7; // Set your custom font size here
+                    doc.styles.tableHeader.fontSize = 7; // Header font size
+
+                    // var columnCount = doc.content[1].table.body[0].length;
+
+                    // // Calculate the total for the 8th column (zero-based index: 8)
+                    // var totalQuantity = 0;
+                    // doc.content[1].table.body.forEach(function(row, index) {
+                    //     // Skip the first row (header)
+                    //     if (index > 0 && row[4] && typeof row[4].text === "string") {
+                    //         // Extract the numeric part and remove any commas
+                    //         var quantityText = row[4].text.split('/')[0].trim(); // Get the part before "/pieces"
+                    //         quantityText = quantityText.replace(/,/g, ''); // Remove commas for parsing
+
+                    //         // Ensure the value is numeric before adding to total
+                    //         if (!isNaN(quantityText)) {
+                    //             totalQuantity += parseFloat(quantityText);
+                    //         }
+                    //     }
+                    // });
+
+                    // // Define the footer row with the same number of columns
+                    // var footerRow = [];
+
+                    // // Loop through each column
+                    // for (var i = 0; i < columnCount; i++) {
+                    //     if (i === 4) {
+                    //         // For the 8th column, add the calculated total value with "/Nos" suffix
+                    //         footerRow.push({
+                    //             text: totalQuantity.toFixed(2) + " /Nos",
+                    //             alignment: 'left',
+                    //             margin: [0, 10, 0, 0],
+                    //             bold: true
+                    //         });
+                    //     } else {
+                    //         // For other columns, add a placeholder (e.g., '---')
+                    //         footerRow.push({
+                    //             text: '---',
+                    //             alignment: 'left',
+                    //             margin: [0, 10, 0, 0]
+                    //         });
+                    //     }
+                    // }
+
+                    // // Push the footer row into the table content
+                    // if (doc.content[1].table && doc.content[1].table.body) {
+                    //     doc.content[1].table.body.push(footerRow);
+                    // }
+
+                    // // Add custom footer at the bottom of each page
+                    // doc.footer = function(currentPage, pageCount) {
+                    //     return {
+                    //         columns: [{
+                    //                 text: "Footer text left",
+                    //                 alignment: "left"
+                    //             },
+                    //             {
+                    //                 text: currentPage.toString() + ' of ' + pageCount,
+                    //                 alignment: "right"
+                    //             }
+                    //         ],
+                    //         margin: [10, 0] // Margin for the footer at the bottom of the page
+                    //     };
+                    // };
                 }
             },
             {
@@ -24,7 +92,7 @@
                 text: '<i class="fas fa-print"></i> Print',
                 className: 'btn btn-primary',
                 exportOptions: {
-                    columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10, 11]
                 }
             },
         ],

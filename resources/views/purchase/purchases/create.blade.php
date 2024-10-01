@@ -122,7 +122,6 @@
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
                 <input type="hidden" name="print_page_size" id="print_page_size" value="1">
-                <input type="number" class="d-none" id="warehouse_alert" value="{{ $generalSettings['subscription']->features['warehouse_count'] > 0 ? 1 : 0 }}">
                 <section>
                     <div class="form_element rounded mt-0 mb-2">
                         <div class="element-body">

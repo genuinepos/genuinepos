@@ -302,7 +302,7 @@
                             <a href="{{ route('purchase.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
 
-                        @if (auth()->user()->can('purchase_order_to_invoice'))
+                        @if (auth()->user()->can('purchase_order_to_invoice') && $order->branch_id == auth()->user()->branch_id)
                             <a href="{{ route('purchase.order.to.invoice.create', [$order->id]) }}" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> {{ __('P/o To Purchase Invoice') }}</a>
                         @endif
 

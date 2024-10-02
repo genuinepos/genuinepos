@@ -13,6 +13,7 @@ use App\Enums\SubscriptionTransactionDetailsType;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use App\Services\Subscriptions\SubscriptionService;
+use Modules\SAAS\Http\Requests\AddShopConfirmRequest;
 use App\Services\Subscriptions\ShopExpireDateHistoryService;
 use Modules\SAAS\Interfaces\UserSubscriptionServiceInterface;
 use App\Services\Subscriptions\SubscriptionTransactionService;
@@ -49,7 +50,7 @@ class AddShopController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function confirm($tenantId, Request $request)
+    public function confirm($tenantId, AddShopConfirmRequest $request)
     {
         try {
             DB::beginTransaction();

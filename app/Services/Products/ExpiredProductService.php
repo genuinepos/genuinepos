@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,8 +20,8 @@ class ExpiredProductService
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
-            ->where('products.has_batch_no_expire_date', 1)
-            ->where('purchase_products.expire_date', '!=', 'NULL')
+            ->where('products.has_batch_no_expire_date', BooleanType::True->value)
+            ->whereNotNull('purchase_products.expire_date')
             ->whereDate('purchase_products.expire_date', '<', date('Y-m-d'));
 
         if (!empty($request->branch_id)) {

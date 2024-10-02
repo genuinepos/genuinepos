@@ -8276,6 +8276,7 @@
                 }
             ],
             "time": "2024-10-02T09:17:49+00:00"
+
         },
         {
             "name": "fakerphp/faker",
@@ -8722,6 +8723,7 @@
                 "source": "https://github.com/laravel/sail"
             },
             "time": "2024-09-27T14:58:09+00:00"
+
         },
         {
             "name": "maximebf/debugbar",

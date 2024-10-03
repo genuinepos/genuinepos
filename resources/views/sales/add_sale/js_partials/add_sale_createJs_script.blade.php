@@ -111,6 +111,7 @@
                             $('#e_product_id').val(product.id);
                             $('#e_variant_id').val('noid');
                             $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                            $('#e_default_price_exc_tax').val(parseFloat(product.product_price).toFixed(2));
                             $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
                             $('#e_discount').val(discount.discount_amount);
                             $('#e_discount_type').val(discount.discount_type);
@@ -176,8 +177,6 @@
                             return value.price_group_id == priceGroupId && value.product_id == variant.product.id && value.variant_id == variant.id;
                         });
 
-                        console.log(priceGroups);
-
                         if (__price.length != 0) {
 
                             price = __price[0].price ? __price[0].price : variant.variant_price;
@@ -202,6 +201,7 @@
                         $('#e_product_id').val(variant.product.id);
                         $('#e_variant_id').val(variant.id);
                         $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                        $('#e_default_price_exc_tax').val(parseFloat(variant.variant_price).toFixed(2));
                         $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
                         $('#e_discount').val(parseFloat(discount.discount_amount).toFixed(2));
                         $('#e_discount_type').val(discount.discount_type);
@@ -392,6 +392,7 @@
                     $('#e_product_id').val(product_id);
                     $('#e_variant_id').val(variant_id);
                     $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                    $('#e_default_price_exc_tax').val(parseFloat(product_price_exc_tax).toFixed(2));
                     $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
                     $('#e_discount').val(parseFloat(discount.discount_amount).toFixed(2));
                     $('#e_discount_type').val(discount.discount_type);
@@ -889,6 +890,41 @@
                 }
             })
         }
+    });
+
+    $(document).on('change', '#price_group_id', function(e) {
+
+        var price_group_id = $(this).val();
+        var product_id = $('#e_product_id').val();
+        var variant_id = $('#e_variant_id').val();
+        var defaultPriceExcTax = $('#e_default_price_exc_tax').val();
+
+        if (product_id == '') {
+            return;
+        }
+
+        var price = 0;
+        var __price = priceGroups.filter(function(value) {
+
+            if (variant_id != 'noid') {
+
+                return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+            } else {
+
+                return value.price_group_id == price_group_id && value.product_id == product_id;
+            }
+        });
+
+        if (__price.length != 0) {
+
+            price = __price[0].price && parseFloat(__price[0].price) > 0 ? parseFloat(__price[0].price) : defaultPriceExcTax;
+        } else {
+
+            price = defaultPriceExcTax;
+        }
+
+        $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
+        calculateEditOrAddAmount();
     });
 
     function calculateEditOrAddAmount() {

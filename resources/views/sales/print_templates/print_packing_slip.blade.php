@@ -255,7 +255,8 @@
             <div class="row">
                 <div class="col-12">
                     <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Shipping Address') }} : </span>{{ $sale->shipment_address }}</p>
-                    <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Shipping Details') }} : </span>{{ $sale->shipment_details }}</p>
+                    <p style="font-size:10px!important;" class="mt-1"><span class="fw-bold">{{ __('Shipping Details') }} : </span>{{ $sale->shipment_details }}</p>
+                    <p style="font-size:10px!important;" class="mt-1"><span class="fw-bold">{{ __('Deliver To') }} : </span>{{ $sale?->delivered_to }}</p>
                 </div>
             </div>
 
@@ -541,7 +542,8 @@
             <div class="row">
                 <div class="col-12">
                     <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Shipping Address') }} : </span>{{ $sale->shipment_address }}</p>
-                    <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Shipping Details') }} : </span>{{ $sale->shipment_details }}</p>
+                    <p style="font-size:9px!important;" class="mt-1"><span class="fw-bold">{{ __('Shipping Details') }} : </span>{{ $sale->shipment_details }}</p>
+                    <p style="font-size:9px!important;" class="mt-1"><span class="fw-bold">{{ __('Deliver To') }} : </span>{{ $sale?->delivered_to }}</p>
                 </div>
             </div>
 

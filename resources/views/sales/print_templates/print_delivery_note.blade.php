@@ -273,6 +273,10 @@
                     <div class="bank_details mt-1">
                         <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $sale?->shipment_address }}</p>
                     </div>
+
+                    <div class="bank_details mt-1">
+                        <p style="font-size:10px!important;"><span class="fw-bold">{{ __('Deliver To') }} : </span> {{ $sale?->delivered_to }}</p>
+                    </div>
                 </div>
             </div>
 
@@ -579,6 +583,10 @@
 
                     <div class="bank_details mt-1">
                         <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Ship. Address') }} : </span> {{ $sale?->shipment_address }}</p>
+                    </div>
+
+                    <div class="bank_details mt-1">
+                        <p style="font-size:9px!important;"><span class="fw-bold">{{ __('Deliver To') }} : </span> {{ $sale?->delivered_to }}</p>
                     </div>
                 </div>
             </div>

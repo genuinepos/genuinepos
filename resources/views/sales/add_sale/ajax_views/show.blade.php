@@ -41,7 +41,7 @@
                             @endif
 
                             <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Invoice ID') }} : </span> {{ $sale->invoice_id }}</li>
-                            
+
                             @if (isset($sale->salesOrder))
                                 <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Sales Order ID') }} : </span> {{ $sale?->salesOrder?->order_id }}</li>
                             @endif
@@ -321,18 +321,21 @@
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Discount') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                     <td class="text-end">
                                         {{ $sale->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $sale->order_discount }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Sale Tax') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ '(' . $sale->order_tax_percent . '%)=' . $sale->order_tax_amount }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $sale?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                     <td class="text-end" style="font-size:11px!important;">
@@ -383,8 +386,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;" class="fw-bold">{{ __('Shipment Address') }}</p>
-                            <p class="shipping_details" style="font-size:11px!important;">{{ $sale->shipment_address }}</p>
+                            <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Shipment Status') }}</span> : {{ str(\App\Enums\ShipmentStatus::tryFrom( $sale->shipment_status)->name)->headline() }}</p>
+                        </div>
+
+                        <div class="details_area mt-1">
+                            <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Shipment Details') }}</span> : {{ $sale->shipment_details }}</p>
+                        </div>
+
+                        <div class="details_area mt-1">
+                            <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Shipment Address') }}</span> : {{ $sale->shipment_address }}</p>
+                        </div>
+
+                        <div class="details_area mt-1">
+                            <p style="font-size:11px!important;"><span class="fw-bold">{{ __('Deliver To') }}</span> : {{ $sale->delivered_to }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">

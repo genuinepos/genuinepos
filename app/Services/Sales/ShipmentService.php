@@ -7,6 +7,7 @@ use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Models\Sales\Sale;
 use App\Enums\PaymentStatus;
+use App\Enums\SaleScreenType;
 use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -46,6 +47,7 @@ class ShipmentService
             'sales.order_id',
             'sales.status',
             'sales.shipment_status',
+            'sales.sale_screen',
             'sales.date',
             'sales.total_item',
             'sales.total_qty',
@@ -54,7 +56,7 @@ class ShipmentService
             'sales.paid as received_amount',
             'sales.due',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'customers.name as customer_name',
@@ -71,6 +73,20 @@ class ShipmentService
                 if (auth()->user()->can('shipment_access')) {
 
                     $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
+                }
+
+                if ($row->sale_screen == SaleScreenType::AddSale->value) {
+
+                    if (auth()->user()->can('sales_edit')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                    }
+                } elseif ($row->sale_screen == SaleScreenType::PosSale->value || $row->sale_screen == SaleScreenType::ServicePosSale->value) {
+
+                    if (auth()->user()->can('sales_edit')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id, $row->sale_screen]) . '">' . __('Edit') . '</a>';
+                    }
                 }
 
                 // if (auth()->user()->can('shipment_access')) {
@@ -118,8 +134,8 @@ class ShipmentService
                     return $generalSettings['business_or_shop__business_name'];
                 }
             })
-            ->editColumn('shipment_status', fn ($row) => '<a id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . ShipmentStatus::tryFrom($row->shipment_status)->name . '</a>')
-            ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
+            ->editColumn('shipment_status', fn($row) => '<a id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . ShipmentStatus::tryFrom($row->shipment_status)->name . '</a>')
+            ->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
             ->editColumn('payment_status', function ($row) {
 
@@ -137,17 +153,17 @@ class ShipmentService
                 }
             })
 
-            ->editColumn('current_status', fn ($row) => SaleStatus::tryFrom($row->status)->name)
+            ->editColumn('current_status', fn($row) => SaleStatus::tryFrom($row->status)->name)
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+            ->editColumn('total_item', fn($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('total_qty', fn($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('total_invoice_amount', fn($row) => '<span class="total_invoice_amount" data-value="' . curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->total_invoice_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('received_amount', fn($row) => '<span class="paid received_amount text-success" data-value="' . curr_cnv($row->received_amount, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->received_amount, $row->c_rate, $row->branch_id)) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
+            ->editColumn('due', fn($row) => '<span class="due text-danger" data-value="' . curr_cnv($row->due, $row->c_rate, $row->branch_id) . '">' . \App\Utils\Converter::format_in_bdt(curr_cnv($row->due, $row->c_rate, $row->branch_id)) . '</span>')
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'transaction_id', 'branch', 'customer', 'due', 'payment_status', 'current_status', 'shipment_status'])
             ->make(true);

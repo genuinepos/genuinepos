@@ -265,6 +265,16 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class="col-4"><b>{{ __('Salling Type') }}</b></label>
+                                                    <div class="col-8">
+                                                        <select name="sale_type" class="form-control" id="sale_type" data-next="search_product">
+                                                            <option value="1">{{ __('Regular') }}</option>
+                                                            <option value="2">{{ __('Installment') }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -378,7 +388,7 @@
                                                 <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                                             </div>
 
-                                            <div class="col-xl-3 col-md-6">
+                                            <div class="col-xl-4 col-md-6">
                                                 <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __('Add') }}</a>
                                                 <input type="reset" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger" value="{{ __('Reset') }}">
 
@@ -391,9 +401,11 @@
                                                         <span class="btn btn-sm btn-info text-white" id="display_unit_cost_toggle_btn">{{ __('Cost') }}</span>
                                                     </a>
                                                 @endif
+
+                                                <a href="#" class="btn btn-sm btn-success d-none" id="installment_btn">{{ __('Add Installment') }}</a>
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6 offset-xl-1">
+                                            <div class="col-xl-2 col-md-6">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">{{ __('Stock') }}</span>
@@ -661,5 +673,6 @@
     <!-- Recent transection list modal end-->
 @endsection
 @push('scripts')
-    @include('sales.add_sale.js_partials.add_sale_createJs_script')
+    @include('sales.add_sale.js_partials.add_sale_create_js')
+    @include('sales.add_sale.js_partials.add_sale_create_installment_js')
 @endpush

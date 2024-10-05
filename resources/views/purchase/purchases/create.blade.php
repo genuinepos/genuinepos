@@ -188,9 +188,21 @@
                                         </div>
                                     @else
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Store Location') }}</b></label>
+                                            <label class="col-4"><b>{{ __('Stock Location') }}</b></label>
                                             <div class="col-8">
-                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] }}" />
+                                                @php
+                                                    $branchName = '';
+                                                    if (auth()->user()?->branch) {
+                                                        if (auth()->user()?->branch?->parentBranch) {
+                                                            $branchName = auth()->user()?->branch?->parentBranch?->name . ' (' . auth()->user()?->branch?->branch_code . ')';
+                                                        } else {
+                                                            $branchName = auth()->user()?->branch?->name . ' (' . auth()->user()?->branch?->branch_code . ')';
+                                                        }
+                                                    } else {
+                                                        $branchName = $generalSettings['business_or_shop__business_name'] . ' (' . __('Company') . ')';
+                                                    }
+                                                @endphp
+                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ $branchName }}" />
                                             </div>
                                         </div>
                                     @endif

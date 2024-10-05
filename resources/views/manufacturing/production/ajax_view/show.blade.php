@@ -21,7 +21,7 @@
 
                             <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>{{ date($dateFormat, strtotime($production->date)) }}</li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Stored Location') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ __('Stock Location') }} : </strong>
                                 @if ($production->storeWarehouse)
 
                                     {{ $production->storeWarehouse->warehouse_name . '/' . $production->storeWarehouse->warehouse_code }}<b>({{ __('WH') }})</b>

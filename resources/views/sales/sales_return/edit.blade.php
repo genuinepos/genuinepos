@@ -188,7 +188,7 @@
                                         </div>
                                     @else
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Store Location') }}</b></label>
+                                            <label class="col-4"><b>{{ __('Stock Location') }}</b></label>
                                             <div class="col-8">
                                                 <input readonly type="text" class="form-control" value="{{ $branchName }}" />
                                             </div>

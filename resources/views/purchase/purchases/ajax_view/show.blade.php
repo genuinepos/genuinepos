@@ -81,7 +81,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Stored Location') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ __('Stock Location') }} : </strong>
                                 @if ($purchase?->warehouse)
                                     {{ $purchase?->warehouse?->warehouse_name . '/' . $purchase?->warehouse?->warehouse_code . '-(WH)' }}
                                 @else

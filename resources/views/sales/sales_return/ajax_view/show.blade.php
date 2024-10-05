@@ -69,7 +69,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Stored Location') }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ __('Stock Location') }} : </strong>
                                 @if ($return?->warehouse)
 
                                     {{ $return?->warehouse?->warehouse_name . '/' . $return?->warehouse?->warehouse_code . '-(WH)' }}

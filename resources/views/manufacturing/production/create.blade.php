@@ -80,7 +80,7 @@
                                 @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
                                     <div class="col-md-2">
                                         <input type="hidden" name="store_warehouse_count" value="{{ count($warehouses) }}">
-                                        <label><b>{{ __('Store Location') }}</b>
+                                        <label><b>{{ __('Stock Location') }}</b>
                                             @if (count($warehouses) > 0)
                                                 <span class="text-danger">*</span>
                                             @endif

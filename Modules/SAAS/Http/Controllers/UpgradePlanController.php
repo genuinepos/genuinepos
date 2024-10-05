@@ -119,7 +119,7 @@ class UpgradePlanController extends Controller
         $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
 
         try {
-            DB::connection(config('database.connections.mysql.database'))->beginTransaction();
+            DB::connection('mysql')->beginTransaction();
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
@@ -135,7 +135,7 @@ class UpgradePlanController extends Controller
             }
 
             $this->setTenantConnection($tenant->tenancy_db_name);
-            DB::statement('use ' . $tenant->tenancy_db_name);
+            // DB::statement('use ' . $tenant->tenancy_db_name);
             DB::connection('tenant')->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
@@ -188,15 +188,15 @@ class UpgradePlanController extends Controller
                 dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
             }
 
-            DB::connection(config('database.connections.mysql.database'))->commit();
+            DB::connection('mysql')->commit();
             DB::connection('tenant')->commit();
         } catch (Exception $e) {
 
-            DB::connection(config('database.connections.mysql.database'))->rollback();
+            DB::connection('mysql')->rollback();
             DB::connection('tenant')->rollback();
         }
 
-        DB::reconnect(config('database.connections.mysql.database'));
+        DB::reconnect('mysql');
         return response()->json(__('Plan upgraded successfully'));
     }
 
@@ -220,7 +220,7 @@ class UpgradePlanController extends Controller
         ]);
 
         // Reconnect to the tenant's database
-        // DB::purge('tenant');
-        // DB::reconnect('tenant');
+        DB::purge('tenant');
+        DB::reconnect('tenant');
     }
 }

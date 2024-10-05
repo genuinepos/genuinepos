@@ -190,7 +190,7 @@
                         <th class="text-start">{{ __('voucher No') }}</th>
                         <th class="text-start">{{ __('Parent Sale') }}</th>
                         <th class="text-start">{{ location_label() }}</th>
-                        <th class="text-start">{{ __('Stored Location') }}</th>
+                        <th class="text-start">{{ __('Stock Location') }}</th>
                         <th class="text-start">{{ __('Customer') }}</th>
                         <th class="text-end">{{ __('Return Qty') }}</th>
                         <th class="text-end">{{ __('Unit Price Exc. Tax') }}</th>

@@ -133,7 +133,7 @@
             <div class="row mt-2">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Stored Location') }} : </span>
+                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Stock Location') }} : </span>
                             @if ($production->storeWarehouse)
 
                                 {{ $production->storeWarehouse->warehouse_name . '/' . $production->storeWarehouse->warehouse_code }}<b>({{ __('WH') }})</b>
@@ -507,7 +507,7 @@
             <div class="row mt-2">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Stored Location') }} : </span>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Stock Location') }} : </span>
                             @if ($production->storeWarehouse)
 
                                 {{ $production->storeWarehouse->warehouse_name . '/' . $production->storeWarehouse->warehouse_code }}<b>({{ __('WH') }})</b>

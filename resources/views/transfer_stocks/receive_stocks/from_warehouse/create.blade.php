@@ -146,7 +146,7 @@
                                                             <tr>
                                                                 <th class="text-start">{{ __('Product') }}</th>
                                                                 <th class="text-start">{{ __('Unit') }}</th>
-                                                                <th class="text-start">{{ __('Store Location') }}</th>
+                                                                <th class="text-start">{{ __('Stock Location') }}</th>
                                                                 <th class="text-start">{{ __('Send Qty') }}</th>
                                                                 <th class="text-start">{{ __('Received Qty') }}</th>
                                                                 <th class="text-start">{{ __('Pending Qty') }}</th>

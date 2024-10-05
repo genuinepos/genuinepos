@@ -109,7 +109,7 @@
                                                 <th>{{ __('Voucher No') }}</th>
                                                 <th>{{ __('Parent Sale') }}</th>
                                                 <th>{{ location_label() }}</th>
-                                                <th>{{ __('Stored Location') }}</th>
+                                                <th>{{ __('Stock Location') }}</th>
                                                 <th>{{ __('Customer') }}</th>
                                                 <th>{{ __('Return Qty') }}</th>
                                                 <th>{{ __('Price Exc. Tax') }}</th>

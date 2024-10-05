@@ -220,7 +220,7 @@ class UpgradePlanController extends Controller
         ]);
 
         // Reconnect to the tenant's database
-        DB::purge('tenant');
-        DB::reconnect('tenant');
+        // DB::purge('tenant');
+        // DB::reconnect('tenant');
     }
 }

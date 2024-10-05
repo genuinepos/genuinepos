@@ -60,7 +60,7 @@
             // {data: 'group_name', name: 'customer_groups.group_name'},
             {
                 data: 'credit_limit',
-                name: 'contacts.credit_limit'
+                name: 'contacts.prefix'
             },
             {
                 data: 'opening_balance',

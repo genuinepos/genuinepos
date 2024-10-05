@@ -164,7 +164,8 @@
                                                 @if (isset($req->is_price))
                                                     {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                                     {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
-                                                    {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }}
+                                                    {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}
+                                                    {{ isset($req->is_tax) ? '+ VAT' : '' }}
                                                 @endif
                                             </th>
                                         </tr>
@@ -213,7 +214,8 @@
                                     <p class="price_details" style="margin: 0px;padding: 0px;font-size: 8px;">
                                         {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                         {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
-                                        {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }}
+                                        {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}
+                                        {{ isset($req->is_tax) ? '+ VAT' : '' }}
                                     </p>
                                 @endif
                             </div>

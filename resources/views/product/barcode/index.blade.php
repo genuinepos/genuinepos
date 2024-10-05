@@ -103,7 +103,7 @@
                                                             </li>
 
                                                             <li>
-                                                                <p class="checkbox_input_wrap"><input type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; {{ __('Tax') }} &nbsp; </p>
+                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; {{ __('Vat/Tax') }} &nbsp; </p>
                                                             </li>
 
                                                             <li>

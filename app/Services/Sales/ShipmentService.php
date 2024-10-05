@@ -21,10 +21,13 @@ class ShipmentService
 
         $query = DB::table('sales')
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
+            ->leftJoin('sales as salesOrder', 'sales.sales_order_id', 'salesOrder.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('currencies', 'branches.currency_id', 'currencies.id')
-            ->where('sales.shipment_status', '!=', BooleanType::False->value);
+            ->where('sales.status', SaleStatus::Final->value)
+            ->where('sales.shipment_status', '!=', BooleanType::False->value)
+            ;
 
         $this->filteredQuery($request, $query);
 
@@ -55,10 +58,15 @@ class ShipmentService
             'sales.sale_return_amount',
             'sales.paid as received_amount',
             'sales.due',
+
+            'salesOrder.id as sales_order_id',
+            'salesOrder.order_id as sale_order_voucher_no',
+
             'branches.name as branch_name',
             'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
+
             'customers.name as customer_name',
             'currencies.currency_rate as c_rate'
         )->orderBy('sales.date_ts', 'desc');
@@ -99,25 +107,36 @@ class ShipmentService
 
                 return $html;
             })
+            
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
+
             ->editColumn('transaction_id', function ($row) {
 
+                $link = '';
                 if ($row->status == SaleStatus::Final->value) {
 
-                    return '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">Sale: ' . $row->invoice_id . '</a>';
+                    $link .= '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">Sale: ' . $row->invoice_id . '</a>';
                 } elseif ($row->status == SaleStatus::Quotation->value) {
 
-                    return '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn">Quotation: ' . $row->quotation_id . '</a>';
+                    $link .= '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">Quotation: ' . $row->quotation_id . '</a>';
                 } elseif ($row->status == SaleStatus::Order->value) {
 
-                    return '<a href="' . route('sale.orders.show', [$row->id]) . '" id="details_btn">Order: ' . $row->order_id . '</a>';
+                    $link .= '<a href="' . route('sale.orders.show', [$row->id]) . '" id="details_btn" class="d-block" style="line-height:1.5!important;">Order: ' . $row->order_id . '</a>';
                 }
+
+                if ($row->sales_order_id) {
+
+                    $link .= '<span class="p-0 m-0 d-block" style="line-height:1.5!important;font-size:11px;">' . __("S/O") . ':<a href="' . route('sale.orders.show', [$row->sales_order_id]) . '" id="details_btn">' . $row->sale_order_voucher_no . '</a></span>';
+                }
+
+                return $link;
             })
+
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -134,6 +153,7 @@ class ShipmentService
                     return $generalSettings['business_or_shop__business_name'];
                 }
             })
+
             ->editColumn('shipment_status', fn($row) => '<a id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . ShipmentStatus::tryFrom($row->shipment_status)->name . '</a>')
             ->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 

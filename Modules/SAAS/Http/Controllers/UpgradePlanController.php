@@ -119,7 +119,7 @@ class UpgradePlanController extends Controller
         $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
 
         try {
-            DB::beginTransaction();
+            DB::connection(config('database.connections.mysql.database'))->beginTransaction();
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
@@ -188,11 +188,11 @@ class UpgradePlanController extends Controller
                 dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
             }
 
-            DB::connection()->commit();
+            DB::connection(config('database.connections.mysql.database'))->commit();
             DB::connection('tenant')->commit();
         } catch (Exception $e) {
 
-            DB::connection()->rollback();
+            DB::connection(config('database.connections.mysql.database'))->rollback();
             DB::connection('tenant')->rollback();
         }
 

@@ -134,7 +134,8 @@ class UpgradePlanController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
             }
 
-            DB::statement('use ' . $tenant->tenancy_db_name);
+            $this->setTenantConnection($tenant->tenancy_db_name);
+            // DB::statement('use ' . $tenant->tenancy_db_name);
             DB::connection($tenant->tenancy_db_name)->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
@@ -197,5 +198,29 @@ class UpgradePlanController extends Controller
 
         DB::reconnect();
         return response()->json(__('Plan upgraded successfully'));
+    }
+
+    private function setTenantConnection(string $databaseName)
+    {
+        // Configure the connection dynamically
+        config([
+            'database.connections.tenant' => [
+                'driver' => 'mysql', // or your specific database driver
+                'host' => env('DB_HOST', '127.0.0.1'),
+                'port' => env('DB_PORT', '3306'),
+                'database' => $databaseName, // dynamic database name
+                'username' => env('DB_USERNAME', 'your_db_username'),
+                'password' => env('DB_PASSWORD', 'your_db_password'),
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'prefix' => '',
+                'strict' => true,
+                'engine' => null,
+            ],
+        ]);
+
+        // Reconnect to the tenant's database
+        DB::purge($databaseName);
+        DB::reconnect($databaseName);
     }
 }

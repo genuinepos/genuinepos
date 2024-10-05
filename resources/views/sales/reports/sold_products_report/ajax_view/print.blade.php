@@ -191,7 +191,6 @@
                 <thead>
                     <tr>
                         <th class="text-start">{{ __('Product') }}</th>
-                        <th class="text-start">{{ __('P. Code(SKU)') }}</th>
                         <th class="text-start">{{ location_label() }}</th>
                         <th class="text-start">{{ __('Stock Location') }}</th>
                         <th class="text-start">{{ __('Customer') }}</th>
@@ -229,15 +228,16 @@
                                     $totalQty += $saleProduct->quantity;
                                     $subtotal = curr_cnv($saleProduct->unit_price_inc_tax, $saleProduct->c_rate, $saleProduct->branch_id);
                                     $totalSubtotal += $subtotal;
+
+                                    $productCode = ' ('.($saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code).')'
                                 @endphp
-                                {{ $saleProduct->name . $variant }}
+                                {{ $saleProduct->name . $variant . $productCode }}
                             </td>
 
-                            <td class="text-start">{{ $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code }}</td>
                             <td class="text-start">
                                 @if ($saleProduct->branch_id)
                                     @if ($saleProduct->parent_branch_name)
-                                        {{ $saleProduct->parent_branch_name . '(' . $purchase->branch_area_name . ')' }}
+                                        {{ $saleProduct->parent_branch_name . '(' . $saleProduct->branch_area_name . ')' }}
                                     @else
                                         {{ $saleProduct->branch_name . '(' . $saleProduct->branch_area_name . ')' }}
                                     @endif

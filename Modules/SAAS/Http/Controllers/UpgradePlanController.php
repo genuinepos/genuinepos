@@ -135,7 +135,7 @@ class UpgradePlanController extends Controller
             }
 
             $this->setTenantConnection($tenant->tenancy_db_name);
-            // DB::statement('use ' . $tenant->tenancy_db_name);
+            DB::statement('use ' . $tenant->tenancy_db_name);
             DB::connection('tenant')->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
@@ -220,7 +220,7 @@ class UpgradePlanController extends Controller
         ]);
 
         // Reconnect to the tenant's database
-        DB::purge('tenant');
-        DB::reconnect('tenant');
+        // DB::purge('tenant');
+        // DB::reconnect('tenant');
     }
 }

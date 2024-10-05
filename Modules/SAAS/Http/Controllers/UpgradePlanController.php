@@ -136,7 +136,7 @@ class UpgradePlanController extends Controller
 
             $this->setTenantConnection($tenant->tenancy_db_name);
             // DB::statement('use ' . $tenant->tenancy_db_name);
-            DB::connection($tenant->tenancy_db_name)->beginTransaction();
+            DB::connection(config('database.connections.tenant'))->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
@@ -189,11 +189,11 @@ class UpgradePlanController extends Controller
             }
 
             DB::connection()->commit();
-            DB::connection($tenant->tenancy_db_name)->commit();
+            DB::connection(config('database.connections.tenant'))->commit();
         } catch (Exception $e) {
 
             DB::connection()->rollback();
-            DB::connection($tenant->tenancy_db_name)->rollback();
+            DB::connection(config('database.connections.tenant'))->rollback();
         }
 
         DB::reconnect();
@@ -220,7 +220,7 @@ class UpgradePlanController extends Controller
         ]);
 
         // Reconnect to the tenant's database
-        DB::purge($databaseName);
-        DB::reconnect($databaseName);
+        DB::purge(config('database.connections.tenant'));
+        DB::reconnect(config('database.connections.tenant'));
     }
 }

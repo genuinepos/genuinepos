@@ -107,12 +107,14 @@ class ShipmentService
 
                 return $html;
             })
+            
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
+
             ->editColumn('transaction_id', function ($row) {
 
                 $link = '';
@@ -134,6 +136,7 @@ class ShipmentService
 
                 return $link;
             })
+
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -150,6 +153,7 @@ class ShipmentService
                     return $generalSettings['business_or_shop__business_name'];
                 }
             })
+
             ->editColumn('shipment_status', fn($row) => '<a id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . ShipmentStatus::tryFrom($row->shipment_status)->name . '</a>')
             ->editColumn('customer', fn($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 

@@ -59,7 +59,7 @@
             },
             {
                 data: 'total_purchase',
-                name: 'contacts.business_name',
+                name: 'contacts.prefix',
                 className: 'text-end fw-bold'
             },
             {

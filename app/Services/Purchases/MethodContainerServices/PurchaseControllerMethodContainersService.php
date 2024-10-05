@@ -482,14 +482,14 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
             $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
-            $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updatePurchaseProduct->branch_id);
+            $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updatePurchase->branch_id);
 
             if (isset($request->warehouse_count) && $request->warehouse_id) {
 
                 $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
             } else {
 
-                $this->productStockService->adjustBranchStock($productId, $variantId, branchId: $updatePurchaseProduct->branch_id);
+                $this->productStockService->adjustBranchStock(productId: $productId, variantId: $variantId, branchId: $updatePurchase->branch_id);
             }
         }
 
@@ -497,7 +497,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
 
             foreach ($storePurchaseProducts as $purchaseProduct) {
 
-                $this->productStockService->adjustWarehouseStock($purchaseProduct->product_id, $purchaseProduct->variant_id, $storedCurrentWarehouseId);
+                $this->productStockService->adjustWarehouseStock(productId: $purchaseProduct->product_id, variantId: $purchaseProduct->variant_id, warehouseId: $storedCurrentWarehouseId);
             }
         }
 

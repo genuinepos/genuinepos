@@ -162,7 +162,6 @@
                                             <tr>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Product') }}</th>
-                                                <th>{{ __('P. Code(SKU)') }}</th>
                                                 <th>{{ location_label() }}</th>
                                                 <th>{{ __('Stock Location') }}</th>
                                                 <th>{{ __('Customer') }}</th>
@@ -178,7 +177,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-end text-white">{{ __('Total') }} : </th>
+                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : </th>
                                                 <th class="text-start text-white">(<span id="quantity"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
@@ -247,10 +246,6 @@
                     name: 'products.name'
                 },
                 {
-                    data: 'product_code',
-                    name: 'products.name'
-                },
-                {
                     data: 'branch',
                     name: 'branches.name'
                 },
@@ -273,22 +268,22 @@
                 },
                 {
                     data: 'unit_price_exc_tax',
-                    name: 'sale_products.unit_price_exc_tax',
+                    name: 'sale_products.description',
                     className: 'text-end fw-bold'
                 },
                 {
                     data: 'unit_discount_amount',
-                    name: 'sale_products.unit_discount_amount',
+                    name: 'products.product_code',
                     className: 'text-end fw-bold'
                 },
                 {
                     data: 'unit_tax_amount',
-                    name: 'sale_products.unit_tax_amount',
+                    name: 'product_variants.variant_name',
                     className: 'text-end fw-bold'
                 },
                 {
                     data: 'unit_price_exc_tax',
-                    name: 'sale_products.unit_price_inc_tax',
+                    name: 'product_variants.variant_code',
                     className: 'text-end fw-bold'
                 },
                 {

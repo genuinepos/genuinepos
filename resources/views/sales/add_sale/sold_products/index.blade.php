@@ -263,7 +263,7 @@
                 },
                 {
                     data: 'unit_discount_amount',
-                    name: 'unit_discount_amount',
+                    name: 'sale_products.description',
                     className: 'text-end fw-bold'
                 },
                 {

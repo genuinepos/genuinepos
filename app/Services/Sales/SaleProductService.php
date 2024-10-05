@@ -86,6 +86,7 @@ class SaleProductService
             'sale_products.unit_cost_inc_tax',
             'sale_products.unit_price_exc_tax',
             'sale_products.unit_price_inc_tax',
+            'sale_products.description',
             'sale_products.subtotal',
             'units.code_name as unit_code',
             'sales.id',
@@ -116,7 +117,8 @@ class SaleProductService
 
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                 $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
-                return $row->name . $variant . $productCode;
+                $description = $row->description ? '<span class="d-block text-muted" style="line-height:1;font-size:8px;" title="' . $row->description . '">' . Str::limit($row->description, 40, '..') . '</span>' : '';
+                return '<p class="p-0 m-0">' . $row->name . $variant . $productCode . '</span>' . $description;
             })
 
             ->editColumn('date', function ($row) {

@@ -135,6 +135,7 @@ class UpgradePlanController extends Controller
             }
 
             DB::statement('use ' . $tenant->tenancy_db_name);
+            DB::connection($tenant->tenancy_db_name)->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
@@ -186,12 +187,12 @@ class UpgradePlanController extends Controller
                 dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
             }
 
+            DB::connection()->commit();
             DB::connection($tenant->tenancy_db_name)->commit();
-            DB::connection(config('database.connections.mysql.database'))->commit();
         } catch (Exception $e) {
 
+            DB::connection()->rollback();
             DB::connection($tenant->tenancy_db_name)->rollback();
-            DB::connection(config('database.connections.mysql.database'))->rollback();
         }
 
         DB::reconnect();

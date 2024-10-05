@@ -134,15 +134,7 @@ class UpgradePlanController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
             }
 
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollback();
-        }
-
-        DB::statement('use ' . $tenant->tenancy_db_name);
-        try {
-            DB::beginTransaction();
+            DB::statement('use ' . $tenant->tenancy_db_name);
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
@@ -180,26 +172,29 @@ class UpgradePlanController extends Controller
 
             $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $updateSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
 
-            DB::commit();
+            if ($isTrialPlan == BooleanType::True->value) {
+
+                $this->deleteTrialPeriodDataService->cleanDataFromDB();
+                Session::forget('startupType');
+            }
+
+            Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
+            if ($tenant?->user) {
+
+                $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
+                dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
+            }
+
+            DB::connection($tenant->tenancy_db_name)->commit();
+            DB::connection(config('database.connections.mysql.database'))->commit();
         } catch (Exception $e) {
-            DB::rollback();
-        }
 
-        if ($isTrialPlan == BooleanType::True->value) {
-
-            $this->deleteTrialPeriodDataService->cleanDataFromDB();
-            Session::forget('startupType');
+            DB::connection($tenant->tenancy_db_name)->rollback();
+            DB::connection(config('database.connections.mysql.database'))->rollback();
         }
 
         DB::reconnect();
-        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
-
-        if ($tenant?->user) {
-
-            $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
-            dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
-        }
-
         return response()->json(__('Plan upgraded successfully'));
     }
 }

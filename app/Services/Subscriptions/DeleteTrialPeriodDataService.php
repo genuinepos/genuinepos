@@ -19,6 +19,7 @@ use App\Models\Manufacturing\Production;
 use App\Models\Purchases\PurchaseProduct;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\TransferStocks\TransferStock;
+use App\Models\Purchases\PurchaseOrderProduct;
 use App\Models\StockAdjustments\StockAdjustment;
 use App\Models\TransferStocks\TransferStockProduct;
 
@@ -49,6 +50,7 @@ class DeleteTrialPeriodDataService
             Schema::disableForeignKeyConstraints();
             Purchase::truncate();
             PurchaseProduct::truncate();
+            PurchaseOrderProduct::truncate();
             Schema::enableForeignKeyConstraints();
         }
 

@@ -126,6 +126,8 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
         $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
+        $autoRepaySaleAndPurchaseReturn = isset($generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return']) ? $generalSettings['business_or_shop__auto_repayment_sales_and_purchase_return'] : 0;
+
         $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService);
         if ($restrictions['pass'] == false) {
 
@@ -198,7 +200,7 @@ class SalesOrderToInvoiceControllerMethodContainersService implements SalesOrder
             ]
         );
 
-        if ($sale->due > 0) {
+        if ($sale->due > 0 && $autoRepaySaleAndPurchaseReturn == 1) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $sale);
         }

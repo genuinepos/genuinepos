@@ -404,7 +404,7 @@
                     <td>
                         <div class="mail-header">
                             <div class="logo">
-                                <img style="height: height; width:auto;" src="{{ {{ url('/') }}'/modules/saas/images/logo_black.png') }}" alt="System Logo" class="logo__img">
+                                <img style="height: height; width:auto;" src="{{ url('/') }}/modules/saas/images/logo_black.png" alt="System Logo" class="logo__img">
                                 FFF
                             </div>
                             <div class="content_customer" style="text-align: right;">

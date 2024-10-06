@@ -137,9 +137,7 @@ class UpgradePlanController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
             }
 
-
             DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
-
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 

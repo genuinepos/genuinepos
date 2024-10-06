@@ -25,7 +25,7 @@
             <div class="form-row">
                 <div class="col-md-4">
                     <label for="branch_name">{{ __('Store Name') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="branch_name" id="branch_name" class="form-control" placeholder="{{ __('Enter Store Name') }}" autocomplete="off">
+                    <input required type="text" name="branch_name" id="branch_name" class="form-control" value="{{ $generalSettings['subscription']->has_business == 0 ? $generalSettings['business_or_shop__business_name'] : '' }}" placeholder="{{ __('Enter Store Name') }}" autocomplete="off">
                     <span class="error error_branch_name"></span>
                 </div>
 
@@ -37,7 +37,7 @@
 
                 <div class="col-md-4">
                     <label for="phone">{{ __('Phone No.') }} <span class="text-danger">*</span></label>
-                    <input required type="text" name="branch_phone" class="form-control" id="branch_phone" placeholder="{{ __('Store Phone No') }}">
+                    <input required type="text" name="branch_phone" class="form-control" id="branch_phone" value="{{ $generalSettings['subscription']->has_business == 0 ? $generalSettings['business_or_shop__phone'] : '' }}" placeholder="{{ __('Store Phone No') }}">
                     <span class="error error_branch_id"></span>
                 </div>
             </div>
@@ -89,14 +89,14 @@
 
                 <div class="col-md-8">
                     <label for="branch_address">{{ __('Address') }}</label>
-                    <input type="text" name="branch_address" class="form-control" id="branch_address" placeholder="{{ __('Address') }}">
+                    <input type="text" name="branch_address" class="form-control" id="branch_address" value="{{ $generalSettings['subscription']->has_business == 0 ? $generalSettings['business_or_shop__address'] : '' }}" placeholder="{{ __('Address') }}">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col-md-4">
                     <label for="branch_email">{{ __('Email Address') }}</label>
-                    <input type="email" name="branch_email" class="form-control" id="branch_email" placeholder="{{ __('Store Email Address') }}">
+                    <input type="email" name="branch_email" class="form-control" id="branch_email" value="{{ $generalSettings['subscription']->has_business == 0 ? $generalSettings['business_or_shop__email'] : '' }}" placeholder="{{ __('Store Email Address') }}">
                     <span></span>
                 </div>
 

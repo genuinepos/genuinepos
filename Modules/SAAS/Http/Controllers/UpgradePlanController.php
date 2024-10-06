@@ -123,7 +123,7 @@ class UpgradePlanController extends Controller
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
-            $isTrialPlan = $tenant?->user?->userSubscription?->plan?->is_trial_plan;
+            $isTrialPlan = $tenant?->user?->userSubscription?->plan?->is_trial_plan == 1 ? 1 : 0;
 
             $transactionDetailsType = $isTrialPlan == BooleanType::True->value ? SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value : SubscriptionTransactionDetailsType::UpgradePlanFromRealPlan->value;
 

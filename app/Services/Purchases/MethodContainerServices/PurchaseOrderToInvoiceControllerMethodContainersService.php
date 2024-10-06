@@ -120,6 +120,8 @@ class PurchaseOrderToInvoiceControllerMethodContainersService implements Purchas
         $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
         $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
+        $autoRepayPurchaseAndSalesReturn = isset($generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return']) ? $generalSettings['business_or_shop__auto_repayment_purchase_and_sales_return'] : 0;
+
         $updateLastCreated = $this->purchaseService->purchaseByAnyConditions()->where('is_last_created', BooleanType::True->value)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
 
         if ($updateLastCreated) {
@@ -203,7 +205,7 @@ class PurchaseOrderToInvoiceControllerMethodContainersService implements Purchas
             ]
         )->where('id', $addPurchase->id)->first();
 
-        if ($purchase->due > 0) {
+        if ($purchase->due > 0 && $autoRepayPurchaseAndSalesReturn == 1) {
 
             $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: AccountingVoucherType::Payment->value, refIdColName: 'purchase_id', purchase: $purchase);
         }

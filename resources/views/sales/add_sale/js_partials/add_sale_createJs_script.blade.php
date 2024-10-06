@@ -699,6 +699,23 @@
         $('#add_item').html("{{ __('Update') }}");
     });
 
+    function isTextSelected(input) {
+        return input.selectionStart !== input.selectionEnd;
+    }
+
+    $('#search_product').on('input keypress', function(e) {
+
+        if (e.which == 13) {
+
+            var inputElement = document.getElementById('search_product');
+
+            if (inputElement && isTextSelected(inputElement)) {
+
+                $('#e_quantity').focus().select();
+            }
+        }
+    });
+
     $('#e_quantity').on('input keypress', function(e) {
 
         calculateEditOrAddAmount();

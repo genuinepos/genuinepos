@@ -60,7 +60,7 @@
         var increaseShopCount = $('#increase_shop_count').val();
 
         if (increaseShopCount == '' || parseFloat(increaseShopCount) == 0) {
-            
+
             $('#increase_shop_count').val(1);
         }
 
@@ -158,6 +158,12 @@
 
                 $('#submit_button').removeClass('d-none');
                 $('#loading_button').addClass('d-none');
+
+                if (!$.isEmptyObject(res.errorMsg)) {
+
+                    toastr.error(res.errorMsg);
+                    return;
+                }
 
                 toastr.success(res);
 

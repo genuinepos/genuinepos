@@ -25,7 +25,7 @@
                 $('#submit_button').removeClass('d-none');
                 $('#loading_button').addClass('d-none');
 
-                if (!$isEmptyObject(res.errorMsg)) {
+                if (!$.isEmptyObject(res.errorMsg)) {
 
                     toastr.error(res.errorMsg);
                     return;

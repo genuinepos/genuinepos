@@ -72,9 +72,9 @@ class AddShopController extends Controller
             DB::rollback();
         }
 
-        DB::statement('use ' . $tenant->tenancy_db_name);
+        DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
         try {
-            DB::beginTransaction();
+            DB::connection('mysql')->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::AddShop->value);
 
@@ -93,9 +93,9 @@ class AddShopController extends Controller
 
             $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $updateSubscription, transactionType: SubscriptionTransactionType::AddShop->value, transactionDetailsType: SubscriptionTransactionDetailsType::AddShop->value, plan: $plan);
 
-            DB::commit();
+            DB::connection('mysql')->commit();
         } catch (Exception $e) {
-            DB::rollback();
+            DB::connection('mysql')->rollback();
         }
         DB::reconnect();
 

@@ -123,6 +123,11 @@ class UpgradePlanController extends Controller
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
+            if (!isset($tenant)) {
+
+                return response()->json(['errorMsg' => 'Tenant not found.']);
+            }
+
             $isTrialPlan = $tenant?->user?->userSubscription?->plan?->is_trial_plan == 1 ? 1 : 0;
 
             $transactionDetailsType = $isTrialPlan == BooleanType::True->value ? SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value : SubscriptionTransactionDetailsType::UpgradePlanFromRealPlan->value;
@@ -190,15 +195,15 @@ class UpgradePlanController extends Controller
         } catch (Exception $e) {
             DB::rollback();
         }
+        DB::reconnect();
+
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         if ($tenant?->user) {
 
             $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
             dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
         }
-
-        DB::reconnect();
-        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
         return response()->json(__('Plan upgraded successfully'));
     }

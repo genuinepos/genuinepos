@@ -145,9 +145,9 @@ class UpgradePlanController extends Controller
             DB::rollback();
         }
 
-        DB::statement('use ' . $tenant->tenancy_db_name);
+        DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
         try {
-            DB::beginTransaction();
+            DB::connection('mysql')->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
@@ -191,9 +191,9 @@ class UpgradePlanController extends Controller
                 Session::forget('startupType');
             }
 
-            DB::commit();
+            DB::connection('mysql')->commit();
         } catch (Exception $e) {
-            DB::rollback();
+            DB::connection('mysql')->rollback();
         }
         DB::reconnect();
 

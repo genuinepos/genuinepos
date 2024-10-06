@@ -66,7 +66,7 @@ Route::get('my-test', function () {
 
     // return $c;
 
-    return config('app.url');
+    return config('app.app_domain');
 });
 
 Route::get('password', function () {

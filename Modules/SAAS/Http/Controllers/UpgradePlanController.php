@@ -123,7 +123,7 @@ class UpgradePlanController extends Controller
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
-            $isTrialPlan = $tenant?->user?->userSubscription?->plan?->is_trial_plan;
+            $isTrialPlan = $tenant?->user?->userSubscription?->plan?->is_trial_plan == 1 ? 1 : 0;
 
             $transactionDetailsType = $isTrialPlan == BooleanType::True->value ? SubscriptionTransactionDetailsType::UpgradePlanFromTrial->value : SubscriptionTransactionDetailsType::UpgradePlanFromRealPlan->value;
 
@@ -186,15 +186,15 @@ class UpgradePlanController extends Controller
                 Session::forget('startupType');
             }
 
-            if ($tenant?->user) {
-
-                $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
-                dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
-            }
-
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+        }
+
+        if ($tenant?->user) {
+
+            $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
+            dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
         }
 
         DB::reconnect();

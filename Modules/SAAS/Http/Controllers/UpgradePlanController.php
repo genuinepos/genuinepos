@@ -119,8 +119,6 @@ class UpgradePlanController extends Controller
         $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
 
         try {
-            DB::beginTransaction();
-
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
             if (!isset($tenant)) {
@@ -139,15 +137,9 @@ class UpgradePlanController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
             }
 
-            DB::commit();
-        } catch (Exception $e) {
 
-            DB::rollback();
-        }
+            DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
 
-        DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
-        try {
-            DB::connection('mysql')->beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
@@ -191,19 +183,22 @@ class UpgradePlanController extends Controller
                 Session::forget('startupType');
             }
 
-            DB::connection('mysql')->commit();
-        } catch (Exception $e) {
-            DB::connection('mysql')->rollback();
+            DB::reconnect();
+
+            Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
+            if ($tenant?->user) {
+
+                $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
+                dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
+            }
+        } catch (\Exception $e) {
+
+            Log::debug($e->getMessage());
+            Log::info($e->getMessage());
+            return null;
         }
-        DB::reconnect();
 
-        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
-
-        if ($tenant?->user) {
-
-            $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
-            dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
-        }
 
         return response()->json(__('Plan upgraded successfully'));
     }

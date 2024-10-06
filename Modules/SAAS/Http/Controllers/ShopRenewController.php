@@ -65,12 +65,15 @@ class ShopRenewController extends Controller
 
     public function confirm(ShopRenewConfirmRequest $request, $tenantId)
     {
-        $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
-
-        $plan = $tenant?->user?->userSubscription?->plan;
-     
         try {
-            DB::beginTransaction();
+            $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
+
+            if (!isset($tenant)) {
+
+                return response()->json(['errorMsg' => 'Tenant not found.']);
+            }
+
+            $plan = $tenant?->user?->userSubscription?->plan;
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription']);
 
@@ -81,16 +84,7 @@ class ShopRenewController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::ShopRenew->value, transactionDetailsType: SubscriptionTransactionDetailsType::ShopRenew->value, plan: $plan);
             }
 
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollback();
-        }
-
-        DB::statement('use ' . $tenant->tenancy_db_name);
-
-        try {
-            DB::beginTransaction();
+            DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, subscriptionUpdateType: SubscriptionUpdateType::ShopRenew->value);
 
@@ -114,16 +108,17 @@ class ShopRenewController extends Controller
 
             $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $updateSubscription, transactionType: SubscriptionTransactionType::ShopRenew->value, transactionDetailsType: SubscriptionTransactionDetailsType::ShopRenew->value, plan: $plan);
 
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollback();
-        }
+            DB::reconnect();
 
-        DB::reconnect();
+            if ($tenant?->user) {
 
-        if ($tenant?->user) {
+                dispatch(new ShopRenewMailJobQueue(user: $tenant?->user, data: $request->all()));
+            }
+        } catch (\Exception $e) {
 
-            dispatch(new ShopRenewMailJobQueue(user: $tenant?->user, data: $request->all()));
+            Log::debug($e->getMessage());
+            Log::info($e->getMessage());
+            return null;
         }
 
         return response()->json(__('Store/company renewed successfully'));

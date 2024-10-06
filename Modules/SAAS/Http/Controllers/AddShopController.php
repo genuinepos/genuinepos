@@ -4,6 +4,7 @@ namespace Modules\SAAS\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Enums\SubscriptionUpdateType;
 use Illuminate\Support\Facades\Artisan;
@@ -53,9 +54,12 @@ class AddShopController extends Controller
     public function confirm($tenantId, AddShopConfirmRequest $request)
     {
         try {
-            DB::beginTransaction();
-
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription',  'user.userSubscription.plan']);
+
+            if (!isset($tenant)) {
+
+                return response()->json(['errorMsg' => 'Tenant not found.']);
+            }
 
             $plan = $tenant?->user?->userSubscription?->plan;
 
@@ -66,15 +70,7 @@ class AddShopController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::AddShop->value, transactionDetailsType: SubscriptionTransactionDetailsType::AddShop->value, plan: $plan);
             }
 
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollback();
-        }
-
-        DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
-        try {
-            DB::connection('mysql')->beginTransaction();
+            DB::connection('mysql')->statement('use ' . $tenant->tenancy_db_name);
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, subscriptionUpdateType: SubscriptionUpdateType::AddShop->value);
 
@@ -93,28 +89,31 @@ class AddShopController extends Controller
 
             $this->subscriptionTransactionService->addSubscriptionTransaction(request: $request, subscription: $updateSubscription, transactionType: SubscriptionTransactionType::AddShop->value, transactionDetailsType: SubscriptionTransactionDetailsType::AddShop->value, plan: $plan);
 
-            DB::connection('mysql')->commit();
-        } catch (Exception $e) {
-            DB::connection('mysql')->rollback();
+            DB::reconnect();
+
+            Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
+            if ($tenant?->user) {
+
+                dispatch(new AddShopMailJobQueue(
+                    user: $tenant?->user,
+                    increasedShopCount: $request->increase_shop_count,
+                    pricePerShop: $request->shop_price,
+                    pricePeriod: $request->shop_price_period,
+                    pricePeriodCount: $request->shop_price_period_count,
+                    subtotal: $request->shop_subtotal,
+                    netTotalAmount: $request->net_total,
+                    discount: $request->discount,
+                    totalPayable: $request->total_payable,
+                ));
+            }
+        } catch (\Exception $e) {
+
+            Log::debug($e->getMessage());
+            Log::info($e->getMessage());
+            return null;
         }
-        DB::reconnect();
 
-        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
-
-        if ($tenant?->user) {
-
-            dispatch(new AddShopMailJobQueue(
-                user: $tenant?->user,
-                increasedShopCount: $request->increase_shop_count,
-                pricePerShop: $request->shop_price,
-                pricePeriod: $request->shop_price_period,
-                pricePeriodCount: $request->shop_price_period_count,
-                subtotal: $request->shop_subtotal,
-                netTotalAmount: $request->net_total,
-                discount: $request->discount,
-                totalPayable: $request->total_payable,
-            ));
-        }
 
         return response()->json(__('Plan upgraded successfully'));
     }

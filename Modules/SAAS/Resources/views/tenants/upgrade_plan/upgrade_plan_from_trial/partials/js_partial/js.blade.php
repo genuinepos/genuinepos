@@ -25,7 +25,13 @@
                 $('#submit_button').removeClass('d-none');
                 $('#loading_button').addClass('d-none');
 
-                toastr.success(res);
+                if (!$isEmptyObject(res.errorMsg)) {
+
+                    toastr.error(res.errorMsg);
+                    return;
+                }
+
+                 toastr.success(res);
 
                 window.location = "{{ route('saas.tenants.index') }}";
             },

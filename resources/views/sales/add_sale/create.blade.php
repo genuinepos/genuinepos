@@ -299,6 +299,7 @@
                                                 <input type="hidden" id="e_variant_id">
                                                 <input type="hidden" id="e_tax_amount">
                                                 <input type="hidden" id="e_is_show_emi_on_pos">
+                                                <input type="hidden" id="e_default_price_exc_tax">
                                                 <input type="hidden" id="e_price_inc_tax">
                                             </div>
 

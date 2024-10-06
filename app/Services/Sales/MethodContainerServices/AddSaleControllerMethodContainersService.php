@@ -147,7 +147,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ->where('account_groups.sub_sub_group_number', 8)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        // $type = auth()->user()->can('supplier_all') ? 'both' : 'customer';
+        $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
 
         $data['priceGroupProducts'] = $this->managePriceGroupService->priceGroupProducts();
 
@@ -350,7 +351,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             // ->where('accounts.branch_id', $sale->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+        // $type = auth()->user()->can('supplier_all') ? 'both' : 'customer';
+        $data['customerAccounts'] = $this->accountService->customerAndSupplierAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
 
         $data['priceGroupProducts'] = $this->managePriceGroupService->priceGroupProducts();
 

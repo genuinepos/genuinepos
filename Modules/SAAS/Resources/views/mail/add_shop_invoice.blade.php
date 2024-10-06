@@ -404,7 +404,7 @@
                     <td>
                         <div class="mail-header">
                             <div class="logo">
-                                <img style="height: height; width:auto;" src="{{ url('/') }}/assets/images/app_logo.png" alt="System Logo" class="logo__img">
+                                <img style="height: height; width:auto;" src="{{ url('/') }}modules/saas/images/logo_black.png" alt="System Logo" class="logo__img">
                             </div>
                             <div class="content_customer" style="text-align: right;">
                                 <span style="font-weight: bold;">{{ config('speeddigit.name') }}</span> <br>

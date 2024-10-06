@@ -186,15 +186,15 @@ class UpgradePlanController extends Controller
                 Session::forget('startupType');
             }
 
-            if ($tenant?->user) {
-
-                $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
-                dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
-            }
-
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+        }
+
+        if ($tenant?->user) {
+
+            $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
+            dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
         }
 
         DB::reconnect();

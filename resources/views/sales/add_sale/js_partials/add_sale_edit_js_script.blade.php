@@ -110,6 +110,7 @@
                             $('#e_product_id').val(product.id);
                             $('#e_variant_id').val('noid');
                             $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                            $('#e_default_price_exc_tax').val(parseFloat(product.product_price).toFixed(2));
                             $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
                             $('#e_discount').val(discount.discount_amount);
                             $('#e_discount_type').val(discount.discount_type);
@@ -197,6 +198,7 @@
                         $('#e_product_id').val(variant.product.id);
                         $('#e_variant_id').val(variant.id);
                         $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                        $('#e_default_price_exc_tax').val(parseFloat(variant.variant_price).toFixed(2));
                         $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
                         $('#e_discount').val(parseFloat(discount.discount_amount).toFixed(2));
                         $('#e_discount_type').val(discount.discount_type);
@@ -391,6 +393,7 @@
                     $('#e_variant_id').val(variant_id);
                     $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
                     $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
+                    $('#e_default_price_exc_tax').val(parseFloat(product_price_exc_tax).toFixed(2));
                     $('#e_discount').val(parseFloat(discount.discount_amount).toFixed(2));
                     $('#e_discount_type').val(discount.discount_type);
                     $('#e_discount_amount').val(parseFloat(discount_amount).toFixed(2));
@@ -438,6 +441,7 @@
         var e_unit_id = $('#e_unit_id').val();
         var e_quantity = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
         var e_current_quantity = $('#e_current_quantity').val() ? $('#e_current_quantity').val() : 0;
+        var e_default_price_exc_tax = $('#e_default_price_exc_tax').val() ? $('#e_default_price_exc_tax').val() : 0;
         var e_price_exc_tax = $('#e_price_exc_tax').val() ? $('#e_price_exc_tax').val() : 0;
         var e_discount = $('#e_discount').val() ? $('#e_discount').val() : 0;
         var e_discount_type = $('#e_discount_type').val();
@@ -568,6 +572,7 @@
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
+                        tr += '<input type="hidden" id="unit_default_price_exc_tax" value="' + parseFloat(e_default_price_exc_tax).toFixed(2) + '">';
                         tr += '<input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="' + parseFloat(e_price_exc_tax).toFixed(2) + '">';
                         tr += '<input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="' + parseFloat(e_price_inc_tax).toFixed(2) + '">';
                         tr += '<span id="span_unit_price_inc_tax" class="fw-bold">' + parseFloat(e_price_inc_tax).toFixed(2) + '</span>';
@@ -653,6 +658,7 @@
         var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();
         var quantity = tr.find('#quantity').val();
         var unit_id = tr.find('#unit_id').val();
+        var unit_default_price_exc_tax = tr.find('#unit_default_price_exc_tax').val();
         var unit_price_exc_tax = tr.find('#unit_price_exc_tax').val();
         var unit_price_inc_tax = tr.find('#unit_price_inc_tax').val();
         var subtotal = tr.find('#subtotal').val();
@@ -692,6 +698,7 @@
         $('#e_variant_id').val(variant_id);
         $('#e_unit_id').val(unit_id);
         $('#e_quantity').val(parseFloat(quantity).toFixed(2)).focus().select();
+        $('#e_default_price_exc_tax').val(parseFloat(unit_default_price_exc_tax).toFixed(2));
         $('#e_price_exc_tax').val(parseFloat(unit_price_exc_tax).toFixed(2));
         $('#e_discount').val(parseFloat(unit_discount).toFixed(2));
         $('#e_discount_type').val(unit_discount_type);
@@ -709,6 +716,23 @@
         $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax).toFixed(2));
 
         $('#add_item').html("{{ __('Update') }}");
+    });
+
+    function isTextSelected(input) {
+        return input.selectionStart !== input.selectionEnd;
+    }
+
+    $('#search_product').on('input keypress', function(e) {
+
+        if (e.which == 13) {
+
+            var inputElement = document.getElementById('search_product');
+
+            if (inputElement && isTextSelected(inputElement)) {
+
+                $('#e_quantity').focus().select();
+            }
+        }
     });
 
     $('#e_quantity').on('input keypress', function(e) {
@@ -918,6 +942,41 @@
         }
     });
 
+    $(document).on('change', '#price_group_id', function(e) {
+
+        var price_group_id = $(this).val();
+        var product_id = $('#e_product_id').val();
+        var variant_id = $('#e_variant_id').val();
+        var defaultPriceExcTax = $('#e_default_price_exc_tax').val();
+
+        if (product_id == '') {
+            return;
+        }
+
+        var price = 0;
+        var __price = priceGroups.filter(function(value) {
+
+            if (variant_id != 'noid') {
+
+                return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+            } else {
+
+                return value.price_group_id == price_group_id && value.product_id == product_id;
+            }
+        });
+
+        if (__price.length != 0) {
+
+            price = __price[0].price && parseFloat(__price[0].price) > 0 ? parseFloat(__price[0].price) : defaultPriceExcTax;
+        } else {
+
+            price = defaultPriceExcTax;
+        }
+
+        $('#e_price_exc_tax').val(parseFloat(price).toFixed(2));
+        calculateEditOrAddAmount();
+    });
+
     function calculateEditOrAddAmount() {
 
         var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0.00;
@@ -1067,6 +1126,7 @@
         $('#e_tax_ac_id').val('');
         $('#e_tax_amount').val(parseFloat(0).toFixed(2));
         $('#e_tax_type').val(1);
+        $('#e_default_price_inc_tax').val(parseFloat(0).toFixed(2));
         $('#e_price_inc_tax').val(parseFloat(0).toFixed(2));
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(0);

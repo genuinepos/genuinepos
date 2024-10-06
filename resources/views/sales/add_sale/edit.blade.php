@@ -281,6 +281,7 @@
                                                 <input type="hidden" id="e_variant_id">
                                                 <input type="hidden" id="e_tax_amount">
                                                 <input type="hidden" id="e_is_show_emi_on_pos">
+                                                <input type="hidden" id="e_default_price_exc_tax">
                                                 <input type="hidden" id="e_price_inc_tax">
                                                 <input type="hidden" id="e_current_quantity" value="0">
                                                 <input type="hidden" id="e_current_warehouse_id">
@@ -500,6 +501,7 @@
 
                                                                         <td class="text-start">
                                                                             <input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="{{ $saleProduct->unit_price_exc_tax }}">
+                                                                            <input type="hidden" id="unit_default_price_exc_tax" value="{{ $saleProduct->unit_price_exc_tax }}">
                                                                             <input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="{{ $saleProduct->unit_price_inc_tax }}">
                                                                             <span id="span_unit_price_inc_tax" class="fw-bold">{{ $saleProduct->unit_price_inc_tax }}</span>
                                                                         </td>

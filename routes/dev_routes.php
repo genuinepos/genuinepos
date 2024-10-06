@@ -65,6 +65,8 @@ Route::get('my-test', function () {
     // $c = array_combine($translationKeys, $translatedArray);
 
     // return $c;
+
+    return config('app.url');
 });
 
 Route::get('password', function () {

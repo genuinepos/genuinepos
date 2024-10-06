@@ -119,7 +119,7 @@ class UpgradePlanController extends Controller
         $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
 
         try {
-            DB::connection('mysql')->beginTransaction();
+            DB::beginTransaction();
 
             $tenant = $this->tenantServiceInterface->singleTenant(id: $tenantId, with: ['user', 'user.userSubscription', 'user.userSubscription.plan']);
 
@@ -134,9 +134,15 @@ class UpgradePlanController extends Controller
                 $this->userSubscriptionTransactionServiceInterface->addUserSubscriptionTransaction(request: $request, userSubscription: $updateUserSubscription, transactionType: SubscriptionTransactionType::BuyPlan->value, transactionDetailsType: $transactionDetailsType, plan: $plan);
             }
 
-            $this->setTenantConnection($tenant->tenancy_db_name);
-            DB::statement('use ' . $tenant->tenancy_db_name);
-            DB::connection('tenant')->beginTransaction();
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollback();
+        }
+
+        DB::statement('use ' . $tenant->tenancy_db_name);
+        try {
+            DB::beginTransaction();
 
             $updateSubscription = $this->subscriptionService->updateSubscription(request: $request, plan: $plan, isTrialPlan: $isTrialPlan);
 
@@ -180,47 +186,20 @@ class UpgradePlanController extends Controller
                 Session::forget('startupType');
             }
 
-            Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
-
             if ($tenant?->user) {
 
                 $appUrl = UrlGenerator::generateFullUrlFromDomain($tenantId);
                 dispatch(new SendUpgradePlanMailJobQueue(user: $tenant?->user, data: $request->all(), planName: $plan->name, isTrialPlan: $isTrialPlan, appUrl: $appUrl));
             }
 
-            DB::connection('mysql')->commit();
-            DB::connection('tenant')->commit();
+            DB::commit();
         } catch (Exception $e) {
-
-            DB::connection('mysql')->rollback();
-            DB::connection('tenant')->rollback();
+            DB::rollback();
         }
 
-        DB::reconnect('mysql');
+        DB::reconnect();
+        Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
         return response()->json(__('Plan upgraded successfully'));
-    }
-
-    private function setTenantConnection(string $databaseName)
-    {
-        // Configure the connection dynamically
-        config([
-            'database.connections.tenant' => [
-                'driver' => 'mysql', // or your specific database driver
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '3306'),
-                'database' => $databaseName, // dynamic database name
-                'username' => env('DB_USERNAME', 'your_db_username'),
-                'password' => env('DB_PASSWORD', 'your_db_password'),
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci',
-                'prefix' => '',
-                'strict' => true,
-                'engine' => null,
-            ],
-        ]);
-
-        // Reconnect to the tenant's database
-        // DB::purge('tenant');
-        // DB::reconnect('tenant');
     }
 }

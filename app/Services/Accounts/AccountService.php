@@ -97,7 +97,9 @@ class AccountService
             ->where('accounts.is_global', BooleanType::False->value);
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $mainQuery->where('accounts.branch_id', null);
             }
         }
@@ -404,38 +406,24 @@ class AccountService
         return $query;
     }
 
-    public function customerAndSupplierAccounts($ownBranchIdOrParentBranchId, $sortingByGroupNumber = 'asc')
+    public function customerAndSupplierAccounts(?int $ownBranchIdOrParentBranchId = null, string $sortingByGroupNumber = 'asc', $type = 'both')
     {
-        $customerAccounts = '';
-        $query = DB::table('accounts')
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
-            ->where('account_groups.sub_sub_group_number', 6);
+        if ($type == 'both') {
 
-        $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
-        // if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+            $customerAccounts = '';
+            $query = DB::table('accounts')
+                ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+                ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
+                ->where('account_groups.sub_sub_group_number', 6);
 
-        //     $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
-        // }
+            $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+            // if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+            // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-        $customerAccounts = $query->select(
-            'accounts.id',
-            'accounts.is_walk_in_customer',
-            'accounts.name',
-            'accounts.phone',
-            'contacts.pay_term_number',
-            'contacts.pay_term',
-            'account_groups.name as account_group_name',
-            'account_groups.sub_sub_group_number',
-            'account_groups.default_balance_type',
-        );
+            //     $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+            // }
 
-        return $results = Account::query()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
-            ->where('account_groups.sub_sub_group_number', 10)
-            ->select(
+            $customerAccounts = $query->select(
                 'accounts.id',
                 'accounts.is_walk_in_customer',
                 'accounts.name',
@@ -445,13 +433,78 @@ class AccountService
                 'account_groups.name as account_group_name',
                 'account_groups.sub_sub_group_number',
                 'account_groups.default_balance_type',
-            )
-            ->union($customerAccounts)
-            // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
-            ->orderBy('sub_sub_group_number', $sortingByGroupNumber) // Order by 'is_walk_in_customer' in descending order
-            ->orderBy('is_walk_in_customer', 'desc') // Order by 'is_walk_in_customer' in descending order
-            ->orderBy('name', 'asc')
-            ->get();
+            );
+
+            return $results = Account::query()
+                ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+                ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
+                ->where('account_groups.sub_sub_group_number', 10)
+                ->select(
+                    'accounts.id',
+                    'accounts.is_walk_in_customer',
+                    'accounts.name',
+                    'accounts.phone',
+                    'contacts.pay_term_number',
+                    'contacts.pay_term',
+                    'account_groups.name as account_group_name',
+                    'account_groups.sub_sub_group_number',
+                    'account_groups.default_balance_type',
+                )
+                ->union($customerAccounts)
+                // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
+                ->orderBy('sub_sub_group_number', $sortingByGroupNumber) // Order by 'is_walk_in_customer' in descending order
+                ->orderBy('is_walk_in_customer', 'desc') // Order by 'is_walk_in_customer' in descending order
+                ->orderBy('name', 'asc')
+                ->get();
+        } elseif ($type == 'customer') {
+
+            $customerAccounts = '';
+            $query = DB::table('accounts')
+                ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+                ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
+                ->where('account_groups.sub_sub_group_number', 6);
+
+            $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+            // if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+            // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            //     $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+            // }
+
+            return $customerAccounts = $query->select(
+                'accounts.id',
+                'accounts.is_walk_in_customer',
+                'accounts.name',
+                'accounts.phone',
+                'contacts.pay_term_number',
+                'contacts.pay_term',
+                'account_groups.name as account_group_name',
+                'account_groups.sub_sub_group_number',
+                'account_groups.default_balance_type',
+            )->get();
+        } elseif ($type == 'supplier') {
+
+            return $results = Account::query()
+                ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+                ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
+                ->where('account_groups.sub_sub_group_number', 10)
+                ->select(
+                    'accounts.id',
+                    'accounts.is_walk_in_customer',
+                    'accounts.name',
+                    'accounts.phone',
+                    'contacts.pay_term_number',
+                    'contacts.pay_term',
+                    'account_groups.name as account_group_name',
+                    'account_groups.sub_sub_group_number',
+                    'account_groups.default_balance_type',
+                )
+                // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
+                ->orderBy('sub_sub_group_number', $sortingByGroupNumber) // Order by 'is_walk_in_customer' in descending order
+                ->orderBy('is_walk_in_customer', 'desc') // Order by 'is_walk_in_customer' in descending order
+                ->orderBy('name', 'asc')
+                ->get();
+        }
     }
 
     public function customerAccounts(object $request): object

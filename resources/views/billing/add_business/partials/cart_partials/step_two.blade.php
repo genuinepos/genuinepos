@@ -63,6 +63,9 @@
                 </div>
             </div>
 
+            @if (config('app.'))
+
+            @endif
             {{-- <button type="submit" class="def-btn palce-order tab-next-btn btn-success text-center" id="submit_button">
                 {{ __("Confirm") }}
             </button>

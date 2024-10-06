@@ -78,7 +78,6 @@ class UserService implements UserServiceInterface
         $updateUser = $this->singleUser(id: $id);
 
         $updateUser->email = $request->email;
-        $updateUser->email = $request->email;
         $updateUser->phone = $request->phone;
         $updateUser->address = $request->address;
         $updateUser->language = $request->language;

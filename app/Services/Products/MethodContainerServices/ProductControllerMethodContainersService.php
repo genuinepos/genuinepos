@@ -68,7 +68,7 @@ class ProductControllerMethodContainersService implements ProductControllerMetho
 
         $data['product'] = $product;
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocks;
-        $data['globalWareHouseStocks'] = $globalWareHouseStocks;
+        // $data['globalWareHouseStocks'] = $globalWareHouseStocks;
 
         $data['priceGroups'] = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 

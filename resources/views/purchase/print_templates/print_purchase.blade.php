@@ -25,9 +25,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -177,6 +177,7 @@
                 <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
+                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('S/L') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Description') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Quantity') }}</th>
                             <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost (Exc. Tax)') }}</th>
@@ -198,9 +199,11 @@
                                     $productCode = $purchaseProduct?->variant ? $purchaseProduct?->variant?->variant_code : $purchaseProduct?->product?->product_code;
                                 @endphp
 
+                                <td class="text-start" style="font-size:10px!important;">{{ $loop->index + 1 }}</td>
+
                                 <td class="text-start" style="font-size:10px!important;">
                                     <p>{{ $purchaseProduct->product->name . ' ' . $variant }}</p>
-                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' !!}
                                     <small class="d-block text-muted" style="font-size: 8px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
                                         <small class="d-block text-muted" style="font-size: 8px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>
@@ -362,9 +365,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
-                line-height: 1!important;
-                padding: 0px!important;
-                margin: 0px!important;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -524,9 +527,11 @@
                                     $productCode = $purchaseProduct?->variant ? $purchaseProduct?->variant?->variant_code : $purchaseProduct?->product?->product_code;
                                 @endphp
 
+                                <td class="text-start" style="font-size:9px!important;">{{ $loop->index + 1 }}</td>
+
                                 <td class="text-start" style="font-size:9px!important;">
                                     <p>{{ $purchaseProduct->product->name . ' ' . $variant }}</p>
-                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' .__('P/c') . ': ' . $productCode . '</span>' !!}
+                                    {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' !!}
                                     <small class="d-block text-muted" style="font-size: 8px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
                                         <small class="d-block text-muted" style="font-size: 8px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>

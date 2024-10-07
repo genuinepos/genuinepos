@@ -377,15 +377,15 @@ class ProductService
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
             ->where('product_ledgers.branch_id', auth()->user()->branch_id)
             ->orderBy('product_ledgers.branch_id', 'asc')
-            ->orderBy('product_ledgers.product_id', 'desc')
-            ->orderBy('product_ledgers.variant_id', 'desc')
+            ->orderBy('product_ledgers.product_id', 'asc')
+            ->orderBy('product_ledgers.variant_id', 'asc')
             ->get();
 
-        $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)
-            ->orderBy('product_ledgers.branch_id', 'asc')
-            ->orderBy('product_ledgers.product_id', 'desc')
-            ->orderBy('product_ledgers.variant_id', 'desc')
-            ->get();
+        // $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)
+        //     ->orderBy('product_ledgers.branch_id', 'asc')
+        //     ->orderBy('product_ledgers.product_id', 'desc')
+        //     ->orderBy('product_ledgers.variant_id', 'desc')
+        //     ->get();
 
         return $data;
     }

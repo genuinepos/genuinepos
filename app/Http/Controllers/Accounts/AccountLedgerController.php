@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Enums\BooleanType;
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountLedgerEntryService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountService;
-use App\Services\Branches\BranchService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\LazyCollection;
+use App\Services\Branches\BranchService;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Accounts\AccountLedgerEntryService;
 
 class AccountLedgerController extends Controller
 {
@@ -58,7 +59,9 @@ class AccountLedgerController extends Controller
 
         $account = $this->accountService->singleAccountById(id: $id, with: ['group']);
 
-        $entries = $this->accountLedgerEntryService->ledgerEntriesPrint(request: $request, id: $id, account: $account);
+        $query = $this->accountLedgerEntryService->ledgerEntriesPrint(request: $request, id: $id, account: $account);
+
+        $entries = new LazyCollection($query);
 
         return view('accounting.accounts.ledger.ajax_view.print_ledger', compact('entries', 'request', 'fromDate', 'toDate', 'filteredBranchName', 'account'));
     }

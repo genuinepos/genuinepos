@@ -21,33 +21,33 @@
 
                     <div class="col-md-3">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Name') }} : </strong> {{ $product->name }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Product Code(SKU)') }} : </strong> {{ $product->product_code }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Brand.') }} : </strong> {{ $product?->brand ? $product?->brand?->name : __('N/A') }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Unit') }} : </strong> {{ $product?->unit ? $product?->unit?->name : __('N/A') }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Barcode Type') }} : </strong> {{ $product->barcode_type }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Name') }} : </strong> {{ $product->name }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Product Code(SKU)') }} : </strong> {{ $product->product_code }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Brand.') }} : </strong> {{ $product?->brand ? $product?->brand?->name : __('N/A') }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Unit') }} : </strong> {{ $product?->unit ? $product?->unit?->name : __('N/A') }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Barcode Type') }} : </strong> {{ $product->barcode_type }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-3">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Category') }} : </strong> {{ $product?->category ? $product?->category?->name : __('N/A') }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Subcategory') }} : </strong> {{ $product->subcategory ? $product?->subcategory?->name : __('N/A') }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Is For Sale?') }} : </strong>{{ $product->is_for_sale == 1 ? __('Yes') : __('No') }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Alert Quantity') }} : </strong>{{ $product->alert_quantity }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Is Manage Stock?') }} : </strong> {!! $product->is_manage_stock == 1 ? '<span class="text-success">YES</span>' : '<span class="text-danger">' . __('NO') . '</span>' !!}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Category') }} : </strong> {{ $product?->category ? $product?->category?->name : __('N/A') }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Subcategory') }} : </strong> {{ $product->subcategory ? $product?->subcategory?->name : __('N/A') }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Is For Sale?') }} : </strong>{{ $product->is_for_sale == 1 ? __('Yes') : __('No') }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Alert Quantity') }} : </strong>{{ $product->alert_quantity }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Is Manage Stock?') }} : </strong> {!! $product->is_manage_stock == 1 ? '<span class="text-success">YES</span>' : '<span class="text-danger">' . __('NO') . '</span>' !!}</li>
 
                         </ul>
                     </div>
 
                     <div class="col-md-3">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Tax') }} : </strong>{{ $product?->tax ? $product?->tax->name : 'N/A' }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Tax') }} : </strong>{{ $product?->tax ? $product?->tax->name : 'N/A' }}</li>
                             @if ($product?->tax)
-                                <li style="font-size:11px!important;"><strong>{{ __('Tax Type') }} : </strong>{{ $product->tax_type == 1 ? __('Exclusive') : __('Inclusive') }}</li>
+                                <li style="font-size:10px!important;"><strong>{{ __('Tax Type') }} : </strong>{{ $product->tax_type == 1 ? __('Exclusive') : __('Inclusive') }}</li>
                             @endif
-                            <li style="font-size:11px!important;"><strong>{{ __('Product Condition') }} : </strong> {{ $product->product_condition }}</li>
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;"><strong>{{ __('Product Condition') }} : </strong> {{ $product->product_condition }}</li>
+                            <li style="font-size:10px!important;">
                                 <strong>{{ __('Product Type') }} : </strong>
                                 @php
                                     $product_type = '';
@@ -65,10 +65,10 @@
 
                                 {{ $product_type }}
                             </li>
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;">
                                 <strong class="text-primary">{{ $product->is_manage_stock == 0 ? '(Service related/Digital Item)' : '' }} </strong>
                             </li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Warranty') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Warranty') }} : </strong>
                                 {{ $product?->warranty ? $product?->warranty?->name . '(' . $product?->warranty?->duration . ' ' . $product?->warranty?->duration_type . ')' : __('N/A') }}
                             </li>
                         </ul>
@@ -82,32 +82,32 @@
                                 <table id="" class="table modal-table table-sm">
                                     <thead>
                                         <tr class="bg-primary">
-                                            <th style="font-size:11px!important;">{{ __('Default Unit Cost (Exc. Tax)') }}</th>
-                                            <th style="font-size:11px!important;">{{ __('Default Unit Cost (Inc. Tax)') }}</th>
-                                            <th style="font-size:11px!important;">{{ __('Default Profit Margin(%)') }}</th>
-                                            <th style="font-size:11px!important;">{{ __('Default Unit Price (Exc. Tax)') }}</th>
-                                            <th style="font-size:11px!important;">{{ __('Default Unit Price (Inx. Tax)') }}</th>
+                                            <th style="font-size:10px!important;">{{ __('Default Unit Cost (Exc. Tax)') }}</th>
+                                            <th style="font-size:10px!important;">{{ __('Default Unit Cost (Inc. Tax)') }}</th>
+                                            <th style="font-size:10px!important;">{{ __('Default Profit Margin(%)') }}</th>
+                                            <th style="font-size:10px!important;">{{ __('Default Unit Price (Exc. Tax)') }}</th>
+                                            <th style="font-size:10px!important;">{{ __('Default Unit Price (Inx. Tax)') }}</th>
                                             @if (count($priceGroups) > 0)
-                                                <th style="font-size:11px!important;">{{ __('Price Group') }}</th>
+                                                <th style="font-size:10px!important;">{{ __('Price Group') }}</th>
                                             @endif
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($product->product_cost) }}</td>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($product->product_cost_with_tax) }}</td>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($product->profit) . '%' }}</td>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($product->product_price) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($product->product_cost) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($product->product_cost_with_tax) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($product->profit) . '%' }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($product->product_price) }}</td>
                                             @php
                                                 $taxPercent = $product?->tax ? $product?->tax->tax_percent : 0;
                                                 $taxAmount = ($product->product_price / 100) * $taxPercent;
                                                 $priceIncTax = $product->product_price + $taxAmount;
                                             @endphp
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
                                             @if (count($priceGroups) > 0)
                                                 <td>
                                                     @foreach ($priceGroups as $priceGroup)
-                                                        <p>
+                                                        <p style="font-size:10px!important;">
                                                             <span class="fw-bold">{{ $priceGroup->name }} : </span>
                                                             @php
                                                                 $groupPrice = 0;
@@ -135,36 +135,36 @@
                             <table id="" class="table modal-table table-sm">
                                 <thead>
                                     <tr class="bg-primary">
-                                        <th style="font-size:11px!important;">{{ __('Variant') }}</th>
-                                        <th style="font-size:11px!important;">{{ __('Code') }}</th>
-                                        <th style="font-size:11px!important;">{{ __('Defautl Unit Cost (Exc. Tax)') }}</th>
-                                        <th style="font-size:11px!important;">{{ __('Defautl Unit Cost (Inc. Tax)') }}</th>
-                                        <th style="font-size:11px!important;">{{ __('Defautl Unit Price (Exc. Tax)') }}</th>
-                                        <th style="font-size:11px!important;">{{ __('Defautl Unit Price (Inc. Tax)') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Variant') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Code') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Defautl Unit Cost (Exc. Tax)') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Defautl Unit Cost (Inc. Tax)') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Defautl Unit Price (Exc. Tax)') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Defautl Unit Price (Inc. Tax)') }}</th>
                                         @if (count($priceGroups) > 0)
-                                            <th style="font-size:11px!important;">{{ __('Price Group') }}</th>
+                                            <th style="font-size:10px!important;">{{ __('Price Group') }}</th>
                                         @endif
-                                        <th style="font-size:11px!important;">{{ __('Variant Image') }}</th>
+                                        <th style="font-size:10px!important;">{{ __('Variant Image') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($product->variants as $variant)
                                         <tr>
-                                            <td style="font-size:11px!important;">{{ $variant->variant_name }}</td>
-                                            <td style="font-size:11px!important;">{{ $variant->variant_code }}</td>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($variant->variant_cost) }}</td>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($variant->variant_cost_with_tax) }}</td>
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($variant->variant_price) }}</td>
+                                            <td style="font-size:10px!important;">{{ $variant->variant_name }}</td>
+                                            <td style="font-size:10px!important;">{{ $variant->variant_code }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($variant->variant_cost) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($variant->variant_cost_with_tax) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($variant->variant_price) }}</td>
                                             @php
                                                 $taxPercent = $product?->tax ? $product?->tax->tax_percent : 0;
                                                 $taxAmount = ($variant->variant_price / 100) * $taxPercent;
                                                 $priceIncTax = $variant->variant_price + $taxAmount;
                                             @endphp
-                                            <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
+                                            <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
                                             @if (count($priceGroups) > 0)
                                                 <td>
                                                     @foreach ($priceGroups as $priceGroup)
-                                                        <p style="font-size:11px!important;">
+                                                        <p style="font-size:10px!important;">
                                                             <span class="fw-bold">{{ $priceGroup->name }} : </span>
                                                             @php
                                                                 $groupPrice = 0;
@@ -182,7 +182,7 @@
                                                 @endforeach
                                             </td>
                                         @endif
-                                        <td style="font-size:11px!important;">
+                                        <td style="font-size:10px!important;">
                                             @if ($variant->variant_image)
                                                 <img style="width:30px;height:30px;" src="{{ file_link(fileType: 'productVariant', fileName: $variant->variant_image) }}" alt="">
                                             @endif
@@ -198,7 +198,21 @@
 
         @if (count($ownBranchAndWarehouseStocks) > 0)
             <div class="row">
-                <p class="fw-bold">{{ __('Stock Details') }}</p>
+                <p>{{ __('Stock Details of Current Location') }} -
+                    @php
+                        $currentBranchName = '';
+                        if (auth()->user()?->branch) {
+                            if (auth()->user()?->branch?->parent_branch_id) {
+                                $currentBranchName = auth()->user()?->branch?->parentBranch?->name . '-' . auth()->user()?->branch?->branch_code;
+                            } else {
+                                $currentBranchName = auth()->user()?->branch?->name . '-' . auth()->user()?->branch?->branch_code;
+                            }
+                        } else {
+                            $currentBranchName = $generalSettings['business_or_shop__business_name'];
+                        }
+                    @endphp
+                    (<span class="fw-bold">{{ $currentBranchName }}</span>)
+                </p>
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-sm">
                         <thead>
@@ -278,7 +292,65 @@
             </div>
         @endif
 
-        @if (count($globalWareHouseStocks) > 0)
+        {{-- <div class="row">
+            <p>{{ __('Stock Details of Other Location(s)') }}</p>
+            <div class="table-responsive">
+                <table id="" class="table modal-table table-sm">
+                    <thead>
+                        <tr class="bg-primary">
+                            <th style="font-size:10px!important;">{{ __('Variant') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Stock Location') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Opening Stock') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Purchased') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Purchase Returned') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Production') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Used In Production') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Sold') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Sale Returned') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Transferred') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Received Stock') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Stock Adjustment') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Curr. Stock') }}</th>
+                            <th style="font-size:10px!important;">{{ __('Stock Value') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:10px!important;" class="fw-bold">{{ 'Variant A' }}</td>
+                            <td style="font-size:10px!important;" class="fw-bold">
+                                {{ __('S/B: Shop B-(1)/') }}
+                            </td>
+                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ __('1') }}</td>
+                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase_return) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_production) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_used_in_production) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sale) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sales_return) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
+                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">
+                                @if ($product->is_manage_stock == 1)
+                                    {{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
+                                @else
+                                    {{ App\Utils\Converter::format_in_bdt(0) . '/' . $product?->unit?->code_name }}
+                                @endif
+                            </td>
+
+                            @php
+                                $currentStock = $ownBranchAndWarehouseStock->stock;
+                                $avgUnitCost = $currentStock > 0 ? $ownBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
+                                $stockValue = $avgUnitCost * $currentStock;
+                            @endphp
+                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($product->is_manage_stock == 1 ? $stockValue : $product->product_cost_with_tax) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> --}}
+
+        {{-- @if (count($globalWareHouseStocks) > 0)
             <div class="row">
                 <p class="fw-bold">{{ __('Global Warehouse Stock Details') }}</p>
                 <div class="table-responsive">
@@ -349,7 +421,7 @@
                     </table>
                 </div>
             </div>
-        @endif
+        @endif --}}
 
         {{-- @if ($product->is_manage_stock == 1)
 

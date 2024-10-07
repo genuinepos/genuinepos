@@ -111,7 +111,7 @@
                                         <form id="filter_product_ledgers" method="get">
                                             <div class="form-group row g-2 align-items-end filter-area">
                                                 {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
-                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->current_shop_count > 1)
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-md-2">
                                                         <label><strong>{{ location_label() }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
@@ -143,17 +143,19 @@
                                                             </select>
                                                         @else
                                                             @php
-                                                                $wh = DB::table('warehouses')
-                                                                    ->where('branch_id', auth()->user()->branch_id)
-                                                                    ->orWhere('is_global', 1)
+                                                                $warehouses = DB::table('warehouses')
+                                                                    ->where('warehouses.branch_id', auth()->user()->branch_id)
+                                                                    ->orWhere('warehouses.is_global', 1)
                                                                     ->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
                                                             @endphp
 
                                                             <label><strong>{{ __('Warehouse') }}</strong></label>
                                                             <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
                                                                 <option data-warehouse_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                                @foreach ($wh as $row)
-                                                                    <option data-warehouse_name="{{ $row->warehouse_name . '/' . $row->warehouse_code }}" value="{{ $row->id }}">{{ $row->warehouse_name . '/' . $row->warehouse_code }}</option>
+                                                                @foreach ($warehouses as $warehouse)
+                                                                    <option data-warehouse_name="{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}" value="{{ $warehouse->id }}">
+                                                                        {{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}
+                                                                    </option>
                                                                 @endforeach
                                                             </select>
                                                         @endif
@@ -173,8 +175,6 @@
                                                         </select>
                                                     </div>
                                                 @endif
-
-
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>
@@ -475,16 +475,15 @@
             });
         });
 
-        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1 && $generalSettings['subscription']->features['warehouse_count'] > 0)
+
             $(document).on('change', '#branch_id', function(e) {
                 e.preventDefault();
 
                 var branchId = $(this).val();
                 getWarehouseByBranch(branchId);
             });
-        @endif
 
-        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
             function getWarehouseByBranch(branchId = '') {
 
                 var branchId = branchId ? branchId : 'noid';

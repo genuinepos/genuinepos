@@ -35,7 +35,7 @@ class ProductController extends Controller
 
         extract($showMethodContainer);
 
-        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks', 'priceGroups'));
+        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'priceGroups'));
     }
 
     public function create(ProductCreateRequest $request, ProductControllerMethodContainersInterface $productControllerMethodContainersInterface, $id = null)

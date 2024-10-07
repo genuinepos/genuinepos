@@ -180,6 +180,13 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
+                                    <th class="text-end">{{ __('Total Item & Qty') }} :</th>
+                                    <td class="text-end">
+                                        ({{ $purchase->total_item }}) / ({{ App\Utils\Converter::format_in_bdt($purchase->total_qty) }}/{{ __("Nos") }})
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <th class="text-end">{{ __('Net Total Amount') }} :
                                         {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                     </th>

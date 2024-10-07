@@ -229,6 +229,13 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
+                                <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Item & Qty') }} :</th>
+                                <td class="text-end" style="font-size:10px!important;">
+                                    ({{ $purchase->total_item }}) / ({{ App\Utils\Converter::format_in_bdt($purchase->total_qty) }}/{{ __("Nos") }})
+                                </td>
+                            </tr>
+
+                            <tr>
                                 <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Net Total Amount') }} : {{ $purchase?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:10px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}

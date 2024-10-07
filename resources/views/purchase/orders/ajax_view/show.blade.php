@@ -22,19 +22,19 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Supplier') }} : </strong> {{ $order?->supplier?->name }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong> {{ $order?->supplier?->address }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Tax Number') }} : </strong> {{ $order?->supplier?->tax_number }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong> {{ $order?->supplier?->phone }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Supplier') }} : </strong> {{ $order?->supplier?->name }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Address') }} : </strong> {{ $order?->supplier?->address }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Tax Number') }} : </strong> {{ $order?->supplier?->tax_number }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Phone') }} : </strong> {{ $order?->supplier?->phone }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('P/o ID') }} : </strong> {{ $order->invoice_id }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('P/o Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Delivery Date') }} : </strong> {{ $order->delivery_date ? date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) : '' }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Receiving Status') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('P/o ID') }} : </strong> {{ $order->invoice_id }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('P/o Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Delivery Date') }} : </strong> {{ $order->delivery_date ? date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) : '' }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Receiving Status') }} : </strong>
                                 @if ($order->po_receiving_status == 'Pending')
                                     <span class="badge bg-danger">{{ __('Pending') }}</span>
                                 @elseif ($order->po_receiving_status == 'Completed')
@@ -44,7 +44,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Payment Status') }} : </strong>
                                 @php
                                     $payable = $order->total_purchase_amount;
                                 @endphp
@@ -56,7 +56,7 @@
                                     <span class="badge bg-danger text-white">{{ __('Due') }}</span>
                                 @endif
                             </li>
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;">
                                 <strong>{{ __('Created By') }} : </strong>
                                 {{ $order?->admin?->prefix . ' ' . $order?->admin?->name . ' ' . $order?->admin?->last_name }}
                             </li>
@@ -65,7 +65,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($order->branch_id) {
@@ -81,7 +81,7 @@
                                 {{ $branchName }}
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Phone') }} : </strong>
                                 @if ($order->branch)
                                     {{ $order->branch->phone }}
                                 @else
@@ -98,17 +98,18 @@
                             <table id="" class="table modal-table table-sm">
                                 <thead>
                                     <tr class="bg-secondary">
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Product') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Ordered Qty') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Pending Qty') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Unit Cost (Before Discount)') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Discount') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Unit Cost (Before Tax)') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Subtotal (Before Tax)') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Tax (%)') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Unit Cost (After Tax)') }}</th>
-                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Linetotal') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('S/L') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Product') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Ordered Qty') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Received Qty') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Pending Qty') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Unit Cost (Before Discount)') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Discount') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Unit Cost (Before Tax)') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Subtotal (Before Tax)') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Tax (%)') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Unit Cost (After Tax)') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:10px!important;">{{ __('Linetotal') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="purchase_product_list">
@@ -119,22 +120,25 @@
                                                 $productCode = $orderProduct?->variant ? $orderProduct?->variant?->variant_code : $orderProduct?->product?->product_code;
                                             @endphp
 
-                                            <td class="text-start" style="font-size:11px!important;">
+                                            <td class="text-start" style="font-size:10px!important;">{{ $loop->index + 1 }}</td>
+
+                                            <td class="text-start" style="font-size:10px!important;">
                                                 {{ $orderProduct?->product->name . ' ' . $variant }}
-                                                <small class="d-block" style="font-size:9px!important;">{{ __("P/c") }}: {{ $productCode }}</small>
+                                                <small class="d-block" style="font-size:9px!important;">{{ __('P/c') }}: {{ $productCode }}</small>
                                             </td>
-                                            <td class="text-start fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) . '/' . $orderProduct?->unit?->code_name }}</td>
-                                            <td class="text-start text-success fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
-                                            <td class="text-start text-danger fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">
+
+                                            <td class="text-start fw-bold" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity) . '/' . $orderProduct?->unit?->code_name }}</td>
+                                            <td class="text-start text-success fw-bold" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->received_quantity) }}</td>
+                                            <td class="text-start text-danger fw-bold" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->pending_quantity) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_exc_tax) }}
                                             </td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount) }} </td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_with_discount) }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->subtotal) }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }} </td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount) }} </td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_cost_with_discount) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->subtotal) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ '(' . $orderProduct->unit_tax_percent . '%)=' . $orderProduct->unit_tax_amount }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->net_unit_cost) }} </td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($orderProduct->line_total) }}</td>
 
                                             @if (count($orderProduct->purchaseProducts) > 0)
                                         <tr>
@@ -144,11 +148,11 @@
                                                 <table class="table modal-table table-sm table-striped">
                                                     <thead>
                                                         <tr class="bg-secondary">
-                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Date') }}</th>
-                                                            <th class="text-white" style="font-size:11px!important;">{{ __('P. Invoice ID.') }}</th>
-                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Challan No') }}</th>
-                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Lot No') }}</th>
-                                                            <th class="text-white" style="font-size:11px!important;">{{ __('Received Qty') }}</th>
+                                                            <th class="text-white" style="font-size:10px!important;">{{ __('Date') }}</th>
+                                                            <th class="text-white" style="font-size:10px!important;">{{ __('P. Invoice ID.') }}</th>
+                                                            <th class="text-white" style="font-size:10px!important;">{{ __('Challan No') }}</th>
+                                                            <th class="text-white" style="font-size:10px!important;">{{ __('Lot No') }}</th>
+                                                            <th class="text-white" style="font-size:10px!important;">{{ __('Received Qty') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -158,15 +162,15 @@
                                                             @endif
 
                                                             <tr>
-                                                                <td style="font-size:11px!important;">{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct?->purchase?->date)) }}</td>
+                                                                <td style="font-size:10px!important;">{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct?->purchase?->date)) }}</td>
 
-                                                                <td style="font-size:11px!important;">{{ $purchaseProduct?->purchase?->invoice_id }}</td>
+                                                                <td style="font-size:10px!important;">{{ $purchaseProduct?->purchase?->invoice_id }}</td>
 
-                                                                <td style="font-size:11px!important;">{{ $purchaseProduct?->purchase?->challan_no }}</td>
+                                                                <td style="font-size:10px!important;">{{ $purchaseProduct?->purchase?->challan_no }}</td>
 
-                                                                <td style="font-size:11px!important;">{{ $purchaseProduct->lot_number }}</td>
+                                                                <td style="font-size:10px!important;">{{ $purchaseProduct->lot_number }}</td>
 
-                                                                <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->quantity) . '/' . $purchaseProduct?->unit?->code_name }}</td>
+                                                                <td style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->quantity) . '/' . $purchaseProduct?->unit?->code_name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -191,6 +195,13 @@
                     <div class="col-md-5">
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
+                                <tr>
+                                    <th class="text-end">{{ __('Total Item & Ordered Qty') }} :</th>
+                                    <td class="text-end">
+                                        ({{ $order->total_item }}) / ({{ App\Utils\Converter::format_in_bdt($order->po_qty) }}/{{ __('Nos') }})
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <th class="text-end">{{ __('Net Total Amount') }} : {{ $order?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
@@ -262,14 +273,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;"><b>{{ __('Shipment Details') }}</b> </p>
-                            <p style="font-size:11px!important;">{{ $order->shipment_details }}</p>
+                            <p style="font-size:10px!important;"><b>{{ __('Shipment Details') }}</b> </p>
+                            <p style="font-size:10px!important;">{{ $order->shipment_details }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;"><b>{{ __('Purchase Note') }}</b> </p>
-                            <p style="font-size:11px!important;">{{ $order->purchase_note }}</p>
+                            <p style="font-size:10px!important;"><b>{{ __('Purchase Note') }}</b> </p>
+                            <p style="font-size:10px!important;">{{ $order->purchase_note }}</p>
                         </div>
                     </div>
                 </div>

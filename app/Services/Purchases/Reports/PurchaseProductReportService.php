@@ -22,8 +22,9 @@ class PurchaseProductReportService
             ->editColumn('product', function ($row) {
 
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-
-                return Str::limit($row->name, 35, '') . $variant;
+                $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
+                $description = $row->description ? '<span class="d-block text-muted" style="line-height:1;font-size:8px;" title="' . $row->description . '">' . Str::limit($row->description, 40, '..') . '</span>' : '';
+                return '<p class="p-0 m-0">' . $row->name . $variant . $productCode . '</span>' . $description;
             })
             ->editColumn('date', function ($row) {
 
@@ -93,6 +94,7 @@ class PurchaseProductReportService
             'purchase_products.net_unit_cost',
             'purchase_products.quantity',
             'units.code_name as unit_code',
+            'purchase_products.description',
             'purchase_products.line_total',
             'purchases.id',
             'purchases.branch_id',

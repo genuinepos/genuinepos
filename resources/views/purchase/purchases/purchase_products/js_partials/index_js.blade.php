@@ -76,7 +76,7 @@
             },
             {
                 data: 'subtotal',
-                name: 'subtotal',
+                name: 'purchase_products.description',
                 className: 'text-end fw-bold'
             },
         ],

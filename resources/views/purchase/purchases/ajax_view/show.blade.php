@@ -141,6 +141,7 @@
                                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
                                                     <small class="d-block" style="font-size: 9px;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} :{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                                 @endif
+                                                <small class="d-block" style="font-size:9px!important;">{{ $purchaseProduct->description }}</small>
                                             </td>
                                             <td class="text-start fw-bold" style="font-size:10px!important;">{{ $purchaseProduct->quantity . '/' . $purchaseProduct?->unit?->code_name }}</td>
                                             <td class="text-start fw-bold" style="font-size:10px!important;">

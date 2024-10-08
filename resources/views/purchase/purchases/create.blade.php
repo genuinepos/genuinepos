@@ -347,7 +347,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-xl-2 col-md-4">
+                                    <div class="col-xl-4 col-md-4">
                                         <label class="fw-bold">{{ __('Short Description') }}</label>
                                         <input type="text" step="any" class="form-control fw-bold" id="e_description" placeholder="{{ __('Short Description') }}" autocomplete="off">
                                     </div>

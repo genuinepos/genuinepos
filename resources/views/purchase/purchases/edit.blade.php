@@ -306,7 +306,7 @@
                                             </div>
                                         @endif
 
-                                        <div class="col-xl-2 col-md-4">
+                                        <div class="col-xl-4 col-md-4">
                                             <label class="fw-bold">{{ __('Short Description') }}</label>
                                             <input type="text" step="any" class="form-control fw-bold" id="e_description" placeholder="{{ __('Short Description') }}" autocomplete="off">
                                         </div>
@@ -407,6 +407,7 @@
                                                                 @endphp
                                                                 <span id="span_unit_cost_exc_tax" class="fw-bold">{{ $purchaseProduct->unit_cost_exc_tax }}</span>
                                                                 <input type="hidden" name="unit_costs_exc_tax[]" id="unit_cost_exc_tax" value="{{ $purchaseProduct->unit_cost_exc_tax }}">
+                                                                <input type="hidden" name="descriptions[]" id="description" value="{{ $purchaseProduct?->description }}">
                                                                 <p class="p-0 m-0 fw-bold">{{ __('Batch No/Exprie Date') }}: <span id="span_batch_expire_date"> {{ $has_batch_no_expire_date == 1 ? $purchaseProduct->batch_number . '|' . ($purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '') : 'N/a' }}</span></p>
                                                                 <input type="hidden" name="batch_numbers[]" id="batch_number" value="{{ $purchaseProduct->batch_number }}">
                                                                 <input type="hidden" name="expire_dates[]" id="expire_date" value="{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}">

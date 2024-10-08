@@ -201,7 +201,7 @@
             <div class="row">
                 <p>
                     @if (session('lang') == 'bn')
-                        <span class="fw-bold">{{ __("বর্তমান") }}</span> {{ __('স্থানের পণ্যের মজুদ') }} -
+                        <span class="fw-bold">{{ __('বর্তমান') }}</span> {{ __('স্থানের পণ্যের মজুদ') }} -
                     @else
                         {{ __('Stock Details of') }} <span class="fw-bold">{{ __('Current') }}</span> {{ __('Location') }} -
                     @endif
@@ -295,6 +295,61 @@
                                 @endif
                                 {{-- @endif --}}
                             @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @else
+            <hr>
+            <div class="row">
+                <p>
+                    @if (session('lang') == 'bn')
+                        <span class="fw-bold">{{ __('বর্তমান') }}</span> {{ __('স্থানের পণ্যের মজুদ') }} -
+                    @else
+                        {{ __('Stock Details of') }} <span class="fw-bold">{{ __('Current') }}</span> {{ __('Location') }} -
+                    @endif
+
+                    @php
+                        $currentBranchName = '';
+                        if (auth()->user()?->branch) {
+                            if (auth()->user()?->branch?->parent_branch_id) {
+                                $currentBranchName = auth()->user()?->branch?->parentBranch?->name . '-' . auth()->user()?->branch?->branch_code;
+                            } else {
+                                $currentBranchName = auth()->user()?->branch?->name . '-' . auth()->user()?->branch?->branch_code;
+                            }
+                        } else {
+                            $currentBranchName = $generalSettings['business_or_shop__business_name'];
+                        }
+                    @endphp
+                    (<span class="fw-bold">{{ $currentBranchName }}</span>)
+                </p>
+                <div class="table-responsive">
+                    <table id="" class="table modal-table table-sm">
+                        <thead>
+                            <tr class="bg-primary">
+                                @if ($ownAndOtherBranchAndWarehouseStocks?->first()?->variant_name)
+                                    <th style="font-size:10px!important;">{{ __('Variant') }}</th>
+                                @endif
+
+                                <th style="font-size:10px!important;">{{ __('Stock Location') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Opening Stock') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Purchased') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Purchase Returned') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Production') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Used In Production') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Sold') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Sale Returned') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Transferred') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Received Stock') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Stock Adjustment') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Curr. Stock') }}</th>
+                                <th style="font-size:10px!important;">{{ __('Stock Value') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-size:10px!important;" class="fw-bold text-danger text-center" colspan="13">{{ __('Product Is Not Available in Current Location') }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

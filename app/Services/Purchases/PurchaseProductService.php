@@ -97,6 +97,7 @@ class PurchaseProductService
             'purchase_products.line_total',
             'purchase_products.selling_price',
             'purchase_products.lot_no',
+            'purchase_products.description',
             'purchases.id',
             'purchases.branch_id',
             'purchases.supplier_account_id',
@@ -119,9 +120,14 @@ class PurchaseProductService
         return DataTables::of($purchaseProducts)
             ->editColumn('product', function ($row) {
 
+                // $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
+                // $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
+                // return $row->name . $variant . $productCode;
+
                 $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
                 $productCode = ' (' . ($row->variant_code ? $row->variant_code : $row->product_code) . ')';
-                return $row->name . $variant . $productCode;
+                $description = $row->description ? '<span class="d-block text-muted" style="line-height:1;font-size:8px;" title="' . $row->description . '">' . Str::limit($row->description, 40, '..') . '</span>' : '';
+                return '<p class="p-0 m-0">' . $row->name . $variant . $productCode . '</span>' . $description;
             })
             ->editColumn('date', function ($row) {
 

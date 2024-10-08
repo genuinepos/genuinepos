@@ -204,10 +204,10 @@
                                 <td class="text-start" style="font-size:10px!important;">
                                     <p>{{ $purchaseProduct->product->name . ' ' . $variant }}</p>
                                     {!! '<span class="text-muted d-block" style="font-size:8px!important;line-height:1.5!important;">' . __('P/c') . ': ' . $productCode . '</span>' !!}
-                                    <small class="d-block text-muted" style="font-size: 8px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                     @if ($purchaseProduct?->product?->has_batch_no_expire_date)
                                         <small class="d-block text-muted" style="font-size: 8px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($dateFormat, strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                     @endif
+                                    <small class="d-block text-muted" style="font-size: 8px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                 </td>
                                 <td class="text-start" style="font-size:10px!important;">{{ $purchaseProduct->quantity }}/{{ $purchaseProduct?->unit?->code_name }}</td>
                                 <td class="text-start" style="font-size:10px!important;">

@@ -162,7 +162,6 @@
                                             <tr>
                                                 <th>{{ __('Date') }}</th>
                                                 <th>{{ __('Product') }}</th>
-                                                <th>{{ __('P. Code(SKU)') }}</th>
                                                 <th>{{ location_label() }}</th>
                                                 <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
@@ -177,7 +176,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : </th>
+                                                <th colspan="5" class="text-end text-white">{{ __('Total') }} : </th>
                                                 <th class="text-start text-white">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
@@ -246,10 +245,6 @@
                     name: 'products.name'
                 },
                 {
-                    data: 'product_code',
-                    name: 'products.name'
-                },
-                {
                     data: 'branch',
                     name: 'branches.name'
                 },
@@ -269,7 +264,7 @@
                 },
                 {
                     data: 'unit_cost_exc_tax',
-                    name: 'purchase_products.unit_cost_exc_tax',
+                    name: 'purchase_products.description',
                     className: 'text-end fw-bold'
                 },
                 {

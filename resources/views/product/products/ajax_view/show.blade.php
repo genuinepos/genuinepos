@@ -347,7 +347,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr>
                                 <td style="font-size:10px!important;" class="fw-bold text-danger text-center" colspan="13">{{ __('Product Is Not Available in Current Location') }}</td>
                             </tr>

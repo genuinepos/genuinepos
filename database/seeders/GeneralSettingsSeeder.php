@@ -43,6 +43,7 @@ class GeneralSettingsSeeder extends Seeder
             array('key' => 'pos__is_enabled_order_tax', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'pos__is_enabled_credit_full_sale', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'pos__is_enabled_hold_invoice', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
+
             array('key' => 'product__product_code_prefix', 'value' => NULL, 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'product__default_unit_id', 'value' => NULL, 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'product__is_enable_brands', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
@@ -50,6 +51,8 @@ class GeneralSettingsSeeder extends Seeder
             array('key' => 'product__is_enable_sub_categories', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'product__is_enable_price_tax', 'value' => '0', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'product__is_enable_warranty', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
+            array('key' => 'product__is_show_other_stock_in_details', 'value' => '1', 'branch_id' => NULL, 'parent_branch_id' => NULL),
+
             array('key' => 'add_sale__default_sale_discount', 'value' => '0.00', 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'add_sale__default_price_group_id', 'value' => NULL, 'branch_id' => NULL, 'parent_branch_id' => NULL),
             array('key' => 'pos__is_disable_draft', 'value' => '0', 'branch_id' => NULL, 'parent_branch_id' => NULL),

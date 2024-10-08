@@ -302,7 +302,7 @@ class ProductService
                         $branchAllStock += $stock->stock;
                     }
 
-                    return '<span class="quantity" data-value="' . $branchAllStock. '">' . \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name . '</span>';
+                    return '<span class="quantity" data-value="' . $branchAllStock . '">' . \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name . '</span>';
                 }
 
                 return \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_name;
@@ -329,7 +329,7 @@ class ProductService
             'priceGroups',
         ]);
 
-        $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
+        $branchAndWarehouseStocksQ = DB::table('product_ledgers')
             ->where('product_ledgers.product_id', $data['product']->id)
             ->leftJoin('product_variants', 'product_ledgers.variant_id', 'product_variants.id')
             ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
@@ -341,6 +341,7 @@ class ProductService
                 'branches.branch_code',
                 'parentBranch.name as parent_branch_name',
                 'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
                 'warehouses.is_global',
                 'product_ledgers.product_id',
                 'product_ledgers.variant_id',
@@ -365,6 +366,7 @@ class ProductService
                 'branches.branch_code',
                 'parentBranch.name',
                 'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
                 'warehouses.is_global',
 
                 'product_ledgers.branch_id',
@@ -374,14 +376,14 @@ class ProductService
                 'product_variants.variant_name',
             );
 
-        $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
-            ->where('product_ledgers.branch_id', auth()->user()->branch_id)
+        $data['ownAndOtherBranchAndWarehouseStocks'] = $branchAndWarehouseStocksQ
+            // ->where('product_ledgers.branch_id', auth()->user()->branch_id)
             ->orderBy('product_ledgers.branch_id', 'asc')
             ->orderBy('product_ledgers.product_id', 'asc')
             ->orderBy('product_ledgers.variant_id', 'asc')
             ->get();
 
-        // $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)
+        // $data['globalWareHouseStocks'] = $branchAndWarehouseStocksQ->where('warehouses.is_global', 1)
         //     ->orderBy('product_ledgers.branch_id', 'asc')
         //     ->orderBy('product_ledgers.product_id', 'desc')
         //     ->orderBy('product_ledgers.variant_id', 'desc')

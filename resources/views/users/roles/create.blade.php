@@ -404,6 +404,11 @@
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="product_other_stock_details" id="product_other_stock_details" class="products product_other_stock_details">
+                                                        <label for="product_other_stock_details">{{ __('View Other Locations Stock (Product Details)') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="product_add" id="product_add" class="products product_all">
                                                         <label for="product_add"> {{ __('Add Product') }}</label>
                                                     </p>
@@ -918,7 +923,7 @@
                                                         <input type="checkbox" name="sales_delete" id="sales_delete" class="sales sale_all">
                                                         <label for="sales_delete"> {{ __('Sale Delete') }}</label>
                                                     </p>
-                                       
+
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="sold_product_list" id="sold_product_list" class="sales sale_all">
                                                         <label for="sold_product_list"> {{ __('Sold Product List') }}</label>

@@ -40,13 +40,13 @@
                                 @if ($plan->is_trial_plan == 0)
                                     <div class="mb-1">
                                         <label class="form-label">{{ __('Price Per Month') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="price_per_month" class="form-control" id="price_per_month" value="{{ $plan->price_per_month }}" placeholder="{{ __('Price Per Month') }}">
+                                        <input type="number" step="any" name="price_per_month" class="form-control" id="price_per_month" value="{{ $plan->price_per_month }}" placeholder="{{ __('Price Per Month') }}">
                                         <span class="text-danger error_price_per_month"></span>
                                     </div>
 
                                     <div class="mb-1">
                                         <label class="form-label">{{ __('Price Per Year') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="price_per_year" class="form-control" id="price_per_year" value="{{ $plan->price_per_year }}" placeholder="{{ __('Price Per Year') }}">
+                                        <input type="number" step="any" name="price_per_year" class="form-control" id="price_per_year" value="{{ $plan->price_per_year }}" placeholder="{{ __('Price Per Year') }}">
                                         <span class="text-danger error error_price_per_year"></span>
                                     </div>
 
@@ -60,31 +60,31 @@
 
                                     <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
                                         <label class="form-label">{{ __('LifeTime Price') }} <span class="text-danger">*</span></label>
-                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="lifetime_price" class="form-control lifetime-required-field" id="lifetime_price" value="{{ $plan->lifetime_price }}" placeholder="{{ __('Lifetime Price') }}">
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" step="any" name="lifetime_price" class="form-control lifetime-required-field" id="lifetime_price" value="{{ $plan->lifetime_price }}" placeholder="{{ __('Lifetime Price') }}">
                                         <span class="text-danger error error_lifetime_price"></span>
                                     </div>
 
                                     <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
                                         <label class="form-label">{{ __('Lifetime Applicable Years') }} <span class="text-danger">*</span></label>
-                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="applicable_lifetime_years" class="form-control lifetime-required-field" id="applicable_lifetime_years" value="{{ $plan->applicable_lifetime_years }}" placeholder="{{ __('Applicable Years') }}">
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" step="any" name="applicable_lifetime_years" class="form-control lifetime-required-field" id="applicable_lifetime_years" value="{{ $plan->applicable_lifetime_years }}" placeholder="{{ __('Applicable Years') }}">
                                         <span class="text-danger error error_applicable_lifetime_years"></span>
                                     </div>
 
                                     <div class="mb-1">
                                         <label class="form-label">{{ __('Company Price Per Month') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_price_per_month" value="{{ $plan->business_price_per_month }}" class="form-control" id="business_price_per_month" placeholder="{{ __('Company Price Per Month') }}">
+                                        <input type="number" step="any" name="business_price_per_month" class="form-control" id="business_price_per_month" value="{{ $plan->business_price_per_month }}" placeholder="{{ __('Company Price Per Month') }}">
                                         <span class="text-danger error error_business_price_per_month"></span>
                                     </div>
 
                                     <div class="mb-1">
                                         <label class="form-label">{{ __('Company Price Per Years') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_price_per_year" value="{{ $plan->business_price_per_year }}" class="form-control" id="business_price_per_year" placeholder="{{ __('Company Price Per Years') }}">
+                                        <input type="number" step="any" name="business_price_per_year" class="form-control" id="business_price_per_year" value="{{ $plan->business_price_per_year }}" placeholder="{{ __('Company Price Per Years') }}">
                                         <span class="text-danger error error_business_price_per_year"></span>
                                     </div>
 
                                     <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
                                         <label class="form-label">{{ __('Company lifetime Price') }} <span class="text-danger">*</span></label>
-                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Company lifetime Price') }}">
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" step="any" name="business_lifetime_price" class="form-control lifetime-required-field" id="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" placeholder="{{ __('Company lifetime Price') }}">
                                         <span class="text-danger error error_business_lifetime_price"></span>
                                     </div>
                                 @else

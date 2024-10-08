@@ -406,6 +406,12 @@
                                                         <input type="checkbox" {{ $role->hasPermissionTo('product_all') ? 'CHECKED' : '' }} name="product_all" id="product_all" class="products product_all">
                                                         <label for="product_all">{{ __('View All Product') }}</label>
                                                     </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('product_other_stock_details') ? 'CHECKED' : '' }} name="product_other_stock_details" id="product_other_stock_details" class="products product_other_stock_details">
+                                                        <label for="product_other_stock_details">{{ __('View Other Locations Stock (Product Details)') }}</label>
+                                                    </p>
+
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('product_add') ? 'CHECKED' : '' }} name="product_add" id="product_add" class="products product_all">
                                                         <label for="product_add"> {{ __('Add Product') }}</label>
@@ -909,7 +915,7 @@
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sales_delete') ? 'CHECKED' : '' }} name="sales_delete" id="sales_delete" class="sales sale_all">
                                                         <label for="sales_delete"> {{ __('Sale Delete') }}</label>
                                                     </p>
-                                                 
+
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sold_product_list') ? 'CHECKED' : '' }} name="sold_product_list" id="sold_product_list" class="sales sale_all">
                                                         <label for="sold_product_list"> {{ __('Sold Product List') }}</label>

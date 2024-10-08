@@ -126,6 +126,7 @@ class GeneralSettingController extends Controller
             'product__is_enable_sub_categories' => $request->is_enable_sub_categories,
             'product__is_enable_price_tax' => $request->is_enable_price_tax,
             'product__is_enable_warranty' => $request->is_enable_warranty,
+            'product__is_show_other_stock_in_details' => $request->is_show_other_stock_in_details,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

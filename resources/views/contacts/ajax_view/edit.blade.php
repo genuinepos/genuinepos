@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit') . ' ' . App\Enums\ContactType::tryFrom($type)->name }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit') . ' ' . __(App\Enums\ContactType::tryFrom($type)->name) }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 

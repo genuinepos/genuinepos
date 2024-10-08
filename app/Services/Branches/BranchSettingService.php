@@ -55,6 +55,7 @@ class BranchSettingService
             ['key' => 'email_settings__customer_due_reminder_via_sms', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'modules__manufacturing', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'modules__service', 'value' => 1, 'branch_id' => $branchId],
+            
             // ['key' => 'product__product_code_prefix', 'value' => $branchPrefix . $numberOfChildBranch, 'branch_id' => $branchId],
             ['key' => 'product__product_code_prefix', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'product__default_unit_id', 'value' => null, 'branch_id' => $branchId],
@@ -63,6 +64,8 @@ class BranchSettingService
             ['key' => 'product__is_enable_sub_categories', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'product__is_enable_price_tax', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'product__is_enable_warranty', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'product__is_show_other_stock_in_details', 'value' => '1', 'branch_id' => $branchId],
+
             ['key' => 'add_sale__default_sale_discount', 'value' => '0.00', 'branch_id' => $branchId],
             ['key' => 'add_sale__default_price_group_id', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'add_sale__default_tax_ac_id', 'value' => null, 'branch_id' => $branchId],

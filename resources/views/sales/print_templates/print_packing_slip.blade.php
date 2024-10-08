@@ -237,7 +237,7 @@
                 </table>
             </div>
 
-            @if (count($customerCopySaleProducts) > 18)
+            {{-- @if (count($customerCopySaleProducts) > 18)
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
@@ -250,7 +250,7 @@
                         <br />
                     @endfor
                 @endif
-            @endif
+            @endif --}}
 
             <div class="row">
                 <div class="col-12">
@@ -524,7 +524,7 @@
                 </table>
             </div>
 
-            @if (count($customerCopySaleProducts) > 18)
+            {{-- @if (count($customerCopySaleProducts) > 18)
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
@@ -537,7 +537,7 @@
                         <br />
                     @endfor
                 @endif
-            @endif
+            @endif --}}
 
             <div class="row">
                 <div class="col-12">

@@ -196,9 +196,16 @@
             </div>
         </div>
 
-        @if (count($ownBranchAndWarehouseStocks) > 0)
+        @if ($ownAndOtherBranchAndWarehouseStocks->where('branch_id', auth()->user()->branch_id)->count() > 0)
+            <hr>
             <div class="row">
-                <p>{{ __('Stock Details of Current Location') }} -
+                <p>
+                    @if (session('lang') == 'bn')
+                        <span class="fw-bold">{{ __("বর্তমান") }}</span> {{ __('স্থানের পণ্যের মজুদ') }} -
+                    @else
+                        {{ __('Stock Details of') }} <span class="fw-bold">{{ __('Current') }}</span> {{ __('Location') }} -
+                    @endif
+
                     @php
                         $currentBranchName = '';
                         if (auth()->user()?->branch) {
@@ -217,7 +224,7 @@
                     <table id="" class="table modal-table table-sm">
                         <thead>
                             <tr class="bg-primary">
-                                @if ($ownBranchAndWarehouseStocks?->first()?->variant_name)
+                                @if ($ownAndOtherBranchAndWarehouseStocks?->first()?->variant_name)
                                     <th style="font-size:10px!important;">{{ __('Variant') }}</th>
                                 @endif
 
@@ -237,54 +244,56 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ownBranchAndWarehouseStocks as $ownBranchAndWarehouseStock)
-                                @if ($ownBranchAndWarehouseStock->is_global == 0 || $ownBranchAndWarehouseStock->is_global == null)
+                            @foreach ($ownAndOtherBranchAndWarehouseStocks->where('branch_id', auth()->user()->branch_id) as $ownAndOtherBranchAndWarehouseStock)
+                                {{-- @if ($ownAndOtherBranchAndWarehouseStock->branch_id == auth()->user()->branch_id) --}}
+                                @if ($ownAndOtherBranchAndWarehouseStock->is_global == 0 || $ownAndOtherBranchAndWarehouseStock->is_global == null)
                                     <tr>
-                                        @if ($ownBranchAndWarehouseStock->variant_name)
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ $ownBranchAndWarehouseStock->variant_name }}</td>
+                                        @if ($ownAndOtherBranchAndWarehouseStock->variant_name)
+                                            <td style="font-size:10px!important;" class="fw-bold">{{ $ownAndOtherBranchAndWarehouseStock->variant_name }}</td>
                                         @endif
 
                                         <td style="font-size:10px!important;" class="fw-bold">
-                                            @if ($ownBranchAndWarehouseStock->warehouse_name)
-                                                {{ $ownBranchAndWarehouseStock->warehouse_name . '(' . __('WH') . ')' }}
+                                            @if ($ownAndOtherBranchAndWarehouseStock->warehouse_name)
+                                                {{ $ownAndOtherBranchAndWarehouseStock->warehouse_name . '(' . __('WH') . ')' }}
                                             @else
-                                                @if ($ownBranchAndWarehouseStock->branch_id)
-                                                    @if ($ownBranchAndWarehouseStock->parent_branch_name)
-                                                        {{ $ownBranchAndWarehouseStock->parent_branch_name . '(' . $ownBranchAndWarehouseStock->area_name . ')-' . $ownBranchAndWarehouseStock->branch_code }}
+                                                @if ($ownAndOtherBranchAndWarehouseStock->branch_id)
+                                                    @if ($ownAndOtherBranchAndWarehouseStock->parent_branch_name)
+                                                        {{ $ownAndOtherBranchAndWarehouseStock->parent_branch_name . '(' . $ownAndOtherBranchAndWarehouseStock->area_name . ')-' . $ownAndOtherBranchAndWarehouseStock->branch_code }}
                                                     @else
-                                                        {{ $ownBranchAndWarehouseStock->branch_name . '(' . $ownBranchAndWarehouseStock->area_name . ')-' . $ownBranchAndWarehouseStock->branch_code }}
+                                                        {{ $ownAndOtherBranchAndWarehouseStock->branch_name . '(' . $ownAndOtherBranchAndWarehouseStock->area_name . ')-' . $ownAndOtherBranchAndWarehouseStock->branch_code }}
                                                     @endif
                                                 @else
                                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                                 @endif
                                             @endif
                                         </td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_opening_stock) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase_return) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_production) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_used_in_production) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sale) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sales_return) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
-                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_opening_stock) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_purchase) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_purchase_return) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_production) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_used_in_production) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_sale) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_sales_return) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
                                         <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">
                                             @if ($product->is_manage_stock == 1)
-                                                {{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
+                                                {{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
                                             @else
                                                 {{ App\Utils\Converter::format_in_bdt(0) . '/' . $product?->unit?->code_name }}
                                             @endif
                                         </td>
 
                                         @php
-                                            $currentStock = $ownBranchAndWarehouseStock->stock;
-                                            $avgUnitCost = $currentStock > 0 ? $ownBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
+                                            $currentStock = $ownAndOtherBranchAndWarehouseStock->stock;
+                                            $avgUnitCost = $currentStock > 0 ? $ownAndOtherBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
                                             $stockValue = $avgUnitCost * $currentStock;
                                         @endphp
                                         <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($product->is_manage_stock == 1 ? $stockValue : $product->product_cost_with_tax) }}</td>
                                     </tr>
                                 @endif
+                                {{-- @endif --}}
                             @endforeach
                         </tbody>
                     </table>
@@ -292,63 +301,98 @@
             </div>
         @endif
 
-        {{-- <div class="row">
-            <p>{{ __('Stock Details of Other Location(s)') }}</p>
-            <div class="table-responsive">
-                <table id="" class="table modal-table table-sm">
-                    <thead>
-                        <tr class="bg-primary">
-                            <th style="font-size:10px!important;">{{ __('Variant') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Stock Location') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Opening Stock') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Purchased') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Purchase Returned') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Production') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Used In Production') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Sold') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Sale Returned') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Transferred') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Received Stock') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Stock Adjustment') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Curr. Stock') }}</th>
-                            <th style="font-size:10px!important;">{{ __('Stock Value') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-size:10px!important;" class="fw-bold">{{ 'Variant A' }}</td>
-                            <td style="font-size:10px!important;" class="fw-bold">
-                                {{ __('S/B: Shop B-(1)/') }}
-                            </td>
-                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ __('1') }}</td>
-                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase_return) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_production) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_used_in_production) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sale) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sales_return) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
-                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">
-                                @if ($product->is_manage_stock == 1)
-                                    {{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
-                                @else
-                                    {{ App\Utils\Converter::format_in_bdt(0) . '/' . $product?->unit?->code_name }}
-                                @endif
-                            </td>
+        @php
+            $isShowOtherStockInDetails = isset($generalSettings['product__is_show_other_stock_in_details']) ? $generalSettings['product__is_show_other_stock_in_details'] : 1;
+        @endphp
 
-                            @php
-                                $currentStock = $ownBranchAndWarehouseStock->stock;
-                                $avgUnitCost = $currentStock > 0 ? $ownBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
-                                $stockValue = $avgUnitCost * $currentStock;
-                            @endphp
-                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($product->is_manage_stock == 1 ? $stockValue : $product->product_cost_with_tax) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div> --}}
+        @if ($isShowOtherStockInDetails == 1)
+            @if ($ownAndOtherBranchAndWarehouseStocks->where('branch_id', '!=', auth()->user()->branch_id)->count() > 0)
+
+                <hr>
+                <div class="row">
+                    <p>{{ __('Stock Details of Other Location(s)') }}</p>
+                    <div class="table-responsive">
+                        <table id="" class="table modal-table table-sm">
+                            <thead>
+                                <tr class="bg-primary">
+                                    @if ($ownAndOtherBranchAndWarehouseStocks?->first()?->variant_name)
+                                        <th style="font-size:10px!important;">{{ __('Variant') }}</th>
+                                    @endif
+
+                                    <th style="font-size:10px!important;">{{ __('Stock Location') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Opening Stock') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Purchased') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Purchase Returned') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Production') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Used In Production') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Sold') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Sale Returned') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Transferred') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Received Stock') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Stock Adjustment') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Curr. Stock') }}</th>
+                                    <th style="font-size:10px!important;">{{ __('Stock Value') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($ownAndOtherBranchAndWarehouseStocks->where('branch_id', '!=', auth()->user()->branch_id) as $ownAndOtherBranchAndWarehouseStock)
+                                    {{-- @if ($ownAndOtherBranchAndWarehouseStock->branch_id != auth()->user()->branch_id) --}}
+                                    <tr>
+                                        @if ($ownAndOtherBranchAndWarehouseStock->variant_name)
+                                            <td style="font-size:10px!important;" class="fw-bold">{{ $ownAndOtherBranchAndWarehouseStock->variant_name }}</td>
+                                        @endif
+
+                                        <td style="font-size:10px!important;" class="fw-bold">
+                                            @php
+                                                $branchName = '';
+                                                if ($ownAndOtherBranchAndWarehouseStock->branch_id) {
+                                                    if ($ownAndOtherBranchAndWarehouseStock->parent_branch_name) {
+                                                        $branchName = $ownAndOtherBranchAndWarehouseStock->parent_branch_name . '(' . $ownAndOtherBranchAndWarehouseStock->area_name . ')-' . $ownAndOtherBranchAndWarehouseStock->branch_code;
+                                                    } else {
+                                                        $branchName = $ownAndOtherBranchAndWarehouseStock->branch_name . '(' . $ownAndOtherBranchAndWarehouseStock->area_name . ')-' . $ownAndOtherBranchAndWarehouseStock->branch_code;
+                                                    }
+                                                } else {
+                                                    $branchName = $generalSettings['business_or_shop__business_name'];
+                                                }
+
+                                                $warehouseName = $ownAndOtherBranchAndWarehouseStock->warehouse_name ? ' / ' . $ownAndOtherBranchAndWarehouseStock->warehouse_name . '-' . $ownAndOtherBranchAndWarehouseStock->warehouse_code . '(' . __('WH') . ')' : '';
+                                            @endphp
+
+                                            {{ $branchName . $warehouseName }}
+                                        </td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_opening_stock) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_purchase) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_purchase_return) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_production) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_used_in_production) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_sale) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_sales_return) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_transferred) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_received) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->total_stock_adjustment) . '/' . $product?->unit?->code_name }}</td>
+                                        <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">
+                                            @if ($product->is_manage_stock == 1)
+                                                {{ App\Utils\Converter::format_in_bdt($ownAndOtherBranchAndWarehouseStock->stock) . '/' . $product?->unit?->code_name }}
+                                            @else
+                                                {{ App\Utils\Converter::format_in_bdt(0) . '/' . $product?->unit?->code_name }}
+                                            @endif
+                                        </td>
+
+                                        @php
+                                            $currentStock = $ownAndOtherBranchAndWarehouseStock->stock;
+                                            $avgUnitCost = $currentStock > 0 ? $ownAndOtherBranchAndWarehouseStock->total_cost / $currentStock : $product->product_cost;
+                                            $stockValue = $avgUnitCost * $currentStock;
+                                        @endphp
+                                        <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($product->is_manage_stock == 1 ? $stockValue : $product->product_cost_with_tax) }}</td>
+                                    </tr>
+                                    {{-- @endif --}}
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
+        @endif
 
         {{-- @if (count($globalWareHouseStocks) > 0)
             <div class="row">

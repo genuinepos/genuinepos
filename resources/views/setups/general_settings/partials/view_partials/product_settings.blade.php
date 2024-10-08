@@ -60,9 +60,17 @@
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-4">
             <label class="fw-bold">{{ __('Enable Product Warranty') }}</label>
-            <select name="is_enable_warranty" class="form-control" id="is_enable_warranty" data-next="save_changes">
+            <select name="is_enable_warranty" class="form-control" id="is_enable_warranty" data-next="is_show_other_stock_in_details">
                 <option value="1">{{ __('Yes') }}</option>
                 <option @selected($generalSettings['product__is_enable_warranty'] == '0') value="0">{{ __('No') }}</option>
+            </select>
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+            <label class="fw-bold">{{ __('Display other location stock in product details.') }}</label>
+            <select name="is_show_other_stock_in_details" class="form-control" id="is_show_other_stock_in_details" data-next="save_changes">
+                <option value="1">{{ __('Yes') }}</option>
+                <option @selected(isset($generalSettings['product__is_show_other_stock_in_details']) && $generalSettings['product__is_show_other_stock_in_details'] == '0') value="0">{{ __('No') }}</option>
             </select>
         </div>
     </div>

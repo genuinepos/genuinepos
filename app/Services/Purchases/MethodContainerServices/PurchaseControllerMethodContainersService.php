@@ -474,7 +474,7 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
                     $this->productStockService->adjustWarehouseStock(productId: $deletedPurchaseProduct->product_id, variantId: $deletedPurchaseProduct->variant_id, warehouseId: $storedCurrentWarehouseId);
                 } else {
 
-                    $this->productStockService->adjustBranchStock(productId: $storedProductId, variantId: $deletedPurchaseProduct->variant_id, branchId: $purchase->branch_id);
+                    $this->productStockService->adjustBranchStock(productId: $deletedPurchaseProduct->product_id, variantId: $deletedPurchaseProduct->variant_id, branchId: $purchase->branch_id);
                 }
             }
         }

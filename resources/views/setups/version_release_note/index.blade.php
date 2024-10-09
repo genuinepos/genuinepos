@@ -41,13 +41,13 @@
                     <div class="changes-log mt-1">
                         <ul class="list-styled">
                             <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
-                            <li> - {{ __('Fixed an error from edit purchases') }}</li>
+                            <li> - {{ __('Fixed an error from edit purchases.') }}</li>
+                            <li> - {{ __('Fixed an error purchase product limitation error.') }}</li>
 
                             <ol class="fw-bold">{{ __('Feature Update') }}</ol>
                             <li> - {{ __('Added new role permission to product permission[View Other Locations Stock (Product Details)]') }}</li>
-                            <li> - {{ __('Show Product Serial number and') }}</li>
-                            <li> - {{ __('Display Product Code in the product list table') }}</li>
-                            <li> - {{ __('Added a new input field called "Reference" in the Sale Order to Invoice section') }}</li>
+                            <li> - {{ __('Show Product Serial number and Total Item & Qty in purchase details and print.') }}</li>
+                            <li> - {{ __('Show serial number and search by serial number in Purchased Product list and Purchased Product report') }}</li>
                         </ul>
                     </div>
                 </div>

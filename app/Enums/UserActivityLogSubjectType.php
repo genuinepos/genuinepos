@@ -45,5 +45,4 @@ enum UserActivityLogSubjectType: int
     case BuyShop = 40;
     case RenewStore = 41;
     case BuyBusiness = 42;
-
 }

@@ -338,7 +338,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
             }
         }
 
-        if ($updateProduction->store_warehouse_id != $updateProduction->previous_store_warehouse_id) {
+        if (isset($updateProduction->previous_store_warehouse_id) && $updateProduction->store_warehouse_id != $updateProduction->previous_store_warehouse_id) {
 
             $this->productStockService->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
 
@@ -347,7 +347,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
             $this->productStockService->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->previous_store_warehouse_id);
         }
 
-        if ($updateProduction->stock_warehouse_id != $updateProduction->previous_stock_warehouse_id) {
+        if (isset($updateProduction->previous_stock_warehouse_id) && $updateProduction->stock_warehouse_id != $updateProduction->previous_stock_warehouse_id) {
 
             $productionIngredients = $this->productionIngredientService->productionIngredients()->where('production_id', $updateProduction->id)->get();
 
@@ -357,7 +357,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
                 $this->productStockService->adjustBranchAllStock(productId: $productionIngredient->product_id, variantId: $productionIngredient->variant_id, branchId: $updateProduction->branch_id);
 
-                $this->productStockService->adjustWarehouseStock($productionIngredient->product_id, $productionIngredient->variant_id, $updateProduction->previous_stock_warehouse_id);
+                $this->productStockService->adjustWarehouseStock(productId: $productionIngredient->product_id, variantId: $productionIngredient->variant_id, warehouseId: $updateProduction->previous_stock_warehouse_id);
             }
         }
 

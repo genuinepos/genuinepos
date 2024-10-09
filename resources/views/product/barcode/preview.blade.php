@@ -129,7 +129,7 @@
                                 </div>
 
                                 <div class="row justify-content-center">
-                                    <img style="width: 45mm; height:7mm;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
+                                    <img style="width: auto; height:7mm;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
                                 </div>
 
                                 <div class="row justify-content-center">

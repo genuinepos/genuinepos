@@ -20,7 +20,7 @@
 
         .company_name {
             font-size: 8px !important;
-            font-weight: 400;
+            font-weight: 600;
             margin: 0;
             padding: 0;
             color: #000
@@ -36,20 +36,22 @@
                 page-break-after: always;
             }
 
-            @page {
-
-                .print_area: {
+            .print_area: {
                     height: 100%;
                     width: 100%;
                 }
 
+            @page {
+
+
+
                 /* size: auto; */
                 /* size: {{ $barcodeSetting->paper_width }}in {{ $barcodeSetting->paper_height }}in; */
-                size: 38mm 25mm;
+                /* size: 38mm 25mm; */
                 /* margin: 5px 0px; */
                 /* margin: 0mm 15mm 0mm 15mm; */
                 margin-top: 0.3cm;
-                margin-bottom: 28px;
+                margin-bottom: 20px;
             }
         @else
 
@@ -69,24 +71,24 @@
         }
 
         body {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         .product_name {
-            font-size: 10px;
-            font-weight: 400;
+            font-size: 9px;
+            font-weight: 600;
             color: #000
         }
 
         .product_price {
-            font-size: 10px;
-            font-weight: 400;
+            font-size: 10px!important;
+            font-weight: 600;
             color: #000
         }
 
         .product_code {
-            font-size: 10px;
-            font-weight: 400;
+            font-size: 8px;
+            font-weight: 600;
             color: #000
         }
 
@@ -129,7 +131,8 @@
                                 </div>
 
                                 <div class="row justify-content-center">
-                                    <img style="width: auto; height:7mm;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
+                                    {{-- style="width: 45mm; height:7mm;"  --}}
+                                    <img style="width: 45mm; height:7mm;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
                                 </div>
 
                                 <div class="row justify-content-center">

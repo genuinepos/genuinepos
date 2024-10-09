@@ -389,7 +389,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
             foreach ($deleteProduction->ingredients as $ingredient) {
 
-                $this->roductStockService->adjustMainProductAndVariantStock($ingredient->product_id, $ingredient->variant_id);
+                $this->productStockService->adjustMainProductAndVariantStock($ingredient->product_id, $ingredient->variant_id);
 
                 $this->productStockService->adjustBranchAllStock(productId: $ingredient->product_id, variantId: $ingredient->variant_id, branchId: $deleteProduction->branch_id);
 

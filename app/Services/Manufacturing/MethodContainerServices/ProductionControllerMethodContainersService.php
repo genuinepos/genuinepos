@@ -349,7 +349,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
         if ($updateProduction->stock_warehouse_id != $updateProduction->previous_stock_warehouse_id) {
 
-            $this->productionIngredients = $productionIngredientService->productionIngredients()->where('production_id', $updateProduction->id)->get();
+            $productionIngredients = $this->productionIngredientService->productionIngredients()->where('production_id', $updateProduction->id)->get();
 
             foreach ($productionIngredients as $productionIngredient) {
 

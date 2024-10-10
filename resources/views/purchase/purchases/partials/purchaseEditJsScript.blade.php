@@ -483,7 +483,7 @@
 
         if (e_product_id == '') {
 
-            toastr.error("{{ __('Please select a item.') }}");
+            toastr.error("{{ __('Please select a product') }}");
             return;
         }
 
@@ -1187,6 +1187,28 @@
 
         $('#supplier_account_id').focus().select();
     }, 1000);
+
+    $(document).on('click', '#editDescription', function(e) {
+
+        var e_description = $('#e_description').val();
+        $('#edit_description').val(e_description);
+
+        $('#editDescriptionModal').modal('show');
+
+        setTimeout(function() {
+
+            $('#edit_description').focus();
+        }, 500);
+    });
+
+    $(document).on('submit', '#description_form', function(e) {
+        e.preventDefault();
+        var edit_description = $('#edit_description').val();
+        $('#e_description').val(edit_description);
+        $('#add_item').focus();
+
+        $('#editDescriptionModal').modal('hide');
+    });
 </script>
 
 @if (auth()->user()->can('supplier_add'))

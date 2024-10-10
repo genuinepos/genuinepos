@@ -189,6 +189,7 @@
                             $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
                             $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
                             $('#e_lot_number').val('');
+                            $('#e_description').val('');
                             $('#e_has_batch_no_expire_date').val(product.has_batch_no_expire_date);
 
                             $('#e_unit_id').empty();
@@ -287,6 +288,7 @@
                         $('#e_profit_margin').val(parseFloat(variant.variant_profit).toFixed(2));
                         $('#e_selling_price').val(parseFloat(variant.variant_price).toFixed(2));
                         $('#e_lot_number').val('');
+                        $('#e_description').val('');
 
                         $('#e_unit_id').empty();
                         $('#e_unit_id').append('<option value="' + variant.product.unit.id + '" data-is_base_unit="1" data-unit_name="' + variant.product.unit.name + '" data-base_unit_multiplier="1">' + variant.product.unit.name + '</option>');
@@ -481,7 +483,7 @@
 
         if (e_product_id == '') {
 
-            toastr.error("{{ __('Please select a item.') }}");
+            toastr.error("{{ __('Please select a product') }}");
             return;
         }
 
@@ -1322,6 +1324,28 @@
     $('#select_print_page_size').on('change', function() {
         var value = $(this).val();
         $('#print_page_size').val(value);
+    });
+
+    $(document).on('click', '#editDescription', function(e) {
+
+        var e_description = $('#e_description').val();
+        $('#edit_description').val(e_description);
+
+        $('#editDescriptionModal').modal('show');
+
+        setTimeout(function() {
+
+            $('#edit_description').focus();
+        }, 500);
+    });
+
+    $(document).on('submit', '#description_form', function(e) {
+        e.preventDefault();
+        var edit_description = $('#edit_description').val();
+        $('#e_description').val(edit_description);
+        $('#add_item').focus();
+
+        $('#editDescriptionModal').modal('hide');
     });
 </script>
 

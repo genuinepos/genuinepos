@@ -122,3 +122,92 @@
         $('.notify-menu .company-name').appendTo('.top-menu .logo__sec');
     }
 </script>
+
+<script>
+    $(document).ready(function() {
+        var inputBuffer = ''; // Store the barcode input
+        var lastKeyTime = Date.now(); // Track the time between key presses
+        var barcodeMinLength = 6; // Minimum length to assume it's a barcode
+        var barcodeTimeout = 50; // Time in ms between keystrokes (typical for a barcode)
+        var barcodeDetected = false; // Flag to check if barcode has been scanned
+
+        // Listen for keydown events on a specific input field
+        $('input').on('keydown', function(e) {
+            // If barcode was detected, prevent all further keypresses
+            if (barcodeDetected) {
+                e.preventDefault(); // Block all keypresses
+                return; // Stop further execution
+            }
+
+            var currentTime = Date.now();
+
+            // If time between keystrokes is larger than the threshold, reset the buffer
+            if (currentTime - lastKeyTime > barcodeTimeout) {
+                inputBuffer = '';
+            }
+
+            lastKeyTime = currentTime;
+            inputBuffer += e.key;
+
+            // Check if the input buffer contains a barcode
+            if (inputBuffer.length >= barcodeMinLength && e.key === 'Enter') {
+                // Detach the element or process the barcode input
+                // alert('Barcode detected: ' + inputBuffer);
+
+                // Detach the input field
+                // $('#e_description').detach();
+
+                // Set barcode detected flag to true
+                barcodeDetected = true;
+
+                // Optionally, clear the input buffer
+                inputBuffer = '';
+            }
+
+            if (barcodeDetected) {
+                e.preventDefault(); // Block all keypresses like Enter, Ctrl+C, etc.
+            }
+
+            barcodeDetected = false;
+        });
+
+        $('textarea').on('keydown', function(e) {
+            // If barcode was detected, prevent all further keypresses
+            if (barcodeDetected) {
+                e.preventDefault(); // Block all keypresses
+                return; // Stop further execution
+            }
+
+            var currentTime = Date.now();
+
+            // If time between keystrokes is larger than the threshold, reset the buffer
+            if (currentTime - lastKeyTime > barcodeTimeout) {
+                inputBuffer = '';
+            }
+
+            lastKeyTime = currentTime;
+            inputBuffer += e.key;
+
+            // Check if the input buffer contains a barcode
+            if (inputBuffer.length >= barcodeMinLength && e.key === 'Enter') {
+                // Detach the element or process the barcode input
+                // alert('Barcode detected: ' + inputBuffer);
+
+                // Detach the input field
+                // $('#e_description').detach();
+
+                // Set barcode detected flag to true
+                barcodeDetected = true;
+
+                // Optionally, clear the input buffer
+                inputBuffer = '';
+            }
+
+            if (barcodeDetected) {
+                e.preventDefault(); // Block all keypresses like Enter, Ctrl+C, etc.
+            }
+
+            barcodeDetected = false;
+        });
+    });
+</script>

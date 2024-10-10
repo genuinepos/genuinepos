@@ -337,9 +337,14 @@
                                         </div>
 
                                         <div class="row g-2 align-items-end">
-                                            <div class="col-xl-2 col-md-6">
+                                            <div class="col-xl-4 col-md-6">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="text" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
+                                                <div class="input-group">
+                                                    <input type="text" step="any" class="form-control fw-bold w-80" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info') }}">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button" id="editDescription"><i class="fa-solid fa-text-width w-20"></i></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
@@ -378,13 +383,13 @@
                                                 @endif
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6 offset-xl-1">
+                                            <div class="col-xl-1 col-md-6">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text add_button p-1 m-0">{{ __('Stock') }}</span>
+                                                        <span class="input-group-text add_button p-1 m-0">{{ __('ST') }}</span>
                                                     </div>
 
-                                                    <input type="text" readonly class="form-control text-success fw-bold" autocomplete="off" id="stock_quantity" placeholder="{{ __('Stock Quantity') }}" tabindex="-1">
+                                                    <input type="text" readonly class="form-control text-success" autocomplete="off" id="stock_quantity" placeholder="{{ __('Stock Quantity') }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -759,6 +764,32 @@
         <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
         <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
+
+    <div class="modal fade" id="editDescriptionModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <form id="description_form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">{{ __('Product IMEI/Serial No./Other Info') }}</h6>
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control" id="edit_description" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="submit" id="description_save" class="btn btn-sm btn-success">{{ __('Save') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     @include('sales.add_sale.js_partials.add_sale_edit_js_script')

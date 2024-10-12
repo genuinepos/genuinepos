@@ -65,6 +65,7 @@
                     $('#e_tax_type').val(tax_type);
                     $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
                     $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
+                    $('#e_descriptions').val('');
 
                     $('#e_unit_id').empty();
                     $('#e_unit_id').append(
@@ -635,7 +636,8 @@
         $('#e_price_inc_tax').val(parseFloat(0).toFixed(2));
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(0);
-        $('#e_is_show_discription').val('');
+        $('#e_is_show_emi_on_pos').val('');
+        $('#e_descriptions').val('');
         $('#stock_quantity').val(parseFloat(0).toFixed(2));
         $('#e_warehouse_id').val('');
 
@@ -972,6 +974,34 @@
         $('#sale_product_list').empty();
     }
 
+    $(document).on('click', '#editDescription', function(e) {
+
+        var is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val() ? $('#e_is_show_emi_on_pos').val() : 1;
+        if (is_show_emi_on_pos == 1) {
+
+            var e_description = $('#e_descriptions').val();
+            $('#edit_description').val(e_description);
+
+            $('#editDescriptionModal').modal('show');
+
+            setTimeout(function() {
+
+                $('#edit_description').focus();
+            }, 500);
+        } else {
+
+            return;
+        }
+    });
+
+    $(document).on('submit', '#description_form', function(e) {
+        e.preventDefault();
+        var edit_description = $('#edit_description').val();
+        $('#e_descriptions').val(edit_description);
+        $('#e_warehouse_id').focus();
+
+        $('#editDescriptionModal').modal('hide');
+    });
 
     $('#payment_method_id').on('change', function() {
 

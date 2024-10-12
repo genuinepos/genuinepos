@@ -8,7 +8,7 @@ use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseOrderProductController;
 use App\Http\Controllers\Purchases\PurchaseOrderToInvoiceController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
-use App\Http\Controllers\Purchases\Reports\SalePurchaseReportController;
+use App\Http\Controllers\Purchases\Reports\SalesVsPurchaseReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
@@ -119,10 +119,9 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
         Route::group(['prefix' => 'sales/purchase'], function () {
 
-            Route::get('/', [SalePurchaseReportController::class, 'index'])->name('reports.sales.purchases.index');
-            Route::get('sale/purchase/amounts', [SalePurchaseReportController::class, 'salePurchaseAmounts'])->name('reports.profit.sales.purchases.amounts');
-            Route::get('filter/sale/purchase/amounts', [SalePurchaseReportController::class, 'filterSalePurchaseAmounts'])->name('reports.profit.sales.filter.purchases.amounts');
-            Route::get('print', [SalePurchaseReportController::class, 'printSalePurchase'])->name('reports.sales.purchases.print');
+            Route::get('/', [SalesVsPurchaseReportController::class, 'index'])->name('reports.sales.vs.purchase.index');
+            Route::get('sales-vs-purchase-amounts', [SalesVsPurchaseReportController::class, 'purchaseVsSalesAmounts'])->name('reports.sales.vs.purchase.amounts');
+            Route::get('print', [SalesVsPurchaseReportController::class, 'print'])->name('reports.sales.vs.purchase.print');
         });
     });
 });

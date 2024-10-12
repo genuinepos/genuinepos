@@ -812,13 +812,13 @@
 
                                             @if (auth()->user()->can('purchase_sale_report'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('reports.sales.purchases.index') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.sales.vs.purchase.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __('Sale Vs Purchase') }}</p>
+                                                        <p class="switch_text">{{ __('Sales Vs Purchase') }}</p>
                                                     </a>
                                                 </div>
                                             @endif

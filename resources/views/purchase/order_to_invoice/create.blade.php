@@ -340,7 +340,8 @@
 
                                     @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
                                         <div class="col-xl-2 col-md-4">
-                                            <label class="fw-bold">{{ __('Lot Number') }}</label>
+                                            <label class="fw-bold">{{ __('+
+                                             Number') }}</label>
                                             <input type="text" step="any" class="form-control fw-bold" id="e_lot_number" placeholder="{{ __('Lot Number') }}" autocomplete="off">
                                         </div>
                                     @endif

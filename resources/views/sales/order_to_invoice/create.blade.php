@@ -204,7 +204,7 @@
                                                         <input type="hidden" name="customer_account_id" class="hidden" id="customer_account_id" value="{{ $order?->customer_account_id }}">
                                                         <input type="hidden" id="closing_balance" class="form-control fw-bold text-danger" value="{{ isset($accountBalance['closing_balance_in_flat_amount']) ? $accountBalance['closing_balance_in_flat_amount'] : 0 }}">
                                                         <input type="hidden" id="default_balance_type" class="hidden" class="form-control fw-bold text-danger" value="{{ $order?->customer?->group?->default_balance_type }}">
-                                                        <input readonly type="text" id="customer_name" class="form-control fw-bold" value="{{ $order?->customer?->name .($order?->customer ? '/' . $order?->customer?->phone : '') }}" placeholder="{{ __("Customer Name") }}" autocomplete="off">
+                                                        <input readonly type="text" id="customer_name" class="form-control fw-bold" value="{{ $order?->customer?->name . ($order?->customer ? '/' . $order?->customer?->phone : '') }}" placeholder="{{ __('Customer Name') }}" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -260,12 +260,12 @@
                                                 <select class="form-control select2" id="sales_order_product_id">
                                                     <option value="">{{ __('Select Product') }}</option>
                                                     @foreach ($order?->saleProducts ? $order?->saleProducts : [] as $orderedProduct)
-
                                                         @php
                                                             $brand = $orderedProduct?->product?->brand ? ' | ' . $orderedProduct?->product?->brand?->name : '';
                                                         @endphp
 
-                                                        <option value="{{ $orderedProduct->id }}" data-name="{{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') . ' (' . $orderedProduct?->product?->product_code . ')' }}" data-p_id="{{ $orderedProduct->product_id }}" data-is_manage_stock="{{ $orderedProduct?->product?->is_manage_stock }}" data-v_id="{{ $orderedProduct?->variant_id }}" data-p_tax_ac_id="{{ $orderedProduct->tax_ac_id ? $orderedProduct->tax_ac_id : '' }}" data-tax_type="{{ $orderedProduct?->tax_type }}" data-is_show_emi_on_pos="{{ $orderedProduct?->product?->is_show_emi_on_pos }}" data-p_price_exc_tax="{{ $orderedProduct?->unit_price_exc_tax }}" data-p_discount="{{ $orderedProduct?->unit_discount }}" data-p_discount_type="{{ $orderedProduct?->unit_discount_type }}" data-p_discount_amount="{{ $orderedProduct?->unit_discount_amount }}" data-p_price_inc_tax="{{ $orderedProduct?->unit_price_inc_tax }}" data-p_cost_inc_tax="{{ $orderedProduct?->unit_cost_inc_tax }}" data-p_ordered_quantity="{{ $orderedProduct?->ordered_quantity }}" data-p_delivered_quantity="{{ $orderedProduct?->delivered_quantity }}" data-p_left_quantity="{{ $orderedProduct?->left_quantity }}">
+                                                        <option value="{{ $orderedProduct->id }}" data-name="{{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') . ' (' . $orderedProduct?->product?->product_code . ')' }}" data-p_id="{{ $orderedProduct->product_id }}" data-is_manage_stock="{{ $orderedProduct?->product?->is_manage_stock }}" data-v_id="{{ $orderedProduct?->variant_id }}" data-p_tax_ac_id="{{ $orderedProduct->tax_ac_id ? $orderedProduct->tax_ac_id : '' }}" data-tax_type="{{ $orderedProduct?->tax_type }}" data-is_show_emi_on_pos="{{ $orderedProduct?->product?->is_show_emi_on_pos }}" data-p_price_exc_tax="{{ $orderedProduct?->unit_price_exc_tax }}" data-p_discount="{{ $orderedProduct?->unit_discount }}" data-p_discount_type="{{ $orderedProduct?->unit_discount_type }}" data-p_discount_amount="{{ $orderedProduct?->unit_discount_amount }}"
+                                                            data-p_price_inc_tax="{{ $orderedProduct?->unit_price_inc_tax }}" data-p_cost_inc_tax="{{ $orderedProduct?->unit_cost_inc_tax }}" data-p_ordered_quantity="{{ $orderedProduct?->ordered_quantity }}" data-p_delivered_quantity="{{ $orderedProduct?->delivered_quantity }}" data-p_left_quantity="{{ $orderedProduct?->left_quantity }}">
                                                             {{ $orderedProduct?->product?->name . ($orderedProduct?->variant ? '-' . $orderedProduct?->variant?->name : '') . ' (' . $orderedProduct?->product?->product_code . $brand . ')' }}
                                                         </option>
                                                     @endforeach
@@ -346,9 +346,14 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6">
+                                            <div class="col-xl-4 col-md-4">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="IMEI/SL No./Other Info.">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}" autocomplete="off">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button" id="editDescription"><i class="fa-solid fa-text-width w-20"></i></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
@@ -621,6 +626,32 @@
         </div>
     </div>
     <input type="hidden" class="form-control fw-bold" id="search_product" autocomplete="off">
+
+    <div class="modal fade" id="editDescriptionModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <form id="description_form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">{{ __('Product IMEI/Serial No./Other Info') }}</h6>
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control fw-bold" id="edit_description" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="submit" id="description_save" class="btn btn-sm btn-success">{{ __('Save') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     @include('sales.order_to_invoice.js_partials.js')

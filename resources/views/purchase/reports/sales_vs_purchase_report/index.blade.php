@@ -128,35 +128,6 @@
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <div class="heading">
-                                                            <h6 class="text-primary"><b>{{ __('Purchase') }}</b></h6>
-                                                        </div>
-
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th>{{ __('Total Purchase') }} : </th>
-                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th>{{ __('Total Purchase Return') }} : </th>
-                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th>{{ __('Total Purchase Included Return') }}</th>
-                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="heading">
                                                             <h6 class="text-primary"><b>{{ __('Sales') }}</b></h6>
                                                         </div>
 
@@ -174,6 +145,35 @@
 
                                                                 <tr>
                                                                     <th>{{ __('Total Sales Included Return') }} </th>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 col-sm-12 col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="heading">
+                                                            <h6 class="text-primary"><b>{{ __('Purchase') }}</b></h6>
+                                                        </div>
+
+                                                        <table class="table modal-table table-sm">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>{{ __('Total Purchase') }} : </th>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>{{ __('Total Purchase Return') }} : </th>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>{{ __('Total Purchase Included Return') }}</th>
                                                                     <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
                                                             </tbody>

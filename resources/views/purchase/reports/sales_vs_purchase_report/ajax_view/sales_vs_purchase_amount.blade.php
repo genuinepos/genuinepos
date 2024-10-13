@@ -2,44 +2,6 @@
     <div class="row g-3">
         <div class="col-md-12 col-sm-12 col-lg-6">
             <div class="card">
-                <div class="card-body card-custom">
-                    <div class="heading">
-                        <h6 class="text-primary"><b>{{ __("Purchase") }}</b> </h6>
-                    </div>
-
-                    <table class="table modal-table table-sm">
-                        <tbody>
-                            <tr>
-                                <th class="fw-bold">{{ __("Total Purchase") }}</th>
-                                <td>
-                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
-                                    {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalPurchaseIncludedTax']) }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="fw-bold">{{ __("Total Purchase Return") }}</th>
-                                <td>
-                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
-                                    {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalPurchaseReturn']) }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="fw-bold">{{ __("Total Purchase Included Return") }}</th>
-                                <td>
-                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
-                                    {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalPurchaseIncludedReturn']) }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 col-sm-12 col-lg-6">
-            <div class="card">
                 <div class="card-body">
                     <div class="heading">
                         <h6 class="text-primary"><b>{{ __("Sales") }}</b></h6>
@@ -68,6 +30,44 @@
                                 <td>
                                     {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                     {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalSaleIncludedReturn']) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-lg-6">
+            <div class="card">
+                <div class="card-body card-custom">
+                    <div class="heading">
+                        <h6 class="text-primary"><b>{{ __("Purchase") }}</b> </h6>
+                    </div>
+
+                    <table class="table modal-table table-sm">
+                        <tbody>
+                            <tr>
+                                <th class="fw-bold">{{ __("Total Purchase") }}</th>
+                                <td>
+                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalPurchaseIncludedTax']) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="fw-bold">{{ __("Total Purchase Return") }}</th>
+                                <td>
+                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalPurchaseReturn']) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="fw-bold">{{ __("Total Purchase Included Return") }}</th>
+                                <td>
+                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
+                                    {{ App\Utils\Converter::format_in_bdt($salesVsPurchaseAmounts['totalPurchaseIncludedReturn']) }}
                                 </td>
                             </tr>
                         </tbody>

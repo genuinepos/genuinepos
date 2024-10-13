@@ -26,31 +26,35 @@ class BankService
             ->make(true);
     }
 
-    public function addBank(object $request): ?Bank
+    public function addBank(object $request): ?object
     {
         return Bank::create(['name' => $request->name]);
     }
 
-    public function updateBank(int $id, object $request): int
+    public function updateBank(int $id, object $request): object
     {
-        return Bank::where('id', $id)->update(['name' => $request->name]);
+        $updateBank = $this->singleBank(id: $id);
+        $updateBank->name = $request->name;
+        $updateBank->save();
+
+        return $updateBank;
     }
 
-    public function deleteBank(int $id): array
+    public function deleteBank(int $id): array|object
     {
-        $deleteBank = Bank::with('accounts')->where('id', $id)->first();
+        $deleteBank = $this->singleBank(id: $id, with: ['accounts']);
 
         if (! is_null($deleteBank)) {
 
             if (count($deleteBank->accounts) > 0) {
 
-                return ['success' => false, 'msg' => __('Bank can not be deleted')];
+                return ['pass' => false, 'msg' => __('Bank can not be deleted, This bank has already been attached with bank account')];
             }
 
             $deleteBank->delete();
         }
 
-        return ['success' => true, 'msg' => __('Bank deleted successfully.')];
+        return $deleteBank;
     }
 
     public function singleBank(int $id, array $with = null): ?Bank

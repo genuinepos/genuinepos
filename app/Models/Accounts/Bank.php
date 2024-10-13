@@ -2,8 +2,8 @@
 
 namespace App\Models\Accounts;
 
-use App\Models\Account;
 use App\Models\BaseModel;
+use App\Models\Accounts\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Bank extends BaseModel

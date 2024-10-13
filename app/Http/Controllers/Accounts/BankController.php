@@ -9,7 +9,11 @@ use App\Services\Accounts\BankService;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Accounts\BankEditRequest;
+use App\Http\Requests\Accounts\BankIndexRequest;
 use App\Http\Requests\Accounts\BankStoreRequest;
+use App\Http\Requests\Accounts\BankCreateRequest;
+use App\Http\Requests\Accounts\BankDeleteRequest;
 use App\Http\Requests\Accounts\BankUpdateRequest;
 
 class BankController extends Controller
@@ -20,10 +24,8 @@ class BankController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(BankIndexRequest $request)
     {
-        abort_if(!auth()->user()->can('banks_index'), 403);
-
         if ($request->ajax()) {
 
             return $this->bankService->bankListTable();
@@ -32,10 +34,8 @@ class BankController extends Controller
         return view('accounting.banks.index');
     }
 
-    public function create()
+    public function create(BankCreateRequest $request)
     {
-        abort_if(!auth()->user()->can('banks_create'), 403);
-
         return view('accounting.banks.ajax_view.create');
     }
 
@@ -57,10 +57,8 @@ class BankController extends Controller
         return $addBank;
     }
 
-    public function edit($id)
+    public function edit($id, BankEditRequest $request)
     {
-        abort_if(!auth()->user()->can('banks_edit'), 403);
-
         $bank = $this->bankService->singleBank(id: $id);
 
         return view('accounting.banks.ajax_view.edit', compact('bank'));
@@ -84,16 +82,14 @@ class BankController extends Controller
         return response()->json(__('Bank updated successfully'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(BankDeleteRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('banks_delete'), 403);
-
         try {
             DB::beginTransaction();
 
             $deleteBank = $this->bankService->deleteBank($id);
 
-            if ($deleteBank['success'] == false) {
+            if (isset($deleteBank['pass']) && $deleteBank['pass'] == false) {
 
                 return response()->json(['errorMsg' => $deleteBank['msg']]);
             }
@@ -106,6 +102,6 @@ class BankController extends Controller
             DB::rollBack();
         }
 
-        return response()->json($deleteBank['msg']);
+        return response()->json(__('Bank deleted successfully.'));
     }
 }

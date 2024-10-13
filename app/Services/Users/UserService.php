@@ -9,6 +9,7 @@ use App\Enums\UserType;
 use App\Enums\BooleanType;
 use App\Utils\FileUploader;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -336,9 +337,17 @@ class UserService
 
         $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
         $__branchId = isset($request->select_type) && $request->select_type == 'business' ? null : $branchId;
-        auth()->user()->branch_id = $__branchId;
-        auth()->user()->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
-        auth()->user()->save();
+        // auth()->user()->branch_id = $__branchId;
+        // auth()->user()->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
+        // auth()->user()->save();
+
+        $user = auth()->user();
+        $user->branch_id = $__branchId;
+        $user->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
+        $user->save();
+
+        // Refresh the auth session with the updated user data
+        Auth::setUser($user); // Update the user session
 
         $user = $this->singleUser(id: auth()->user()->id, with: ['branch', 'branch.parentBranch']);
 

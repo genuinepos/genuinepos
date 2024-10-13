@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Branches\BranchService;
 use App\Services\Purchases\Reports\SalesVsPurchaseReportService;
+use App\Http\Requests\Purchases\Reports\SalesVsPurchaseReportIndexRequest;
 
 class SalesVsPurchaseReportController extends Controller
 {
@@ -14,7 +15,7 @@ class SalesVsPurchaseReportController extends Controller
         private BranchService $branchService,
     ) {}
 
-    public function index()
+    public function index(SalesVsPurchaseReportIndexRequest $request)
     {
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();

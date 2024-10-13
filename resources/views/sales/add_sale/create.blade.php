@@ -675,7 +675,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <textarea class="form-control" id="edit_description" cols="30" rows="10"></textarea>
+                            <textarea class="form-control fw-bold" id="edit_description" cols="30" rows="10"></textarea>
                         </div>
 
                         <div class="form-group row mt-2">

@@ -5,14 +5,15 @@ namespace App\Services\Startup\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Utils\FileUploader;
 use App\Services\Users\RoleService;
-use App\Services\Branches\BranchService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Services\Branches\BranchService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use App\Services\Startup\StartupService;
 use App\Services\Setups\CashCounterService;
-use App\Services\Branches\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
+use App\Services\Branches\BranchSettingService;
 use App\Services\GeneralSettingServiceInterface;
 use App\Services\Subscriptions\SubscriptionService;
 use App\Interfaces\Startup\StartupControllerMethodContainerInterface;
@@ -132,9 +133,17 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
 
             if ($generalSettings['subscription']->current_shop_count == 1 && $generalSettings['subscription']->has_business == BooleanType::False->value) {
 
-                auth()->user()->branch_id = $addBranch->id;
-                auth()->user()->is_belonging_an_area = BooleanType::True->value;
-                auth()->user()->save();
+                // auth()->user()->branch_id = $addBranch->id;
+                // auth()->user()->is_belonging_an_area = BooleanType::True->value;
+                // auth()->user()->save();
+
+                $user = auth()->user();
+                $user->branch_id = $addBranch->id;
+                $user->is_belonging_an_area = BooleanType::True->value;
+                $user->save();
+
+                // Refresh the auth session with the updated user data
+                Auth::setUser($user); // Update the user session
             }
         }
 

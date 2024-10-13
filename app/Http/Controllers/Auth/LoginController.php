@@ -139,9 +139,17 @@ class LoginController extends Controller
 
         if (auth()->user()->can('has_access_to_all_area')) {
 
-            auth()->user()->branch_id = null;
-            auth()->user()->is_belonging_an_area = BooleanType::False->value;
-            auth()->user()->save();
+            // auth()->user()->branch_id = null;
+            // auth()->user()->is_belonging_an_area = BooleanType::False->value;
+            // auth()->user()->save();
+
+            $user = auth()->user();
+            $user->branch_id = null;
+            $user->is_belonging_an_area = BooleanType::False->value;
+            $user->save();
+
+            // Refresh the auth session with the updated user data
+            Auth::setUser($user); // Update the user session
         }
 
         $this->guard()->logout();

@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Enums\BooleanType;
-use App\Enums\UserActivityLogActionType;
-use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
+use App\Models\Branches\Branch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
-use App\Services\Users\UserActivityLogService;
 use Illuminate\Support\Facades\Session;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Models\Subscriptions\Subscription;
+use App\Services\Users\UserActivityLogService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -67,8 +69,8 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $subscription = DB::table('subscriptions')->first();
-        $firstBranch = DB::table('branches')->first();
+        $subscription = Subscription::first();
+        $firstBranch = Branch::first();
 
         $user = User::with('branch', 'roles', 'roles.permissions')
             ->where('username', $request->username_or_email)
@@ -117,6 +119,7 @@ class LoginController extends Controller
                     $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
                 }
 
+                Auth::guard()->login($user);
                 return redirect()->intended(route('dashboard.index'));
             } else {
 

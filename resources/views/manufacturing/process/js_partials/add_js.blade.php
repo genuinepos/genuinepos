@@ -287,7 +287,7 @@
 
         if (e_product_id == '') {
 
-            toastr.error('Please select a item.');
+            toastr.error("{{ __('Please select a product') }}");
             return;
         }
 

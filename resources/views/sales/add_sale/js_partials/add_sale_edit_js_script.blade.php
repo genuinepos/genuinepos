@@ -51,7 +51,7 @@
                     toastr.error(product.errorMsg);
                     $('#search_product').val("");
                     $('.select_area').hide();
-                    $('#stock_quantity').val(parseFloat(0).toFixed(2));
+                    $('#stock_quantity').val(parseFloat(0));
                     return;
                 }
 
@@ -77,7 +77,7 @@
                             var stock = product.product_branch_stock != null ? product.product_branch_stock.all_stock : 0;
                             if (product.is_manage_stock == 1) {
 
-                                $('#stock_quantity').val(parseFloat(stock).toFixed(2));
+                                $('#stock_quantity').val(parseFloat(stock));
                             }
 
                             var price = 0;
@@ -118,13 +118,22 @@
                             $('#e_tax_ac_id').val(product.tax_ac_id != null ? product.tax_ac_id : '');
                             $('#e_tax_type').val(product.tax_type);
                             $('#e_unit_cost_inc_tax').val(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax);
-                            $('#display_unit_cost').html(product.update_product_cost ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax);
+                            $('#display_unit_cost').html(product.update_product_cost ? parseFloat(product.update_product_cost.net_unit_cost) : parseFloat(product.product_cost_with_tax));
                             $('#e_is_show_emi_on_pos').val(product.is_show_emi_on_pos);
+                            $('#e_descriptions').val('');
 
                             $('#e_unit_id').empty();
                             $('#e_unit_id').append('<option value="' + product.unit.id +
                                 '" data-is_base_unit="1" data-unit_name="' + product.unit.name +
                                 '" data-base_unit_multiplier="1">' + product.unit.name + '</option>');
+
+                            if (product.is_show_emi_on_pos == 0) {
+
+                                $('#e_descriptions').prop('readonly', true);
+                            } else {
+
+                                $('#e_descriptions').prop('readonly', false);
+                            }
 
                             itemUnitsArray[product.id] = [{
                                 'unit_id': product.unit.id,
@@ -165,7 +174,7 @@
                         var stock = variant.variant_branch_stock ? variant.variant_branch_stock.all_stock : 0;
                         if (variant.product.is_manage_stock == 1) {
 
-                            $('#stock_quantity').val(parseFloat(stock).toFixed(2));
+                            $('#stock_quantity').val(parseFloat(stock));
                         }
 
                         var price = 0;
@@ -206,8 +215,9 @@
                         $('#e_tax_ac_id').val(variant.product.tax_ac_id != null ? variant.product.tax_ac_id : '');
                         $('#e_tax_type').val(variant.product.tax_type);
                         $('#e_unit_cost_inc_tax').val(variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax);
-                        $('#display_unit_cost').html(variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax);
-                        $('#e_is_show_emi_on_pos').val(product.is_show_emi_on_pos);
+                        $('#display_unit_cost').html(variant.update_variant_cost ? parseFloat(variant.update_variant_cost.net_unit_cost) : parseFloat(variant.variant_cost_with_tax));
+                        $('#e_is_show_emi_on_pos').val(variant.product.is_show_emi_on_pos);
+                        $('#e_descriptions').val('');
 
                         $('#e_unit_id').empty();
 
@@ -225,6 +235,14 @@
                             'multiplier_details': '',
                             'is_base_unit': 1,
                         }];
+
+                        if (variant.product.is_show_emi_on_pos == 0) {
+
+                            $('#e_descriptions').prop('readonly', true);
+                        } else {
+
+                            $('#e_descriptions').prop('readonly', false);
+                        }
 
                         if (variant.product.unit.child_units.length > 0) {
 
@@ -343,7 +361,7 @@
 
                     if (is_manage_stock == 1) {
 
-                        $('#stock_quantity').val(parseFloat(data.stock).toFixed(2));
+                        $('#stock_quantity').val(parseFloat(data.stock));
                     }
 
                     if (is_show_emi_on_pos == 0) {
@@ -400,8 +418,9 @@
                     $('#e_tax_ac_id').val(p_tax_ac_id);
                     $('#e_tax_type').val(p_tax_type);
                     $('#e_unit_cost_inc_tax').val(parseFloat(product_cost_inc_tax).toFixed(2));
-                    $('#display_unit_cost').html(parseFloat(product_cost_inc_tax).toFixed(2));
+                    $('#display_unit_cost').html(parseFloat(product_cost_inc_tax));
                     $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
+                    $('#e_descriptions').val('');
 
                     $('#e_unit_id').empty();
                     $('#e_unit_id').append(
@@ -709,11 +728,10 @@
         $('#e_price_inc_tax').val(parseFloat(unit_price_inc_tax).toFixed(2));
         $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
         $('#e_unit_cost_inc_tax').val(parseFloat(unit_cost_inc_tax).toFixed(2));
-        $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax).toFixed(2));
+        $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax));
         $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
         $('#e_descriptions').val(descriptions);
-        $('#stock_quantity').val(parseFloat(current_stock).toFixed(2));
-        $('#display_unit_cost').html(parseFloat(unit_cost_inc_tax).toFixed(2));
+        $('#stock_quantity').val(parseFloat(current_stock));
 
         $('#add_item').html("{{ __('Update') }}");
     });
@@ -934,7 +952,7 @@
                             $('#stock_quantity').val(data.stock);
                         } else {
 
-                            $('#stock_quantity').val(parseFloat(0).toFixed(2));
+                            $('#stock_quantity').val(parseFloat(0));
                         }
                     }
                 }
@@ -1131,9 +1149,10 @@
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(0);
         $('#e_is_show_discription').val('');
-        $('#stock_quantity').val(parseFloat(0).toFixed(2));
+        $('#stock_quantity').val(parseFloat(0));
         $('#e_current_warehouse_id').val('');
         $('#e_warehouse_id').val('');
+        $('#e_descriptions').val('');
         $('#add_item').html('Add');
     }
 
@@ -1474,6 +1493,29 @@
     });
 
     calculateTotalAmount();
+
+    $(document).on('click', '#editDescription', function(e) {
+
+        var e_description = $('#e_descriptions').val();
+        $('#edit_description').val(e_description);
+
+        $('#editDescriptionModal').modal('show');
+
+        setTimeout(function() {
+
+            $('#edit_description').focus();
+        }, 500);
+    });
+
+    $(document).on('submit', '#description_form', function(e) {
+        e.preventDefault();
+
+        var edit_description = $('#edit_description').val();
+        $('#e_descriptions').val(edit_description);
+        $('#e_warehouse_id').focus();
+
+        $('#editDescriptionModal').modal('hide');
+    });
 </script>
 
 @if ($generalSettings['subscription']->features['contacts'] == 1 && auth()->user()->can('customer_add'))
@@ -1591,7 +1633,7 @@
 
                     if (data.is_manage_stock == 1) {
 
-                        $('#stock_quantity').val(parseFloat(data.quantity).toFixed(2));
+                        $('#stock_quantity').val(parseFloat(data.quantity));
                     }
 
                     var name = data.name + ' (' + data.product_code + ')';
@@ -1608,8 +1650,17 @@
                     $('#e_tax_ac_id').val(data.tax_ac_id != null ? data.tax_ac_id : '');
                     $('#e_tax_type').val(data.tax_type);
                     $('#e_unit_cost_inc_tax').val(data.product_cost_with_tax);
-                    $('#display_unit_cost').html(parseFloat(data.product_cost_with_tax).toFixed(2));
+                    $('#display_unit_cost').html(parseFloat(data.product_cost_with_tax));
                     $('#e_is_show_emi_on_pos').val(data.is_show_emi_on_pos);
+                    $('#e_descriptions').val('');
+
+                    if (data.is_show_emi_on_pos == 0) {
+
+                        $('#e_descriptions').prop('readonly', true);
+                    } else {
+
+                        $('#e_descriptions').prop('readonly', false);
+                    }
 
                     $('#e_unit_id').empty();
                     $('#e_unit_id').append('<option value="' + data.unit.id +

@@ -308,7 +308,14 @@
 
                                         <div class="col-xl-4 col-md-4">
                                             <label class="fw-bold">{{ __('Short Description') }}</label>
-                                            <input type="text" step="any" class="form-control fw-bold" id="e_description" placeholder="{{ __('Short Description') }}" autocomplete="off">
+
+
+                                            <div class="input-group">
+                                                <input type="text" step="any" class="form-control fw-bold" id="e_description" placeholder="{{ __('Short Description') }}" autocomplete="off">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text add_button" id="editDescription"><i class="fa-solid fa-text-width w-20"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
@@ -695,6 +702,32 @@
         <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
         <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
+
+    <div class="modal fade" id="editDescriptionModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog col-50-modal" role="document">
+            <form id="description_form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">{{ __('Short Description') }}</h6>
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control fw-bold" id="edit_description" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="submit" id="description_save" class="btn btn-sm btn-success">{{ __('Save') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     @include('purchase.purchases.partials.purchaseEditJsScript')

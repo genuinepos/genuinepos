@@ -14,12 +14,44 @@
                 <div class="name-head">
                     <h5>{{ __('Version Release Notes') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
         <div class="p-1">
             <div class="card">
+                <div class="all-release-note-area p-2">
+                    <div class="version-release-note mt-1">
+                        <div class="release-version">
+                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.10</h5>
+                        </div>
+                        <div class="release-list p-1">
+                            <ul class="list-styled">
+                                <ol class="fw-bold">{{ __('About This Update') }}</ol>
+                                <li>{{ __('Upgrade to the new version of the Gposs System (fixes several bugs, enhances stability, and improves the overall user experience).') }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="changes-log-area p-2 mt-3">
+                    <div class="release-version">
+                        <h5 class="text-blue">{{ __('Update Log') }}</h5>
+                    </div>
+                    <div class="changes-log mt-1">
+                        <ul class="list-styled">
+                            <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
+                            <li> - {{ __('Fixed Sales Vs Purchase Report error') }}</li>
+
+                            <ol class="fw-bold">{{ __('Feature Update') }}</ol>
+                            <li> - {{ __('User can increase the [Short Description Field] from purchase And P/o To Purchase Invoice portion.') }}</li>
+                            <li> - {{ __('User can increase the [IMEI/SL No./Other Info] from Sales And Sales Order To Invoice portion.') }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">

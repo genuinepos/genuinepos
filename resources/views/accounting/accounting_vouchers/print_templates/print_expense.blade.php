@@ -18,6 +18,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -92,7 +95,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    <p style="text-transform: uppercase;font-size:10px!important;" class="p-0 m-0 fw-bold">
                         @if ($expense?->branch)
                             @if ($expense?->branch?->parent_branch_id)
                                 {{ $expense?->branch?->parentBranch?->name }}
@@ -113,7 +116,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($expense?->branch)
                             {{ $expense->branch->city . ', ' . $expense->branch->state . ', ' . $expense->branch->zip_code . ', ' . $expense->branch->country }}
                         @else
@@ -121,7 +124,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($expense?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $expense?->branch?->email }},
                             <span class="fw-bold">{{ __('Phone') }} : </span> {{ $expense?->branch?->phone }}
@@ -135,28 +138,28 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __('Expense Voucher') }}</h5>
+                    <h6 class="fw-bold" style="text-transform: uppercase;">{{ __('Expense Voucher') }}</h6>
                 </div>
             </div>
 
             <div class="row mt-2">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
                             {{ date($dateFormat, strtotime($expense->date)) }}
                         </li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $expense->voucher_no }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Total Expense Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $expense->voucher_no }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Total Expense Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</li>
                     </ul>
                 </div>
 
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Reference') }} : </span>
                             {{ $expense->reference }}
                         </li>
 
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $expense?->createdBy?->prefix . ' ' . $expense?->createdBy?->name . ' ' . $expense?->createdBy?->last_name }}
                         </li>
                     </ul>
@@ -173,43 +176,43 @@
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Credit A/c') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                <th style="width: 30%;font-size:10px!important;" class="text-start fw-bold">{{ __('Credit A/c') }} : </th>
+                                <td style="width: 70%;font-size:10px!important;" class="text-start">
                                     : {{ $creditDescription?->account?->name }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Type/Method') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                <th style="width: 30%;font-size:10px!important;" class="text-start fw-bold">{{ __('Type/Method') }} : </th>
+                                <td style="width: 70%;font-size:10px!important;" class="text-start">
                                     : {{ $creditDescription?->paymentMethod?->name }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Transaction No') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                <th style="width: 30%;font-size:10px!important;" class="text-start fw-bold">{{ __('Transaction No') }} : </th>
+                                <td style="width: 70%;font-size:10px!important;" class="text-start">
                                     : {{ $creditDescription?->tanasaction_no }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque No') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                <th style="width: 30%;font-size:10px!important;" class="text-start fw-bold">{{ __('Cheque No') }} : </th>
+                                <td style="width: 70%;font-size:10px!important;" class="text-start">
                                     : {{ $creditDescription?->cheque_no }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque Serial No') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                <th style="width: 30%;font-size:10px!important;" class="text-start fw-bold">{{ __('Cheque Serial No') }} : </th>
+                                <td style="width: 70%;font-size:10px!important;" class="text-start">
                                     : {{ $creditDescription?->cheque_serial_no }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Total Expense Paid') }} :</th>
-                                <td style="width: 70%;" class="text-start fw-bold" style="font-size:11px!important;">
+                                <th style="width: 30%;font-size:10px!important;" class="text-start fw-bold">{{ __('Total Expense Paid') }} :</th>
+                                <td style="width: 70%;font-size:10px!important;" class="text-start fw-bold">
                                     : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>
@@ -220,28 +223,28 @@
 
             <div class="row mt-2">
                 <div class="col-12">
-                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __('Expesne Descriptions') }} : </p>
+                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:10px!important;">{{ __('Expesne Descriptions') }} : </p>
                     <table class="table report-table table-sm table-bordered print_table mt-1">
                         <thead>
                             <tr>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Serial No') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Expense Ledger Name') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                                <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Serial No') }}</th>
+                                <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Expense Ledger Name') }}</th>
+                                <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Amount') }}</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach ($debitDescriptions as $debitDescription)
                                 <tr>
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ $loop->index + 1 }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ $debitDescription?->account?->name }}
                                     </td>
 
-                                    <td class="text-start" style="font-size:11px!important;">
+                                    <td class="text-start" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }}
                                     </td>
                                 </tr>
@@ -260,19 +263,19 @@
             <br /><br />
             <div class="row">
                 <div class="col-4 text-start">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-size:11px; font-weight: 600;">
                         {{ __('Prepared By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-center">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-size:11px; font-weight: 600;">
                         {{ __('Checked By') }}
                     </p>
                 </div>
 
                 <div class="col-4 text-end">
-                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-size:11px; font-weight: 600;">
                         {{ __('Authorized By') }}
                     </p>
                 </div>
@@ -325,6 +328,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -453,7 +459,7 @@
                             {{ date($dateFormat, strtotime($expense->date)) }}
                         </li>
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $expense->voucher_no }}</li>
-                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Total Expense Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Total Expense Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</li>
                     </ul>
                 </div>
 
@@ -476,47 +482,47 @@
             @endphp
             <div class="row mt-2">
                 <div class="col-12">
-                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:9px!important;">{{ __('Credit A/c Details') }} :</p>
+                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:10px!important;">{{ __('Credit A/c Details') }} :</p>
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Credit A/c') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:9px!important;">
+                                <th style="width: 30%;font-size:9px!important;" class="text-start fw-bold">{{ __('Credit A/c') }} : </th>
+                                <td style="width: 70%;font-size:9px!important;" class="text-start">
                                     : {{ $creditDescription?->account?->name }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Type/Method') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:9px!important;">
+                                <th style="width: 30%;font-size:9px!important;" class="text-start fw-bold">{{ __('Type/Method') }} : </th>
+                                <td style="width: 70%;font-size:9px!important;" class="text-start">
                                     : {{ $creditDescription?->paymentMethod?->name }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Transaction No') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:9px!important;">
+                                <th style="width: 30%;font-size:9px!important;" class="text-start fw-bold">{{ __('Transaction No') }} : </th>
+                                <td style="width: 70%;font-size:9px!important;" class="text-start">
                                     : {{ $creditDescription?->tanasaction_no }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Cheque No') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:9px!important;">
+                                <th style="width: 30%;font-size:9px!important;" class="text-start fw-bold">{{ __('Cheque No') }} : </th>
+                                <td style="width: 70%;font-size:9px!important;" class="text-start">
                                     : {{ $creditDescription?->cheque_no }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Cheque Serial No') }} : </th>
-                                <td style="width: 70%;" class="text-start" style="font-size:9px!important;">
+                                <th style="width: 30%;font-size:9px!important;" class="text-start fw-bold">{{ __('Cheque Serial No') }} : </th>
+                                <td style="width: 70%;font-size:9px!important;" class="text-start">
                                     : {{ $creditDescription?->cheque_serial_no }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th style="width: 30%;" class="text-start fw-bold" style="font-size:9px!important;">{{ __('Total Expense Paid') }} :</th>
-                                <td style="width: 70%;" class="text-start fw-bold" style="font-size:9px!important;">
+                                <th style="width: 30%;font-size:9px!important;" class="text-start fw-bold">{{ __('Total Expense Paid') }} :</th>
+                                <td style="width: 70%;font-size:9px!important;" class="text-start fw-bold">
                                     : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                 </td>
                             </tr>

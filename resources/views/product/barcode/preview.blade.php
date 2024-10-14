@@ -89,7 +89,7 @@
 
             .company_name {
                 font-size: 10px !important;
-                font-weight: 600;
+                font-weight: bold;
                 margin: 0;
                 padding: 0;
                 color: #000
@@ -97,26 +97,26 @@
 
             .product_name {
                 font-size: 10px;
-                font-weight: 600;
+                font-weight: bold;
                 color: #000
             }
 
             .product_price {
                 font-size: 10px !important;
-                font-weight: 600;
+                font-weight: bold!important;
                 color: #000
             }
 
             .product_code {
                 font-size: 8px;
-                font-weight: 600;
+                font-weight: bold;
                 color: #000
             }
 
             @page {
                 /* size: auto; */
                 /* size: {{ $barcodeSetting->paper_width }}in {{ $barcodeSetting->paper_height }}in; */
-                size: {{ $barcodeSetting->paper_width }}in {{ $barcodeSetting->paper_width }}in;
+                size: a4;
                 /* margin: 0mm 15mm 0mm 15mm; */
                 margin-top: 100cm;
                 margin-bottom: 0px;
@@ -247,7 +247,7 @@
                                 @endif
 
                                 @if (isset($req->is_price))
-                                    <p class="price_details" style="margin: 0px;padding: 0px;font-size: 8px;">
+                                    <p class="price_details fw-bold" style="margin: 0px;padding: 0px;font-size: 8px;">
                                         {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                         {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                         {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}

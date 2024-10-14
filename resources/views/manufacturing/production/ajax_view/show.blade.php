@@ -17,11 +17,11 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong> {{ $production->voucher_no }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Voucher No') }} : </strong> {{ $production->voucher_no }}</li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>{{ date($dateFormat, strtotime($production->date)) }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Date') }} : </strong>{{ date($dateFormat, strtotime($production->date)) }}</li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Stock Location') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Product Store Location (Aft. Prod.)') }} : </strong>
                                 @if ($production->storeWarehouse)
 
                                     {{ $production->storeWarehouse->warehouse_name . '/' . $production->storeWarehouse->warehouse_code }}<b>({{ __('WH') }})</b>
@@ -39,10 +39,10 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Ingredients Stock Location') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Ingredients Stock Location') }} : </strong>
                                 @if ($production->stockWarehouse)
 
-                                    {{ $production->stockWarehouse->warehouse_name . '/' . $production->stockWarehouse->warehouse_code }}<b>({{ __('WH)') }})</b>
+                                    {{ $production->stockWarehouse->warehouse_name . '/' . $production->stockWarehouse->warehouse_code }}<b>({{ __('WH') }})</b>
                                 @else
                                     @if ($production->branch_id)
 
@@ -61,12 +61,12 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;">
                                 <strong>{{ __('Mfd. Product') }} : </strong>
                                 {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                             </li>
 
-                            <li style="font-size:11px!important;">
+                            <li style="font-size:10px!important;">
                                 <strong>{{ __('Status') }} : </strong>
                                 {{ \App\Enums\ProductionStatus::tryFrom($production->status)->name }}
                             </li>
@@ -75,7 +75,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ location_label() }} : </strong>
                                 @if ($production->branch_id)
 
                                     @if ($production?->branch?->parentBranch)
@@ -88,7 +88,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Phone') }} : </strong>
                                 @if ($production->branch)
                                     {{ $production->branch->phone }}
                                 @else
@@ -101,17 +101,17 @@
                 <br>
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important;"><strong>{{ __('Ingredients List') }}</strong></p>
+                        <p style="font-size:10px!important;"><strong>{{ __('Ingredients List') }}</strong></p>
                         <div class="table-responsive">
                             <table class="table modal-table table-sm table-striped">
                                 <thead>
                                     <tr class="bg-secondary">
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ingredient Name') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Input Qty') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost Exc. Tax') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost Inc. Tax') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Ingredient Name') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Input Qty') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost Exc. Tax') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Unit Cost Inc. Tax') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Subtotal') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="purchase_print_product_list">
@@ -121,12 +121,12 @@
                                                 $variant = $ingredient->variant_id ? ' -' . $ingredient->variant->variant_name : '';
                                             @endphp
 
-                                            <td class="text-start" style="font-size:11px!important;">{{ Str::limit($ingredient->product->name, 40) . ' ' . $variant }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ $ingredient->final_qty . '/' . $ingredient?->unit?->code_name }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_exc_tax) }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ '(' . $ingredient->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($ingredient->unit_tax_tax_amount) }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_inc_tax) }}</td>
-                                            <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->subtotal) }}
+                                            <td class="text-start" style="font-size:10px!important;">{{ Str::limit($ingredient->product->name, 40) . ' ' . $variant }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ $ingredient->final_qty . '/' . $ingredient?->unit?->code_name }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_exc_tax) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ '(' . $ingredient->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($ingredient->unit_tax_tax_amount) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->unit_cost_inc_tax) }}</td>
+                                            <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($ingredient->subtotal) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -138,40 +138,40 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <p style="font-size:11px!important;"><strong>{{ __('Production Quantity And Net Cost') }}</strong></p>
+                        <p style="font-size:10px!important;"><strong>{{ __('Production Quantity And Net Cost') }}</strong></p>
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Output Qty') }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Output Qty') }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ $production->total_output_quantity . '/' . $production?->unit?->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Wasted Qty') }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Wasted Qty') }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ $production->total_wasted_quantity . '/' . $production?->unit?->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Final Output Qty') }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Total Final Output Qty') }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ $production->total_final_output_quantity . '/' . $production?->unit?->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Additional Production Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Net Cost') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->net_cost) }}
                                     </td>
                                 </tr>
@@ -180,40 +180,40 @@
                     </div>
 
                     <div class="col-md-6 text-end">
-                        <p style="font-size:11px!important;"><strong>{{ __('Product Costing And Pricing') }}</strong></p>
+                        <p style="font-size:10px!important;"><strong>{{ __('Product Costing And Pricing') }}</strong></p>
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Vat/Tax') }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ '(' . $production->unit_tax_percent . '%)=' . App\Utils\Converter::format_in_bdt($production->unit_tax_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Profit Margin') }}(%)</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Profit Margin') }}(%)</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ $production->profit_margin }}%
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-end" style="font-size:11px!important;">
+                                    <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $production?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                    <td class="text-end" style="font-size:10px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}
                                     </td>
                                 </tr>

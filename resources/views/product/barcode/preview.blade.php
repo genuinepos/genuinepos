@@ -16,7 +16,9 @@
         p.sku {font-size: 7px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;} */
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            /* font-family: Arial, Helvetica, sans-serif; */
+            font-family: "Poppins", sans-serif;
+
         }
 
         /* .barcode {
@@ -24,7 +26,6 @@
         } */
 
         @if ($barcodeSetting->is_continuous == 1)
-
             /* .div {
                 page-break-after: always;
             } */
@@ -34,7 +35,7 @@
                 font-weight: {{ $barcodeSetting->company_name_bold_or_regular == 1 ? 'bold' : '400' }};
                 margin: 0;
                 padding: 0;
-                color: #000
+                color: #000;
             }
 
             .barcode_area {
@@ -44,18 +45,19 @@
             .product_name {
                 font-size: {{ $barcodeSetting->product_name_size }}px !important;
                 font-weight: {{ $barcodeSetting->product_name_bold_or_regular == 1 ? 'bold' : '400' }};
-                color: #000
+                color: #000;
             }
 
             .product_price {
                 font-size: {{ $barcodeSetting->price_size }}px !important;
                 font-weight: {{ $barcodeSetting->price_bold_or_regular == 1 ? 'bold' : '400' }} !important;
-                color: #000
+                color: #000;
             }
 
             .product_code {
                 font-size: {{ $barcodeSetting->product_code_size }}px !important;
-                color: #000
+                color: #000;
+                letter-spacing: 3px;
             }
 
             td {
@@ -65,7 +67,7 @@
 
             @page {
                 /* size: auto; */
-                size: {{ $barcodeSetting->paper_width }}in {{ $barcodeSetting->paper_height }}in !important;
+                size: {{ $barcodeSetting->paper_width }}mm {{ $barcodeSetting->paper_height }}mm !important;
                 /* size: 1.4in 0.90in;  */
                 /* size: 1.1in 0.80in; */
                 /* margin: 5px 0px; */
@@ -73,8 +75,8 @@
                 /* margin-top: 0.3cm; */
                 margin: 0 auto;
                 /* margin-bottom: 5px; */
-                margin-left:{{ $barcodeSetting->left_margin }}px!important;
-                margin-right:{{ $barcodeSetting->right_margin }}px!important;
+                margin-left: {{ $barcodeSetting->left_margin }}px !important;
+                margin-right: {{ $barcodeSetting->right_margin }}px !important;
             }
         @else
 
@@ -92,25 +94,26 @@
                 font-weight: bold;
                 margin: 0;
                 padding: 0;
-                color: #000
+                color: #000;
             }
 
             .product_name {
                 font-size: 10px;
                 font-weight: bold;
-                color: #000
+                color: #000;
             }
 
             .product_price {
                 font-size: 10px !important;
-                font-weight: bold!important;
-                color: #000
+                font-weight: bold !important;
+                color: #000;
             }
 
             .product_code {
                 font-size: 8px;
                 font-weight: bold;
-                color: #000
+                color: #000;
+                letter-spacing: 5px;
             }
 
             @page {
@@ -137,7 +140,12 @@
 <body>
     <div class="print_area">
         @if ($barcodeSetting->is_continuous == 1)
-            @php $index = 0; @endphp
+            @php
+                $index = 0;
+
+                $barWidth = $barcodeSetting->paper_width / 100 * $barcodeSetting->bar_width;
+                $barHeight = $barcodeSetting->paper_height / 100 * $barcodeSetting->bar_height;
+            @endphp
             @foreach ($req->product_ids as $product)
                 @php
                     $qty = isset($req->left_quantities[$index]) ? $req->left_quantities[$index] : 0;
@@ -165,7 +173,11 @@
                                 <div class="row justify-content-center">
                                     {{-- style="width: 45mm; height:7mm;"  --}}
                                     {{-- <img style="width: 45mm; height:7mm;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}"> --}}
-                                    <img style="width: {{ $barcodeSetting->bar_width }}%; height:{{ $barcodeSetting->bar_height }}%;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
+
+                                    <img style="width: {{ $barcodeSetting->bar_width }}%!important; height:{{ $barcodeSetting->bar_width }}$!important;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
+
+                                    {{-- <img style="width: {{ $barWidth }}mm!important; height:{{ $barHeight }}mm!important;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}"> --}}
+                                    {{-- <p>{{ $barWidth }}</p> --}}
                                 </div>
 
                                 <div class="row justify-content-center">

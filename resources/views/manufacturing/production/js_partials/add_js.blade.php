@@ -16,24 +16,42 @@
     $(document).on('change', '#process_id', function(e) {
         e.preventDefault();
 
-        var processId = $(this).val();
+        getIngredients();
+    });
+
+    $(document).on('change', '#stock_warehouse_id', function(e) {
+        e.preventDefault();
+
+        var process_id = $('#process_id').val()
+        if (process_id) {
+
+            getIngredients();
+        }
+    });
+
+    function getIngredients() {
+
+        var processId = $('#process_id').val();
         var stockWarehouseId = $('#stock_warehouse_id').val() ? $('#stock_warehouse_id').val() : '';
 
-        var tax_ac_id = $(this).find('option:selected').data('tax_ac_id');
-        var tax_type = $(this).find('option:selected').data('tax_type');
-        var product_id = $(this).find('option:selected').data('p_id');
-        var variant_id = $(this).find('option:selected').data('v_id');
+        var tax_ac_id = $('#process_id').find('option:selected').data('tax_ac_id');
+        var tax_type = $('#process_id').find('option:selected').data('tax_type');
+        var product_id = $('#process_id').find('option:selected').data('p_id');
+        var variant_id = $('#process_id').find('option:selected').data('v_id');
         var __variant_id = variant_id ? variant_id : 'noid';
-        var total_output_qty = $(this).find('option:selected').data('total_output_qty');
-        var unit_id = $(this).find('option:selected').data('unit_id');
-        var total_ingredient_cost = $(this).find('option:selected').data('total_ingredient_cost');
-        var additional_production_cost = $(this).find('option:selected').data('addl_production_cost');
-        var net_cost = $(this).find('option:selected').data('net_cost');
+        var total_output_qty = $('#process_id').find('option:selected').data('total_output_qty');
+        var unit_id = $('#process_id').find('option:selected').data('unit_id');
+        var total_ingredient_cost = $('#process_id').find('option:selected').data('total_ingredient_cost');
+        var additional_production_cost = $('#process_id').find('option:selected').data('addl_production_cost');
+        var net_cost = $('#process_id').find('option:selected').data('net_cost');
 
         var url = "{{ route('manufacturing.process.ingredients.for.production', ['processId' => ':processId', 'warehouseId' => ':warehouseId']) }}";
 
         var route = url.replace(':processId', processId);
         route = route.replace(':warehouseId', stockWarehouseId);
+
+        $('#ingredient_list').empty();
+        __calculateTotalAmount();
 
         $.ajax({
             url: route,
@@ -75,7 +93,7 @@
                 }
             }
         });
-    });
+    }
 
     $(document).on('input', '#total_output_quantity', function() {
 
@@ -170,7 +188,8 @@
 
         var net_cost = $('#net_cost').val() ? $('#net_cost').val() : 0;
         var final_output_qty = $('#total_final_output_quantity').val() ? $('#total_final_output_quantity').val() : 0;
-        var par_unit_cost_exc_tax = parseFloat(net_cost) / parseFloat(final_output_qty);
+
+        var par_unit_cost_exc_tax = parseFloat(final_output_qty) > 0 ? parseFloat(net_cost) / parseFloat(final_output_qty) : 0;
 
         var tax_type = $('#tax_type').val();
         var calc_product_cost_tax = parseFloat(par_unit_cost_exc_tax) / 100 * parseFloat(tax_percent);
@@ -253,16 +272,41 @@
         }
     }
 
-    //Add process request by ajax
     $('#add_production_form').on('submit', function(e) {
         e.preventDefault();
 
+        if ($('#store_warehouse_count').val() != undefined && $('#store_warehouse_id').val() == '' && $('#status').val() == 1) {
+
+            $.confirm({
+                'title': 'Confirmation',
+                'content': "{{ __('You have forgotten to select the warehouse. Do you want to continue?') }}",
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-primary',
+                        'action': function() {
+                            submitProductForm();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-success',
+                        'action': function() {
+                            console.log('ok');
+                        }
+                    }
+                }
+            });
+
+            return;
+        }
+
+        submitProductForm();
+    });
+
+    function submitProductForm() {
         errorCount = 0;
 
         $('.loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-
+        var url = $('#add_production_form').attr('action');;
         var currentTitle = document.title;
 
         var allTr = $('#ingredient_list').find('tr');
@@ -287,7 +331,10 @@
             },
             url: url,
             type: 'post',
-            data: request,
+            data: new FormData($('#add_production_form')[0]),
+            contentType: false,
+            cache: false,
+            processData: false,
             success: function(data) {
 
                 isAjaxIn = true;
@@ -359,7 +406,7 @@
 
             isAllowSubmit = true;
         }
-    });
+    }
 
     $('select').on('select2:close', function(e) {
 

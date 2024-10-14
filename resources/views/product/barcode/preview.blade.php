@@ -31,7 +31,7 @@
 
             .company_name {
                 font-size: {{ $barcodeSetting->company_name_size }}px !important;
-                font-weight: {{ $barcodeSetting->company_name_bold_or_regular == 1 ? '600' : '400' }};
+                font-weight: {{ $barcodeSetting->company_name_bold_or_regular == 1 ? 'bold' : '400' }};
                 margin: 0;
                 padding: 0;
                 color: #000
@@ -43,13 +43,13 @@
 
             .product_name {
                 font-size: {{ $barcodeSetting->product_name_size }}px !important;
-                font-weight: {{ $barcodeSetting->product_name_bold_or_regular == 1 ? '600' : '400' }};
+                font-weight: {{ $barcodeSetting->product_name_bold_or_regular == 1 ? 'bold' : '400' }};
                 color: #000
             }
 
             .product_price {
                 font-size: {{ $barcodeSetting->price_size }}px !important;
-                font-weight: {{ $barcodeSetting->price_bold_or_regular == 1 ? '600' : '400' }} !important;
+                font-weight: {{ $barcodeSetting->price_bold_or_regular == 1 ? 'bold' : '400' }} !important;
                 color: #000
             }
 
@@ -58,9 +58,7 @@
                 color: #000
             }
 
-
-
-            th {
+            td {
                 padding: 0;
                 letter-spacing: 1px;
             }
@@ -75,6 +73,8 @@
                 /* margin-top: 0.3cm; */
                 margin: 0 auto;
                 /* margin-bottom: 5px; */
+                margin-left:{{ $barcodeSetting->left_margin }}px!important;
+                margin-right:{{ $barcodeSetting->right_margin }}px!important;
             }
         @else
 
@@ -144,19 +144,19 @@
                 @endphp
 
                 @for ($i = 0; $i < $qty; $i++)
-                    <div class="row justify-content-center div justify-center" style="overflow: hidden;page-break-after: always;">
+                    <div class="row justify-content-center div justify-center" style="font-family: Arial, Helvetica, sans-serif;overflow: hidden;page-break-after: always;">
                         {{-- <div class="barcode_area text-center" style="margin-bottom: {{ $barcodeSetting->top_margin }}in;"> --}}
                         <div class="barcode_area text-center">
                             <div class="barcode">
-                                <div class="company_name row">
+                                <div class="row justify-content-center">
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <td class="company_name">
                                                     @if (isset($req->is_business_name))
                                                         {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business_or_shop__business_name'] }}
                                                     @endif
-                                                </th>
+                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
@@ -172,9 +172,9 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th class="product_code">
+                                                <td class="product_code">
                                                     {{ $req->product_codes[$index] }}
-                                                </th>
+                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
@@ -185,7 +185,7 @@
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th class="product_name">
+                                            <td class="product_name">
                                                 @if (isset($req->is_product_name))
                                                     @php
                                                         $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
@@ -193,17 +193,17 @@
                                                     {{ Str::limit($req->product_names[$index], 50, '') . $variant }}
                                                     {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
                                                 @endif
-                                            </th>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <th class="product_price">
+                                            <td class="product_price">
                                                 @if (isset($req->is_price))
                                                     {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                                     {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                                     {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}
                                                     {{ isset($req->is_tax) ? '+ VAT' : '' }}
                                                 @endif
-                                            </th>
+                                            </td>
                                         </tr>
                                     </thead>
                                 </table>

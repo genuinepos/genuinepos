@@ -23,7 +23,39 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.10</h5>
+                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.11</h5>
+                        </div>
+                        <div class="release-list p-1">
+                            <ul class="list-styled">
+                                <ol class="fw-bold">{{ __('About This Update') }}</ol>
+                                <li>{{ __('Upgrade to the new version of the Gposs System (fixes several bugs, enhances stability, and improves the overall user experience).') }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="changes-log-area p-2 mt-3">
+                    <div class="release-version">
+                        <h5 class="text-blue">{{ __('Update Log') }}</h5>
+                    </div>
+                    <div class="changes-log mt-1">
+                        <ul class="list-styled">
+                            <ol class="fw-bold">{{ __('Fixed Some Bugs') }}</ol>
+                            <li> - {{ __('Fixed Bank Edit/Delete Server error.') }}</li>
+                            <li> - {{ __('Fixed Unit Delete Server error.') }}</li>
+
+                            <ol class="fw-bold">{{ __('Feature Update') }}</ol>
+                            <li> - {{ __('More page sizes is added to Generate barcode.') }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="all-release-note-area p-2">
+                    <div class="version-release-note mt-1">
+                        <div class="release-version">
+                            <h5 class="text-blue">{{ __('Release') }}: 2.0.10</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">
@@ -55,7 +87,7 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.9</h5>
+                            <h5 class="text-blue">{{ __('Release') }}: 2.0.9</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">
@@ -89,7 +121,7 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.8</h5>
+                            <h5 class="text-blue">{{ __('Release') }}: 2.0.8</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">
@@ -116,7 +148,7 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.7</h5>
+                            <h5 class="text-blue">{{ __('Release') }}: 2.0.7</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">
@@ -152,7 +184,7 @@
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">{{ __('Last Release') }}: 2.0.6</h5>
+                            <h5 class="text-blue">{{ __('Release') }}: 2.0.6</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">

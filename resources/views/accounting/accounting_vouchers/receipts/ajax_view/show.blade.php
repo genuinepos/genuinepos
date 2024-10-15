@@ -16,17 +16,17 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Date') }} : </strong>
                                 {{ date($generalSettings['business_or_shop__date_format'], strtotime($receipt->date)) }}
                             </li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $receipt->voucher_no }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Received Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($receipt->total_amount) }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $receipt->voucher_no }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Received Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($receipt->total_amount) }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Reference') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Reference') }} : </strong>
                                 @if ($receipt?->saleRef)
 
                                     @if ($receipt?->saleRef->status == \App\Enums\SaleStatus::Final->value)
@@ -45,7 +45,7 @@
                                 @endif
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Created By') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Created By') }} : </strong>
                                 {{ $receipt?->createdBy?->prefix . ' ' . $receipt?->createdBy?->name . ' ' . $receipt?->createdBy?->last_name }}
                             </li>
                         </ul>
@@ -53,7 +53,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($receipt->branch_id) {
@@ -69,7 +69,7 @@
                                 {{ $branchName }}
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Phone') }} : </strong>
                                 @if ($receipt->branch)
                                     {{ $receipt->branch->phone }}
                                 @else
@@ -88,29 +88,29 @@
                                 <table class="table print-table table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Credit A/c') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Credit A/c') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->account?->name }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Address') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Address') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->account?->address }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
-                                                {{ $description?->account?->name }}
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Phone') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
+                                                {{ $description?->account?->phone }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $receipt?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                            <td class="text-end fw-bold" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Received Amount') }} : {{ $receipt?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
+                                            <td class="text-end fw-bold" style="font-size:10px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                             </td>
                                         </tr>
@@ -127,36 +127,36 @@
                                 <table class="table print-table table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Debit A/c') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Debit A/c') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->account?->name }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Method/Type') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Method/Type') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->paymentMethod?->name }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Transaction No') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Transaction No') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->transaction_no }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Cheque No') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Cheque No') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->cheque_no }}
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Cheque Serial No') }} : </th>
-                                            <td class="text-end" style="font-size:11px!important;">
+                                            <th class="text-end fw-bold" style="font-size:10px!important;">{{ __('Cheque Serial No') }} : </th>
+                                            <td class="text-end" style="font-size:10px!important;">
                                                 {{ $description?->cheque_serial_no }}
                                             </td>
                                         </tr>
@@ -179,10 +179,10 @@
                                 <table class="display table modal-table table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Date') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher No') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher Type') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Date') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Voucher No') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Voucher Type') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Amount') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="purchase_print_product_list">
@@ -200,7 +200,7 @@
 
                                             @if ($isOrder == 0)
                                                 <tr>
-                                                    <td class="text-start" style="font-size:11px!important;">
+                                                    <td class="text-start" style="font-size:10px!important;">
                                                         @if ($reference?->sale)
                                                             {{ $reference?->sale->date }}
                                                         @endif
@@ -214,7 +214,7 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="text-start" style="font-size:11px!important;">
+                                                    <td class="text-start" style="font-size:10px!important;">
                                                         @if ($reference?->sale)
                                                             @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
                                                                 {{ $reference?->sale->invoice_id }}
@@ -232,7 +232,7 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="text-start" style="font-size:11px!important;">
+                                                    <td class="text-start" style="font-size:10px!important;">
                                                         @if ($reference?->sale)
                                                             @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
                                                                 {{ __('Sales') }}
@@ -250,7 +250,7 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($reference->amount) }}</td>
+                                                    <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($reference->amount) }}</td>
                                                     @php
                                                         $totalAmount += $reference->amount;
                                                     @endphp
@@ -274,10 +274,10 @@
                                 <table class="display table modal-table table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Date') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher No') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher Type') }}</th>
-                                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Date') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Voucher No') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Voucher Type') }}</th>
+                                            <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Amount') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="purchase_print_product_list">
@@ -295,7 +295,7 @@
 
                                             @if ($isOrder == 1)
                                                 <tr>
-                                                    <td class="text-start" style="font-size:11px!important;">
+                                                    <td class="text-start" style="font-size:10px!important;">
                                                         @if ($reference?->sale)
                                                             {{ $reference?->sale->date }}
                                                         @endif
@@ -309,7 +309,7 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="text-start" style="font-size:11px!important;">
+                                                    <td class="text-start" style="font-size:10px!important;">
                                                         @if ($reference?->sale)
                                                             @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
                                                                 {{ $reference?->sale->invoice_id }}
@@ -327,7 +327,7 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="text-start" style="font-size:11px!important;">
+                                                    <td class="text-start" style="font-size:10px!important;">
                                                         @if ($reference?->sale)
                                                             @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
                                                                 {{ __('Sales') }}
@@ -345,7 +345,7 @@
                                                         @endif
                                                     </td>
 
-                                                    <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($reference->amount) }}</td>
+                                                    <td class="text-start" style="font-size:10px!important;">{{ App\Utils\Converter::format_in_bdt($reference->amount) }}</td>
                                                     @php
                                                         $totalAmount += $reference->amount;
                                                     @endphp
@@ -368,8 +368,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;"><strong>{{ __('Remarks') }}</strong></p>
-                            <p class="shipping_details" style="font-size:11px!important;">{{ $receipt->remarks }}</p>
+                            <p style="font-size:10px!important;"><strong>{{ __('Remarks') }}</strong></p>
+                            <p class="shipping_details" style="font-size:10px!important;">{{ $receipt->remarks }}</p>
                         </div>
                     </div>
                 </div>

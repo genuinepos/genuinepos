@@ -77,23 +77,33 @@
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row gx-2">
-                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                    <div class="col-md-2">
-                                        <input type="hidden" name="store_warehouse_count" value="{{ count($warehouses) }}">
-                                        <label><b>{{ __('Stock Location') }}</b>
-                                            @if (count($warehouses) > 0)
-                                                <span class="text-danger">*</span>
-                                            @endif
-                                        </label>
-                                        <select {{ count($warehouses) > 0 ? 'required' : '' }} class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
+                                <div class="col-md-2">
+
+                                    <label><b>{{ __('Product Store Location (After Prod.)') }}</b></label>
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && count($warehouses) > 0)
+                                        <input type="hidden" name="store_warehouse_count" id="store_warehouse_count" value="YES">
+                                        <select class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
                                             <option value="">{{ __('Select Warehouse') }}</option>
                                             @foreach ($warehouses as $w)
                                                 <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
                                             @endforeach
                                         </select>
-                                        <span class="error error_store_warehouse_id"></span>
-                                    </div>
-                                @endif
+                                    @else
+                                        @php
+                                            $branchName = '';
+                                            if (auth()->user()?->branch) {
+                                                if (auth()->user()?->branch?->parentBranch) {
+                                                    $branchName = auth()->user()?->branch?->parentBranch?->name . ' (' . auth()->user()?->branch?->branch_code . ')';
+                                                } else {
+                                                    $branchName = auth()->user()?->branch?->name . ' (' . auth()->user()?->branch?->branch_code . ')';
+                                                }
+                                            } else {
+                                                $branchName = $generalSettings['business_or_shop__business_name'] . ' (' . __('Company') . ')';
+                                            }
+                                        @endphp
+                                        <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ $branchName }}" />
+                                    @endif
+                                </div>
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Voucher No') }}</b></label>
@@ -106,18 +116,34 @@
                                     <span class="error error_date"></span>
                                 </div>
 
-                                @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-                                    <div class="col-md-2">
-                                        <label><b>{{ __('Ingredient Stock Location') }}</b></label>
+
+                                <div class="col-md-2">
+                                    <label><b>{{ __('Ingredient Stock Location') }}</b></label>
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && count($warehouses) > 0)
+                                        <input type="hidden" name="stock_warehouse_count" value="YES">
                                         <select class="form-control" name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id" data-next="process_id">
                                             <option value="">{{ __('Select Warehouse') }}</option>
                                             @foreach ($warehouses as $w)
                                                 <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
                                             @endforeach
                                         </select>
-                                        <span class="error error_warehouse_id"></span>
-                                    </div>
-                                @endif
+                                    @else
+                                        @php
+                                            $branchName = '';
+                                            if (auth()->user()?->branch) {
+                                                if (auth()->user()?->branch?->parentBranch) {
+                                                    $branchName = auth()->user()?->branch?->parentBranch?->name . ' (' . auth()->user()?->branch?->branch_code . ')';
+                                                } else {
+                                                    $branchName = auth()->user()?->branch?->name . ' (' . auth()->user()?->branch?->branch_code . ')';
+                                                }
+                                            } else {
+                                                $branchName = $generalSettings['business_or_shop__business_name'] . ' (' . __('Company') . ')';
+                                            }
+                                        @endphp
+                                        <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ $branchName }}" />
+                                    @endif
+                                </div>
+
 
                                 <div class="col-md-2">
                                     <label><b>{{ __('Product') }} </b> <span class="text-danger">*</span></label>

@@ -24,7 +24,7 @@ class BarcodeController extends Controller
     {
         $barcodeSettings = $this->barcodeSettingService->barcodeSettings()
             ->select('id', 'name', 'is_default')
-            ->orderBy('is_continuous', 'desc')->get();
+            ->orderBy('is_default', 'desc')->orderBy('is_continuous', 'desc')->get();
 
         $purchasedProducts = DB::table('purchase_products')
             ->leftJoin('products', 'purchase_products.product_id', 'products.id')

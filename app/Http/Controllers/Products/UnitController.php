@@ -97,10 +97,7 @@ class UnitController extends Controller
                 return response()->json(['errorMsg' => $deleteUnit['msg']]);
             }
 
-            if ($deleteUnit) {
-
-                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Units->value, dataObj: $deleteUnit);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Units->value, dataObj: $deleteUnit['data']);
 
             DB::commit();
         } catch (Exception $e) {

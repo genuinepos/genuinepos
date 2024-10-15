@@ -30,7 +30,7 @@ class ProductionUpdateRequest extends FormRequest
             'total_output_quantity' => 'required',
             'total_final_output_quantity' => 'required',
             'net_cost' => 'required',
-            'store_warehouse_id' => Rule::when(isset($request->store_warehouse_count) && $request->store_warehouse_count > 0, 'required'),
+            // 'store_warehouse_id' => Rule::when(isset($request->store_warehouse_count) && $request->store_warehouse_count > 0, 'required'),
         ];
     }
 

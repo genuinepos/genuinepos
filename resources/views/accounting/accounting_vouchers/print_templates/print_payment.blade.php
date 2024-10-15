@@ -19,6 +19,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -93,7 +96,7 @@
                 </div>
 
                 <div class="col-8 text-end">
-                    <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    <p style="text-transform: uppercase; font-size:10px!important;" class="p-0 m-0 fw-bold">
                         @if ($payment?->branch)
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
@@ -114,7 +117,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($payment?->branch)
                             {{ $payment->branch->city . ', ' . $payment->branch->state . ', ' . $payment->branch->zip_code . ', ' . $payment->branch->country }}
                         @else
@@ -122,7 +125,7 @@
                         @endif
                     </p>
 
-                    <p>
+                    <p style="font-size:10px!important;">
                         @if ($payment?->branch)
                             <span class="fw-bold">{{ __('Email') }} : </span> {{ $payment?->branch?->email }},
                             <span class="fw-bold">{{ __('Phone') }} : </span> {{ $payment?->branch?->phone }}
@@ -136,24 +139,24 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __('Payment Voucher') }}</h5>
+                    <h6 class="fw-bold" style="text-transform: uppercase;">{{ __('Payment Voucher') }}</h6>
                 </div>
             </div>
 
             <div class="row mt-2">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
                             {{ date($generalSettings['business_or_shop__date_format'], strtotime($payment->date)) }}
                         </li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $payment->voucher_no }}</li>
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Paid Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($payment->total_amount) }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $payment->voucher_no }}</li>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Paid Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($payment->total_amount) }} {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</li>
                     </ul>
                 </div>
 
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Reference') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Reference') }} : </span>
                             @if ($payment?->purchaseRef)
 
                                 @if ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
@@ -168,7 +171,7 @@
                             @endif
                         </li>
 
-                        <li style="font-size:11px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
+                        <li style="font-size:10px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $payment?->createdBy?->prefix . ' ' . $payment?->createdBy?->name . ' ' . $payment?->createdBy?->last_name }}
                         </li>
                     </ul>
@@ -177,36 +180,28 @@
 
             <div class="row mt-2">
                 <div class="col-6">
-                    <p class="fw-bold">{{ __('Paid To') }} :</p>
+                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __('Paid To (Details)') }} :</p>
                     @foreach ($payment->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
                         <table class="table print-table table-sm">
                             <thead>
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Debit A/c') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->account?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Debit A/c') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->account?->name }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Address') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->account?->address }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Address') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->account?->address }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->account?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Phone') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->account?->phone }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-start fw-bold" style="font-size:11px!important;">
-                                        {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Paid Amount') }}</th>
+                                    <td class="text-start fw-bold" style="font-size:10px!important;">: {{ App\Utils\Converter::format_in_bdt($description?->amount) }} {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 </tr>
                             </thead>
                         </table>
@@ -214,43 +209,33 @@
                 </div>
 
                 <div class="col-6">
-                    <p class="fw-bold">{{ __('Paid From') }} : </p>
+                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __('Paid From (Details)') }} : </p>
                     @foreach ($payment->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
                         <table class="table print-table table-sm">
                             <thead>
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Credit A/c') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->account?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Credit A/c') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->account?->name }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Method/Type') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->paymentMethod?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Method/Type') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->paymentMethod?->name }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Transaction No') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->transaction_no }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Transaction No') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->transaction_no }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque No') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->cheque_no }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Cheque No') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->cheque_no }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque Serial No') }} : </th>
-                                    <td class="text-start" style="font-size:11px!important;">
-                                        {{ $description?->cheque_serial_no }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:10px!important;">{{ __('Cheque Serial No') }}</th>
+                                    <td class="text-start" style="font-size:10px!important;">: {{ $description?->cheque_serial_no }}</td>
                                 </tr>
                             </thead>
                         </table>
@@ -492,6 +477,9 @@
             td {
                 page-break-inside: avoid;
                 page-break-after: auto;
+                line-height: 1 !important;
+                padding: 0px !important;
+                margin: 0px !important;
             }
 
             thead {
@@ -621,7 +609,7 @@
                             {{ date($dateFormat, strtotime($payment->date)) }}
                         </li>
                         <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $payment->voucher_no }}</li>
-                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Paid Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($payment->total_amount) }}</li>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Paid Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($payment->total_amount) }} {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</li>
                     </ul>
                 </div>
 
@@ -651,36 +639,28 @@
 
             <div class="row mt-2">
                 <div class="col-6">
-                    <p class="fw-bold" style="font-size: 9px">{{ __('Paid To') }} :</p>
+                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:10px!important;">{{ __('Paid To (Details)') }} :</p>
                     @foreach ($payment->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
                         <table class="table print-table table-sm">
                             <thead>
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Debit A/c') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->account?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Debit A/c') }}</th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->account?->name }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Address') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->account?->address }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Address') }}</th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->account?->address }} </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Phone') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->account?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Phone') }} </th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->account?->phone }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Paid Amount') }} : {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                    <td class="text-start fw-bold" style="font-size:9px!important;">
-                                        {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Paid Amount') }} </th>
+                                    <td class="text-start fw-bold" style="font-size:9px!important;">: {{ App\Utils\Converter::format_in_bdt($description?->amount) }} {{ $payment?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                 </tr>
                             </thead>
                         </table>
@@ -688,43 +668,33 @@
                 </div>
 
                 <div class="col-6">
-                    <p class="fw-bold" style="font-size: 9px">{{ __('Paid From') }} : </p>
+                    <p class="fw-bold" style="border-bottom: 1px solid black;font-size:10px!important;">{{ __('Paid From (Details)') }} : </p>
                     @foreach ($payment->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
                         <table class="table print-table table-sm">
                             <thead>
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Credit A/c') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->account?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Credit A/c') }}</th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->account?->name }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Method/Type') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->paymentMethod?->name }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Method/Type') }}  </th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->paymentMethod?->name }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Transaction No') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->transaction_no }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Transaction No') }}</th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->transaction_no }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Cheque No') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->cheque_no }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Cheque No') }}</th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->cheque_no }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Cheque Serial No') }} : </th>
-                                    <td class="text-start" style="font-size:9px!important;">
-                                        {{ $description?->cheque_serial_no }}
-                                    </td>
+                                    <th class="text-start fw-bold" style="font-size:9px!important;">{{ __('Cheque Serial No') }}</th>
+                                    <td class="text-start" style="font-size:9px!important;">: {{ $description?->cheque_serial_no }}</td>
                                 </tr>
                             </thead>
                         </table>

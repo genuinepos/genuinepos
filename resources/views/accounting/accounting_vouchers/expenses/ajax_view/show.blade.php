@@ -16,21 +16,21 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Date') }} : </strong>
                                 {{ date($dateFormat, strtotime($expense->date)) }}
                             </li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $expense->voucher_no }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Total Expense Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $expense->voucher_no }}</li>
+                            <li style="font-size:10px!important;"><strong>{{ __('Total Expense Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Reference') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Reference') }} : </strong>
                                 {{ $expense->reference }}
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Created By') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Created By') }} : </strong>
                                 {{ $expense?->createdBy?->prefix . ' ' . $expense?->createdBy?->name . ' ' . $expense?->createdBy?->last_name }}
                             </li>
                         </ul>
@@ -38,7 +38,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ location_label() }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ location_label() }} : </strong>
                                 @php
                                     $branchName = '';
                                     if ($expense->branch_id) {
@@ -54,7 +54,7 @@
                                 {{ $branchName }}
                             </li>
 
-                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                            <li style="font-size:10px!important;"><strong>{{ __('Phone') }} : </strong>
                                 @if ($expense->branch)
                                     {{ $expense->branch->phone }}
                                 @else
@@ -74,13 +74,13 @@
 
                 <div class="row mt-2">
                     <div class="col-12">
-                        <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __('Credit A/c Details') }} :</p>
+                        <p class="fw-bold" style="border-bottom: 1px solid black;font-size:10px!important;">{{ __('Credit A/c Details') }} :</p>
                         <div class="table-responsive">
                             <table class="table print-table table-sm">
                                 <thead>
                                     <tr>
-                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Credit A/c') }}</th>
-                                        <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:10px!important;">{{ __('Credit A/c') }}</th>
+                                        <td style="width: 70%;" class="text-start" style="font-size:10px!important;">
                                             @php
                                                 $accountNumber = $creditDescription?->account?->account_number ? ' / ' . $creditDescription?->account?->account_number : '';
                                             @endphp
@@ -89,36 +89,36 @@
                                     </tr>
 
                                     <tr>
-                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Type/Method') }}</th>
-                                        <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:10px!important;">{{ __('Type/Method') }}</th>
+                                        <td style="width: 70%;" class="text-start" style="font-size:10px!important;">
                                             : {{ $creditDescription?->paymentMethod?->name }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Transaction No') }}</th>
-                                        <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:10px!important;">{{ __('Transaction No') }}</th>
+                                        <td style="width: 70%;" class="text-start" style="font-size:10px!important;">
                                             : {{ $creditDescription?->tanasaction_no }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque No') }}</th>
-                                        <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:10px!important;">{{ __('Cheque No') }}</th>
+                                        <td style="width: 70%;" class="text-start" style="font-size:10px!important;">
                                             : {{ $creditDescription?->cheque_no }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque Serial No') }}</th>
-                                        <td style="width: 70%;" class="text-start" style="font-size:11px!important;">
+                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:10px!important;">{{ __('Cheque Serial No') }}</th>
+                                        <td style="width: 70%;" class="text-start" style="font-size:10px!important;">
                                             : {{ $creditDescription?->cheque_serial_no }}
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:11px!important;">{{ __('Total Expense Paid') }}</th>
-                                        <td style="width: 70%;" class="text-start fw-bold" style="font-size:11px!important;">
+                                        <th style="width: 30%;" class="text-start fw-bold" style="font-size:10px!important;">{{ __('Total Expense Paid') }}</th>
+                                        <td style="width: 70%;" class="text-start fw-bold" style="font-size:10px!important;">
                                             : {{ App\Utils\Converter::format_in_bdt($expense?->total_amount) }} {{ $expense?->branch?->currency?->value ?? $generalSettings['business_or_shop__currency_symbol'] }}
                                         </td>
                                     </tr>
@@ -130,29 +130,29 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __('Expesne Descriptions') }} : </p>
+                        <p class="fw-bold" style="border-bottom: 1px solid black;font-size:10px!important;">{{ __('Expesne Descriptions') }} : </p>
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <thead>
                                     <tr>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Serial No') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Expense Ledger Name') }}</th>
-                                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Serial No') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Expense Ledger Name') }}</th>
+                                        <th class="fw-bold text-start" style="font-size:10px!important;">{{ __('Amount') }}</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     @foreach ($debitDescriptions as $debitDescription)
                                         <tr>
-                                            <td class="text-start" style="font-size:11px!important;">
+                                            <td class="text-start" style="font-size:10px!important;">
                                                 {{ $loop->index + 1 }}
                                             </td>
 
-                                            <td class="text-start" style="font-size:11px!important;">
+                                            <td class="text-start" style="font-size:10px!important;">
                                                 {{ $debitDescription?->account?->name }}
                                             </td>
 
-                                            <td class="text-start" style="font-size:11px!important;">
+                                            <td class="text-start" style="font-size:10px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }}
                                             </td>
                                         </tr>
@@ -173,8 +173,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;"><strong>{{ __('Remarks') }}</strong></p>
-                            <p class="shipping_details" style="font-size:11px!important;">{{ $expense->remarks }}</p>
+                            <p style="font-size:10px!important;"><strong>{{ __('Remarks') }}</strong></p>
+                            <p class="shipping_details" style="font-size:10px!important;">{{ $expense->remarks }}</p>
                         </div>
                     </div>
                 </div>

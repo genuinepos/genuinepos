@@ -82,7 +82,7 @@ class ProcessIngredientService
         }
     }
 
-    public function ingredientsForProduction(int $processId, ?int $warehouseId): array|object
+    public function ingredientsForProduction(int $processId, ?int $warehouseId = null): array|object
     {
         $ingredients = DB::table('process_ingredients')
             ->leftJoin('products', 'process_ingredients.product_id', 'products.id')

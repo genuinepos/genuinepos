@@ -99,19 +99,27 @@ class UnitService
 
     public function deleteUnit(int $id): ?array
     {
-        $deleteUnit = $this->singleUnit(id: $id, with: ['childUnits']);
+        $deleteUnit = $this->singleUnit(id: $id, with: ['products', 'childUnits']);
 
-        if (count($deleteUnit->childUnits)) {
-
-            return ['pass' => false, 'msg' => __('Unit can not be deleted. This unit is a base unit for one or many units.')];
-        }
-
-        if (!is_null($deleteUnit)) {
+        if (isset($deleteUnit)) {
 
             $deleteUnit->delete();
-        }
 
-        return ['pass' => true, 'data' => $deleteUnit];
+            if (count($deleteUnit->products)) {
+
+                return ['pass' => false, 'msg' => __('Unit can not be deleted. This unit is attached with one or many products.')];
+            }
+
+            if (count($deleteUnit->childUnits)) {
+
+                return ['pass' => false, 'msg' => __('Unit can not be deleted. This unit is a base unit of one or many units.')];
+            }
+
+            return ['pass' => true, 'data' => $deleteUnit];
+        }else {
+
+            return ['pass' => false, 'msg' => __('Unit Not Found')];
+        }
     }
 
     public function singleUnit(?int $id, array $with = null)

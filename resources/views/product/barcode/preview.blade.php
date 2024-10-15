@@ -18,7 +18,6 @@
         body {
             /* font-family: Arial, Helvetica, sans-serif; */
             font-family: "Poppins", sans-serif;
-
         }
 
         /* .barcode {
@@ -29,6 +28,12 @@
             /* .div {
                 page-break-after: always;
             } */
+
+            th {
+                font-weight: 400;
+                padding: 0;
+                letter-spacing: 1px;
+            }
 
             .company_name {
                 font-size: {{ $barcodeSetting->company_name_size }}px !important;
@@ -60,11 +65,6 @@
                 letter-spacing: 3px;
             }
 
-            td {
-                padding: 0;
-                letter-spacing: 1px;
-            }
-
             @page {
                 /* size: auto; */
                 size: {{ $barcodeSetting->paper_width }}mm {{ $barcodeSetting->paper_height }}mm !important;
@@ -75,8 +75,8 @@
                 /* margin-top: 0.3cm; */
                 margin: 0 auto;
                 /* margin-bottom: 5px; */
-                margin-left: {{ $barcodeSetting->left_margin }}px !important;
-                margin-right: {{ $barcodeSetting->right_margin }}px !important;
+                margin-left: {{ $barcodeSetting->left_margin }}px!important;
+                margin-right: {{ $barcodeSetting->right_margin }}px!important;
             }
         @else
 
@@ -156,15 +156,15 @@
                         {{-- <div class="barcode_area text-center" style="margin-bottom: {{ $barcodeSetting->top_margin }}in;"> --}}
                         <div class="barcode_area text-center">
                             <div class="barcode">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center p-0 m-0">
                                     <table>
                                         <thead>
                                             <tr>
-                                                <td class="company_name">
+                                                <th class="company_name">
                                                     @if (isset($req->is_business_name))
                                                         {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business_or_shop__business_name'] }}
                                                     @endif
-                                                </td>
+                                                </th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -174,9 +174,9 @@
                                     {{-- style="width: 45mm; height:7mm;"  --}}
                                     {{-- <img style="width: 45mm; height:7mm;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}"> --}}
 
-                                    <img style="width: {{ $barcodeSetting->bar_width }}%!important; height:{{ $barcodeSetting->bar_width }}$!important;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
+                                    {{-- <img style="width: {{ $barcodeSetting->bar_width }}%!important; height:{{ $barcodeSetting->bar_width }}$!important;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}"> --}}
 
-                                    {{-- <img style="width: {{ $barWidth }}mm!important; height:{{ $barHeight }}mm!important;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}"> --}}
+                                    <img style="width: {{ $barWidth }}mm!important; height:{{ $barHeight }}mm!important;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
                                     {{-- <p>{{ $barWidth }}</p> --}}
                                 </div>
 
@@ -184,38 +184,38 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <td class="product_code">
+                                                <th class="product_code">
                                                     {{ $req->product_codes[$index] }}
-                                                </td>
+                                                </th>
                                             </tr>
                                         </thead>
                                     </table>
                                 </div>
                             </div>
 
-                            <div class="product_details_area row">
+                            <div class="product_details_area row m-0 p-0">
                                 <table>
                                     <thead>
                                         <tr>
-                                            <td class="product_name">
+                                            <th class="product_name">
                                                 @if (isset($req->is_product_name))
                                                     @php
                                                         $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                                     @endphp
                                                     {{ Str::limit($req->product_names[$index], 50, '') . $variant }}
-                                                    {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
+                                                    {{ isset($req->is_supplier_prefix) ? ' (' . $req->supplier_prefixes[$index] . ')' : '' }}
                                                 @endif
-                                            </td>
+                                            </th>
                                         </tr>
                                         <tr>
-                                            <td class="product_price">
+                                            <th class="product_price">
                                                 @if (isset($req->is_price))
                                                     {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                                     {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                                     {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}
                                                     {{ isset($req->is_tax) ? '+ VAT' : '' }}
                                                 @endif
-                                            </td>
+                                            </th>
                                         </tr>
                                     </thead>
                                 </table>

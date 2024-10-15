@@ -3,6 +3,7 @@
 namespace App\Models\Products;
 
 use App\Models\BaseModel;
+use App\Models\Products\Product;
 
 class Unit extends BaseModel
 {
@@ -18,5 +19,10 @@ class Unit extends BaseModel
     public function baseUnit()
     {
         return $this->belongsTo(Unit::class, 'base_unit_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'unit_id');
     }
 }

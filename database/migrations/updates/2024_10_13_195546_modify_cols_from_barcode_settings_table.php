@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('barcode_settings', function (Blueprint $table) {
             $table->string('top_margin', 191)->change()->nullable()->comment('pixel');
-            $table->string('paper_width', 191)->change()->nullable()->comment('incs');
-            $table->string('paper_height', 191)->change()->nullable()->comment('incs');
+            $table->string('paper_width', 191)->change()->nullable()->comment('mm');
+            $table->string('paper_height', 191)->change()->nullable()->comment('mm');
         });
     }
 

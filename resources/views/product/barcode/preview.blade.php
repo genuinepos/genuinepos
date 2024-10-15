@@ -75,8 +75,8 @@
                 /* margin-top: 0.3cm; */
                 margin: 0 auto;
                 /* margin-bottom: 5px; */
-                margin-left: {{ $barcodeSetting->left_margin }}px!important;
-                margin-right: {{ $barcodeSetting->right_margin }}px!important;
+                margin-left: {{ $barcodeSetting->left_margin }}px !important;
+                margin-right: {{ $barcodeSetting->right_margin }}px !important;
             }
         @else
 
@@ -90,30 +90,33 @@
             }
 
             .company_name {
-                font-size: 10px !important;
-                font-weight: bold;
+                font-size: {{ $barcodeSetting->company_name_size }}px !important;
+                font-weight: {{ $barcodeSetting->company_name_bold_or_regular == 1 ? 'bold' : '400' }};
                 margin: 0;
                 padding: 0;
                 color: #000;
             }
 
+            .barcode_area {
+                margin-top: {{ $barcodeSetting->top_margin }}px !important;
+            }
+
             .product_name {
-                font-size: 10px;
-                font-weight: bold;
+                font-size: {{ $barcodeSetting->product_name_size }}px !important;
+                font-weight: {{ $barcodeSetting->product_name_bold_or_regular == 1 ? 'bold' : '400' }};
                 color: #000;
             }
 
             .product_price {
-                font-size: 10px !important;
-                font-weight: bold !important;
+                font-size: {{ $barcodeSetting->price_size }}px !important;
+                font-weight: {{ $barcodeSetting->price_bold_or_regular == 1 ? 'bold' : '400' }} !important;
                 color: #000;
             }
 
             .product_code {
-                font-size: 8px;
-                font-weight: bold;
+                font-size: {{ $barcodeSetting->product_code_size }}px !important;
                 color: #000;
-                letter-spacing: 5px;
+                letter-spacing: 3px;
             }
 
             @page {
@@ -143,8 +146,8 @@
             @php
                 $index = 0;
 
-                $barWidth = $barcodeSetting->paper_width / 100 * $barcodeSetting->bar_width;
-                $barHeight = $barcodeSetting->paper_height / 100 * $barcodeSetting->bar_height;
+                $barWidth = ($barcodeSetting->paper_width / 100) * $barcodeSetting->bar_width;
+                $barHeight = ($barcodeSetting->paper_height / 100) * $barcodeSetting->bar_height;
             @endphp
             @foreach ($req->product_ids as $product)
                 @php
@@ -235,9 +238,9 @@
                         @php
                             $currentPublished += 1;
                         @endphp
-                        <div class="barcode_area text-center" style=" margin-bottom: {{ $barcodeSetting->top_margin }}in; margin-left : {{ $barcodeSetting->left_margin }}in; height:auto; width:{{ $barcodeSetting->bar_width }}%; ">
+                        <div class="barcode_area text-center" style=" margin-bottom: {{ $barcodeSetting->top_margin }}in; margin-left : {{ $barcodeSetting->left_margin }}in; height:auto; width:{{ $barcodeSetting->bar_width }}%;">
                             <div class="barcode">
-                                <p class="company_name" style="margin: 0px;padding: 0px;font-size: 4px;">
+                                <p class="company_name" style="margin: 0px;padding: 0px;">
                                     @if (isset($req->is_business_name))
                                         {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business_or_shop__business_name'] }}
                                     @endif
@@ -249,7 +252,7 @@
 
                             <div class="product_details_area">
                                 @if (isset($req->is_product_name))
-                                    <p class="pro_details" style="margin: 0px;padding: 0px;font-size: 8px;">
+                                    <p class="product_name" style="margin: 0px;padding: 0px;font-size: 8px;">
                                         @php
                                             $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                         @endphp
@@ -259,7 +262,7 @@
                                 @endif
 
                                 @if (isset($req->is_price))
-                                    <p class="price_details fw-bold" style="margin: 0px;padding: 0px;font-size: 8px;">
+                                    <p class="product_price fw-bold" style="margin: 0px;padding: 0px;font-size: 8px;">
                                         {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                         {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                         {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}
@@ -269,12 +272,12 @@
                             </div>
                         </div>
 
-                        @if ($currentPublished == $limit)
+                        {{-- @if ($currentPublished == $limit)
                             <div id="pageBreaker" style="page-break-after: always;"></div>
                             @php
                                 $currentPublished = 0;
                             @endphp
-                        @endif
+                        @endif --}}
                     @endfor
                     @php $index++; @endphp
                 @endforeach

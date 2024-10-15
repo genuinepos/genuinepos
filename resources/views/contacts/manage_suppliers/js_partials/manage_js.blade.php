@@ -137,7 +137,7 @@
             },
             {
                 data: 'payment_status',
-                name: 'payment_status',
+                name: 'suppliers.phone',
                 className: 'fw-bold'
             },
             {

@@ -105,6 +105,7 @@ class PurchaseService
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
             'suppliers.name as supplier_name',
+            'suppliers.phone as supplier_phone',
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',

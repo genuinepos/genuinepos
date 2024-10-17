@@ -51,35 +51,35 @@ class AccountService
                 'bankParentBranch.name as bank_parent_branch_name',
                 DB::raw(
                     '
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type = 0
-                            THEN account_ledgers.debit
-                            ELSE 0
-                        END
-                    ) AS opening_total_debit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type = 0
-                            THEN account_ledgers.credit
-                            ELSE 0
-                        END
-                    ) AS opening_total_credit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type != 0
-                            THEN account_ledgers.debit
-                            ELSE 0
-                        END
-                    ) AS curr_total_debit,
-                    SUM(
-                        CASE
-                            WHEN account_ledgers.voucher_type != 0
-                            THEN account_ledgers.credit
-                            ELSE 0
-                        END
-                    ) AS curr_total_credit
-                '
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type = 0
+                                THEN account_ledgers.debit
+                                ELSE 0
+                            END
+                        ) AS opening_total_debit,
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type = 0
+                                THEN account_ledgers.credit
+                                ELSE 0
+                            END
+                        ) AS opening_total_credit,
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type != 0
+                                THEN account_ledgers.debit
+                                ELSE 0
+                            END
+                        ) AS curr_total_debit,
+                        SUM(
+                            CASE
+                                WHEN account_ledgers.voucher_type != 0
+                                THEN account_ledgers.credit
+                                ELSE 0
+                            END
+                        ) AS curr_total_credit
+                    '
                 ),
             )
             ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
@@ -576,6 +576,7 @@ class AccountService
             ->where('account_groups.sub_sub_group_number', 6);
 
         $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+
         $customerAccounts = $query->select(
             'accounts.id',
             'accounts.name',

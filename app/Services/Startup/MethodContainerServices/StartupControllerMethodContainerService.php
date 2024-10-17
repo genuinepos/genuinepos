@@ -5,6 +5,7 @@ namespace App\Services\Startup\MethodContainerServices;
 use App\Enums\BooleanType;
 use App\Utils\FileUploader;
 use App\Services\Users\RoleService;
+use App\Services\Users\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Services\Branches\BranchService;
@@ -31,6 +32,7 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
         private InvoiceLayoutService $invoiceLayoutService,
         private BranchSettingService $branchSettingService,
         private SubscriptionService $subscriptionService,
+        private UserService $userService,
     ) {}
 
     public function startupFromContainer(): array
@@ -137,7 +139,7 @@ class StartupControllerMethodContainerService implements StartupControllerMethod
                 // auth()->user()->is_belonging_an_area = BooleanType::True->value;
                 // auth()->user()->save();
 
-                $user = auth()->user();
+                $user = $this->userService->singleUser(id: auth()->user()->id)->first();
                 $user->branch_id = $addBranch->id;
                 $user->is_belonging_an_area = BooleanType::True->value;
                 $user->save();

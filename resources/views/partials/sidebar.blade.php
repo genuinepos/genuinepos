@@ -1460,6 +1460,19 @@
                                                     </a>
                                                 </div>
                                             @endif
+
+                                            @if (auth()->user()->can('contras_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('journals.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-hand-holding-usd"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __('Journals') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif

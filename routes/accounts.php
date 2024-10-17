@@ -6,6 +6,7 @@ use App\Http\Controllers\Accounts\ContraController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\DayBookController;
 use App\Http\Controllers\Accounts\ExpenseController;
+use App\Http\Controllers\Accounts\JournalController;
 use App\Http\Controllers\Accounts\PaymentController;
 use App\Http\Controllers\Accounts\ReceiptController;
 use App\Http\Controllers\Accounts\AccountGroupController;
@@ -123,6 +124,12 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('edit/{id}', 'edit')->name('contras.edit');
         Route::post('update/{id}', 'update')->name('contras.update');
         Route::delete('delete/{id}', 'delete')->name('contras.delete');
+    });
+
+    Route::controller(JournalController::class)->prefix('journals')->group(function () {
+
+        Route::get('create', 'create')->name('journals.create');
+        Route::get('search/account', 'searchAccount')->name('journals.search.account');
     });
 
     Route::controller(DayBookController::class)->prefix('day-books')->group(function () {

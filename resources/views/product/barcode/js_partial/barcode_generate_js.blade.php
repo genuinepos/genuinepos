@@ -73,7 +73,9 @@
                                 priceIncTax = priceExcTax + taxAmount;
                             }
 
-                            var name = product.name.length > 25 ? product.name.substring(0, 25) + '...' : product.name;
+                            // var name = product.name.length > 25 ? product.name.substring(0, 25) + '...' : product.name;
+
+                            var name = product.name;
 
                             var tr = '';
                             tr += '<tr>';
@@ -83,7 +85,7 @@
                             tr += '<input type="hidden" name="product_names[]" value="' + name + '">';
                             tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="noid">';
                             tr += '<input type="hidden" name="product_variants[]" value="">';
-                            tr += '<input type="hidden" name="product_codes[]" value="' + product.product_cost + '">';
+                            tr += '<input type="hidden" name="product_codes[]" value="' + product.product_code + '">';
                             tr += '</td>';
 
                             tr += '<td class="text-start">';
@@ -129,12 +131,14 @@
                         } else {
 
                             var li = "";
+                            product.thumbnail_photo = product.thumbnail_photo == null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
+
                             $.each(product.variants, function(key, variant) {
 
-                                product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
+                                var brand = product.brand != null ? ' | ' + product.brand.name : '';
 
                                 li += '<li>';
-                                li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + variant.id + '" data-product_name="' + product.name + '" data-variant_name="' + variant.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax != null ? product.tax.tax_percent : 0) + '"  data-product_code="' + variant.variant_code + '" data-price_exc_tax="' + variant.variant_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + variant.id + '" data-product_name="' + product.name + '" data-variant_name="' + variant.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax != null ? product.tax.tax_percent : 0) + '"  data-product_code="' + variant.variant_code + '" data-price_exc_tax="' + variant.variant_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + ' (Price: ' + variant.variant_price + ' | ' + variant.variant_code + brand + ')' + '</a>';
                                 li += '</li>';
                             });
 
@@ -153,15 +157,17 @@
 
                                 product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/general_default.png') }}" : "{{ file_link('productThumbnail') }}" + product.thumbnail_photo;
 
+                                var brand = product.brand_name != null ? ' | ' + product.brand_name : '';
+
                                 if (product.is_variant == 1) {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a  href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + product.variant_id + '" data-product_name="' + product.name + '" data-variant_name="' + product.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.variant_code + '" data-price_exc_tax="' + product.variant_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
+                                    li += '<a  href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="' + product.variant_id + '" data-product_name="' + product.name + '" data-variant_name="' + product.variant_name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.variant_code + '" data-price_exc_tax="' + product.variant_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '">' + product.name + ' - ' + product.variant_name + ' (Price: ' + product.variant_price + ' | ' + product.variant_code + brand + ')' + '</a>';
                                     li += '</li>';
                                 } else {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="noid" data-variant_name="" data-product_name="' + product.name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '"  data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.product_code + '" data-price_exc_tax="' + product.product_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                    li += '<a href="#" onclick="selectProduct(this); return false;" data-product_id="' + product.id + '" data-variant_id="noid" data-variant_name="" data-product_name="' + product.name + '" data-tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '"  data-tax_type="' + product.tax_type + '" data-tax_percent="' + (product.tax_percent != null ? product.tax_percent : 0) + '" data-product_code="' + product.product_code + '" data-price_exc_tax="' + product.product_price + '"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' (Price: ' + product.product_price + ' | ' + product.product_code + brand + ')' + '</a>';
                                     li += '</li>';
                                 }
                             });

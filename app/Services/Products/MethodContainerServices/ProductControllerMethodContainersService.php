@@ -223,6 +223,7 @@ class ProductControllerMethodContainersService implements ProductControllerMetho
         $data['bulkVariants'] = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
         $data['units'] = $this->unitService->units()->get(['id', 'name', 'code_name']);
         $defaultUnitId = $generalSettings['product__default_unit_id'] ? $generalSettings['product__default_unit_id'] : null;
+
         $defaultUnit = $this->unitService->singleUnit(id: $defaultUnitId);
         $data['defaultUnitName'] = isset($defaultUnit) ? $defaultUnit->name : null;
         $data['defaultUnit'] = $defaultUnit;

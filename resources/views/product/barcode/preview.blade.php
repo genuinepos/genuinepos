@@ -65,18 +65,57 @@
                 letter-spacing: 3px;
             }
 
-            @page {
-                /* size: auto; */
-                size: {{ $barcodeSetting->paper_width }}mm {{ $barcodeSetting->paper_height }}mm !important;
-                /* size: 1.4in 0.90in;  */
-                /* size: 1.1in 0.80in; */
-                /* margin: 5px 0px; */
-                /* margin: 0mm 15mm 0mm 15mm; */
-                /* margin-top: 0.3cm; */
-                margin: 0 auto;
-                /* margin-bottom: 5px; */
-                margin-left: {{ $barcodeSetting->left_margin }}px !important;
-                margin-right: {{ $barcodeSetting->right_margin }}px !important;
+            @media print {
+                th {
+                    font-weight: 400;
+                    padding: 0;
+                    letter-spacing: 1px;
+                }
+
+                .company_name {
+                    font-size: {{ $barcodeSetting->company_name_size }}px !important;
+                    font-weight: {{ $barcodeSetting->company_name_bold_or_regular == 1 ? 'bold' : '400' }};
+                    margin: 0;
+                    padding: 0;
+                    color: #000;
+                }
+
+                .barcode_area {
+                    margin-top: {{ $barcodeSetting->top_margin }}px !important;
+                }
+
+                .product_name {
+                    font-size: {{ $barcodeSetting->product_name_size }}px !important;
+                    font-weight: {{ $barcodeSetting->product_name_bold_or_regular == 1 ? 'bold' : '400' }};
+                    color: #000;
+                }
+
+                .product_price {
+                    font-size: {{ $barcodeSetting->price_size }}px !important;
+                    font-weight: {{ $barcodeSetting->price_bold_or_regular == 1 ? 'bold' : '400' }} !important;
+                    color: #000;
+                }
+
+                .product_code {
+                    font-size: {{ $barcodeSetting->product_code_size }}px !important;
+                    color: #000;
+                    letter-spacing: 3px;
+                }
+
+                @page {
+                    /* size: auto; */
+                    size: {{ $barcodeSetting->paper_width }}mm {{ $barcodeSetting->paper_height }}mm portrait landscape !important;
+                    /* size: 1.4in 0.90in;  */
+                    /* size: 1.1in 0.80in; */
+                    /* margin: 5px 0px; */
+                    /* margin: 0mm 15mm 0mm 15mm; */
+                    /* margin-top: 0.3cm; */
+                    margin: 0 auto;
+                    /* margin-bottom: 5px; */
+                    margin-left: {{ $barcodeSetting->left_margin }}px !important;
+                    margin-right: {{ $barcodeSetting->right_margin }}px !important;
+                }
+
             }
         @else
 
@@ -122,7 +161,7 @@
             @page {
                 /* size: auto; */
                 /* size: {{ $barcodeSetting->paper_width }}in {{ $barcodeSetting->paper_height }}in; */
-                size: a4;
+                size: a4 portrait landscape;
                 /* margin: 0mm 15mm 0mm 15mm; */
                 margin-top: 100cm;
                 margin-bottom: 0px;
@@ -155,7 +194,7 @@
                 @endphp
 
                 @for ($i = 0; $i < $qty; $i++)
-                    <div class="row justify-content-center div justify-center" style="font-family: Arial, Helvetica, sans-serif;overflow: hidden;page-break-after: always;">
+                    <div class="row justify-content-center div justify-center" style="font-family: Arial, Helvetica, sans-serif;overflow: hidden;page-break-after: always; page-break-inside: avoid;">
                         {{-- <div class="barcode_area text-center" style="margin-bottom: {{ $barcodeSetting->top_margin }}in;"> --}}
                         <div class="barcode_area text-center">
                             <div class="barcode">
@@ -206,7 +245,10 @@
                                                         $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                                     @endphp
                                                     {{ Str::limit($req->product_names[$index], 30, '') . $variant }}
-                                                    {{ isset($req->is_supplier_prefix) ? ' (' . $req->supplier_prefixes[$index] . ')' : '' }}
+                                                    @php
+                                                        $supplierPrefix = isset($req->supplier_prefixes[$index]) ? ' (' . $req->supplier_prefixes[$index] . ')' : '';
+                                                    @endphp
+                                                    {{ isset($req->is_supplier_prefix) ? $supplierPrefix : '' }}
                                                 @endif
                                             </th>
                                         </tr>
@@ -257,7 +299,10 @@
                                             $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                         @endphp
                                         {{ Str::limit($req->product_names[$index], 50, '.') . $variant }}
-                                        {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
+                                        @php
+                                            $supplierPrefix = isset($req->supplier_prefixes[$index]) ? ' (' . $req->supplier_prefixes[$index] . ')' : '';
+                                        @endphp
+                                        {{ isset($req->is_supplier_prefix) ? $supplierPrefix : '' }}
                                     </p>
                                 @endif
 

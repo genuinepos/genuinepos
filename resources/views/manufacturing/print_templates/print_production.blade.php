@@ -30,7 +30,7 @@
         }
 
         @page {
-            size: a4;
+            size: a4 portrait landscape;
             margin-top: 0.8cm;
             margin-bottom: 35px;
             margin-left: 20px;
@@ -404,7 +404,7 @@
         }
 
         @page {
-            size: 5.8in 8.3in;
+            size: 5.8in 8.3in portrait landscape;
             margin-top: 0.8cm;
             margin-bottom: 35px;
             margin-left: 20px;

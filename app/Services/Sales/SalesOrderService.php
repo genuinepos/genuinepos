@@ -213,13 +213,13 @@ class SalesOrderService
         $time = date(' H:i:s', strtotime($updateSalesOrder->date_ts));
         $updateSalesOrder->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateSalesOrder->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
-        $updateSalesOrder->total_item = $request->total_item;
-        $updateSalesOrder->total_qty = $request->total_qty;
-        $updateSalesOrder->total_ordered_qty = $request->total_qty;
-        $updateSalesOrder->net_total_amount = $request->net_total_amount;
+        $updateSalesOrder->total_item = $request->total_item ? $request->total_item : 0;
+        $updateSalesOrder->total_qty = $request->total_qty ? $request->total_qty : 0;
+        $updateSalesOrder->total_ordered_qty = $request->total_qty ? $request->total_qty : 0;
+        $updateSalesOrder->net_total_amount = $request->net_total_amount ? $request->net_total_amount : 0;
         $updateSalesOrder->order_discount_type = $request->order_discount_type;
-        $updateSalesOrder->order_discount = $request->order_discount;
-        $updateSalesOrder->order_discount_amount = $request->order_discount_amount;
+        $updateSalesOrder->order_discount = $request->order_discount ? $request->order_discount : 0;
+        $updateSalesOrder->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0;
         $updateSalesOrder->sale_tax_ac_id = $request->sale_tax_ac_id;
         $updateSalesOrder->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
         $updateSalesOrder->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
@@ -229,7 +229,7 @@ class SalesOrderService
         $updateSalesOrder->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
         $updateSalesOrder->delivered_to = $request->delivered_to;
         $updateSalesOrder->note = $request->note;
-        $updateSalesOrder->total_invoice_amount = $request->total_invoice_amount;
+        $updateSalesOrder->total_invoice_amount = $request->total_invoice_amount ? $request->total_invoice_amount : 0;
         $updateSalesOrder->save();
 
         return $updateSalesOrder;

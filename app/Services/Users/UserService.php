@@ -341,7 +341,8 @@ class UserService
         // auth()->user()->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
         // auth()->user()->save();
 
-        $user = auth()->user();
+        $user = $this->singleUser(id: auth()->user()->id);
+        $currentUser = $user;
         $user->branch_id = $__branchId;
         $user->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
         $user->save();

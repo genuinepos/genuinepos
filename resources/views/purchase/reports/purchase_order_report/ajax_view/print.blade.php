@@ -24,7 +24,7 @@
     }
 
     @page {
-        size: a4;
+        size: a4 portrait landscape;
         margin-top: 0.8cm;
         margin-bottom: 35px;
         margin-left: 5px;

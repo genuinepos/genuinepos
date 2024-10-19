@@ -234,7 +234,7 @@
                                                                         <input type="checkbox" class="check">
                                                                     </td>
                                                                     <td class="text-start">
-                                                                        <span id="span_product_name">{{ Str::limit($purchasedProduct->product_name, 25, '') }}</span>
+                                                                        <span id="span_product_name" title="{{ $purchasedProduct->product_name . ( $purchasedProduct->variant_name ? ' - ' . $purchasedProduct->variant_name : '') }}">{{ Str::limit($purchasedProduct->product_name, 15, '') }}</span>
                                                                         @if ($purchasedProduct->variant_name)
                                                                             <span id="span_variant_name">{{ ' - ' . $purchasedProduct->variant_name }}</span>
                                                                         @endif

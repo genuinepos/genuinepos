@@ -43,7 +43,7 @@
         }
 
         @page {
-            size: a4;
+            size: a4 portrait landscape;
             margin-top: 0.8cm;
             margin-bottom: 35px;
             margin-left: 20px;
@@ -621,7 +621,7 @@
         }
 
         @page {
-            size: 5.8in 8.3in;
+            size: 5.8in 8.3in portrait landscape;
             margin-top: 0.8cm;
             margin-bottom: 35px;
             margin-left: 20px;
@@ -1156,6 +1156,10 @@
         @page {
             margin: 6px;
         }
+
+        /* img {
+            filter: contrast(200%);
+        } */
     </style>
     <!-- Packing slip print templete-->
     <div class="sale_print_template">
@@ -1168,9 +1172,8 @@
                                 <th class="text-center">
                                     @if ($sale?->branch)
                                         @if ($sale?->branch?->parent_branch_id)
-
                                             @if ($sale?->branch?->parentBranch?->logo && $invoiceLayout->show_shop_logo == 1)
-                                                <img style="height: 40px; width:100px;" src="{{ file_link('branchLogo', $sale->branch?->parentBranch?->logo) }}">
+                                                <img style="height: auto; width:auto;" src="{{ file_link('branchLogo', $sale->branch?->parentBranch?->logo) }}">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:14px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
                                             @endif

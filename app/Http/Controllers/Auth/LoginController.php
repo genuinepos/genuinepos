@@ -76,8 +76,12 @@ class LoginController extends Controller
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
 
-        $role = $user?->roles()?->first();
-        if (isset($role) && $role->hasPermissionTo('has_access_to_all_area') && ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)) {
+        $role = isset($user) ? $user?->roles()?->first() : null;
+        if (
+            isset($role) &&
+            $role->hasPermissionTo('has_access_to_all_area') &&
+            ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)
+        ) {
 
             $user->branch_id = null;
             $user->is_belonging_an_area = BooleanType::False->value;
@@ -85,9 +89,10 @@ class LoginController extends Controller
         }
 
         if (
+            isset($user) &&
             $user?->branch &&
-            isset($user?->branch?->expire_date) &&
-            date('Y-m-d') > $user?->branch?->expire_date &&
+            isset($user->branch->expire_date) &&
+            date('Y-m-d') > $user->branch->expire_date &&
             !$role->hasPermissionTo('billing_renew_branch')
         ) {
 
@@ -102,6 +107,7 @@ class LoginController extends Controller
                 Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
                 Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
             ) {
+                
                 if (!Session::has($user->language)) {
 
                     session(['lang' => $user->language]);
@@ -142,8 +148,7 @@ class LoginController extends Controller
             // auth()->user()->branch_id = null;
             // auth()->user()->is_belonging_an_area = BooleanType::False->value;
             // auth()->user()->save();
-
-            $user = auth()->user();
+            $user = User::where('id', auth()->user()->id)->first();
             $user->branch_id = null;
             $user->is_belonging_an_area = BooleanType::False->value;
             $user->save();

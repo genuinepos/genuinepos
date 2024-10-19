@@ -569,7 +569,7 @@
                                         <div class="row g-2">
                                             <label class="col-md-5 text-end"><b>{{ __('Total Invoice Amt.') }}</b></label>
                                             <div class="col-md-7">
-                                                <input type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
+                                                <input readonly type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
                                                 <input type="number" step="any" name="sales_ledger_amount" id="sales_ledger_amount" class="d-none" value="0.00" tabindex="-1">
                                             </div>
                                         </div>

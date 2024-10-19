@@ -97,11 +97,11 @@ class ProcessService
         $addProcess->branch_id = auth()->user()->branch_id;
         $addProcess->product_id = $request->product_id;
         $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : null;
-        $addProcess->total_ingredient_cost = $request->total_ingredient_cost;
-        $addProcess->total_output_qty = $request->total_output_qty;
+        $addProcess->total_ingredient_cost = $request->total_ingredient_cost ? $request->total_ingredient_cost : 0;
+        $addProcess->total_output_qty = $request->total_output_qty ? $request->total_output_qty : 0;
         $addProcess->unit_id = $request->unit_id;
-        $addProcess->additional_production_cost = $request->additional_production_cost;
-        $addProcess->net_cost = $request->net_cost;
+        $addProcess->additional_production_cost = $request->additional_production_cost ? $request->additional_production_cost : 0;
+        $addProcess->net_cost = $request->net_cost ? $request->net_cost : 0;
         $addProcess->production_instruction = $request->production_instruction;
         $addProcess->save();
 
@@ -120,11 +120,11 @@ class ProcessService
 
         $updateProcess->product_id = $request->product_id;
         $updateProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : null;
-        $updateProcess->total_ingredient_cost = $request->total_ingredient_cost;
-        $updateProcess->total_output_qty = $request->total_output_qty;
+        $updateProcess->total_ingredient_cost = $request->total_ingredient_cost ? $request->total_ingredient_cost : 0;
+        $updateProcess->total_output_qty = $request->total_output_qty ? $request->total_output_qty : 0;
         $updateProcess->unit_id = $request->unit_id;
         $updateProcess->additional_production_cost = $request->additional_production_cost ? $request->additional_production_cost : 0;
-        $updateProcess->net_cost = $request->net_cost;
+        $updateProcess->net_cost = $request->net_cost ? $request->net_cost : 0;
         $updateProcess->production_instruction = $request->production_instruction;
         $updateProcess->save();
 

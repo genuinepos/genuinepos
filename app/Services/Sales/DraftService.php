@@ -166,12 +166,12 @@ class DraftService
         $updateDraft->date = $request->date;
         $updateDraft->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateDraft->draft_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
-        $updateDraft->total_item = $request->total_item;
-        $updateDraft->total_qty = $request->total_qty;
-        $updateDraft->net_total_amount = $request->net_total_amount;
+        $updateDraft->total_item = $request->total_item ? $request->total_item : 0;
+        $updateDraft->total_qty = $request->total_qty ? $request->total_qty : 0;
+        $updateDraft->net_total_amount = $request->net_total_amount ? $request->net_total_amount : 0;
         $updateDraft->order_discount_type = $request->order_discount_type;
-        $updateDraft->order_discount = $request->order_discount;
-        $updateDraft->order_discount_amount = $request->order_discount_amount;
+        $updateDraft->order_discount = $request->order_discount ? $request->order_discount : 0;
+        $updateDraft->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0;
         $updateDraft->sale_tax_ac_id = $request->sale_tax_ac_id;
         $updateDraft->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
         $updateDraft->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
@@ -181,8 +181,8 @@ class DraftService
         $updateDraft->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
         $updateDraft->delivered_to = $request->delivered_to;
         $updateDraft->note = $request->note;
-        $updateDraft->total_invoice_amount = $request->total_invoice_amount;
-        $updateDraft->due = $request->total_invoice_amount;
+        $updateDraft->total_invoice_amount = $request->total_invoice_amount ? $request->total_invoice_amount : 0;
+        $updateDraft->due = $request->total_invoice_amount ? $request->total_invoice_amount : 0;
         $updateDraft->save();
 
         return $updateDraft;

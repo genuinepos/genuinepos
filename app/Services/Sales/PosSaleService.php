@@ -52,11 +52,11 @@ class PosSaleService
         $addSale->draft_date_ts = $request->status == SaleStatus::Draft->value ? date('Y-m-d H:i:s') : null;
         $addSale->quotation_status = $request->status == SaleStatus::Quotation->value ? BooleanType::True->value : 0;
         $addSale->draft_status = $request->status == SaleStatus::Draft->value ? BooleanType::True->value : 0;
-        $addSale->total_item = $request->total_item;
-        $addSale->total_qty = $request->total_qty;
+        $addSale->total_item = $request->total_item ? $request->total_item : 0;
+        $addSale->total_qty = $request->total_qty ? $request->total_qty : 0;
         $addSale->total_sold_qty = $request->status == SaleStatus::Final->value ? $request->total_qty : 0;
         $addSale->total_quotation_qty = $request->status == SaleStatus::Quotation->value ? $request->total_qty : 0;
-        $addSale->net_total_amount = $request->net_total_amount;
+        $addSale->net_total_amount = $request->net_total_amount ? $request->net_total_amount : 0;
         $addSale->order_discount_type = $request->order_discount_type;
         $addSale->order_discount = $request->order_discount ? $request->order_discount : 0;
         $addSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0;
@@ -64,9 +64,9 @@ class PosSaleService
         $addSale->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
         $addSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
         $addSale->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
-        $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
-        $addSale->total_invoice_amount = $request->total_invoice_amount;
-        $addSale->due = $request->total_invoice_amount;
+        $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0;
+        $addSale->total_invoice_amount = $request->total_invoice_amount ? $request->total_invoice_amount : 0;
+        $addSale->due = $request->total_invoice_amount ? $request->total_invoice_amount : 0;
         $addSale->sale_screen = $saleScreenType;
         $addSale->save();
 
@@ -111,15 +111,15 @@ class PosSaleService
         $updateSale->draft_date_ts = $request->status == SaleStatus::Draft->value && !isset($updateSale->draft_date_ts) ? date('Y-m-d H:i:s') : $updateSale->draft_date_ts;
         $updateSale->draft_status = $request->status == SaleStatus::Draft->value ? BooleanType::True->value : $updateSale->draft_status;
         $updateSale->quotation_status = $request->status == SaleStatus::Quotation->value ? BooleanType::True->value : $updateSale->quotation_status;
-        $updateSale->total_item = $request->total_item;
-        $updateSale->total_qty = $request->total_qty;
+        $updateSale->total_item = $request->total_item ? $request->total_item : 0;
+        $updateSale->total_qty = $request->total_qty ? $request->total_qty : 0;
         $updateSale->total_sold_qty = $request->status == SaleStatus::Final->value ? $request->total_qty : $updateSale->total_sold_qty;
         $updateSale->total_quotation_qty = $request->status == SaleStatus::Quotation->value ? $request->total_qty : $updateSale->total_quotation_qty;
         $updateSale->total_quotation_qty = $updateSale->quotation_status == BooleanType::True->value ? $request->total_qty : $updateSale->total_quotation_qty;
-        $updateSale->net_total_amount = $request->net_total_amount;
+        $updateSale->net_total_amount = $request->net_total_amount ? $request->net_total_amount : 0;
         $updateSale->order_discount_type = $request->order_discount_type;
-        $updateSale->order_discount = $request->order_discount;
-        $updateSale->order_discount_amount = $request->order_discount_amount;
+        $updateSale->order_discount = $request->order_discount ? $request->order_discount : 0;
+        $updateSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0;
         $updateSale->sale_tax_ac_id = $request->sale_tax_ac_id;
         $updateSale->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
         $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;

@@ -166,7 +166,6 @@ class StockIssueService
 
     public function deleteStockIssue(int $id): object
     {
-
         $deleteStockIssue = $this->singleStockIssue(id: $id, with: [
             'stockIssuedProducts',
             'stockIssuedProducts.product',

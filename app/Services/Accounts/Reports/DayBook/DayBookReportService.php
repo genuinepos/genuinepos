@@ -53,7 +53,7 @@ class DayBookReportService
             ->rawColumns(['date', 'particulars', 'voucher_type', 'voucher_no', 'debit', 'credit'])
             ->make(true);
     }
-    
+
     public function daybookEntriesQuery(object $request): ?object
     {
         $query = DayBook::query();
@@ -207,7 +207,8 @@ class DayBookReportService
                 'transfer_stocks.voucher_no as transfer_stock_voucher_no',
             );
 
-        return $query->orderBy('day_books.date_ts', 'asc')->orderBy('day_books.id', 'asc');
+        // return $query->orderBy('day_books.date_ts', 'asc')->orderBy('day_books.id', 'asc');
+        return $query->orderBy('day_books.date_ts', 'asc');
     }
 
     private function filter(object $request, object $query): object

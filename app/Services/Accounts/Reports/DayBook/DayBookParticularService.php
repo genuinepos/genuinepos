@@ -537,7 +537,7 @@ class DayBookParticularService
 
     public function stockAdjustmentDetails(object $request, object $daybook): string
     {
-        $showingAccount = '<a href="' . route('accounting.accounts.ledger', [($daybook?->account_id)]) . '" target="_blank">' . $daybook?->account?->name . '</a>';
+        $showingAccount = '<a href="' . route('accounts.ledger.index', [($daybook?->account_id)]) . '" target="_blank">' . $daybook?->account?->name . '</a>';
 
         $daybookReferenceBranch = $this->daybookBranchName($daybook);
 

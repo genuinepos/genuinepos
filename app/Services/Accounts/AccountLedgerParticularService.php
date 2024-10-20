@@ -348,7 +348,7 @@ class AccountLedgerParticularService
 
     public function stockAdjustmentDetails($request, $ledger)
     {
-        $showingAccount = '<a href="' . route('accounting.accounts.ledger', [($ledger?->stockAdjustment?->expenseAccount?->id)]) . '" target="_blank">' . $ledger?->expenseAccount?->expenseAccount?->name . '</a>';
+        $showingAccount = '<a href="' . route('accounts.ledger.index', [($ledger?->stockAdjustment?->expenseAccount?->id)]) . '" target="_blank">' . $ledger?->expenseAccount?->expenseAccount?->name . '</a>';
 
         $ledgerReferenceBranch = $this->ledgerBranchName($ledger);
 

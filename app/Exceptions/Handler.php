@@ -52,6 +52,7 @@ class Handler extends ExceptionHandler
 
             if ($exceptionClass == 'Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException') {
                 // Return a 404 Not Found response
+                Log::info('Class Name: FFFFFFFF ' . $exceptionClass);
                 return response()->view('errors.404', [], 404);
             }
         });

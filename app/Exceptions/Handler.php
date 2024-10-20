@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Throwable $e, $request) {
             // Log the exception for debugging purposes
             if ($e instanceof \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException) {
-      
+
                 // Return the custom 404 error page
                 return response()->view('errors.404', [], 404);
             }

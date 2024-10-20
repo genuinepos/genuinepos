@@ -65,7 +65,7 @@
                                                     if ($transferStock?->senderBranch?->parentBranch) {
                                                         $sendFrom = $transferStock?->senderBranch?->parentBranch?->name . '(' . $transferStock?->senderBranch?->area_name . ')';
                                                     } else {
-                                                        $sendFrom = $transferStock?->senderBranch?->area_name . '(' . $transferStock?->senderBranch?->area_name->area_name . ')';
+                                                        $sendFrom = $transferStock?->senderBranch?->area_name . '(' . $transferStock?->senderBranch?->area_name . ')';
                                                     }
                                                 } else {
                                                     $sendFrom = $generalSettings['business_or_shop__business_name'];

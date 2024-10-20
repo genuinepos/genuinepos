@@ -1461,7 +1461,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('contras_index'))
+                                            {{-- @if (auth()->user()->can('contras_index'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('journals.create') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
@@ -1472,7 +1472,7 @@
                                                         <p class="switch_text">{{ __('Journals') }}</p>
                                                     </a>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </div>
                                 @endif

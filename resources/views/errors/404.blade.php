@@ -28,7 +28,7 @@
             <div class="content-text">
                 <h1 class="error-hedding">{{ __("Page Not Found") }}</h1>
                 <br>
-                <a href="/" class="go-home-btn">{{ __("Go Home") }}</a>
+                <a href="{{ route('dashboard.index') }}" class="go-home-btn">{{ __("Go Home") }}</a>
             </div>
         </div>
     </div>

@@ -18,7 +18,7 @@ class ReceiveStockFromBranchService
         $query = DB::table('transfer_stocks')
             ->leftJoin('branches', 'transfer_stocks.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('branches as sender_branch', 'transfer_stocks.receiver_branch_id', 'sender_branch.id')
+            ->leftJoin('branches as sender_branch', 'transfer_stocks.sender_branch_id', 'sender_branch.id')
             ->leftJoin('branches as sender_branch_parent', 'sender_branch.parent_branch_id', 'sender_branch_parent.id')
             ->leftJoin('branches as receiver_branch', 'transfer_stocks.receiver_branch_id', 'receiver_branch.id')
             ->leftJoin('branches as receiver_branch_parent', 'receiver_branch.parent_branch_id', 'receiver_branch_parent.id')
@@ -102,7 +102,7 @@ class ReceiveStockFromBranchService
                         $senderBranch = '<strong>' . __('Send From') . ':</strong> ' . $row->sender_parent_branch_name . '(' . $row->sender_branch_area_name . ')';
                     } else {
 
-                        $senderBranch = '<strong>' . __('Send From') . ':</strong> ' . $senderBranch = $row->sender_branch_name . '(' . $row->sender_branch_area_name . ')';
+                        $senderBranch = '<strong>' . __('Send From') . ':</strong> ' . $row->sender_branch_name . '(' . $row->sender_branch_area_name . ')';
                     }
                 } else {
 

@@ -47,6 +47,7 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
 
             $exceptionClass = get_class($e); // Get the class of the exception
+            Log::info($exceptionClass);
             if ($e instanceof \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException) {
                 // Return a 404 Not Found response
                 return response()->view('errors.404', [], 404);

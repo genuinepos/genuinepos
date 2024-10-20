@@ -207,8 +207,8 @@ class DayBookReportService
                 'transfer_stocks.voucher_no as transfer_stock_voucher_no',
             );
 
-        // return $query->orderBy('day_books.date_ts', 'asc')->orderBy('day_books.id', 'asc');
-        return $query->orderBy('day_books.date_ts', 'asc');
+        return $query->orderBy('day_books.date_ts', 'asc')->orderBy('day_books.id', 'asc');
+        // return $query->orderBy('day_books.date_ts', 'asc');
     }
 
     private function filter(object $request, object $query): object

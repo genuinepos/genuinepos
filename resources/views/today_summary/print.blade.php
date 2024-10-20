@@ -27,8 +27,8 @@
         size: a4 portrait landscape;
         margin-top: 0.8cm;
         margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     div#footer {

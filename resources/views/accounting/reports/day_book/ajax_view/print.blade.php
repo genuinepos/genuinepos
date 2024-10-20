@@ -24,11 +24,12 @@
     }
 
     @page {
-        size: a4 portrait landscape;;
+        size: a4 portrait landscape;
+        ;
         margin-top: 0.8cm;
         margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     div#footer {
@@ -209,7 +210,7 @@
                             @endphp
 
                             <tr>
-                                <th colspan="6" style="font-size: 15px!important; font-weight:500;">{{ $date }}</th>
+                                <th colspan="6" style="font-size: 12px!important; font-weight:500;">{{ $date }}</th>
                             </tr>
                         @endif
 

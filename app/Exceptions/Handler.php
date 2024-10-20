@@ -44,17 +44,29 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
+        $this->renderable(function (Throwable $e, $request) {
+            // Log the exception for debugging purposes
+            if ($e instanceof \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException) {
 
-            $exceptionClass = get_class($e); // Get the class of the exception
-            Log::info('Class Name: ' . $exceptionClass);
-            Log::info('Msg: ' . $e);
-
-            if ($exceptionClass == 'Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException') {
-                // Return a 404 Not Found response
-                Log::info('Class Name: FFFFFFFF ' . $exceptionClass);
+                // Return the custom 404 error page
                 return response()->view('errors.404', [], 404);
             }
         });
+
+        // $this->reportable(function (Throwable $e) {
+
+        //     $exceptionClass = get_class($e); // Get the class of the exception
+        //     // dd($exceptionClass);
+        //     Log::info('Class Name: ' . $exceptionClass);
+        //     Log::info('Msg: ' . $e);
+
+        //     if ($exceptionClass == "Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException") {
+        //         // Return a 404 Not Found response
+        //         // dd($exceptionClass);
+        //         Log::info('Class Name: FFFFFFFF ' . $exceptionClass);
+        //         return redirect()->back();
+        //         // return response()->view('errors.404', [], 404);
+        //     }
+        // });
     }
 }

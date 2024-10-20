@@ -14,7 +14,7 @@
         <div class="col-lg-3 col-sm-6">
             <label class="fw-bold">{{ __('Default Unit') }}</label>
             <select name="default_unit_id" class="form-control" id="default_unit_id" data-next="is_enable_brands">
-                <option value="null">{{ __('None') }}</option>
+                <option value="">{{ __('None') }}</option>
                 @foreach ($units as $unit)
                     <option {{ $generalSettings['product__default_unit_id'] == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}
                     </option>

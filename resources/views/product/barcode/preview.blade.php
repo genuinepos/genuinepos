@@ -8,7 +8,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ __('Barcode') }} - {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business_or_shop__business_name'] }} </title>
+    <title>{{ __('Barcode') }} -
+        @if (auth()->user()?->branch)
+            @if (auth()->user()?->branch?->parentBranch)
+                {{ auth()->user()?->branch?->parentBranch?->name }}
+            @else
+                {{ auth()->user()?->branch?->name }}
+            @endif
+        @else
+            {{ $generalSettings['business_or_shop__business_name'] }}
+        @endif
+    </title>
     <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}">
 
     <style>
@@ -203,7 +213,15 @@
                                             <tr>
                                                 <th class="company_name">
                                                     @if (isset($req->is_business_name))
-                                                        {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business_or_shop__business_name'] }}
+                                                        @if (auth()->user()?->branch)
+                                                            @if (auth()->user()?->branch?->parentBranch)
+                                                                {{ auth()->user()?->branch?->parentBranch?->name }}
+                                                            @else
+                                                                {{ auth()->user()?->branch?->name }}
+                                                            @endif
+                                                        @else
+                                                            {{ $generalSettings['business_or_shop__business_name'] }}
+                                                        @endif
                                                     @endif
                                                 </th>
                                             </tr>
@@ -283,7 +301,15 @@
                             <div class="barcode">
                                 <p class="company_name" style="margin: 0px;padding: 0px;">
                                     @if (isset($req->is_business_name))
-                                        {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business_or_shop__business_name'] }}
+                                        @if (auth()->user()?->branch)
+                                            @if (auth()->user()?->branch?->parentBranch)
+                                                {{ auth()->user()?->branch?->parentBranch?->name }}
+                                            @else
+                                                {{ auth()->user()?->branch?->name }}
+                                            @endif
+                                        @else
+                                            {{ $generalSettings['business_or_shop__business_name'] }}
+                                        @endif
                                     @endif
                                 </p>
 

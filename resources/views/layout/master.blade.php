@@ -161,7 +161,7 @@
     <!-- Logout form for global -->
     <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
     <!-- Logout form for global end -->
-    <script src="{{ asset('/sw.js') }}"></script>
+    {{-- <script src="{{ asset('/sw.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/install-pwa-app.js') }}"></script>
 </body>
 

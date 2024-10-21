@@ -92,7 +92,7 @@
     @include('saas::_includes.main-js')
     @stack('js')
 
-    {{-- <script src="{{ asset('/sw.js') }}"></script> --}}
+    <script src="{{ asset('/sw.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/install-pwa-app.js') }}"></script>
 </body>
 

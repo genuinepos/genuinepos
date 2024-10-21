@@ -84,7 +84,7 @@ Route::middleware('is_auth')->group(function () {
 });
 
 // Auth and Verified
-Route::middleware(['is_verified'])->group(function () {
+Route::middleware(['is_verified', 'is_auth'])->group(function () {
 
     Route::prefix('dashboard')->group(function () {
 

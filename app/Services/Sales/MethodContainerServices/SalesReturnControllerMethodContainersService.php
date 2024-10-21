@@ -297,6 +297,8 @@ class SalesReturnControllerMethodContainersService implements SalesReturnControl
             'saleReturnProducts.unit.baseUnit:id,base_unit_id,code_name',
         ]);
 
+        abort_if(!$return, 404);
+
         $ownBranchIdOrParentBranchId = $return?->branch?->parent_branch_id ? $return?->branch?->parent_branch_id : $return?->branch_id;
 
         $data['branchName'] = $this->branchService->branchName(transObject: $return);

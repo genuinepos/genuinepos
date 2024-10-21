@@ -15,9 +15,7 @@ use App\Http\Requests\Services\StatusUpdateRequest;
 
 class StatusController extends Controller
 {
-    public function __construct(private StatusService $statusService)
-    {
-    }
+    public function __construct(private StatusService $statusService) {}
 
     public function statusTable(StatusTableRequest $request)
     {

@@ -26,6 +26,8 @@ class ProductLedgerController extends Controller
 
         $product = $this->productService->singleProduct(id: $id, with: ['unit', 'brand', 'category', 'subcategory', 'variants']);
 
+        abort_if(!$product, 404);
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 

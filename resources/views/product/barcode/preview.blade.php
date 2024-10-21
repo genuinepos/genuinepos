@@ -118,7 +118,6 @@
 
             }
         @else
-
             .print_area: {
                 height: 100%;
                 width: 100%;
@@ -280,7 +279,7 @@
                         @php
                             $currentPublished += 1;
                         @endphp
-                        <div class="barcode_area text-center" style=" margin-bottom: {{ $barcodeSetting->top_margin }}in; margin-left : {{ $barcodeSetting->left_margin }}in; height:auto; width:{{ $barcodeSetting->bar_width }}%;">
+                        <div class="barcode_area text-center" style=" margin-bottom: {{ $barcodeSetting->top_margin }}in; margin-left : {{ $barcodeSetting->left_margin }}in; height:auto; width:{{ $barcodeSetting->bar_width }}%;page-break-inside: avoid;">
                             <div class="barcode">
                                 <p class="company_name" style="margin: 0px;padding: 0px;">
                                     @if (isset($req->is_business_name))
@@ -288,13 +287,13 @@
                                     @endif
                                 </p>
 
-                                <img style="width: 100%; height:25px; margin:auto;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
-                                <p class="product_code" style="margin: 0px;padding: 0px;font-size: 7px;">{{ $req->product_codes[$index] }}</p>
+                                <img style="width: 100%; height:22px; margin:auto;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_codes[$index], $generator::TYPE_CODE_128)) }}">
+                                <p class="product_code" style="margin: 0px!important;padding: 0px!important;font-size: 7px;">{{ $req->product_codes[$index] }}</p>
                             </div>
 
-                            <div class="product_details_area">
+                            <div class="product_details_area" style="margin-top: -2px;">
                                 @if (isset($req->is_product_name))
-                                    <p class="product_name" style="margin: 0px;padding: 0px;font-size: 8px;">
+                                    <p class="product_name" style="margin: 0px;padding: 0px;font-size: 8px;line-height:1.3!important;">
                                         @php
                                             $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                         @endphp
@@ -307,7 +306,7 @@
                                 @endif
 
                                 @if (isset($req->is_price))
-                                    <p class="product_price fw-bold" style="margin: 0px;padding: 0px;font-size: 8px;">
+                                    <p class="product_price fw-bold" style="margin: 0px;padding: 0px;font-size: 8px;line-height:1.5!important;">
                                         {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                         {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                         {{-- {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }} --}}

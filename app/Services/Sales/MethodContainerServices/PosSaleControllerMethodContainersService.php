@@ -363,6 +363,8 @@ class PosSaleControllerMethodContainersService implements PosSaleControllerMetho
                 'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
             ]);
 
+            abort_if(!$sale, 404);
+
             $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
             $branchName = $this->branchService->branchName(transObject: $sale);

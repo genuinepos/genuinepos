@@ -59,6 +59,8 @@ class ReceiveStockFromBranchControllerMethodContainersService implements Receive
             ]
         );
 
+        abort_if(!$data['transferStock'], 404);
+
         return $data;
     }
 

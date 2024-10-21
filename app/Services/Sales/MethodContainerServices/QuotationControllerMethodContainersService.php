@@ -105,6 +105,8 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
             'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
         ]);
 
+        abort_if(!$quotation, 404);
+
         $generalSettings = config('generalSettings');
         $ownBranchIdOrParentBranchId = $quotation?->branch?->parent_branch_id ? $quotation?->branch?->parent_branch_id : $quotation->branch_id;
 

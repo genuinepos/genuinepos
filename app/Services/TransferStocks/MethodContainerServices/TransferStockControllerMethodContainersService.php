@@ -186,6 +186,8 @@ class TransferStockControllerMethodContainersService implements TransferStockCon
             ]
         );
 
+        abort_if(!$transferStock, 404);
+
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 

@@ -260,6 +260,8 @@ class JobCardController extends Controller
             'jobCardProducts.unit.baseUnit:id,base_unit_id,name,code_name',
         ]);
 
+        abort_if(!$jobCard, 404);
+
         $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
         $brands = $this->brandService->brands()->get(['id', 'name']);

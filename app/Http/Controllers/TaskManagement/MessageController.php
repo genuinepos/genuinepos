@@ -11,9 +11,7 @@ use App\Http\Requests\TaskManagement\MessageDeleteRequest;
 
 class MessageController extends Controller
 {
-    public function __construct(private MessageService $messageService)
-    {
-    }
+    public function __construct(private MessageService $messageService) {}
 
     public function index(MessageIndexRequest $request)
     {

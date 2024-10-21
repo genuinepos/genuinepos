@@ -157,6 +157,8 @@ class ServiceQuotationController extends Controller
             'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
         ]);
 
+        abort_if(!$quotation, 404);
+
         $ownBranchIdOrParentBranchId = $quotation?->branch?->parent_branch_id ? $quotation?->branch?->parent_branch_id : $quotation->branch_id;
 
         $saleAccounts = $this->accountService->accounts()

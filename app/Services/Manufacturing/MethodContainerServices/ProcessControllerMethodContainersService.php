@@ -121,6 +121,8 @@ class ProcessControllerMethodContainersService implements ProcessControllerMetho
             'ingredients.unit.baseUnit:id,name,code_name,base_unit_id',
         ])->where('id', $id)->first();
 
+        abort_if(!$data['process'], 404);
+
         $data['taxAccounts'] = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)

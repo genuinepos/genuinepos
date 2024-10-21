@@ -323,6 +323,8 @@ class PurchaseControllerMethodContainersService implements PurchaseControllerMet
             'purchaseProducts.unit:id,name,code_name,base_unit_multiplier',
         ]);
 
+        abort_if(!$purchase, 404);
+
         $ownBranchIdOrParentBranchId = $purchase?->branch?->parent_branch_id ? $purchase?->branch?->parent_branch_id : $purchase->branch_id;
 
         $accounts = $this->accountService->accounts(with: [

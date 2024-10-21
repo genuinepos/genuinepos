@@ -42,6 +42,8 @@ class ManageCustomerController extends Controller
             'account.branch:id,name,branch_code,parent_branch_id',
         ]);
 
+        abort_if(!$contact, 404);
+
         $ownBranchIdOrParentBranchId = $contact->account?->branch?->parent_branch_id ? $contact->account?->branch?->parent_branch_id : $contact->account?->branch_id;
 
         $branch = $this->branchService->singleBranch(id: $ownBranchIdOrParentBranchId, with: ['childBranches']);

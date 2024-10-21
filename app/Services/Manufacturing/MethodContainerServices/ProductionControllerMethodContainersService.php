@@ -213,6 +213,8 @@ class ProductionControllerMethodContainersService implements ProductionControlle
             'ingredients.unit:id,name',
         ])->where('id', $id)->first();
 
+        abort_if(!$data['production'], 404);
+
         $data['warehouses'] = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
             ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 

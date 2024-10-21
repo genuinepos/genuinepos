@@ -8,9 +8,7 @@ use App\Services\Sales\QuotationProductService;
 
 class ServiceQuotationProductController extends Controller
 {
-    public function __construct(private QuotationProductService $quotationProductService)
-    {
-    }
+    public function __construct(private QuotationProductService $quotationProductService) {}
 
     public function quotationProductsForJobCard($quotationId)
     {

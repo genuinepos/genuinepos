@@ -150,6 +150,8 @@ class ProductControllerMethodContainersService implements ProductControllerMetho
         $data = [];
         $product = $this->productService->singleProduct(id: $id, with: ['productUnits', 'productUnits.baseUnit', 'variants', 'variants.variantUnits', 'variants.variantUnits.assignedUnit', 'variants.productLedgers', 'productAccessBranches']);
 
+        abort_if(!$product, 404);
+
         $data['categories'] = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
         $data['subCategories'] = $this->categoryService->categories()->where('parent_category_id', ($product->category_id ? $product->category_id : 0))->get(['id', 'name']);
         $data['brands'] = $this->brandService->brands()->get(['id', 'name']);

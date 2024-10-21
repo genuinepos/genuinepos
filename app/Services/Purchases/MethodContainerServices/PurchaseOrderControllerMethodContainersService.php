@@ -251,6 +251,8 @@ class PurchaseOrderControllerMethodContainersService implements PurchaseOrderCon
             'purchaseOrderProducts.unit:id,name,code_name,base_unit_multiplier',
         ]);
 
+        abort_if(!$order, 404);
+
         $ownBranchIdOrParentBranchId = $order?->branch?->parent_branch_id ? $order?->branch?->parent_branch_id : $order->branch_id;
 
         $accounts = $this->accountService->accounts(with: [

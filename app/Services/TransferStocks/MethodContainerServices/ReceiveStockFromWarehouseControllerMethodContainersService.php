@@ -67,6 +67,8 @@ class ReceiveStockFromWarehouseControllerMethodContainersService implements Rece
             ]
         );
 
+        abort_if(!$data['transferStock'], 404);
+
         return $data;
     }
 

@@ -295,6 +295,8 @@ class PurchaseReturnControllerMethodContainersService implements PurchaseReturnC
             'purchaseReturnProducts.unit:id,name,code_name,base_unit_multiplier',
         ]);
 
+        abort_if(!$return, 404);
+
         $ownBranchIdOrParentBranchId = $return?->branch?->parent_branch_id ? $return?->branch?->parent_branch_id : $return?->branch_id;
 
         $data['branchName'] = $this->branchService->branchName(transObject: $return);

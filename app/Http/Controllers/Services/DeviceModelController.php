@@ -20,8 +20,7 @@ class DeviceModelController extends Controller
         private DeviceModelService $deviceModelService,
         private BrandService $brandService,
         private DeviceService $deviceService
-    ) {
-    }
+    ) {}
 
     public function deviceModelsTable(DeviceModelTableRequest $request)
     {

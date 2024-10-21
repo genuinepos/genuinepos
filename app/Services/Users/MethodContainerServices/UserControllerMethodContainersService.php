@@ -39,6 +39,7 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
     {
         $data = [];
         $data['user'] = $this->userService->singleUser(id: $id);
+        abort_if(!$data['user'], 404);
         return $data;
     }
 
@@ -75,6 +76,8 @@ class UserControllerMethodContainersService implements UserControllerMethodConta
     {
         $data = [];
         $data['user'] = $this->userService->singleUser(id: $id);
+
+        abort_if(!$data['user'], 404);
 
         $data['roles'] = $this->roleService->roles()->get();
         $data['branches'] = $this->branchService->branches(with: ['parentBranch'])

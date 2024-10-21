@@ -70,6 +70,7 @@ class WorkSpaceController extends Controller
     public function edit($id, WorkspaceEditRequest $request)
     {
         $workspace = $this->workspaceService->singleWorkspace(id: $id, with: ['users']);
+        abort_if(!$workspace, 404);
         $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
 
         return view('task_management.workspaces.ajax_view.edit', compact('workspace', 'users'));

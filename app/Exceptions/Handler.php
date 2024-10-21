@@ -49,24 +49,13 @@ class Handler extends ExceptionHandler
             if ($e instanceof \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException) {
 
                 // Return the custom 404 error page
-                return response()->view('errors.404', [], 404);
+                // return response()->view('errors.404', [], 404);
+                return __('Please use the correct url');
             }
         });
 
         // $this->reportable(function (Throwable $e) {
 
-        //     $exceptionClass = get_class($e); // Get the class of the exception
-        //     // dd($exceptionClass);
-        //     Log::info('Class Name: ' . $exceptionClass);
-        //     Log::info('Msg: ' . $e);
-
-        //     if ($exceptionClass == "Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException") {
-        //         // Return a 404 Not Found response
-        //         // dd($exceptionClass);
-        //         Log::info('Class Name: FFFFFFFF ' . $exceptionClass);
-        //         return redirect()->back();
-        //         // return response()->view('errors.404', [], 404);
-        //     }
         // });
     }
 }

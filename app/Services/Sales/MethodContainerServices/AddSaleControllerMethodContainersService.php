@@ -318,6 +318,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
         ]);
 
+        abort_if(!$sale, 404);
+
         $ownBranchIdOrParentBranchId = $sale?->branch?->parent_branch_id ? $sale?->branch?->parent_branch_id : $sale->branch_id;
 
         $data['branchName'] = $this->branchService->branchName(transObject: $sale);

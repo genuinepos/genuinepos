@@ -116,6 +116,8 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
             'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
         ]);
 
+        abort_if(!$draft, 404);
+
         $generalSettings = config('generalSettings');
         $ownBranchIdOrParentBranchId = $draft?->branch?->parent_branch_id ? $draft?->branch?->parent_branch_id : $draft->branch_id;
 

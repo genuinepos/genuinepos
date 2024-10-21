@@ -111,6 +111,8 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
             'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
         ]);
 
+        abort_if(!$order, 404);
+
         $generalSettings = config('generalSettings');
         $ownBranchIdOrParentBranchId = $order?->branch?->parent_branch_id ? $order?->branch?->parent_branch_id : $order->branch_id;
 

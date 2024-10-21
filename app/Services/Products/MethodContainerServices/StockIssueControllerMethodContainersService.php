@@ -204,6 +204,8 @@ class StockIssueControllerMethodContainersService implements StockIssueControlle
             ]
         );
 
+        abort_if(!$data['stockIssue'], 404);
+
         $data['branchName'] = $this->branchService->branchName();
         return $data;
     }

@@ -8,12 +8,10 @@ use App\Http\Requests\Services\SettingIndexRequest;
 
 class SettingController extends Controller
 {
-    public function __construct(private StatusService $statusService)
+    public function __construct(private StatusService $statusService) {}
+
+    public function index(SettingIndexRequest $request)
     {
-    }
-
-    public function index(SettingIndexRequest $request) {
-
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $status = $this->statusService->allStatus()->where('service_status.branch_id', $ownBranchIdOrParentBranchId)->orderByRaw('ISNULL(sort_order), sort_order ASC')->get(['id', 'name', 'color_code']);

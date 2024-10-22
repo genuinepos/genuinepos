@@ -169,14 +169,8 @@ class JournalController extends Controller
                 $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Journal->value, date: $request->date, accountId: $addAccountingVoucherDescription->account_id, transId: $addAccountingVoucherDescription->id, amount: $addAccountingVoucherDescription->amount, amountType: $addAccountingVoucherDescription->amount_type);
             }
 
-            //Add Debit Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Journal->value, date: $request->date, account_id: $addAccountingVoucherDescription->account_id, trans_id: $addAccountingVoucherDescription->id, amount: $addAccountingVoucherDescription->amount, amount_type: $amountTypeFullStr);
-
-            // Add Payment Description Credit Entry
-            $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->credit_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount);
-
-            //Add Credit Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->debit_account_id);
+            //Add Ledger Entry
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Journal->value, date: $request->date, account_id: $addAccountingVoucherDescription->account_id, trans_id: $addAccountingVoucherDescription->id, amount: $addAccountingVoucherDescription->amount, amount_type: $amountTypeFullStr, cash_bank_account_id: $cashBankAcId);
         }
 
 

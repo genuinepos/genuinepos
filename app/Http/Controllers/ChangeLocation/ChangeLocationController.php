@@ -16,9 +16,7 @@ use App\Http\Requests\ChangeBusinessOrBranchLocation\RedirectLocationRequest;
 
 class ChangeLocationController extends Controller
 {
-    public function __construct(private BranchService $branchService, private UserService $userService, private UserActivityLogService $userActivityLogService)
-    {
-    }
+    public function __construct(private BranchService $branchService, private UserService $userService, private UserActivityLogService $userActivityLogService) {}
 
     public function index()
     {

@@ -348,7 +348,9 @@ class UserService
         $user->save();
 
         // Refresh the auth session with the updated user data
+
         Auth::setUser($user); // Update the user session
+        $request->session()->regenerate();
 
         $user = $this->singleUser(id: auth()->user()->id, with: ['branch', 'branch.parentBranch']);
 

@@ -4,12 +4,12 @@ namespace App\Models\Sales;
 
 use App\Models\User;
 use App\Models\BaseModel;
-use App\Models\Sales\Sale;
 use App\Models\Branches\Branch;
 use App\Models\Accounts\Account;
+use App\Models\Sales\SaleReturn;
+use App\Models\Services\JobCard;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
-use App\Models\Services\JobCard;
 
 class Sale extends BaseModel
 {
@@ -38,9 +38,9 @@ class Sale extends BaseModel
         return $this->belongsTo(Sale::class, 'sales_order_id');
     }
 
-    public function saleReturn()
+    public function saleReturns()
     {
-        return $this->hasOne(SaleReturn::class, 'sale_id');
+        return $this->hasMany(SaleReturn::class, 'sale_id');
     }
 
     public function references()

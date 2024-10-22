@@ -352,6 +352,7 @@ class SaleService
     {
         $deleteSale = $this->singleSale(id: $id, with: [
             'salesOrder',
+            'saleReturns',
             'references',
             'saleProducts',
             'saleProducts.product',
@@ -366,6 +367,11 @@ class SaleService
         if (count($deleteSale->references) > 0) {
 
             return ['pass' => false, 'msg' => __("Data can not be deleted. There is one or more receipt which is against this ${__voucherName}.")];
+        }
+
+        if (count($deleteSale->saleReturns) > 0) {
+
+            return ['pass' => false, 'msg' => __("Data can not be deleted. There is one or more sales return which is against this ${__voucherName}.")];
         }
 
         if ($deleteSale->status == SaleStatus::Order->value && $deleteSale->total_delivered_qty > 0) {

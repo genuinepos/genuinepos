@@ -107,7 +107,7 @@ class LoginController extends Controller
                 Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
                 Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
             ) {
-                
+
                 if (!Session::has($user->language)) {
 
                     session(['lang' => $user->language]);
@@ -126,6 +126,7 @@ class LoginController extends Controller
                 }
 
                 Auth::guard()->login($user);
+                $request->session()->regenerate();
                 return redirect()->intended(route('dashboard.index'));
             } else {
 
@@ -155,6 +156,7 @@ class LoginController extends Controller
 
             // Refresh the auth session with the updated user data
             Auth::setUser($user); // Update the user session
+            $request->session()->regenerate();
         }
 
         $this->guard()->logout();

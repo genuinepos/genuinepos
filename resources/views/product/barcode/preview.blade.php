@@ -125,7 +125,6 @@
                     margin-left: {{ $barcodeSetting->left_margin }}px !important;
                     margin-right: {{ $barcodeSetting->right_margin }}px !important;
                 }
-
             }
         @else
             .print_area: {

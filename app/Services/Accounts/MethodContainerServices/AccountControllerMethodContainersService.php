@@ -104,7 +104,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
             swiftCode: $request->swift_code,
             bankBranch: $request->bank_branch,
             taxPercent: $request->tax_percent,
-            openingBalance: $request->opening_balance,
+            openingBalance: $request->opening_balance ? $request->opening_balance : 0,
             openingBalanceType: $request->opening_balance_type,
             remarks: $request->remarks,
         );
@@ -214,7 +214,7 @@ class AccountControllerMethodContainersService implements AccountControllerMetho
             swiftCode: $request->swift_code,
             bankBranch: $request->bank_branch,
             taxPercent: $request->tax_percent,
-            openingBalance: $request->opening_balance,
+            openingBalance: $request->opening_balance ? $request->opening_balance : 0,
             openingBalanceType: $request->opening_balance_type,
             remarks: $request->remarks,
         );

@@ -64,8 +64,25 @@ Route::middleware([
 |--------------------------------------------------------------------------
  */
 Route::get('/', function (Request $request) {
+    // return config('app.app_domain');
+    // return $host = dd($request);
     $isTenant = tenant();
-    return isset($isTenant) ?
-        redirect(RouteServiceProvider::HOME) :
-        redirect()->route('saas.welcome-page');
+    // return isset($isTenant) ?
+    //     redirect(RouteServiceProvider::HOME) :
+    //     redirect()->route('saas.welcome-page');
+
+    if (isset($isTenant)) {
+
+        return redirect(RouteServiceProvider::HOME);
+    }else {
+        // dd('Fail');
+        // return config('app.app_domain');
+        if ($request->getHost() == config('app.app_domain')) {
+            // dd('GET');
+            return redirect()->route('saas.login.showForm');
+        }else {
+
+            return 'Please enter a correct url.';
+        }
+    }
 })->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

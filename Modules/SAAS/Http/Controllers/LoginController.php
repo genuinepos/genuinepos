@@ -52,6 +52,7 @@ class LoginController extends Controller
         // }
 
         Auth::guard()->login($user);
+        $request->session()->regenerate();
         return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
     }
 

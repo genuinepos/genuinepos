@@ -65,6 +65,8 @@ Route::get('my-test', function () {
     // $c = array_combine($translationKeys, $translatedArray);
 
     // return $c;
+
+    dd(session('user'));
 });
 
 Route::get('password', function () {

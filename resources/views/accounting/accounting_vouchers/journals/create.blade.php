@@ -221,12 +221,9 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-md-6 text-end pe-2"><b>{{ __('Maintain Against Invoice') }}</b></label>
+                                                    <label class="col-md-6 text-end pe-2"><b>{{ __('Reference Docs') }}</b></label>
                                                     <div class="col-6">
-                                                        <select name="against_invoice" class="form-control" id="against_invoice" data-next="search_account">
-                                                            <option value="0">{{ __('No') }}</option>
-                                                            <option value="1">{{ __('Yes') }}</option>
-                                                        </select>
+                                                        <input type="file" name="reference_docs[]" class="form-control" id="against_invoice"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,13 +259,10 @@
                                                                                 <input type="hidden" id="account_name" class="voidable">
                                                                                 <input type="hidden" id="default_account_name" class="voidable">
                                                                                 <input type="hidden" name="account_ids[]" id="account_id" class="voidable">
-                                                                                <input type="hidden" name="user_ids[]" id="user_id" class="voidable">
                                                                                 <input type="hidden" name="payment_method_ids[]" id="payment_method_id" class="voidable">
                                                                                 <input type="hidden" name="transaction_nos[]" id="transaction_no" class="voidable">
                                                                                 <input type="hidden" name="cheque_nos[]" id="cheque_no" class="voidable">
                                                                                 <input type="hidden" name="cheque_serial_nos[]" id="cheque_serial_no" class="voidable">
-                                                                                <input type="hidden" name="cheque_issue_dates[]" id="cheque_issue_date" class="voidable">
-                                                                                <input type="hidden" name="remarkable_notes[]" id="remarkable_note" class="voidable">
                                                                                 <input type="hidden" name="indexes[]" id="index" value="0">
                                                                                 <input type="hidden" name="journal_entry_ids[]" id="journal_entry_id" value="">
                                                                                 @php
@@ -276,27 +270,25 @@
                                                                                 @endphp
                                                                                 <input type="hidden" class="unique_id-{{ $uniqueId }}" id="unique_id" value="{{ $uniqueId }}">
                                                                                 <input type="hidden" id="main_group_number" class="voidable">
-                                                                                <div class="cost_centre_list_for_entry_table_area">
                                                                                 </div>
-                                                                            </div>
 
-                                                                            <div class="col-4">
-                                                                                <p class="fw-bold text-muted curr_bl">{{ __('Curr. Bal.') }} :
-                                                                                    <span id="account_balance" class="fw-bold text-dark voidable"></span>
-                                                                                </p>
+                                                                                <div class="col-4">
+                                                                                    <p class="fw-bold text-muted curr_bl">{{ __('Curr. Bal.') }} :
+                                                                                        <span id="account_balance" class="fw-bold text-dark voidable"></span>
+                                                                                    </p>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </td>
 
                                                                     <td>
                                                                         <p class="m-0 p-0 fw-bold" id="show_debit_amount"></p>
-                                                                        <input type="number" step="any" name="debit_amounts[]" class="form-control fw-bold spinner_hidden display-none text-end" id="debit_amount" value="0.00">
+                                                                        <input type="number" step="any" name="debit_amounts[]" class="form-control fw-bold spinner_hidden d-hide text-end" id="debit_amount" value="0.00">
                                                                     </td>
 
                                                                     <td>
-                                                                        <p class="m-0 p-0 fw-bold" id="show_credit_amount">
-                                                                        </p>
-                                                                        <input type="number" step="any" name="credit_amounts[]" class="form-control fw-bold spinner_hidden display-none text-end" id="credit_amount" value="0.00">
+                                                                        <p class="m-0 p-0 fw-bold" id="show_credit_amount"></p>
+                                                                        <input type="number" step="any" name="credit_amounts[]" class="form-control fw-bold spinner_hidden d-hide text-end" id="credit_amount" value="0.00">
                                                                     </td>
 
                                                                     <td>
@@ -315,9 +307,9 @@
 
                                                             <tbody>
                                                                 <tr>
-                                                                    <td class="text-end" colspan="1">{{ __('Total') }}:</td>
-                                                                    <td class="text-end" id="show_debit_total">0.00</td>
-                                                                    <td class="text-end" id="show_credit_total">0.00</td>
+                                                                    <td class="text-end fw-bold" colspan="1">{{ __('Total') }}:</td>
+                                                                    <td class="text-end fw-bold" id="show_debit_total">0.00</td>
+                                                                    <td class="text-end fw-bold" id="show_credit_total">0.00</td>
                                                                     <td class="text-center">...</td>
                                                                 </tr>
                                                             </tbody>
@@ -336,6 +328,8 @@
                                                 <div class="input-group">
                                                     <label class="col-1 text-end pe-1"><b>{{ __('Remarks') }} </b></label>
                                                     <div class="col-11">
+                                                        <input type="hidden" name="debit_total" id="debit_total" value="0">
+                                                        <input type="hidden" name="credit_total" id="credit_total" value="0">
                                                         <input type="text" name="remarks" class="form-control" id="remarks" data-next="shipment_address" placeholder="{{ __('Remarks') }}">
                                                     </div>
                                                 </div>
@@ -357,14 +351,9 @@
                                 <div class="form_element rounded m-0 mt-1">
                                     <div class="element-body side-number-field">
                                         <div class="payment_body">
-
-
                                             <div class="row g-2">
                                                 <div class="col-md-12">
                                                     <ul class="list-unstyled account_list" id="account_list">
-                                                        <li>
-                                                            <a class="select_account ' + (key == 0 && length == 1 ? 'selected_account' : '') + '" data-is_customer="' + (account.customer_id != null ? 1 : 0) + '" data-account_name="' + account.name + accuntNumber + '" data-default_account_name="' + account.name + '" data-account_id="' + account.id + '" data-main_group_number="' + account.main_group_number + '" data-sub_sub_group_number="' + account.sub_sub_group_number + '" href="#"> account.name + accuntNumber + groupName </a>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -388,136 +377,64 @@
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="addTransactionDetailsModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog double-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __("Transaction Details") }}</h6>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="fas fa-times"></span>
+                    </a>
+                </div>
+
+                <div class="modal-body">
+                    <form id="add_transaction_details_form" action="" method="POST">
+                        @csrf
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <label class="col-md-3"><b>{{ __("Type") }} :</b></label>
+                                    <div class="col-md-9">
+                                        <select id="trans_payment_method_id" class="form-control trans_input form-select">
+                                            <option value="">None</option>
+                                            @foreach ($methods as $method)
+                                                <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="col-md-3"><b>{{ __("Transaction No") }} :</b></label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control trans_input" id="trans_transaction_no" placeholder="{{ __("Transaction No") }}">
+                                    </div>
+                                </div>
+
+                                <div class="input-group mt-1">
+                                    <label class="col-md-3"><b>{{ __("Cheque No") }} :</b></label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control trans_input" id="trans_cheque_no" placeholder="{{ __("Cheque No") }}">
+                                    </div>
+                                </div>
+
+                                <div class="input-group mt-1">
+                                    <label class="col-md-3"><b>{{ __("Cheque Serial No") }} :</b></label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control trans_input" id="trans_cheque_serial_no" placeholder="{{ __("Cheque Serial No") }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="search_product">
 @endsection
 @push('scripts')
-    <script>
-        var myArray = [];
-        var rowIndex = 1;
-        var ul = '';
-        var selectObjClassName = '';
-        var uniqueId = '';
-        var mainGroupNumber = '';
-
-        $(document).on('keypress', '#search_account', function(e) {
-
-            var getUniqueId = $(this).closest('tr').find('#unique_id').val();
-            uniqueId = getUniqueId;
-            ul = document.getElementById('account_list');
-            selectObjClassName = 'selected_account';
-
-            if (e.which == 13) {
-
-                $('.selected_account').click();
-            }
-        });
-
-        $(document).on('mousedown', '#account_list a', function(e) {
-            e.preventDefault();
-
-            $('.select_account').removeClass('selected_account');
-            $(this).addClass('selected_account');
-            $(this).find('#selected_account').click();
-        });
-
-        $(document).on('focus', '#search_account', function(e) {
-
-            var val = $(this).val();
-
-            if (val) {
-
-                $('#account_list').empty();
-            }
-
-            var getUniqueId = $(this).closest('tr').find('#unique_id').val();
-            uniqueId = getUniqueId;
-            ul = document.getElementById('account_list');
-            selectObjClassName = 'selected_account';
-        });
-
-        $(document).on('blur', '#search_account', function(e) {
-
-            ul = '';
-            selectObjClassName = '';
-        });
-
-        var delay = (function() {
-            var timer = 0;
-            return function(callback, ms) {
-
-                clearTimeout(timer);
-                timer = setTimeout(callback, ms);
-            };
-        })();
-
-        $(document).on('input', '#search_account', function(e) {
-
-            var keyword = $(this).val();
-            var __keyword = keyword.replaceAll('/', '~');
-            __keyword = __keyword.replaceAll('#', '^^^');
-            var tr = $(this).closest('tr');
-
-            if (keyword == '') {
-
-                tr.find('#account_id').val('');
-                tr.find('#default_account_name').val('');
-                tr.find('#search_account').val('');
-                tr.find('#account_balance').html('');
-            }
-
-            delay(function() {
-                searchAccount(__keyword);
-            }, 200);
-        });
-
-        $(document).on('focus', '#search_account', function(e) {
-
-            var tr = $(this).closest('tr');
-            var only_type = $(this).data('only_type');
-            var keyword = tr.find('#default_account_name').val();
-            var __keyword = keyword.replaceAll('/', '~');
-            __keyword = __keyword.replaceAll('#', '^^^');
-            delay(function() {
-                searchAccount(__keyword);
-            }, 200);
-        });
-
-        function searchAccount(keyword) {
-
-            var keyword = keyword ? keyword : 'NULL';
-
-            var url = "{{ route('journals.search.account') }}";
-
-            $.ajax({
-                url: url,
-                dataType: 'json',
-                data: {keyword},
-                success: function(accounts) {
-
-                    var length = accounts.length;
-                    $('.select_account').removeClass('selected_account');
-                    var li = '';
-
-                    $.each(accounts, function(key, account) {
-
-                        var groupName = ' (' + account.group_name + ')';
-                        var accuntNumber = account.account_number != null ? ' - A/c No.: ' + account.account_number : '';
-
-                        li += '<li>';
-                        li += '<a class="select_account ' + (key == 0 && length == 1 ? 'selected_account' : '') + '" data-account_name="' + account.name + accuntNumber + '" data-default_account_name="' + account.name + '" data-account_id="' + account.id + '" data-main_group_number="' + account.main_group_number + '" data-sub_sub_group_number="' + account.sub_sub_group_number + '" href="#"> ' + account.name + accuntNumber + groupName + '</a>';
-                        li += '</li>';
-                    });
-
-                    $('#account_list').html(li);
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error('Net Connetion Error. Please check the connetion.');
-                        return;
-                    }
-                }
-            });
-        }
-    </script>
+    @include('accounting.accounting_vouchers.journals.js_partials.add_js')
 @endpush

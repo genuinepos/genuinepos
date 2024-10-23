@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'subscriptionRestrictions' => \App\Http\Middleware\SubscriptionRestrictionsMiddleware::class,
         'changeLocation' => \App\Http\Middleware\changeLocationMiddleware::class,
         'startup' => \App\Http\Middleware\StartupMiddleware::class,
+        'nba' => \App\Http\Middleware\NoBusinessAccess::class,
     ];
 }
